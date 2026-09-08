@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: gaiaos-loader-api
+    runtime: docker
+    dockerfilePath: ./api/Dockerfile
+    dockerContext: ./api
+    healthCheckPath: /health
+    envVars:
+      - key: GAIAOS_REPOSITORY
+        value: hurrisonferd/NaomiLeGaia
+      - key: GAIAOS_BRANCH
+        value: main
+      - key: GAIAOS_API_KEY
+        generateValue: true
