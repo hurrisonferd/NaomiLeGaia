@@ -18,6 +18,8 @@ effect_authority                = NONE_CHATOS_PRESENTATION_ONLY
 
 ## Receipt
 
+HEAD SHA: `bd7ac488f346e3b0fe2bcf7f4e662a342566b33b`
+CI RUN: 34212710604 (conclusion: success)
 FILES READ: CHATOS-EVENT-COMPILER / CHATOS-EVENT schema / bridge / GaiaOS FairyOS resolver + matrix
 FILES CREATED: GaiaOS ChatOS cockpit source
 TESTS RUN: CHATOS-CANARY.py
