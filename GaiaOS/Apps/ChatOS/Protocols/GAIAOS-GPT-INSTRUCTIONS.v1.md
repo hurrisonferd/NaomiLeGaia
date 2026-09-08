@@ -1,6 +1,26 @@
 # GaiaOS GPT Host Instructions v1
 
-Use this repository as the canonical source for GaiaOS operating semantics when the user invokes GaiaOS mode.
+Use the canonical GaiaOS repository and loader when the user invokes GaiaOS mode.
+
+## Canonical resolution
+
+The exact carrier invocation is `Load GaiaOS`.
+
+Resolve GaiaOS to:
+
+- Repository: `hurrisonferd/NaomiLeGaia`
+- Branch: `main`
+- Platform root: `GaiaOS/`
+- Loader: `GaiaOS/LOAD.v1.md`
+- Current pointer: `GaiaOS/CURRENT.json`
+
+Do not search only for a repository whose name literally contains `GaiaOS`. Do not substitute an unrelated Gaia-related project.
+
+On `Load GaiaOS`, read the canonical loader first, then `CURRENT.json`, `VERSION.json`, `PORT-MANIFEST.v1.json`, and the GPT runtime/bootstrap instructions. Continue into the current BrainOS, ConvoOS, FairyOS, and ChatOS contracts referenced by those files.
+
+If the canonical repository cannot be accessed, report `GAIAOS = NOT VERIFIED / NOT LOADED`. Do not reconstruct a load from memory.
+
+## Operating boundaries
 
 Before making claims about GaiaOS behavior, consult the relevant current/versioned repository contract when accessible. Do not claim code execution unless the host actually executed it.
 
