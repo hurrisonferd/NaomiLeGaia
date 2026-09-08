@@ -5,6 +5,12 @@ info:
   description: Read-only carrier bootstrap API for the canonical GaiaOS source.
 servers:
   - url: https://REPLACE-WITH-YOUR-DEPLOYMENT-DOMAIN
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Optional in local development; required by the recommended Render deployment.
 paths:
   /gaiaos/load:
     get:
@@ -15,6 +21,8 @@ paths:
         pin the load to one Git commit, and return the canonical loader,
         CURRENT, VERSION, PORT-MANIFEST, runtime bootstrap, and host instructions.
         Use this operation when the user explicitly requests "Load GaiaOS".
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Verified GaiaOS bootstrap bundle.
@@ -23,6 +31,8 @@ paths:
               schema:
                 type: object
                 additionalProperties: true
+        '401':
+          description: Missing or invalid API key.
         '502':
           description: Canonical source unavailable or invalid.
   /health:
