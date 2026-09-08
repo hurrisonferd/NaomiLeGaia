@@ -2,18 +2,22 @@
 
 from __future__ import annotations
 
+import base64
+import hashlib
+import hmac
 import json
 import os
+import secrets
 import urllib.error
 import urllib.request
 from typing import Any
 
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import HTMLResponse
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.1.1"
 REPOSITORY = os.getenv("GAIAOS_REPOSITORY", "hurrisonferd/NaomiLeGaia")
 BRANCH = os.getenv("GAIAOS_BRANCH", "main")
 GITHUB_API = "https://api.github.com"
@@ -22,6 +26,7 @@ API_KEY = os.getenv("GAIAOS_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
 TIMEOUT = float(os.getenv("GAIAOS_HTTP_TIMEOUT", "10"))
+SESSION_COOKIE = "gaiaos_session"
 
 LOAD_PATHS = [
     "GaiaOS/LOAD.v1.md",
@@ -66,6 +71,31 @@ def _authorize(authorization: str | None) -> None:
         return
     if authorization != f"Bearer {API_KEY}":
         raise HTTPException(status_code=401, detail="Invalid or missing API key")
+
+
+def _session_token() -> str:
+    """Create a signed browser session token without exposing the server API key."""
+    if not API_KEY:
+        raise HTTPException(status_code=503, detail="GAIAOS_API_KEY is not configured on the carrier")
+    nonce = secrets.token_urlsafe(32)
+    signature = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
+    return base64.urlsafe_b64encode(f"{nonce}.{signature}".encode()).decode()
+
+
+def _authorize_browser_session(request: Request) -> None:
+    if API_KEY is None:
+        return
+    token = request.cookies.get(SESSION_COOKIE)
+    if not token:
+        raise HTTPException(status_code=401, detail="Browser session missing; reload the GaiaOS page")
+    try:
+        raw = base64.urlsafe_b64decode(token.encode()).decode()
+        nonce, signature = raw.rsplit(".", 1)
+    except (ValueError, UnicodeDecodeError, base64.binascii.Error) as exc:
+        raise HTTPException(status_code=401, detail="Invalid browser session") from exc
+    expected = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
+    if not hmac.compare_digest(signature, expected):
+        raise HTTPException(status_code=401, detail="Invalid browser session")
 
 
 def _resolve_commit() -> str:
@@ -153,8 +183,10 @@ When the user says "Load GaiaOS", report the verified source commit and loaded s
 
 
 @app.get("/", response_class=HTMLResponse)
-def home() -> str:
-    return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + OpenAI Responses API</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS” or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages})});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Request failed');messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
+def home(response: Response) -> str:
+    if API_KEY is not None:
+        response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
+    return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + OpenAI Responses API</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS” or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Request failed');messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
 
 
 @app.get("/health", operation_id="health")
@@ -169,8 +201,8 @@ def load_gaiaos(authorization: str | None = Header(default=None)) -> dict[str, A
 
 
 @app.post("/chat")
-def chat(request: ChatRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
-    _authorize(authorization)
+def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
+    _authorize_browser_session(browser_request)
     if not OPENAI_API_KEY:
         raise HTTPException(status_code=503, detail="OPENAI_API_KEY is not configured on the carrier")
 
