@@ -1,0 +1,34 @@
+openapi: 3.1.0
+info:
+  title: GaiaOS Canonical Loader API
+  version: 1.0.0
+  description: Read-only carrier bootstrap API for the canonical GaiaOS source.
+servers:
+  - url: https://REPLACE-WITH-YOUR-DEPLOYMENT-DOMAIN
+paths:
+  /gaiaos/load:
+    get:
+      operationId: loadGaiaOS
+      summary: Load GaiaOS
+      description: >-
+        Resolve the canonical GaiaOS repository hurrisonferd/NaomiLeGaia on main,
+        pin the load to one Git commit, and return the canonical loader,
+        CURRENT, VERSION, PORT-MANIFEST, runtime bootstrap, and host instructions.
+        Use this operation when the user explicitly requests "Load GaiaOS".
+      responses:
+        '200':
+          description: Verified GaiaOS bootstrap bundle.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '502':
+          description: Canonical source unavailable or invalid.
+  /health:
+    get:
+      operationId: health
+      summary: Health check
+      responses:
+        '200':
+          description: Service health.
