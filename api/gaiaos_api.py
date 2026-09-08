@@ -1,8 +1,9 @@
-"""GaiaOS canonical loader and OpenAI carrier API."""
+"""GaiaOS canonical loader, OpenAI carrier API, and remote MCP carrier."""
 
 from __future__ import annotations
 
 import base64
+import contextlib
 import hashlib
 import hmac
 import json
@@ -14,10 +15,12 @@ from typing import Any
 
 from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import HTMLResponse
+from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-APP_VERSION = "1.1.1"
+APP_VERSION = "1.2.0"
 REPOSITORY = os.getenv("GAIAOS_REPOSITORY", "hurrisonferd/NaomiLeGaia")
 BRANCH = os.getenv("GAIAOS_BRANCH", "main")
 GITHUB_API = "https://api.github.com"
@@ -27,6 +30,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
 TIMEOUT = float(os.getenv("GAIAOS_HTTP_TIMEOUT", "10"))
 SESSION_COOKIE = "gaiaos_session"
+MCP_PUBLIC_HOST = os.getenv("MCP_PUBLIC_HOST", "ligeia-api.onrender.com")
 
 LOAD_PATHS = [
     "GaiaOS/LOAD.v1.md",
@@ -37,10 +41,25 @@ LOAD_PATHS = [
     "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
 ]
 
-app = FastAPI(
-    title="GaiaOS Carrier API",
-    version=APP_VERSION,
-    description="GaiaOS source loader plus a web carrier backed by the OpenAI Responses API.",
+mcp = FastMCP(
+    "GaiaOS Carrier",
+    instructions=(
+        "Canonical GaiaOS source loader. The load_gaiaos tool retrieves the current GaiaOS "
+        "loader surface directly from the canonical GitHub repository. It is read-only and "
+        "does not execute repository code."
+    ),
+    stateless_http=True,
+    json_response=True,
+    transport_security=TransportSecuritySettings(
+        enable_dns_rebinding_protection=True,
+        allowed_hosts=["localhost:*", "127.0.0.1:*", "[::1]:*", MCP_PUBLIC_HOST, f"{MCP_PUBLIC_HOST}:*"],
+        allowed_origins=[
+            "http://localhost:*",
+            "http://127.0.0.1:*",
+            f"https://{MCP_PUBLIC_HOST}",
+            f"https://{MCP_PUBLIC_HOST}:*",
+        ],
+    ),
 )
 
 
@@ -56,7 +75,7 @@ class ChatRequest(BaseModel):
 def _request(url: str) -> bytes:
     request = urllib.request.Request(
         url,
-        headers={"User-Agent": "GaiaOS-Loader/1.1", "Accept": "application/json,text/plain"},
+        headers={"User-Agent": "GaiaOS-Loader/1.2", "Accept": "application/json,text/plain"},
         method="GET",
     )
     try:
@@ -182,20 +201,44 @@ PROOF BOUNDARY:
 When the user says "Load GaiaOS", report the verified source commit and loaded state. For ordinary requests, continue operating under the loaded GaiaOS contract until the user asks to stop or reload it."""
 
 
+@mcp.tool()
+def load_gaiaos() -> dict[str, Any]:
+    """Load the current canonical GaiaOS state and bootstrap instructions from GitHub.
+
+    This is read-only. It resolves the main branch to one commit and retrieves the
+    versioned GaiaOS loader surface from that commit. It does not execute repository code.
+    """
+    return _load_bundle()
+
+
+@contextlib.asynccontextmanager
+async def _lifespan(_: FastAPI):
+    async with mcp.session_manager.run():
+        yield
+
+
+app = FastAPI(
+    title="GaiaOS Carrier API",
+    version=APP_VERSION,
+    description="GaiaOS source loader plus a web carrier backed by the OpenAI Responses API and a read-only MCP carrier.",
+    lifespan=_lifespan,
+)
+
+
 @app.get("/", response_class=HTMLResponse)
 def home(response: Response) -> str:
     if API_KEY is not None:
         response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
-    return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + OpenAI Responses API</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS” or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Request failed');messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
+    return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + OpenAI Responses API · MCP</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS” or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Request failed');messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
 
 
 @app.get("/health", operation_id="health")
 def health() -> dict[str, Any]:
-    return {"status": "ok", "service": "gaiaos-carrier", "api_version": APP_VERSION, "canonical_repository": REPOSITORY, "canonical_branch": BRANCH, "authentication_required": API_KEY is not None, "openai_configured": OPENAI_API_KEY is not None}
+    return {"status": "ok", "service": "gaiaos-carrier", "api_version": APP_VERSION, "canonical_repository": REPOSITORY, "canonical_branch": BRANCH, "authentication_required": API_KEY is not None, "openai_configured": OPENAI_API_KEY is not None, "mcp_endpoint": "/mcp"}
 
 
 @app.get("/gaiaos/load", operation_id="loadGaiaOS")
-def load_gaiaos(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+def load_gaiaos_http(authorization: str | None = Header(default=None)) -> dict[str, Any]:
     _authorize(authorization)
     return _load_bundle()
 
@@ -214,3 +257,7 @@ def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
         input=[{"role": message.role, "content": message.content} for message in request.messages],
     )
     return {"output": response.output_text, "model": OPENAI_MODEL, "source": bundle["gaiaos"]["source"]}
+
+
+# The MCP server is mounted alongside the existing browser/API carrier.
+app.mount("/mcp", mcp.streamable_http_app())
