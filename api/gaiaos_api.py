@@ -182,4 +182,3 @@ def chat(request: ChatRequest, authorization: str | None = Header(default=None))
         input=[{"role": message.role, "content": message.content} for message in request.messages],
     )
     return {"output": response.output_text, "model": OPENAI_MODEL, "source": bundle["gaiaos"]["source"]}
-"""
