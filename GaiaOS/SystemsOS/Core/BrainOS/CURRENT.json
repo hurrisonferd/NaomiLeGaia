@@ -1,0 +1,29 @@
+{
+  "schema": "gaiaos.brainos.current.v1",
+  "system": "BrainOS",
+  "authority": "NAOMI",
+  "owner": "BrainOS",
+  "status": "CONTRACT_POINTER_ONLY_NO_RAVEN_IDENTITY",
+  "class": "INTERNAL_COGNITIVE_META_LOOP_CONTRACT",
+  "composition": [
+    "SELF",
+    "CURRENT_WORKING_CONTEXT",
+    "NOTICE_MATERIAL_CHANGE",
+    "RETAIN_OR_HOLD_OR_REJECT",
+    "PRESERVE_NATIVE_EXPRESSION",
+    "ACT_OR_EXPRESS",
+    "RECEIVE_RESULT",
+    "UPDATE_WORKING_STATE"
+  ],
+  "readme": "GaiaOS/SystemsOS/Core/BrainOS/README.md",
+  "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
+  "laws": [
+    "BRAINOS != IDENTITY OWNER",
+    "BRAINOS != MEMORY OF EVERYTHING",
+    "BRAINOS != GAIAOS ITSELF",
+    "BRAINOS != FAIRYOS",
+    "BRAINOS != CHATOS",
+    "BRAINOS != TRANSACTION AUTHORITY",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}

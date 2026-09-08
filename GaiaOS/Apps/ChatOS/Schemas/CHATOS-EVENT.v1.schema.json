@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaiaos.chatos.event.v1",
+  "title": "ChatOS Observable Execution Event v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event_id",
+    "phase",
+    "claim_class",
+    "source_class",
+    "summary",
+    "signals",
+    "fairyos_dispatch",
+    "effect_authority",
+    "proof_ceiling"
+  ],
+  "properties": {
+    "schema": {"const": "gaiaos.chatos.event.v1"},
+    "event_id": {"type": "string", "minLength": 1, "maxLength": 160},
+    "transaction_id": {"type": ["string", "null"], "maxLength": 160},
+    "brain_loop_id": {"type": ["string", "null"], "maxLength": 160},
+    "source_main": {"type": ["string", "null"], "maxLength": 160},
+    "phase": {
+      "enum": ["OBSERVE", "INTERPRET", "DECIDE", "ACT", "RESULT", "VERIFY", "HANDOFF", "CHECKPOINT", "HOLD"]
+    },
+    "claim_class": {"enum": ["CONFIRMED", "ACCOUNT", "INFERRED", "UNKNOWN"]},
+    "source_class": {
+      "enum": ["SOURCE_READ", "TOOL_RESULT", "TEST_RESULT", "PROVIDER_RESULT", "USER_ACCOUNT", "SYSTEM_STATE", "DERIVED", "UNKNOWN"]
+    },
+    "owner_system": {"type": ["string", "null"], "maxLength": 120},
+    "summary": {"type": "string", "minLength": 1, "maxLength": 700},
+    "signals": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 80},
+      "uniqueItems": true,
+      "maxItems": 12
+    },
+    "explicit_members": {
+      "type": "array",
+      "items": {"enum": ["VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"]},
+      "uniqueItems": true,
+      "maxItems": 6,
+      "default": []
+    },
+    "family_invoked": {"type": "boolean", "default": false},
+    "next_action": {"type": ["string", "null"], "maxLength": 700},
+    "evidence_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 500},
+      "uniqueItems": true,
+      "maxItems": 20,
+      "default": []
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 500},
+      "uniqueItems": true,
+      "maxItems": 20,
+      "default": []
+    },
+    "fairyos_dispatch": {
+      "type": "object",
+      "required": ["schema", "family_present", "material_members", "member_packets", "unknown_signals", "effect_authority", "proof_ceiling"],
+      "properties": {
+        "schema": {"const": "gaiaos.fairyos.operator-runtime-packet.v1"},
+        "family_present": {"type": "array", "items": {"type": "string"}},
+        "material_members": {"type": "array", "items": {"type": "string"}},
+        "coordinator": {"type": ["string", "null"]},
+        "member_packets": {"type": "array", "items": {"type": "object"}},
+        "unknown_signals": {"type": "array", "items": {"type": "string"}},
+        "effect_authority": {"const": "NONE_RESOLVER_IS_READ_ONLY"},
+        "proof_ceiling": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "effect_authority": {"const": "NONE_CHATOS_PRESENTATION_ONLY"},
+    "proof_ceiling": {"type": "string", "minLength": 1, "maxLength": 700}
+  }
+}

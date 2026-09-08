@@ -1,0 +1,33 @@
+name: GaiaOS Canary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'GaiaOS/**'
+      - '.github/workflows/gaiaos-canary.yml'
+  pull_request:
+    paths:
+      - 'GaiaOS/**'
+      - '.github/workflows/gaiaos-canary.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gaiaos-canary:
+    name: FairyOS + ChatOS deterministic canaries
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run FairyOS dispatch canary
+        run: python GaiaOS/SystemsOS/Core/FairyOS/Tests/GAIAOS-FAIRYOS-DISPATCH-CANARY.py
+      - name: Run ChatOS canary
+        run: python GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py

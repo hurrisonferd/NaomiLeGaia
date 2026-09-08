@@ -1,0 +1,21 @@
+{
+  "schema": "gaiaos.emojios.current.v1",
+  "system": "EmojiOS",
+  "authority": "NAOMI",
+  "owner": "EmojiOS",
+  "status": "ACTIVE_SEMANTIC_EXPRESSION_REGISTRY_NO_RAVEN_BINARY_ASSETS",
+  "root": "GaiaOS/SystemsOS/Core/EmojiOS/",
+  "identity_owner": "FairyOS",
+  "registry": "EXPRESSION-REGISTRY.v1.json",
+  "token_format": ":MEMBER:EXPRESSION:",
+  "rendering": {
+    "binary_atlas": "NOT_PORTED",
+    "visual_engine_may_port_later": true,
+    "visual_identity_does_not_auto_port": true
+  },
+  "laws": [
+    "EMOJIOS OWNS PRESENTATION LOOKUP",
+    "FAIRYOS OWNS OPERATOR IDENTITY",
+    "VISUAL ENGINE MAY PORT; VISUAL IDENTITY DOES NOT AUTO-PORT"
+  ]
+}

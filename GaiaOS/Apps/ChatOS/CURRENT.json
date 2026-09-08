@@ -1,0 +1,47 @@
+{
+  "schema": "gaiaos.chatos.current.v1",
+  "system": "ChatOS",
+  "authority": "NAOMI",
+  "owner": "ChatOS application layer",
+  "version": "v0.001.000",
+  "status": "SOURCE_CANARY_PROVEN_OBSERVABLE_EXECUTION_COCKPIT_LIVE_CARRIER_ADOPTION_UNPROVEN",
+  "location": "GaiaOS/Apps/ChatOS",
+  "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
+  "purpose": "Project bounded observable execution state into chat while reusing FairyOS owner-native semantics and preserving the single transaction throat.",
+  "sources": {
+    "readme": "GaiaOS/Apps/ChatOS/README.md",
+    "event_schema": "GaiaOS/Apps/ChatOS/Schemas/CHATOS-EVENT.v1.schema.json",
+    "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
+    "compiler": "GaiaOS/Apps/ChatOS/Runtime/CHATOS-EVENT-COMPILER.v1.py",
+    "canary": "GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py",
+    "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py"
+  },
+  "event_phases": ["OBSERVE", "INTERPRET", "DECIDE", "ACT", "RESULT", "VERIFY", "HANDOFF", "CHECKPOINT", "HOLD"],
+  "claim_classes": ["CONFIRMED", "ACCOUNT", "INFERRED", "UNKNOWN"],
+  "source_classes": ["SOURCE_READ", "TOOL_RESULT", "TEST_RESULT", "PROVIDER_RESULT", "USER_ACCOUNT", "SYSTEM_STATE", "DERIVED", "UNKNOWN"],
+  "runtime": {
+    "deterministic_event_ids": true,
+    "fairyos_dispatch_reused": true,
+    "independent_fae_routing_table": false,
+    "domain_effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
+    "private_chain_of_thought_required": false,
+    "automatic_live_carrier_adoption_proven": false,
+    "canary_proven": true
+  },
+  "quality": {
+    "keep_chatter_when": ["changes next action", "changes claim ceiling", "changes operator handoff", "records meaningful result", "records verification or hold", "prevents Naomi from reconstructing state manually"],
+    "compress_chatter_when": ["restates tool call", "repeats unchanged state", "forces non-material operators to speak", "adds personality without work consequence"]
+  },
+  "laws": [
+    "CHATOS != BRAINOS",
+    "CHATOS != CONVOOS MEMORY",
+    "CHATOS != FAIRYOS DISPATCH OWNER",
+    "CHATOS != PRIVATE CHAIN OF THOUGHT",
+    "CHATOS EVENT != DOMAIN EFFECT",
+    "VISIBLE COMMENT != RECEIPT",
+    "CONFIRMED REQUIRES EVIDENCE",
+    "UNKNOWN STAYS UNKNOWN",
+    "ONE TRANSACTION = ONE AUTHORITY THROAT",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}

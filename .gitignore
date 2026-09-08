@@ -1,0 +1,15 @@
+# Python runtime and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# OS drops
+.DS_Store

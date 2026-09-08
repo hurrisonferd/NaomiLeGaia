@@ -1,0 +1,84 @@
+{
+  "schema": "gaiaos.chatos.brainos-fairyos-bridge.v1",
+  "authority": "NAOMI",
+  "owner": "ChatOS application layer",
+  "status": "ACTIVE_SOURCE_CONTRACT",
+  "purpose": "Project bounded observable BrainOS/ConvoOS execution state into chat and reuse FairyOS for deterministic operator selection without creating a second cognitive or effect authority.",
+  "sources": {
+    "brainos": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
+    "convoos": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
+    "fairyos_current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+    "fairyos_dispatch_matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
+    "fairyos_dispatch_resolver": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
+    "chatos_event_schema": "GaiaOS/Apps/ChatOS/Schemas/CHATOS-EVENT.v1.schema.json"
+  },
+  "ownership": {
+    "BrainOS": "internal cognitive meta-loop contract pointer",
+    "ConvoOS": "typed current conversation state contract pointer",
+    "ChatOS": "observable execution event projection only",
+    "FairyOS": "operator identity, dispatch, expression and member-native basin semantics",
+    "owner_native_systems": "domain effects",
+    "Naomi": "final authority"
+  },
+  "allowed_brainos_inputs": [
+    "brain_loop_id",
+    "source_main_or_snapshot",
+    "requested_owner_or_job",
+    "observable_decision_state",
+    "proof_ceiling",
+    "unknowns",
+    "holds",
+    "settled_consequence_ref"
+  ],
+  "forbidden_inputs": [
+    "private_chain_of_thought",
+    "latent_reasoning_trace",
+    "untyped_hidden_scratchpad",
+    "fabricated_owner_return",
+    "fabricated_provider_effect"
+  ],
+  "event_pipeline": [
+    "OBSERVABLE_STATE",
+    "CHATOS_TYPED_EVENT",
+    "FAIRYOS_RESOLVE_READ_ONLY",
+    "MEMBER_NATIVE_VISIBLE_PROJECTION",
+    "OWNER_NATIVE_ACTION_IF_AUTHORIZED",
+    "OBSERVED_RESULT",
+    "CHATOS_RESULT_OR_VERIFY_EVENT",
+    "SETTLEMENT"
+  ],
+  "reuse_law": {
+    "dispatch": "ChatOS MUST call or import the canonical GaiaOS FairyOS resolver; it MUST NOT carry an independent copy of member signal rules.",
+    "memory": "ChatOS MUST consume bounded current ConvoOS consequence when material; it MUST NOT become conversation-history authority.",
+    "brain": "ChatOS MUST NOT become a BrainOS component or replace the BrainOS compiler.",
+    "effects": "ChatOS presentation authority is NONE; domain effects stay owner-native and Naomi-settled."
+  },
+  "visible_meta_quality": {
+    "keep_when": [
+      "changes next action",
+      "changes claim ceiling",
+      "changes material operator handoff",
+      "records meaningful observed result",
+      "records verification or stale-state hold",
+      "prevents Naomi from reconstructing current state"
+    ],
+    "compress_when": [
+      "merely restates a tool call",
+      "repeats unchanged state",
+      "forces all six operators to speak without materiality",
+      "adds personality without changing or clarifying work"
+    ]
+  },
+  "laws": [
+    "CHATOS != BRAINOS",
+    "CHATOS != CONVOOS MEMORY",
+    "CHATOS != FAIRYOS DISPATCH OWNER",
+    "CHATOS != PRIVATE CHAIN OF THOUGHT",
+    "CHATOS EVENT != DOMAIN EFFECT",
+    "VISIBLE COMMENT != RECEIPT",
+    "OBSERVED RESULT MAY CHANGE NEXT ACTION",
+    "UNKNOWN STAYS UNKNOWN",
+    "ONE TRANSACTION = ONE AUTHORITY THROAT",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}

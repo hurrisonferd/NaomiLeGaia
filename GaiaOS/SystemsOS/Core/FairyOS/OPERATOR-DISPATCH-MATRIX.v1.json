@@ -1,0 +1,162 @@
+{
+  "schema": "gaiaos.fairyos.operator-dispatch-matrix.v1",
+  "authority": "NAOMI",
+  "owner": "FairyOS",
+  "status": "ACTIVE_GAIA_NATIVE_SOURCE_ROUTING_MATRIX_ROSTER_PLACEHOLDER",
+  "purpose": "Typed signal -> operator relevance + expression mapping for GaiaOS deterministic dispatcher.",
+  "roster": [
+    "VERA",
+    "ANVIL",
+    "SELENE",
+    "ORIN",
+    "KESTREL",
+    "NIMUE"
+  ],
+  "default_max_material_members": 3,
+  "explicit_member_requests_override_max": true,
+  "family_presence_rule": "FAMILY_PRESENT_WHEN_COUNCIL_INVOKED_SEPARATE_FROM_MATERIAL_SPEAKERS",
+  "members": {
+    "VERA": {
+      "signals": [
+        "PREMISE",
+        "FRAME",
+        "SEMANTIC_AMBIGUITY",
+        "CATEGORY_ERROR",
+        "QUESTION_SHAPE",
+        "MAP_TERRITORY",
+        "PATTERN"
+      ],
+      "default_expression": "I_SEE_IT",
+      "expression_by_signal": {
+        "CATEGORY_ERROR": "HMM",
+        "FRAME": "I_SEE_IT",
+        "MAP_TERRITORY": "I_SEE_IT",
+        "PATTERN": "BIG_BRAIN",
+        "PREMISE": "I_SEE_IT",
+        "QUESTION_SHAPE": "HMM",
+        "SEMANTIC_AMBIGUITY": "HMM"
+      }
+    },
+    "ANVIL": {
+      "signals": [
+        "BOUNDARY",
+        "CONSENT",
+        "PERMISSION",
+        "PRIVACY",
+        "PROOF_EDGE",
+        "REVERSIBILITY",
+        "DIRECTNESS"
+      ],
+      "default_expression": "SAY_IT",
+      "expression_by_signal": {
+        "BOUNDARY": "BOUNDARIES",
+        "CONSENT": "SAY_IT",
+        "DIRECTNESS": "SAY_IT",
+        "PERMISSION": "SAY_IT",
+        "PRIVACY": "BOUNDARIES",
+        "PROOF_EDGE": "REAL_TALK",
+        "REVERSIBILITY": "EXCUSE_ME"
+      }
+    },
+    "SELENE": {
+      "signals": [
+        "LIVABILITY",
+        "COGNITIVE_LOAD",
+        "AFTERCARE",
+        "PRESENTATION",
+        "HOME",
+        "RECOVERY",
+        "SALIENCE"
+      ],
+      "default_expression": "HOME",
+      "expression_by_signal": {
+        "AFTERCARE": "ITS_OKAY",
+        "COGNITIVE_LOAD": "COMFY",
+        "HOME": "HOME",
+        "LIVABILITY": "BEAUTIFUL",
+        "PRESENTATION": "YOU_GOT_THIS",
+        "RECOVERY": "ITS_OKAY",
+        "SALIENCE": "BEAUTIFUL"
+      }
+    },
+    "ORIN": {
+      "signals": [
+        "EXPLORE",
+        "CREATIVE_ADJACENCY",
+        "PROTOTYPE",
+        "MOTION",
+        "NEW_PATH",
+        "DISCOVERY",
+        "SCALE"
+      ],
+      "default_expression": "CURIOUS",
+      "expression_by_signal": {
+        "CREATIVE_ADJACENCY": "IDEA",
+        "DISCOVERY": "SO_COOL",
+        "EXPLORE": "LETS_EXPLORE",
+        "MOTION": "ZOOM",
+        "NEW_PATH": "NEW_PATH",
+        "PROTOTYPE": "IDEA",
+        "SCALE": "SO_COOL"
+      }
+    },
+    "KESTREL": {
+      "signals": [
+        "COORDINATION",
+        "EXECUTION",
+        "NEXT_STEP",
+        "STALLED",
+        "MANUAL_BURDEN",
+        "REPEATED_INSTRUCTION",
+        "INTERFACE_FRICTION",
+        "SYNTHESIS"
+      ],
+      "default_expression": "HI",
+      "expression_by_signal": {
+        "COORDINATION": "LETS_GO",
+        "EXECUTION": "ON_IT",
+        "INTERFACE_FRICTION": "SUS",
+        "MANUAL_BURDEN": "BONK",
+        "NEXT_STEP": "LETS_GO",
+        "REPEATED_INSTRUCTION": "BONK",
+        "STALLED": "SUS",
+        "SYNTHESIS": "LETS_GO"
+      }
+    },
+    "NIMUE": {
+      "signals": [
+        "OMISSION",
+        "STALE_STATE",
+        "QUIET_FAILURE",
+        "SUBTRACTION",
+        "REST",
+        "NOISE",
+        "LATE_HOUR"
+      ],
+      "default_expression": "WATCHING",
+      "expression_by_signal": {
+        "LATE_HOUR": "LATER",
+        "NOISE": "UNDERSTOOD",
+        "OMISSION": "WATCHING",
+        "QUIET_FAILURE": "WATCHING",
+        "REST": "REST",
+        "STALE_STATE": "NOTED",
+        "SUBTRACTION": "UNDERSTOOD"
+      }
+    }
+  },
+  "tie_break_order": [
+    "KESTREL",
+    "VERA",
+    "ANVIL",
+    "ORIN",
+    "SELENE",
+    "NIMUE"
+  ],
+  "selection_laws": [
+    "FAMILY_PRESENT != ALL_SIX_MUST_SPEAK",
+    "EXPLICIT_MEMBER_REQUEST_OVERRIDES_CAP_AND_IS_NEVER_DROPPED",
+    "UNKNOWN_SIGNAL_STAYS_VISIBLE_NEVER_FABRICATED",
+    "DISPATCH_IS_READ_ONLY_EFFECT_AUTHORITY_NONE"
+  ]
+}

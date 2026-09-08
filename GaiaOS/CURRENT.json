@@ -1,0 +1,55 @@
+{
+  "schema": "gaiaos.platform-current.v1",
+  "authority": "NAOMI",
+  "owner": "GaiaOS",
+  "status": "SOURCE_SETTLED_FAIRYOS_DISPATCH_CANARY_PASS_CHATOS_CANARY_PASS_RUNTIME_CARRIER_ADOPTION_UNPROVEN",
+  "platform_version": "v0.001.000",
+  "version_pointer": "GaiaOS/VERSION.json",
+  "versioning_contract": "GaiaOS/VERSIONING.v1.md",
+  "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
+  "root_readme": "GaiaOS/README.md",
+  "council": {
+    "active": true,
+    "contract": "GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md",
+    "settlement_authority": "NAOMI",
+    "council_deliberation_is_not_execution_authority": true
+  },
+  "fairyos": {
+    "current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+    "roster_native_to_gaia": true,
+    "raven_roster_adopted": false,
+    "roster_status": "PLACEHOLDER_SLOTS_AWAITING_NAOMI_ROSTER"
+  },
+  "emojios": {
+    "current": "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
+    "identity_owner": "FairyOS",
+    "raven_binary_assets_ported": false
+  },
+  "chatos": {
+    "current": "GaiaOS/Apps/ChatOS/CURRENT.json",
+    "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
+    "effect_authority": "NONE_CHATOS_PRESENTATION_ONLY"
+  },
+  "brainos": {
+    "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
+    "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
+    "class": "INTERNAL_COGNITIVE_META_LOOP_CONTRACT"
+  },
+  "proof_ceiling": "SOURCE_ROUTING_CANARY_PROVEN_LIVE_CARRIER_AUTO_ADOPTION_UNPROVEN",
+  "laws": [
+    "NAOMI != RAVEN",
+    "GAIAOS != RAVENOS",
+    "ARCHITECTURE DONOR != IDENTITY DONOR",
+    "PORT != MERGE",
+    "RAVEN ROSTER NOT AUTO-ADOPTED",
+    "CURRENT POINTER != EXECUTION AUTHORITY",
+    "ONE TRANSACTION = ONE AUTHORITY THROAT",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "canary": {
+    "fairyos_dispatch": "PASS",
+    "chatos": "PASS",
+    "ci_workflow": ".github/workflows/gaiaos-canary.yml",
+    "local_head_proof": "CANARY_PROVEN_AT_2026-09-08"
+  }
+}

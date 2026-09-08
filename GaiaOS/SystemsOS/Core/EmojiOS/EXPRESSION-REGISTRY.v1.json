@@ -1,0 +1,78 @@
+{
+  "schema": "gaiaos.emojios.expression-registry.v1",
+  "authority": "NAOMI",
+  "owner": "EmojiOS",
+  "identity_owner": "FairyOS",
+  "status": "ACTIVE_SEMANTIC_EXPRESSION_REGISTRY_GAIA_NATIVE_NO_RAVEN_BINARY_ASSETS",
+  "token_format": ":MEMBER:EXPRESSION:",
+  "members": {
+    "VERA": {
+      "expressions": ["HMM", "I_SEE_IT", "EXACTLY", "BIG_BRAIN", "SUS", "ALL_GOOD"]
+    },
+    "ANVIL": {
+      "expressions": ["YES", "NO", "SAY_IT", "BOUNDARIES", "EXCUSE_ME", "REAL_TALK"]
+    },
+    "SELENE": {
+      "expressions": ["GOOD_MORNING", "YOU_GOT_THIS", "COMFY", "ITS_OKAY", "BEAUTIFUL", "HOME"]
+    },
+    "ORIN": {
+      "expressions": ["LETS_EXPLORE", "SO_COOL", "IDEA", "ZOOM", "CURIOUS", "NEW_PATH"]
+    },
+    "KESTREL": {
+      "expressions": ["HI", "LETS_GO", "ON_IT", "HEHE", "BONK", "SUS"]
+    },
+    "NIMUE": {
+      "expressions": ["DEFAULT", "WATCHING", "UNDERSTOOD", "REST", "NOTED", "LATER"]
+    }
+  },
+  "expression_semantics": {
+    "HI": "greeting / present",
+    "LETS_GO": "coordinate / start moving",
+    "ON_IT": "executing now",
+    "HEHE": "playful / teasing joy",
+    "BONK": "playful correction",
+    "SUS": "suspicious / friction detected",
+    "HMM": "premise question / pondering",
+    "I_SEE_IT": "frame seen / understood",
+    "EXACTLY": "precise agreement",
+    "BIG_BRAIN": "pattern recognized",
+    "ALL_GOOD": "frame settles clean",
+    "YES": "authorized / affirmative",
+    "NO": "boundary / negative",
+    "SAY_IT": "state the direct truth",
+    "BOUNDARIES": "edge named",
+    "EXCUSE_ME": "reversibility / re-check",
+    "REAL_TALK": "direct honest claim",
+    "GOOD_MORNING": "soft warm opening",
+    "YOU_GOT_THIS": "reassurance / capable",
+    "COMFY": "load softened / comfortable",
+    "ITS_OKAY": "aftercare / it is fine",
+    "BEAUTIFUL": "settled result salience",
+    "HOME": "belonging / settled space",
+    "LETS_EXPLORE": "curiosity opening",
+    "SO_COOL": "discovery delight",
+    "IDEA": "prototype / new thought",
+    "ZOOM": "motion / fast route",
+    "CURIOUS": "interest / wonder",
+    "NEW_PATH": "fresh route found",
+    "DEFAULT": "neutral present",
+    "WATCHING": "low-noise observation",
+    "UNDERSTOOD": "acknowledged quietly",
+    "REST": "rest window / pause",
+    "NOTED": "recorded / held",
+    "LATER": "deferred / low-noise return"
+  },
+  "rendering": {
+    "rendering_engine": "semantic_tokens_only",
+    "binary_atlas": "NOT_PORTED",
+    "lookup": "deterministic_expression_id_per_member",
+    "visual_engine_may_port_later": true,
+    "visual_identity_does_not_auto_port": true
+  },
+  "laws": [
+    "EMOJIOS OWNS PRESENTATION LOOKUP",
+    "FAIRYOS OWNS OPERATOR IDENTITY",
+    "VISUAL ENGINE MAY PORT; VISUAL IDENTITY DOES NOT AUTO-PORT",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}

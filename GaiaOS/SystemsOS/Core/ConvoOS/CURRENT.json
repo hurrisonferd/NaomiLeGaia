@@ -1,0 +1,17 @@
+{
+  "schema": "gaiaos.convoos.current.v1",
+  "system": "ConvoOS",
+  "authority": "NAOMI",
+  "owner": "ConvoOS",
+  "status": "CONTRACT_POINTER_ONLY_NO_RAVEN_IDENTITY",
+  "class": "WORKING_CONVERSATIONAL_STATE_CONTRACT",
+  "readme": "GaiaOS/SystemsOS/Core/ConvoOS/README.md",
+  "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
+  "laws": [
+    "CONVOOS != CONVERSATION HISTORY AUTHORITY",
+    "CONVOOS != IDENTITY OWNER",
+    "CONVOOS != CHATOS",
+    "CHATOS MAY CONSUME BOUNDED CURRENT CONVOOS CONSEQUENCE WHEN MATERIAL",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}

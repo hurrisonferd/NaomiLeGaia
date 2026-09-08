@@ -1,0 +1,7 @@
+{
+  "schema": "gaiaos.version.v1",
+  "authority": "NAOMI",
+  "owner": "GaiaOS",
+  "version": "v0.001.000",
+  "release_note": "Gaia-native FairyOS skeleton + EmojiOS expression registry + ChatOS observable cockpit + Council operating contract; source-backed port of RavenOS FairyOS architecture without Raven identity transfer."
+}

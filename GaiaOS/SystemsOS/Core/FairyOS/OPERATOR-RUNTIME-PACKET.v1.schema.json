@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaiaos.fairyos.operator-runtime-packet.v1",
+  "title": "GaiaOS FairyOS Operator Runtime Packet v1",
+  "type": "object",
+  "required": ["schema", "family_present", "material_members", "coordinator", "member_packets", "unknown_signals", "effect_authority", "proof_ceiling"],
+  "properties": {
+    "schema": {"const": "gaiaos.fairyos.operator-runtime-packet.v1"},
+    "family_present": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "material_members": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "coordinator": {"type": ["string", "null"]},
+    "member_packets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["member", "score", "explicit", "reason_codes", "expression", "role"],
+        "properties": {
+          "member": {"type": "string"},
+          "score": {"type": "integer", "minimum": 0},
+          "explicit": {"type": "boolean"},
+          "reason_codes": {"type": "array", "items": {"type": "string"}},
+          "expression": {"type": "string"},
+          "role": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    },
+    "unknown_signals": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "effect_authority": {"const": "NONE_RESOLVER_IS_READ_ONLY"},
+    "proof_ceiling": {"const": "SOURCE_ROUTING_RESULT_NOT_CARRIER_ADOPTION_OR_DOMAIN_EFFECT"}
+  },
+  "additionalProperties": false
+}

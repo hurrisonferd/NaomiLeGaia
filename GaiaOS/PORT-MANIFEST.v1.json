@@ -1,0 +1,93 @@
+{
+  "schema": "gaiaos.port-manifest.v1",
+  "authority": "NAOMI",
+  "source_reference": "hurrisonferd/Jarvis-Private@main",
+  "source_family": [
+    "RavenOS",
+    "FairyOS",
+    "EmojiOS",
+    "ChatOS",
+    "BrainOS",
+    "ConvoOS"
+  ],
+  "mode": "SOURCE_BACKED_PORT_NO_BLIND_CLONE",
+  "port_map": [
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/FairyOS/FAE-DISPATCH-MATRIX.v1.json",
+      "source_owner": "RavenOS FairyOS",
+      "reusable_pattern": "typed-signal -> material member dispatch with explicit override cap 3, unknown-signal visibility, read-only resolver",
+      "raven_specific_data": "six-Fae roster: KYU / PAIMON / LUMA / SYLPH / QIRA / NYX; accent colors; expressions",
+      "gaia_target": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
+      "port_action": "ADAPT (Gaia-native placeholder roster preserves schema and selection laws; Raven identities NOT adopted)"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/FairyOS/Runtime/FAIRYOS-DISPATCH-RESOLVER.v1.py",
+      "source_owner": "RavenOS FairyOS",
+      "reusable_pattern": "deterministic material-member resolver; family-present != all-speak; explicit request preservation; effect_authority=NONE",
+      "raven_specific_data": "ROSTER constant + hard-coded member names",
+      "gaia_target": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
+      "port_action": "PORT (decode member names from matrix at runtime; zero Raven identity residue)"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/FairyOS/FAE-PROFILES.v1.json",
+      "source_owner": "RavenOS FairyOS",
+      "reusable_pattern": "per-member role / accent / expressions / handoff edges",
+      "raven_specific_data": "six Raven Fae profiles",
+      "gaia_target": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+      "port_action": "ADAPT (placeholder Gaia operator slots, awaiting Naomi roster)"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/FairyOS/FAE-PROSODY-BASINS.v1.md",
+      "source_owner": "RavenOS FairyOS",
+      "reusable_pattern": "per-member attention / cadence / humor / affection / correction / silence / action signature / anti-attractors / handoffs / return",
+      "raven_specific_data": "six Raven Fae basin texts",
+      "gaia_target": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
+      "port_action": "ADAPT (archetypal lanes; no Raven autobiographical anchors)"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/EmojiOS/DIGI-FAE-EMOJI-PACK.v2.json",
+      "source_owner": "RavenOS EmojiOS",
+      "reusable_pattern": "semantic expression IDs per member -> deterministic micro visual vocabulary",
+      "raven_specific_data": "Raven Fae names + binary atlas/webp assets",
+      "gaia_target": "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
+      "port_action": "ADAPT (expression-ID machinery ports; binary image assets do NOT port)"
+    },
+    {
+      "source_coordinate": "RavenOS/Apps/ChatOS/",
+      "source_owner": "RavenOS application layer",
+      "reusable_pattern": "observable execution cockpit: typed event OBSERVE..HOLD, claim/source classes, deterministic event IDs, reuse FairyOS dispatch, effect_authority=NONE",
+      "raven_specific_data": "Raven/NYX/QIRA test fixtures + RavenOS pointer refs",
+      "gaia_target": "GaiaOS/Apps/ChatOS/",
+      "port_action": "PORT (Gaia-native fixtures; no Raven identity leakage)"
+    },
+    {
+      "source_coordinate": "RavenOS/COUNCIL-OPERATING-CONTRACT.v1.md",
+      "source_owner": "RavenOS platform surface",
+      "reusable_pattern": "platform-level council contract connecting differentiated deliberation to owner effects with Naomi settlement",
+      "raven_specific_data": "ElfOS council detail + Haunted Telemetry brand",
+      "gaia_target": "GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md",
+      "port_action": "ADAPT (GaiaOS-native; settlement authority = NAOMI)"
+    },
+    {
+      "source_coordinate": "canon/Living_Codex/SystemsOS/Core/Critical/BrainOS/",
+      "source_owner": "Raven canonical BrainOS",
+      "reusable_pattern": "internal cognitive meta-loop composition: SELF -> WORKING CONTEXT -> NOTICE -> RETAIN/HOLD/REJECT -> EXPRESS -> ACT -> UPDATE",
+      "raven_specific_data": "Raven EgoOS identity + job-mesh registries",
+      "gaia_target": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
+      "port_action": "REFERENCE_ONLY (contract pointer; no Raven identity)"
+    }
+  ],
+  "explicit_holds": {
+    "rovtter": "Gaia-native operator roster is placeholder slots awaiting Naomi's adoption; Raven's six Fae are NOT silently claimed",
+    "visual": "No Raven personal Fae image binaries ported into Naomi's repo",
+    "identity": "No Raven autobiographical / EgoOS state ported",
+    "runtime": "Source canaries prove deterministic routing only; live carrier auto-adoption remains UNPROVEN"
+  },
+  "laws": [
+    "REUSABLE ARCHETYPE != AUTOMATIC IDENTITY TRANSFER",
+    "VISUAL ENGINE MAY PORT; VISUAL IDENTITY DOES NOT AUTO-PORT",
+    "ARCHITECTURE DONOR != IDENTITY DONOR",
+    "PORT != MERGE",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}
