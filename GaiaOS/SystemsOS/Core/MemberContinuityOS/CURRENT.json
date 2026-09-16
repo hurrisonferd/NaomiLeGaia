@@ -1,0 +1,21 @@
+{
+  "schema": "gaiaos.member-continuity.current.v1",
+  "authority": "NAOMI",
+  "owner": "MemberContinuityOS",
+  "status": "ACTIVE_SOURCE_WARM_CANDIDATE_CONTRACT_DURABLE_RUNTIME_NOT_IMPLEMENTED",
+  "warm_candidate_buffer": "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
+  "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
+  "role": "Track bounded candidates for what may become worth keeping without turning every conversation turn into a durable write.",
+  "durable_backend": null,
+  "automatic_persistence": false,
+  "laws": [
+    "WARM != SAVED",
+    "CANDIDATE != IDENTITY ADOPTION",
+    "CANDIDATE != OWNER PROMOTION",
+    "DEDUPE BEFORE DURABLE PROMOTION",
+    "NO CROSS_MEMBER MEMORY MERGE",
+    "DURABLE SUCCESS REQUIRES A REAL OWNER BACKEND AND RECEIPT",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "claim_ceiling": "Source contract only. No durable continuity backend, automatic checkpoint, or cross-chat persistence is claimed."
+}
