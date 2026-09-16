@@ -1,0 +1,65 @@
+{
+  "schema": "gaiaos.brainos.support-fabric.current.v1",
+  "authority": "NAOMI",
+  "owner": "BrainOS",
+  "status": "ACTIVE_SOURCE_HOT_PATH_OPTIONAL_COGNITION_CONTEXT_SELECTION_WARM_CANDIDATE_AWARE",
+  "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
+  "chatos_current": "GaiaOS/Apps/ChatOS/CURRENT.json",
+  "fairyos_current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+  "convoos_current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
+  "member_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+  "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
+  "hot_path": {
+    "default": true,
+    "required_surface": ["current ChatOS carrier-visible context"],
+    "brainos_always_addressable": true,
+    "brainos_always_invoked": false,
+    "convoos_always_invoked": false,
+    "membercontinuity_always_invoked": false,
+    "current_operator_resolution": "FairyOS profiles + prosody + dispatch when operator material"
+  },
+  "brainos_invoke_when": [
+    "multi-owner reasoning can change the answer",
+    "source or authority resolution is material",
+    "routing is ambiguous",
+    "substantial research/build/review needs support selection",
+    "operator-native source resolution is uncertain",
+    "home/route recovery is needed",
+    "durable effect planning is requested"
+  ],
+  "support_set": {
+    "NOW": "ChatOS",
+    "WHO": "FairyOS",
+    "WHERE_WE_WERE": "ConvoOS when historical or re-entry context is material",
+    "WHAT_MAY_BE_WORTH_KEEPING": "MemberContinuityOS warm candidate buffer",
+    "SMALLEST_SOURCE_PACKET": "BrainOS Context Compass",
+    "EFFECT": "actual domain owner / provider",
+    "SETTLEMENT": "Naomi"
+  },
+  "warm_path": {
+    "result": "BOUNDED_CONTINUITY_CANDIDATE_ONLY",
+    "durable": false,
+    "dedupe_required": true,
+    "reply_waits_for_persistence": false
+  },
+  "cold_path": {
+    "trigger": "durable effect, explicit save/checkpoint, accepted durable promotion, or provider/repository mutation",
+    "receipt_required_for_success_claim": true,
+    "non_invoked_owners_require_synthetic_no_delta": false
+  },
+  "laws": [
+    "CHATOS OWNS NOW",
+    "FAIRYOS OWNS OPERATOR IDENTITY / DISPATCH",
+    "BRAINOS OWNS EXTRA SUPPORT SELECTION NOT IDENTITY",
+    "CONVOOS IS NOT THE DEFAULT IMMEDIATE CHAT WINDOW",
+    "MEMBERCONTINUITYOS WARM CANDIDATE != DURABLE MEMORY",
+    "BRAINOS ADDRESSABLE != BRAINOS INVOKED",
+    "CURRENT VISIBLE CONTEXT SHOULD NOT REQUIRE HISTORICAL REDISCOVERY",
+    "NO WHOLE-REPO TAX ON ORDINARY CHAT",
+    "SMALLEST SUFFICIENT SUPPORT SET WINS",
+    "SOURCE DONOR != IDENTITY DONOR",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "claim_ceiling": "Source routing contract. Automatic host invocation, durable continuity, domain execution, and future navigation organs require separate proof."
+}
