@@ -1,0 +1,58 @@
+{
+  "schema": "gaiaos.chatos.response-modes.v1",
+  "authority": "NAOMI",
+  "owner": "ChatOS application layer",
+  "status": "ACTIVE_SOURCE_CONTRACT",
+  "purpose": "Let Naomi change visible response burden without changing source fidelity, operator-native loading, semantic truth, proof state, privacy, or effect authority.",
+  "default_mode": "AUTO",
+  "modes": ["MIN", "AUTO", "MAX"],
+  "command_grammar": {
+    "MIN": ["GAIAOS MIN", "MIN MODE", "CHATOS MIN"],
+    "AUTO": ["GAIAOS AUTO", "AUTO MODE", "CHATOS AUTO", "NORMAL MODE"],
+    "MAX": ["GAIAOS MAX", "MAX MODE", "CHATOS MAX"],
+    "scope": "CURRENT_CONVERSATION_WORKING_STATE_UNLESS_NAOMI_EXPLICITLY_REQUESTS_DURABLE_PREFERENCE"
+  },
+  "hard_invariant": {
+    "name": "LOAD_FIDELITY_ORTHOGONAL_TO_OUTPUT_DENSITY",
+    "law": "MIN/AUTO/MAX govern visible presentation only after required source/operator/proof scope resolves.",
+    "forbidden_coupling": [
+      "MIN != WEAK LOAD",
+      "MIN != SHALLOW SOURCE RESOLUTION",
+      "MAX != LOAD EVERY FILE",
+      "MAX != FORCE EVERY OPERATOR TO SPEAK",
+      "MAX != STRONGER TRUTH CLAIM",
+      "MAX != EFFECT AUTHORITY"
+    ]
+  },
+  "mode_semantics": {
+    "MIN": {
+      "presentation_density": "COMPACT",
+      "source_resolution": "FULL_MATERIAL_FIDELITY",
+      "goal": "Smallest complete answer Naomi can act on without losing material operator identity, caveats, evidence, or next action.",
+      "default_visible_speakers": 1
+    },
+    "AUTO": {
+      "presentation_density": "AUTO",
+      "source_resolution": "FULL_MATERIAL_FIDELITY",
+      "goal": "Normal GaiaOS conversation with scene-aware detail and the smallest sufficient material cast."
+    },
+    "MAX": {
+      "presentation_density": "RICH",
+      "source_resolution": "FULL_MATERIAL_FIDELITY_PLUS_RELEVANT_POINTER_EXPANSION",
+      "goal": "Richer source-backed discussion, alternatives, disagreement, evidence and edge cases without irrelevant dumping."
+    }
+  },
+  "laws": [
+    "LOAD QUALITY IS NOT A VERBOSITY SETTING",
+    "MIN MEANS COMPRESSED NOT DUMBER",
+    "MAX MEANS EXPANDED NOT NOISIER",
+    "SOURCE RESOLUTION PRECEDES PRESENTATION COMPRESSION",
+    "OPERATOR NATIVE PROSODY SURVIVES ALL MODES WHEN MATERIAL",
+    "VISIBLE RECEIPT MAY SHRINK; EVIDENCE FLOOR MAY NOT",
+    "EXPLICIT NAOMI REQUEST WINS",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "effect_authority": "NONE_PRESENTATION_AND_WORKING_STATE_ONLY",
+  "donor_boundary": "Adapted from RavenOS ChatOS response-mode architecture without Raven identity, continuity, or presentation cadence transfer."
+}
