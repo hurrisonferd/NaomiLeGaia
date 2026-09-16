@@ -2,6 +2,13 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.000",
-  "release_note": "Gaia-native FairyOS skeleton + EmojiOS expression registry + ChatOS observable cockpit + Council operating contract; source-backed port of RavenOS FairyOS architecture without Raven identity transfer."
+  "version": "v0.001.001",
+  "release_note": "Council carrier wave 1: source-backed council commands, full Gaia Council bundle in the carrier, deterministic dispatch/operator API and MCP surfaces, and direct GPT council/cast instructions. The six current operator slots remain placeholders until Naomi adopts or changes them; Raven identity is not transferred.",
+  "proof": {
+    "source_committed": true,
+    "carrier_source_version": "1.3.0",
+    "post_release_ci": "PENDING_OBSERVATION",
+    "deployment": "UNPROVEN",
+    "automatic_external_carrier_adoption": "UNPROVEN"
+  }
 }
