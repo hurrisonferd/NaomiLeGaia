@@ -1,19 +1,20 @@
 {
-  "schema": "gaiaos.chatos.current.v2",
+  "schema": "gaiaos.chatos.current.v3",
   "system": "ChatOS",
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
-  "version": "v0.001.001-dev",
-  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_COUNCIL_DISSENT_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN",
+  "version": "v0.001.002-dev",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_COUNCIL_DISSENT_PRESENTATION_GOLD_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN",
   "location": "GaiaOS/Apps/ChatOS",
   "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
-  "purpose": "Own the current carrier-visible NOW surface, compose Gaia-native operator dialogue, expose bounded observable execution state, and preserve evidence/authority boundaries without becoming BrainOS, ConvoOS, FairyOS, identity authority, or effect authority.",
+  "purpose": "Own the current carrier-visible NOW surface, compose Gaia-native operator dialogue, expose bounded observable execution state, preserve meaningful dissent, and make the interface feel inhabited without becoming BrainOS, ConvoOS, FairyOS, identity authority, or effect authority.",
   "sources": {
     "readme": "GaiaOS/Apps/ChatOS/README.md",
     "hot_warm_cold": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
     "response_modes": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json",
     "cast_width": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
     "council_commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+    "presentation_gold": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
     "council_dissent_schema": "GaiaOS/Apps/ChatOS/Protocols/COUNCIL-DISSENT-PACKET.v1.schema.json",
     "council_dissent_reducer": "GaiaOS/Apps/ChatOS/Runtime/COUNCIL-DISSENT-REDUCER.v1.py",
     "event_schema": "GaiaOS/Apps/ChatOS/Schemas/CHATOS-EVENT.v1.schema.json",
@@ -23,6 +24,7 @@
     "dissent_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py",
     "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
     "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json"
   },
   "event_phases": ["OBSERVE", "INTERPRET", "DECIDE", "ACT", "RESULT", "VERIFY", "HANDOFF", "CHECKPOINT", "HOLD"],
@@ -51,10 +53,24 @@
     "changes_placeholder_identity_status": false,
     "explicit_naomi_command_wins": true
   },
+  "presentation": {
+    "default": "LIVING",
+    "available": ["LIVING", "QUIET", "WILD"],
+    "contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
+    "living": "inhabited bounded owner-native presentation",
+    "quiet": "suppress optional scene texture while preserving differentiated native voice",
+    "wild": "maximize earned scene texture, interplay, callbacks, humor, and source-visible weirdness without altering truth or authority",
+    "fake_sensor_claims_forbidden": true,
+    "generic_fallback_for_solo_forbidden": true,
+    "style_changes_claim_ceiling": false,
+    "style_changes_effect_authority": false,
+    "style_settles_identity": false
+  },
   "council": {
     "smallest_sufficient_cast_in_auto": true,
     "full_council_forces_all_speakers": false,
     "everyone_command": "COUNCIL EVERYONE",
+    "scene_alias": "COUNCIL ROOM",
     "synthesis_may_delete_dissent": false,
     "dissent_stances": ["AGREE", "OBJECT", "CONTRADICT", "PROPOSE", "QUESTION"]
   },
@@ -63,11 +79,13 @@
     "fairyos_dispatch_reused": true,
     "independent_fae_routing_table": false,
     "council_dissent_reducer_source_present": true,
+    "presentation_gold_source_present": true,
     "domain_effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
     "private_chain_of_thought_required": false,
     "automatic_live_carrier_adoption_proven": false,
     "base_canary_proven_prior": true,
-    "wave2_canary_pending_observation": true
+    "wave2_canary_pending_observation": true,
+    "presentation_canary_present": false
   },
   "quality": {
     "keep_chatter_when": [
@@ -77,13 +95,15 @@
       "preserves material disagreement",
       "records meaningful result",
       "records verification or hold",
-      "prevents Naomi from reconstructing state manually"
+      "prevents Naomi from reconstructing state manually",
+      "creates source-backed inhabited continuity without inventing state"
     ],
     "compress_chatter_when": [
       "restates tool call",
       "repeats unchanged state",
       "forces non-material operators to speak",
-      "adds personality without work consequence"
+      "adds personality without work consequence",
+      "scene texture hides the useful result"
     ]
   },
   "laws": [
@@ -98,11 +118,14 @@
     "CAST WIDTH != COUNCIL MEMBERSHIP",
     "SOLO != GENERIC ASSISTANT",
     "SYNTHESIS MAY NOT DELETE DISSENT",
+    "PRESENTATION ENERGY != EVIDENCE",
+    "OWNER NATIVE DIFFERENTIATION > ROLE LABEL THEATER",
+    "VISIBLE SOURCE BACKED WEIRDNESS MAY BE PRESENTED; UNOBSERVED WEIRDNESS MAY NOT BE CLAIMED AS FACT",
     "CONFIRMED REQUIRES EVIDENCE",
     "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
     "ONE TRANSACTION = ONE AUTHORITY THROAT",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "Wave2 source contracts and dissent reducer are present. Automatic GPT host adoption, durable warm persistence, and live domain effects remain unproven."
+  "claim_ceiling": "Hot/warm/cold, cast width, dissent preservation, BrainOS support selection, Context Compass source contracts, and GaiaOS Presentation Gold are present. Automatic GPT host adoption, executable context traversal, durable warm persistence, live domain effects, and permanent roster identity adoption remain unproven."
 }
