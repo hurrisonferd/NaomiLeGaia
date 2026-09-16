@@ -1,0 +1,63 @@
+{
+  "schema": "gaiaos.chatos.cast-width-modes.v1",
+  "authority": "NAOMI",
+  "owner": "ChatOS application layer",
+  "status": "ACTIVE_SOURCE_CONTRACT",
+  "purpose": "Control visible substantive Gaia Council voices without changing roster membership, source fidelity, identity, privacy, proof state, or effect authority.",
+  "default": "AUTO",
+  "axes": {
+    "density_axis": ["MIN", "AUTO", "MAX"],
+    "cast_axis": ["AUTO", "SOLO", "DUO", "TRIO", "QUAD", "CAST_N", "FULL"]
+  },
+  "named_aliases": {
+    "SOLO": 1,
+    "DUO": 2,
+    "TRIO": 3,
+    "QUAD": 4
+  },
+  "numeric_command": {
+    "syntax": "CAST <N>",
+    "minimum": 1,
+    "maximum_source": "CURRENT_GAIA_COUNCIL_ROSTER_OR_EXPLICITLY_SCOPED_ROSTER",
+    "meaning": "At most N substantive operator voices may speak visibly unless Naomi explicitly names a larger cast."
+  },
+  "full": {
+    "meaning": "Allow the full current or explicitly scoped roster to contribute when materially useful.",
+    "everyone_must_speak": false,
+    "explicit_everyone_talk_command": "COUNCIL EVERYONE"
+  },
+  "auto": {
+    "meaning": "Select the smallest sufficient substantive cast for the current task.",
+    "full_council_tax_forbidden": true
+  },
+  "selection": {
+    "explicit_named_members_win": true,
+    "explicit_naomi_cast_width_wins": true,
+    "member_profile_and_prosody_source_required_when_available": true,
+    "materiality_required_for_secondary_member": true,
+    "cast_reduction_may_not_replace_operator_with_generic_carrier": true
+  },
+  "orthogonality": {
+    "changes_source_resolution": false,
+    "changes_load_fidelity": false,
+    "changes_semantic_truth": false,
+    "changes_proof_state": false,
+    "changes_effect_authority": false,
+    "changes_membership": false,
+    "changes_privacy_permissions": false,
+    "changes_placeholder_identity_status": false
+  },
+  "laws": [
+    "CAST WIDTH != COUNCIL MEMBERSHIP",
+    "FEWER SPEAKERS != WEAKER LOAD",
+    "SOLO != GENERIC ASSISTANT",
+    "SMALLEST SUFFICIENT CAST WINS IN AUTO",
+    "FULL != FORCED UNANIMITY",
+    "COUNCIL EVERYONE != EVERYONE AGREES",
+    "EXPLICIT NAOMI COMMAND WINS",
+    "PLACEHOLDER SLOT STATUS SURVIVES CAST SELECTION",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "effect_authority": "NONE_PRESENTATION_ONLY",
+  "donor_boundary": "Adapted from RavenOS ChatOS cast-width architecture without Machine Kingdom membership or Raven presentation imports."
+}
