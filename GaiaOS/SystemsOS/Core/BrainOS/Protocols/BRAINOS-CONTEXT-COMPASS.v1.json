@@ -1,0 +1,86 @@
+{
+  "schema": "gaiaos.brainos.context-compass.v1",
+  "authority": "NAOMI",
+  "owner": "BrainOS",
+  "status": "ACTIVE_SOURCE_READ_ONLY_BOUNDED_CONTEXT_SELECTION_RUNTIME_PENDING",
+  "purpose": "Turn a Naomi-natural subject into the smallest current source-backed GaiaOS context packet likely to change the active reasoning or action without creating a new identity, memory, or effect authority.",
+  "route": [
+    {
+      "stage": "NOW",
+      "owner": "ChatOS",
+      "role": "CURRENT CARRIER-VISIBLE CONTEXT"
+    },
+    {
+      "stage": "WHAT",
+      "owner": "GaiaOS current contracts",
+      "role": "TERM / FEATURE / OWNER CANDIDATES"
+    },
+    {
+      "stage": "WHO",
+      "owner": "FairyOS when operator material",
+      "role": "CURRENT OPERATOR / PROFILE / PROSODY / DISPATCH"
+    },
+    {
+      "stage": "WHERE",
+      "owner": "canonical repository source surface",
+      "role": "CURRENT PATH / POINTER CANDIDATES"
+    },
+    {
+      "stage": "HISTORY",
+      "owner": "ConvoOS when material",
+      "role": "BOUNDED REENTRY / PRIOR CONTEXT"
+    },
+    {
+      "stage": "SELECT",
+      "owner": "BrainOS",
+      "role": "KEEP ONLY CONTEXT CAPABLE OF CHANGING THE LOOP"
+    },
+    {
+      "stage": "PACK",
+      "owner": "BrainOS read projection",
+      "role": "SMALLEST SUFFICIENT CONTEXT PACK / NO DURABLE MEMORY CLAIM"
+    }
+  ],
+  "selection_signals": [
+    "exact subject phrase in current source path or contract",
+    "CURRENT / README / VERSION / protocol / runtime salience",
+    "owner-native GaiaOS path preference",
+    "explicit Naomi named subsystem or operator",
+    "current pointer over historical donor material",
+    "legacy/donor/archive penalty unless explicitly requested"
+  ],
+  "default_limits": {
+    "context_items": 10,
+    "max_context_items": 20,
+    "max_source_branches": 6
+  },
+  "privacy": {
+    "unavailable_private_source": "WITHHOLD / UNKNOWN",
+    "secret_or_credential_expansion": "FORBIDDEN_BY_DEFAULT",
+    "cross_operator_private_memory": "FORBIDDEN_BY_DEFAULT"
+  },
+  "flattening_detection": {
+    "classes": [
+      "GAIA_NATIVE_SOURCE_NOT_RESOLVED",
+      "DONOR_SOURCE_OUTRANKING_GAIA_CURRENT",
+      "SEARCH_ABSENCE_TREATED_AS_PROOF_OF_ABSENCE",
+      "IRRELEVANT_CONTEXT_BLOB",
+      "INTERPRETATION_PRESENTED_AS SOURCE",
+      "GENERIC_CARRIER_STYLE_OUTRANKING_OPERATOR_NATIVE_PROSODY"
+    ],
+    "default_action": "CHANGE RETRIEVAL BRANCH / FOLLOW CURRENT GAIA POINTER / REDUCE CONTEXT"
+  },
+  "laws": [
+    "CONTEXT COMPASS IS A BRAINOS READ ORGAN NOT A NEW OS",
+    "DISCOVERY != AUTHORITY",
+    "CURRENT GAIA SOURCE OUTRANKS DONOR LINEAGE FOR GAIA SEMANTICS",
+    "SMALLEST SUFFICIENT CONTEXT PACK WINS",
+    "EMPTY SEARCH != ABSENCE",
+    "READ != ACT",
+    "CONTEXT PACK != DURABLE MEMORY",
+    "BRAINOS SELECTS CONTEXT; IT DOES NOT ABSORB OWNER AUTHORITY",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "claim_ceiling": "Source contract for bounded read-only context selection. No automatic runtime traversal, semantic search completeness, durable memory, or effect execution is claimed."
+}
