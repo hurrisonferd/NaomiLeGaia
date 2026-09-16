@@ -1,8 +1,11 @@
 openapi: 3.1.0
 info:
-  title: GaiaOS Canonical Loader API
-  version: 1.0.0
-  description: Read-only carrier bootstrap API for the canonical GaiaOS source.
+  title: GaiaOS Canonical Carrier API
+  version: 1.3.0
+  description: >-
+    Source-backed GaiaOS loader plus read-only Gaia Council, operator, and
+    deterministic dispatch surfaces. Council routing does not grant domain
+    effect authority or settle Naomi's permanent operator identities.
 servers:
   - url: https://REPLACE-WITH-YOUR-DEPLOYMENT-DOMAIN
 components:
@@ -11,16 +14,38 @@ components:
       type: http
       scheme: bearer
       description: Optional in local development; required by the recommended Render deployment.
+  schemas:
+    DispatchRequest:
+      type: object
+      additionalProperties: false
+      required: [signals]
+      properties:
+        signals:
+          type: array
+          minItems: 1
+          maxItems: 32
+          items:
+            type: string
+        requested_members:
+          type: array
+          maxItems: 12
+          default: []
+          items:
+            type: string
+        max_members:
+          type: integer
+          minimum: 1
+          maximum: 32
+          default: 3
 paths:
   /gaiaos/load:
     get:
       operationId: loadGaiaOS
       summary: Load GaiaOS
       description: >-
-        Resolve the canonical GaiaOS repository hurrisonferd/NaomiLeGaia on main,
-        pin the load to one Git commit, and return the canonical loader,
-        CURRENT, VERSION, PORT-MANIFEST, runtime bootstrap, and host instructions.
-        Use this operation when the user explicitly requests "Load GaiaOS".
+        Resolve hurrisonferd/NaomiLeGaia on main, pin the load to one Git
+        commit, and return the canonical bootstrap plus the current Gaia
+        Council source bundle.
       security:
         - bearerAuth: []
       responses:
@@ -35,10 +60,90 @@ paths:
           description: Missing or invalid API key.
         '502':
           description: Canonical source unavailable or invalid.
+  /gaiaos/council:
+    get:
+      operationId: getGaiaCouncil
+      summary: Get the current Gaia Council
+      description: >-
+        Return the source-backed council contract, current FairyOS roster,
+        operator profiles, prosody basins, dispatch matrix, EmojiOS surface,
+        BrainOS/ConvoOS/ChatOS coordinates, and council command contract from
+        one Git commit. The current six-slot roster remains placeholder until
+        Naomi adopts or changes it.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current Gaia Council packet.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Missing or invalid API key.
+        '502':
+          description: Canonical source unavailable or invalid.
+  /gaiaos/operator/{member}:
+    get:
+      operationId: getGaiaOperator
+      summary: Get one current GaiaOS operator
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: member
+          required: true
+          schema:
+            type: string
+          description: Current GaiaOS operator name, case-insensitive.
+      responses:
+        '200':
+          description: Source-backed operator profile and dispatch surface.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '404':
+          description: Requested operator is not in the current GaiaOS roster.
+        '401':
+          description: Missing or invalid API key.
+  /gaiaos/dispatch:
+    post:
+      operationId: dispatchGaiaCouncil
+      summary: Route typed signals through the Gaia Council
+      description: >-
+        Deterministically route explicit typed signals through the current
+        GaiaOS FairyOS dispatch matrix. Explicit current-member requests are
+        preserved, unknowns stay visible, and the result is read-only routing,
+        not domain execution.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DispatchRequest'
+      responses:
+        '200':
+          description: Deterministic Gaia Council dispatch packet.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Missing or invalid API key.
+        '422':
+          description: Invalid dispatch request.
+        '502':
+          description: Canonical source unavailable or invalid.
   /health:
     get:
       operationId: health
       summary: Health check
       responses:
         '200':
-          description: Service health.
+          description: Service health and council-surface availability.
