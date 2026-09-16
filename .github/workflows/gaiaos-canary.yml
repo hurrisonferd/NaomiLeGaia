@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   gaiaos-canary:
-    name: GaiaOS source + FairyOS + ChatOS + carrier canaries
+    name: GaiaOS source + FairyOS + ChatOS + council + presentation canaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -35,6 +35,10 @@ jobs:
         run: python GaiaOS/SystemsOS/Core/FairyOS/Tests/GAIAOS-FAIRYOS-DISPATCH-CANARY.py
       - name: Run ChatOS canary
         run: python GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py
+      - name: Run council dissent canary
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py
+      - name: Run presentation gold canary
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRESENTATION-CANARY.py
       - name: Compile GaiaOS carrier API
         run: python -m py_compile api/gaiaos_api.py
       - name: Verify council carrier source surface
@@ -46,6 +50,7 @@ jobs:
           openapi = Path('api/openapi.yaml').read_text(encoding='utf-8')
           current = Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8')
           commands = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md').read_text(encoding='utf-8')
+          presentation = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md').read_text(encoding='utf-8')
 
           required_api = [
               'def gaia_council(',
@@ -60,14 +65,30 @@ jobs:
               '/gaiaos/dispatch:',
               '/gaiaos/operator/{member}:',
           ]
-          required_commands = ['COUNCIL [subject]', 'COUNCIL EVERYONE [subject]', 'CAST <N> [subject]']
+          required_commands = [
+              'COUNCIL [subject]',
+              'COUNCIL EVERYONE [subject]',
+              'COUNCIL ROOM [subject]',
+              'CAST <N> [subject]',
+              'GAIAOS LIVING',
+              'GAIAOS QUIET',
+              'GAIAOS WILD',
+          ]
+          required_presentation = [
+              'HUMOR MUST EARN ITS CHAIR.',
+              'PRESENTATION ENERGY != EVIDENCE',
+              'RAVEN META GOBLIN != GAIA REQUIRED CADENCE',
+          ]
 
           missing = []
           missing += [f'api:{x}' for x in required_api if x not in api]
           missing += [f'openapi:{x}' for x in required_openapi if x not in openapi]
           missing += [f'commands:{x}' for x in required_commands if x not in commands]
-          if 'v0.001.001' not in current:
-              missing.append('current:v0.001.001')
+          missing += [f'presentation:{x}' for x in required_presentation if x not in presentation]
+          if 'v0.001.002' not in current:
+              missing.append('current:v0.001.002')
+          if 'APP_VERSION = "1.4.0"' not in api:
+              missing.append('api:APP_VERSION=1.4.0')
 
           if missing:
               raise SystemExit('GAIAOS_COUNCIL_CARRIER_CANARY_FAIL ' + ', '.join(missing))
