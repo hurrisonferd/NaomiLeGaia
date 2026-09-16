@@ -1,14 +1,15 @@
 {
-  "schema": "gaiaos.brainos.current.v1",
+  "schema": "gaiaos.brainos.current.v2",
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "CONTRACT_POINTER_ONLY_NO_RAVEN_IDENTITY",
-  "class": "INTERNAL_COGNITIVE_META_LOOP_CONTRACT",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_HOT_WARM_COLD_AWARE_CONTEXT_COMPASS_BOUND_RUNTIME_EXPANSION_PENDING",
+  "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
     "CURRENT_WORKING_CONTEXT",
     "NOTICE_MATERIAL_CHANGE",
+    "SELECT_SMALLEST_SUFFICIENT_SUPPORT",
     "RETAIN_OR_HOLD_OR_REJECT",
     "PRESERVE_NATIVE_EXPRESSION",
     "ACT_OR_EXPRESS",
@@ -16,7 +17,42 @@
     "UPDATE_WORKING_STATE"
   ],
   "readme": "GaiaOS/SystemsOS/Core/BrainOS/README.md",
+  "support_fabric": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+  "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
+  "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
+  "convoos": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
+  "fairyos": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+  "member_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+  "invocation": {
+    "always_addressable": true,
+    "always_invoked": false,
+    "use_when": [
+      "multi-owner reasoning can change the answer",
+      "source or authority resolution is material",
+      "routing is ambiguous",
+      "substantial analysis/build/review needs support selection",
+      "operator-native source resolution is uncertain",
+      "reentry/source recovery is material",
+      "durable effect planning is requested"
+    ]
+  },
+  "current_organs": {
+    "NOW": "ChatOS",
+    "WHO": "FairyOS",
+    "WHERE_WE_WERE": "ConvoOS when material",
+    "CONTEXT_SELECTION": "ContextCompass",
+    "WARM_CONTINUITY": "MemberContinuityOS",
+    "EFFECT": "domain owner/provider",
+    "FINAL_SETTLEMENT": "Naomi"
+  },
+  "runtime": {
+    "support_fabric_source_present": true,
+    "context_compass_source_present": true,
+    "context_compass_executable_runtime_present": false,
+    "automatic_host_invocation_proven": false,
+    "durable_memory_backend_present": false
+  },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
     "BRAINOS != MEMORY OF EVERYTHING",
@@ -24,6 +60,14 @@
     "BRAINOS != FAIRYOS",
     "BRAINOS != CHATOS",
     "BRAINOS != TRANSACTION AUTHORITY",
+    "BRAINOS ADDRESSABLE != BRAINOS INVOKED",
+    "CURRENT CHAT FIRST",
+    "SMALLEST SUFFICIENT SUPPORT SET WINS",
+    "CONTEXT SELECTION != OWNER AUTHORITY",
+    "WARM != SAVED",
+    "SOURCE DONOR != IDENTITY DONOR",
+    "UNKNOWN STAYS UNKNOWN",
     "NAOMI RETAINS FINAL AUTHORITY"
-  ]
+  ],
+  "claim_ceiling": "Gaia-native source support fabric and Context Compass contracts are active. Executable context traversal, automatic host invocation, durable continuity, and domain effects remain separately unproven."
 }
