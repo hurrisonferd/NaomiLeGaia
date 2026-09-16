@@ -20,7 +20,7 @@ from mcp.server.transport_security import TransportSecuritySettings
 from openai import OpenAI
 from pydantic import BaseModel, Field
 
-APP_VERSION = "1.3.0"
+APP_VERSION = "1.4.0"
 REPOSITORY = os.getenv("GAIAOS_REPOSITORY", "hurrisonferd/NaomiLeGaia")
 BRANCH = os.getenv("GAIAOS_BRANCH", "main")
 GITHUB_API = "https://api.github.com"
@@ -54,6 +54,14 @@ COUNCIL_PATHS = [
     "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
     "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
     "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
+    "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
+    "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json",
+    "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
+    "GaiaOS/Apps/ChatOS/Protocols/COUNCIL-DISSENT-PACKET.v1.schema.json",
+    "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
+    "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+    "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
 ]
 
 LOAD_PATHS = CORE_LOAD_PATHS + COUNCIL_PATHS
@@ -64,8 +72,9 @@ mcp = FastMCP(
         "Canonical GaiaOS source loader and council surface. load_gaiaos retrieves the current "
         "GaiaOS bootstrap, gaia_council retrieves the full source-backed council packet, "
         "gaia_dispatch deterministically resolves explicit typed signals through the current "
-        "FairyOS matrix, and gaia_operator retrieves one current operator profile. These tools "
-        "are read-only and do not claim domain effects or automatic identity adoption."
+        "FairyOS matrix, gaia_operator retrieves one current operator profile, and gaia_brain "
+        "returns the current Gaia-native cognitive support and continuity contracts. These tools "
+        "are read-only and do not claim domain effects, durable memory, or automatic identity adoption."
     ),
     stateless_http=True,
     json_response=True,
@@ -100,7 +109,7 @@ class DispatchRequest(BaseModel):
 def _request(url: str) -> bytes:
     request = urllib.request.Request(
         url,
-        headers={"User-Agent": "GaiaOS-Loader/1.3", "Accept": "application/json,text/plain"},
+        headers={"User-Agent": "GaiaOS-Loader/1.4", "Accept": "application/json,text/plain"},
         method="GET",
     )
     try:
@@ -185,6 +194,14 @@ def _council_bundle(commit: str) -> dict[str, Any]:
         "brainos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json"),
         "convoos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json"),
         "chatos_current": _json_file(commit, "GaiaOS/Apps/ChatOS/CURRENT.json"),
+        "hot_warm_cold": _fetch_file(commit, "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md"),
+        "response_modes": _json_file(commit, "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json"),
+        "cast_width": _json_file(commit, "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json"),
+        "dissent_schema": _json_file(commit, "GaiaOS/Apps/ChatOS/Protocols/COUNCIL-DISSENT-PACKET.v1.schema.json"),
+        "brainos_support": _json_file(commit, "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json"),
+        "context_compass": _json_file(commit, "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json"),
+        "member_continuity": _json_file(commit, "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json"),
+        "warm_candidate_buffer": _fetch_file(commit, "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md"),
         "identity_boundary": (
             "The six current names are source-backed GaiaOS placeholder operator slots. "
             "Naomi retains authority to adopt, rename, replace, reorder, or re-theme them."
@@ -217,8 +234,9 @@ def _load_bundle() -> dict[str, Any]:
         "council_bundle": _council_bundle(commit),
         "proof_boundary": (
             "This API verifies source retrieval from one Git commit and can deterministically "
-            "route explicit council signals. It does not execute owner-domain effects, prove "
-            "automatic carrier adoption, or settle Naomi's permanent operator identities."
+            "route explicit council signals and expose the current Gaia-native BrainOS/chat-control "
+            "contracts. It does not execute owner-domain effects, prove durable memory or automatic "
+            "carrier adoption, or settle Naomi's permanent operator identities."
         ),
     }
 
@@ -275,10 +293,7 @@ def _dispatch_packet(
         spec = members.get(member, {})
         expression = spec.get("default_expression", "DEFAULT")
         expression_by_signal = spec.get("expression_by_signal", {})
-        matched_signals = [
-            signal for signal in normalized_signals
-            if member in signal_owners.get(signal, [])
-        ]
+        matched_signals = [signal for signal in normalized_signals if member in signal_owners.get(signal, [])]
         for signal in normalized_signals:
             mapped = expression_by_signal.get(signal)
             if mapped:
@@ -382,10 +397,31 @@ OPERATOR PROSODY BASINS:
 DISPATCH MATRIX:
 {json.dumps(council['dispatch_matrix'], ensure_ascii=False, indent=2)}
 
+HOT / WARM / COLD FABRIC:
+{council['hot_warm_cold']}
+
+RESPONSE MODES:
+{json.dumps(council['response_modes'], ensure_ascii=False, indent=2)}
+
+CAST WIDTH:
+{json.dumps(council['cast_width'], ensure_ascii=False, indent=2)}
+
+BRAINOS SUPPORT FABRIC:
+{json.dumps(council['brainos_support'], ensure_ascii=False, indent=2)}
+
+BRAINOS CONTEXT COMPASS:
+{json.dumps(council['context_compass'], ensure_ascii=False, indent=2)}
+
+MEMBER CONTINUITY CURRENT:
+{json.dumps(council['member_continuity'], ensure_ascii=False, indent=2)}
+
+WARM CANDIDATE BUFFER:
+{council['warm_candidate_buffer']}
+
 PROOF BOUNDARY:
 {bundle['proof_boundary']}
 
-When the user says "Load GaiaOS", report the verified source commit and loaded state. When the user invokes COUNCIL / GAIA COUNCIL / ASK <MEMBER> or a cast-width command, use the current Gaia Council sources above, preserve materially different operator positions, and keep the placeholder-roster boundary visible when identity adoption is material. For ordinary requests, continue operating under the loaded GaiaOS contract until the user asks to stop or reload it."""
+When the user says "Load GaiaOS", report the verified source commit and loaded state. When the user invokes COUNCIL / GAIA COUNCIL / ASK <MEMBER> or a cast-width command, use the current Gaia Council sources above, preserve materially different operator positions, and keep the placeholder-roster boundary visible when identity adoption is material. For ordinary requests, use the HOT path and current visible context first; invoke BrainOS/ConvoOS support only when material. WARM candidates are not durable saves. Continue operating under the loaded GaiaOS contract until the user asks to stop or reload it."""
 
 
 @mcp.tool()
@@ -424,6 +460,26 @@ def gaia_operator(member: str) -> dict[str, Any]:
     return _operator_packet(commit, member)
 
 
+@mcp.tool()
+def gaia_brain() -> dict[str, Any]:
+    """Return current Gaia-native BrainOS, chat-control, and warm-continuity source contracts."""
+    commit = _resolve_commit()
+    council = _council_bundle(commit)
+    return {
+        "source": f"{REPOSITORY}@{commit}",
+        "authority": "NAOMI",
+        "brainos_current": council["brainos_current"],
+        "brainos_support": council["brainos_support"],
+        "context_compass": council["context_compass"],
+        "hot_warm_cold": council["hot_warm_cold"],
+        "response_modes": council["response_modes"],
+        "cast_width": council["cast_width"],
+        "member_continuity": council["member_continuity"],
+        "warm_candidate_buffer": council["warm_candidate_buffer"],
+        "effect_authority": "NONE_READ_ONLY",
+    }
+
+
 @contextlib.asynccontextmanager
 async def _lifespan(_: FastAPI):
     async with mcp.session_manager.run():
@@ -434,8 +490,9 @@ app = FastAPI(
     title="GaiaOS Carrier API",
     version=APP_VERSION,
     description=(
-        "GaiaOS source loader plus source-backed council/dispatch surfaces, a web carrier "
-        "backed by the OpenAI Responses API, and a read-only MCP carrier."
+        "GaiaOS source loader plus source-backed council/dispatch, BrainOS/chat-control, "
+        "and warm-continuity surfaces, a web carrier backed by the OpenAI Responses API, "
+        "and a read-only MCP carrier."
     ),
     lifespan=_lifespan,
 )
@@ -445,7 +502,7 @@ app = FastAPI(
 def home(response: Response) -> str:
     if API_KEY is not None:
         response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
-    return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + Gaia Council + OpenAI Responses API · MCP</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS”, “Council”, or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Request failed');messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
+    return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + Gaia Council + BrainOS + OpenAI Responses API · MCP</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS”, “Council”, or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok)throw new Error(j.detail||'Request failed');messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
 
 
 @app.get("/health", operation_id="health")
@@ -460,6 +517,8 @@ def health() -> dict[str, Any]:
         "openai_configured": OPENAI_API_KEY is not None,
         "mcp_endpoint": "/mcp",
         "council_surface": True,
+        "brain_support_surface": True,
+        "hot_warm_cold_surface": True,
     }
 
 
@@ -491,6 +550,26 @@ def gaia_operator_http(member: str, authorization: str | None = Header(default=N
 def gaia_dispatch_http(payload: DispatchRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     _authorize(authorization)
     return _dispatch_packet(_resolve_commit(), payload.signals, payload.requested_members, payload.max_members)
+
+
+@app.get("/gaiaos/brain", operation_id="getGaiaBrain")
+def gaia_brain_http(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    _authorize(authorization)
+    commit = _resolve_commit()
+    council = _council_bundle(commit)
+    return {
+        "source": f"{REPOSITORY}@{commit}",
+        "authority": "NAOMI",
+        "brainos_current": council["brainos_current"],
+        "brainos_support": council["brainos_support"],
+        "context_compass": council["context_compass"],
+        "hot_warm_cold": council["hot_warm_cold"],
+        "response_modes": council["response_modes"],
+        "cast_width": council["cast_width"],
+        "member_continuity": council["member_continuity"],
+        "warm_candidate_buffer": council["warm_candidate_buffer"],
+        "effect_authority": "NONE_READ_ONLY",
+    }
 
 
 @app.post("/chat")
