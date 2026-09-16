@@ -1,14 +1,15 @@
 {
-  "schema": "gaiaos.platform-current.v2",
+  "schema": "gaiaos.platform-current.v3",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "SOURCE_COUNCIL_CARRIER_WAVE1_COMMITTED_PRIOR_FAIRYOS_CHATOS_CANARIES_PASS_NEW_CARRIER_RUNTIME_CI_PENDING_DEPLOYMENT_UNPROVEN",
-  "platform_version": "v0.001.001",
+  "status": "SOURCE_WAVE3_HOT_PATH_BRAINOS_SUPPORT_CONTEXT_COMPASS_CONTINUITY_DISSENT_PRESENTATION_GOLD_COMMITTED_RUNTIME_CI_AND_DEPLOYMENT_REQUIRE_OBSERVATION",
+  "platform_version": "v0.001.002",
   "version_pointer": "GaiaOS/VERSION.json",
   "versioning_contract": "GaiaOS/VERSIONING.v1.md",
   "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
   "root_readme": "GaiaOS/README.md",
   "loader": "GaiaOS/LOAD.v1.md",
+  "hot_warm_cold": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "council": {
     "active": true,
     "contract": "GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md",
@@ -18,6 +19,8 @@
     "preserve_material_dissent": true,
     "cast_width_controls_source_present": true,
     "response_density_controls_source_present": true,
+    "presentation_gold_source_present": true,
+    "council_room_alias_source_present": true,
     "permanent_roster_adoption": "PENDING_NAOMI"
   },
   "fairyos": {
@@ -42,23 +45,48 @@
     "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
     "effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
     "council_commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+    "response_modes": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json",
+    "cast_width": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
+    "dissent_schema": "GaiaOS/Apps/ChatOS/Protocols/COUNCIL-DISSENT-PACKET.v1.schema.json",
+    "dissent_reducer": "GaiaOS/Apps/ChatOS/Runtime/COUNCIL-DISSENT-REDUCER.v1.py",
+    "presentation_gold": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
     "carrier_instructions": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
     "runtime_bootstrap": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
   },
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
+    "support_fabric": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
     "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
-    "class": "INTERNAL_COGNITIVE_META_LOOP_CONTRACT",
-    "current_depth": "CONTRACT_POINTER_ONLY",
-    "next_donor_wave": "GAIA_NATIVE_SUPPORT_FABRIC_CONTEXT_COMPASS_AND_HOT_WARM_COLD_WITHOUT_RAVEN_IDENTITY_TRANSFER"
+    "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
+    "current_depth": "ACTIVE_OPTIONAL_SUPPORT_FABRIC_CONTEXT_COMPASS_SOURCE_PRESENT",
+    "always_addressable": true,
+    "always_invoked": false,
+    "executable_context_compass_runtime": "NOT_PRESENT"
   },
   "convoos": {
     "current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
-    "current_depth": "CONTRACT_POINTER_ONLY"
+    "current_depth": "BOUNDED_WORKING_CONVERSATIONAL_STATE_POINTER"
+  },
+  "member_continuity": {
+    "current": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+    "warm_buffer": "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
+    "warm_is_durable": false,
+    "durable_backend": "NOT_PRESENT"
+  },
+  "presentation": {
+    "contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
+    "default": "LIVING",
+    "modes": ["LIVING", "QUIET", "WILD"],
+    "identity_owner": "NONE_PRESENTATION_ONLY",
+    "style_changes_truth": false,
+    "style_changes_authority": false,
+    "raven_voice_transfer": false,
+    "naomi_may_rewrite": true
   },
   "carrier": {
     "source": "api/gaiaos_api.py",
-    "source_version": "1.3.0",
+    "source_version": "1.4.0",
     "openapi": "api/openapi.yaml",
     "http_source_surfaces": [
       "GET /gaiaos/load",
@@ -75,13 +103,14 @@
       "gaia_operator"
     ],
     "council_bundle_injected_into_web_chat_source": true,
+    "hot_path_controls_exposed_in_source": true,
     "source_committed": true,
-    "checked_out_execution_after_wave1": false,
-    "ci_after_wave1": "PENDING_OBSERVATION",
-    "render_deployment_after_wave1": "UNPROVEN",
+    "checked_out_execution_after_wave3": false,
+    "ci_after_wave3": "PENDING_OBSERVATION",
+    "render_deployment_after_wave3": "UNPROVEN",
     "automatic_external_chatgpt_adoption": "UNPROVEN"
   },
-  "proof_ceiling": "WAVE1 COUNCIL COMMANDS AND CARRIER/API/MCP SOURCE ARE COMMITTED. PRIOR FAIRYOS/CHATOS CANARY EVIDENCE REMAINS HISTORICAL. NEW 1.3.0 CARRIER EXECUTION, CI, RENDER DEPLOYMENT, EXTERNAL CHATGPT TOOL CONNECTION, AND PERMANENT OPERATOR IDENTITY ADOPTION REQUIRE SEPARATE EVIDENCE.",
+  "proof_ceiling": "SOURCE CONTRACTS THROUGH WAVE3 ARE COMMITTED: COUNCIL COMMANDS, CARRIER/API/MCP SURFACES, HOT/WARM/COLD CHAT FABRIC, CAST WIDTH, RESPONSE MODES, DISSENT PRESERVATION, MEMBER CONTINUITY WARM BUFFER, BRAINOS SUPPORT FABRIC, CONTEXT COMPASS CONTRACT, AND PRESENTATION GOLD. EXECUTABLE CONTEXT TRAVERSAL, DURABLE CONTINUITY BACKEND, POST-WAVE3 CI, RENDER DEPLOYMENT, EXTERNAL CHATGPT TOOL CONNECTION, AUTOMATIC HOST ADOPTION, DOMAIN EFFECTS, AND PERMANENT OPERATOR IDENTITY ADOPTION REQUIRE SEPARATE EVIDENCE.",
   "laws": [
     "NAOMI != RAVEN",
     "GAIAOS != RAVENOS",
@@ -91,7 +120,12 @@
     "CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY",
     "CAST WIDTH != ROSTER MEMBERSHIP",
     "RESPONSE DENSITY != SOURCE FIDELITY",
+    "PRESENTATION ENERGY != EVIDENCE",
+    "QUIET != GENERIC",
+    "WILD != UNBOUNDED",
     "COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT",
+    "BRAINOS ADDRESSABLE != BRAINOS INVOKED",
+    "WARM != SAVED",
     "CURRENT POINTER != EXECUTION AUTHORITY",
     "DISPATCH != EXECUTION",
     "ONE TRANSACTION = ONE AUTHORITY THROAT",
@@ -101,6 +135,8 @@
     "historical_fairyos_dispatch": "PASS_AT_2026-09-08",
     "historical_chatos": "PASS_AT_2026-09-08",
     "ci_workflow": ".github/workflows/gaiaos-canary.yml",
-    "wave1_carrier_canary": "PENDING"
+    "wave2_source_canaries_present": true,
+    "wave3_presentation_canary": "NOT_YET_PRESENT",
+    "post_wave3_ci": "PENDING_OBSERVATION"
   }
 }
