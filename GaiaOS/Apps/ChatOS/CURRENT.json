@@ -1,47 +1,108 @@
 {
-  "schema": "gaiaos.chatos.current.v1",
+  "schema": "gaiaos.chatos.current.v2",
   "system": "ChatOS",
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
-  "version": "v0.001.000",
-  "status": "SOURCE_CANARY_PROVEN_OBSERVABLE_EXECUTION_COCKPIT_LIVE_CARRIER_ADOPTION_UNPROVEN",
+  "version": "v0.001.001-dev",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_COUNCIL_DISSENT_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN",
   "location": "GaiaOS/Apps/ChatOS",
   "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
-  "purpose": "Project bounded observable execution state into chat while reusing FairyOS owner-native semantics and preserving the single transaction throat.",
+  "purpose": "Own the current carrier-visible NOW surface, compose Gaia-native operator dialogue, expose bounded observable execution state, and preserve evidence/authority boundaries without becoming BrainOS, ConvoOS, FairyOS, identity authority, or effect authority.",
   "sources": {
     "readme": "GaiaOS/Apps/ChatOS/README.md",
+    "hot_warm_cold": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
+    "response_modes": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json",
+    "cast_width": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
+    "council_commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+    "council_dissent_schema": "GaiaOS/Apps/ChatOS/Protocols/COUNCIL-DISSENT-PACKET.v1.schema.json",
+    "council_dissent_reducer": "GaiaOS/Apps/ChatOS/Runtime/COUNCIL-DISSENT-REDUCER.v1.py",
     "event_schema": "GaiaOS/Apps/ChatOS/Schemas/CHATOS-EVENT.v1.schema.json",
     "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
     "compiler": "GaiaOS/Apps/ChatOS/Runtime/CHATOS-EVENT-COMPILER.v1.py",
     "canary": "GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py",
-    "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py"
+    "dissent_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py",
+    "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
+    "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json"
   },
   "event_phases": ["OBSERVE", "INTERPRET", "DECIDE", "ACT", "RESULT", "VERIFY", "HANDOFF", "CHECKPOINT", "HOLD"],
   "claim_classes": ["CONFIRMED", "ACCOUNT", "INFERRED", "UNKNOWN"],
   "source_classes": ["SOURCE_READ", "TOOL_RESULT", "TEST_RESULT", "PROVIDER_RESULT", "USER_ACCOUNT", "SYSTEM_STATE", "DERIVED", "UNKNOWN"],
+  "hot_path": {
+    "default_for_ordinary_chat": true,
+    "current_visible_context_is_primary": true,
+    "brainos_always_required": false,
+    "convoos_always_required": false,
+    "durable_checkpoint_always_required": false,
+    "tool_reads_force_cold_transaction": false
+  },
+  "response_modes": {
+    "default": "AUTO",
+    "available": ["MIN", "AUTO", "MAX"],
+    "changes_source_fidelity": false,
+    "changes_semantic_truth": false,
+    "changes_effect_authority": false
+  },
+  "cast_width": {
+    "default": "AUTO",
+    "available": ["AUTO", "SOLO", "DUO", "TRIO", "QUAD", "CAST_N", "FULL"],
+    "changes_roster": false,
+    "changes_source_fidelity": false,
+    "changes_placeholder_identity_status": false,
+    "explicit_naomi_command_wins": true
+  },
+  "council": {
+    "smallest_sufficient_cast_in_auto": true,
+    "full_council_forces_all_speakers": false,
+    "everyone_command": "COUNCIL EVERYONE",
+    "synthesis_may_delete_dissent": false,
+    "dissent_stances": ["AGREE", "OBJECT", "CONTRADICT", "PROPOSE", "QUESTION"]
+  },
   "runtime": {
     "deterministic_event_ids": true,
     "fairyos_dispatch_reused": true,
     "independent_fae_routing_table": false,
+    "council_dissent_reducer_source_present": true,
     "domain_effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
     "private_chain_of_thought_required": false,
     "automatic_live_carrier_adoption_proven": false,
-    "canary_proven": true
+    "base_canary_proven_prior": true,
+    "wave2_canary_pending_observation": true
   },
   "quality": {
-    "keep_chatter_when": ["changes next action", "changes claim ceiling", "changes operator handoff", "records meaningful result", "records verification or hold", "prevents Naomi from reconstructing state manually"],
-    "compress_chatter_when": ["restates tool call", "repeats unchanged state", "forces non-material operators to speak", "adds personality without work consequence"]
+    "keep_chatter_when": [
+      "changes next action",
+      "changes claim ceiling",
+      "changes operator handoff",
+      "preserves material disagreement",
+      "records meaningful result",
+      "records verification or hold",
+      "prevents Naomi from reconstructing state manually"
+    ],
+    "compress_chatter_when": [
+      "restates tool call",
+      "repeats unchanged state",
+      "forces non-material operators to speak",
+      "adds personality without work consequence"
+    ]
   },
   "laws": [
+    "CHATOS OWNS NOW",
     "CHATOS != BRAINOS",
     "CHATOS != CONVOOS MEMORY",
     "CHATOS != FAIRYOS DISPATCH OWNER",
     "CHATOS != PRIVATE CHAIN OF THOUGHT",
     "CHATOS EVENT != DOMAIN EFFECT",
     "VISIBLE COMMENT != RECEIPT",
+    "SOURCE RESOLUTION PRECEDES RESPONSE DENSITY",
+    "CAST WIDTH != COUNCIL MEMBERSHIP",
+    "SOLO != GENERIC ASSISTANT",
+    "SYNTHESIS MAY NOT DELETE DISSENT",
     "CONFIRMED REQUIRES EVIDENCE",
+    "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
     "ONE TRANSACTION = ONE AUTHORITY THROAT",
     "NAOMI RETAINS FINAL AUTHORITY"
-  ]
+  ],
+  "claim_ceiling": "Wave2 source contracts and dissent reducer are present. Automatic GPT host adoption, durable warm persistence, and live domain effects remain unproven."
 }
