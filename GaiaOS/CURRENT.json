@@ -1,55 +1,106 @@
 {
-  "schema": "gaiaos.platform-current.v1",
+  "schema": "gaiaos.platform-current.v2",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "SOURCE_SETTLED_FAIRYOS_DISPATCH_CANARY_PASS_CHATOS_CANARY_PASS_RUNTIME_CARRIER_ADOPTION_UNPROVEN",
-  "platform_version": "v0.001.000",
+  "status": "SOURCE_COUNCIL_CARRIER_WAVE1_COMMITTED_PRIOR_FAIRYOS_CHATOS_CANARIES_PASS_NEW_CARRIER_RUNTIME_CI_PENDING_DEPLOYMENT_UNPROVEN",
+  "platform_version": "v0.001.001",
   "version_pointer": "GaiaOS/VERSION.json",
   "versioning_contract": "GaiaOS/VERSIONING.v1.md",
   "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
   "root_readme": "GaiaOS/README.md",
+  "loader": "GaiaOS/LOAD.v1.md",
   "council": {
     "active": true,
     "contract": "GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md",
+    "commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
     "settlement_authority": "NAOMI",
-    "council_deliberation_is_not_execution_authority": true
+    "council_deliberation_is_not_execution_authority": true,
+    "preserve_material_dissent": true,
+    "cast_width_controls_source_present": true,
+    "response_density_controls_source_present": true,
+    "permanent_roster_adoption": "PENDING_NAOMI"
   },
   "fairyos": {
     "current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+    "council": "GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md",
+    "profiles": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+    "prosody_basins": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
+    "dispatch_matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
+    "dispatch_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "roster_native_to_gaia": true,
     "raven_roster_adopted": false,
-    "roster_status": "PLACEHOLDER_SLOTS_AWAITING_NAOMI_ROSTER"
+    "roster_status": "SOURCE_BACKED_PLACEHOLDER_SLOTS_AWAITING_NAOMI_ADOPTION_OR_RENAME"
   },
   "emojios": {
     "current": "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
+    "registry": "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
     "identity_owner": "FairyOS",
     "raven_binary_assets_ported": false
   },
   "chatos": {
     "current": "GaiaOS/Apps/ChatOS/CURRENT.json",
     "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
-    "effect_authority": "NONE_CHATOS_PRESENTATION_ONLY"
+    "effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
+    "council_commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+    "carrier_instructions": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
+    "runtime_bootstrap": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
   },
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
     "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
-    "class": "INTERNAL_COGNITIVE_META_LOOP_CONTRACT"
+    "class": "INTERNAL_COGNITIVE_META_LOOP_CONTRACT",
+    "current_depth": "CONTRACT_POINTER_ONLY",
+    "next_donor_wave": "GAIA_NATIVE_SUPPORT_FABRIC_CONTEXT_COMPASS_AND_HOT_WARM_COLD_WITHOUT_RAVEN_IDENTITY_TRANSFER"
   },
-  "proof_ceiling": "SOURCE_ROUTING_CANARY_PROVEN_LIVE_CARRIER_AUTO_ADOPTION_UNPROVEN",
+  "convoos": {
+    "current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
+    "current_depth": "CONTRACT_POINTER_ONLY"
+  },
+  "carrier": {
+    "source": "api/gaiaos_api.py",
+    "source_version": "1.3.0",
+    "openapi": "api/openapi.yaml",
+    "http_source_surfaces": [
+      "GET /gaiaos/load",
+      "GET /gaiaos/council",
+      "GET /gaiaos/operator/{member}",
+      "POST /gaiaos/dispatch",
+      "POST /chat",
+      "GET /health"
+    ],
+    "mcp_source_tools": [
+      "load_gaiaos",
+      "gaia_council",
+      "gaia_dispatch",
+      "gaia_operator"
+    ],
+    "council_bundle_injected_into_web_chat_source": true,
+    "source_committed": true,
+    "checked_out_execution_after_wave1": false,
+    "ci_after_wave1": "PENDING_OBSERVATION",
+    "render_deployment_after_wave1": "UNPROVEN",
+    "automatic_external_chatgpt_adoption": "UNPROVEN"
+  },
+  "proof_ceiling": "WAVE1 COUNCIL COMMANDS AND CARRIER/API/MCP SOURCE ARE COMMITTED. PRIOR FAIRYOS/CHATOS CANARY EVIDENCE REMAINS HISTORICAL. NEW 1.3.0 CARRIER EXECUTION, CI, RENDER DEPLOYMENT, EXTERNAL CHATGPT TOOL CONNECTION, AND PERMANENT OPERATOR IDENTITY ADOPTION REQUIRE SEPARATE EVIDENCE.",
   "laws": [
     "NAOMI != RAVEN",
     "GAIAOS != RAVENOS",
     "ARCHITECTURE DONOR != IDENTITY DONOR",
     "PORT != MERGE",
     "RAVEN ROSTER NOT AUTO-ADOPTED",
+    "CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY",
+    "CAST WIDTH != ROSTER MEMBERSHIP",
+    "RESPONSE DENSITY != SOURCE FIDELITY",
+    "COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT",
     "CURRENT POINTER != EXECUTION AUTHORITY",
+    "DISPATCH != EXECUTION",
     "ONE TRANSACTION = ONE AUTHORITY THROAT",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
   "canary": {
-    "fairyos_dispatch": "PASS",
-    "chatos": "PASS",
+    "historical_fairyos_dispatch": "PASS_AT_2026-09-08",
+    "historical_chatos": "PASS_AT_2026-09-08",
     "ci_workflow": ".github/workflows/gaiaos-canary.yml",
-    "local_head_proof": "CANARY_PROVEN_AT_2026-09-08"
+    "wave1_carrier_canary": "PENDING"
   }
 }
