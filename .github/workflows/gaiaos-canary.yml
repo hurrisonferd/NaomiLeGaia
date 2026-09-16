@@ -5,10 +5,14 @@ on:
     branches: [main]
     paths:
       - 'GaiaOS/**'
+      - 'api/**'
+      - 'GAIAOS-LOAD.md'
       - '.github/workflows/gaiaos-canary.yml'
   pull_request:
     paths:
       - 'GaiaOS/**'
+      - 'api/**'
+      - 'GAIAOS-LOAD.md'
       - '.github/workflows/gaiaos-canary.yml'
   workflow_dispatch:
 
@@ -17,7 +21,7 @@ permissions:
 
 jobs:
   gaiaos-canary:
-    name: FairyOS + ChatOS deterministic canaries
+    name: GaiaOS source + FairyOS + ChatOS + carrier canaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -31,3 +35,40 @@ jobs:
         run: python GaiaOS/SystemsOS/Core/FairyOS/Tests/GAIAOS-FAIRYOS-DISPATCH-CANARY.py
       - name: Run ChatOS canary
         run: python GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py
+      - name: Compile GaiaOS carrier API
+        run: python -m py_compile api/gaiaos_api.py
+      - name: Verify council carrier source surface
+        shell: python
+        run: |
+          from pathlib import Path
+
+          api = Path('api/gaiaos_api.py').read_text(encoding='utf-8')
+          openapi = Path('api/openapi.yaml').read_text(encoding='utf-8')
+          current = Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8')
+          commands = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md').read_text(encoding='utf-8')
+
+          required_api = [
+              'def gaia_council(',
+              'def gaia_dispatch(',
+              'def gaia_operator(',
+              '@app.get("/gaiaos/council"',
+              '@app.post("/gaiaos/dispatch"',
+              '@app.get("/gaiaos/operator/{member}"',
+          ]
+          required_openapi = [
+              '/gaiaos/council:',
+              '/gaiaos/dispatch:',
+              '/gaiaos/operator/{member}:',
+          ]
+          required_commands = ['COUNCIL [subject]', 'COUNCIL EVERYONE [subject]', 'CAST <N> [subject]']
+
+          missing = []
+          missing += [f'api:{x}' for x in required_api if x not in api]
+          missing += [f'openapi:{x}' for x in required_openapi if x not in openapi]
+          missing += [f'commands:{x}' for x in required_commands if x not in commands]
+          if 'v0.001.001' not in current:
+              missing.append('current:v0.001.001')
+
+          if missing:
+              raise SystemExit('GAIAOS_COUNCIL_CARRIER_CANARY_FAIL ' + ', '.join(missing))
+          print('GAIAOS_COUNCIL_CARRIER_CANARY_PASS')
