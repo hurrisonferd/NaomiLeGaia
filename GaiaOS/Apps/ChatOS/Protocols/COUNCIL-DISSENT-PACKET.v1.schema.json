@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaiaos.chatos.council-dissent-packet.v1",
+  "title": "GaiaOS ChatOS Council Dissent Packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "authority",
+    "issue",
+    "participants",
+    "agreements",
+    "minority_objections",
+    "contradictions",
+    "unique_proposals",
+    "unresolved_questions",
+    "source_contributions",
+    "law"
+  ],
+  "properties": {
+    "schema": {"const": "gaiaos.chatos.council-dissent-packet.v1"},
+    "authority": {"const": "NAOMI"},
+    "issue": {"type": "string"},
+    "participants": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "agreements": {"type": "array", "items": {"type": "object"}},
+    "minority_objections": {"type": "array", "items": {"type": "object"}},
+    "contradictions": {"type": "array", "items": {"type": "object"}},
+    "unique_proposals": {"type": "array", "items": {"type": "object"}},
+    "unresolved_questions": {"type": "array", "items": {"type": "string"}},
+    "recommended_cut": {"type": ["object", "null"]},
+    "source_contributions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["speaker", "stance", "text"],
+        "properties": {
+          "speaker": {"type": "string", "minLength": 1},
+          "stance": {"enum": ["AGREE", "OBJECT", "CONTRADICT", "PROPOSE", "QUESTION"]},
+          "text": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "law": {"const": "SYNTHESIS_MAY_NOT_DELETE_DISSENT"}
+  }
+}
