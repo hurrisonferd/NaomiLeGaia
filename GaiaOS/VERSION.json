@@ -2,13 +2,17 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.001",
-  "release_note": "Council carrier wave 1: source-backed council commands, full Gaia Council bundle in the carrier, deterministic dispatch/operator API and MCP surfaces, and direct GPT council/cast instructions. The six current operator slots remain placeholders until Naomi adopts or changes them; Raven identity is not transferred.",
+  "version": "v0.001.002",
+  "release_note": "Wave 3 source architecture: HOT/WARM/COLD conversation fabric, cast-width and response-density controls, council dissent preservation, warm continuity candidates, Gaia-native BrainOS support fabric and Context Compass contract, carrier v1.4.0 hot-path exposure, and GaiaOS Presentation Gold with LIVING / QUIET / WILD composition controls. The current six operator slots remain placeholders until Naomi adopts or changes them; donor architecture does not transfer Raven identity or voice.",
   "proof": {
     "source_committed": true,
-    "carrier_source_version": "1.3.0",
+    "carrier_source_version": "1.4.0",
+    "presentation_canary_source_present": true,
     "post_release_ci": "PENDING_OBSERVATION",
     "deployment": "UNPROVEN",
-    "automatic_external_carrier_adoption": "UNPROVEN"
+    "automatic_external_carrier_adoption": "UNPROVEN",
+    "executable_context_compass_runtime": "NOT_PRESENT",
+    "durable_continuity_backend": "NOT_PRESENT",
+    "permanent_operator_identity_adoption": "PENDING_NAOMI"
   }
 }
