@@ -1,13 +1,13 @@
 {
-  "schema": "gaiaos.platform-current.v9",
+  "schema": "gaiaos.platform-current.v10",
   "authority": "NAOMI",
   "authority_alias": "Ligeia",
   "operator_identity": "NAOMI",
   "operator_call_sign": "Ligeia",
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
-  "platform_version": "v0.001.008-dev",
-  "status": "ACTIVE_SOURCE_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_CONTINUITY_INTEGRITY",
+  "platform_version": "v0.001.009-dev",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_CONTINUITY_INTEGRITY",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -35,7 +35,21 @@
     "current": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
     "warm_buffer": "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
     "warm_is_durable": false,
-    "durable_backend": "MEMCONOS_SQLITE_RUNTIME_PRESENT"
+    "durable_backend": "MEMCONOS_SQLITE_RUNTIME_PRESENT",
+    "memory_lifecycle": "GaiaOS/SystemsOS/Core/MemoryOS/MEMORYOS.v1.md"
+  },
+  "memoryos": {
+    "current": "GaiaOS/SystemsOS/Core/MemoryOS/CURRENT.json",
+    "protocol": "GaiaOS/SystemsOS/Core/MemoryOS/MEMORYOS.v1.md",
+    "runtime": "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py",
+    "backend": "api/memcon_runtime.py",
+    "session_event_graph": true,
+    "candidate_stage": true,
+    "approval_gate": true,
+    "verified_promotion": true,
+    "retrieval_context": true,
+    "automatic_capture": false,
+    "automatic_promotion": false
   },
   "dictionaryos": {
     "current": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
@@ -55,14 +69,7 @@
     "current": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
     "protocol": "GaiaOS/SystemsOS/Core/AgencyOS/AGENCYOS.v1.md",
     "runtime": "GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py",
-    "capabilities": [
-      "READ",
-      "CREATE",
-      "MODIFY",
-      "EXECUTE",
-      "COMMUNICATE",
-      "DEPLOY"
-    ],
+    "capabilities": ["READ", "CREATE", "MODIFY", "EXECUTE", "COMMUNICATE", "DEPLOY"],
     "effect_authority": "NONE_UNTIL_EXPLICITLY_APPROVED"
   },
   "workspaceos": {
@@ -80,17 +87,23 @@
   },
   "carrier": {
     "entrypoint": "api/gaiaos_app.py",
+    "runtime_entrypoint": "api/memcon_entrypoint.py",
     "source_version": "1.6.0",
     "docker": "api/Dockerfile",
     "live_context_binding": "DEPLOYED_CHECKOUT"
   },
-  "proof_ceiling": "AgencyOS, WorkspaceOS, EvolutionOS, VASKON, and MemconOS runtime source are present and registered. Carrier integration is source-committed. Deployment, external smoke, provider execution, and automatic evolution remain unproven until independently observed.",
+  "proof_ceiling": "MemoryOS lifecycle source and MemconOS session/candidate backend are committed. Carrier integration is source-committed. Deployment and live end-to-end MemoryOS smoke for this revision remain unproven until independently observed.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "NAOMI == LIGEIA",
     "NAOMI != RAVEN",
     "GAIAOS != RAVENOS",
     "READ != ACT",
+    "EXCHANGE != MEMORY",
+    "CANDIDATE != DURABLE RECORD",
+    "APPROVAL != WRITE RECEIPT",
+    "WRITE RECEIPT != VERIFICATION",
+    "RETRIEVAL != IDENTITY ADOPTION",
     "REQUESTED ACTION != COMPLETED ACTION",
     "INTENDED STATE != OBSERVED STATE",
     "DISPATCH != EXECUTION",
@@ -104,5 +117,5 @@
     "DURABLE RECORD != CONSCIOUSNESS",
     "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION"
   ],
-  "previous_platform_version": "v0.001.007"
+  "previous_platform_version": "v0.001.008-dev"
 }
