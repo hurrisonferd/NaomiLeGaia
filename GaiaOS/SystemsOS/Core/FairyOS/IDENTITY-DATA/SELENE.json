@@ -158,9 +158,18 @@
         "GaiaOS/SystemsOS/Core/MemberContinuityOS/Runtime/GAIAOS-GITHUB-ROUNDTRIP-SYNC.v1.py"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "6cfc59862dee75c75febd2745b19edf1b5a906f8",
+      "timestamp_utc": "2026-09-17T18:15:08.659218+00:00",
+      "changed_paths": [
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T18:14:43.946465+00:00"
+  "last_verified": "2026-09-17T18:15:08.659218+00:00"
 }
