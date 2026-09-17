@@ -156,3 +156,18 @@ VISIBLE COMMENT != RECEIPT
 UNKNOWN STAYS UNKNOWN
 NAOMI RETAINS FINAL AUTHORITY
 ```
+
+
+## Agency / creation / evolution path
+
+When AgencyOS is present, load its current contract and runtime after the core cognitive/support systems:
+
+14. GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json
+15. GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json
+16. GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json
+
+The bounded operational path is:
+
+GOAL → DECOMPOSE → ASSIGN → PLAN → APPROVE → EXECUTE → OBSERVE → VERIFY → REPLAN → DELIVER
+
+VASKON may provide decomposition, critique, and synthesis. AgencyOS owns orchestration. WorkspaceOS owns explicitly approved artifacts. EvolutionOS owns non-adopting improvement proposals.
