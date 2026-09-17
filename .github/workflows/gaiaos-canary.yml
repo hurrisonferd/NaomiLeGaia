@@ -80,7 +80,14 @@ jobs:
               '@app.get("/gaiaos/council"', '@app.post("/gaiaos/dispatch"',
               '@app.get("/gaiaos/operator/{member}"', '@app.get("/gaiaos/brain"',
           ]
-          required_app = ['EXTENSION_VERSION = "1.5.0"', 'def gaia_context(', '@app.get("/gaiaos/context"', 'SOURCE_PINNED']
+          required_app = [
+              'EXTENSION_VERSION = "1.5.0"',
+              'def gaia_context(',
+              '@app.get("/gaiaos/context"',
+              'SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY',
+              'DEPLOYED_ROOT',
+              'DEPLOYED_CHECKOUT',
+          ]
           required_context_runtime = ['gaiaos.brainos.remote-context-packet.v1', 'TERM HIT != AUTHORITY', 'GRAPH EDGE != EFFECT', 'SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY']
           required_docker = ['COPY gaiaos_context_runtime.py ./', 'COPY gaiaos_app.py ./', 'uvicorn gaiaos_app:app']
           required_openapi = ['/gaiaos/council:', '/gaiaos/dispatch:', '/gaiaos/operator/{member}:', '/gaiaos/brain:', '/gaiaos/context:', 'version: 1.5.0']
@@ -91,6 +98,21 @@ jobs:
           required_dictionary = ['GAIA-TERMS.v1.json', 'GAIAOS-DICTIONARY-RESOLVER.v1.py', 'TERM HIT != AUTHORITY']
           required_yggdrasil = ['GAIA-GRAPH.v1.json', 'GAIAOS-YGGDRASIL-QUERY.v1.py', 'GRAPH EDGE != EFFECT']
           required_reentry = ['CHATOS OWNS NOW', 'CONVOOS OWNS WHERE WE WERE', 'SIDEQUEST IS A BRANCH NOT A NEW SELF']
+          required_live_current = [
+              'v0.001.005',
+              'LIVE_EXTERNAL_SMOKE_PASS',
+              'srv-daljhgjl550s73bgcv3g',
+              'dep-daljklrl550s73bgmnig',
+              '35168570633',
+              'DEPLOYED_CHECKOUT',
+          ]
+          required_live_version = [
+              'v0.001.005',
+              'dep-daljklrl550s73bgmnig',
+              '35168570633',
+              'live_http_health',
+              'live_http_context',
+          ]
 
           missing = []
           missing += [f'api:{x}' for x in required_api if x not in api]
@@ -105,8 +127,8 @@ jobs:
           missing += [f'dictionary:{x}' for x in required_dictionary if x not in dictionary]
           missing += [f'yggdrasil:{x}' for x in required_yggdrasil if x not in yggdrasil]
           missing += [f'reentry:{x}' for x in required_reentry if x not in reentry]
-          if 'v0.001.004' not in current or 'v0.001.004' not in version:
-              missing.append('version:v0.001.004')
+          missing += [f'current:{x}' for x in required_live_current if x not in current]
+          missing += [f'version:{x}' for x in required_live_version if x not in version]
           if 'source_version": "1.5.0"' not in current:
               missing.append('current:carrier=1.5.0')
           if 'gaia_context' not in current or 'GET /gaiaos/context' not in current:
