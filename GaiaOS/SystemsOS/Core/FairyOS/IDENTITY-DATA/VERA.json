@@ -131,9 +131,18 @@
         "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "693f010a33839e7ade03123369104939ff8d8de3",
+      "timestamp_utc": "2026-09-17T17:35:02.746249+00:00",
+      "changed_paths": [
+        "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T17:34:43.799156+00:00"
+  "last_verified": "2026-09-17T17:35:02.746249+00:00"
 }
