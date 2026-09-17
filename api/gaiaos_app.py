@@ -15,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import Header, HTTPException
+from starlette.routing import Mount
 
 import gaiaos_api as base
 from gaiaos_context_runtime import build_context_packet
@@ -86,6 +87,16 @@ app.description = (
     "BrainOS/chat-control, DictionaryOS/YggdrasilOS context navigation, warm-continuity "
     "surfaces, a web carrier backed by the OpenAI Responses API, and a read-only MCP carrier."
 )
+
+# The base carrier historically mounted FastMCP at /mcp while FastMCP itself also
+# used its default /mcp transport path, yielding /mcp/mcp. Replace only that Mount
+# so the public endpoint advertised by /health is genuinely /mcp.
+app.routes[:] = [
+    route
+    for route in app.routes
+    if not (isinstance(route, Mount) and getattr(route, "path", None) == "/mcp")
+]
+app.mount("/mcp", mcp.streamable_http_app(streamable_http_path="/"))
 app.openapi_schema = None
 
 NAVIGATION_PATHS = {
