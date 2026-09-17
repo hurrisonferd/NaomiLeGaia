@@ -11,61 +11,148 @@ permissions:
   contents: write
 
 jobs:
-  repair-fastmcp:
+  settle-live-proof:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Repair FastMCP 1.30 instruction wiring
+      - name: Record Wave 8 live proof
         shell: python
         run: |
-          import re
+          import json
           from pathlib import Path
 
-          base_path = Path('api/gaiaos_api.py')
-          base = base_path.read_text(encoding='utf-8')
-          instruction_block = '''instructions=(
-              "GaiaOS is Naomi's read-only source-backed support carrier. For ordinary requests, "
-              "use gaia(request) as the PRIMARY FRONT DOOR. It returns bounded context, conservative "
-              "Gaia-native council routing, source binding, authority, and proof limits in one compact packet. "
-              "Use gaia_selftest for diagnostics. Use load_gaiaos, gaia_council, gaia_brain, gaia_context, "
-              "gaia_dispatch, and gaia_operator only for explicit deep inspection or debugging. Do not make "
-              "Naomi or Raven manually orchestrate subsystem tools when gaia() is sufficient. These tools are "
-              "read-only support surfaces; dispatch is not execution, WARM is not saved, and Naomi retains final authority."
-          ),'''
-          if 'use gaia(request) as the PRIMARY FRONT DOOR' not in base:
-              pattern = r'instructions=\(.*?\),\n\s*stateless_http=True,'
-              replacement = instruction_block + '\n    stateless_http=True,'
-              base, count = re.subn(pattern, replacement, base, count=1, flags=re.S)
-              if count != 1:
-                  raise SystemExit('Could not replace FastMCP construction instructions')
-          base_path.write_text(base, encoding='utf-8')
+          current_path = Path('GaiaOS/CURRENT.json')
+          current = json.loads(current_path.read_text(encoding='utf-8'))
+          current['status'] = 'ACTIVE_SOURCE_WAVE8_SINGLE_FRONT_DOOR_1_6_LIVE_EXTERNAL_PASS'
 
-          app_path = Path('api/gaiaos_app.py')
-          app = app_path.read_text(encoding='utf-8')
-          pattern = r'mcp\.instructions\s*=\s*\(.*?\)\n(?=app\.version\s*=\s*EXTENSION_VERSION)'
-          replacement = (
-              '# PRIMARY FRONT DOOR instructions are defined when FastMCP is constructed in\n'
-              '# gaiaos_api.py. FastMCP 1.30 exposes instructions as a read-only property.\n'
+          carrier = current.setdefault('carrier', {})
+          render = carrier.setdefault('render_deployment', {})
+          render.update({
+              'status': 'LIVE_WAVE8_1_6_HTTP_AND_MCP_EXTERNAL_PASS',
+              'provider': 'Render',
+              'workspace': 'RavenOS',
+              'service_name': 'gaiaos-loader-api',
+              'service_id': 'srv-daljhgjl550s73bgcv3g',
+              'url': 'https://gaiaos-loader-api.onrender.com',
+              'deploy_id': 'dep-dalkgdijnfac739ssg10',
+              'deployed_commit': 'eb2d655c51becc9b205081305302759450254234',
+              'deploy_status': 'live',
+              'health_status': 'ok',
+              'health_api_version': '1.6.0',
+          })
+
+          front = carrier.setdefault('live_frontdoor', {})
+          front.update({
+              'status': 'LIVE_HTTP_AND_MCP_SINGLE_FRONTDOOR_1_6_EXTERNAL_PASS',
+              'deployed_commit': 'eb2d655c51becc9b205081305302759450254234',
+              'render_deploy_id': 'dep-dalkgdijnfac739ssg10',
+              'external_smoke_run_id': 35171044235,
+              'external_smoke_job_id': 105046659240,
+              'external_smoke_rerun_result': 'PASS',
+              'http_and_mcp_packet_bytes': 2943,
+              'legacy_deep_load_bytes': 105774,
+              'manual_tool_chain_required': False,
+              'probe_signals': ['NEXT_STEP', 'MANUAL_BURDEN', 'SUBTRACTION'],
+              'probe_selected': ['KESTREL', 'NIMUE'],
+              'explicit_member_override': 'PASS_VERA_ANVIL_WITH_CAP_1',
+              'unknown_signal_fabrication': False,
+              'selftest': 'PASS_ALL_LOCAL_ORGANS',
+              'carrier_1_6_live_redeploy': 'PASS',
+              'live_version_acceptance_run_id': 35172449195,
+              'live_version_acceptance_job_id': 105046808901,
+              'live_version_acceptance_result': 'PASS',
+              'live_carrier_version': '1.6.0',
+              'live_platform_version': 'v0.001.007',
+              'mcp_primary_frontdoor_instructions': 'PASS',
+          })
+
+          live_mcp = carrier.setdefault('live_mcp', {})
+          live_mcp.update({
+              'status': 'LIVE_WAVE8_PROTOCOL_FRONTDOOR_AND_SELFTEST_PASS',
+              'endpoint': 'https://gaiaos-loader-api.onrender.com/mcp',
+              'server_name': 'GaiaOS Carrier',
+              'deployed_commit': 'eb2d655c51becc9b205081305302759450254234',
+              'render_deploy_id': 'dep-dalkgdijnfac739ssg10',
+              'frontdoor_smoke_job_id': 105046659240,
+              'version_smoke_run_id': 35172449195,
+              'version_smoke_job_id': 105046808901,
+              'result': 'PASS',
+              'tools_observed': ['gaia','gaia_selftest','load_gaiaos','gaia_council','gaia_dispatch','gaia_operator','gaia_brain','gaia_context'],
+          })
+
+          current['proof_ceiling'] = (
+              'GaiaOS Wave 8 is live on Render at carrier 1.6.0 / platform v0.001.007. '
+              'External HTTP and real MCP acceptance against deployed commit eb2d655c proved gaia() as a compact '
+              'single front door, gaia_selftest() PASS, deterministic MANUAL_BURDEN + SUBTRACTION + NEXT_STEP routing '
+              'to KESTREL + NIMUE, explicit VERA + ANVIL preservation through a cast cap of 1, no signal fabrication '
+              'for nonsense input, source binding to the deployed checkout, and MCP initialize instructions that tell '
+              'hosts to use gaia(request) as the PRIMARY FRONT DOOR. The front-door packet remained 2,943 bytes versus '
+              'the prior 105,774-byte deep load. Naomi ChatGPT connection/adoption, durable continuity, write/domain '
+              'effects, and hosted OpenAI-backed /chat remain separate and unproven or unconfigured as stated.'
           )
-          app, count = re.subn(pattern, replacement, app, count=1, flags=re.S)
-          if count != 1 and 'mcp.instructions =' in app:
-              raise SystemExit('Could not remove FastMCP instructions setter')
-          if 'mcp.instructions =' in app:
-              raise SystemExit('FastMCP instructions setter still present')
-          app_path.write_text(app, encoding='utf-8')
 
-      - name: Compile repaired carrier
-        run: python -m py_compile api/gaiaos_api.py api/gaiaos_app.py
-      - name: Commit startup repair
+          canary = current.setdefault('canary', {})
+          canary.update({
+              'wave8_startup_repair_canary_run': 108,
+              'wave8_startup_repair_canary_run_id': 35172288636,
+              'wave8_startup_repair_canary_job_id': 105046319214,
+              'wave8_startup_repair_canary_result': 'PASS',
+              'wave8_live_frontdoor_rerun_job_id': 105046659240,
+              'wave8_live_frontdoor_rerun_result': 'PASS',
+              'wave8_live_version_run_id': 35172449195,
+              'wave8_live_version_job_id': 105046808901,
+              'wave8_live_version_result': 'PASS',
+              'wave8_live_version_workflow': '.github/workflows/gaiaos-wave8-version-live-smoke.yml',
+          })
+          current_path.write_text(json.dumps(current, indent=2) + '\n', encoding='utf-8')
+
+          version_path = Path('GaiaOS/VERSION.json')
+          version = json.loads(version_path.read_text(encoding='utf-8'))
+          version['release_note'] = (
+              'Wave 8 live settlement complete. GaiaOS carrier 1.6.0 / platform v0.001.007 is live on Render deploy '
+              'dep-dalkgdijnfac739ssg10 from source eb2d655c51becc9b205081305302759450254234. External front-door rerun '
+              'job 105046659240 passed HTTP + real MCP gaia()/gaia_selftest acceptance; live-version run 35172449195 '
+              'job 105046808901 additionally proved health api_version 1.6.0, front-door platform v0.001.007, selftest PASS, '
+              'and MCP PRIMARY FRONT DOOR instructions. The 2,943-byte front-door packet replaces ordinary 105,774-byte '
+              'deep-loader ceremony while specialized tools remain available on demand.'
+          )
+          proof = version.setdefault('proof', {})
+          proof.update({
+              'carrier_source_version': '1.6.0',
+              'single_frontdoor_source_present': True,
+              'primary_mcp_tool': 'gaia',
+              'selftest_mcp_tool': 'gaia_selftest',
+              'frontdoor_render_deploy': 'dep-dalkgdijnfac739ssg10',
+              'frontdoor_deployed_commit': 'eb2d655c51becc9b205081305302759450254234',
+              'frontdoor_live_smoke_run_id': 35171044235,
+              'frontdoor_live_smoke_job_id': 105046659240,
+              'frontdoor_live_smoke': 'PASS',
+              'frontdoor_packet_bytes': 2943,
+              'legacy_deep_load_bytes': 105774,
+              'manual_tool_chain_required': False,
+              'carrier_1_6_live_redeploy': 'PASS',
+              'wave8_source_canary_run_id': 35172288636,
+              'wave8_source_canary_job_id': 105046319214,
+              'wave8_source_canary': 'PASS',
+              'wave8_live_version_run_id': 35172449195,
+              'wave8_live_version_job_id': 105046808901,
+              'wave8_live_version': 'PASS',
+              'live_carrier_version': '1.6.0',
+              'live_platform_version': 'v0.001.007',
+              'mcp_primary_frontdoor_instructions': 'PASS',
+          })
+          version_path.write_text(json.dumps(version, indent=2) + '\n', encoding='utf-8')
+
+      - name: Commit live settlement
         run: |
           git config user.name 'GaiaOS Proof Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add api/gaiaos_api.py api/gaiaos_app.py
+          git add GaiaOS/CURRENT.json GaiaOS/VERSION.json
           if git diff --cached --quiet; then
-            echo 'No repair changes required.'
+            echo 'No live settlement changes required.'
             exit 0
           fi
-          git commit -m 'Fix GaiaOS 1.6 FastMCP startup instructions'
+          git commit -m 'Settle GaiaOS Wave 8 live 1.6 proof'
           git push
