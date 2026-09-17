@@ -1,28 +1,108 @@
 {
-  "schema":"gaiaos.platform-current.v9",
-  "authority":"NAOMI",
-  "authority_alias":"Ligeia",
-  "operator_identity":"NAOMI",
-  "operator_call_sign":"Ligeia",
-  "operator_alias_equivalence":"NAOMI == LIGEIA",
-  "owner":"GaiaOS",
-  "platform_version":"v0.001.007",
-  "status":"ACTIVE_SOURCE_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_CONTINUITY_INTEGRITY",
-  "loader":"GaiaOS/LOAD.v1.md",
-  "version_pointer":"GaiaOS/VERSION.json",
-  "continuity_integrity":"GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
-  "fairyos":{"current":"GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json","profiles":"GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json","dispatch_matrix":"GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json","dispatch_runtime":"GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py"},
-  "chatos":{"current":"GaiaOS/Apps/ChatOS/CURRENT.json","commands":"GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md","vaskon":"GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"},
-  "brainos":{"current":"GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json","context_compass":"GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py","always_addressable":true},
-  "convoos":{"current":"GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json","thread_home":"GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json"},
-  "member_continuity":{"current":"GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json","warm_buffer":"GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md","warm_is_durable":false,"durable_backend":"MEMCONOS_SQLITE_RUNTIME_PRESENT"},
-  "dictionaryos":{"current":"GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json","runtime":"GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py","mode":"READ_ONLY_TERM_ALIAS_RESOLUTION"},
-  "yggdrasilos":{"current":"GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json","runtime":"GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py","mode":"READ_ONLY_BOUNDED_GRAPH_TRAVERSAL"},
-  "emojios":{"current":"GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json","registry":"GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"},
-  "agencyos":{"current":"GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json","protocol":"GaiaOS/SystemsOS/Core/AgencyOS/AGENCYOS.v1.md","runtime":"GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py","capabilities":["READ","CREATE","MODIFY","EXECUTE","COMMUNICATE","DEPLOY"],"effect_authority":"NONE_UNTIL_EXPLICITLY_APPROVED"},
-  "workspaceos":{"current":"GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json","protocol":"GaiaOS/SystemsOS/Core/WorkspaceOS/WORKSPACEOS.v1.md","runtime":"GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py","root":"/data/gaiaos-workspace","artifact_effects":"EXPLICIT_APPROVAL_REQUIRED"},
-  "evolutionos":{"current":"GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json","protocol":"GaiaOS/SystemsOS/Core/EvolutionOS/EVOLUTIONOS.v1.md","runtime":"GaiaOS/SystemsOS/Core/EvolutionOS/Runtime/GAIAOS-EVOLUTION.v1.py","automatic_adoption":false},
-  "carrier":{"entrypoint":"api/gaiaos_app.py","source_version":"1.6.0","docker":"api/Dockerfile","live_context_binding":"DEPLOYED_CHECKOUT"},
-  "proof_ceiling":"Canonical source now contains AgencyOS, WorkspaceOS, EvolutionOS, VASKON, durable SQLite MemconOS runtime, and round-trip verification machinery. Provider execution, deployed adoption of newly added systems, and automatic evolution remain unproven until independently observed.",
-  "laws":["NAOMI RETAINS FINAL AUTHORITY","NAOMI == LIGEIA","NAOMI != RAVEN","GAIAOS != RAVENOS","READ != ACT","REQUESTED ACTION != COMPLETED ACTION","INTENDED STATE != OBSERVED STATE","DISPATCH != EXECUTION","EXECUTION != AUTHORITY","PROPOSAL != ADOPTION","CANARY != PRODUCTION","RECEIPT REQUIRED","REPULL REQUIRED","UNKNOWN STAYS UNKNOWN","MEMBER DATA ISOLATED","DURABLE RECORD != CONSCIOUSNESS","LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION"]
+  "schema": "gaiaos.platform-current.v9",
+  "authority": "NAOMI",
+  "authority_alias": "Ligeia",
+  "operator_identity": "NAOMI",
+  "operator_call_sign": "Ligeia",
+  "operator_alias_equivalence": "NAOMI == LIGEIA",
+  "owner": "GaiaOS",
+  "platform_version": "v0.001.008-dev",
+  "status": "ACTIVE_SOURCE_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_CONTINUITY_INTEGRITY",
+  "loader": "GaiaOS/LOAD.v1.md",
+  "version_pointer": "GaiaOS/VERSION.json",
+  "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
+  "fairyos": {
+    "current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+    "profiles": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+    "dispatch_matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
+    "dispatch_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py"
+  },
+  "chatos": {
+    "current": "GaiaOS/Apps/ChatOS/CURRENT.json",
+    "commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+    "vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+  },
+  "brainos": {
+    "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
+    "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
+    "always_addressable": true
+  },
+  "convoos": {
+    "current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
+    "thread_home": "GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json"
+  },
+  "member_continuity": {
+    "current": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+    "warm_buffer": "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
+    "warm_is_durable": false,
+    "durable_backend": "MEMCONOS_SQLITE_RUNTIME_PRESENT"
+  },
+  "dictionaryos": {
+    "current": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
+    "runtime": "GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py",
+    "mode": "READ_ONLY_TERM_ALIAS_RESOLUTION"
+  },
+  "yggdrasilos": {
+    "current": "GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json",
+    "runtime": "GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py",
+    "mode": "READ_ONLY_BOUNDED_GRAPH_TRAVERSAL"
+  },
+  "emojios": {
+    "current": "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
+    "registry": "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+  },
+  "agencyos": {
+    "current": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
+    "protocol": "GaiaOS/SystemsOS/Core/AgencyOS/AGENCYOS.v1.md",
+    "runtime": "GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py",
+    "capabilities": [
+      "READ",
+      "CREATE",
+      "MODIFY",
+      "EXECUTE",
+      "COMMUNICATE",
+      "DEPLOY"
+    ],
+    "effect_authority": "NONE_UNTIL_EXPLICITLY_APPROVED"
+  },
+  "workspaceos": {
+    "current": "GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json",
+    "protocol": "GaiaOS/SystemsOS/Core/WorkspaceOS/WORKSPACEOS.v1.md",
+    "runtime": "GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py",
+    "root": "/data/gaiaos-workspace",
+    "artifact_effects": "EXPLICIT_APPROVAL_REQUIRED"
+  },
+  "evolutionos": {
+    "current": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json",
+    "protocol": "GaiaOS/SystemsOS/Core/EvolutionOS/EVOLUTIONOS.v1.md",
+    "runtime": "GaiaOS/SystemsOS/Core/EvolutionOS/Runtime/GAIAOS-EVOLUTION.v1.py",
+    "automatic_adoption": false
+  },
+  "carrier": {
+    "entrypoint": "api/gaiaos_app.py",
+    "source_version": "1.6.0",
+    "docker": "api/Dockerfile",
+    "live_context_binding": "DEPLOYED_CHECKOUT"
+  },
+  "proof_ceiling": "AgencyOS, WorkspaceOS, EvolutionOS, VASKON, and MemconOS runtime source are present and registered. Carrier integration is source-committed. Deployment, external smoke, provider execution, and automatic evolution remain unproven until independently observed.",
+  "laws": [
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "NAOMI == LIGEIA",
+    "NAOMI != RAVEN",
+    "GAIAOS != RAVENOS",
+    "READ != ACT",
+    "REQUESTED ACTION != COMPLETED ACTION",
+    "INTENDED STATE != OBSERVED STATE",
+    "DISPATCH != EXECUTION",
+    "EXECUTION != AUTHORITY",
+    "PROPOSAL != ADOPTION",
+    "CANARY != PRODUCTION",
+    "RECEIPT REQUIRED",
+    "REPULL REQUIRED",
+    "UNKNOWN STAYS UNKNOWN",
+    "MEMBER DATA ISOLATED",
+    "DURABLE RECORD != CONSCIOUSNESS",
+    "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION"
+  ],
+  "previous_platform_version": "v0.001.007"
 }
