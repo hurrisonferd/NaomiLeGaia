@@ -11,16 +11,20 @@ from typing import Any
 
 from fastapi import Header, HTTPException
 
-from gaiaos_api import (
-    RAW_BASE,
-    REPOSITORY,
-    _authorize,
-    _request,
-    _resolve_commit,
-    app,
-    mcp,
-)
+import gaiaos_api as base
 from gaiaos_context_runtime import build_context_packet
+
+EXTENSION_VERSION = "1.5.0"
+base.APP_VERSION = EXTENSION_VERSION
+app = base.app
+mcp = base.mcp
+app.version = EXTENSION_VERSION
+app.description = (
+    "GaiaOS source loader plus source-backed council/dispatch, BrainOS/chat-control, "
+    "source-pinned DictionaryOS/YggdrasilOS context navigation, warm-continuity surfaces, "
+    "a web carrier backed by the OpenAI Responses API, and a read-only MCP carrier."
+)
+app.openapi_schema = None
 
 NAVIGATION_PATHS = {
     "GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json",
@@ -32,7 +36,9 @@ def _navigation_json(commit: str, path: str) -> dict[str, Any]:
     if path not in NAVIGATION_PATHS:
         raise HTTPException(status_code=400, detail="Path is not part of the GaiaOS navigation surface")
     try:
-        value = json.loads(_request(f"{RAW_BASE}/{REPOSITORY}/{commit}/{path}").decode("utf-8"))
+        value = json.loads(
+            base._request(f"{base.RAW_BASE}/{base.REPOSITORY}/{commit}/{path}").decode("utf-8")
+        )
     except UnicodeDecodeError as exc:
         raise HTTPException(status_code=502, detail=f"Canonical navigation source is not UTF-8: {path}") from exc
     except json.JSONDecodeError as exc:
@@ -46,7 +52,7 @@ def _context_packet(subject: str, limit: int = 10, depth: int = 1) -> dict[str, 
     subject = str(subject).strip()
     if not subject:
         raise HTTPException(status_code=422, detail="subject must not be empty")
-    commit = _resolve_commit()
+    commit = base._resolve_commit()
     registry = _navigation_json(
         commit,
         "GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json",
@@ -59,7 +65,7 @@ def _context_packet(subject: str, limit: int = 10, depth: int = 1) -> dict[str, 
         registry,
         graph,
         subject,
-        source=f"{REPOSITORY}@{commit}",
+        source=f"{base.REPOSITORY}@{commit}",
         limit=limit,
         depth=depth,
     )
@@ -79,5 +85,5 @@ def gaia_context_http(
     authorization: str | None = Header(default=None),
 ) -> dict[str, Any]:
     """Read-only source-pinned GaiaOS semantic context query."""
-    _authorize(authorization)
+    base._authorize(authorization)
     return _context_packet(subject, limit, depth)
