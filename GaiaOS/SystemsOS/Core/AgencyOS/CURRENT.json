@@ -1,0 +1,12 @@
+{
+  "schema": "gaiaos.agencyos.current.v1",
+  "system": "AgencyOS",
+  "authority": "NAOMI",
+  "status": "ACTIVE_SOURCE_CONTRACT_AND_RUNTIME",
+  "purpose": "Turn GaiaOS goals into bounded task plans, capability checks, observable actions, receipts, verification, and replanning without granting autonomous authority.",
+  "protocol": "GaiaOS/SystemsOS/Core/AgencyOS/AGENCYOS.v1.md",
+  "runtime": "GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py",
+  "capabilities": ["READ","CREATE","MODIFY","EXECUTE","COMMUNICATE","DEPLOY"],
+  "default_effect_authority": "NONE_UNTIL_EXPLICITLY_APPROVED",
+  "laws": ["REQUESTED != COMPLETED","INTENDED != OBSERVED","DISPATCH != EXECUTION","EXECUTION != AUTHORITY","RECEIPT REQUIRED","NAOMI RETAINS FINAL AUTHORITY"]
+}
