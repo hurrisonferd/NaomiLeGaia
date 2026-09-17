@@ -1,4 +1,4 @@
-# GaiaOS Canonical Loader v3
+# GaiaOS Canonical Loader v4
 
 ```text
 AUTHORITY: NAOMI
@@ -27,6 +27,8 @@ Read in this order:
 11. FairyOS operator profiles, prosody basins, and dispatch matrix before operator selection.
 12. EmojiOS expression registry when operator expression is material.
 13. Establish bounded current working context.
+
+For a host that can read the repository but does not have the live GaiaOS MCP attached, `GaiaOS/NAOMI-CHAT-FULL-PACKET.md` defines the richer GitHub-backed fallback session without pretending MCP connectivity.
 
 ## Semantic navigation path
 
@@ -76,10 +78,10 @@ GAIAOS STATUS
 GAIAOS MAP
 ```
 
-The current six-slot roster is source-backed and usable for project dialogue, but remains explicitly placeholder until Naomi adopts, renames, replaces, or re-themes it.
+The current six-member Gaia roster is source-backed and accepted for current use by Naomi. It remains renamable, replaceable, re-orderable, and re-themeable under Naomi's authority.
 
 ```text
-CURRENT SLOT != IRREVOCABLE IDENTITY
+CURRENT ACCEPTANCE != IRREVOCABLE IDENTITY
 ARCHITECTURE DONOR != IDENTITY DONOR
 RAVEN ROSTER NOT AUTO-ADOPTED
 NAOMI SETTLES
