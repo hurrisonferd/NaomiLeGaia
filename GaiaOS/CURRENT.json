@@ -1,9 +1,9 @@
 {
-  "schema": "gaiaos.platform-current.v4",
+  "schema": "gaiaos.platform-current.v5",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "ACTIVE_SOURCE_WAVE4_DICTIONARY_YGGDRASIL_CONTEXT_NAVIGATION_CI_PASS_DEPLOYMENT_UNPROVEN",
-  "platform_version": "v0.001.003",
+  "status": "SOURCE_WAVE5_CONTEXT_CARRIER_BOUND_CI_PENDING_DEPLOYMENT_UNPROVEN",
+  "platform_version": "v0.001.004",
   "version_pointer": "GaiaOS/VERSION.json",
   "versioning_contract": "GaiaOS/VERSIONING.v1.md",
   "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
@@ -66,9 +66,10 @@
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
     "context_compass_runtime": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
     "navigation_chain": "DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS",
+    "local_navigation_ci": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
+    "proof_pointer_ci": "PASS_RUN_71_AT_a66df6dfe8597eda475b74ed08dddaf8c226ca33",
     "always_addressable": true,
-    "always_invoked": false,
-    "navigation_ci": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9"
+    "always_invoked": false
   },
   "convoos": {
     "current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
@@ -91,27 +92,31 @@
     "naomi_may_rewrite": true
   },
   "carrier": {
-    "source": "api/gaiaos_api.py",
-    "source_version": "1.4.0",
+    "entrypoint": "api/gaiaos_app.py",
+    "base_source": "api/gaiaos_api.py",
+    "context_runtime": "api/gaiaos_context_runtime.py",
+    "context_canary": "api/gaiaos_context_canary.py",
+    "source_version": "1.5.0",
     "openapi": "api/openapi.yaml",
-    "http_source_surfaces": ["GET /gaiaos/load","GET /gaiaos/council","GET /gaiaos/operator/{member}","POST /gaiaos/dispatch","GET /gaiaos/brain","POST /chat","GET /health"],
-    "mcp_source_tools": ["load_gaiaos","gaia_council","gaia_dispatch","gaia_operator","gaia_brain"],
-    "prior_wave3_ci": "PASS_RUN_50_AT_e0b92b16e2638f1777fd0d32baa0644756ea60da",
-    "wave4_navigation_ci": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
+    "docker": "api/Dockerfile",
+    "http_source_surfaces": ["GET /gaiaos/load","GET /gaiaos/council","GET /gaiaos/operator/{member}","POST /gaiaos/dispatch","GET /gaiaos/brain","GET /gaiaos/context","POST /chat","GET /health"],
+    "mcp_source_tools": ["load_gaiaos","gaia_council","gaia_dispatch","gaia_operator","gaia_brain","gaia_context"],
+    "context_mode": "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY",
+    "wave5_context_carrier_ci": "PENDING_OBSERVATION",
     "render_deployment": "UNPROVEN",
     "automatic_external_chatgpt_adoption": "UNPROVEN"
   },
-  "proof_ceiling": "DictionaryOS, YggdrasilOS, and BrainOS Context Compass read-only navigation chain passed repository CI run 68. Deployment, automatic external host adoption, durable continuity, domain effects, semantic/graph completeness, and permanent operator identity adoption remain separately unproven.",
-  "laws": ["NAOMI != RAVEN","GAIAOS != RAVENOS","ARCHITECTURE DONOR != IDENTITY DONOR","PORT != MERGE","TERM HIT != AUTHORITY","GRAPH EDGE != EFFECT","RAVEN ROSTER NOT AUTO-ADOPTED","CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY","PRESENTATION ENERGY != EVIDENCE","QUIET != GENERIC","WILD != UNBOUNDED","COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT","BRAINOS ADDRESSABLE != BRAINOS INVOKED","WARM != SAVED","READ != ACT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
+  "proof_ceiling": "Wave 4 local DictionaryOS/YggdrasilOS/Context Compass navigation passed CI and its proof pointers passed CI. Wave 5 adds a source-pinned read-only gaia_context HTTP/MCP carrier surface in source. Current-wave carrier CI, deployment, automatic external host adoption, durable continuity, domain effects, semantic/graph completeness, and permanent operator identity adoption remain separately unproven.",
+  "laws": ["NAOMI != RAVEN","GAIAOS != RAVENOS","ARCHITECTURE DONOR != IDENTITY DONOR","PORT != MERGE","TERM HIT != AUTHORITY","GRAPH EDGE != EFFECT","REMOTE CONTEXT PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL","REMOTE CONTEXT PACK != DURABLE MEMORY","RAVEN ROSTER NOT AUTO-ADOPTED","CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY","PRESENTATION ENERGY != EVIDENCE","QUIET != GENERIC","WILD != UNBOUNDED","COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT","BRAINOS ADDRESSABLE != BRAINOS INVOKED","WARM != SAVED","READ != ACT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
   "canary": {
     "wave3_ci_run": 50,
-    "wave3_ci_commit": "e0b92b16e2638f1777fd0d32baa0644756ea60da",
     "wave3_ci_result": "PASS",
     "wave4_ci_run": 68,
-    "wave4_ci_commit": "a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
     "wave4_ci_result": "PASS",
+    "wave4_proof_pointer_ci_run": 71,
+    "wave4_proof_pointer_ci_result": "PASS",
     "ci_workflow": ".github/workflows/gaiaos-canary.yml",
-    "dictionary_canary_source_present": true,
-    "yggdrasil_canary_source_present": true
+    "wave5_context_carrier_canary_source_present": true,
+    "wave5_ci": "PENDING_OBSERVATION"
   }
 }
