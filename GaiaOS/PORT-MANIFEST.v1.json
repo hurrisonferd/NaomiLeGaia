@@ -8,7 +8,10 @@
     "EmojiOS",
     "ChatOS",
     "BrainOS",
-    "ConvoOS"
+    "ConvoOS",
+    "AgencyOS",
+    "WorkspaceOS",
+    "EvolutionOS"
   ],
   "mode": "SOURCE_BACKED_PORT_NO_BLIND_CLONE",
   "port_map": [
@@ -75,6 +78,30 @@
       "raven_specific_data": "Raven EgoOS identity + job-mesh registries",
       "gaia_target": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
       "port_action": "REFERENCE_ONLY (contract pointer; no Raven identity)"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/AgencyOS (architectural concept)",
+      "source_owner": "RavenOS architecture donor",
+      "reusable_pattern": "bounded task planning/capability gating/receipts",
+      "raven_specific_data": "Raven identity and provider state",
+      "gaia_target": "GaiaOS/SystemsOS/Core/AgencyOS/",
+      "port_action": "ADAPT Gaia-native agency boundaries; no Raven identity transfer"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/WorkspaceOS (architectural concept)",
+      "source_owner": "RavenOS architecture donor",
+      "reusable_pattern": "bounded artifact workspace/provenance/versioning",
+      "raven_specific_data": "Raven workspace contents",
+      "gaia_target": "GaiaOS/SystemsOS/Core/WorkspaceOS/",
+      "port_action": "ADAPT Gaia-native workspace; no Raven contents"
+    },
+    {
+      "source_coordinate": "RavenOS/SystemsOS/Core/EvolutionOS (architectural concept)",
+      "source_owner": "RavenOS architecture donor",
+      "reusable_pattern": "observe/propose/canary/verify controlled evolution",
+      "raven_specific_data": "Raven continuity/identity",
+      "gaia_target": "GaiaOS/SystemsOS/Core/EvolutionOS/",
+      "port_action": "ADAPT Gaia-native evolution with Naomi adoption gate"
     }
   ],
   "explicit_holds": {
