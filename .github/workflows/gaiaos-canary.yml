@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   gaiaos-canary:
-    name: GaiaOS council + navigation + carrier canaries
+    name: GaiaOS council + navigation + context carrier canaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -45,9 +45,13 @@ jobs:
         run: python GaiaOS/SystemsOS/Core/YggdrasilOS/Tests/GAIAOS-YGGDRASIL-CANARY.py
       - name: Run BrainOS Context Compass canary
         run: python GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py
+      - name: Run carrier context canary
+        run: python api/gaiaos_context_canary.py
       - name: Compile GaiaOS Python source
         run: |
           python -m py_compile api/gaiaos_api.py
+          python -m py_compile api/gaiaos_context_runtime.py
+          python -m py_compile api/gaiaos_app.py
           python -m py_compile GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py
           python -m py_compile GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py
           python -m py_compile GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py
@@ -57,12 +61,16 @@ jobs:
           from pathlib import Path
 
           api = Path('api/gaiaos_api.py').read_text(encoding='utf-8')
+          app = Path('api/gaiaos_app.py').read_text(encoding='utf-8')
+          context_runtime = Path('api/gaiaos_context_runtime.py').read_text(encoding='utf-8')
+          docker = Path('api/Dockerfile').read_text(encoding='utf-8')
           openapi = Path('api/openapi.yaml').read_text(encoding='utf-8')
           current = Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8')
           version = Path('GaiaOS/VERSION.json').read_text(encoding='utf-8')
           commands = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md').read_text(encoding='utf-8')
           presentation = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md').read_text(encoding='utf-8')
           brain = Path('GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json').read_text(encoding='utf-8')
+          compass = Path('GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json').read_text(encoding='utf-8')
           dictionary = Path('GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json').read_text(encoding='utf-8')
           yggdrasil = Path('GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json').read_text(encoding='utf-8')
           reentry = Path('GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json').read_text(encoding='utf-8')
@@ -72,27 +80,37 @@ jobs:
               '@app.get("/gaiaos/council"', '@app.post("/gaiaos/dispatch"',
               '@app.get("/gaiaos/operator/{member}"', '@app.get("/gaiaos/brain"',
           ]
-          required_openapi = ['/gaiaos/council:', '/gaiaos/dispatch:', '/gaiaos/operator/{member}:', '/gaiaos/brain:']
+          required_app = ['EXTENSION_VERSION = "1.5.0"', 'def gaia_context(', '@app.get("/gaiaos/context"', 'SOURCE_PINNED']
+          required_context_runtime = ['gaiaos.brainos.remote-context-packet.v1', 'TERM HIT != AUTHORITY', 'GRAPH EDGE != EFFECT', 'SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY']
+          required_docker = ['COPY gaiaos_context_runtime.py ./', 'COPY gaiaos_app.py ./', 'uvicorn gaiaos_app:app']
+          required_openapi = ['/gaiaos/council:', '/gaiaos/dispatch:', '/gaiaos/operator/{member}:', '/gaiaos/brain:', '/gaiaos/context:', 'version: 1.5.0']
           required_commands = ['COUNCIL [subject]', 'COUNCIL EVERYONE [subject]', 'COUNCIL ROOM [subject]', 'CAST <N> [subject]', 'GAIAOS LIVING', 'GAIAOS QUIET', 'GAIAOS WILD']
           required_presentation = ['HUMOR MUST EARN ITS CHAIR.', 'PRESENTATION ENERGY != EVIDENCE', 'RAVEN META GOBLIN != GAIA REQUIRED CADENCE']
           required_brain = ['GAIAOS-CONTEXT-COMPASS.v1.py', 'DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS', 'dictionaryos_runtime_present', 'yggdrasilos_runtime_present']
+          required_compass = ['DictionaryOS', 'YggdrasilOS', 'remote_carrier_runtime', 'REMOTE SOURCE-PATH PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL']
           required_dictionary = ['GAIA-TERMS.v1.json', 'GAIAOS-DICTIONARY-RESOLVER.v1.py', 'TERM HIT != AUTHORITY']
           required_yggdrasil = ['GAIA-GRAPH.v1.json', 'GAIAOS-YGGDRASIL-QUERY.v1.py', 'GRAPH EDGE != EFFECT']
           required_reentry = ['CHATOS OWNS NOW', 'CONVOOS OWNS WHERE WE WERE', 'SIDEQUEST IS A BRANCH NOT A NEW SELF']
 
           missing = []
           missing += [f'api:{x}' for x in required_api if x not in api]
+          missing += [f'app:{x}' for x in required_app if x not in app]
+          missing += [f'context_runtime:{x}' for x in required_context_runtime if x not in context_runtime]
+          missing += [f'docker:{x}' for x in required_docker if x not in docker]
           missing += [f'openapi:{x}' for x in required_openapi if x not in openapi]
           missing += [f'commands:{x}' for x in required_commands if x not in commands]
           missing += [f'presentation:{x}' for x in required_presentation if x not in presentation]
           missing += [f'brain:{x}' for x in required_brain if x not in brain]
+          missing += [f'compass:{x}' for x in required_compass if x not in compass]
           missing += [f'dictionary:{x}' for x in required_dictionary if x not in dictionary]
           missing += [f'yggdrasil:{x}' for x in required_yggdrasil if x not in yggdrasil]
           missing += [f'reentry:{x}' for x in required_reentry if x not in reentry]
-          if 'v0.001.003' not in current or 'v0.001.003' not in version:
-              missing.append('version:v0.001.003')
-          if 'APP_VERSION = "1.4.0"' not in api:
-              missing.append('api:APP_VERSION=1.4.0')
+          if 'v0.001.004' not in current or 'v0.001.004' not in version:
+              missing.append('version:v0.001.004')
+          if 'source_version": "1.5.0"' not in current:
+              missing.append('current:carrier=1.5.0')
+          if 'gaia_context' not in current or 'GET /gaiaos/context' not in current:
+              missing.append('current:context-surface')
 
           if missing:
               raise SystemExit('GAIAOS_SOURCE_CANARY_FAIL ' + ', '.join(missing))
