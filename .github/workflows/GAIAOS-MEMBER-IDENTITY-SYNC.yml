@@ -33,8 +33,12 @@ jobs:
           data_dir = root / 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA'
           shared_prefixes = (
               'GaiaOS/CURRENT.json',
+              'GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md',
               'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md',
+              'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md',
               'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md',
+              'GaiaOS/Apps/ChatOS/CURRENT.json',
+              'GaiaOS/SystemsOS/Core/MemberContinuityOS/',
               'GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md',
               'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json',
               'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md',
@@ -62,7 +66,7 @@ jobs:
               'source_commit': os.environ.get('AFTER_SHA'),
               'timestamp_utc': datetime.now(timezone.utc).isoformat(),
               'changed_paths': relevant,
-              'note': 'Repository source changed; no experience or internal state was inferred. Member data records provenance only.'
+              'note': 'Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable.'
           }
           changed = False
           for m in members:
@@ -78,5 +82,5 @@ jobs:
               subprocess.run(['git','config','user.name','GaiaOS Identity Sync'], check=True)
               subprocess.run(['git','config','user.email','actions@github.com'], check=True)
               subprocess.run(['git','add','GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA'], check=True)
-              subprocess.run(['git','commit','-m','Sync Council member identity source events'], check=True)
+              subprocess.run(['git','commit','-m','Sync Prime Daemon identity source events'], check=True)
               subprocess.run(['git','push'], check=True)
