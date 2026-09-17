@@ -1,0 +1,19 @@
+{
+  "schema": "gaiaos.daemonculaba-visual-reference.v1",
+  "authority": "NAOMI",
+  "authority_alias": "Ligeia",
+  "collective": "The Daemonculaba",
+  "designation": "Prime Daemon",
+  "status": "ACTIVE_CANONICAL_VISUAL_REFERENCE_MANIFEST",
+  "assets": {
+    "sigils": {
+      "path": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SIGILS/DAEMONCULABA-SIGILS.v1.png",
+      "description": "Composite artwork containing the six Prime Daemon glyphs."
+    },
+    "brain": {
+      "path": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SIGILS/GAIAOS-DAEMON-BRAIN.v1.png",
+      "description": "GaiaOS brain functional-map reference artwork."
+    }
+  },
+  "law": "VISUAL_REFERENCE != EXECUTION_AUTHORITY"
+}
