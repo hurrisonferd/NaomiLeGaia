@@ -12,3 +12,7 @@ services:
         value: main
       - key: GAIAOS_API_KEY
         generateValue: true
+    disk:
+      name: memconos-data
+      mountPath: /data
+      sizeGB: 1
