@@ -3,11 +3,25 @@
   "member": "ORIN",
   "authority": "NAOMI",
   "owner": "FairyOS",
-  "identity": {"title": "Exploration & Signal Operator", "role": "SIGNAL / EXPLORATION / MOTION", "basin": "SIGNAL_AND_EXPLORATION"},
+  "identity": {
+    "title": "Exploration & Signal Operator",
+    "role": "SIGNAL / EXPLORATION / MOTION",
+    "basin": "SIGNAL_AND_EXPLORATION"
+  },
   "source_profile": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
   "source_prosody": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
-  "event_log": [],
+  "event_log": [
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "f03161d84468ad38a1c5d748c09ea2ab2e6753c6",
+      "timestamp_utc": "2026-09-17T15:52:36.538599+00:00",
+      "changed_paths": [
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only."
+    }
+  ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": null
+  "last_verified": "2026-09-17T15:52:36.538599+00:00"
 }
