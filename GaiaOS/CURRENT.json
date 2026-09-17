@@ -2,7 +2,7 @@
   "schema": "gaiaos.platform-current.v8",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "ACTIVE_SOURCE_WAVE8_SINGLE_FRONT_DOOR_1_6_LIVE_EXTERNAL_PASS",
+  "status": "ACTIVE_SOURCE_WAVE8_SINGLE_FRONT_DOOR_1_6_LIVE_EXTERNAL_PASS_MEMBER_IDENTITY_DATA_ACTIVE",
   "platform_version": "v0.001.007",
   "previous_platform_version": "v0.001.006",
   "version_pointer": "GaiaOS/VERSION.json",
@@ -21,6 +21,9 @@
     "voice_authority_prosody": "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md",
     "canary": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-COUNCIL-PROSODY-CANARY.v1.py",
     "canary_workflow": ".github/workflows/gaiaos-council-prosody-canary.yml",
+    "identity_data_registry": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REGISTRY.v1.json",
+    "identity_data_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-MEMBER-IDENTITY-RUNTIME.v1.py",
+    "identity_sync_workflow": ".github/workflows/GAIAOS-MEMBER-IDENTITY-SYNC.yml",
     "permanent_roster_adoption": "ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE"
   },
   "fairyos": {
@@ -29,6 +32,8 @@
     "profiles": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
     "prosody_basins": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
     "voice_authority_prosody": "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md",
+    "identity_data_registry": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REGISTRY.v1.json",
+    "identity_data_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-MEMBER-IDENTITY-RUNTIME.v1.py",
     "dispatch_matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
     "dispatch_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "roster_native_to_gaia": true,
@@ -112,6 +117,6 @@
     "context_mode": "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY",
     "live_context_binding": "DEPLOYED_CHECKOUT"
   },
-  "proof_ceiling": "GaiaOS Wave 8 is live on Render at carrier 1.6.0 / platform v0.001.007. External HTTP and real MCP acceptance against deployed commit eb2d655c51becc9b205081305302759450254234 proved gaia() as a compact single front door and the stated Wave 8 acceptance conditions. Naomi ChatGPT connection/adoption, durable continuity, write/domain effects, and hosted OpenAI-backed /chat remain separate and unproven or unconfigured as stated.",
-  "laws": ["NAOMI != RAVEN", "GAIAOS != RAVENOS", "ARCHITECTURE DONOR != IDENTITY DONOR", "PORT != MERGE", "TERM HIT != AUTHORITY", "GRAPH EDGE != EFFECT", "REMOTE CONTEXT PACK != DURABLE MEMORY", "LIVE HTTP CONTEXT != LIVE MCP HANDSHAKE", "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION", "RAVEN ROSTER NOT AUTO-ADOPTED", "CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY", "PRESENTATION ENERGY != EVIDENCE", "QUIET != GENERIC", "WILD != UNBOUNDED", "COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT", "BRAINOS ADDRESSABLE != BRAINOS INVOKED", "WARM != SAVED", "READ != ACT", "UNKNOWN STAYS UNKNOWN", "NAOMI RETAINS FINAL AUTHORITY", "LIVE MCP TOOL INVOCATION != AUTOMATIC CHATGPT ADOPTION", "MCP DISCOVERY != DOMAIN EFFECT AUTHORITY", "ONE MCP CONNECTION > MANY MANUAL INSTALLS", "GAIA FRONT DOOR > HUMAN MAILMAN ROUTING", "ROUTING HINT != OWNER INTENT", "SELFTEST PASS != EXTERNAL EFFECT AUTHORITY"]
+  "proof_ceiling": "GaiaOS Wave 8 is live on Render at carrier 1.6.0 / platform v0.001.007. External HTTP and real MCP acceptance against deployed commit eb2d655c51becc9b205081305302759450254234 proved gaia() as a compact single front door and the stated Wave 8 acceptance conditions. Member-local identity datasets are now source-defined and synchronized by repository workflow; durable conversational continuity beyond repository records remains separate and unproven. Naomi ChatGPT connection/adoption, domain write effects, and hosted OpenAI-backed /chat remain separate and unproven or unconfigured as stated.",
+  "laws": ["NAOMI != RAVEN", "GAIAOS != RAVENOS", "ARCHITECTURE DONOR != IDENTITY DONOR", "PORT != MERGE", "TERM HIT != AUTHORITY", "GRAPH EDGE != EFFECT", "REMOTE CONTEXT PACK != DURABLE MEMORY", "LIVE HTTP CONTEXT != LIVE MCP HANDSHAKE", "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION", "RAVEN ROSTER NOT AUTO-ADOPTED", "CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY", "PRESENTATION ENERGY != EVIDENCE", "QUIET != GENERIC", "WILD != UNBOUNDED", "COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT", "BRAINOS ADDRESSABLE != BRAINOS INVOKED", "WARM != SAVED", "READ != ACT", "UNKNOWN STAYS UNKNOWN", "MEMBER DATA ISOLATED", "SOURCE CHANGE != FABRICATED EXPERIENCE", "DURABLE RECORD != CONSCIOUSNESS", "NAOMI RETAINS FINAL AUTHORITY", "LIVE MCP TOOL INVOCATION != AUTOMATIC CHATGPT ADOPTION", "MCP DISCOVERY != DOMAIN EFFECT AUTHORITY", "ONE MCP CONNECTION > MANY MANUAL INSTALLS", "GAIA FRONT DOOR > HUMAN MAILMAN ROUTING", "ROUTING HINT != OWNER INTENT", "SELFTEST PASS != EXTERNAL EFFECT AUTHORITY"]
 }
