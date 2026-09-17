@@ -2,6 +2,7 @@ services:
   - type: web
     name: gaiaos-loader-api
     runtime: docker
+    rootDir: .
     dockerfilePath: ./api/Dockerfile
     dockerContext: .
     healthCheckPath: /health
