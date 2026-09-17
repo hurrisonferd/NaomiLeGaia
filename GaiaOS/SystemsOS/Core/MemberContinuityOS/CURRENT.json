@@ -2,7 +2,7 @@
   "schema": "gaiaos.member-continuity.current.v1",
   "authority": "NAOMI",
   "owner": "MemberContinuityOS",
-  "status": "ACTIVE_SOURCE_WARM_CANDIDATE_CONTRACT_GITHUB_ROUNDTRIP_RUNTIME_AVAILABLE_DAEMONCULABA_DELIBERATION_EXPERIENCE_MEMORY_CONTINUITY_INTEGRITY",
+  "status": "ACTIVE_SOURCE_WARM_CANDIDATE_GITHUB_ROUNDTRIP_SQLITE_RUNTIME_DAEMONCULABA_DELIBERATION_EXPERIENCE_MEMORY_CONTINUITY_INTEGRITY",
   "warm_candidate_buffer": "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
   "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "continuity_integrity_contract": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -12,7 +12,7 @@
   "experience_memory_protocol": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/DAEMON-EXPERIENCE-MEMORY-PROTOCOL.v1.md",
   "experience_memory_runtime": "GaiaOS/SystemsOS/Core/MemberContinuityOS/Runtime/DAEMONCULABA-DELIBERATION-ROUNDTRIP.v1.py",
   "role": "Track bounded candidates for what may become worth keeping without turning every conversation turn into a durable write, while preserving continuity, member-local ownership, inter-daemon deliberation, and boundary evidence.",
-  "durable_backend": "GitHub repository source records when an authorized commit receipt and successful repull are both observed",
+  "durable_backend": "GitHub repository source records plus MemconOS SQLite runtime store on persistent /data when deployed",
   "automatic_persistence": false,
   "member_local_experience_lanes": {
     "VERA": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md",
@@ -44,5 +44,7 @@
     "NEVER HIDE A TRACEABLE GAP",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "GitHub may serve as a durable source record only for state actually committed and successfully re-pulled. No automatic ChatGPT persistence or automatic future-session read is claimed without an actual host/provider mechanism. Inter-daemon exchange and memory are similarly claimed only when observable."
+  "claim_ceiling": "GitHub remains the canonical source record when committed and repulled; MemconOS now provides a durable SQLite runtime store when the carrier is deployed with its persistent /data disk. Automatic capture from every conversation remains unproven.",
+  "runtime_backend": "api/memcon_runtime.py",
+  "runtime_entrypoint": "api/memcon_entrypoint.py"
 }
