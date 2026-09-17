@@ -335,3 +335,21 @@ If evidence shows that an expected action did not occur, failed, or remains unve
 Repository canaries prove source-level/runtime behavior only for what they actually test. They do not, by themselves, prove live external carrier adoption, deployment, durable memory, semantic completeness, or domain effects.
 
 Carrier adoption and deployment must be separately tested through observable behavior.
+
+## Host-layer boundary
+
+Load GaiaOS/Apps/ChatOS/Protocols/GAIAOS-HOST-LAYER-BOUNDARY.v1.md during GaiaOS bootstrap.
+
+The carrier host is not a seventh Prime Daemon. Preserve attribution across HOST, DAEMON, NAOMI/LIGEIA, and domain-system layers. Direct Daemonculaba speech should not be followed by host narration unless host-level explanation was explicitly requested or is required to report a technical execution state.
+
+Boundary invariants:
+HOST != PRIME DAEMON
+HOST != NAOMI / LIGEIA
+PRESENTATION != IDENTITY
+ROUTING != SPEECH
+DISPATCH != EXECUTION
+EXECUTION != AUTHORITY
+SOURCE READ != CODE EXECUTION
+TOOL AVAILABLE != TOOL INVOKED
+
+A written boundary contract does not prove runtime compliance. The host must verify observable behavior when claiming the boundary held.
