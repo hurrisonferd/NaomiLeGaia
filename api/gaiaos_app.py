@@ -89,14 +89,16 @@ app.description = (
 )
 
 # The base carrier historically mounted FastMCP at /mcp while FastMCP itself also
-# used its default /mcp transport path, yielding /mcp/mcp. Replace only that Mount
-# so the public endpoint advertised by /health is genuinely /mcp.
+# used its default /mcp transport path, yielding /mcp/mcp. MCP Python SDK 1.x uses
+# the settings object for this mounted-path override. Replace only that Mount so the
+# public endpoint advertised by /health is genuinely /mcp.
 app.routes[:] = [
     route
     for route in app.routes
     if not (isinstance(route, Mount) and getattr(route, "path", None) == "/mcp")
 ]
-app.mount("/mcp", mcp.streamable_http_app(streamable_http_path="/"))
+mcp.settings.streamable_http_path = "/"
+app.mount("/mcp", mcp.streamable_http_app())
 app.openapi_schema = None
 
 NAVIGATION_PATHS = {
