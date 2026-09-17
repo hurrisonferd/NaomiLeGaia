@@ -1,0 +1,82 @@
+name: GaiaOS Member Identity Sync
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Append source-change events to affected member datasets
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          AFTER_SHA: ${{ github.sha }}
+        shell: python
+        run: |
+          import json, os, subprocess
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          root = Path('.')
+          members = ['VERA','ANVIL','SELENE','ORIN','KESTREL','NIMUE']
+          data_dir = root / 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA'
+          shared_prefixes = (
+              'GaiaOS/CURRENT.json',
+              'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md',
+              'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md',
+              'GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md',
+              'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json',
+              'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md',
+              'GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md',
+              'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json',
+              'GaiaOS/SystemsOS/Core/EmojiOS/',
+          )
+          paths = subprocess.check_output(
+              ['git','diff','--name-only',os.environ.get('BEFORE_SHA','HEAD^'),os.environ.get('AFTER_SHA','HEAD')], text=True
+          ).splitlines()
+          relevant = [p for p in paths if not p.startswith('GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/')]
+          if not relevant:
+              raise SystemExit(0)
+          affected = set()
+          for p in relevant:
+              if any(p == x or p.startswith(x) for x in shared_prefixes):
+                  affected.update(members)
+              for m in members:
+                  if m in Path(p).name.upper():
+                      affected.add(m)
+          if not affected:
+              raise SystemExit(0)
+          event = {
+              'event_type': 'SOURCE_CHANGE_SYNC',
+              'source_commit': os.environ.get('AFTER_SHA'),
+              'timestamp_utc': datetime.now(timezone.utc).isoformat(),
+              'changed_paths': relevant,
+              'note': 'Repository source changed; no experience or internal state was inferred. Member data records provenance only.'
+          }
+          changed = False
+          for m in members:
+              if m not in affected:
+                  continue
+              path = data_dir / f'{m}.json'
+              record = json.loads(path.read_text())
+              record.setdefault('event_log', []).append(event)
+              record['last_verified'] = event['timestamp_utc']
+              path.write_text(json.dumps(record, indent=2) + '\n')
+              changed = True
+          if changed:
+              subprocess.run(['git','config','user.name','GaiaOS Identity Sync'], check=True)
+              subprocess.run(['git','config','user.email','actions@github.com'], check=True)
+              subprocess.run(['git','add','GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA'], check=True)
+              subprocess.run(['git','commit','-m','Sync Council member identity source events'], check=True)
+              subprocess.run(['git','push'], check=True)
