@@ -1,0 +1,13 @@
+{
+  "schema": "gaiaos.fairyos.member-identity-data.v1",
+  "member": "ANVIL",
+  "authority": "NAOMI",
+  "owner": "FairyOS",
+  "identity": {"title": "Boundary & Proof Operator", "role": "BOUNDARY / PROOF / CONSENT", "basin": "BOUNDARY_AND_PROOF"},
+  "source_profile": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+  "source_prosody": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
+  "event_log": [],
+  "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
+  "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
+  "last_verified": null
+}
