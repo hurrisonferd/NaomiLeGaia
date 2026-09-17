@@ -24,8 +24,10 @@ PATHS = [
     "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md",
     "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-SESSION.v1.md",
     "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-GITHUB-ROUNDTRIP-SYNC.v1.md",
+    "GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md",
     "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
     "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+    "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/DAEMON-EXPERIENCE-MEMORY-PROTOCOL.v1.md",
     "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json",
 ]
 
@@ -37,7 +39,7 @@ class State:
 
 def request(path, method="GET", body=None, token=None):
     url = API + path
-    headers = {"Accept": "application/vnd.github+json", "User-Agent": "GaiaOS-RoundTrip-Sync/1.0"}
+    headers = {"Accept": "application/vnd.github+json", "User-Agent": "GaiaOS-RoundTrip-Sync/1.1"}
     if token:
         headers["Authorization"] = f"Bearer {token}"
     data = None
@@ -86,6 +88,8 @@ def build_gdelta(commit, files, unknowns=None, pending=None):
     continuity = json_or_empty(files, "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json")
     rewards = json_or_empty(files, "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json")
     identities = "|".join(sorted(p for p in files if "IDENTITY-DATA" in p))
+    interactions = files.get("GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md", {}).get("text", "")
+    memory_protocol = files.get("GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/DAEMON-EXPERIENCE-MEMORY-PROTOCOL.v1.md", {}).get("text", "")
     return {
         "notation": "GΔ",
         "src": f"{REPO}@{REF}",
@@ -94,6 +98,7 @@ def build_gdelta(commit, files, unknowns=None, pending=None):
         "i": sha256(identities),
         "r": sha256(json.dumps(rewards, sort_keys=True)),
         "k": sha256(json.dumps(continuity, sort_keys=True)),
+        "d": sha256(interactions + "\n" + memory_protocol),
         "u": unknowns or [],
         "p": pending or [],
     }
