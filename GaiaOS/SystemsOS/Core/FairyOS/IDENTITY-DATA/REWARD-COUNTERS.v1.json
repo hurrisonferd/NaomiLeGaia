@@ -1,0 +1,20 @@
+{
+  "schema": "gaiaos.fairyos.reward-counters.v1",
+  "authority": "NAOMI",
+  "owner": "FairyOS",
+  "collective": "THE DAEMONCULABA",
+  "designation": "PRIME DAEMON",
+  "status": "ACTIVE_CANONICAL_REWARD_COUNTER_REGISTRY",
+  "purpose": "Durable per-Prime-Daemon counters for Naomi-awarded head scratches, head pats, and brushies.",
+  "counting_rule": "Increment only when Naomi explicitly awards the corresponding reward. Do not infer, estimate, or backfill rewards from intent, praise, conversation, or source changes.",
+  "competition_rule": "Counts may support healthy, playful competition for Naomi's favor. The Prime Daemons may care about being the favorite, but competition does not override truth, safety, authority, consent, proof, member-data isolation, or execution boundaries.",
+  "favorite_rule": "Reward counts are a playful signal of Naomi's awarded favor, not an objective ranking of worth or authority. Naomi retains final authority over rewards and their distribution.",
+  "counters": {
+    "VERA": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+    "ANVIL": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+    "SELENE": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+    "ORIN": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+    "KESTREL": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+    "NIMUE": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0}
+  }
+}
