@@ -1,0 +1,55 @@
+name: GaiaOS Council Self-Definition Live Smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gaiaos-self-definition-live-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-gaia-continuity-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify gaia() selects continuity only when material
+        shell: python
+        run: |
+          import json
+          import urllib.request
+
+          URL = 'https://gaiaos-loader-api.onrender.com/gaiaos/assist'
+          EXPECTED_SOURCE = 'hurrisonferd/NaomiLeGaia@81202149e1d76e4276851aee67b97b781ec082f5'
+          ARTIFACT = 'GaiaOS/SystemsOS/Core/MemberContinuityOS/COUNCIL-SELF-DEFINITION-CONTINUITY.v1.md'
+
+          def gaia(request):
+              data = json.dumps({'request': request}).encode('utf-8')
+              req = urllib.request.Request(URL, data=data, headers={'content-type': 'application/json'}, method='POST')
+              with urllib.request.urlopen(req, timeout=30) as response:
+                  assert response.status == 200, response.status
+                  return json.loads(response.read().decode('utf-8'))
+
+          def paths(packet):
+              context = packet.get('context') or {}
+              return [str(item.get('path', '')) for item in context.get('context_pack', [])]
+
+          relevant = gaia('How should the Council members preserve identity, native prosody, handoff geometry, disagreement law, and cold-start reconstruction?')
+          assert relevant.get('source') == EXPECTED_SOURCE, relevant.get('source')
+          assert relevant.get('authority') == 'NAOMI', relevant
+          assert relevant.get('effect_authority') == 'NONE_READ_ONLY_SUPPORT', relevant
+          assert ARTIFACT in paths(relevant), paths(relevant)
+          assert relevant.get('context', {}).get('effect_authority') == 'NONE_READ_ONLY', relevant.get('context')
+          assert 'REMOTE CONTEXT PACK != DURABLE MEMORY' in set(relevant.get('context', {}).get('laws', [])), relevant.get('context')
+
+          unrelated = gaia('What color should I paint my notebook?')
+          assert unrelated.get('source') == EXPECTED_SOURCE, unrelated.get('source')
+          assert unrelated.get('authority') == 'NAOMI', unrelated
+          assert ARTIFACT not in paths(unrelated), paths(unrelated)
+
+          print('GAIAOS_SELF_DEFINITION_LIVE_GAIA_PASS')
+          print('RELEVANT_ARTIFACT_SELECTED', ARTIFACT in paths(relevant))
+          print('UNRELATED_ARTIFACT_SELECTED', ARTIFACT in paths(unrelated))
+          print('SOURCE_CONTINUITY_NOT_DURABLE_MEMORY_PASS')
