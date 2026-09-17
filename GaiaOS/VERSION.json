@@ -2,9 +2,9 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.007",
-  "previous_version": "v0.001.006",
-  "release_note": "Wave 8 live settlement complete. GaiaOS carrier 1.6.0 / platform v0.001.007 is live on Render deploy dep-dalkgdijnfac739ssg10 from source eb2d655c51becc9b205081305302759450254234. External front-door rerun job 105046659240 passed HTTP + real MCP gaia()/gaia_selftest acceptance; live-version run 35172449195 job 105046808901 additionally proved health api_version 1.6.0, front-door platform v0.001.007, selftest PASS, and MCP PRIMARY FRONT DOOR instructions. The 2,943-byte front-door packet replaces ordinary 105,774-byte deep-loader ceremony while specialized tools remain available on demand.",
+  "version": "v0.001.008-dev",
+  "previous_version": "v0.001.007",
+  "release_note": "AgencyOS, WorkspaceOS, and EvolutionOS source/runtime foundation implemented. MemconOS SQLite runtime is registered as the durable runtime backend. Carrier integration is committed to source but not yet live-deployed or externally re-smoked.",
   "proof": {
     "source_committed": true,
     "carrier_source_version": "1.6.0",
@@ -27,7 +27,7 @@
     "live_mcp_handshake": "PASS",
     "hosted_openai_chat": "NOT_CONFIGURED_AT_SMOKE",
     "automatic_external_carrier_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT",
-    "durable_continuity_backend": "NOT_PRESENT",
+    "durable_continuity_backend": "MEMCONOS_SQLITE_SOURCE_PRESENT_DEPLOYMENT_UNVERIFIED",
     "permanent_operator_identity_adoption": "ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE",
     "live_mcp_endpoint": "https://gaiaos-loader-api.onrender.com/mcp",
     "live_mcp_tool_discovery": "PASS_6_TOOLS",
@@ -59,6 +59,10 @@
     "wave8_live_version": "PASS",
     "live_carrier_version": "1.6.0",
     "live_platform_version": "v0.001.007",
-    "mcp_primary_frontdoor_instructions": "PASS"
+    "mcp_primary_frontdoor_instructions": "PASS",
+    "agencyos_source_present": true,
+    "workspaceos_source_present": true,
+    "evolutionos_source_present": true,
+    "new_carrier_surfaces": "SOURCE_COMMITTED_DEPLOYMENT_UNVERIFIED"
   }
 }
