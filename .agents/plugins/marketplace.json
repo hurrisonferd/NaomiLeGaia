@@ -1,0 +1,17 @@
+{
+  "name": "naomilegaia-local",
+  "plugins": [
+    {
+      "name": "gaiaos",
+      "source": {
+        "source": "local",
+        "path": "./plugins/gaiaos"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
