@@ -1,9 +1,4 @@
-"""MemconOS durable runtime backend.
-
-SQLite is used so the service has a real durable store without adding a database
-service dependency. Render persistence is provided by mounting /data as a disk.
-This module never treats GitHub source persistence as runtime memory.
-"""
+"""MemconOS durable runtime backend for MemoryOS and MemberContinuityOS."""
 from __future__ import annotations
 
 import json
@@ -15,7 +10,7 @@ from pathlib import Path
 from typing import Any
 
 DB_PATH = Path(os.getenv("MEMCONOS_DB_PATH", "/data/memconos.db"))
-SCHEMA_VERSION = "memconos.runtime.v1"
+SCHEMA_VERSION = "memconos.runtime.v2"
 
 
 def _now() -> str:
@@ -52,6 +47,7 @@ def initialize() -> None:
             CREATE INDEX IF NOT EXISTS idx_memory_scope ON memory_records(scope);
             CREATE INDEX IF NOT EXISTS idx_memory_status ON memory_records(status);
             CREATE INDEX IF NOT EXISTS idx_memory_created ON memory_records(created_at);
+
             CREATE TABLE IF NOT EXISTS runtime_receipts (
                 receipt_id TEXT PRIMARY KEY,
                 operation TEXT NOT NULL,
@@ -60,6 +56,48 @@ def initialize() -> None:
                 result TEXT NOT NULL,
                 detail TEXT NOT NULL
             );
+
+            CREATE TABLE IF NOT EXISTS sessions (
+                session_id TEXT PRIMARY KEY,
+                source TEXT NOT NULL,
+                subject TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL
+            );
+
+            CREATE TABLE IF NOT EXISTS session_events (
+                event_id TEXT PRIMARY KEY,
+                session_id TEXT NOT NULL,
+                actor TEXT NOT NULL,
+                event_type TEXT NOT NULL,
+                statement TEXT NOT NULL,
+                source TEXT NOT NULL,
+                relation TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                FOREIGN KEY(session_id) REFERENCES sessions(session_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_session_events_session ON session_events(session_id);
+            CREATE INDEX IF NOT EXISTS idx_session_events_actor ON session_events(actor);
+
+            CREATE TABLE IF NOT EXISTS memory_candidates (
+                candidate_id TEXT PRIMARY KEY,
+                event_id TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                record_type TEXT NOT NULL,
+                scope TEXT NOT NULL,
+                statement TEXT NOT NULL,
+                source TEXT NOT NULL,
+                owner TEXT NOT NULL,
+                why_material TEXT NOT NULL,
+                other_voices TEXT NOT NULL,
+                tension TEXT NOT NULL,
+                fingerprint TEXT NOT NULL,
+                duplicate_of TEXT,
+                status TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                promoted_record_id TEXT
+            );
+            CREATE INDEX IF NOT EXISTS idx_candidates_status ON memory_candidates(status);
+            CREATE INDEX IF NOT EXISTS idx_candidates_fingerprint ON memory_candidates(fingerprint);
             """
         )
 
@@ -156,6 +194,94 @@ def update_record(record_id: str, *, authority: str, approved: bool, statement: 
             (values["statement"], values["status"], values["notes"], values["supersedes"], values["updated_at"], record_id),
         )
     return {"record": get_record(record_id), "receipt": _receipt("UPDATE", record_id, "SUCCESS", "Durably updated in SQLite runtime store")}
+
+
+def create_session(session_id: str, source: str, subject: str = "") -> None:
+    initialize()
+    with _db() as conn:
+        conn.execute("INSERT INTO sessions VALUES (?, ?, ?, ?)", (session_id, source, subject, _now()))
+
+
+def create_session_event(*, event_id: str, session_id: str, actor: str,
+                         event_type: str, statement: str, source: str,
+                         relation: str = "PART_OF") -> None:
+    initialize()
+    with _db() as conn:
+        conn.execute(
+            "INSERT INTO session_events VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+            (event_id, session_id, actor, event_type, statement, source, relation, _now()),
+        )
+
+
+def get_session_event(event_id: str) -> dict[str, Any] | None:
+    initialize()
+    with _db() as conn:
+        row = conn.execute("SELECT * FROM session_events WHERE event_id=?", (event_id,)).fetchone()
+    return dict(row) if row else None
+
+
+def get_session(session_id: str) -> dict[str, Any] | None:
+    initialize()
+    with _db() as conn:
+        session = conn.execute("SELECT * FROM sessions WHERE session_id=?", (session_id,)).fetchone()
+        events = conn.execute(
+            "SELECT * FROM session_events WHERE session_id=? ORDER BY created_at",
+            (session_id,),
+        ).fetchall()
+    if session is None:
+        return None
+    result = dict(session)
+    result["events"] = [dict(row) for row in events]
+    return result
+
+
+def create_memory_candidate(candidate: dict[str, Any]) -> None:
+    initialize()
+    with _db() as conn:
+        conn.execute(
+            """INSERT INTO memory_candidates
+            (candidate_id,event_id,authority,record_type,scope,statement,source,owner,
+             why_material,other_voices,tension,fingerprint,duplicate_of,status,created_at,promoted_record_id)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NULL)""",
+            (
+                candidate["candidate_id"], candidate["event_id"], candidate["authority"],
+                candidate["record_type"], candidate["scope"], candidate["statement"],
+                candidate["source"], candidate["owner"], candidate["why_material"],
+                json.dumps(candidate.get("other_voices", [])),
+                candidate.get("tension", ""), candidate["fingerprint"],
+                candidate.get("duplicate_of"), candidate["status"], candidate["created_at"],
+            ),
+        )
+
+
+def get_memory_candidate(candidate_id: str) -> dict[str, Any] | None:
+    initialize()
+    with _db() as conn:
+        row = conn.execute("SELECT * FROM memory_candidates WHERE candidate_id=?", (candidate_id,)).fetchone()
+    if row is None:
+        return None
+    result = dict(row)
+    result["other_voices"] = json.loads(result["other_voices"])
+    return result
+
+
+def find_fingerprint(fingerprint: str) -> str | None:
+    initialize()
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT record_id FROM memory_records WHERE lower(notes) LIKE ? LIMIT 1",
+            (f'"fingerprint": "{fingerprint}"',),
+        ).fetchone()
+    return row["record_id"] if row else None
+
+
+def mark_candidate(candidate_id: str, status: str, promoted_record_id: str | None = None) -> None:
+    initialize()
+    with _db() as conn:
+        conn.execute(
+            "UPDATE memory_candidates SET status=?, promoted_record_id=? WHERE candidate_id=?",
+            (status, promoted_record_id, candidate_id),
+        )
 
 
 def canary() -> dict[str, Any]:
