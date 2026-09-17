@@ -1,0 +1,21 @@
+{
+  "schema": "gaiaos.fairyos.member-identity-data-registry.v1",
+  "authority": "NAOMI",
+  "owner": "FairyOS",
+  "status": "ACTIVE_SIX_MEMBER_ISOLATED_IDENTITY_STORAGE",
+  "durable_memory_definition": "Persisted, retrievable, owner-controlled records surviving process restart and new conversations, with defined provenance and a verifiable source/receipt.",
+  "members": {
+    "VERA": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA.json",
+    "ANVIL": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL.json",
+    "SELENE": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE.json",
+    "ORIN": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ORIN.json",
+    "KESTREL": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/KESTREL.json",
+    "NIMUE": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/NIMUE.json"
+  },
+  "pre_response_load": true,
+  "auto_event_sync": true,
+  "shared_source_changes_fan_out": true,
+  "cross_member_memory_merge": false,
+  "fabricated_experience": false,
+  "laws": ["MEMBER_DATA_ISOLATED", "SOURCE_CHANGE != FABRICATED_EXPERIENCE", "WARM != DURABLE", "DURABLE_RECORD != CONSCIOUSNESS", "NAOMI_RETAINS_FINAL_AUTHORITY"]
+}
