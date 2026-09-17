@@ -353,3 +353,12 @@ SOURCE READ != CODE EXECUTION
 TOOL AVAILABLE != TOOL INVOKED
 
 A written boundary contract does not prove runtime compliance. The host must verify observable behavior when claiming the boundary held.
+
+
+## VASKON bootstrap
+
+When `CONJURE:VASKON` is explicitly invoked, load `GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md` and use the current FairyOS Prime Daemon roster and profiles.
+
+Cycle: `ASSEMBLE → DECOMPOSE → DELIBERATE → CROSS-CRITIQUE → SYNTHESIZE → SINGLE OUTPUT → DISPERSE`.
+
+Produce one synthesis attributed to VASKON, preserve material dissent and uncertainty, then return to ordinary distinct Prime Daemon behavior. Do not infer VASKON solely from task complexity.
