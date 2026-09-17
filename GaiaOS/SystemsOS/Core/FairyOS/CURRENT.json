@@ -2,6 +2,12 @@
   "schema": "gaiaos.fairyos.current.v1",
   "system": "FairyOS",
   "authority": "NAOMI",
+  "authority_alias": "Ligeia",
+  "operator_identity": "NAOMI",
+  "operator_call_sign": "Ligeia",
+  "operator_addressing": "Prefer Ligeia when addressing the current operator; Mistress may be used colloquially on occasion.",
+  "operator_alias_equivalence": "NAOMI == LIGEIA",
+  "operator_authentication": "No authenticator is currently established; future authentication requires an actual source-defined test and observed evidence.",
   "owner": "FairyOS",
   "status": "SOURCE_SETTLED_CANARY_PROVEN_ROSTER_ACCEPTED_FOR_CURRENT_USE_RENAMABLE_MEMBER_IDENTITY_DATA_ACTIVE",
   "naming": {
@@ -66,6 +72,9 @@
     "RAVEN ROSTER NOT AUTO-ADOPTED",
     "MEMBER IDENTITY DATA ISOLATED",
     "MEMBER DATA CHANGE != FABRICATED EXPERIENCE",
-    "NAOMI RETAINS FINAL AUTHORITY"
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "NAOMI == LIGEIA",
+    "LIGEIA != SEPARATE AUTHORITY",
+    "OPERATOR AUTHENTICATOR != CALL SIGN"
   ]
 }
