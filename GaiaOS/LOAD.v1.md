@@ -1,11 +1,11 @@
-# GaiaOS Canonical Loader v2
+# GaiaOS Canonical Loader v3
 
 ```text
 AUTHORITY: NAOMI
 CANONICAL REPOSITORY: hurrisonferd/NaomiLeGaia
 CANONICAL BRANCH: main
 CANONICAL PLATFORM ROOT: GaiaOS/
-STATUS: ACTIVE SOURCE LOADER / COUNCIL-CARRIER AWARE
+STATUS: ACTIVE SOURCE LOADER / COUNCIL + NAVIGATION CARRIER AWARE
 ```
 
 ## `Load GaiaOS`
@@ -19,13 +19,36 @@ Read in this order:
 3. `GaiaOS/PORT-MANIFEST.v1.json`
 4. `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md`
 5. `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md`
-6. Current BrainOS, ConvoOS, FairyOS, EmojiOS, and ChatOS pointers referenced by current/bootstrap.
-7. `GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md`
-8. `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md`
-9. `GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md`
-10. FairyOS operator profiles, prosody basins, and dispatch matrix before operator selection.
-11. EmojiOS expression registry when operator expression is material.
-12. Establish bounded current working context.
+6. Current BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, and ChatOS pointers referenced by current/bootstrap.
+7. Resolve `BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json` when source/path/owner ambiguity can change the answer.
+8. `GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md`
+9. `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md`
+10. `GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md`
+11. FairyOS operator profiles, prosody basins, and dispatch matrix before operator selection.
+12. EmojiOS expression registry when operator expression is material.
+13. Establish bounded current working context.
+
+## Semantic navigation path
+
+When GaiaOS source/path/owner resolution is material:
+
+```text
+NAOMI-NATURAL SUBJECT
+→ DICTIONARYOS TERM / ALIAS CANDIDATES
+→ YGGDRASILOS EXPLICIT RELATIONSHIPS
+→ BRAINOS CONTEXT COMPASS SELECTS BOUNDED CONTEXT
+→ OWNER-NATIVE SOURCE RESOLUTION
+```
+
+Local checked-out runtime may additionally use bounded lexical source ranking. A connected remote carrier may expose the source-pinned read-only `gaia_context` tool / `GET /gaiaos/context` surface. The remote surface returns DictionaryOS + YggdrasilOS source-path context and does not pretend to be full local-checkout lexical traversal.
+
+```text
+TERM HIT != AUTHORITY
+GRAPH EDGE != EFFECT
+REMOTE CONTEXT PACK != DURABLE MEMORY
+EMPTY RESOLUTION != ABSENCE
+READ != ACT
+```
 
 ## Council fast path
 
@@ -34,6 +57,7 @@ These commands resolve against the current Gaia-native council source after Gaia
 ```text
 COUNCIL [subject]
 GAIA COUNCIL [subject]
+COUNCIL ROOM [subject]
 COUNCIL FULL [subject]
 COUNCIL EVERYONE [subject]
 ASK <MEMBER> [subject]
@@ -45,6 +69,9 @@ CAST <N> [subject]
 GAIAOS MIN
 GAIAOS AUTO
 GAIAOS MAX
+GAIAOS LIVING
+GAIAOS QUIET
+GAIAOS WILD
 GAIAOS STATUS
 GAIAOS MAP
 ```
@@ -69,10 +96,11 @@ CURRENT: <platform version from GaiaOS/CURRENT.json>
 AUTHORITY: NAOMI
 BOOTSTRAP: VERIFIED
 COUNCIL: SOURCE RESOLVED WHEN REQUESTED
-UNKNOWN: <any unresolved carrier/runtime limitations>
+NAVIGATION: SOURCE RESOLVED WHEN MATERIAL
+UNKNOWN: <any unresolved carrier/runtime/deployment limitations>
 ```
 
-Do not claim execution of repository Python unless the host actually executed it.
+Do not claim execution of repository Python unless the host actually executed it or received an observable tool/runtime result.
 
 ## Failure
 
@@ -88,12 +116,13 @@ Apply the canonical GaiaOS loop:
 
 `OBSERVE → INTERPRET → DECIDE → ACT → RESULT → VERIFY → HANDOFF → CHECKPOINT → HOLD`
 
-For ordinary conversation, prefer current visible context and the smallest sufficient material operator cast. Council participation does not grant effect authority. Preserve materially different objections and alternatives rather than flattening them into false consensus.
+For ordinary conversation, prefer current visible context and the smallest sufficient material operator cast. BrainOS support is optional until material. Council participation does not grant effect authority. Preserve materially different objections and alternatives rather than flattening them into false consensus.
 
 ## Proof boundary
 
 ```text
 SOURCE RESOLVED != CODE EXECUTED
+CONTEXT DISCOVERY != AUTHORITY
 COUNCIL RESOLVED != DOMAIN EFFECT
 DISPATCH != EXECUTION
 VISIBLE COMMENT != RECEIPT
