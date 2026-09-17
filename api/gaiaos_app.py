@@ -470,3 +470,100 @@ def gaia_context_http(
     """Read-only GaiaOS semantic context query bound to the deployed repository checkout."""
     base._authorize(authorization)
     return _context_packet(subject, limit, depth)
+
+# --- AgencyOS / WorkspaceOS / EvolutionOS bounded runtime surfaces ---
+
+import importlib.util as _importlib_util
+
+def _gaia_runtime(path: str, module_name: str):
+    module_path = _safe_local_target(path)
+    spec = _importlib_util.spec_from_file_location(module_name, module_path)
+    if spec is None or spec.loader is None:
+        raise HTTPException(status_code=500, detail=f"Unable to load GaiaOS runtime: {path}")
+    module = _importlib_util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+class AgencyPlanRequest(BaseModel):
+    goal: str = Field(min_length=1, max_length=20000)
+    capabilities: list[str] = Field(default_factory=list, max_length=12)
+
+class AgencyExecuteRequest(BaseModel):
+    capability: str = Field(min_length=1, max_length=32)
+    approved: bool = False
+    payload: dict[str, Any] = Field(default_factory=dict)
+
+class WorkspaceWriteRequest(BaseModel):
+    name: str = Field(min_length=1, max_length=500)
+    content: str = Field(max_length=500000)
+    provenance: str = Field(min_length=1, max_length=5000)
+    approved: bool = False
+
+class EvolutionProposalRequest(BaseModel):
+    observation: str = Field(min_length=1, max_length=10000)
+    weakness: str = Field(min_length=1, max_length=10000)
+    change: str = Field(min_length=1, max_length=10000)
+    benefit: str = Field(min_length=1, max_length=10000)
+    surfaces: list[str] = Field(default_factory=list, max_length=32)
+    canary: str = Field(min_length=1, max_length=5000)
+    rollback: str = Field(min_length=1, max_length=5000)
+
+@mcp.tool()
+def gaia_agency_plan(goal: str, capabilities: list[str] | None = None) -> dict[str, Any]:
+    """Create a bounded GaiaOS AgencyOS plan. Planning never executes effects."""
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py", "gaia_agency_runtime")
+    return runtime.plan(goal, capabilities)
+
+@mcp.tool()
+def gaia_agency_execute(capability: str, approved: bool = False, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Attempt one registered AgencyOS capability. Effect classes require explicit approval and providers."""
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py", "gaia_agency_runtime")
+    return runtime.execute_capability(capability, approved, payload)
+
+@mcp.tool()
+def gaia_workspace_write(name: str, content: str, provenance: str, approved: bool = False) -> dict[str, Any]:
+    """Write one versioned/provenanced workspace artifact. Approval is explicit."""
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py", "gaia_workspace_runtime")
+    return runtime.write_artifact(name, content, provenance, approved)
+
+@mcp.tool()
+def gaia_workspace_read(name: str) -> dict[str, Any]:
+    """Read one GaiaOS workspace artifact and return its observed checksum."""
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py", "gaia_workspace_runtime")
+    return runtime.read_artifact(name)
+
+@mcp.tool()
+def gaia_evolution_propose(observation: str, weakness: str, change: str, benefit: str, surfaces: list[str], canary: str, rollback: str) -> dict[str, Any]:
+    """Create a controlled EvolutionOS proposal. Proposal never self-adopts."""
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/EvolutionOS/Runtime/GAIAOS-EVOLUTION.v1.py", "gaia_evolution_runtime")
+    return runtime.propose(observation, weakness, change, benefit, surfaces, canary, rollback)
+
+@app.post("/gaiaos/agency/plan", operation_id="planGaiaAgency")
+def agency_plan_http(payload: AgencyPlanRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py", "gaia_agency_runtime")
+    return runtime.plan(payload.goal, payload.capabilities)
+
+@app.post("/gaiaos/agency/execute", operation_id="executeGaiaAgency")
+def agency_execute_http(payload: AgencyExecuteRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py", "gaia_agency_runtime")
+    return runtime.execute_capability(payload.capability, payload.approved, payload.payload)
+
+@app.post("/gaiaos/workspace/write", operation_id="writeGaiaWorkspace")
+def workspace_write_http(payload: WorkspaceWriteRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py", "gaia_workspace_runtime")
+    return runtime.write_artifact(payload.name, payload.content, payload.provenance, payload.approved)
+
+@app.get("/gaiaos/workspace/read", operation_id="readGaiaWorkspace")
+def workspace_read_http(name: str, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py", "gaia_workspace_runtime")
+    return runtime.read_artifact(name)
+
+@app.post("/gaiaos/evolution/propose", operation_id="proposeGaiaEvolution")
+def evolution_propose_http(payload: EvolutionProposalRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    runtime = _gaia_runtime("GaiaOS/SystemsOS/Core/EvolutionOS/Runtime/GAIAOS-EVOLUTION.v1.py", "gaia_evolution_runtime")
+    return runtime.propose(payload.observation, payload.weakness, payload.change, payload.benefit, payload.surfaces, payload.canary, payload.rollback)
