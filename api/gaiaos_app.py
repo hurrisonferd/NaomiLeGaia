@@ -1,9 +1,10 @@
-"""GaiaOS carrier extension: deployed-checkout semantic context navigation.
+"""GaiaOS carrier extension: deployed-checkout source and semantic navigation.
 
-This module imports the stable carrier app/MCP server, then adds one bounded
-read-only context surface backed by the DictionaryOS + YggdrasilOS data shipped
-inside the exact deployed repository checkout. The live context route therefore
-does not depend on a second outbound GitHub fetch after deployment.
+This module imports the stable carrier app/MCP server, then binds canonical GaiaOS
+reads to the exact deployed repository checkout before adding the bounded read-only
+Context Compass surface. Live council, operator, dispatch, BrainOS, loader, chat
+bootstrap, and context reads therefore do not require a second outbound GitHub fetch
+when the requested canonical source is already present in the deployed checkout.
 """
 
 from __future__ import annotations
@@ -21,14 +22,69 @@ from gaiaos_context_runtime import build_context_packet
 EXTENSION_VERSION = "1.5.0"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
 DEPLOYED_ROOT = Path(__file__).resolve().parent.parent
+
+# Preserve the original remote source functions as bounded fallbacks. The deployed
+# checkout is authoritative for the running build; GitHub is only consulted when a
+# canonical loader path is unexpectedly absent locally.
+_REMOTE_RESOLVE_COMMIT = base._resolve_commit
+_REMOTE_FETCH_FILE = base._fetch_file
+
+
+def _deployed_commit() -> str:
+    commit = (
+        os.getenv("RENDER_GIT_COMMIT")
+        or os.getenv("GIT_COMMIT")
+        or os.getenv("SOURCE_COMMIT")
+    )
+    if commit:
+        return commit
+    try:
+        return _REMOTE_RESOLVE_COMMIT()
+    except HTTPException:
+        return "DEPLOYED_CHECKOUT"
+
+
+def _safe_local_target(path: str) -> Path:
+    target = (DEPLOYED_ROOT / path).resolve()
+    try:
+        target.relative_to(DEPLOYED_ROOT)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Canonical source path escaped deployed source root") from exc
+    return target
+
+
+def _deployed_fetch_file(commit: str, path: str) -> str:
+    if path not in base.LOAD_PATHS:
+        raise HTTPException(status_code=400, detail="Path is not part of the canonical loader surface")
+
+    target = _safe_local_target(path)
+    try:
+        return target.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        # A missing deployed file is unusual, but keep the original source-backed
+        # behavior available rather than silently fabricating content.
+        if commit != "DEPLOYED_CHECKOUT":
+            return _REMOTE_FETCH_FILE(commit, path)
+        raise HTTPException(status_code=500, detail=f"Deployed canonical source missing: {path}")
+    except UnicodeDecodeError as exc:
+        raise HTTPException(status_code=500, detail=f"Deployed canonical source is not UTF-8: {path}") from exc
+    except OSError as exc:
+        raise HTTPException(status_code=500, detail=f"Unable to read deployed canonical source: {path}") from exc
+
+
+# All existing base loader/council/MCP route functions resolve these globals at call
+# time, so this single binding hardens the entire live source-reading surface.
+base._resolve_commit = _deployed_commit
+base._fetch_file = _deployed_fetch_file
+
 base.APP_VERSION = EXTENSION_VERSION
 app = base.app
 mcp = base.mcp
 app.version = EXTENSION_VERSION
 app.description = (
-    "GaiaOS source loader plus source-backed council/dispatch, BrainOS/chat-control, "
-    "deployed-checkout DictionaryOS/YggdrasilOS context navigation, warm-continuity surfaces, "
-    "a web carrier backed by the OpenAI Responses API, and a read-only MCP carrier."
+    "GaiaOS deployed-checkout source loader plus source-backed council/dispatch, "
+    "BrainOS/chat-control, DictionaryOS/YggdrasilOS context navigation, warm-continuity "
+    "surfaces, a web carrier backed by the OpenAI Responses API, and a read-only MCP carrier."
 )
 app.openapi_schema = None
 
@@ -39,25 +95,14 @@ NAVIGATION_PATHS = {
 
 
 def _deployed_source() -> str:
-    commit = (
-        os.getenv("RENDER_GIT_COMMIT")
-        or os.getenv("GIT_COMMIT")
-        or os.getenv("SOURCE_COMMIT")
-        or "DEPLOYED_CHECKOUT"
-    )
-    return f"{base.REPOSITORY}@{commit}"
+    return f"{base.REPOSITORY}@{_deployed_commit()}"
 
 
 def _navigation_json(path: str) -> dict[str, Any]:
     if path not in NAVIGATION_PATHS:
         raise HTTPException(status_code=400, detail="Path is not part of the GaiaOS navigation surface")
 
-    target = (DEPLOYED_ROOT / path).resolve()
-    try:
-        target.relative_to(DEPLOYED_ROOT)
-    except ValueError as exc:
-        raise HTTPException(status_code=400, detail="Navigation path escaped deployed source root") from exc
-
+    target = _safe_local_target(path)
     try:
         value = json.loads(target.read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
