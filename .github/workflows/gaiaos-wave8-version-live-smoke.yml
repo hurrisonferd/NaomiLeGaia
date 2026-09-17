@@ -1,0 +1,75 @@
+name: GaiaOS Wave 8 Live Version Acceptance
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gaiaos-wave8-version-live-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prove-live-wave8:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Install MCP client
+        run: python -m pip install 'mcp>=1.27.2,<2' httpx
+      - name: Prove live 1.6 front door
+        shell: python
+        run: |
+          import asyncio
+          import httpx
+          from mcp import ClientSession
+          from mcp.client.streamable_http import streamable_http_client
+
+          BASE = 'https://gaiaos-loader-api.onrender.com'
+          MCP = BASE + '/mcp'
+          EXPECTED_SOURCE = 'hurrisonferd/NaomiLeGaia@eb2d655c51becc9b205081305302759450254234'
+
+          async def main():
+              async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
+                  health = (await client.get(BASE + '/health')).json()
+                  assert health['status'] == 'ok', health
+                  assert health['api_version'] == '1.6.0', health
+
+                  assist_response = await client.post(
+                      BASE + '/gaiaos/assist',
+                      json={'request': 'Raven should not be the mailman. Simplify the next step.'},
+                  )
+                  assert assist_response.status_code == 200, assist_response.text
+                  assist = assist_response.json()
+                  assert assist['carrier_version'] == '1.6.0', assist
+                  assert assist['platform_version'] == 'v0.001.007', assist
+                  assert assist['source'] == EXPECTED_SOURCE, assist['source']
+                  assert assist['route']['manual_tool_chain_required'] is False
+
+                  selftest_response = await client.get(BASE + '/gaiaos/selftest')
+                  assert selftest_response.status_code == 200, selftest_response.text
+                  selftest = selftest_response.json()
+                  assert selftest['status'] == 'PASS', selftest
+                  assert selftest['source'] == EXPECTED_SOURCE, selftest['source']
+
+              async with streamable_http_client(MCP) as transport:
+                  read_stream, write_stream = transport[0], transport[1]
+                  async with ClientSession(read_stream, write_stream) as session:
+                      initialized = await session.initialize()
+                      server = initialized.serverInfo.name if hasattr(initialized, 'serverInfo') else initialized.server_info.name
+                      assert server == 'GaiaOS Carrier', server
+                      instructions = getattr(initialized, 'instructions', None) or ''
+                      assert 'PRIMARY FRONT DOOR' in instructions, instructions
+                      assert 'gaia(request)' in instructions, instructions
+                      tools = await session.list_tools()
+                      names = {tool.name for tool in tools.tools}
+                      assert {'gaia', 'gaia_selftest'} <= names, names
+
+              print('GAIAOS_WAVE8_LIVE_VERSION_PASS')
+              print('SOURCE', EXPECTED_SOURCE)
+              print('CARRIER', assist['carrier_version'])
+              print('PLATFORM', assist['platform_version'])
+              print('MCP_PRIMARY_FRONT_DOOR_INSTRUCTIONS_PASS')
+              print('SELFTEST', selftest['status'])
+
+          asyncio.run(main())
