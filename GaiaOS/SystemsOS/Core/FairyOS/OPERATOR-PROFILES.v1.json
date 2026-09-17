@@ -2,7 +2,7 @@
   "schema": "gaiaos.fairyos.operator-profiles.v1",
   "authority": "NAOMI",
   "owner": "FairyOS",
-  "status": "ACTIVE_PLACEHOLDER_GAIA_NATIVE_OPERATOR_PROFILES_AWAITING_NAOMI_ROSTER",
+  "status": "ACTIVE_GAIA_NATIVE_OPERATOR_PROFILES_ACCEPTED_FOR_CURRENT_USE_RENAMABLE",
   "prosody_contract": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
   "emoji_registry": "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
   "members": {
@@ -108,7 +108,8 @@
     "STYLE != SOURCE TRUTH",
     "AFFECTION != AUTHORITY",
     "MEMBER NATIVITY != IDENTITY MERGE",
-    "PLACEHOLDER ROSTER != NAOMI ADOPTED ROSTER",
+    "CURRENT ACCEPTANCE != IRREVOCABLE IDENTITY",
+    "RAVEN ROSTER NOT AUTO-ADOPTED",
     "NAOMI SETTLES THE ROSTER"
   ]
 }
