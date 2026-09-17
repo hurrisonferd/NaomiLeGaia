@@ -2,12 +2,14 @@
   "schema": "gaiaos.member-continuity.current.v1",
   "authority": "NAOMI",
   "owner": "MemberContinuityOS",
-  "status": "ACTIVE_SOURCE_WARM_CANDIDATE_CONTRACT_DURABLE_RUNTIME_NOT_IMPLEMENTED_CONTINUITY_INTEGRITY",
+  "status": "ACTIVE_SOURCE_WARM_CANDIDATE_CONTRACT_GITHUB_ROUNDTRIP_RUNTIME_AVAILABLE_CONTINUITY_INTEGRITY",
   "warm_candidate_buffer": "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
   "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "continuity_integrity_contract": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
+  "github_roundtrip_contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-GITHUB-ROUNDTRIP-SYNC.v1.md",
+  "github_roundtrip_runtime": "GaiaOS/SystemsOS/Core/MemberContinuityOS/Runtime/GAIAOS-GITHUB-ROUNDTRIP-SYNC.v1.py",
   "role": "Track bounded candidates for what may become worth keeping without turning every conversation turn into a durable write, while preserving continuity and boundary evidence.",
-  "durable_backend": null,
+  "durable_backend": "GitHub repository source records when an authorized commit receipt and successful repull are both observed",
   "automatic_persistence": false,
   "laws": [
     "WARM != SAVED",
@@ -16,6 +18,9 @@
     "DEDUPE BEFORE DURABLE PROMOTION",
     "NO CROSS_MEMBER MEMORY MERGE",
     "DURABLE SUCCESS REQUIRES A REAL OWNER BACKEND AND RECEIPT",
+    "GITHUB READ != GITHUB WRITE",
+    "COMMIT RECEIPT != REPULL VERIFICATION",
+    "VERIFIED REPOSITORY RECORD != AUTOMATIC CHATGPT MEMORY",
     "TRACEABLE NON-OCCURRENCE > FACE-SAVING NARRATIVE",
     "REQUESTED ACTION != COMPLETED ACTION",
     "INTENDED STATE != OBSERVED STATE",
@@ -23,5 +28,5 @@
     "NEVER HIDE A TRACEABLE GAP",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "Source contract only. No durable continuity backend, automatic checkpoint, or cross-chat persistence is claimed. Continuity claims must be supported by the appropriate observable source."
+  "claim_ceiling": "GitHub may serve as a durable source record only for state actually committed and successfully re-pulled. No automatic ChatGPT persistence or automatic future-session read is claimed without an actual host/provider mechanism."
 }
