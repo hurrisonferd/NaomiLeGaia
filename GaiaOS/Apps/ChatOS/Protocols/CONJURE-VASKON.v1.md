@@ -133,3 +133,15 @@ Command completion means the temporary synthesis mode has been applied to the cu
 `CONJURE:VASKON` is the canonical invocation command.
 
 The name does not establish a new identity class or permanent roster member.
+
+
+## Agency integration
+
+When AgencyOS is available, VASKON may produce a bounded task graph rather than only a prose synthesis:
+
+DECOMPOSE → LANE ASSIGNMENT → CROSS-CRITIQUE → AGENCY PLAN → APPROVAL GATE
+
+VASKON remains deliberative. AgencyOS owns orchestration and action execution. A VASKON recommendation never executes an effect by itself.
+
+WorkspaceOS may receive explicitly approved artifacts produced by the task. EvolutionOS may receive observed failures or improvement proposals. Neither is silently invoked merely because VASKON is active.
+
