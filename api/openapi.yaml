@@ -299,6 +299,98 @@ paths:
           description: Missing or invalid API key.
         '422':
           description: Invalid or empty subject.
+  /gaiaos/agency/plan:
+    post:
+      operationId: planGaiaAgency
+      summary: Create a bounded AgencyOS plan
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [goal]
+              properties:
+                goal: {type: string, minLength: 1, maxLength: 20000}
+                capabilities:
+                  type: array
+                  items: {type: string}
+      responses:
+        '200': {description: Proposed plan, content: {application/json: {schema: {type: object}}}}
+  /gaiaos/agency/execute:
+    post:
+      operationId: executeGaiaAgency
+      summary: Execute one registered AgencyOS capability
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [capability]
+              properties:
+                capability: {type: string}
+                approved: {type: boolean, default: false}
+                payload: {type: object}
+      responses:
+        '200': {description: Observable capability result, content: {application/json: {schema: {type: object}}}}
+  /gaiaos/workspace/write:
+    post:
+      operationId: writeGaiaWorkspace
+      summary: Write a bounded workspace artifact
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, content, provenance]
+              properties:
+                name: {type: string}
+                content: {type: string}
+                provenance: {type: string}
+                approved: {type: boolean, default: false}
+      responses:
+        '200': {description: Artifact receipt or hold, content: {application/json: {schema: {type: object}}}}
+  /gaiaos/workspace/read:
+    get:
+      operationId: readGaiaWorkspace
+      summary: Read a workspace artifact
+      security:
+        - bearerAuth: []
+      parameters:
+        - {in: query, name: name, required: true, schema: {type: string}}
+      responses:
+        '200': {description: Observed artifact, content: {application/json: {schema: {type: object}}}}
+  /gaiaos/evolution/propose:
+    post:
+      operationId: proposeGaiaEvolution
+      summary: Create a non-adopting EvolutionOS proposal
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [observation, weakness, change, benefit, canary, rollback]
+              properties:
+                observation: {type: string}
+                weakness: {type: string}
+                change: {type: string}
+                benefit: {type: string}
+                surfaces: {type: array, items: {type: string}}
+                canary: {type: string}
+                rollback: {type: string}
+      responses:
+        '200': {description: Proposed evolution, content: {application/json: {schema: {type: object}}}}
   /health:
     get:
       operationId: health
