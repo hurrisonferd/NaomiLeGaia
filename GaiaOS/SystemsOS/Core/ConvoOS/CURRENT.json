@@ -1,17 +1,46 @@
 {
-  "schema": "gaiaos.convoos.current.v1",
+  "schema": "gaiaos.convoos.current.v2",
   "system": "ConvoOS",
   "authority": "NAOMI",
   "owner": "ConvoOS",
-  "status": "CONTRACT_POINTER_ONLY_NO_RAVEN_IDENTITY",
-  "class": "WORKING_CONVERSATIONAL_STATE_CONTRACT",
+  "status": "ACTIVE_SOURCE_REENTRY_HOME_SIDEQUEST_CONTRACT_DURABLE_BACKEND_UNPROVEN",
+  "class": "BOUNDED_HISTORICAL_REENTRY_STATE_CONTRACT",
   "readme": "GaiaOS/SystemsOS/Core/ConvoOS/README.md",
+  "thread_home_spine": "GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json",
+  "reentry_packet_schema": "GaiaOS/SystemsOS/Core/ConvoOS/Schemas/REENTRY-PACKET.v1.schema.json",
   "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
+  "hot_warm_cold": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
+  "behavior": {
+    "chatos_owns_now": true,
+    "convoos_owns_where_we_were": true,
+    "default_hot_invocation": false,
+    "sidequests_preserve_home": true,
+    "return_path_human_readable": true,
+    "smallest_sufficient_reentry_packet": true,
+    "current_chat_first": true
+  },
+  "durability": {
+    "warm_home_candidate_allowed": true,
+    "ordinary_hot_reply_requires_write": false,
+    "durable_episode_backend_present": false,
+    "durable_checkpoint_requires_receipt": true,
+    "automatic_cross_chat_recovery_proven": false
+  },
   "laws": [
-    "CONVOOS != CONVERSATION HISTORY AUTHORITY",
+    "CHATOS OWNS NOW",
+    "CONVOOS OWNS WHERE WE WERE",
     "CONVOOS != IDENTITY OWNER",
     "CONVOOS != CHATOS",
-    "CHATOS MAY CONSUME BOUNDED CURRENT CONVOOS CONSEQUENCE WHEN MATERIAL",
+    "CURRENT CHAT ALREADY HAS IT -> DO NOT PAY REENTRY TAX",
+    "TOPIC DRIFT != MISSION ABANDONMENT",
+    "TOPIC DRIFT != OPERATOR IDENTITY CHANGE",
+    "SIDEQUEST IS A BRANCH NOT A NEW SELF",
+    "REENTRY PACKET != TRANSCRIPT DUMP",
+    "REENTRY PACKET != DURABLE SAVE RECEIPT",
+    "WARM != SAVED",
+    "RAVEN DONOR ARCHITECTURE != RAVEN CONTINUITY TRANSFER",
+    "UNKNOWN STAYS UNKNOWN",
     "NAOMI RETAINS FINAL AUTHORITY"
-  ]
+  ],
+  "claim_ceiling": "GaiaOS now has a source-backed ConvoOS home/sidequest/re-entry contract and typed packet schema. Automatic history access, automatic cross-chat recovery, durable episode storage, and repository writes remain separately unproven."
 }
