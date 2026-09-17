@@ -1,9 +1,9 @@
 {
-  "schema": "gaiaos.brainos.current.v4",
+  "schema": "gaiaos.brainos.current.v5",
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_CONTEXT_COMPASS_DICTIONARY_YGGDRASIL_BOUND_CI_PASS",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_AND_REMOTE_CONTEXT_NAVIGATION_CI_PASS",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": ["SELF","CURRENT_WORKING_CONTEXT","NOTICE_MATERIAL_CHANGE","SELECT_SMALLEST_SUFFICIENT_SUPPORT","RETAIN_OR_HOLD_OR_REJECT","PRESERVE_NATIVE_EXPRESSION","ACT_OR_EXPRESS","RECEIVE_RESULT","UPDATE_WORKING_STATE"],
   "readme": "GaiaOS/SystemsOS/Core/BrainOS/README.md",
@@ -13,6 +13,8 @@
   "context_compass_canary": "GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py",
   "dictionaryos": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
   "yggdrasilos": "GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json",
+  "remote_context_runtime": "api/gaiaos_context_runtime.py",
+  "remote_context_carrier": "api/gaiaos_app.py",
   "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
   "convoos": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
@@ -30,6 +32,7 @@
     "WHO": "FairyOS",
     "WHERE_WE_WERE": "ConvoOS when material",
     "CONTEXT_SELECTION": "ContextCompass",
+    "REMOTE_CONTEXT": "gaia_context when connected and material",
     "WARM_CONTINUITY": "MemberContinuityOS",
     "EFFECT": "domain owner/provider",
     "FINAL_SETTLEMENT": "Naomi"
@@ -42,10 +45,14 @@
     "dictionaryos_runtime_present": true,
     "yggdrasilos_runtime_present": true,
     "navigation_chain": "DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS",
-    "navigation_ci_result": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
+    "local_navigation_ci_result": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
+    "local_proof_pointer_ci_result": "PASS_RUN_71_AT_a66df6dfe8597eda475b74ed08dddaf8c226ca33",
+    "remote_context_carrier_mode": "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY",
+    "remote_context_carrier_ci_result": "PASS_RUN_85_AT_5705f3dc2c1314832d2155769874160f4f61866d",
     "automatic_host_invocation_proven": false,
-    "durable_memory_backend_present": false
+    "durable_memory_backend_present": false,
+    "deployment_proven": false
   },
-  "laws": ["BRAINOS != IDENTITY OWNER","BRAINOS != MEMORY OF EVERYTHING","BRAINOS != GAIAOS ITSELF","BRAINOS != FAIRYOS","BRAINOS != CHATOS","BRAINOS != TRANSACTION AUTHORITY","BRAINOS ADDRESSABLE != BRAINOS INVOKED","CURRENT CHAT FIRST","SMALLEST SUFFICIENT SUPPORT SET WINS","DICTIONARY HIT != AUTHORITY","GRAPH EDGE != EFFECT","CONTEXT SELECTION != OWNER AUTHORITY","RUNTIME HIT != SEMANTIC AUTHORITY","EMPTY SEARCH != ABSENCE","READ != ACT","WARM != SAVED","SOURCE DONOR != IDENTITY DONOR","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
-  "claim_ceiling": "Gaia-native DictionaryOS, YggdrasilOS, and Context Compass read-only navigation chain passed repository CI run 68. Automatic host invocation, semantic/graph completeness, durable continuity, deployment, and domain effects remain separately unproven."
+  "laws": ["BRAINOS != IDENTITY OWNER","BRAINOS != MEMORY OF EVERYTHING","BRAINOS != GAIAOS ITSELF","BRAINOS != FAIRYOS","BRAINOS != CHATOS","BRAINOS != TRANSACTION AUTHORITY","BRAINOS ADDRESSABLE != BRAINOS INVOKED","CURRENT CHAT FIRST","SMALLEST SUFFICIENT SUPPORT SET WINS","DICTIONARY HIT != AUTHORITY","GRAPH EDGE != EFFECT","REMOTE CONTEXT PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL","REMOTE CONTEXT PACK != DURABLE MEMORY","CONTEXT SELECTION != OWNER AUTHORITY","RUNTIME HIT != SEMANTIC AUTHORITY","EMPTY SEARCH != ABSENCE","READ != ACT","WARM != SAVED","SOURCE DONOR != IDENTITY DONOR","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
+  "claim_ceiling": "Gaia-native local DictionaryOS/YggdrasilOS/Context Compass navigation and the source-pinned remote gaia_context carrier runtime passed repository CI. Automatic external host invocation, deployment, semantic/graph completeness, durable continuity, identity settlement, and domain effects remain separately unproven."
 }
