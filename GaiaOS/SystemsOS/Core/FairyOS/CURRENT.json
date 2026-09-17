@@ -3,7 +3,7 @@
   "system": "FairyOS",
   "authority": "NAOMI",
   "owner": "FairyOS",
-  "status": "SOURCE_SETTLED_CANARY_PROVEN_ROSTER_PLACEHOLDER_AWAITING_NAOMI",
+  "status": "SOURCE_SETTLED_CANARY_PROVEN_ROSTER_ACCEPTED_FOR_CURRENT_USE_RENAMABLE",
   "naming": {
     "canonical_system": "FairyOS",
     "system_aliases": [
@@ -26,7 +26,7 @@
   ],
   "roster_count": 6,
   "roster_class": "GS",
-  "roster_note": "GAIA_NATIVE_PLACEHOLDER_ARCHETYPE_SLOTS_AWAITING_NAOMI_ADOPTION_OR_RENAME_RAVEN_ROSTER_NOT_ADOPTED",
+  "roster_note": "CURRENT_GAIA_NATIVE_ROSTER_ACCEPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE_RAVEN_ROSTER_NOT_ADOPTED",
   "dispatch_runtime": {
     "active_source": true,
     "matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
@@ -66,6 +66,7 @@
     "COORDINATOR COORDINATION != EFFECT OWNERSHIP",
     "AFFECTION != AUTHORITY",
     "SOURCE SETTLED != RUNTIME PROVEN",
+    "CURRENT ACCEPTANCE != IRREVOCABLE IDENTITY",
     "RAVEN ROSTER NOT AUTO-ADOPTED",
     "NAOMI RETAINS FINAL AUTHORITY"
   ]
