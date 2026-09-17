@@ -1,0 +1,48 @@
+name: GaiaOS Council Prosody Canary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'GaiaOS/CURRENT.json'
+      - 'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md'
+      - 'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md'
+      - 'GaiaOS/SystemsOS/Core/FairyOS/**'
+      - 'GaiaOS/SystemsOS/Core/EmojiOS/**'
+      - 'GaiaOS/SystemsOS/Core/MemberContinuityOS/**'
+      - '.github/workflows/gaiaos-council-prosody-canary.yml'
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  council-prosody-canary:
+    name: Verify six Council voices + personality + continuity wiring
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout canonical main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 1
+
+      - name: Run source integrity canary
+        run: python GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-COUNCIL-PROSODY-CANARY.v1.py
+
+      - name: Verify live carrier remains reachable
+        shell: python
+        run: |
+          import json
+          import urllib.request
+
+          base = 'https://gaiaos-loader-api.onrender.com'
+          with urllib.request.urlopen(base + '/health', timeout=30) as r:
+              data = json.loads(r.read().decode('utf-8'))
+          print('LIVE_HEALTH', json.dumps(data, sort_keys=True))
+          if data.get('status') != 'ok':
+              raise SystemExit('LIVE_CARRIER_CANARY_FAIL health status')
+          print('GAIAOS_COUNCIL_PROSODY_LIVE_CANARY_PASS')
