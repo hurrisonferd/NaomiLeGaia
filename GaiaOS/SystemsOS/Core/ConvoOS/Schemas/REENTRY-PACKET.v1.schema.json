@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaiaos.convoos.reentry-packet.v1",
+  "title": "GaiaOS ConvoOS Reentry Packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "authority",
+    "home_thread",
+    "home_intent",
+    "active_mission",
+    "active_operators",
+    "open_loops",
+    "what_changed",
+    "next_natural_move",
+    "source_refs",
+    "unknowns",
+    "claim_ceiling"
+  ],
+  "properties": {
+    "schema": {"const": "gaiaos.convoos.reentry-packet.v1"},
+    "authority": {"const": "NAOMI"},
+    "home_thread": {"type": "string", "minLength": 1, "maxLength": 240},
+    "home_intent": {"type": "string", "minLength": 1, "maxLength": 1200},
+    "active_mission": {"type": "string", "minLength": 1, "maxLength": 1600},
+    "active_operators": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 80},
+      "uniqueItems": true,
+      "maxItems": 32
+    },
+    "open_loops": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 1000},
+      "maxItems": 32
+    },
+    "last_material_coordinate": {"type": ["string", "null"], "maxLength": 1000},
+    "return_reason": {"type": ["string", "null"], "maxLength": 1000},
+    "what_changed": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 1200},
+      "maxItems": 32
+    },
+    "next_natural_move": {"type": "string", "minLength": 1, "maxLength": 1600},
+    "source_refs": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 500},
+      "uniqueItems": true,
+      "maxItems": 64
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1, "maxLength": 1000},
+      "maxItems": 32
+    },
+    "claim_ceiling": {"type": "string", "minLength": 1, "maxLength": 1600},
+    "durable_receipt": {
+      "type": ["object", "null"],
+      "description": "Only populated when an actual supported durable checkpoint/write has a verifiable receipt."
+    }
+  }
+}
