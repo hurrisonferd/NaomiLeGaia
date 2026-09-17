@@ -1,0 +1,102 @@
+name: GaiaOS MCP Live Smoke
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gaiaos-mcp-live-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mcp-live-smoke:
+    name: Initialize GaiaOS MCP and call gaia_dispatch
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Install MCP client
+        run: python -m pip install 'mcp>=1.27.2,<2'
+      - name: Initialize, list tools, and call gaia_dispatch
+        shell: python
+        run: |
+          import asyncio
+          import json
+          import time
+
+          from mcp import ClientSession
+          from mcp.client.streamable_http import streamable_http_client
+
+          URL = 'https://gaiaos-loader-api.onrender.com/mcp'
+          EXPECTED_TOOLS = {
+              'load_gaiaos', 'gaia_council', 'gaia_dispatch',
+              'gaia_operator', 'gaia_brain', 'gaia_context'
+          }
+
+          def tool_payload(result):
+              payload = getattr(result, 'structuredContent', None)
+              if payload is None:
+                  payload = getattr(result, 'structured_content', None)
+              if isinstance(payload, dict):
+                  return payload
+              for block in getattr(result, 'content', []) or []:
+                  text = getattr(block, 'text', None)
+                  if isinstance(text, str):
+                      try:
+                          value = json.loads(text)
+                      except json.JSONDecodeError:
+                          continue
+                      if isinstance(value, dict):
+                          return value
+              raise RuntimeError('gaia_dispatch returned no parseable object payload')
+
+          async def attempt():
+              async with streamable_http_client(URL) as transport:
+                  read_stream, write_stream = transport[0], transport[1]
+                  async with ClientSession(read_stream, write_stream) as session:
+                      initialized = await session.initialize()
+                      server_name = initialized.serverInfo.name if hasattr(initialized, 'serverInfo') else initialized.server_info.name
+                      print('MCP_SERVER', server_name)
+
+                      tools = await session.list_tools()
+                      names = {tool.name for tool in tools.tools}
+                      print('MCP_TOOLS', sorted(names))
+                      missing = EXPECTED_TOOLS - names
+                      if missing:
+                          raise RuntimeError(f'missing tools: {sorted(missing)}')
+
+                      result = await session.call_tool(
+                          'gaia_dispatch',
+                          arguments={
+                              'signals': ['FRAME', 'PROOF_EDGE', 'NEXT_STEP'],
+                              'requested_members': [],
+                              'max_members': 3,
+                          },
+                      )
+                      payload = tool_payload(result)
+                      print('MCP_DISPATCH', json.dumps(payload, sort_keys=True))
+                      if payload.get('authority') != 'NAOMI':
+                          raise RuntimeError('authority mismatch')
+                      if payload.get('effect_authority') != 'NONE_READ_ONLY_DISPATCH':
+                          raise RuntimeError('effect authority mismatch')
+                      selected = [entry.get('member') for entry in payload.get('selected', [])]
+                      if selected != ['KESTREL', 'VERA', 'ANVIL']:
+                          raise RuntimeError(f'unexpected selected members: {selected}')
+                      if payload.get('unknown_signals') != []:
+                          raise RuntimeError(f"unexpected unknown signals: {payload.get('unknown_signals')}")
+                      print('GAIAOS_MCP_LIVE_SMOKE_PASS')
+
+          async def main():
+              last = None
+              for index in range(24):
+                  try:
+                      await attempt()
+                      return
+                  except Exception as exc:
+                      last = exc
+                      print(f'attempt {index + 1}/24 failed: {type(exc).__name__}: {exc}')
+                      await asyncio.sleep(5)
+              raise SystemExit(f'GAIAOS_MCP_LIVE_SMOKE_FAIL: {last}')
+
+          asyncio.run(main())
