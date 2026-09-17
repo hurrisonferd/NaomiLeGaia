@@ -1,73 +1,16 @@
-name: GaiaOS Council Live Smoke
+name: GaiaOS Council Live Smoke (legacy manual)
+
+# Consolidated into .github/workflows/gaiaos-master-canary.yml.
+# Retained only for manual historical diagnostics.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/gaiaos-council-live-smoke.yml'
-  workflow_dispatch:
+  workflow_dispatch
 
 permissions:
   contents: read
 
 jobs:
-  council-live-smoke:
-    name: Probe live GaiaOS council + operator + dispatch
+  legacy-disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - name: Probe council surfaces
-        shell: python
-        run: |
-          import json
-          import urllib.request
-
-          base = 'https://gaiaos-loader-api.onrender.com'
-
-          def get_json(path):
-              req = urllib.request.Request(base + path, headers={'User-Agent': 'GaiaOS-Council-Smoke/1.0'})
-              with urllib.request.urlopen(req, timeout=30) as r:
-                  assert r.status == 200, r.status
-                  return json.loads(r.read().decode('utf-8'))
-
-          def post_json(path, payload):
-              data = json.dumps(payload).encode('utf-8')
-              req = urllib.request.Request(
-                  base + path,
-                  data=data,
-                  headers={'User-Agent': 'GaiaOS-Council-Smoke/1.0', 'Content-Type': 'application/json'},
-                  method='POST',
-              )
-              with urllib.request.urlopen(req, timeout=30) as r:
-                  assert r.status == 200, r.status
-                  return json.loads(r.read().decode('utf-8'))
-
-          council = get_json('/gaiaos/council')
-          print('COUNCIL_SOURCE', council.get('source'))
-          assert council.get('authority') == 'NAOMI'
-          assert council.get('effect_authority') == 'NONE_READ_ONLY'
-          profiles = council['council']['profiles']['members']
-          expected = {'VERA','ANVIL','SELENE','ORIN','KESTREL','NIMUE'}
-          assert set(profiles) == expected, set(profiles)
-
-          vera = get_json('/gaiaos/operator/VERA')
-          print('VERA', json.dumps(vera, sort_keys=True))
-          assert vera.get('authority') == 'NAOMI'
-          assert vera.get('member') == 'VERA'
-          assert vera.get('placeholder_slot') is True
-          assert vera['profile'].get('role') == 'PREMISE / FRAME / META'
-
-          dispatch = post_json('/gaiaos/dispatch', {
-              'signals': ['FRAME', 'PROOF_EDGE', 'NEXT_STEP'],
-              'requested_members': [],
-              'max_members': 3,
-          })
-          print('DISPATCH', json.dumps(dispatch, sort_keys=True))
-          assert dispatch.get('authority') == 'NAOMI'
-          assert dispatch.get('effect_authority') == 'NONE_READ_ONLY_DISPATCH'
-          selected = [x['member'] for x in dispatch.get('selected', [])]
-          assert selected == ['KESTREL','VERA','ANVIL'], selected
-          assert dispatch.get('unknown_signals') == []
-          assert dispatch.get('placeholder_roster') is True
-
-          print('GAIAOS_COUNCIL_LIVE_SMOKE_PASS')
+      - run: echo "Legacy council smoke disabled. Use GaiaOS Master Canary."
