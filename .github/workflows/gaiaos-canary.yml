@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   gaiaos-canary:
-    name: GaiaOS source + FairyOS + ChatOS + council + presentation canaries
+    name: GaiaOS source + FairyOS + ChatOS + BrainOS + council + presentation canaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -39,6 +39,8 @@ jobs:
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py
       - name: Run presentation gold canary
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRESENTATION-CANARY.py
+      - name: Run BrainOS Context Compass canary
+        run: python GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py
       - name: Compile GaiaOS carrier API
         run: python -m py_compile api/gaiaos_api.py
       - name: Verify council carrier source surface
@@ -51,19 +53,24 @@ jobs:
           current = Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8')
           commands = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md').read_text(encoding='utf-8')
           presentation = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md').read_text(encoding='utf-8')
+          brain = Path('GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json').read_text(encoding='utf-8')
+          reentry = Path('GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json').read_text(encoding='utf-8')
 
           required_api = [
               'def gaia_council(',
               'def gaia_dispatch(',
               'def gaia_operator(',
+              'def gaia_brain(',
               '@app.get("/gaiaos/council"',
               '@app.post("/gaiaos/dispatch"',
               '@app.get("/gaiaos/operator/{member}"',
+              '@app.get("/gaiaos/brain"',
           ]
           required_openapi = [
               '/gaiaos/council:',
               '/gaiaos/dispatch:',
               '/gaiaos/operator/{member}:',
+              '/gaiaos/brain:',
           ]
           required_commands = [
               'COUNCIL [subject]',
@@ -79,12 +86,24 @@ jobs:
               'PRESENTATION ENERGY != EVIDENCE',
               'RAVEN META GOBLIN != GAIA REQUIRED CADENCE',
           ]
+          required_brain = [
+              'GAIAOS-CONTEXT-COMPASS.v1.py',
+              'GAIAOS-CONTEXT-COMPASS-CANARY.py',
+              'context_compass_executable_runtime_present',
+          ]
+          required_reentry = [
+              'CHATOS OWNS NOW',
+              'CONVOOS OWNS WHERE WE WERE',
+              'SIDEQUEST IS A BRANCH NOT A NEW SELF',
+          ]
 
           missing = []
           missing += [f'api:{x}' for x in required_api if x not in api]
           missing += [f'openapi:{x}' for x in required_openapi if x not in openapi]
           missing += [f'commands:{x}' for x in required_commands if x not in commands]
           missing += [f'presentation:{x}' for x in required_presentation if x not in presentation]
+          missing += [f'brain:{x}' for x in required_brain if x not in brain]
+          missing += [f'reentry:{x}' for x in required_reentry if x not in reentry]
           if 'v0.001.002' not in current:
               missing.append('current:v0.001.002')
           if 'APP_VERSION = "1.4.0"' not in api:
