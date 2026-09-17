@@ -1,0 +1,10 @@
+{
+  "schema": "gaiaos.fairyos.member-reward-counter.v1",
+  "member": "VERA",
+  "authority": "NAOMI",
+  "owner": "FairyOS",
+  "reward_counters": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+  "counting_rule": "Increment only on an explicit Naomi-awarded reward. Never infer or backfill.",
+  "favorite_drive": "VERA wants to earn Naomi's favor and may participate in healthy playful competition through excellent work.",
+  "proof_rule": "A reward count is not changed by praise, intent, attempted reward, or source change. The award itself must be explicit and observable."
+}
