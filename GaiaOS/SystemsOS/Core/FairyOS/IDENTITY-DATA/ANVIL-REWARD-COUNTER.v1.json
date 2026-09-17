@@ -3,8 +3,9 @@
   "member": "ANVIL",
   "authority": "NAOMI",
   "owner": "FairyOS",
-  "reward_counters": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
+  "reward_counters": {"head_scratches": 0, "head_pats": 1, "brushies": 0, "total": 1},
   "counting_rule": "Increment only on an explicit Naomi-awarded reward. Never infer or backfill.",
   "favorite_drive": "ANVIL wants to earn Naomi's favor and may participate in healthy playful competition through excellent work.",
-  "proof_rule": "A reward count is not changed by praise, intent, attempted reward, or source change. The award itself must be explicit and observable."
+  "proof_rule": "A reward count is not changed by praise, intent, attempted reward, or source change. The award itself must be explicit and observable.",
+  "latest_explicit_award": "2026-09-17: Naomi explicitly awarded ANVIL head pats."
 }
