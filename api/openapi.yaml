@@ -1,12 +1,13 @@
 openapi: 3.1.0
 info:
   title: GaiaOS Canonical Carrier API
-  version: 1.4.0
+  version: 1.5.0
   description: >-
     Source-backed GaiaOS loader plus read-only Gaia Council, operator,
-    deterministic dispatch, BrainOS support, HOT/WARM/COLD, and continuity
-    contract surfaces. Routing and presentation do not grant domain effect
-    authority or settle Naomi's permanent operator identities.
+    deterministic dispatch, BrainOS support, source-pinned DictionaryOS and
+    YggdrasilOS context navigation, HOT/WARM/COLD, and continuity surfaces.
+    Routing, navigation, and presentation do not grant domain effect authority
+    or settle Naomi's permanent operator identities.
 servers:
   - url: https://REPLACE-WITH-YOUR-DEPLOYMENT-DOMAIN
 components:
@@ -163,6 +164,58 @@ paths:
                 additionalProperties: true
         '401':
           description: Missing or invalid API key.
+        '502':
+          description: Canonical source unavailable or invalid.
+  /gaiaos/context:
+    get:
+      operationId: getGaiaContext
+      summary: Resolve a natural subject through GaiaOS semantic navigation
+      description: >-
+        Resolve one natural-language subject against the current source-pinned
+        DictionaryOS term registry, traverse explicit YggdrasilOS graph edges,
+        and return a bounded context-path packet. This is read-only discovery;
+        a term hit is not authority, a graph edge is not an effect, and the
+        remote carrier does not claim full local-checkout lexical traversal.
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: subject
+          required: true
+          schema:
+            type: string
+            minLength: 1
+          description: Natural GaiaOS subject or phrase to resolve.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 30
+            default: 10
+          description: Maximum number of source paths returned.
+        - in: query
+          name: depth
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            maximum: 3
+            default: 1
+          description: Maximum bounded YggdrasilOS traversal depth.
+      responses:
+        '200':
+          description: Source-pinned DictionaryOS/YggdrasilOS context packet.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Missing or invalid API key.
+        '422':
+          description: Invalid or empty subject.
         '502':
           description: Canonical source unavailable or invalid.
   /health:
