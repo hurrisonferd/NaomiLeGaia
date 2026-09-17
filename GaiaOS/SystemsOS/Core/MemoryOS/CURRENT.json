@@ -1,0 +1,41 @@
+{
+  "schema": "gaiaos.memoryos.current.v1",
+  "system": "MemoryOS",
+  "authority": "NAOMI",
+  "status": "ACTIVE_SOURCE_CONTRACT_AND_RUNTIME",
+  "purpose": "Bounded session-to-memory lifecycle connecting conversation events to candidates, approval, MemconOS persistence, receipts, verification, and contextual retrieval.",
+  "protocol": "GaiaOS/SystemsOS/Core/MemoryOS/MEMORYOS.v1.md",
+  "runtime": "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py",
+  "backend": "api/memcon_runtime.py",
+  "lifecycle": [
+    "SESSION",
+    "EXTRACT",
+    "CLASSIFY",
+    "DEDUPE",
+    "DELIBERATE",
+    "CANDIDATE",
+    "NAOMI_APPROVAL",
+    "WRITE",
+    "RECEIPT",
+    "VERIFY",
+    "RETRIEVE",
+    "CONTEXT"
+  ],
+  "durable_promotion_requires_approval": true,
+  "automatic_capture": false,
+  "automatic_promotion": false,
+  "session_event_graph": true,
+  "member_local_ownership": true,
+  "laws": [
+    "EXCHANGE != MEMORY",
+    "CANDIDATE != DURABLE RECORD",
+    "APPROVAL != WRITE RECEIPT",
+    "WRITE RECEIPT != VERIFICATION",
+    "SESSION EVENT != UNIVERSAL MEMORY",
+    "NO CROSS_MEMBER MEMORY MERGE",
+    "MEMORY CONTEXT != IDENTITY AUTHORITY",
+    "RETRIEVAL != ADOPTION",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
+}
