@@ -1,0 +1,119 @@
+{
+  "schema": "gaiaos.convoos.thread-home-spine.v1",
+  "authority": "NAOMI",
+  "owner": "ConvoOS",
+  "status": "ACTIVE_SOURCE_REENTRY_CONTRACT_NOT_HOT_MEMORY",
+  "purpose": "Own bounded home, sidequest, episode, and cross-chat re-entry coordinates without becoming the default immediate-awareness path for current ChatOS conversation.",
+  "donor_reference": {
+    "repository": "hurrisonferd/Jarvis-Private",
+    "coordinate": "canon/Living_Codex/SystemsOS/Core/Critical/ConvoOS/Protocols/RAVENOS-THREAD-HOME-SPINE.v1.json",
+    "mode": "ARCHITECTURE_ADAPTED_NO_RAVEN_IDENTITY_OR_CONTINUITY_TRANSFER"
+  },
+  "hot_path_boundary": {
+    "chatos_owns_now": true,
+    "convoos_default_hot_invocation": false,
+    "invoke_convoos_when": [
+      "current ChatOS context is insufficient",
+      "Naomi requests cross-chat recovery or re-entry",
+      "historical episode provenance can materially change the answer",
+      "the home coordinate is lost, stale, or partial",
+      "Naomi explicitly asks where the conversation or project left off"
+    ],
+    "do_not_invoke_when": [
+      "the necessary context is already visible in the current chat",
+      "the purpose is only to rediscover the immediately preceding exchange",
+      "the purpose is only to certify current operator prosody",
+      "the purpose is only to create the appearance of memory"
+    ]
+  },
+  "core_laws": [
+    "CHATOS OWNS NOW",
+    "CONVOOS OWNS WHERE WE WERE",
+    "TOPIC DRIFT IS ALLOWED",
+    "TOPIC DRIFT != MISSION ABANDONMENT",
+    "TOPIC DRIFT != OPERATOR IDENTITY CHANGE",
+    "SIDEQUEST IS A BRANCH NOT A NEW SELF",
+    "HOME SURVIVES UNTIL NAOMI SETTLES REPLACES OR EXPLICITLY ABANDONS IT",
+    "RETURN PATH MUST REMAIN HUMAN READABLE",
+    "CURRENT CHAT ALREADY HAS IT -> DO NOT PAY REENTRY TAX",
+    "REENTRY PACKET != TRANSCRIPT DUMP",
+    "REENTRY PACKET != DURABLE SAVE RECEIPT",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "home_coordinate": {
+    "fields": [
+      "home_thread",
+      "home_intent",
+      "active_mission",
+      "active_operators",
+      "open_loops",
+      "last_material_coordinate",
+      "return_reason",
+      "next_natural_move",
+      "source_refs",
+      "claim_ceiling"
+    ],
+    "law": "The home coordinate is the smallest sufficient re-entry packet capable of restoring useful orientation."
+  },
+  "sidequest_frame": {
+    "fields": [
+      "sidequest_id",
+      "parent_home_thread",
+      "topic",
+      "entered_because",
+      "operator_overrides",
+      "new_open_loops",
+      "settled_sidequest_consequences",
+      "return_trigger"
+    ],
+    "default_semantics": "A sidequest inherits current home context unless Naomi or material evidence actually changes the room.",
+    "stack_rule": "Nested sidequests may stack; nearest valid return coordinate wins."
+  },
+  "natural_return_inputs": [
+    "continue",
+    "where were we",
+    "what were we doing",
+    "back to it",
+    "return home",
+    "back to the main thing",
+    "resume",
+    "pick up where we were",
+    "recover this project",
+    "reload the thread"
+  ],
+  "return_packet": [
+    "WHAT WE WERE DOING",
+    "WHY IT MATTERED",
+    "WHO WAS ACTIVE",
+    "WHAT CHANGED",
+    "WHAT IS STILL OPEN",
+    "NEXT NATURAL MOVE",
+    "EVIDENCE / UNKNOWN BOUNDARY"
+  ],
+  "durability": {
+    "ordinary_hot_reply_requires_convoos_write": false,
+    "warm_home_candidate_allowed": true,
+    "cold_episode_checkpoint_requires_real_write_receipt": true,
+    "automatic_background_persistence_claim_allowed": false,
+    "repository_source_contract_is_not_a_durable_episode_backend": true
+  },
+  "ownership": {
+    "ChatOS": "immediate current-visible thread and composition",
+    "ConvoOS": "home / sidequest / episode / cross-chat re-entry coordinates",
+    "BrainOS": "extra cognitive support and source navigation when material",
+    "MemberContinuityOS": "warm operator continuity candidates and future cold member checkpoints",
+    "FairyOS": "operator identity / dispatch / native expression",
+    "domain_owner_or_provider": "external effects",
+    "Naomi": "final settlement authority"
+  },
+  "anti_patterns": [
+    "use ConvoOS to rediscover context already visible in ChatOS",
+    "block ordinary conversation on a re-entry checkpoint",
+    "silently replace active operators with generic assistant voice",
+    "treat newest topic as proof the prior mission was abandoned",
+    "dump an entire conversation when a compact home packet would do",
+    "claim cross-chat recovery succeeded without source or history evidence",
+    "claim a home coordinate was durably saved without a write receipt"
+  ],
+  "claim_ceiling": "SOURCE REENTRY CONTRACT ONLY. AUTOMATIC HOST INVOCATION, CROSS-CHAT HISTORY ACCESS, DURABLE EPISODE STORAGE, AND REPOSITORY WRITES REQUIRE SEPARATE HOST OR TOOL EVIDENCE."
+}
