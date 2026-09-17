@@ -105,9 +105,18 @@
         "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "3303f4b601100cdd9bbdb3035dc82cea410fbc8b",
+      "timestamp_utc": "2026-09-17T17:35:40.315380+00:00",
+      "changed_paths": [
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T17:35:02.746249+00:00"
+  "last_verified": "2026-09-17T17:35:40.315380+00:00"
 }
