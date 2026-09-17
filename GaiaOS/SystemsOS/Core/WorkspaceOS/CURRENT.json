@@ -1,0 +1,11 @@
+{
+  "schema": "gaiaos.workspaceos.current.v1",
+  "system": "WorkspaceOS",
+  "authority": "NAOMI",
+  "status": "ACTIVE_SOURCE_CONTRACT_AND_RUNTIME",
+  "purpose": "Provide bounded artifact/workspace creation with provenance, versions, checksums, and reversible operations.",
+  "protocol": "GaiaOS/SystemsOS/Core/WorkspaceOS/WORKSPACEOS.v1.md",
+  "runtime": "GaiaOS/SystemsOS/Core/WorkspaceOS/Runtime/GAIAOS-WORKSPACE.v1.py",
+  "root": "/data/gaiaos-workspace",
+  "laws": ["ARTIFACT != CLAIM","WRITE REQUIRES APPROVAL","PROVENANCE REQUIRED","VERSIONED ARTIFACTS ARE RECONSTRUCTABLE","NAOMI RETAINS FINAL AUTHORITY"]
+}
