@@ -1,0 +1,23 @@
+{
+  "schema": "gaiaos.dictionaryos.current.v1",
+  "system": "DictionaryOS",
+  "authority": "NAOMI",
+  "owner": "DictionaryOS",
+  "status": "ACTIVE_SOURCE_READ_ONLY_TERM_ALIAS_RESOLUTION",
+  "class": "SEMANTIC_NAMING_AND_ALIAS_RESOLUTION",
+  "readme": "GaiaOS/SystemsOS/Core/DictionaryOS/README.md",
+  "registry": "GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json",
+  "runtime": "GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py",
+  "canary": "GaiaOS/SystemsOS/Core/DictionaryOS/Tests/GAIAOS-DICTIONARY-CANARY.py",
+  "downstream": "GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json",
+  "laws": [
+    "DICTIONARYOS NAMES AND RESOLVES; IT DOES NOT GRANT AUTHORITY",
+    "ALIAS HIT != CURRENT OWNER AUTHORITY",
+    "CURRENT GAIA SOURCE OUTRANKS DONOR LINEAGE FOR GAIA SEMANTICS",
+    "EMPTY RESOLUTION != PROOF OF ABSENCE",
+    "READ != ACT",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "claim_ceiling": "Bounded Gaia-native term and alias resolution only. It does not establish identity, execution authority, durable memory, or semantic completeness."
+}
