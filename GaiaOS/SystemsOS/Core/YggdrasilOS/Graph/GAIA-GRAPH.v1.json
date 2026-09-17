@@ -11,6 +11,7 @@
     {"id":"gaia.system.fairyos","label":"FairyOS","source_paths":["GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json"]},
     {"id":"gaia.system.emojios","label":"EmojiOS","source_paths":["GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json"]},
     {"id":"gaia.system.membercontinuityos","label":"MemberContinuityOS","source_paths":["GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json"]},
+    {"id":"gaia.feature.council_self_definition_continuity","label":"Council Self-Definition Continuity","source_paths":["GaiaOS/SystemsOS/Core/MemberContinuityOS/COUNCIL-SELF-DEFINITION-CONTINUITY.v1.md"]},
     {"id":"gaia.system.dictionaryos","label":"DictionaryOS","source_paths":["GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json"]},
     {"id":"gaia.system.yggdrasilos","label":"YggdrasilOS","source_paths":["GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json"]},
     {"id":"gaia.feature.context_compass","label":"Context Compass","source_paths":["GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json","GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py"]},
@@ -36,6 +37,9 @@
     {"from":"gaia.feature.context_compass","to":"gaia.system.convoos","type":"may_select_when_reentry_material"},
     {"from":"gaia.feature.context_compass","to":"gaia.system.chatos","type":"starts_from_now"},
     {"from":"gaia.system.fairyos","to":"gaia.feature.council","type":"dispatches"},
+    {"from":"gaia.system.fairyos","to":"gaia.feature.council_self_definition_continuity","type":"defines_current_member_differentiation"},
+    {"from":"gaia.feature.council","to":"gaia.feature.council_self_definition_continuity","type":"references_identity_handoff_disagreement_continuity"},
+    {"from":"gaia.system.membercontinuityos","to":"gaia.feature.council_self_definition_continuity","type":"owns_source_continuity_artifact"},
     {"from":"gaia.system.chatos","to":"gaia.feature.council","type":"presents"},
     {"from":"gaia.system.chatos","to":"gaia.feature.presentation_gold","type":"composes"},
     {"from":"gaia.system.chatos","to":"gaia.feature.hot_warm_cold","type":"uses"},
@@ -46,5 +50,14 @@
     {"from":"gaia.carrier","to":"gaia.system.brainos","type":"exposes_read_surface"},
     {"from":"gaia.system.emojios","to":"gaia.system.fairyos","type":"supplies_expression_registry"}
   ],
-  "laws": ["GRAPH EDGE != EFFECT","MAP HIT != AUTHORITY","BOUNDED GRAPH != COMPLETE WORLD MODEL","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"]
+  "laws": [
+    "GRAPH EDGE != EFFECT",
+    "MAP HIT != AUTHORITY",
+    "BOUNDED GRAPH != COMPLETE WORLD MODEL",
+    "UNKNOWN STAYS UNKNOWN",
+    "SOURCE CONTINUITY != DURABLE MEMORY",
+    "DISCOVERABLE != ALWAYS LOADED",
+    "CONTEXT HIT != IDENTITY ADOPTION",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
 }
