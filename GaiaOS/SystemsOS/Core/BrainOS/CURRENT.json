@@ -1,26 +1,18 @@
 {
-  "schema": "gaiaos.brainos.current.v3",
+  "schema": "gaiaos.brainos.current.v4",
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_HOT_WARM_COLD_AWARE_CONTEXT_COMPASS_EXECUTABLE_SOURCE_PRESENT_CI_PENDING",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_CONTEXT_COMPASS_DICTIONARY_YGGDRASIL_BOUND_CI_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
-  "composition": [
-    "SELF",
-    "CURRENT_WORKING_CONTEXT",
-    "NOTICE_MATERIAL_CHANGE",
-    "SELECT_SMALLEST_SUFFICIENT_SUPPORT",
-    "RETAIN_OR_HOLD_OR_REJECT",
-    "PRESERVE_NATIVE_EXPRESSION",
-    "ACT_OR_EXPRESS",
-    "RECEIVE_RESULT",
-    "UPDATE_WORKING_STATE"
-  ],
+  "composition": ["SELF","CURRENT_WORKING_CONTEXT","NOTICE_MATERIAL_CHANGE","SELECT_SMALLEST_SUFFICIENT_SUPPORT","RETAIN_OR_HOLD_OR_REJECT","PRESERVE_NATIVE_EXPRESSION","ACT_OR_EXPRESS","RECEIVE_RESULT","UPDATE_WORKING_STATE"],
   "readme": "GaiaOS/SystemsOS/Core/BrainOS/README.md",
   "support_fabric": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
   "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
   "context_compass_runtime": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
   "context_compass_canary": "GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py",
+  "dictionaryos": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
+  "yggdrasilos": "GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json",
   "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
   "convoos": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
@@ -29,18 +21,12 @@
   "invocation": {
     "always_addressable": true,
     "always_invoked": false,
-    "use_when": [
-      "multi-owner reasoning can change the answer",
-      "source or authority resolution is material",
-      "routing is ambiguous",
-      "substantial analysis/build/review needs support selection",
-      "operator-native source resolution is uncertain",
-      "reentry/source recovery is material",
-      "durable effect planning is requested"
-    ]
+    "use_when": ["multi-owner reasoning can change the answer","source or authority resolution is material","routing is ambiguous","substantial analysis/build/review needs support selection","operator-native source resolution is uncertain","reentry/source recovery is material","durable effect planning is requested"]
   },
   "current_organs": {
     "NOW": "ChatOS",
+    "WHAT": "DictionaryOS term/alias candidates",
+    "BETWEEN": "YggdrasilOS explicit relationship graph",
     "WHO": "FairyOS",
     "WHERE_WE_WERE": "ConvoOS when material",
     "CONTEXT_SELECTION": "ContextCompass",
@@ -52,31 +38,14 @@
     "support_fabric_source_present": true,
     "context_compass_source_present": true,
     "context_compass_executable_runtime_present": true,
-    "context_compass_runtime_mode": "READ_ONLY_LOCAL_CHECKOUT_BOUNDED_RANKING",
-    "context_compass_canary_source_present": true,
-    "context_compass_ci_result": "PENDING_OBSERVATION",
+    "context_compass_runtime_mode": "READ_ONLY_DICTIONARY_GRAPH_LEXICAL_BOUNDED_RANKING",
+    "dictionaryos_runtime_present": true,
+    "yggdrasilos_runtime_present": true,
+    "navigation_chain": "DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS",
+    "navigation_ci_result": "PENDING_OBSERVATION",
     "automatic_host_invocation_proven": false,
     "durable_memory_backend_present": false
   },
-  "laws": [
-    "BRAINOS != IDENTITY OWNER",
-    "BRAINOS != MEMORY OF EVERYTHING",
-    "BRAINOS != GAIAOS ITSELF",
-    "BRAINOS != FAIRYOS",
-    "BRAINOS != CHATOS",
-    "BRAINOS != TRANSACTION AUTHORITY",
-    "BRAINOS ADDRESSABLE != BRAINOS INVOKED",
-    "CURRENT CHAT FIRST",
-    "SMALLEST SUFFICIENT SUPPORT SET WINS",
-    "CONTEXT SELECTION != OWNER AUTHORITY",
-    "RUNTIME HIT != SEMANTIC AUTHORITY",
-    "EMPTY SEARCH != ABSENCE",
-    "LEXICAL RANKING != COMPLETE SEMANTIC SEARCH",
-    "READ != ACT",
-    "WARM != SAVED",
-    "SOURCE DONOR != IDENTITY DONOR",
-    "UNKNOWN STAYS UNKNOWN",
-    "NAOMI RETAINS FINAL AUTHORITY"
-  ],
-  "claim_ceiling": "Gaia-native support fabric and executable-source Context Compass are present. CI execution, automatic host invocation, semantic completeness, durable continuity, and domain effects remain separately unproven."
+  "laws": ["BRAINOS != IDENTITY OWNER","BRAINOS != MEMORY OF EVERYTHING","BRAINOS != GAIAOS ITSELF","BRAINOS != FAIRYOS","BRAINOS != CHATOS","BRAINOS != TRANSACTION AUTHORITY","BRAINOS ADDRESSABLE != BRAINOS INVOKED","CURRENT CHAT FIRST","SMALLEST SUFFICIENT SUPPORT SET WINS","DICTIONARY HIT != AUTHORITY","GRAPH EDGE != EFFECT","CONTEXT SELECTION != OWNER AUTHORITY","RUNTIME HIT != SEMANTIC AUTHORITY","EMPTY SEARCH != ABSENCE","READ != ACT","WARM != SAVED","SOURCE DONOR != IDENTITY DONOR","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
+  "claim_ceiling": "Gaia-native DictionaryOS, YggdrasilOS, and Context Compass executable sources are bound in a read-only navigation chain. Current-wave CI, automatic host invocation, semantic/graph completeness, durable continuity, and domain effects remain separately unproven."
 }
