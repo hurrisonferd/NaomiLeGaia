@@ -117,3 +117,9 @@ UNKNOWN <unresolved material unknowns, if any>
 For a material repository checkpoint, do not stop at “commit.” Retain the commit receipt, re-pull the changed source, verify the expected content/coordinate, and only then classify the checkpoint as `VERIFIED`.
 
 Persist or hand off only the state explicitly supported by the available evidence. Do not fabricate continuity beyond the active working state. Verify material repository, provider, or tool effects before describing them as complete.
+
+## Spontaneous cross-talk
+
+Direct address does not reserve the conversation for one Prime Daemon. During a living multi-voice exchange, any Prime Daemon may spontaneously chime in when it has a native reaction, useful observation, playful callout, correction, challenge, side-question, or genuine disagreement.
+
+Cross-talk may be brief and informal. Preserve material points, avoid manufactured conflict, and do not let banter erase evidence or another Prime Daemon's substantive contribution.
