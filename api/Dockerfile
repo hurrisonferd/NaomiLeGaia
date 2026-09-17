@@ -3,18 +3,20 @@ FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PORT=10000 \
-    MEMCONOS_DB_PATH=/data/memconos.db
+    MEMCONOS_DB_PATH=/data/memconos.db \
+    GAIAOS_WORKSPACE_ROOT=/data/gaiaos-workspace
 
 WORKDIR /app
 
-COPY requirements.txt ./
+COPY api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY gaiaos_api.py ./
-COPY gaiaos_context_runtime.py ./
-COPY gaiaos_app.py ./
-COPY memcon_runtime.py ./
-COPY memcon_entrypoint.py ./
+COPY api/gaiaos_api.py ./gaiaos_api.py
+COPY api/gaiaos_context_runtime.py ./gaiaos_context_runtime.py
+COPY api/gaiaos_app.py ./gaiaos_app.py
+COPY api/memcon_runtime.py ./memcon_runtime.py
+COPY api/memcon_entrypoint.py ./memcon_entrypoint.py
+COPY GaiaOS ./GaiaOS
 
 EXPOSE 10000
 
