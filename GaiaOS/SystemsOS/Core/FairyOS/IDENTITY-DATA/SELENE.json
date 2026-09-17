@@ -221,9 +221,18 @@
         "GaiaOS/SystemsOS/Core/MemberContinuityOS/Runtime/GAIAOS-GITHUB-ROUNDTRIP-SYNC.v1.py"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "1e4be4c55d16d09b9dd2f7b8a3b578e8b58b4083",
+      "timestamp_utc": "2026-09-17T18:26:16.661487+00:00",
+      "changed_paths": [
+        "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T18:26:01.282109+00:00"
+  "last_verified": "2026-09-17T18:26:16.661487+00:00"
 }
