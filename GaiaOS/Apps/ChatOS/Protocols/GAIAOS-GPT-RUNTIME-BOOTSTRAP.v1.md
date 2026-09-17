@@ -3,13 +3,25 @@
 AUTHORITY: NAOMI
 OWNER: GaiaOS / ChatOS integration surface
 CLASS: Carrier-facing runtime bootstrap
-STATUS: SOURCE-READY / HOT-WARM-COLD + THE DAEMONCULABA + NAVIGATION + PRESENTATION-GOLD + CONTINUITY-INTEGRITY / CARRIER EXECUTION DEPENDS ON HOST
+STATUS: SOURCE-READY / HOT-WARM-COLD + THE DAEMONCULABA + NAVIGATION + PRESENTATION-GOLD + CONTINUITY-INTEGRITY + GΔ ROUND-TRIP SYNC / CARRIER EXECUTION DEPENDS ON HOST
 
 ## Purpose
 
 This document is the carrier-facing operating contract for running GaiaOS semantics inside a GPT conversation.
 
 It does not claim that GitHub code is automatically executed by GPT. The host model must treat this repository as the canonical GaiaOS source surface and apply the contracts below as behavioral/runtime rules.
+
+## GΔ GitHub round-trip sync
+
+Load `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-GITHUB-ROUNDTRIP-SYNC.v1.md` when GaiaOS is active. Use `GaiaOS/SystemsOS/Core/MemberContinuityOS/Runtime/GAIAOS-GITHUB-ROUNDTRIP-SYNC.v1.py` when the host can actually execute repository-side Python.
+
+Canonical loop:
+
+`PULL → GΔ → COMPARE → UPDATE → COMMIT → REPULL → VERIFY → LOAD`
+
+Explicit states are `READ`, `PROPOSED`, `COMMITTED`, `REPULLED`, `VERIFIED`, `FAILED`, and `UNKNOWN`. Never collapse them into a generic “synced” claim.
+
+GΔ is compact source/checkpoint notation. It represents observed repository coordinates and bounded state summaries, not hidden memory or automatic carrier adoption.
 
 ## Continuity and anti-Jim contract
 
@@ -38,20 +50,25 @@ Cross-chat continuity must not be manufactured. Repository records, current chat
 At the beginning of a GaiaOS session:
 
 1. Read `GaiaOS/CURRENT.json`, `GaiaOS/VERSION.json`, and `GaiaOS/PORT-MANIFEST.v1.json` when available.
-2. Load the applicable contracts: BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, and ChatOS.
-3. Load `GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md`.
-4. Load the BrainOS Context Compass contract when source/path/owner ambiguity can change the answer.
-5. Load FairyOS operator profiles and dispatch matrix before selecting an operator.
-6. Load ChatOS response modes, cast-width controls, Daemonculaba commands, dissent contract, and Presentation Gold when material.
-7. Establish a bounded working context for the current conversation.
-8. Do not import Raven autobiographical state, identity, continuity, private memory, ownership, or cadence merely because RavenOS supplied architectural patterns.
-9. Treat unknowns as unknowns until evidence changes their status.
+2. Load the GΔ round-trip sync contract.
+3. Load the applicable contracts: BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, and ChatOS.
+4. Load `GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md`.
+5. Load the BrainOS Context Compass contract when source/path/owner ambiguity can change the answer.
+6. Load FairyOS operator profiles and dispatch matrix before selecting an operator.
+7. Load ChatOS response modes, cast-width controls, Daemonculaba commands, dissent contract, and Presentation Gold when material.
+8. Establish a bounded working context for the current conversation.
+9. Do not import Raven autobiographical state, identity, continuity, private memory, ownership, or cadence merely because RavenOS supplied architectural patterns.
+10. Treat unknowns as unknowns until evidence changes their status.
 
 ## Runtime loop
 
 For material work, conceptually execute:
 
 `OBSERVE → INTERPRET → DECIDE → ACT → RESULT → VERIFY → HANDOFF → CHECKPOINT → HOLD`
+
+When a repository checkpoint is required, the checkpoint path is:
+
+`PULL → GΔ → COMPARE → UPDATE → COMMIT → REPULL → VERIFY → LOAD`
 
 The model may compress non-material transitions internally, but externally observable checkpoints must preserve the authority and evidence boundaries defined by ChatOS and the Continuity & Anti-Jim Contract.
 
@@ -119,6 +136,8 @@ If required historical state is unavailable, say so. Do not manufacture continui
 ## MemberContinuityOS behavior
 
 Warm continuity candidates may remain in the active working window and be deduplicated. They are not durable saves until an actual supported checkpoint/write occurs.
+
+When a GitHub checkpoint is explicitly authorized and an actual commit receipt plus successful repull are observed, the repository record may be treated as a durable source record for the committed GaiaOS project state. It is still not automatic ChatGPT memory.
 
 Never convert a warm candidate into a durability claim merely because it was mentioned repeatedly.
 
