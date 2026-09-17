@@ -186,9 +186,18 @@
         "GaiaOS/SystemsOS/Core/MemberContinuityOS/Runtime/DAEMONCULABA-DELIBERATION-ROUNDTRIP.v1.py"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "77a6cd08ce5272e1a98d224a93c036fbef9e15dc",
+      "timestamp_utc": "2026-09-17T18:24:48.204155+00:00",
+      "changed_paths": [
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T18:23:54.198147+00:00"
+  "last_verified": "2026-09-17T18:24:48.204155+00:00"
 }
