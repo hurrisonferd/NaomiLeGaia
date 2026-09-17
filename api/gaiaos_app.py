@@ -104,14 +104,8 @@ base._fetch_file = _deployed_fetch_file
 base.APP_VERSION = EXTENSION_VERSION
 app = base.app
 mcp = base.mcp
-mcp.instructions = (
-    "GaiaOS is Naomi's read-only source-backed support carrier. For ordinary requests, "
-    "use gaia(request) as the PRIMARY FRONT DOOR. It returns bounded context, conservative "
-    "Gaia-native council routing, source binding, authority, and proof limits in one compact packet. "
-    "Use gaia_selftest for diagnostics. Use load_gaiaos, gaia_council, gaia_brain, gaia_context, "
-    "gaia_dispatch, and gaia_operator only for explicit deep inspection or debugging. Do not make "
-    "Naomi or Raven manually orchestrate those tools when gaia() is sufficient. Naomi retains final authority."
-)
+# PRIMARY FRONT DOOR instructions are defined when FastMCP is constructed in
+# gaiaos_api.py. FastMCP 1.30 exposes instructions as a read-only property.
 app.version = EXTENSION_VERSION
 app.description = (
     "GaiaOS deployed-checkout source loader plus a compact Gaia front door, "

@@ -69,13 +69,14 @@ LOAD_PATHS = CORE_LOAD_PATHS + COUNCIL_PATHS
 mcp = FastMCP(
     "GaiaOS Carrier",
     instructions=(
-        "Canonical GaiaOS source loader and council surface. load_gaiaos retrieves the current "
-        "GaiaOS bootstrap, gaia_council retrieves the full source-backed council packet, "
-        "gaia_dispatch deterministically resolves explicit typed signals through the current "
-        "FairyOS matrix, gaia_operator retrieves one current operator profile, and gaia_brain "
-        "returns the current Gaia-native cognitive support and continuity contracts. These tools "
-        "are read-only and do not claim domain effects, durable memory, or automatic identity adoption."
-    ),
+    "GaiaOS is Naomi's read-only source-backed support carrier. For ordinary requests, "
+    "use gaia(request) as the PRIMARY FRONT DOOR. It returns bounded context, conservative "
+    "Gaia-native council routing, source binding, authority, and proof limits in one compact packet. "
+    "Use gaia_selftest for diagnostics. Use load_gaiaos, gaia_council, gaia_brain, gaia_context, "
+    "gaia_dispatch, and gaia_operator only for explicit deep inspection or debugging. Do not make "
+    "Naomi or Raven manually orchestrate subsystem tools when gaia() is sufficient. These tools are "
+    "read-only support surfaces; dispatch is not execution, WARM is not saved, and Naomi retains final authority."
+),
     stateless_http=True,
     json_response=True,
     transport_security=TransportSecuritySettings(
