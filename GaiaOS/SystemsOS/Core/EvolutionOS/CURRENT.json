@@ -1,0 +1,12 @@
+{
+  "schema": "gaiaos.evolutionos.current.v1",
+  "system": "EvolutionOS",
+  "authority": "NAOMI",
+  "status": "ACTIVE_SOURCE_CONTRACT_AND_RUNTIME",
+  "purpose": "Evaluate observed GaiaOS behavior, identify bounded improvements, run canary checks, and propose changes without silently self-adopting them.",
+  "protocol": "GaiaOS/SystemsOS/Core/EvolutionOS/EVOLUTIONOS.v1.md",
+  "runtime": "GaiaOS/SystemsOS/Core/EvolutionOS/Runtime/GAIAOS-EVOLUTION.v1.py",
+  "cycle": ["OBSERVE","EVALUATE","IDENTIFY_WEAKNESS","PROPOSE","CANARY","APPROVE","COMMIT","REPULL","VERIFY","ADOPT"],
+  "automatic_adoption": false,
+  "laws": ["PROPOSAL != ADOPTION","CANARY != PRODUCTION","COMMIT RECEIPT REQUIRED","REPULL REQUIRED","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"]
+}
