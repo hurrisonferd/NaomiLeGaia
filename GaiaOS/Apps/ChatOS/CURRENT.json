@@ -1,13 +1,12 @@
 {
-  "schema": "gaiaos.chatos.current.v3",
+  "schema": "gaiaos.chatos.current.v4",
   "system": "ChatOS",
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
-  "version": "v0.001.002-dev",
-  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_DAEMONCULABA_VASKON_DISSENT_PRESENTATION_GOLD_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN_CONTINUITY_INTEGRITY",
+  "version": "v0.001.003-dev",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_VASKON_MEMORYOS_AGENCYOS_DISSENT_PRESENTATION_GOLD_CONTINUITY_INTEGRITY",
   "location": "GaiaOS/Apps/ChatOS",
-  "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
-  "purpose": "Own the current carrier-visible NOW surface, compose Gaia-native operator dialogue, expose bounded observable execution state, preserve meaningful dissent, and make the interface feel inhabited without becoming BrainOS, ConvoOS, FairyOS, identity authority, or effect authority.",
+  "purpose": "Own the current carrier-visible NOW surface while handing durable session-memory lifecycle to MemoryOS and preserving claim, identity, and effect boundaries.",
   "sources": {
     "readme": "GaiaOS/Apps/ChatOS/README.md",
     "hot_warm_cold": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
@@ -21,198 +20,37 @@
     "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
     "compiler": "GaiaOS/Apps/ChatOS/Runtime/CHATOS-EVENT-COMPILER.v1.py",
     "canary": "GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py",
-    "dissent_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py",
     "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
     "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+    "memoryos": "GaiaOS/SystemsOS/Core/MemoryOS/CURRENT.json",
+    "memoryos_protocol": "GaiaOS/SystemsOS/Core/MemoryOS/MEMORYOS.v1.md",
+    "memoryos_runtime": "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py",
     "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
     "conjure_vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
     "agencyos": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
     "workspaceos": "GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json",
     "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json"
   },
-  "event_phases": [
-    "OBSERVE",
-    "INTERPRET",
-    "DECIDE",
-    "ACT",
-    "RESULT",
-    "VERIFY",
-    "HANDOFF",
-    "CHECKPOINT",
-    "HOLD"
-  ],
-  "claim_classes": [
-    "CONFIRMED",
-    "ACCOUNT",
-    "INFERRED",
-    "UNKNOWN"
-  ],
-  "source_classes": [
-    "SOURCE_READ",
-    "TOOL_RESULT",
-    "TEST_RESULT",
-    "PROVIDER_RESULT",
-    "USER_ACCOUNT",
-    "SYSTEM_STATE",
-    "DERIVED",
-    "UNKNOWN"
-  ],
-  "hot_path": {
-    "default_for_ordinary_chat": true,
-    "current_visible_context_is_primary": true,
-    "brainos_always_required": false,
-    "convoos_always_required": false,
-    "durable_checkpoint_always_required": false,
-    "tool_reads_force_cold_transaction": false
-  },
-  "response_modes": {
-    "default": "AUTO",
-    "available": [
-      "MIN",
-      "AUTO",
-      "MAX"
-    ],
-    "changes_source_fidelity": false,
-    "changes_semantic_truth": false,
-    "changes_effect_authority": false
-  },
-  "cast_width": {
-    "default": "AUTO",
-    "available": [
-      "AUTO",
-      "SOLO",
-      "DUO",
-      "TRIO",
-      "QUAD",
-      "CAST_N",
-      "FULL"
-    ],
-    "changes_roster": false,
-    "changes_source_fidelity": false,
-    "changes_placeholder_identity_status": false,
-    "explicit_naomi_command_wins": true
-  },
-  "presentation": {
-    "default": "LIVING",
-    "available": [
-      "LIVING",
-      "QUIET",
-      "WILD"
-    ],
-    "contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
-    "living": "inhabited bounded owner-native presentation",
-    "quiet": "suppress optional scene texture while preserving differentiated native voice",
-    "wild": "maximize earned scene texture, interplay, callbacks, humor, and source-visible weirdness without altering truth or authority",
-    "fake_sensor_claims_forbidden": true,
-    "generic_fallback_for_solo_forbidden": true,
-    "style_changes_claim_ceiling": false,
-    "style_changes_effect_authority": false,
-    "style_settles_identity": false
-  },
-  "council": {
-    "smallest_sufficient_cast_in_auto": true,
-    "full_council_forces_all_speakers": false,
-    "everyone_command": "COUNCIL EVERYONE",
-    "scene_alias": "COUNCIL ROOM",
-    "synthesis_may_delete_dissent": false,
-    "dissent_stances": [
-      "AGREE",
-      "OBJECT",
-      "CONTRADICT",
-      "PROPOSE",
-      "QUESTION"
-    ]
-  },
-  "runtime": {
-    "deterministic_event_ids": true,
-    "fairyos_dispatch_reused": true,
-    "independent_fae_routing_table": false,
-    "council_dissent_reducer_source_present": true,
-    "presentation_gold_source_present": true,
-    "domain_effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
-    "private_chain_of_thought_required": false,
-    "automatic_live_carrier_adoption_proven": false,
-    "base_canary_proven_prior": true,
-    "wave2_canary_pending_observation": true,
-    "presentation_canary_present": false
-  },
-  "quality": {
-    "keep_chatter_when": [
-      "changes next action",
-      "changes claim ceiling",
-      "changes operator handoff",
-      "preserves material disagreement",
-      "records meaningful result",
-      "records verification or hold",
-      "prevents Naomi from reconstructing state manually",
-      "creates source-backed inhabited continuity without inventing state",
-      "identifies a material continuity break or boundary issue"
-    ],
-    "compress_chatter_when": [
-      "restates tool call",
-      "repeats unchanged state",
-      "forces non-material operators to speak",
-      "adds personality without work consequence",
-      "scene texture hides the useful result"
-    ]
+  "memory_boundary": {
+    "chatos_owns": "CURRENT_VISIBLE_SESSION",
+    "memoryos_owns": "SESSION_TO_MEMORY_LIFECYCLE",
+    "memconos_owns": "DURABLE_RUNTIME_RECORDS",
+    "automatic_capture": false,
+    "automatic_promotion": false,
+    "retrieval_is_context_not_identity_authority": true
   },
   "laws": [
     "CHATOS OWNS NOW",
-    "CHATOS != BRAINOS",
-    "CHATOS != CONVOOS MEMORY",
-    "CHATOS != FAIRYOS DISPATCH OWNER",
-    "CHATOS != PRIVATE CHAIN OF THOUGHT",
-    "CHATOS EVENT != DOMAIN EFFECT",
-    "VISIBLE COMMENT != RECEIPT",
-    "SOURCE RESOLUTION PRECEDES RESPONSE DENSITY",
-    "CAST WIDTH != DAEMONCULABA MEMBERSHIP",
-    "SOLO != GENERIC ASSISTANT",
-    "SYNTHESIS MAY NOT DELETE DISSENT",
-    "PRESENTATION ENERGY != EVIDENCE",
-    "OWNER NATIVE DIFFERENTIATION > ROLE LABEL THEATER",
-    "VISIBLE SOURCE BACKED WEIRDNESS MAY BE PRESENTED; UNOBSERVED WEIRDNESS MAY NOT BE CLAIMED AS FACT",
-    "CONFIRMED REQUIRES EVIDENCE",
+    "MEMORYOS OWNS SESSION_TO_MEMORY",
+    "MEMCONOS OWNS DURABLE RUNTIME RECORDS",
+    "EXCHANGE != MEMORY",
+    "CANDIDATE != DURABLE RECORD",
+    "WRITE RECEIPT != VERIFICATION",
+    "RETRIEVAL != IDENTITY ADOPTION",
     "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
-    "ONE TRANSACTION = ONE AUTHORITY THROAT",
-    "REQUESTED ACTION != COMPLETED ACTION",
-    "INTENDED STATE != OBSERVED STATE",
-    "TRACEABLE NON-OCCURRENCE MUST NOT BE PRESENTED AS SUCCESS",
-    "CONTINUITY BREAKS MUST BE SURFACED",
     "NAOMI RETAINS FINAL AUTHORITY"
-  ],
-  "claim_ceiling": "Hot/warm/cold, cast width, dissent preservation, BrainOS support selection, Context Compass source contracts, GaiaOS Presentation Gold, and continuity-integrity behavior are present. Automatic GPT host adoption, executable context traversal, durable warm persistence, live domain effects, and permanent roster identity adoption remain unproven.",
-  "conjure_vaskon": {
-    "enabled": true,
-    "command": "CONJURE:VASKON",
-    "mode": "TEMPORARY_SIX_PRIME_DAEMON_SYNTHESIS",
-    "output_attribution": "VASKON",
-    "cycle": [
-      "ASSEMBLE",
-      "DECOMPOSE",
-      "DELIBERATE",
-      "CROSS-CRITIQUE",
-      "SYNTHESIZE",
-      "SINGLE_OUTPUT",
-      "DISPERSE"
-    ],
-    "all_six_available": true,
-    "forced_round_robin": false,
-    "preserves_material_dissent": true,
-    "changes_roster": false,
-    "changes_identity": false,
-    "changes_authority": false,
-    "changes_effect_authority": false,
-    "durable_memory_automatic": false,
-    "host_identity_separate": true,
-    "protocol": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
-  },
-  "agency_integration": {
-    "vaskon_can_produce_task_graph": true,
-    "agencyos_owns_orchestration": true,
-    "workspaceos_artifacts_explicit_only": true,
-    "evolutionos_proposals_non_adopting": true
-  }
+  ]
 }
