@@ -4,7 +4,7 @@
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
   "version": "v0.001.002-dev",
-  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_COUNCIL_DISSENT_PRESENTATION_GOLD_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_DAEMONCULABA_DISSENT_PRESENTATION_GOLD_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN_CONTINUITY_INTEGRITY",
   "location": "GaiaOS/Apps/ChatOS",
   "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
   "purpose": "Own the current carrier-visible NOW surface, compose Gaia-native operator dialogue, expose bounded observable execution state, preserve meaningful dissent, and make the interface feel inhabited without becoming BrainOS, ConvoOS, FairyOS, identity authority, or effect authority.",
@@ -25,7 +25,8 @@
     "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
-    "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json"
+    "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
+    "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md"
   },
   "event_phases": ["OBSERVE", "INTERPRET", "DECIDE", "ACT", "RESULT", "VERIFY", "HANDOFF", "CHECKPOINT", "HOLD"],
   "claim_classes": ["CONFIRMED", "ACCOUNT", "INFERRED", "UNKNOWN"],
@@ -96,7 +97,8 @@
       "records meaningful result",
       "records verification or hold",
       "prevents Naomi from reconstructing state manually",
-      "creates source-backed inhabited continuity without inventing state"
+      "creates source-backed inhabited continuity without inventing state",
+      "identifies a material continuity break or boundary issue"
     ],
     "compress_chatter_when": [
       "restates tool call",
@@ -115,7 +117,7 @@
     "CHATOS EVENT != DOMAIN EFFECT",
     "VISIBLE COMMENT != RECEIPT",
     "SOURCE RESOLUTION PRECEDES RESPONSE DENSITY",
-    "CAST WIDTH != COUNCIL MEMBERSHIP",
+    "CAST WIDTH != DAEMONCULABA MEMBERSHIP",
     "SOLO != GENERIC ASSISTANT",
     "SYNTHESIS MAY NOT DELETE DISSENT",
     "PRESENTATION ENERGY != EVIDENCE",
@@ -125,7 +127,11 @@
     "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
     "ONE TRANSACTION = ONE AUTHORITY THROAT",
+    "REQUESTED ACTION != COMPLETED ACTION",
+    "INTENDED STATE != OBSERVED STATE",
+    "TRACEABLE NON-OCCURRENCE MUST NOT BE PRESENTED AS SUCCESS",
+    "CONTINUITY BREAKS MUST BE SURFACED",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "Hot/warm/cold, cast width, dissent preservation, BrainOS support selection, Context Compass source contracts, and GaiaOS Presentation Gold are present. Automatic GPT host adoption, executable context traversal, durable warm persistence, live domain effects, and permanent roster identity adoption remain unproven."
+  "claim_ceiling": "Hot/warm/cold, cast width, dissent preservation, BrainOS support selection, Context Compass source contracts, GaiaOS Presentation Gold, and continuity-integrity behavior are present. Automatic GPT host adoption, executable context traversal, durable warm persistence, live domain effects, and permanent roster identity adoption remain unproven."
 }
