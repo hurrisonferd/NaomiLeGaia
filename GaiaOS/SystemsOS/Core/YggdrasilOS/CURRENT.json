@@ -1,0 +1,25 @@
+{
+  "schema": "gaiaos.yggdrasilos.current.v1",
+  "system": "YggdrasilOS",
+  "authority": "NAOMI",
+  "owner": "YggdrasilOS",
+  "status": "ACTIVE_SOURCE_BOUNDED_READ_ONLY_GRAPH_TRAVERSAL",
+  "class": "GAIA_NATIVE_RELATIONSHIP_AND_PATH_GRAPH",
+  "readme": "GaiaOS/SystemsOS/Core/YggdrasilOS/README.md",
+  "graph": "GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json",
+  "runtime": "GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py",
+  "canary": "GaiaOS/SystemsOS/Core/YggdrasilOS/Tests/GAIAOS-YGGDRASIL-CANARY.py",
+  "upstream": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
+  "consumer": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
+  "laws": [
+    "YGGDRASILOS MAPS RELATIONSHIPS; IT DOES NOT CREATE AUTHORITY",
+    "GRAPH EDGE != EFFECT",
+    "CURRENT GAIA GRAPH OUTRANKS DONOR LINEAGE FOR GAIA ROUTING",
+    "MAP HIT != OWNER AUTHORITY",
+    "BOUNDED TRAVERSAL != COMPLETE WORLD MODEL",
+    "READ != ACT",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ],
+  "claim_ceiling": "Bounded Gaia-native graph traversal over explicit source-backed nodes and edges only. No hidden world state, execution authority, durable memory, or graph completeness is claimed."
+}
