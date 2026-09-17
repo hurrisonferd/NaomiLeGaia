@@ -356,9 +356,18 @@
         "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "3a0006a48864c3c121efacc880123bd458b93261",
+      "timestamp_utc": "2026-09-17T23:45:19.897230+00:00",
+      "changed_paths": [
+        "GaiaOS/Apps/ChatOS/CURRENT.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T23:32:26.554206+00:00"
+  "last_verified": "2026-09-17T23:45:19.897230+00:00"
 }
