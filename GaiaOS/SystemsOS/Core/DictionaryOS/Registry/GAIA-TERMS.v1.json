@@ -1,0 +1,23 @@
+{
+  "schema": "gaiaos.dictionaryos.terms.v1",
+  "authority": "NAOMI",
+  "owner": "DictionaryOS",
+  "status": "ACTIVE_SOURCE_HIGH_SALIENCE_SEED",
+  "objects": [
+    {"id":"gaia.platform","term":"GaiaOS","aliases":["gaia","gaia os","platform"],"source_paths":["GaiaOS/CURRENT.json","GaiaOS/VERSION.json","GaiaOS/LOAD.v1.md"]},
+    {"id":"gaia.system.brainos","term":"BrainOS","aliases":["brain","context support","cognitive support"],"source_paths":["GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json","GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json"]},
+    {"id":"gaia.system.chatos","term":"ChatOS","aliases":["chat","now surface","conversation surface"],"source_paths":["GaiaOS/Apps/ChatOS/CURRENT.json","GaiaOS/Apps/ChatOS/README.md"]},
+    {"id":"gaia.system.convoos","term":"ConvoOS","aliases":["conversation memory","reentry","resume","thread home","where we were"],"source_paths":["GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json","GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json"]},
+    {"id":"gaia.system.fairyos","term":"FairyOS","aliases":["fairy","operator routing","operator dispatch","council members"],"source_paths":["GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json","GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json"]},
+    {"id":"gaia.system.emojios","term":"EmojiOS","aliases":["emoji","expression","expression registry"],"source_paths":["GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json","GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"]},
+    {"id":"gaia.system.membercontinuityos","term":"MemberContinuityOS","aliases":["member continuity","warm continuity","warm candidate","warm buffer"],"source_paths":["GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json","GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md"]},
+    {"id":"gaia.system.dictionaryos","term":"DictionaryOS","aliases":["dictionary","terms","aliases","semantic naming"],"source_paths":["GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json","GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json"]},
+    {"id":"gaia.system.yggdrasilos","term":"YggdrasilOS","aliases":["yggdrasil","graph","relationships","map connections","topology"],"source_paths":["GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json","GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json"]},
+    {"id":"gaia.feature.context_compass","term":"Context Compass","aliases":["context compass","source compass","context traversal","find context"],"source_paths":["GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json","GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py"]},
+    {"id":"gaia.feature.council","term":"Gaia Council","aliases":["council","council room","gaia council","everyone"],"source_paths":["GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md","GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md","GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md"]},
+    {"id":"gaia.feature.presentation_gold","term":"Presentation Gold","aliases":["presentation","living","quiet","wild","inhabited"],"source_paths":["GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md"]},
+    {"id":"gaia.feature.hot_warm_cold","term":"HOT/WARM/COLD conversation fabric","aliases":["hot path","warm","cold","conversation fabric"],"source_paths":["GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md"]},
+    {"id":"gaia.carrier","term":"GaiaOS carrier","aliases":["carrier","api","mcp","openapi","web chat"],"source_paths":["api/gaiaos_api.py","api/openapi.yaml","GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"]}
+  ],
+  "laws": ["TERM HIT != AUTHORITY","ALIAS != IDENTITY","CURRENT GAIA PATHS ONLY BY DEFAULT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"]
+}
