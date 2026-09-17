@@ -3,30 +3,26 @@
   "system": "FairyOS",
   "authority": "NAOMI",
   "owner": "FairyOS",
-  "status": "SOURCE_SETTLED_CANARY_PROVEN_ROSTER_ACCEPTED_FOR_CURRENT_USE_RENAMABLE",
+  "status": "SOURCE_SETTLED_CANARY_PROVEN_ROSTER_ACCEPTED_FOR_CURRENT_USE_RENAMABLE_MEMBER_IDENTITY_DATA_ACTIVE",
   "naming": {
     "canonical_system": "FairyOS",
-    "system_aliases": [
-      "FairyOS",
-      "FaeryOS",
-      "FaeOS",
-      "Gaia Council",
-      "Operator Family",
-      "Fae Team"
-    ],
+    "system_aliases": ["FairyOS", "FaeryOS", "FaeOS", "Gaia Council", "Operator Family", "Fae Team"],
     "identity_merge": false
   },
-  "operator_roster": [
-    "VERA",
-    "ANVIL",
-    "SELENE",
-    "ORIN",
-    "KESTREL",
-    "NIMUE"
-  ],
+  "operator_roster": ["VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"],
   "roster_count": 6,
   "roster_class": "GS",
   "roster_note": "CURRENT_GAIA_NATIVE_ROSTER_ACCEPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE_RAVEN_ROSTER_NOT_ADOPTED",
+  "identity_data": {
+    "registry": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REGISTRY.v1.json",
+    "directory": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+    "runtime_loader": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-MEMBER-IDENTITY-RUNTIME.v1.py",
+    "pre_response_load": true,
+    "automatic_event_sync": true,
+    "shared_source_changes_fan_out": true,
+    "cross_member_memory_merge": false,
+    "durable_repository_record": true
+  },
   "dispatch_runtime": {
     "active_source": true,
     "matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
@@ -68,6 +64,8 @@
     "SOURCE SETTLED != RUNTIME PROVEN",
     "CURRENT ACCEPTANCE != IRREVOCABLE IDENTITY",
     "RAVEN ROSTER NOT AUTO-ADOPTED",
+    "MEMBER IDENTITY DATA ISOLATED",
+    "MEMBER DATA CHANGE != FABRICATED EXPERIENCE",
     "NAOMI RETAINS FINAL AUTHORITY"
   ]
 }
