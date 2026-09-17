@@ -102,7 +102,7 @@
     "automatic_external_chatgpt_adoption": "UNPROVEN"
   },
   "proof_ceiling": "DictionaryOS, YggdrasilOS, and their BrainOS Context Compass integration are committed as read-only source/runtime surfaces. Wave 3 CI is confirmed by run 50. Wave 4 navigation CI, deployment, automatic external host adoption, durable continuity, domain effects, graph completeness, and permanent operator identity adoption remain separately unproven.",
-  "laws": ["NAOMI != RAVEN","GAIAOS != RAVENOS","ARCHITECTURE DONOR != IDENTITY DONOR","PORT != MERGE","TERM HIT != AUTHORITY","GRAPH EDGE != EFFECT","RAVEN ROSTER NOT AUTO-ADOPTED","CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY","PRESENTATION ENERGY != EVIDENCE","COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT","BRAINOS ADDRESSABLE != BRAINOS INVOKED","WARM != SAVED","READ != ACT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
+  "laws": ["NAOMI != RAVEN","GAIAOS != RAVENOS","ARCHITECTURE DONOR != IDENTITY DONOR","PORT != MERGE","TERM HIT != AUTHORITY","GRAPH EDGE != EFFECT","RAVEN ROSTER NOT AUTO-ADOPTED","CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY","PRESENTATION ENERGY != EVIDENCE","QUIET != GENERIC","WILD != UNBOUNDED","COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT","BRAINOS ADDRESSABLE != BRAINOS INVOKED","WARM != SAVED","READ != ACT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
   "canary": {
     "wave3_ci_run": 50,
     "wave3_ci_commit": "e0b92b16e2638f1777fd0d32baa0644756ea60da",
