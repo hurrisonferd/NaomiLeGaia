@@ -1,9 +1,12 @@
 {
-  "schema": "gaiaos.brainos.context-compass.v1",
+  "schema": "gaiaos.brainos.context-compass.v2",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_READ_ONLY_BOUNDED_CONTEXT_SELECTION_RUNTIME_PENDING",
+  "status": "ACTIVE_SOURCE_READ_ONLY_BOUNDED_CONTEXT_SELECTION_RUNTIME_PRESENT_CANARY_PENDING_OBSERVATION",
   "purpose": "Turn a Naomi-natural subject into the smallest current source-backed GaiaOS context packet likely to change the active reasoning or action without creating a new identity, memory, or effect authority.",
+  "runtime": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
+  "canary": "GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py",
+  "runtime_mode": "BOUNDED_LOCAL_CHECKOUT_LEXICAL_PLUS_ALIAS_HINT_RANKING",
   "route": [
     {
       "stage": "NOW",
@@ -12,7 +15,7 @@
     },
     {
       "stage": "WHAT",
-      "owner": "GaiaOS current contracts",
+      "owner": "GaiaOS current contracts + runtime semantic hints",
       "role": "TERM / FEATURE / OWNER CANDIDATES"
     },
     {
@@ -23,7 +26,7 @@
     {
       "stage": "WHERE",
       "owner": "canonical repository source surface",
-      "role": "CURRENT PATH / POINTER CANDIDATES"
+      "role": "BOUNDED CURRENT PATH CANDIDATES"
     },
     {
       "stage": "HISTORY",
@@ -33,7 +36,7 @@
     {
       "stage": "SELECT",
       "owner": "BrainOS",
-      "role": "KEEP ONLY CONTEXT CAPABLE OF CHANGING THE LOOP"
+      "role": "RANK ONLY CONTEXT CAPABLE OF CHANGING THE LOOP"
     },
     {
       "stage": "PACK",
@@ -41,23 +44,34 @@
       "role": "SMALLEST SUFFICIENT CONTEXT PACK / NO DURABLE MEMORY CLAIM"
     }
   ],
+  "runtime_scope": [
+    "GaiaOS/",
+    "api/",
+    ".github/",
+    "GAIAOS-LOAD.md",
+    "README.md",
+    "render.yaml"
+  ],
   "selection_signals": [
     "exact subject phrase in current source path or contract",
+    "normalized subject-token density",
+    "bounded semantic alias hints",
     "CURRENT / README / VERSION / protocol / runtime salience",
     "owner-native GaiaOS path preference",
     "explicit Naomi named subsystem or operator",
-    "current pointer over historical donor material",
-    "legacy/donor/archive penalty unless explicitly requested"
+    "current pointer over donor or historical material"
   ],
   "default_limits": {
     "context_items": 10,
     "max_context_items": 20,
-    "max_source_branches": 6
+    "max_file_bytes": 256000,
+    "max_content_chars_per_file": 80000
   },
   "privacy": {
-    "unavailable_private_source": "WITHHOLD / UNKNOWN",
+    "sensitive_path_tokens_withheld": true,
     "secret_or_credential_expansion": "FORBIDDEN_BY_DEFAULT",
-    "cross_operator_private_memory": "FORBIDDEN_BY_DEFAULT"
+    "cross_operator_private_memory": "FORBIDDEN_BY_DEFAULT",
+    "runtime_effect_authority": "NONE_READ_ONLY"
   },
   "flattening_detection": {
     "classes": [
@@ -73,14 +87,22 @@
   "laws": [
     "CONTEXT COMPASS IS A BRAINOS READ ORGAN NOT A NEW OS",
     "DISCOVERY != AUTHORITY",
+    "RUNTIME HIT != SEMANTIC OWNER AUTHORITY",
     "CURRENT GAIA SOURCE OUTRANKS DONOR LINEAGE FOR GAIA SEMANTICS",
     "SMALLEST SUFFICIENT CONTEXT PACK WINS",
     "EMPTY SEARCH != ABSENCE",
+    "LEXICAL RANKING != COMPLETE SEMANTIC SEARCH",
     "READ != ACT",
     "CONTEXT PACK != DURABLE MEMORY",
     "BRAINOS SELECTS CONTEXT; IT DOES NOT ABSORB OWNER AUTHORITY",
     "UNKNOWN STAYS UNKNOWN",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "Source contract for bounded read-only context selection. No automatic runtime traversal, semantic search completeness, durable memory, or effect execution is claimed."
+  "proof": {
+    "runtime_source_present": true,
+    "canary_source_present": true,
+    "ci_execution": "PENDING_OBSERVATION",
+    "automatic_chatgpt_host_invocation": false
+  },
+  "claim_ceiling": "Source contract plus executable local-checkout bounded ranking runtime are present. CI/runtime pass, semantic-search completeness, automatic host invocation, durable memory, and effect execution require separate evidence."
 }
