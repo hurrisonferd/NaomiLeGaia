@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   gaiaos-canary:
-    name: GaiaOS source + FairyOS + ChatOS + BrainOS + council + presentation canaries
+    name: GaiaOS council + navigation + carrier canaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -39,11 +39,19 @@ jobs:
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py
       - name: Run presentation gold canary
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRESENTATION-CANARY.py
+      - name: Run DictionaryOS canary
+        run: python GaiaOS/SystemsOS/Core/DictionaryOS/Tests/GAIAOS-DICTIONARY-CANARY.py
+      - name: Run YggdrasilOS canary
+        run: python GaiaOS/SystemsOS/Core/YggdrasilOS/Tests/GAIAOS-YGGDRASIL-CANARY.py
       - name: Run BrainOS Context Compass canary
         run: python GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py
-      - name: Compile GaiaOS carrier API
-        run: python -m py_compile api/gaiaos_api.py
-      - name: Verify council carrier source surface
+      - name: Compile GaiaOS Python source
+        run: |
+          python -m py_compile api/gaiaos_api.py
+          python -m py_compile GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py
+          python -m py_compile GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py
+          python -m py_compile GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py
+      - name: Verify GaiaOS source surfaces
         shell: python
         run: |
           from pathlib import Path
@@ -51,51 +59,26 @@ jobs:
           api = Path('api/gaiaos_api.py').read_text(encoding='utf-8')
           openapi = Path('api/openapi.yaml').read_text(encoding='utf-8')
           current = Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8')
+          version = Path('GaiaOS/VERSION.json').read_text(encoding='utf-8')
           commands = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md').read_text(encoding='utf-8')
           presentation = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md').read_text(encoding='utf-8')
           brain = Path('GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json').read_text(encoding='utf-8')
+          dictionary = Path('GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json').read_text(encoding='utf-8')
+          yggdrasil = Path('GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json').read_text(encoding='utf-8')
           reentry = Path('GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json').read_text(encoding='utf-8')
 
           required_api = [
-              'def gaia_council(',
-              'def gaia_dispatch(',
-              'def gaia_operator(',
-              'def gaia_brain(',
-              '@app.get("/gaiaos/council"',
-              '@app.post("/gaiaos/dispatch"',
-              '@app.get("/gaiaos/operator/{member}"',
-              '@app.get("/gaiaos/brain"',
+              'def gaia_council(', 'def gaia_dispatch(', 'def gaia_operator(', 'def gaia_brain(',
+              '@app.get("/gaiaos/council"', '@app.post("/gaiaos/dispatch"',
+              '@app.get("/gaiaos/operator/{member}"', '@app.get("/gaiaos/brain"',
           ]
-          required_openapi = [
-              '/gaiaos/council:',
-              '/gaiaos/dispatch:',
-              '/gaiaos/operator/{member}:',
-              '/gaiaos/brain:',
-          ]
-          required_commands = [
-              'COUNCIL [subject]',
-              'COUNCIL EVERYONE [subject]',
-              'COUNCIL ROOM [subject]',
-              'CAST <N> [subject]',
-              'GAIAOS LIVING',
-              'GAIAOS QUIET',
-              'GAIAOS WILD',
-          ]
-          required_presentation = [
-              'HUMOR MUST EARN ITS CHAIR.',
-              'PRESENTATION ENERGY != EVIDENCE',
-              'RAVEN META GOBLIN != GAIA REQUIRED CADENCE',
-          ]
-          required_brain = [
-              'GAIAOS-CONTEXT-COMPASS.v1.py',
-              'GAIAOS-CONTEXT-COMPASS-CANARY.py',
-              'context_compass_executable_runtime_present',
-          ]
-          required_reentry = [
-              'CHATOS OWNS NOW',
-              'CONVOOS OWNS WHERE WE WERE',
-              'SIDEQUEST IS A BRANCH NOT A NEW SELF',
-          ]
+          required_openapi = ['/gaiaos/council:', '/gaiaos/dispatch:', '/gaiaos/operator/{member}:', '/gaiaos/brain:']
+          required_commands = ['COUNCIL [subject]', 'COUNCIL EVERYONE [subject]', 'COUNCIL ROOM [subject]', 'CAST <N> [subject]', 'GAIAOS LIVING', 'GAIAOS QUIET', 'GAIAOS WILD']
+          required_presentation = ['HUMOR MUST EARN ITS CHAIR.', 'PRESENTATION ENERGY != EVIDENCE', 'RAVEN META GOBLIN != GAIA REQUIRED CADENCE']
+          required_brain = ['GAIAOS-CONTEXT-COMPASS.v1.py', 'DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS', 'dictionaryos_runtime_present', 'yggdrasilos_runtime_present']
+          required_dictionary = ['GAIA-TERMS.v1.json', 'GAIAOS-DICTIONARY-RESOLVER.v1.py', 'TERM HIT != AUTHORITY']
+          required_yggdrasil = ['GAIA-GRAPH.v1.json', 'GAIAOS-YGGDRASIL-QUERY.v1.py', 'GRAPH EDGE != EFFECT']
+          required_reentry = ['CHATOS OWNS NOW', 'CONVOOS OWNS WHERE WE WERE', 'SIDEQUEST IS A BRANCH NOT A NEW SELF']
 
           missing = []
           missing += [f'api:{x}' for x in required_api if x not in api]
@@ -103,12 +86,14 @@ jobs:
           missing += [f'commands:{x}' for x in required_commands if x not in commands]
           missing += [f'presentation:{x}' for x in required_presentation if x not in presentation]
           missing += [f'brain:{x}' for x in required_brain if x not in brain]
+          missing += [f'dictionary:{x}' for x in required_dictionary if x not in dictionary]
+          missing += [f'yggdrasil:{x}' for x in required_yggdrasil if x not in yggdrasil]
           missing += [f'reentry:{x}' for x in required_reentry if x not in reentry]
-          if 'v0.001.002' not in current:
-              missing.append('current:v0.001.002')
+          if 'v0.001.003' not in current or 'v0.001.003' not in version:
+              missing.append('version:v0.001.003')
           if 'APP_VERSION = "1.4.0"' not in api:
               missing.append('api:APP_VERSION=1.4.0')
 
           if missing:
-              raise SystemExit('GAIAOS_COUNCIL_CARRIER_CANARY_FAIL ' + ', '.join(missing))
-          print('GAIAOS_COUNCIL_CARRIER_CANARY_PASS')
+              raise SystemExit('GAIAOS_SOURCE_CANARY_FAIL ' + ', '.join(missing))
+          print('GAIAOS_SOURCE_CANARY_PASS')
