@@ -1,0 +1,28 @@
+name: GaiaOS Council Self-Definition Context Canary
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'GaiaOS/SystemsOS/Core/MemberContinuityOS/COUNCIL-SELF-DEFINITION-CONTINUITY.v1.md'
+      - 'GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json'
+      - 'GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json'
+      - 'api/gaiaos_context_runtime.py'
+      - 'api/gaiaos_self_definition_context_canary.py'
+      - '.github/workflows/gaiaos-self-definition-context-canary.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  self-definition-context-canary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify bounded continuity discoverability
+        run: python api/gaiaos_self_definition_context_canary.py
