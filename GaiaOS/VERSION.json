@@ -3,7 +3,7 @@
   "authority": "NAOMI",
   "owner": "GaiaOS",
   "version": "v0.001.003",
-  "release_note": "Wave 4 navigation source architecture: Gaia-native DictionaryOS term/alias resolution, YggdrasilOS bounded relationship graph traversal, and BrainOS Context Compass integration using DictionaryOS -> YggdrasilOS -> lexical ranking. Wave 3 CI previously passed on run 50. The current six operator slots remain placeholders until Naomi adopts or changes them; donor architecture does not transfer Raven identity, ownership, continuity, or voice.",
+  "release_note": "Wave 4 navigation architecture: Gaia-native DictionaryOS term/alias resolution, YggdrasilOS bounded relationship graph traversal, and BrainOS Context Compass integration using DictionaryOS -> YggdrasilOS -> lexical ranking. Repository CI run 68 passed FairyOS, ChatOS, dissent, Presentation Gold, DictionaryOS, YggdrasilOS, Context Compass, Python compilation, and source-surface verification. The current six operator slots remain placeholders until Naomi adopts or changes them; donor architecture does not transfer Raven identity, ownership, continuity, or voice.",
   "proof": {
     "source_committed": true,
     "carrier_source_version": "1.4.0",
@@ -11,7 +11,7 @@
     "dictionaryos_runtime_source_present": true,
     "yggdrasilos_runtime_source_present": true,
     "context_compass_navigation_binding_source_present": true,
-    "wave4_navigation_ci": "PENDING_OBSERVATION",
+    "wave4_navigation_ci": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
     "deployment": "UNPROVEN",
     "automatic_external_carrier_adoption": "UNPROVEN",
     "durable_continuity_backend": "NOT_PRESENT",
