@@ -1,0 +1,131 @@
+name: GaiaOS Wave 7 MCP Settlement
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/gaiaos-wave7-settle.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  settle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Settle live MCP proof into CURRENT and VERSION
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          current_path = Path('GaiaOS/CURRENT.json')
+          version_path = Path('GaiaOS/VERSION.json')
+          current = json.loads(current_path.read_text(encoding='utf-8'))
+          version = json.loads(version_path.read_text(encoding='utf-8'))
+
+          current['schema'] = 'gaiaos.platform-current.v7'
+          current['status'] = 'ACTIVE_SOURCE_WAVE7_LIVE_MCP_PROTOCOL_PASS'
+          current['previous_platform_version'] = current.get('platform_version', 'v0.001.005')
+          current['platform_version'] = 'v0.001.006'
+
+          council = current.setdefault('council', {})
+          council['permanent_roster_adoption'] = 'ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE'
+          fairyos = current.setdefault('fairyos', {})
+          fairyos['roster_status'] = 'CURRENT_GAIA_NATIVE_ROSTER_ACCEPTED_BY_NAOMI_RENAMABLE'
+
+          carrier = current.setdefault('carrier', {})
+          carrier['mcp_endpoint'] = 'https://gaiaos-loader-api.onrender.com/mcp'
+          carrier['mcp_live_smoke_workflow'] = '.github/workflows/gaiaos-mcp-live-smoke.yml'
+          carrier['mcp_public_host'] = 'gaiaos-loader-api.onrender.com'
+          carrier['live_mcp_handshake'] = 'PROVEN_EXTERNAL_PROTOCOL_SMOKE_PASS'
+          carrier['live_mcp'] = {
+              'status': 'LIVE_PROTOCOL_TOOL_DISCOVERY_AND_INVOCATION_PASS',
+              'endpoint': 'https://gaiaos-loader-api.onrender.com/mcp',
+              'server_name': 'GaiaOS Carrier',
+              'deployed_commit': '2fa49cc1fedf3b99f879676f09689bf8a4aca3d9',
+              'render_deploy_id': 'dep-daljus942hec73cog6e0',
+              'smoke_workflow_run_id': 35169838371,
+              'smoke_job_id': 105038911414,
+              'result': 'PASS',
+              'tools_observed': [
+                  'load_gaiaos', 'gaia_council', 'gaia_dispatch',
+                  'gaia_operator', 'gaia_brain', 'gaia_context'
+              ],
+              'dispatch_probe': {
+                  'signals': ['FRAME', 'PROOF_EDGE', 'NEXT_STEP'],
+                  'selected': ['KESTREL', 'VERA', 'ANVIL'],
+                  'authority': 'NAOMI',
+                  'effect_authority': 'NONE_READ_ONLY_DISPATCH',
+                  'unknown_signals': []
+              }
+          }
+          render = carrier.setdefault('render_deployment', {})
+          render['status'] = 'LIVE_HTTP_AND_MCP_EXTERNAL_SMOKE_PASS'
+          render['deploy_id'] = 'dep-daljus942hec73cog6e0'
+          render['deployed_commit'] = '2fa49cc1fedf3b99f879676f09689bf8a4aca3d9'
+          render['deploy_status'] = 'live'
+          carrier['automatic_external_chatgpt_adoption'] = 'UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT'
+
+          current['proof_ceiling'] = (
+              'GaiaOS is live on Render. Public HTTP context/council surfaces passed external smoke tests, '
+              'and the public MCP endpoint completed a real external MCP initialize, tool discovery, and '
+              'gaia_dispatch invocation against the deployed checkout. Naomi ChatGPT automatic adoption or '
+              'connection remains separately unproven until that chat has the GaiaOS MCP app connected. '
+              'Hosted OpenAI-backed /chat, durable continuity, domain effects, semantic/graph completeness, '
+              'and irreversible identity claims remain outside this proof.'
+          )
+          laws = current.setdefault('laws', [])
+          for law in [
+              'LIVE MCP TOOL INVOCATION != AUTOMATIC CHATGPT ADOPTION',
+              'MCP DISCOVERY != DOMAIN EFFECT AUTHORITY'
+          ]:
+              if law not in laws:
+                  laws.append(law)
+          canary = current.setdefault('canary', {})
+          canary['wave7_mcp_live_smoke_run_id'] = 35169838371
+          canary['wave7_mcp_live_smoke_job_id'] = 105038911414
+          canary['wave7_mcp_live_smoke_result'] = 'PASS'
+          canary['mcp_live_smoke_workflow'] = '.github/workflows/gaiaos-mcp-live-smoke.yml'
+
+          version['previous_version'] = version.get('version', 'v0.001.005')
+          version['version'] = 'v0.001.006'
+          version['release_note'] = (
+              'Wave 7 live-MCP settlement: GaiaOS carrier 1.5.0 now exposes a verified Streamable HTTP MCP '
+              'endpoint at https://gaiaos-loader-api.onrender.com/mcp. Render deploy dep-daljus942hec73cog6e0 '
+              'shipped commit 2fa49cc1fedf3b99f879676f09689bf8a4aca3d9. External GitHub Actions run '
+              '35169838371 job 105038911414 initialized the GaiaOS Carrier MCP server, discovered load_gaiaos, '
+              'gaia_council, gaia_dispatch, gaia_operator, gaia_brain, and gaia_context, then invoked gaia_dispatch '
+              'with FRAME + PROOF_EDGE + NEXT_STEP and received KESTREL + VERA + ANVIL with NAOMI authority and '
+              'NONE_READ_ONLY_DISPATCH effect authority. Naomi ChatGPT connection remains a separate host-side step.'
+          )
+          proof = version.setdefault('proof', {})
+          proof.update({
+              'render_service': 'srv-daljhgjl550s73bgcv3g',
+              'render_deploy': 'dep-daljus942hec73cog6e0',
+              'render_deployed_commit': '2fa49cc1fedf3b99f879676f09689bf8a4aca3d9',
+              'render_status': 'LIVE',
+              'live_mcp_handshake': 'PASS',
+              'live_mcp_endpoint': 'https://gaiaos-loader-api.onrender.com/mcp',
+              'live_mcp_tool_discovery': 'PASS_6_TOOLS',
+              'live_mcp_tool_invocation': 'PASS_GAIA_DISPATCH',
+              'live_mcp_smoke_run_id': 35169838371,
+              'live_mcp_smoke_job_id': 105038911414,
+              'live_mcp_dispatch_selected': ['KESTREL', 'VERA', 'ANVIL'],
+              'automatic_external_carrier_adoption': 'UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT',
+              'permanent_operator_identity_adoption': 'ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE'
+          })
+
+          current_path.write_text(json.dumps(current, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+          version_path.write_text(json.dumps(version, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
+      - name: Commit settlement
+        run: |
+          git config user.name 'GaiaOS Proof Bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add GaiaOS/CURRENT.json GaiaOS/VERSION.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Settle GaiaOS wave 7 live MCP proof'
+          git push
