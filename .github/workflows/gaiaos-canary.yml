@@ -1,127 +1,16 @@
-name: GaiaOS Canary
+name: GaiaOS Canary (legacy manual)
+
+# Consolidated into .github/workflows/gaiaos-master-canary.yml.
+# Retained only for manual historical diagnostics.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'GaiaOS/**'
-      - 'api/**'
-      - 'plugins/gaiaos/**'
-      - 'GAIAOS-LOAD.md'
-      - '.github/workflows/gaiaos-canary.yml'
-      - '.github/workflows/gaiaos-mcp-live-smoke.yml'
-      - '.github/workflows/gaiaos-frontdoor-live-smoke.yml'
-      - '.github/workflows/gaiaos-wave8-version-live-smoke.yml'
-  pull_request:
-    paths:
-      - 'GaiaOS/**'
-      - 'api/**'
-      - 'plugins/gaiaos/**'
-      - 'GAIAOS-LOAD.md'
-      - '.github/workflows/gaiaos-canary.yml'
-      - '.github/workflows/gaiaos-mcp-live-smoke.yml'
-      - '.github/workflows/gaiaos-frontdoor-live-smoke.yml'
-      - '.github/workflows/gaiaos-wave8-version-live-smoke.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  gaiaos-canary:
-    name: GaiaOS council + navigation + front-door + plugin canaries
+  legacy-disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-      - name: Run FairyOS dispatch canary
-        run: python GaiaOS/SystemsOS/Core/FairyOS/Tests/GAIAOS-FAIRYOS-DISPATCH-CANARY.py
-      - name: Run ChatOS canary
-        run: python GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py
-      - name: Run council dissent canary
-        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-COUNCIL-DISSENT-CANARY.py
-      - name: Run presentation gold canary
-        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRESENTATION-CANARY.py
-      - name: Run DictionaryOS canary
-        run: python GaiaOS/SystemsOS/Core/DictionaryOS/Tests/GAIAOS-DICTIONARY-CANARY.py
-      - name: Run YggdrasilOS canary
-        run: python GaiaOS/SystemsOS/Core/YggdrasilOS/Tests/GAIAOS-YGGDRASIL-CANARY.py
-      - name: Run BrainOS Context Compass canary
-        run: python GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py
-      - name: Run carrier context canary
-        run: python api/gaiaos_context_canary.py
-      - name: Compile GaiaOS Python source
-        run: |
-          python -m py_compile api/gaiaos_api.py
-          python -m py_compile api/gaiaos_context_runtime.py
-          python -m py_compile api/gaiaos_app.py
-          python -m py_compile GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py
-          python -m py_compile GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py
-          python -m py_compile GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py
-      - name: Verify GaiaOS source surfaces
-        shell: python
-        run: |
-          import json
-          from pathlib import Path
-
-          api = Path('api/gaiaos_api.py').read_text(encoding='utf-8')
-          app = Path('api/gaiaos_app.py').read_text(encoding='utf-8')
-          context_runtime = Path('api/gaiaos_context_runtime.py').read_text(encoding='utf-8')
-          docker = Path('api/Dockerfile').read_text(encoding='utf-8')
-          openapi = Path('api/openapi.yaml').read_text(encoding='utf-8')
-          current = Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8')
-          version = Path('GaiaOS/VERSION.json').read_text(encoding='utf-8')
-          load = Path('GaiaOS/LOAD.v1.md').read_text(encoding='utf-8')
-          host = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md').read_text(encoding='utf-8')
-          commands = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md').read_text(encoding='utf-8')
-          presentation = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md').read_text(encoding='utf-8')
-          brain = Path('GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json').read_text(encoding='utf-8')
-          compass = Path('GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json').read_text(encoding='utf-8')
-          dictionary = Path('GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json').read_text(encoding='utf-8')
-          yggdrasil = Path('GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json').read_text(encoding='utf-8')
-          reentry = Path('GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json').read_text(encoding='utf-8')
-          mcp_smoke = Path('.github/workflows/gaiaos-mcp-live-smoke.yml').read_text(encoding='utf-8')
-          frontdoor_smoke = Path('.github/workflows/gaiaos-frontdoor-live-smoke.yml').read_text(encoding='utf-8')
-          version_smoke = Path('.github/workflows/gaiaos-wave8-version-live-smoke.yml').read_text(encoding='utf-8')
-          plugin = Path('plugins/gaiaos/plugin.json').read_text(encoding='utf-8')
-          plugin_readme = Path('plugins/gaiaos/README.md').read_text(encoding='utf-8')
-          plugin_skill = Path('plugins/gaiaos/skills/gaiaos-council/SKILL.md').read_text(encoding='utf-8')
-
-          required = {
-              'api': (api, ['def gaia_council(', 'def gaia_dispatch(', 'def gaia_operator(', 'def gaia_brain(', 'PRIMARY FRONT DOOR']),
-              'app': (app, ['EXTENSION_VERSION = "1.6.0"', 'def gaia(', 'def gaia_selftest(', 'def gaia_context(', '@app.post("/gaiaos/assist"', '@app.get("/gaiaos/selftest"', '@app.get("/gaiaos/context"', 'PRIMARY FRONT DOOR', 'DEPLOYED_CHECKOUT', 'app.mount("/mcp", mcp.streamable_http_app())']),
-              'context_runtime': (context_runtime, ['gaiaos.brainos.remote-context-packet.v1', 'TERM HIT != AUTHORITY', 'GRAPH EDGE != EFFECT']),
-              'docker': (docker, ['COPY gaiaos_context_runtime.py ./', 'COPY gaiaos_app.py ./', 'uvicorn gaiaos_app:app']),
-              'openapi': (openapi, ['/gaiaos/assist:', '/gaiaos/selftest:', '/gaiaos/council:', '/gaiaos/dispatch:', '/gaiaos/context:', 'version: 1.6.0']),
-              'current': (current, ['v0.001.007', 'ACTIVE_SOURCE_WAVE8_SINGLE_FRONT_DOOR_1_6_LIVE_EXTERNAL_PASS', 'source_version": "1.6.0"', '"primary_tool": "gaia"', '"diagnostic_tool": "gaia_selftest"', 'dep-dalkgdijnfac739ssg10', 'eb2d655c51becc9b205081305302759450254234', '35172449195', '105046808901', '105046659240', 'carrier_1_6_live_redeploy', '2943', '105774', 'ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE']),
-              'version': (version, ['v0.001.007', 'carrier_source_version', '1.6.0', 'primary_mcp_tool', 'gaia_selftest', 'dep-dalkgdijnfac739ssg10', 'eb2d655c51becc9b205081305302759450254234', '35172449195', '105046808901', '105046659240', 'carrier_1_6_live_redeploy', '2943', '105774']),
-              'load': (load, ['Canonical Loader v4', 'Connected-carrier fast path', 'gaia(request)', 'ONE MCP CONNECTION > MANY MANUAL INSTALLS']),
-              'host': (host, ['GPT Host Instructions v5', 'Primary connected-carrier behavior', 'NORMAL REQUEST → gaia()', 'DIAGNOSTIC → gaia_selftest()']),
-              'commands': (commands, ['COUNCIL [subject]', 'COUNCIL EVERYONE [subject]', 'COUNCIL ROOM [subject]', 'GAIAOS WILD']),
-              'presentation': (presentation, ['HUMOR MUST EARN ITS CHAIR.', 'PRESENTATION ENERGY != EVIDENCE', 'RAVEN META GOBLIN != GAIA REQUIRED CADENCE']),
-              'brain': (brain, ['GAIAOS-CONTEXT-COMPASS.v1.py', 'DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS']),
-              'compass': (compass, ['DictionaryOS', 'YggdrasilOS', 'REMOTE SOURCE-PATH PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL']),
-              'dictionary': (dictionary, ['GAIA-TERMS.v1.json', 'TERM HIT != AUTHORITY']),
-              'yggdrasil': (yggdrasil, ['GAIA-GRAPH.v1.json', 'GRAPH EDGE != EFFECT']),
-              'reentry': (reentry, ['CHATOS OWNS NOW', 'CONVOOS OWNS WHERE WE WERE', 'SIDEQUEST IS A BRANCH NOT A NEW SELF']),
-              'mcp_smoke': (mcp_smoke, ['GAIAOS_MCP_LIVE_SMOKE_PASS', "['KESTREL', 'VERA', 'ANVIL']"]),
-              'frontdoor_smoke': (frontdoor_smoke, ['gaia', 'gaia_selftest', 'GAIAOS_SINGLE_FRONTDOOR_LIVE_PASS', 'MANUAL_BURDEN', 'SUBTRACTION']),
-              'version_smoke': (version_smoke, ['GAIAOS_WAVE8_LIVE_VERSION_PASS', "'1.6.0'", "'v0.001.007'", 'PRIMARY FRONT DOOR']),
-              'plugin': (plugin, ['"version": "0.2.0"', 'GaiaOS front door']),
-              'plugin_readme': (plugin_readme, ['`gaia`', '`gaia_selftest`', 'Preferred use']),
-              'plugin_skill': (plugin_skill, ['Use `gaia(request)` first', '`gaia_selftest()`', 'manually orchestrate subsystem tools']),
-          }
-          missing = []
-          for label, (text, needles) in required.items():
-              missing.extend(f'{label}:{needle}' for needle in needles if needle not in text)
-          json.loads(Path('GaiaOS/CURRENT.json').read_text(encoding='utf-8'))
-          json.loads(Path('GaiaOS/VERSION.json').read_text(encoding='utf-8'))
-          json.loads(Path('plugins/gaiaos/plugin.json').read_text(encoding='utf-8'))
-          if missing:
-              raise SystemExit('GAIAOS_SOURCE_CANARY_FAIL ' + ', '.join(missing))
-          print('GAIAOS_SOURCE_CANARY_PASS')
+      - run: echo "Legacy canary disabled. Use GaiaOS Master Canary."
