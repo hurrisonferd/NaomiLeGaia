@@ -1,9 +1,9 @@
 {
-  "schema": "gaiaos.brainos.current.v2",
+  "schema": "gaiaos.brainos.current.v3",
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_HOT_WARM_COLD_AWARE_CONTEXT_COMPASS_BOUND_RUNTIME_EXPANSION_PENDING",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_HOT_WARM_COLD_AWARE_CONTEXT_COMPASS_EXECUTABLE_SOURCE_PRESENT_CI_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -19,6 +19,8 @@
   "readme": "GaiaOS/SystemsOS/Core/BrainOS/README.md",
   "support_fabric": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
   "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
+  "context_compass_runtime": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
+  "context_compass_canary": "GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py",
   "hot_warm_cold_fabric": "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
   "chatos_bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
   "convoos": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
@@ -49,7 +51,10 @@
   "runtime": {
     "support_fabric_source_present": true,
     "context_compass_source_present": true,
-    "context_compass_executable_runtime_present": false,
+    "context_compass_executable_runtime_present": true,
+    "context_compass_runtime_mode": "READ_ONLY_LOCAL_CHECKOUT_BOUNDED_RANKING",
+    "context_compass_canary_source_present": true,
+    "context_compass_ci_result": "PENDING_OBSERVATION",
     "automatic_host_invocation_proven": false,
     "durable_memory_backend_present": false
   },
@@ -64,10 +69,14 @@
     "CURRENT CHAT FIRST",
     "SMALLEST SUFFICIENT SUPPORT SET WINS",
     "CONTEXT SELECTION != OWNER AUTHORITY",
+    "RUNTIME HIT != SEMANTIC AUTHORITY",
+    "EMPTY SEARCH != ABSENCE",
+    "LEXICAL RANKING != COMPLETE SEMANTIC SEARCH",
+    "READ != ACT",
     "WARM != SAVED",
     "SOURCE DONOR != IDENTITY DONOR",
     "UNKNOWN STAYS UNKNOWN",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "Gaia-native source support fabric and Context Compass contracts are active. Executable context traversal, automatic host invocation, durable continuity, and domain effects remain separately unproven."
+  "claim_ceiling": "Gaia-native support fabric and executable-source Context Compass are present. CI execution, automatic host invocation, semantic completeness, durable continuity, and domain effects remain separately unproven."
 }
