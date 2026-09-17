@@ -3,7 +3,7 @@ services:
     name: gaiaos-loader-api
     runtime: docker
     dockerfilePath: ./api/Dockerfile
-    dockerContext: ./api
+    dockerContext: .
     healthCheckPath: /health
     envVars:
       - key: GAIAOS_WORKSPACE_ROOT
