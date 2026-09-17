@@ -3,20 +3,55 @@ info:
   title: GaiaOS Canonical Carrier API
   version: 1.5.0
   description: >-
-    Source-backed GaiaOS loader plus read-only Gaia Council, operator,
-    deterministic dispatch, BrainOS support, source-pinned DictionaryOS and
-    YggdrasilOS context navigation, HOT/WARM/COLD, and continuity surfaces.
-    Routing, navigation, and presentation do not grant domain effect authority
-    or settle Naomi's permanent operator identities.
+    Source-backed GaiaOS carrier with a compact primary front door, read-only
+    Gaia Council/operator routing, deterministic dispatch, BrainOS support,
+    DictionaryOS/YggdrasilOS context navigation, HOT/WARM/COLD, continuity,
+    and diagnostic surfaces. Routing, navigation, and presentation do not grant
+    domain effect authority or settle irreversible identity claims.
 servers:
-  - url: https://REPLACE-WITH-YOUR-DEPLOYMENT-DOMAIN
+  - url: https://gaiaos-loader-api.onrender.com
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      description: Optional in local development; required by the recommended Render deployment.
+      description: Optional when GAIAOS_API_KEY is not configured; bearer token required when enabled.
   schemas:
+    GaiaAssistRequest:
+      type: object
+      additionalProperties: false
+      required: [request]
+      properties:
+        request:
+          type: string
+          minLength: 1
+          maxLength: 20000
+          description: Naomi's ordinary natural-language request. This is the preferred front door.
+        requested_members:
+          type: array
+          maxItems: 12
+          default: []
+          items:
+            type: string
+          description: Optional explicit current Gaia Council member requests.
+        max_members:
+          type: integer
+          minimum: 1
+          maximum: 32
+          default: 3
+        include_context:
+          type: boolean
+          default: true
+        context_limit:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 6
+        context_depth:
+          type: integer
+          minimum: 0
+          maximum: 2
+          default: 1
     DispatchRequest:
       type: object
       additionalProperties: false
@@ -40,14 +75,66 @@ components:
           maximum: 32
           default: 3
 paths:
+  /gaiaos/assist:
+    post:
+      operationId: assistGaiaOS
+      summary: Primary GaiaOS front door
+      description: >-
+        Preferred ordinary-use surface. Submit Naomi's natural-language request
+        once. GaiaOS conservatively resolves source-pinned semantic context,
+        infers only current Gaia-native dispatch signals, preserves explicit
+        member requests, and returns one compact read-only support packet. Hosts
+        should prefer this over manually chaining load, context, BrainOS, and
+        dispatch calls unless deep diagnostics are required.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GaiaAssistRequest'
+      responses:
+        '200':
+          description: Compact GaiaOS front-door support packet.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Missing or invalid API key when authentication is enabled.
+        '422':
+          description: Invalid request.
+  /gaiaos/selftest:
+    get:
+      operationId: selfTestGaiaOS
+      summary: Self-test deployed GaiaOS organs
+      description: >-
+        Validate the deployed checkout, Naomi authority, council/profile
+        alignment, deterministic dispatch, DictionaryOS candidates, YggdrasilOS
+        graph edges, and deployed-checkout context binding. This is diagnostic
+        only and does not prove external network reachability or provider effects.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: GaiaOS deployed-checkout diagnostic packet.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Missing or invalid API key when authentication is enabled.
   /gaiaos/load:
     get:
       operationId: loadGaiaOS
-      summary: Load GaiaOS
+      summary: Load the deep GaiaOS source bundle
       description: >-
-        Resolve hurrisonferd/NaomiLeGaia on main, pin the load to one Git
-        commit, and return the canonical bootstrap plus the current Gaia
-        Council and cognitive support source bundle.
+        Return the canonical bootstrap plus current Gaia Council and cognitive
+        support source bundle. This is a deep diagnostic/bootstrap surface and
+        is intentionally much larger than the primary /gaiaos/assist response.
       security:
         - bearerAuth: []
       responses:
@@ -67,11 +154,11 @@ paths:
       operationId: getGaiaCouncil
       summary: Get the current Gaia Council
       description: >-
-        Return the source-backed council contract, current FairyOS roster,
+        Return the deep source-backed council contract, current FairyOS roster,
         operator profiles, prosody basins, dispatch matrix, EmojiOS surface,
-        BrainOS/ConvoOS/ChatOS coordinates, and council command contract from
-        one Git commit. The current six-slot roster remains placeholder until
-        Naomi adopts or changes it.
+        BrainOS/ConvoOS/ChatOS coordinates, and council command contract. The
+        current Gaia-native roster is accepted for current use by Naomi and
+        remains renamable.
       security:
         - bearerAuth: []
       responses:
@@ -147,11 +234,10 @@ paths:
       operationId: getGaiaBrain
       summary: Get GaiaOS BrainOS support state
       description: >-
-        Return the current read-only BrainOS support fabric, Context Compass
+        Return the deep read-only BrainOS support fabric, Context Compass
         contract, HOT/WARM/COLD controls, response and cast modes, ConvoOS
-        re-entry coordinates, and MemberContinuityOS warm-candidate surface
-        from one source-pinned GaiaOS commit. This endpoint does not create
-        memory or execute domain effects.
+        re-entry coordinates, and MemberContinuityOS warm-candidate surface.
+        This endpoint does not create memory or execute domain effects.
       security:
         - bearerAuth: []
       responses:
@@ -171,11 +257,10 @@ paths:
       operationId: getGaiaContext
       summary: Resolve a natural subject through GaiaOS semantic navigation
       description: >-
-        Resolve one natural-language subject against the current source-pinned
-        DictionaryOS term registry, traverse explicit YggdrasilOS graph edges,
-        and return a bounded context-path packet. This is read-only discovery;
-        a term hit is not authority, a graph edge is not an effect, and the
-        remote carrier does not claim full local-checkout lexical traversal.
+        Resolve one natural-language subject against the deployed DictionaryOS
+        term registry, traverse explicit YggdrasilOS graph edges, and return a
+        bounded context packet. A term hit is not authority and a graph edge is
+        not an effect.
       security:
         - bearerAuth: []
       parameters:
@@ -192,21 +277,19 @@ paths:
           schema:
             type: integer
             minimum: 1
-            maximum: 30
+            maximum: 10
             default: 10
-          description: Maximum number of source paths returned.
         - in: query
           name: depth
           required: false
           schema:
             type: integer
             minimum: 0
-            maximum: 3
+            maximum: 2
             default: 1
-          description: Maximum bounded YggdrasilOS traversal depth.
       responses:
         '200':
-          description: Source-pinned DictionaryOS/YggdrasilOS context packet.
+          description: Deployed-checkout DictionaryOS/YggdrasilOS context packet.
           content:
             application/json:
               schema:
@@ -216,8 +299,6 @@ paths:
           description: Missing or invalid API key.
         '422':
           description: Invalid or empty subject.
-        '502':
-          description: Canonical source unavailable or invalid.
   /health:
     get:
       operationId: health
