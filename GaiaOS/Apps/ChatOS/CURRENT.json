@@ -27,7 +27,10 @@
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
     "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
     "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
-    "conjure_vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+    "conjure_vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
+    "agencyos": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
+    "workspaceos": "GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json",
+    "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json"
   },
   "event_phases": [
     "OBSERVE",
@@ -205,5 +208,11 @@
     "durable_memory_automatic": false,
     "host_identity_separate": true,
     "protocol": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+  },
+  "agency_integration": {
+    "vaskon_can_produce_task_graph": true,
+    "agencyos_owns_orchestration": true,
+    "workspaceos_artifacts_explicit_only": true,
+    "evolutionos_proposals_non_adopting": true
   }
 }
