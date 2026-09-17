@@ -1,11 +1,12 @@
 openapi: 3.1.0
 info:
   title: GaiaOS Canonical Carrier API
-  version: 1.3.0
+  version: 1.4.0
   description: >-
-    Source-backed GaiaOS loader plus read-only Gaia Council, operator, and
-    deterministic dispatch surfaces. Council routing does not grant domain
-    effect authority or settle Naomi's permanent operator identities.
+    Source-backed GaiaOS loader plus read-only Gaia Council, operator,
+    deterministic dispatch, BrainOS support, HOT/WARM/COLD, and continuity
+    contract surfaces. Routing and presentation do not grant domain effect
+    authority or settle Naomi's permanent operator identities.
 servers:
   - url: https://REPLACE-WITH-YOUR-DEPLOYMENT-DOMAIN
 components:
@@ -45,7 +46,7 @@ paths:
       description: >-
         Resolve hurrisonferd/NaomiLeGaia on main, pin the load to one Git
         commit, and return the canonical bootstrap plus the current Gaia
-        Council source bundle.
+        Council and cognitive support source bundle.
       security:
         - bearerAuth: []
       responses:
@@ -140,10 +141,34 @@ paths:
           description: Invalid dispatch request.
         '502':
           description: Canonical source unavailable or invalid.
+  /gaiaos/brain:
+    get:
+      operationId: getGaiaBrain
+      summary: Get GaiaOS BrainOS support state
+      description: >-
+        Return the current read-only BrainOS support fabric, Context Compass
+        contract, HOT/WARM/COLD controls, response and cast modes, ConvoOS
+        re-entry coordinates, and MemberContinuityOS warm-candidate surface
+        from one source-pinned GaiaOS commit. This endpoint does not create
+        memory or execute domain effects.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current GaiaOS BrainOS and continuity support packet.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '401':
+          description: Missing or invalid API key.
+        '502':
+          description: Canonical source unavailable or invalid.
   /health:
     get:
       operationId: health
       summary: Health check
       responses:
         '200':
-          description: Service health and council-surface availability.
+          description: Service health and source-surface availability.
