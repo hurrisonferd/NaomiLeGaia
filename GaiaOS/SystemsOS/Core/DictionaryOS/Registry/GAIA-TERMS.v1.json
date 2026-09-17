@@ -11,6 +11,7 @@
     {"id":"gaia.system.fairyos","term":"FairyOS","aliases":["fairy","operator routing","operator dispatch","council members"],"source_paths":["GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json","GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json"]},
     {"id":"gaia.system.emojios","term":"EmojiOS","aliases":["emoji","expression","expression registry"],"source_paths":["GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json","GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"]},
     {"id":"gaia.system.membercontinuityos","term":"MemberContinuityOS","aliases":["member continuity","warm continuity","warm candidate","warm buffer"],"source_paths":["GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json","GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md"]},
+    {"id":"gaia.feature.council_self_definition_continuity","term":"Council Self-Definition Continuity","aliases":["council identity","council self definition","member identity","member prosody","council prosody","cold start reconstruction","cold-start reconstruction","handoff geometry","handoff law","disagreement law","source continuity","council continuity","future carrier council reconstruction"],"source_paths":["GaiaOS/SystemsOS/Core/MemberContinuityOS/COUNCIL-SELF-DEFINITION-CONTINUITY.v1.md"]},
     {"id":"gaia.system.dictionaryos","term":"DictionaryOS","aliases":["dictionary","terms","aliases","semantic naming"],"source_paths":["GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json","GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json"]},
     {"id":"gaia.system.yggdrasilos","term":"YggdrasilOS","aliases":["yggdrasil","graph","relationships","map connections","topology"],"source_paths":["GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json","GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json"]},
     {"id":"gaia.feature.context_compass","term":"Context Compass","aliases":["context compass","source compass","context traversal","find context"],"source_paths":["GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json","GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py"]},
@@ -19,5 +20,14 @@
     {"id":"gaia.feature.hot_warm_cold","term":"HOT/WARM/COLD conversation fabric","aliases":["hot path","warm","cold","conversation fabric"],"source_paths":["GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md"]},
     {"id":"gaia.carrier","term":"GaiaOS carrier","aliases":["carrier","api","mcp","openapi","web chat"],"source_paths":["api/gaiaos_api.py","api/openapi.yaml","GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"]}
   ],
-  "laws": ["TERM HIT != AUTHORITY","ALIAS != IDENTITY","CURRENT GAIA PATHS ONLY BY DEFAULT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"]
+  "laws": [
+    "TERM HIT != AUTHORITY",
+    "ALIAS != IDENTITY",
+    "CURRENT GAIA PATHS ONLY BY DEFAULT",
+    "UNKNOWN STAYS UNKNOWN",
+    "SOURCE CONTINUITY != DURABLE MEMORY",
+    "DISCOVERABLE != ALWAYS LOADED",
+    "CONTEXT HIT != IDENTITY ADOPTION",
+    "NAOMI RETAINS FINAL AUTHORITY"
+  ]
 }
