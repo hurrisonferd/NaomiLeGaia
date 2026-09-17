@@ -19,14 +19,11 @@ Use this skill when the user asks to load GaiaOS, talk with Naomi's Gaia Council
 
 When the GaiaOS MCP server is available:
 
-1. Use `load_gaiaos` for a canonical boot/source receipt.
-2. Use `gaia_council` for the current Council source bundle.
-3. Use `gaia_operator` when one named operator is requested or materially sufficient.
-4. Use `gaia_dispatch` to select differentiated operators from explicit typed signals.
-5. Use `gaia_context` when source/path/owner ambiguity can change the answer.
-6. Use `gaia_brain` when broader cognitive support, continuity contracts, or chat-control context is material.
+1. Use `gaia(request)` first for ordinary GaiaOS requests. Pass the user's natural request through substantially intact.
+2. Use `gaia_selftest()` when carrier integrity is in question.
+3. Use `load_gaiaos`, `gaia_council`, `gaia_operator`, `gaia_dispatch`, `gaia_context`, or `gaia_brain` only when explicit deep inspection is actually useful.
 
-Do not call every tool on every reply. Prefer the smallest sufficient support surface.
+Do not call every tool on every reply and do not make Naomi or Raven manually orchestrate subsystem tools. Prefer one front door plus the smallest sufficient deep inspection surface.
 
 ## Conversation behavior
 

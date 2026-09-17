@@ -13,7 +13,7 @@ GaiaOS already has the expensive core pieces needed for an MCP-backed ChatGPT pl
 
 - A public HTTPS Streamable HTTP MCP endpoint.
 - A source-backed GaiaOS carrier bound to `hurrisonferd/NaomiLeGaia`.
-- Read-only tools: `load_gaiaos`, `gaia_council`, `gaia_dispatch`, `gaia_operator`, `gaia_brain`, `gaia_context`.
+- Read-only tools include primary `gaia`, diagnostic `gaia_selftest`, and deep inspection surfaces `load_gaiaos`, `gaia_council`, `gaia_dispatch`, `gaia_operator`, `gaia_brain`, `gaia_context`.
 - External MCP initialize, tool-discovery, and invocation proof recorded in `GaiaOS/CURRENT.json` and `GaiaOS/VERSION.json`.
 - A portable plugin package at `plugins/gaiaos/`.
 - A bundled `gaiaos-council` skill.

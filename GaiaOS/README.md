@@ -69,7 +69,7 @@ NAOMI RETAINS FINAL AUTHORITY FOR GAIAOS
 ## Current whole-platform coordinate
 
 ```text
-GaiaOS v0.001.000
+GaiaOS v0.001.007
 ```
 
 Canonical pointers:
@@ -81,4 +81,16 @@ GaiaOS/VERSIONING.v1.md
 GaiaOS/PORT-MANIFEST.v1.json
 ```
 
-`v0.001.000` is the first formal platform coordinate. It is a composition coordinate, not a claim that every subsystem is deployed or carrier-adopted.
+`v0.001.007` is the current Wave 8 single-front-door platform coordinate. The original `v0.001.000` remains the first formal platform coordinate. It is a composition coordinate, not a claim that every subsystem is deployed or carrier-adopted.
+
+## One-connection operating path
+
+```text
+NAOMI CHATGPT
+→ one GaiaOS MCP connection
+→ gaia(natural request)
+→ GaiaOS resolves bounded context + material council support
+→ answer
+```
+
+Lower-level tools remain available for diagnostics and explicit deep inspection. They are not an installation or orchestration checklist for ordinary use.

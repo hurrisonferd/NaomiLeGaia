@@ -2,12 +2,12 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.006",
-  "previous_version": "v0.001.005",
-  "release_note": "Wave 7 live-MCP settlement: GaiaOS carrier 1.5.0 now exposes a verified Streamable HTTP MCP endpoint at https://gaiaos-loader-api.onrender.com/mcp. Render deploy dep-daljus942hec73cog6e0 shipped commit 2fa49cc1fedf3b99f879676f09689bf8a4aca3d9. External GitHub Actions run 35169838371 job 105038911414 initialized the GaiaOS Carrier MCP server, discovered load_gaiaos, gaia_council, gaia_dispatch, gaia_operator, gaia_brain, and gaia_context, then invoked gaia_dispatch with FRAME + PROOF_EDGE + NEXT_STEP and received KESTREL + VERA + ANVIL with NAOMI authority and NONE_READ_ONLY_DISPATCH effect authority. Naomi ChatGPT connection remains a separate host-side step.",
+  "version": "v0.001.007",
+  "previous_version": "v0.001.006",
+  "release_note": "Wave 8 single-front-door settlement. External run 35171044235 job 105042568889 proved live HTTP and MCP gaia() plus gaia_selftest() on Render deploy dep-dalk5v2jnfac739rtmm0 at c0ca8a80. The anti-mailman probe inferred NEXT_STEP + MANUAL_BURDEN + SUBTRACTION, selected KESTREL + NIMUE, returned 2,943 bytes versus 105,774 bytes for the prior deep load, preserved explicit VERA + ANVIL through a cap of 1, and fabricated no signals for nonsense input. Source promotes carrier 1.6.0 and gaia-first host/plugin guidance; live 1.6.0 redeployment remains pending.",
   "proof": {
     "source_committed": true,
-    "carrier_source_version": "1.5.0",
+    "carrier_source_version": "1.6.0",
     "carrier_entrypoint": "api/gaiaos_app.py",
     "remote_context_runtime_source_present": true,
     "remote_context_http_source_present": true,
@@ -38,6 +38,18 @@
       "KESTREL",
       "VERA",
       "ANVIL"
-    ]
+    ],
+    "single_frontdoor_source_present": true,
+    "primary_mcp_tool": "gaia",
+    "selftest_mcp_tool": "gaia_selftest",
+    "frontdoor_render_deploy": "dep-dalk5v2jnfac739rtmm0",
+    "frontdoor_deployed_commit": "c0ca8a80a6d362ce6c6b9add1bc2c18ab731f7d7",
+    "frontdoor_live_smoke_run_id": 35171044235,
+    "frontdoor_live_smoke_job_id": 105042568889,
+    "frontdoor_live_smoke": "PASS",
+    "frontdoor_packet_bytes": 2943,
+    "legacy_deep_load_bytes": 105774,
+    "manual_tool_chain_required": false,
+    "carrier_1_6_live_redeploy": "PENDING"
   }
 }

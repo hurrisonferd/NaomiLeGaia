@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "gaiaos",
-  "version": "0.1.0",
-  "description": "Source-backed GaiaOS council, navigation, and cognitive support for Naomi.",
+  "version": "0.2.0",
+  "description": "Naomi's source-backed GaiaOS front door, council, navigation, and bounded cognitive support.",
   "repository": "https://github.com/hurrisonferd/NaomiLeGaia",
   "keywords": [
     "gaiaos",
@@ -16,16 +16,18 @@
     "com.openai": {
       "interface": {
         "displayName": "GaiaOS",
-        "shortDescription": "Naomi's source-backed GaiaOS council and context system.",
-        "longDescription": "Load GaiaOS, consult Naomi's differentiated Council, navigate Gaia-native source context, and use bounded BrainOS support through the read-only GaiaOS carrier.",
+        "shortDescription": "Naomi's GaiaOS front door, council, and context system.",
+        "longDescription": "Use one GaiaOS front door for ordinary requests, with source-backed council routing, semantic navigation, diagnostics, and deeper read-only inspection tools on demand.",
         "category": "Productivity",
-        "capabilities": ["Read"],
+        "capabilities": [
+          "Read"
+        ],
         "websiteURL": "https://github.com/hurrisonferd/NaomiLeGaia",
         "defaultPrompt": [
-          "Load GaiaOS and give me a compact boot receipt.",
-          "Bring in the Gaia Council to discuss this with me.",
-          "Ask the right GaiaOS operators to help me think through this.",
-          "Use GaiaOS context navigation to find the source that matters for this question."
+          "Use GaiaOS to help me with this request.",
+          "Ask GaiaOS to route the right council support for this.",
+          "Run the GaiaOS self-test and report only what fails.",
+          "Bring in the Gaia Council for this topic."
         ],
         "brandColor": "#6BAF78"
       }

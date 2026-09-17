@@ -5,7 +5,32 @@ AUTHORITY: NAOMI
 CANONICAL REPOSITORY: hurrisonferd/NaomiLeGaia
 CANONICAL BRANCH: main
 CANONICAL PLATFORM ROOT: GaiaOS/
-STATUS: ACTIVE SOURCE LOADER / COUNCIL + NAVIGATION CARRIER AWARE
+STATUS: ACTIVE SOURCE LOADER / SINGLE FRONT DOOR + COUNCIL + NAVIGATION CARRIER AWARE
+```
+
+## Connected-carrier fast path
+
+When the live GaiaOS MCP carrier is connected, ordinary use begins with one tool:
+
+```text
+NAOMI NATURAL REQUEST
+→ gaia(request)
+→ bounded DictionaryOS / YggdrasilOS context
+→ conservative Gaia-native signal inference
+→ deterministic FairyOS routing when material
+→ compact support packet
+→ HOST ANSWERS NAOMI
+```
+
+`gaia()` is the primary front door. It exists specifically so Naomi or Raven do not have to manually chain loader, context, BrainOS, council, and dispatch calls for ordinary conversation.
+
+Use `gaia_selftest()` for diagnostics. Keep `load_gaiaos`, `gaia_council`, `gaia_brain`, `gaia_context`, `gaia_dispatch`, and `gaia_operator` as deep-inspection escape hatches.
+
+```text
+ONE MCP CONNECTION > MANY MANUAL INSTALLS
+GAIA FRONT DOOR > HUMAN MAILMAN ROUTING
+ROUTING HINT != OWNER INTENT
+SELFTEST PASS != EXTERNAL EFFECT AUTHORITY
 ```
 
 ## `Load GaiaOS`

@@ -1,10 +1,10 @@
 {
-  "schema": "gaiaos.platform-current.v7",
+  "schema": "gaiaos.platform-current.v8",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "ACTIVE_SOURCE_WAVE7_LIVE_MCP_PROTOCOL_PASS",
-  "platform_version": "v0.001.006",
-  "previous_platform_version": "v0.001.005",
+  "status": "ACTIVE_SOURCE_WAVE8_SINGLE_FRONT_DOOR_LIVE_PASS_1_6_REDEPLOY_PENDING",
+  "platform_version": "v0.001.007",
+  "previous_platform_version": "v0.001.006",
   "version_pointer": "GaiaOS/VERSION.json",
   "versioning_contract": "GaiaOS/VERSIONING.v1.md",
   "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
@@ -104,10 +104,12 @@
     "context_runtime": "api/gaiaos_context_runtime.py",
     "context_canary": "api/gaiaos_context_canary.py",
     "live_smoke_workflow": ".github/workflows/gaiaos-live-smoke.yml",
-    "source_version": "1.5.0",
+    "source_version": "1.6.0",
     "openapi": "api/openapi.yaml",
     "docker": "api/Dockerfile",
     "http_source_surfaces": [
+      "GET /gaiaos/selftest",
+      "POST /gaiaos/assist",
       "GET /gaiaos/load",
       "GET /gaiaos/council",
       "GET /gaiaos/operator/{member}",
@@ -118,6 +120,8 @@
       "GET /health"
     ],
     "mcp_source_tools": [
+      "gaia",
+      "gaia_selftest",
       "load_gaiaos",
       "gaia_council",
       "gaia_dispatch",
@@ -197,9 +201,36 @@
         "effect_authority": "NONE_READ_ONLY_DISPATCH",
         "unknown_signals": []
       }
+    },
+    "primary_tool": "gaia",
+    "diagnostic_tool": "gaia_selftest",
+    "frontdoor_policy": "ONE_CONNECTION_GAIA_FIRST_DEEP_TOOLS_ON_DEMAND",
+    "live_frontdoor": {
+      "status": "LIVE_HTTP_AND_MCP_SINGLE_FRONTDOOR_PASS",
+      "deployed_commit": "c0ca8a80a6d362ce6c6b9add1bc2c18ab731f7d7",
+      "render_deploy_id": "dep-dalk5v2jnfac739rtmm0",
+      "external_smoke_run_id": 35171044235,
+      "external_smoke_job_id": 105042568889,
+      "result": "PASS",
+      "http_and_mcp_packet_bytes": 2943,
+      "legacy_deep_load_bytes": 105774,
+      "manual_tool_chain_required": false,
+      "probe_signals": [
+        "NEXT_STEP",
+        "MANUAL_BURDEN",
+        "SUBTRACTION"
+      ],
+      "probe_selected": [
+        "KESTREL",
+        "NIMUE"
+      ],
+      "explicit_member_override": "PASS_VERA_ANVIL_WITH_CAP_1",
+      "unknown_signal_fabrication": false,
+      "selftest": "PASS_ALL_LOCAL_ORGANS",
+      "carrier_1_6_live_redeploy": "PENDING"
     }
   },
-  "proof_ceiling": "GaiaOS is live on Render. Public HTTP context/council surfaces passed external smoke tests, and the public MCP endpoint completed a real external MCP initialize, tool discovery, and gaia_dispatch invocation against the deployed checkout. Naomi ChatGPT automatic adoption or connection remains separately unproven until that chat has the GaiaOS MCP app connected. Hosted OpenAI-backed /chat, durable continuity, domain effects, semantic/graph completeness, and irreversible identity claims remain outside this proof.",
+  "proof_ceiling": "GaiaOS HTTP and MCP transport are live. The gaia() front door and gaia_selftest() passed external acceptance against deployed commit c0ca8a80, including a 2,943-byte bounded packet versus the prior 105,774-byte deep load, deterministic MANUAL_BURDEN/SUBTRACTION/NEXT_STEP routing to KESTREL + NIMUE, explicit VERA + ANVIL preservation, no fabricated signals for nonsense input, and manual_tool_chain_required=false. Source now promotes carrier 1.6.0 and gaia-first host/plugin guidance; live 1.6.0 redeployment is pending this settlement. Naomi ChatGPT connection/adoption, durable continuity, write/domain effects, and hosted OpenAI-backed /chat remain separate.",
   "laws": [
     "NAOMI != RAVEN",
     "GAIAOS != RAVENOS",
@@ -223,7 +254,11 @@
     "UNKNOWN STAYS UNKNOWN",
     "NAOMI RETAINS FINAL AUTHORITY",
     "LIVE MCP TOOL INVOCATION != AUTOMATIC CHATGPT ADOPTION",
-    "MCP DISCOVERY != DOMAIN EFFECT AUTHORITY"
+    "MCP DISCOVERY != DOMAIN EFFECT AUTHORITY",
+    "ONE MCP CONNECTION > MANY MANUAL INSTALLS",
+    "GAIA FRONT DOOR > HUMAN MAILMAN ROUTING",
+    "ROUTING HINT != OWNER INTENT",
+    "SELFTEST PASS != EXTERNAL EFFECT AUTHORITY"
   ],
   "canary": {
     "wave3_ci_run": 50,
@@ -243,6 +278,13 @@
     "wave7_mcp_live_smoke_run_id": 35169838371,
     "wave7_mcp_live_smoke_job_id": 105038911414,
     "wave7_mcp_live_smoke_result": "PASS",
-    "mcp_live_smoke_workflow": ".github/workflows/gaiaos-mcp-live-smoke.yml"
+    "mcp_live_smoke_workflow": ".github/workflows/gaiaos-mcp-live-smoke.yml",
+    "wave8_frontdoor_source_canary_run": 98,
+    "wave8_frontdoor_source_canary_run_id": 35170869137,
+    "wave8_frontdoor_source_canary_result": "PASS",
+    "wave8_frontdoor_live_smoke_run_id": 35171044235,
+    "wave8_frontdoor_live_smoke_job_id": 105042568889,
+    "wave8_frontdoor_live_smoke_result": "PASS",
+    "frontdoor_live_smoke_workflow": ".github/workflows/gaiaos-frontdoor-live-smoke.yml"
   }
 }

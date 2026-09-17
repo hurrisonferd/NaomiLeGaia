@@ -18,7 +18,9 @@ REMOTE MCP: https://gaiaos-loader-api.onrender.com/mcp
 
 ## Expected MCP tools
 
-- `load_gaiaos`
+- `gaia` — primary ordinary-use front door
+- `gaia_selftest` — compact diagnostic
+- `load_gaiaos` — deep bootstrap / diagnostic
 - `gaia_council`
 - `gaia_dispatch`
 - `gaia_operator`
@@ -34,3 +36,7 @@ The repository also contains `.agents/plugins/marketplace.json` for supported lo
 ## Current limitation
 
 The package is staged and the remote MCP has passed external protocol/tool discovery and invocation tests, but Naomi's current ChatGPT chat has not demonstrated an installed live MCP/plugin connection. Until that bridge is available, use `GaiaOS/NAOMI-CHAT-FULL-PACKET.md` with the already-confirmed GitHub source access.
+
+## Preferred use
+
+Prefer `gaia` for ordinary requests and `gaia_selftest` for diagnostics. The remaining tools are deep-inspection surfaces, not a manual installation checklist.
