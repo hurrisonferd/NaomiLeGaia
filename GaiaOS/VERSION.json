@@ -4,7 +4,7 @@
   "owner": "GaiaOS",
   "version": "v0.001.007",
   "previous_version": "v0.001.006",
-  "release_note": "Wave 8 single-front-door settlement. External run 35171044235 job 105042568889 proved live HTTP and MCP gaia() plus gaia_selftest() on Render deploy dep-dalk5v2jnfac739rtmm0 at c0ca8a80. The anti-mailman probe inferred NEXT_STEP + MANUAL_BURDEN + SUBTRACTION, selected KESTREL + NIMUE, returned 2,943 bytes versus 105,774 bytes for the prior deep load, preserved explicit VERA + ANVIL through a cap of 1, and fabricated no signals for nonsense input. Source promotes carrier 1.6.0 and gaia-first host/plugin guidance; live 1.6.0 redeployment remains pending.",
+  "release_note": "Wave 8 live settlement complete. GaiaOS carrier 1.6.0 / platform v0.001.007 is live on Render deploy dep-dalkgdijnfac739ssg10 from source eb2d655c51becc9b205081305302759450254234. External front-door rerun job 105046659240 passed HTTP + real MCP gaia()/gaia_selftest acceptance; live-version run 35172449195 job 105046808901 additionally proved health api_version 1.6.0, front-door platform v0.001.007, selftest PASS, and MCP PRIMARY FRONT DOOR instructions. The 2,943-byte front-door packet replaces ordinary 105,774-byte deep-loader ceremony while specialized tools remain available on demand.",
   "proof": {
     "source_committed": true,
     "carrier_source_version": "1.6.0",
@@ -42,14 +42,23 @@
     "single_frontdoor_source_present": true,
     "primary_mcp_tool": "gaia",
     "selftest_mcp_tool": "gaia_selftest",
-    "frontdoor_render_deploy": "dep-dalk5v2jnfac739rtmm0",
-    "frontdoor_deployed_commit": "c0ca8a80a6d362ce6c6b9add1bc2c18ab731f7d7",
+    "frontdoor_render_deploy": "dep-dalkgdijnfac739ssg10",
+    "frontdoor_deployed_commit": "eb2d655c51becc9b205081305302759450254234",
     "frontdoor_live_smoke_run_id": 35171044235,
-    "frontdoor_live_smoke_job_id": 105042568889,
+    "frontdoor_live_smoke_job_id": 105046659240,
     "frontdoor_live_smoke": "PASS",
     "frontdoor_packet_bytes": 2943,
     "legacy_deep_load_bytes": 105774,
     "manual_tool_chain_required": false,
-    "carrier_1_6_live_redeploy": "PENDING"
+    "carrier_1_6_live_redeploy": "PASS",
+    "wave8_source_canary_run_id": 35172288636,
+    "wave8_source_canary_job_id": 105046319214,
+    "wave8_source_canary": "PASS",
+    "wave8_live_version_run_id": 35172449195,
+    "wave8_live_version_job_id": 105046808901,
+    "wave8_live_version": "PASS",
+    "live_carrier_version": "1.6.0",
+    "live_platform_version": "v0.001.007",
+    "mcp_primary_frontdoor_instructions": "PASS"
   }
 }
