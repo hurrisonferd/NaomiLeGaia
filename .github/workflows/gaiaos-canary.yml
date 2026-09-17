@@ -8,12 +8,14 @@ on:
       - 'api/**'
       - 'GAIAOS-LOAD.md'
       - '.github/workflows/gaiaos-canary.yml'
+      - '.github/workflows/gaiaos-mcp-live-smoke.yml'
   pull_request:
     paths:
       - 'GaiaOS/**'
       - 'api/**'
       - 'GAIAOS-LOAD.md'
       - '.github/workflows/gaiaos-canary.yml'
+      - '.github/workflows/gaiaos-mcp-live-smoke.yml'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +23,7 @@ permissions:
 
 jobs:
   gaiaos-canary:
-    name: GaiaOS council + navigation + context carrier canaries
+    name: GaiaOS council + navigation + context + MCP carrier canaries
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -74,6 +76,7 @@ jobs:
           dictionary = Path('GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json').read_text(encoding='utf-8')
           yggdrasil = Path('GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json').read_text(encoding='utf-8')
           reentry = Path('GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json').read_text(encoding='utf-8')
+          mcp_smoke = Path('.github/workflows/gaiaos-mcp-live-smoke.yml').read_text(encoding='utf-8')
 
           required_api = [
               'def gaia_council(', 'def gaia_dispatch(', 'def gaia_operator(', 'def gaia_brain(',
@@ -87,6 +90,8 @@ jobs:
               'SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY',
               'DEPLOYED_ROOT',
               'DEPLOYED_CHECKOUT',
+              'mcp.settings.streamable_http_path = "/"',
+              'app.mount("/mcp", mcp.streamable_http_app())',
           ]
           required_context_runtime = ['gaiaos.brainos.remote-context-packet.v1', 'TERM HIT != AUTHORITY', 'GRAPH EDGE != EFFECT', 'SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY']
           required_docker = ['COPY gaiaos_context_runtime.py ./', 'COPY gaiaos_app.py ./', 'uvicorn gaiaos_app:app']
@@ -99,19 +104,34 @@ jobs:
           required_yggdrasil = ['GAIA-GRAPH.v1.json', 'GAIAOS-YGGDRASIL-QUERY.v1.py', 'GRAPH EDGE != EFFECT']
           required_reentry = ['CHATOS OWNS NOW', 'CONVOOS OWNS WHERE WE WERE', 'SIDEQUEST IS A BRANCH NOT A NEW SELF']
           required_live_current = [
-              'v0.001.005',
-              'LIVE_EXTERNAL_SMOKE_PASS',
+              'v0.001.006',
+              'ACTIVE_SOURCE_WAVE7_LIVE_MCP_PROTOCOL_PASS',
               'srv-daljhgjl550s73bgcv3g',
-              'dep-daljklrl550s73bgmnig',
-              '35168570633',
-              'DEPLOYED_CHECKOUT',
+              'dep-daljus942hec73cog6e0',
+              '2fa49cc1fedf3b99f879676f09689bf8a4aca3d9',
+              '35169838371',
+              '105038911414',
+              'PROVEN_EXTERNAL_PROTOCOL_SMOKE_PASS',
+              'LIVE_PROTOCOL_TOOL_DISCOVERY_AND_INVOCATION_PASS',
+              'https://gaiaos-loader-api.onrender.com/mcp',
+              'ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE',
           ]
           required_live_version = [
-              'v0.001.005',
-              'dep-daljklrl550s73bgmnig',
-              '35168570633',
-              'live_http_health',
-              'live_http_context',
+              'v0.001.006',
+              'dep-daljus942hec73cog6e0',
+              '2fa49cc1fedf3b99f879676f09689bf8a4aca3d9',
+              '35169838371',
+              '105038911414',
+              'live_mcp_handshake',
+              'live_mcp_tool_discovery',
+              'live_mcp_tool_invocation',
+          ]
+          required_mcp_smoke = [
+              'https://gaiaos-loader-api.onrender.com/mcp',
+              "'load_gaiaos'", "'gaia_council'", "'gaia_dispatch'",
+              "'gaia_operator'", "'gaia_brain'", "'gaia_context'",
+              'GAIAOS_MCP_LIVE_SMOKE_PASS',
+              "['KESTREL', 'VERA', 'ANVIL']",
           ]
 
           missing = []
@@ -129,6 +149,7 @@ jobs:
           missing += [f'reentry:{x}' for x in required_reentry if x not in reentry]
           missing += [f'current:{x}' for x in required_live_current if x not in current]
           missing += [f'version:{x}' for x in required_live_version if x not in version]
+          missing += [f'mcp_smoke:{x}' for x in required_mcp_smoke if x not in mcp_smoke]
           if 'source_version": "1.5.0"' not in current:
               missing.append('current:carrier=1.5.0')
           if 'gaia_context' not in current or 'GET /gaiaos/context' not in current:
