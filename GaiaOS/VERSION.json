@@ -2,16 +2,18 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.002",
-  "release_note": "Wave 3 source architecture: HOT/WARM/COLD conversation fabric, cast-width and response-density controls, council dissent preservation, warm continuity candidates, Gaia-native BrainOS support fabric and Context Compass contract, carrier v1.4.0 hot-path exposure, and GaiaOS Presentation Gold with LIVING / QUIET / WILD composition controls. The current six operator slots remain placeholders until Naomi adopts or changes them; donor architecture does not transfer Raven identity or voice.",
+  "version": "v0.001.003",
+  "release_note": "Wave 4 navigation source architecture: Gaia-native DictionaryOS term/alias resolution, YggdrasilOS bounded relationship graph traversal, and BrainOS Context Compass integration using DictionaryOS -> YggdrasilOS -> lexical ranking. Wave 3 CI previously passed on run 50. The current six operator slots remain placeholders until Naomi adopts or changes them; donor architecture does not transfer Raven identity, ownership, continuity, or voice.",
   "proof": {
     "source_committed": true,
     "carrier_source_version": "1.4.0",
-    "presentation_canary_source_present": true,
-    "post_release_ci": "PENDING_OBSERVATION",
+    "prior_wave3_ci": "PASS_RUN_50",
+    "dictionaryos_runtime_source_present": true,
+    "yggdrasilos_runtime_source_present": true,
+    "context_compass_navigation_binding_source_present": true,
+    "wave4_navigation_ci": "PENDING_OBSERVATION",
     "deployment": "UNPROVEN",
     "automatic_external_carrier_adoption": "UNPROVEN",
-    "executable_context_compass_runtime": "NOT_PRESENT",
     "durable_continuity_backend": "NOT_PRESENT",
     "permanent_operator_identity_adoption": "PENDING_NAOMI"
   }
