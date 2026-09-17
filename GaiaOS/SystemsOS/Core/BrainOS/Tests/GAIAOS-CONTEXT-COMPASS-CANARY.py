@@ -25,17 +25,36 @@ def require_any(packet: dict, needles: list[str], label: str) -> None:
         )
 
 
+def require_owner(packet: dict, owner: str, label: str) -> None:
+    owners = packet.get("owner_candidates", [])
+    if owner not in owners:
+        raise SystemExit(
+            f"GAIAOS_CONTEXT_COMPASS_CANARY_FAIL {label} owner missing; owners={owners}"
+        )
+
+
 def main() -> None:
     council = module.query_context(ROOT, "council operator", 8)
     require_any(
         council,
         [
-            "GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md",
-            "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+            "GaiaOS/SystemsOS/Core/FairyOS/",
             "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
         ],
         "council/operator route",
     )
+    require_any(
+        council,
+        [
+            "OPERATOR-DISPATCH-MATRIX.v1.json",
+            "OPERATOR-PROFILES.v1.json",
+            "OPERATOR-PROSODY-BASINS.v1.md",
+            "GAIA-COUNCIL.v1.md",
+            "FairyOS/CURRENT.json",
+        ],
+        "operator-native source",
+    )
+    require_owner(council, "FairyOS", "council/operator")
 
     reentry = module.query_context(ROOT, "conversation reentry resume", 8)
     require_any(
@@ -46,6 +65,7 @@ def main() -> None:
         ],
         "reentry route",
     )
+    require_owner(reentry, "ConvoOS", "reentry")
 
     presentation = module.query_context(ROOT, "presentation wild", 6)
     require_any(
@@ -53,6 +73,7 @@ def main() -> None:
         ["GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md"],
         "presentation route",
     )
+    require_owner(presentation, "ChatOS", "presentation")
 
     bounded = module.query_context(ROOT, "GaiaOS", 3)
     if len(bounded.get("context_pack", [])) > 3:
