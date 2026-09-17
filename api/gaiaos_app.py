@@ -15,6 +15,7 @@ import gaiaos_api as base
 from gaiaos_context_runtime import build_context_packet
 
 EXTENSION_VERSION = "1.5.0"
+CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
 base.APP_VERSION = EXTENSION_VERSION
 app = base.app
 mcp = base.mcp
@@ -61,7 +62,7 @@ def _context_packet(subject: str, limit: int = 10, depth: int = 1) -> dict[str, 
         commit,
         "GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json",
     )
-    return build_context_packet(
+    packet = build_context_packet(
         registry,
         graph,
         subject,
@@ -69,6 +70,9 @@ def _context_packet(subject: str, limit: int = 10, depth: int = 1) -> dict[str, 
         limit=limit,
         depth=depth,
     )
+    packet["carrier_mode"] = CONTEXT_MODE
+    packet["carrier_version"] = EXTENSION_VERSION
+    return packet
 
 
 @mcp.tool()
