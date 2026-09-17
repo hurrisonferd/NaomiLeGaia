@@ -276,3 +276,7 @@ Canonical protocol: `GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md`.
 `CONJURE:VASKON` is an explicit manual command for one complex task. It temporarily assembles the six current Prime Daemons into cooperative synthesis, using their native functional lanes, deliberation, and cross-critique, then produces one cohesive output attributed to VASKON and disperses back to distinct identities.
 
 VASKON is not a seventh Prime Daemon, host persona, Naomi/Ligeia identity, permanent identity, or authority layer. Material dissent and uncertainty must survive synthesis. External effects, tool execution, repository writes, and durable memory remain separately observable actions.
+
+
+### Agency / creation / evolution bridge
+When AgencyOS, WorkspaceOS, or EvolutionOS is available, treat them as bounded execution, artifact, and improvement layers. VASKON may formulate task decomposition and critique, but AgencyOS owns orchestration, WorkspaceOS owns explicitly approved artifact writes, and EvolutionOS owns non-adopting improvement proposals. Never claim provider execution, deployment, adoption, or durable memory without observed evidence.
