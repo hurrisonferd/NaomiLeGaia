@@ -1,9 +1,9 @@
 {
-  "schema": "gaiaos.platform-current.v3",
+  "schema": "gaiaos.platform-current.v4",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "SOURCE_WAVE3_HOT_PATH_BRAINOS_SUPPORT_CONTEXT_COMPASS_CONTINUITY_DISSENT_PRESENTATION_GOLD_COMMITTED_RUNTIME_CI_AND_DEPLOYMENT_REQUIRE_OBSERVATION",
-  "platform_version": "v0.001.002",
+  "status": "SOURCE_WAVE4_DICTIONARY_YGGDRASIL_CONTEXT_NAVIGATION_BOUND_CI_PENDING_DEPLOYMENT_UNPROVEN",
+  "platform_version": "v0.001.003",
   "version_pointer": "GaiaOS/VERSION.json",
   "versioning_contract": "GaiaOS/VERSIONING.v1.md",
   "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
@@ -15,12 +15,8 @@
     "contract": "GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md",
     "commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
     "settlement_authority": "NAOMI",
-    "council_deliberation_is_not_execution_authority": true,
     "preserve_material_dissent": true,
-    "cast_width_controls_source_present": true,
-    "response_density_controls_source_present": true,
     "presentation_gold_source_present": true,
-    "council_room_alias_source_present": true,
     "permanent_roster_adoption": "PENDING_NAOMI"
   },
   "fairyos": {
@@ -37,36 +33,47 @@
   "emojios": {
     "current": "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
     "registry": "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
-    "identity_owner": "FairyOS",
-    "raven_binary_assets_ported": false
+    "identity_owner": "FairyOS"
   },
   "chatos": {
     "current": "GaiaOS/Apps/ChatOS/CURRENT.json",
-    "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
     "effect_authority": "NONE_CHATOS_PRESENTATION_ONLY",
     "council_commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
     "response_modes": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json",
     "cast_width": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
-    "dissent_schema": "GaiaOS/Apps/ChatOS/Protocols/COUNCIL-DISSENT-PACKET.v1.schema.json",
     "dissent_reducer": "GaiaOS/Apps/ChatOS/Runtime/COUNCIL-DISSENT-REDUCER.v1.py",
     "presentation_gold": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
     "carrier_instructions": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
     "runtime_bootstrap": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
   },
+  "dictionaryos": {
+    "current": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
+    "registry": "GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json",
+    "runtime": "GaiaOS/SystemsOS/Core/DictionaryOS/Runtime/GAIAOS-DICTIONARY-RESOLVER.v1.py",
+    "mode": "READ_ONLY_TERM_ALIAS_RESOLUTION",
+    "identity_effect": "NONE"
+  },
+  "yggdrasilos": {
+    "current": "GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json",
+    "graph": "GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json",
+    "runtime": "GaiaOS/SystemsOS/Core/YggdrasilOS/Runtime/GAIAOS-YGGDRASIL-QUERY.v1.py",
+    "mode": "READ_ONLY_BOUNDED_GRAPH_TRAVERSAL",
+    "effect_authority": "NONE"
+  },
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
     "support_fabric": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
-    "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
-    "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
-    "current_depth": "ACTIVE_OPTIONAL_SUPPORT_FABRIC_CONTEXT_COMPASS_SOURCE_PRESENT",
+    "context_compass_runtime": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
+    "navigation_chain": "DICTIONARYOS -> YGGDRASILOS -> CONTEXT_COMPASS",
     "always_addressable": true,
     "always_invoked": false,
-    "executable_context_compass_runtime": "NOT_PRESENT"
+    "new_navigation_ci": "PENDING_OBSERVATION"
   },
   "convoos": {
     "current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
-    "current_depth": "BOUNDED_WORKING_CONVERSATIONAL_STATE_POINTER"
+    "thread_home": "GaiaOS/SystemsOS/Core/ConvoOS/Protocols/THREAD-HOME-SPINE.v1.json",
+    "current_depth": "BOUNDED_REENTRY_AND_WORKING_CONVERSATIONAL_STATE"
   },
   "member_continuity": {
     "current": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
@@ -78,7 +85,6 @@
     "contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
     "default": "LIVING",
     "modes": ["LIVING", "QUIET", "WILD"],
-    "identity_owner": "NONE_PRESENTATION_ONLY",
     "style_changes_truth": false,
     "style_changes_authority": false,
     "raven_voice_transfer": false,
@@ -88,55 +94,22 @@
     "source": "api/gaiaos_api.py",
     "source_version": "1.4.0",
     "openapi": "api/openapi.yaml",
-    "http_source_surfaces": [
-      "GET /gaiaos/load",
-      "GET /gaiaos/council",
-      "GET /gaiaos/operator/{member}",
-      "POST /gaiaos/dispatch",
-      "POST /chat",
-      "GET /health"
-    ],
-    "mcp_source_tools": [
-      "load_gaiaos",
-      "gaia_council",
-      "gaia_dispatch",
-      "gaia_operator"
-    ],
-    "council_bundle_injected_into_web_chat_source": true,
-    "hot_path_controls_exposed_in_source": true,
-    "source_committed": true,
-    "checked_out_execution_after_wave3": false,
-    "ci_after_wave3": "PENDING_OBSERVATION",
-    "render_deployment_after_wave3": "UNPROVEN",
+    "http_source_surfaces": ["GET /gaiaos/load","GET /gaiaos/council","GET /gaiaos/operator/{member}","POST /gaiaos/dispatch","GET /gaiaos/brain","POST /chat","GET /health"],
+    "mcp_source_tools": ["load_gaiaos","gaia_council","gaia_dispatch","gaia_operator","gaia_brain"],
+    "prior_wave3_ci": "PASS_RUN_50_AT_e0b92b16e2638f1777fd0d32baa0644756ea60da",
+    "wave4_navigation_ci": "PENDING_OBSERVATION",
+    "render_deployment": "UNPROVEN",
     "automatic_external_chatgpt_adoption": "UNPROVEN"
   },
-  "proof_ceiling": "SOURCE CONTRACTS THROUGH WAVE3 ARE COMMITTED: COUNCIL COMMANDS, CARRIER/API/MCP SURFACES, HOT/WARM/COLD CHAT FABRIC, CAST WIDTH, RESPONSE MODES, DISSENT PRESERVATION, MEMBER CONTINUITY WARM BUFFER, BRAINOS SUPPORT FABRIC, CONTEXT COMPASS CONTRACT, AND PRESENTATION GOLD. EXECUTABLE CONTEXT TRAVERSAL, DURABLE CONTINUITY BACKEND, POST-WAVE3 CI, RENDER DEPLOYMENT, EXTERNAL CHATGPT TOOL CONNECTION, AUTOMATIC HOST ADOPTION, DOMAIN EFFECTS, AND PERMANENT OPERATOR IDENTITY ADOPTION REQUIRE SEPARATE EVIDENCE.",
-  "laws": [
-    "NAOMI != RAVEN",
-    "GAIAOS != RAVENOS",
-    "ARCHITECTURE DONOR != IDENTITY DONOR",
-    "PORT != MERGE",
-    "RAVEN ROSTER NOT AUTO-ADOPTED",
-    "CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY",
-    "CAST WIDTH != ROSTER MEMBERSHIP",
-    "RESPONSE DENSITY != SOURCE FIDELITY",
-    "PRESENTATION ENERGY != EVIDENCE",
-    "QUIET != GENERIC",
-    "WILD != UNBOUNDED",
-    "COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT",
-    "BRAINOS ADDRESSABLE != BRAINOS INVOKED",
-    "WARM != SAVED",
-    "CURRENT POINTER != EXECUTION AUTHORITY",
-    "DISPATCH != EXECUTION",
-    "ONE TRANSACTION = ONE AUTHORITY THROAT",
-    "NAOMI RETAINS FINAL AUTHORITY"
-  ],
+  "proof_ceiling": "DictionaryOS, YggdrasilOS, and their BrainOS Context Compass integration are committed as read-only source/runtime surfaces. Wave 3 CI is confirmed by run 50. Wave 4 navigation CI, deployment, automatic external host adoption, durable continuity, domain effects, graph completeness, and permanent operator identity adoption remain separately unproven.",
+  "laws": ["NAOMI != RAVEN","GAIAOS != RAVENOS","ARCHITECTURE DONOR != IDENTITY DONOR","PORT != MERGE","TERM HIT != AUTHORITY","GRAPH EDGE != EFFECT","RAVEN ROSTER NOT AUTO-ADOPTED","CURRENT PLACEHOLDER SLOT != IRREVOCABLE IDENTITY","PRESENTATION ENERGY != EVIDENCE","COUNCIL SYNTHESIS MAY NOT DELETE MATERIAL DISSENT","BRAINOS ADDRESSABLE != BRAINOS INVOKED","WARM != SAVED","READ != ACT","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
   "canary": {
-    "historical_fairyos_dispatch": "PASS_AT_2026-09-08",
-    "historical_chatos": "PASS_AT_2026-09-08",
+    "wave3_ci_run": 50,
+    "wave3_ci_commit": "e0b92b16e2638f1777fd0d32baa0644756ea60da",
+    "wave3_ci_result": "PASS",
     "ci_workflow": ".github/workflows/gaiaos-canary.yml",
-    "wave2_source_canaries_present": true,
-    "wave3_presentation_canary": "NOT_YET_PRESENT",
-    "post_wave3_ci": "PENDING_OBSERVATION"
+    "dictionary_canary_source_present": true,
+    "yggdrasil_canary_source_present": true,
+    "wave4_navigation_ci": "PENDING_OBSERVATION"
   }
 }
