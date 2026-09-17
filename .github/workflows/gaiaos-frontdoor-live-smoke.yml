@@ -1,156 +1,16 @@
-name: GaiaOS Front Door Live Acceptance
+name: GaiaOS Front Door Live Acceptance (legacy manual)
+
+# Consolidated into .github/workflows/gaiaos-master-canary.yml.
+# Retained only for manual historical diagnostics.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/gaiaos-frontdoor-live-smoke.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  frontdoor:
-    name: Prove gaia front door without manual tool chaining
+  legacy-disabled:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
     steps:
-      - name: Install client dependencies
-        run: python -m pip install 'mcp>=1.27.2,<2' httpx
-      - name: Front-door acceptance
-        shell: python
-        run: |
-          import asyncio
-          import json
-          import httpx
-          from mcp import ClientSession
-          from mcp.client.streamable_http import streamable_http_client
-
-          BASE = 'https://gaiaos-loader-api.onrender.com'
-          MCP = BASE + '/mcp'
-          REQUEST = 'Raven is being a mailman with too many installs. Simplify this, reduce ceremony, and tell me the next step.'
-
-          def size(value):
-              return len(json.dumps(value, ensure_ascii=False, separators=(',', ':')).encode())
-
-          def payload(result):
-              value = getattr(result, 'structuredContent', None)
-              if value is None:
-                  value = getattr(result, 'structured_content', None)
-              if isinstance(value, dict):
-                  return value
-              for block in getattr(result, 'content', []) or []:
-                  text = getattr(block, 'text', None)
-                  if isinstance(text, str):
-                      try:
-                          parsed = json.loads(text)
-                      except json.JSONDecodeError:
-                          continue
-                      if isinstance(parsed, dict):
-                          return parsed
-              raise AssertionError('tool returned no parseable object payload')
-
-          def verify_frontdoor(packet):
-              assert packet['schema'] == 'gaiaos.frontdoor.packet.v1'
-              assert packet['authority'] == 'NAOMI'
-              assert packet['effect_authority'] == 'NONE_READ_ONLY_SUPPORT'
-              assert packet['source_binding'] == 'DEPLOYED_CHECKOUT'
-              assert packet['route']['manual_tool_chain_required'] is False
-              signals = packet['route']['signals']
-              assert 'MANUAL_BURDEN' in signals, signals
-              assert 'SUBTRACTION' in signals, signals
-              assert 'NEXT_STEP' in signals, signals
-              selected = packet['route']['selected_members']
-              assert selected == ['KESTREL', 'NIMUE'], selected
-              assert packet['context'] is not None
-              assert size(packet) < 20000, size(packet)
-              return selected, signals
-
-          def verify_selftest(packet):
-              assert packet['schema'] == 'gaiaos.selftest.packet.v1'
-              assert packet['status'] == 'PASS', packet
-              assert packet['authority'] == 'NAOMI'
-              assert packet['effect_authority'] == 'NONE_DIAGNOSTIC_ONLY'
-              assert packet['source_binding'] == 'DEPLOYED_CHECKOUT'
-              assert all(packet['checks'].values()), packet['checks']
-              assert packet['dispatch_probe_selected'] == ['KESTREL', 'VERA', 'ANVIL']
-
-          async def wait_http(client):
-              for attempt in range(24):
-                  try:
-                      r = await client.get(BASE + '/health')
-                      if r.status_code == 200:
-                          return r.json()
-                  except Exception:
-                      pass
-                  await asyncio.sleep(5)
-              raise AssertionError('carrier never became healthy')
-
-          async def http_test():
-              async with httpx.AsyncClient(timeout=30, follow_redirects=True) as client:
-                  health = await wait_http(client)
-                  assert health['status'] == 'ok'
-                  r = await client.post(BASE + '/gaiaos/assist', json={'request': REQUEST})
-                  assert r.status_code == 200, (r.status_code, r.text[:1000])
-                  assist = r.json()
-                  selected, signals = verify_frontdoor(assist)
-                  s = await client.get(BASE + '/gaiaos/selftest')
-                  assert s.status_code == 200, (s.status_code, s.text[:1000])
-                  selftest = s.json()
-                  verify_selftest(selftest)
-                  print('HTTP_FRONTDOOR_SOURCE', assist['source'])
-                  print('HTTP_FRONTDOOR_SIGNALS', signals)
-                  print('HTTP_FRONTDOOR_SELECTED', selected)
-                  print('HTTP_FRONTDOOR_SIZE', size(assist))
-                  print('HTTP_SELFTEST_PASS', json.dumps(selftest['checks'], sort_keys=True))
-                  return assist['source']
-
-          async def mcp_test(expected_source):
-              async with streamable_http_client(MCP) as transport:
-                  read_stream, write_stream = transport[0], transport[1]
-                  async with ClientSession(read_stream, write_stream) as session:
-                      initialized = await session.initialize()
-                      server = initialized.serverInfo.name if hasattr(initialized, 'serverInfo') else initialized.server_info.name
-                      assert server == 'GaiaOS Carrier'
-                      tools = await session.list_tools()
-                      names = {tool.name for tool in tools.tools}
-                      assert {'gaia', 'gaia_selftest'} <= names, names
-                      print('MCP_FRONTDOOR_TOOLS', sorted(names))
-
-                      assist = payload(await session.call_tool('gaia', arguments={'request': REQUEST}))
-                      selected, signals = verify_frontdoor(assist)
-                      assert assist['source'] == expected_source, (assist['source'], expected_source)
-
-                      selftest = payload(await session.call_tool('gaia_selftest', arguments={}))
-                      verify_selftest(selftest)
-                      assert selftest['source'] == expected_source
-
-                      explicit = payload(await session.call_tool('gaia', arguments={
-                          'request': 'Ask Vera to frame this and Anvil to verify the proof.',
-                          'max_members': 1,
-                      }))
-                      assert explicit['route']['requested_members'] == ['VERA', 'ANVIL'], explicit['route']
-                      assert explicit['route']['selected_members'][:2] == ['VERA', 'ANVIL'], explicit['route']
-
-                      unknown = payload(await session.call_tool('gaia', arguments={
-                          'request': 'zorb flarn quux',
-                          'include_context': False,
-                      }))
-                      assert unknown['route']['signals'] == [], unknown['route']
-                      assert unknown['route']['selected_members'] == [], unknown['route']
-                      assert unknown['route']['mode'] == 'CONTEXT_ONLY'
-
-                      print('MCP_FRONTDOOR_SOURCE', assist['source'])
-                      print('MCP_FRONTDOOR_SIGNALS', signals)
-                      print('MCP_FRONTDOOR_SELECTED', selected)
-                      print('MCP_FRONTDOOR_SIZE', size(assist))
-                      print('MCP_EXPLICIT_OVERRIDE_PASS', explicit['route']['selected_members'])
-                      print('MCP_UNKNOWN_STAYS_UNKNOWN_PASS')
-
-          async def main():
-              source = await http_test()
-              await mcp_test(source)
-              print('GAIAOS_SINGLE_FRONTDOOR_LIVE_PASS')
-
-          asyncio.run(main())
+      - run: echo "Legacy front-door smoke disabled. Use GaiaOS Master Canary."
