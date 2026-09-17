@@ -1,10 +1,10 @@
 {
-  "schema": "gaiaos.platform-current.v6",
+  "schema": "gaiaos.platform-current.v7",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "status": "ACTIVE_SOURCE_WAVE6_RENDER_LIVE_EXTERNAL_SMOKE_PASS",
-  "platform_version": "v0.001.005",
-  "previous_platform_version": "v0.001.004",
+  "status": "ACTIVE_SOURCE_WAVE7_LIVE_MCP_PROTOCOL_PASS",
+  "platform_version": "v0.001.006",
+  "previous_platform_version": "v0.001.005",
   "version_pointer": "GaiaOS/VERSION.json",
   "versioning_contract": "GaiaOS/VERSIONING.v1.md",
   "port_manifest": "GaiaOS/PORT-MANIFEST.v1.json",
@@ -18,7 +18,7 @@
     "settlement_authority": "NAOMI",
     "preserve_material_dissent": true,
     "presentation_gold_source_present": true,
-    "permanent_roster_adoption": "PENDING_NAOMI"
+    "permanent_roster_adoption": "ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE"
   },
   "fairyos": {
     "current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
@@ -29,7 +29,7 @@
     "dispatch_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "roster_native_to_gaia": true,
     "raven_roster_adopted": false,
-    "roster_status": "SOURCE_BACKED_PLACEHOLDER_SLOTS_AWAITING_NAOMI_ADOPTION_OR_RENAME"
+    "roster_status": "CURRENT_GAIA_NATIVE_ROSTER_ACCEPTED_BY_NAOMI_RENAMABLE"
   },
   "emojios": {
     "current": "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
@@ -88,7 +88,11 @@
   "presentation": {
     "contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
     "default": "LIVING",
-    "modes": ["LIVING", "QUIET", "WILD"],
+    "modes": [
+      "LIVING",
+      "QUIET",
+      "WILD"
+    ],
     "style_changes_truth": false,
     "style_changes_authority": false,
     "raven_voice_transfer": false,
@@ -125,14 +129,14 @@
     "live_context_binding": "DEPLOYED_CHECKOUT",
     "wave5_context_carrier_ci": "PASS_RUN_85_AT_5705f3dc2c1314832d2155769874160f4f61866d",
     "render_deployment": {
-      "status": "LIVE_EXTERNAL_SMOKE_PASS",
+      "status": "LIVE_HTTP_AND_MCP_EXTERNAL_SMOKE_PASS",
       "provider": "Render",
       "workspace": "RavenOS",
       "service_name": "gaiaos-loader-api",
       "service_id": "srv-daljhgjl550s73bgcv3g",
       "url": "https://gaiaos-loader-api.onrender.com",
-      "deploy_id": "dep-daljklrl550s73bgmnig",
-      "deployed_commit": "4fd1cfe38c7041467494af65306be699c6a60066",
+      "deploy_id": "dep-daljus942hec73cog6e0",
+      "deployed_commit": "2fa49cc1fedf3b99f879676f09689bf8a4aca3d9",
       "deploy_status": "live",
       "external_smoke_run": 2,
       "external_smoke_run_id": 35168570633,
@@ -156,10 +160,46 @@
     },
     "hosted_chat_openai_configured_at_smoke": false,
     "authentication_required_at_smoke": false,
-    "live_mcp_handshake": "UNPROVEN",
-    "automatic_external_chatgpt_adoption": "UNPROVEN"
+    "live_mcp_handshake": "PROVEN_EXTERNAL_PROTOCOL_SMOKE_PASS",
+    "automatic_external_chatgpt_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT",
+    "mcp_endpoint": "https://gaiaos-loader-api.onrender.com/mcp",
+    "mcp_live_smoke_workflow": ".github/workflows/gaiaos-mcp-live-smoke.yml",
+    "mcp_public_host": "gaiaos-loader-api.onrender.com",
+    "live_mcp": {
+      "status": "LIVE_PROTOCOL_TOOL_DISCOVERY_AND_INVOCATION_PASS",
+      "endpoint": "https://gaiaos-loader-api.onrender.com/mcp",
+      "server_name": "GaiaOS Carrier",
+      "deployed_commit": "2fa49cc1fedf3b99f879676f09689bf8a4aca3d9",
+      "render_deploy_id": "dep-daljus942hec73cog6e0",
+      "smoke_workflow_run_id": 35169838371,
+      "smoke_job_id": 105038911414,
+      "result": "PASS",
+      "tools_observed": [
+        "load_gaiaos",
+        "gaia_council",
+        "gaia_dispatch",
+        "gaia_operator",
+        "gaia_brain",
+        "gaia_context"
+      ],
+      "dispatch_probe": {
+        "signals": [
+          "FRAME",
+          "PROOF_EDGE",
+          "NEXT_STEP"
+        ],
+        "selected": [
+          "KESTREL",
+          "VERA",
+          "ANVIL"
+        ],
+        "authority": "NAOMI",
+        "effect_authority": "NONE_READ_ONLY_DISPATCH",
+        "unknown_signals": []
+      }
+    }
   },
-  "proof_ceiling": "The GaiaOS carrier is live on Render and its public HTTP /health and /gaiaos/context surfaces passed an external GitHub-hosted smoke test. The live context packet was pinned to the deployed checkout and returned Gaia-native DictionaryOS candidates, YggdrasilOS graph edges, and a bounded context pack. Live MCP handshake, hosted OpenAI-backed /chat behavior, automatic external ChatGPT adoption, durable continuity, domain effects, semantic/graph completeness, and permanent operator identity adoption remain separately unproven.",
+  "proof_ceiling": "GaiaOS is live on Render. Public HTTP context/council surfaces passed external smoke tests, and the public MCP endpoint completed a real external MCP initialize, tool discovery, and gaia_dispatch invocation against the deployed checkout. Naomi ChatGPT automatic adoption or connection remains separately unproven until that chat has the GaiaOS MCP app connected. Hosted OpenAI-backed /chat, durable continuity, domain effects, semantic/graph completeness, and irreversible identity claims remain outside this proof.",
   "laws": [
     "NAOMI != RAVEN",
     "GAIAOS != RAVENOS",
@@ -181,7 +221,9 @@
     "WARM != SAVED",
     "READ != ACT",
     "UNKNOWN STAYS UNKNOWN",
-    "NAOMI RETAINS FINAL AUTHORITY"
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "LIVE MCP TOOL INVOCATION != AUTOMATIC CHATGPT ADOPTION",
+    "MCP DISCOVERY != DOMAIN EFFECT AUTHORITY"
   ],
   "canary": {
     "wave3_ci_run": 50,
@@ -197,6 +239,10 @@
     "wave6_live_smoke_run_id": 35168570633,
     "wave6_live_smoke_result": "PASS",
     "ci_workflow": ".github/workflows/gaiaos-canary.yml",
-    "live_smoke_workflow": ".github/workflows/gaiaos-live-smoke.yml"
+    "live_smoke_workflow": ".github/workflows/gaiaos-live-smoke.yml",
+    "wave7_mcp_live_smoke_run_id": 35169838371,
+    "wave7_mcp_live_smoke_job_id": 105038911414,
+    "wave7_mcp_live_smoke_result": "PASS",
+    "mcp_live_smoke_workflow": ".github/workflows/gaiaos-mcp-live-smoke.yml"
   }
 }

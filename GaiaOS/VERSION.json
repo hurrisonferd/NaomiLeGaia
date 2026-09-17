@@ -2,9 +2,9 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.005",
-  "previous_version": "v0.001.004",
-  "release_note": "Wave 6 live-carrier settlement: GaiaOS carrier 1.5.0 is live on Render at gaiaos-loader-api.onrender.com. The live context route was hardened to read Gaia-native DictionaryOS and YggdrasilOS data from the exact deployed checkout instead of depending on an outbound GitHub request at query time. Render deploy dep-daljklrl550s73bgmnig shipped commit 4fd1cfe38c7041467494af65306be699c6a60066 and reached live state. External GitHub Actions smoke run 2 (run id 35168570633) passed /health and /gaiaos/context for subject 'council operator', observing carrier 1.5.0, NAOMI authority, NONE_READ_ONLY effect authority, DEPLOYED_CHECKOUT source binding, DictionaryOS candidates, YggdrasilOS graph edges, and a bounded context pack. Live MCP handshake, hosted OpenAI-backed chat, automatic external ChatGPT adoption, durable continuity, and permanent operator identity adoption remain separately unproven.",
+  "version": "v0.001.006",
+  "previous_version": "v0.001.005",
+  "release_note": "Wave 7 live-MCP settlement: GaiaOS carrier 1.5.0 now exposes a verified Streamable HTTP MCP endpoint at https://gaiaos-loader-api.onrender.com/mcp. Render deploy dep-daljus942hec73cog6e0 shipped commit 2fa49cc1fedf3b99f879676f09689bf8a4aca3d9. External GitHub Actions run 35169838371 job 105038911414 initialized the GaiaOS Carrier MCP server, discovered load_gaiaos, gaia_council, gaia_dispatch, gaia_operator, gaia_brain, and gaia_context, then invoked gaia_dispatch with FRAME + PROOF_EDGE + NEXT_STEP and received KESTREL + VERA + ANVIL with NAOMI authority and NONE_READ_ONLY_DISPATCH effect authority. Naomi ChatGPT connection remains a separate host-side step.",
   "proof": {
     "source_committed": true,
     "carrier_source_version": "1.5.0",
@@ -17,17 +17,27 @@
     "wave4_proof_pointer_ci": "PASS_RUN_71_AT_a66df6dfe8597eda475b74ed08dddaf8c226ca33",
     "wave5_context_carrier_ci": "PASS_RUN_85_AT_5705f3dc2c1314832d2155769874160f4f61866d",
     "render_service": "srv-daljhgjl550s73bgcv3g",
-    "render_deploy": "dep-daljklrl550s73bgmnig",
-    "render_deployed_commit": "4fd1cfe38c7041467494af65306be699c6a60066",
+    "render_deploy": "dep-daljus942hec73cog6e0",
+    "render_deployed_commit": "2fa49cc1fedf3b99f879676f09689bf8a4aca3d9",
     "render_status": "LIVE",
     "external_live_smoke": "PASS_RUN_2_ID_35168570633",
     "external_live_smoke_workflow_commit": "436dd5c1e1a060509e92446a0e6bb2f0e3d5e699",
     "live_http_health": "PASS",
     "live_http_context": "PASS",
-    "live_mcp_handshake": "UNPROVEN",
+    "live_mcp_handshake": "PASS",
     "hosted_openai_chat": "NOT_CONFIGURED_AT_SMOKE",
-    "automatic_external_carrier_adoption": "UNPROVEN",
+    "automatic_external_carrier_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT",
     "durable_continuity_backend": "NOT_PRESENT",
-    "permanent_operator_identity_adoption": "PENDING_NAOMI"
+    "permanent_operator_identity_adoption": "ADOPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE",
+    "live_mcp_endpoint": "https://gaiaos-loader-api.onrender.com/mcp",
+    "live_mcp_tool_discovery": "PASS_6_TOOLS",
+    "live_mcp_tool_invocation": "PASS_GAIA_DISPATCH",
+    "live_mcp_smoke_run_id": 35169838371,
+    "live_mcp_smoke_job_id": 105038911414,
+    "live_mcp_dispatch_selected": [
+      "KESTREL",
+      "VERA",
+      "ANVIL"
+    ]
   }
 }
