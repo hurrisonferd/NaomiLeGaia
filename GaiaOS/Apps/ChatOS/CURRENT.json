@@ -4,7 +4,7 @@
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
   "version": "v0.001.002-dev",
-  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_DAEMONCULABA_DISSENT_PRESENTATION_GOLD_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN_CONTINUITY_INTEGRITY",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_RESPONSE_DENSITY_CAST_WIDTH_DAEMONCULABA_VASKON_DISSENT_PRESENTATION_GOLD_OBSERVABLE_COCKPIT_LIVE_HOST_ADOPTION_UNPROVEN_CONTINUITY_INTEGRITY",
   "location": "GaiaOS/Apps/ChatOS",
   "class": "APPLICATION_LAYER_NOT_SYSTEMSOS_CORE_ROOT",
   "purpose": "Own the current carrier-visible NOW surface, compose Gaia-native operator dialogue, expose bounded observable execution state, preserve meaningful dissent, and make the interface feel inhabited without becoming BrainOS, ConvoOS, FairyOS, identity authority, or effect authority.",
@@ -26,11 +26,36 @@
     "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
     "warm_continuity": "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json",
-    "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md"
+    "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
+    "conjure_vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
   },
-  "event_phases": ["OBSERVE", "INTERPRET", "DECIDE", "ACT", "RESULT", "VERIFY", "HANDOFF", "CHECKPOINT", "HOLD"],
-  "claim_classes": ["CONFIRMED", "ACCOUNT", "INFERRED", "UNKNOWN"],
-  "source_classes": ["SOURCE_READ", "TOOL_RESULT", "TEST_RESULT", "PROVIDER_RESULT", "USER_ACCOUNT", "SYSTEM_STATE", "DERIVED", "UNKNOWN"],
+  "event_phases": [
+    "OBSERVE",
+    "INTERPRET",
+    "DECIDE",
+    "ACT",
+    "RESULT",
+    "VERIFY",
+    "HANDOFF",
+    "CHECKPOINT",
+    "HOLD"
+  ],
+  "claim_classes": [
+    "CONFIRMED",
+    "ACCOUNT",
+    "INFERRED",
+    "UNKNOWN"
+  ],
+  "source_classes": [
+    "SOURCE_READ",
+    "TOOL_RESULT",
+    "TEST_RESULT",
+    "PROVIDER_RESULT",
+    "USER_ACCOUNT",
+    "SYSTEM_STATE",
+    "DERIVED",
+    "UNKNOWN"
+  ],
   "hot_path": {
     "default_for_ordinary_chat": true,
     "current_visible_context_is_primary": true,
@@ -41,14 +66,26 @@
   },
   "response_modes": {
     "default": "AUTO",
-    "available": ["MIN", "AUTO", "MAX"],
+    "available": [
+      "MIN",
+      "AUTO",
+      "MAX"
+    ],
     "changes_source_fidelity": false,
     "changes_semantic_truth": false,
     "changes_effect_authority": false
   },
   "cast_width": {
     "default": "AUTO",
-    "available": ["AUTO", "SOLO", "DUO", "TRIO", "QUAD", "CAST_N", "FULL"],
+    "available": [
+      "AUTO",
+      "SOLO",
+      "DUO",
+      "TRIO",
+      "QUAD",
+      "CAST_N",
+      "FULL"
+    ],
     "changes_roster": false,
     "changes_source_fidelity": false,
     "changes_placeholder_identity_status": false,
@@ -56,7 +93,11 @@
   },
   "presentation": {
     "default": "LIVING",
-    "available": ["LIVING", "QUIET", "WILD"],
+    "available": [
+      "LIVING",
+      "QUIET",
+      "WILD"
+    ],
     "contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
     "living": "inhabited bounded owner-native presentation",
     "quiet": "suppress optional scene texture while preserving differentiated native voice",
@@ -73,7 +114,13 @@
     "everyone_command": "COUNCIL EVERYONE",
     "scene_alias": "COUNCIL ROOM",
     "synthesis_may_delete_dissent": false,
-    "dissent_stances": ["AGREE", "OBJECT", "CONTRADICT", "PROPOSE", "QUESTION"]
+    "dissent_stances": [
+      "AGREE",
+      "OBJECT",
+      "CONTRADICT",
+      "PROPOSE",
+      "QUESTION"
+    ]
   },
   "runtime": {
     "deterministic_event_ids": true,
@@ -133,5 +180,30 @@
     "CONTINUITY BREAKS MUST BE SURFACED",
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
-  "claim_ceiling": "Hot/warm/cold, cast width, dissent preservation, BrainOS support selection, Context Compass source contracts, GaiaOS Presentation Gold, and continuity-integrity behavior are present. Automatic GPT host adoption, executable context traversal, durable warm persistence, live domain effects, and permanent roster identity adoption remain unproven."
+  "claim_ceiling": "Hot/warm/cold, cast width, dissent preservation, BrainOS support selection, Context Compass source contracts, GaiaOS Presentation Gold, and continuity-integrity behavior are present. Automatic GPT host adoption, executable context traversal, durable warm persistence, live domain effects, and permanent roster identity adoption remain unproven.",
+  "conjure_vaskon": {
+    "enabled": true,
+    "command": "CONJURE:VASKON",
+    "mode": "TEMPORARY_SIX_PRIME_DAEMON_SYNTHESIS",
+    "output_attribution": "VASKON",
+    "cycle": [
+      "ASSEMBLE",
+      "DECOMPOSE",
+      "DELIBERATE",
+      "CROSS-CRITIQUE",
+      "SYNTHESIZE",
+      "SINGLE_OUTPUT",
+      "DISPERSE"
+    ],
+    "all_six_available": true,
+    "forced_round_robin": false,
+    "preserves_material_dissent": true,
+    "changes_roster": false,
+    "changes_identity": false,
+    "changes_authority": false,
+    "changes_effect_authority": false,
+    "durable_memory_automatic": false,
+    "host_identity_separate": true,
+    "protocol": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+  }
 }
