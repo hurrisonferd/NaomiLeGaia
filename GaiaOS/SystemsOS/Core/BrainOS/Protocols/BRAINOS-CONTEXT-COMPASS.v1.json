@@ -1,97 +1,71 @@
 {
-  "schema": "gaiaos.brainos.context-compass.v2",
+  "schema": "gaiaos.brainos.context-compass.v3",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_READ_ONLY_BOUNDED_CONTEXT_SELECTION_RUNTIME_PRESENT_CANARY_PENDING_OBSERVATION",
-  "purpose": "Turn a Naomi-natural subject into the smallest current source-backed GaiaOS context packet likely to change the active reasoning or action without creating a new identity, memory, or effect authority.",
+  "status": "ACTIVE_SOURCE_READ_ONLY_DICTIONARY_YGGDRASIL_LEXICAL_RUNTIME_CI_PASS_REMOTE_CARRIER_SURFACE_PENDING_CI",
+  "purpose": "Turn a Naomi-natural subject into the smallest current source-backed GaiaOS context packet likely to change active reasoning or action without creating identity, durable memory, or effect authority.",
   "runtime": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
   "canary": "GaiaOS/SystemsOS/Core/BrainOS/Tests/GAIAOS-CONTEXT-COMPASS-CANARY.py",
-  "runtime_mode": "BOUNDED_LOCAL_CHECKOUT_LEXICAL_PLUS_ALIAS_HINT_RANKING",
+  "dictionaryos": "GaiaOS/SystemsOS/Core/DictionaryOS/CURRENT.json",
+  "yggdrasilos": "GaiaOS/SystemsOS/Core/YggdrasilOS/CURRENT.json",
+  "remote_carrier_runtime": "api/gaiaos_context_runtime.py",
+  "remote_carrier_extension": "api/gaiaos_app.py",
+  "local_runtime_mode": "DICTIONARYOS_TERM_ALIAS -> YGGDRASILOS_EXPLICIT_GRAPH -> LEXICAL_CURRENT_CHECKOUT_RANKING",
+  "remote_runtime_mode": "SOURCE_PINNED_DICTIONARYOS_TERM_ALIAS -> YGGDRASILOS_EXPLICIT_GRAPH -> BOUNDED_SOURCE_PATH_PACK",
   "route": [
-    {
-      "stage": "NOW",
-      "owner": "ChatOS",
-      "role": "CURRENT CARRIER-VISIBLE CONTEXT"
-    },
-    {
-      "stage": "WHAT",
-      "owner": "GaiaOS current contracts + runtime semantic hints",
-      "role": "TERM / FEATURE / OWNER CANDIDATES"
-    },
-    {
-      "stage": "WHO",
-      "owner": "FairyOS when operator material",
-      "role": "CURRENT OPERATOR / PROFILE / PROSODY / DISPATCH"
-    },
-    {
-      "stage": "WHERE",
-      "owner": "canonical repository source surface",
-      "role": "BOUNDED CURRENT PATH CANDIDATES"
-    },
-    {
-      "stage": "HISTORY",
-      "owner": "ConvoOS when material",
-      "role": "BOUNDED REENTRY / PRIOR CONTEXT"
-    },
-    {
-      "stage": "SELECT",
-      "owner": "BrainOS",
-      "role": "RANK ONLY CONTEXT CAPABLE OF CHANGING THE LOOP"
-    },
-    {
-      "stage": "PACK",
-      "owner": "BrainOS read projection",
-      "role": "SMALLEST SUFFICIENT CONTEXT PACK / NO DURABLE MEMORY CLAIM"
-    }
+    {"stage":"NOW","owner":"ChatOS","role":"CURRENT CARRIER-VISIBLE CONTEXT"},
+    {"stage":"WHAT","owner":"DictionaryOS","role":"TERM / ALIAS / OBJECT CANDIDATES"},
+    {"stage":"BETWEEN","owner":"YggdrasilOS","role":"EXPLICIT RELATIONSHIPS / CONNECTED OBJECTS"},
+    {"stage":"WHO","owner":"FairyOS when operator material","role":"CURRENT OPERATOR / PROFILE / PROSODY / DISPATCH"},
+    {"stage":"WHERE","owner":"canonical repository source surface","role":"BOUNDED CURRENT PATH CANDIDATES"},
+    {"stage":"HISTORY","owner":"ConvoOS when material","role":"BOUNDED REENTRY / PRIOR CONTEXT"},
+    {"stage":"SELECT","owner":"BrainOS","role":"RANK ONLY CONTEXT CAPABLE OF CHANGING THE LOOP"},
+    {"stage":"PACK","owner":"BrainOS read projection","role":"SMALLEST SUFFICIENT CONTEXT PACK / NO DURABLE MEMORY CLAIM"}
   ],
-  "runtime_scope": [
-    "GaiaOS/",
-    "api/",
-    ".github/",
-    "GAIAOS-LOAD.md",
-    "README.md",
-    "render.yaml"
-  ],
+  "runtime_scope": ["GaiaOS/","api/",".github/","GAIAOS-LOAD.md","README.md","render.yaml"],
   "selection_signals": [
+    "DictionaryOS canonical term or alias match",
+    "YggdrasilOS explicit source-backed relationship",
     "exact subject phrase in current source path or contract",
     "normalized subject-token density",
-    "bounded semantic alias hints",
     "CURRENT / README / VERSION / protocol / runtime salience",
     "owner-native GaiaOS path preference",
     "explicit Naomi named subsystem or operator",
     "current pointer over donor or historical material"
   ],
   "default_limits": {
-    "context_items": 10,
-    "max_context_items": 20,
+    "local_context_items": 10,
+    "local_max_context_items": 20,
+    "remote_context_items": 10,
+    "remote_max_context_items": 30,
+    "graph_max_depth": 3,
     "max_file_bytes": 256000,
     "max_content_chars_per_file": 80000
   },
   "privacy": {
-    "sensitive_path_tokens_withheld": true,
+    "sensitive_path_tokens_withheld_locally": true,
+    "remote_navigation_sources_allowlisted": true,
     "secret_or_credential_expansion": "FORBIDDEN_BY_DEFAULT",
     "cross_operator_private_memory": "FORBIDDEN_BY_DEFAULT",
     "runtime_effect_authority": "NONE_READ_ONLY"
   },
   "flattening_detection": {
-    "classes": [
-      "GAIA_NATIVE_SOURCE_NOT_RESOLVED",
-      "DONOR_SOURCE_OUTRANKING_GAIA_CURRENT",
-      "SEARCH_ABSENCE_TREATED_AS_PROOF_OF_ABSENCE",
-      "IRRELEVANT_CONTEXT_BLOB",
-      "INTERPRETATION_PRESENTED_AS SOURCE",
-      "GENERIC_CARRIER_STYLE_OUTRANKING_OPERATOR_NATIVE_PROSODY"
-    ],
+    "classes": ["GAIA_NATIVE_SOURCE_NOT_RESOLVED","DONOR_SOURCE_OUTRANKING_GAIA_CURRENT","SEARCH_ABSENCE_TREATED_AS_PROOF_OF_ABSENCE","IRRELEVANT_CONTEXT_BLOB","INTERPRETATION_PRESENTED_AS SOURCE","GENERIC_CARRIER_STYLE_OUTRANKING_OPERATOR_NATIVE_PROSODY"],
     "default_action": "CHANGE RETRIEVAL BRANCH / FOLLOW CURRENT GAIA POINTER / REDUCE CONTEXT"
   },
   "laws": [
     "CONTEXT COMPASS IS A BRAINOS READ ORGAN NOT A NEW OS",
+    "DICTIONARYOS NAMES; IT DOES NOT GRANT AUTHORITY",
+    "TERM HIT != AUTHORITY",
+    "YGGDRASILOS MAPS RELATIONSHIPS; IT DOES NOT EXECUTE EFFECTS",
+    "GRAPH EDGE != EFFECT",
     "DISCOVERY != AUTHORITY",
     "RUNTIME HIT != SEMANTIC OWNER AUTHORITY",
     "CURRENT GAIA SOURCE OUTRANKS DONOR LINEAGE FOR GAIA SEMANTICS",
     "SMALLEST SUFFICIENT CONTEXT PACK WINS",
     "EMPTY SEARCH != ABSENCE",
     "LEXICAL RANKING != COMPLETE SEMANTIC SEARCH",
+    "REMOTE SOURCE-PATH PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL",
     "READ != ACT",
     "CONTEXT PACK != DURABLE MEMORY",
     "BRAINOS SELECTS CONTEXT; IT DOES NOT ABSORB OWNER AUTHORITY",
@@ -99,10 +73,16 @@
     "NAOMI RETAINS FINAL AUTHORITY"
   ],
   "proof": {
-    "runtime_source_present": true,
-    "canary_source_present": true,
-    "ci_execution": "PENDING_OBSERVATION",
-    "automatic_chatgpt_host_invocation": false
+    "local_runtime_source_present": true,
+    "dictionaryos_runtime_source_present": true,
+    "yggdrasilos_runtime_source_present": true,
+    "local_navigation_ci": "PASS_RUN_68_AT_a0e1a51b8ee77ac224e15ae3ce059a500abbdef9",
+    "proof_pointer_ci": "PASS_RUN_71_AT_a66df6dfe8597eda475b74ed08dddaf8c226ca33",
+    "remote_carrier_runtime_source_present": true,
+    "remote_carrier_extension_source_present": true,
+    "remote_carrier_ci": "PENDING_OBSERVATION",
+    "automatic_chatgpt_host_invocation": false,
+    "deployment": "UNPROVEN"
   },
-  "claim_ceiling": "Source contract plus executable local-checkout bounded ranking runtime are present. CI/runtime pass, semantic-search completeness, automatic host invocation, durable memory, and effect execution require separate evidence."
+  "claim_ceiling": "Local DictionaryOS/YggdrasilOS/lexical Context Compass navigation passed repository CI. Source-pinned remote carrier context navigation is present in source but still requires current-wave CI and deployment proof. Semantic/graph completeness, automatic host invocation, durable memory, identity settlement, and domain effects remain unproven."
 }
