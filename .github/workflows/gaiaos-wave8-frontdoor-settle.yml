@@ -11,29 +11,45 @@ permissions:
   contents: write
 
 jobs:
-  settle:
+  repair-fastmcp:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Settle GaiaOS Wave 8 source and plugin guidance
+      - name: Move MCP guidance to FastMCP construction
         shell: python
         run: |
-          import json
           from pathlib import Path
 
-          def replace_once(text, old, new):
-              return text.replace(old, new, 1) if old in text else text
+          base_path = Path('api/gaiaos_api.py')
+          base = base_path.read_text(encoding='utf-8')
+          old = '''    instructions=(
+              "Canonical GaiaOS source loader and council surface. load_gaiaos retrieves the current "
+              "GaiaOS bootstrap, gaia_council retrieves the full source-backed council packet, "
+              "gaia_dispatch deterministically resolves explicit typed signals through the current "
+              "FairyOS matrix, gaia_operator retrieves one current operator profile, and gaia_brain "
+              "returns the current Gaia-native cognitive support and continuity contracts. These tools "
+              "are read-only and do not claim domain effects, durable memory, or automatic identity adoption."
+          ),'''
+          new = '''    instructions=(
+              "GaiaOS is Naomi's read-only source-backed support carrier. For ordinary requests, "
+              "use gaia(request) as the PRIMARY FRONT DOOR. It returns bounded context, conservative "
+              "Gaia-native council routing, source binding, authority, and proof limits in one compact packet. "
+              "Use gaia_selftest for diagnostics. Use load_gaiaos, gaia_council, gaia_brain, gaia_context, "
+              "gaia_dispatch, and gaia_operator only for explicit deep inspection or debugging. Do not make "
+              "Naomi or Raven manually orchestrate subsystem tools when gaia() is sufficient. These tools are "
+              "read-only support surfaces; dispatch is not execution, WARM is not saved, and Naomi retains final authority."
+          ),'''
+          if old not in base and 'use gaia(request) as the PRIMARY FRONT DOOR' not in base:
+              raise SystemExit('FastMCP construction instruction block not found')
+          if old in base:
+              base = base.replace(old, new, 1)
+          base_path.write_text(base, encoding='utf-8')
 
-          # Carrier: promote 1.6 and advertise the single front door directly to MCP hosts.
-          p = Path('api/gaiaos_app.py')
-          s = p.read_text(encoding='utf-8')
-          s = replace_once(s, 'EXTENSION_VERSION = "1.5.0"', 'EXTENSION_VERSION = "1.6.0"')
-          if 'PRIMARY FRONT DOOR' not in s:
-              marker = 'mcp = base.mcp\napp.version = EXTENSION_VERSION'
-              replacement = '''mcp = base.mcp
-          mcp.instructions = (
+          app_path = Path('api/gaiaos_app.py')
+          app = app_path.read_text(encoding='utf-8')
+          old_setter = '''mcp.instructions = (
               "GaiaOS is Naomi's read-only source-backed support carrier. For ordinary requests, "
               "use gaia(request) as the PRIMARY FRONT DOOR. It returns bounded context, conservative "
               "Gaia-native council routing, source binding, authority, and proof limits in one compact packet. "
@@ -41,178 +57,27 @@ jobs:
               "gaia_dispatch, and gaia_operator only for explicit deep inspection or debugging. Do not make "
               "Naomi or Raven manually orchestrate those tools when gaia() is sufficient. Naomi retains final authority."
           )
-          app.version = EXTENSION_VERSION'''
-              if marker not in s:
-                  raise SystemExit('GaiaOS app insertion point missing')
-              s = s.replace(marker, replacement, 1)
-          p.write_text(s, encoding='utf-8')
-
-          # OpenAPI source version.
-          p = Path('api/openapi.yaml')
-          s = p.read_text(encoding='utf-8')
-          s = replace_once(s, 'version: 1.5.0', 'version: 1.6.0')
-          p.write_text(s, encoding='utf-8')
-
-          # Loader contract: one connection, one front door for normal use.
-          p = Path('GaiaOS/LOAD.v1.md')
-          s = p.read_text(encoding='utf-8')
-          s = replace_once(s, '# GaiaOS Canonical Loader v3', '# GaiaOS Canonical Loader v4')
-          s = replace_once(s, 'STATUS: ACTIVE SOURCE LOADER / COUNCIL + NAVIGATION CARRIER AWARE', 'STATUS: ACTIVE SOURCE LOADER / SINGLE FRONT DOOR + COUNCIL + NAVIGATION CARRIER AWARE')
-          if '## Connected-carrier fast path' not in s:
-              block = '''## Connected-carrier fast path
-
-          When the live GaiaOS MCP carrier is connected, ordinary use begins with one tool:
-
-          ```text
-          NAOMI NATURAL REQUEST
-          → gaia(request)
-          → bounded DictionaryOS / YggdrasilOS context
-          → conservative Gaia-native signal inference
-          → deterministic FairyOS routing when material
-          → compact support packet
-          → HOST ANSWERS NAOMI
-          ```
-
-          `gaia()` is the primary front door. It exists specifically so Naomi or Raven do not have to manually chain loader, context, BrainOS, council, and dispatch calls for ordinary conversation.
-
-          Use `gaia_selftest()` for diagnostics. Keep `load_gaiaos`, `gaia_council`, `gaia_brain`, `gaia_context`, `gaia_dispatch`, and `gaia_operator` as deep-inspection escape hatches.
-
-          ```text
-          ONE MCP CONNECTION > MANY MANUAL INSTALLS
-          GAIA FRONT DOOR > HUMAN MAILMAN ROUTING
-          ROUTING HINT != OWNER INTENT
-          SELFTEST PASS != EXTERNAL EFFECT AUTHORITY
-          ```
-
           '''
-              s = s.replace('## `Load GaiaOS`\n', block + '## `Load GaiaOS`\n', 1)
-          s = s.replace('The current six-slot roster is source-backed and usable for project dialogue, but remains explicitly placeholder until Naomi adopts, renames, replaces, or re-themes it.', 'The current six-member Gaia-native roster is accepted by Naomi for current use and remains renamable, replaceable, reorderable, or re-themeable by Naomi.')
-          p.write_text(s, encoding='utf-8')
-
-          # Host instructions: gaia first, specialized tools only on demand.
-          p = Path('GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md')
-          s = p.read_text(encoding='utf-8')
-          s = replace_once(s, '# GaiaOS GPT Host Instructions v4', '# GaiaOS GPT Host Instructions v5')
-          s = replace_once(s, 'STATUS: ACTIVE SOURCE HOST PROFILE / COUNCIL + NAVIGATION + HOT-PATH + PRESENTATION-GOLD AWARE', 'STATUS: ACTIVE SOURCE HOST PROFILE / SINGLE-FRONT-DOOR + COUNCIL + NAVIGATION + HOT-PATH + PRESENTATION-GOLD AWARE')
-          if '## Primary connected-carrier behavior' not in s:
-              block = '''## Primary connected-carrier behavior
-
-          When the GaiaOS MCP app is connected and Naomi makes an ordinary GaiaOS request, prefer `gaia(request)` first and pass the natural request through substantially intact. Do not require Naomi or Raven to choose and sequence subsystem tools when the front door is sufficient.
-
-          Use `gaia_selftest()` when carrier integrity is in question. Use specialized tools only for explicit deep source inspection, a specific operator, raw council state, raw BrainOS state, raw semantic navigation, or typed-signal debugging.
-
-          ```text
-          NORMAL REQUEST → gaia()
-          DIAGNOSTIC → gaia_selftest()
-          DEEP INSPECTION → specialized tool on demand
-          ```
-
-          The front door remains read-only support. Inferred routing is not Naomi's intent, an identity settlement, write authorization, or external effect.
-
+          replacement = '''# PRIMARY FRONT DOOR instructions are defined when FastMCP is constructed in
+          # gaiaos_api.py. FastMCP 1.30 exposes instructions as a read-only property.
           '''
-              s = s.replace('## Canonical resolution\n', block + '## Canonical resolution\n', 1)
-          old = 'load_gaiaos\ngaia_council\ngaia_dispatch\ngaia_operator\ngaia_brain\ngaia_context'
-          new = 'gaia                    # PRIMARY ordinary-use front door\ngaia_selftest           # compact diagnostic\nload_gaiaos             # deep bootstrap / diagnostic\ngaia_council            # deep council source\ngaia_dispatch           # explicit typed-signal diagnostic\ngaia_operator           # explicit single-operator source\ngaia_brain              # deep BrainOS state\ngaia_context            # explicit semantic-navigation diagnostic'
-          s = s.replace(old, new)
-          s = s.replace('The current six names are source-backed Gaia-native project slots but remain placeholders until Naomi adopts or changes them. Do not present a placeholder name as an irrevocable personal identity.', 'The current six Gaia-native names are accepted by Naomi for current use and remain renamable. Do not present a current name as an irrevocable personal identity.')
-          p.write_text(s, encoding='utf-8')
+          if old_setter in app:
+              app = app.replace(old_setter, replacement, 1)
+          elif 'mcp.instructions =' in app:
+              raise SystemExit('Unexpected FastMCP instructions setter shape')
+          app_path.write_text(app, encoding='utf-8')
 
-          # GaiaOS README current platform coordinate + one-connection path.
-          p = Path('GaiaOS/README.md')
-          s = p.read_text(encoding='utf-8')
-          s = s.replace('GaiaOS v0.001.000', 'GaiaOS v0.001.007')
-          s = s.replace('`v0.001.000` is the first formal platform coordinate.', '`v0.001.007` is the current Wave 8 single-front-door platform coordinate. The original `v0.001.000` remains the first formal platform coordinate.')
-          if '## One-connection operating path' not in s:
-              s += '''\n\n## One-connection operating path\n\n```text\nNAOMI CHATGPT\n→ one GaiaOS MCP connection\n→ gaia(natural request)\n→ GaiaOS resolves bounded context + material council support\n→ answer\n```\n\nLower-level tools remain available for diagnostics and explicit deep inspection. They are not an installation or orchestration checklist for ordinary use.\n'''
-          p.write_text(s, encoding='utf-8')
-
-          # Current/version settlement keeps Wave 7 receipts and adds Wave 8 proof.
-          p = Path('GaiaOS/CURRENT.json')
-          cur = json.loads(p.read_text(encoding='utf-8'))
-          cur['schema'] = 'gaiaos.platform-current.v8'
-          cur['status'] = 'ACTIVE_SOURCE_WAVE8_SINGLE_FRONT_DOOR_LIVE_PASS_1_6_REDEPLOY_PENDING'
-          cur['previous_platform_version'] = cur.get('platform_version', 'v0.001.006')
-          cur['platform_version'] = 'v0.001.007'
-          carrier = cur.setdefault('carrier', {})
-          carrier['source_version'] = '1.6.0'
-          carrier['primary_tool'] = 'gaia'
-          carrier['diagnostic_tool'] = 'gaia_selftest'
-          carrier['frontdoor_policy'] = 'ONE_CONNECTION_GAIA_FIRST_DEEP_TOOLS_ON_DEMAND'
-          for value in ['POST /gaiaos/assist', 'GET /gaiaos/selftest']:
-              if value not in carrier.setdefault('http_source_surfaces', []): carrier['http_source_surfaces'].insert(0, value)
-          for value in ['gaia_selftest', 'gaia']:
-              if value not in carrier.setdefault('mcp_source_tools', []): carrier['mcp_source_tools'].insert(0, value)
-          carrier['live_frontdoor'] = {
-              'status': 'LIVE_HTTP_AND_MCP_SINGLE_FRONTDOOR_PASS',
-              'deployed_commit': 'c0ca8a80a6d362ce6c6b9add1bc2c18ab731f7d7',
-              'render_deploy_id': 'dep-dalk5v2jnfac739rtmm0',
-              'external_smoke_run_id': 35171044235,
-              'external_smoke_job_id': 105042568889,
-              'result': 'PASS',
-              'http_and_mcp_packet_bytes': 2943,
-              'legacy_deep_load_bytes': 105774,
-              'manual_tool_chain_required': False,
-              'probe_signals': ['NEXT_STEP', 'MANUAL_BURDEN', 'SUBTRACTION'],
-              'probe_selected': ['KESTREL', 'NIMUE'],
-              'explicit_member_override': 'PASS_VERA_ANVIL_WITH_CAP_1',
-              'unknown_signal_fabrication': False,
-              'selftest': 'PASS_ALL_LOCAL_ORGANS',
-              'carrier_1_6_live_redeploy': 'PENDING'
-          }
-          cur['proof_ceiling'] = 'GaiaOS HTTP and MCP transport are live. The gaia() front door and gaia_selftest() passed external acceptance against deployed commit c0ca8a80, including a 2,943-byte bounded packet versus the prior 105,774-byte deep load, deterministic MANUAL_BURDEN/SUBTRACTION/NEXT_STEP routing to KESTREL + NIMUE, explicit VERA + ANVIL preservation, no fabricated signals for nonsense input, and manual_tool_chain_required=false. Source now promotes carrier 1.6.0 and gaia-first host/plugin guidance; live 1.6.0 redeployment is pending this settlement. Naomi ChatGPT connection/adoption, durable continuity, write/domain effects, and hosted OpenAI-backed /chat remain separate.'
-          for law in ['ONE MCP CONNECTION > MANY MANUAL INSTALLS','GAIA FRONT DOOR > HUMAN MAILMAN ROUTING','ROUTING HINT != OWNER INTENT','SELFTEST PASS != EXTERNAL EFFECT AUTHORITY']:
-              if law not in cur.setdefault('laws', []): cur['laws'].append(law)
-          canary = cur.setdefault('canary', {})
-          canary.update({'wave8_frontdoor_source_canary_run':98,'wave8_frontdoor_source_canary_run_id':35170869137,'wave8_frontdoor_source_canary_result':'PASS','wave8_frontdoor_live_smoke_run_id':35171044235,'wave8_frontdoor_live_smoke_job_id':105042568889,'wave8_frontdoor_live_smoke_result':'PASS','frontdoor_live_smoke_workflow':'.github/workflows/gaiaos-frontdoor-live-smoke.yml'})
-          p.write_text(json.dumps(cur, indent=2) + '\n', encoding='utf-8')
-
-          p = Path('GaiaOS/VERSION.json')
-          ver = json.loads(p.read_text(encoding='utf-8'))
-          ver['previous_version'] = ver.get('version', 'v0.001.006')
-          ver['version'] = 'v0.001.007'
-          ver['release_note'] = 'Wave 8 single-front-door settlement. External run 35171044235 job 105042568889 proved live HTTP and MCP gaia() plus gaia_selftest() on Render deploy dep-dalk5v2jnfac739rtmm0 at c0ca8a80. The anti-mailman probe inferred NEXT_STEP + MANUAL_BURDEN + SUBTRACTION, selected KESTREL + NIMUE, returned 2,943 bytes versus 105,774 bytes for the prior deep load, preserved explicit VERA + ANVIL through a cap of 1, and fabricated no signals for nonsense input. Source promotes carrier 1.6.0 and gaia-first host/plugin guidance; live 1.6.0 redeployment remains pending.'
-          proof = ver.setdefault('proof', {})
-          proof.update({'carrier_source_version':'1.6.0','single_frontdoor_source_present':True,'primary_mcp_tool':'gaia','selftest_mcp_tool':'gaia_selftest','frontdoor_render_deploy':'dep-dalk5v2jnfac739rtmm0','frontdoor_deployed_commit':'c0ca8a80a6d362ce6c6b9add1bc2c18ab731f7d7','frontdoor_live_smoke_run_id':35171044235,'frontdoor_live_smoke_job_id':105042568889,'frontdoor_live_smoke':'PASS','frontdoor_packet_bytes':2943,'legacy_deep_load_bytes':105774,'manual_tool_chain_required':False,'carrier_1_6_live_redeploy':'PENDING'})
-          p.write_text(json.dumps(ver, indent=2) + '\n', encoding='utf-8')
-
-          # Reconcile the concurrent plugin package with the front-door architecture.
-          p = Path('plugins/gaiaos/README.md')
-          s = p.read_text(encoding='utf-8')
-          s = s.replace('- `load_gaiaos`\n', '- `gaia` — primary ordinary-use front door\n- `gaia_selftest` — compact diagnostic\n- `load_gaiaos` — deep bootstrap / diagnostic\n')
-          if 'Prefer `gaia` for ordinary requests' not in s:
-              s += '\n## Preferred use\n\nPrefer `gaia` for ordinary requests and `gaia_selftest` for diagnostics. The remaining tools are deep-inspection surfaces, not a manual installation checklist.\n'
-          p.write_text(s, encoding='utf-8')
-
-          p = Path('plugins/gaiaos/plugin.json')
-          plugin = json.loads(p.read_text(encoding='utf-8'))
-          plugin['version'] = '0.2.0'
-          plugin['description'] = "Naomi's source-backed GaiaOS front door, council, navigation, and bounded cognitive support."
-          ui = plugin.setdefault('extensions', {}).setdefault('com.openai', {}).setdefault('interface', {})
-          ui['shortDescription'] = "Naomi's GaiaOS front door, council, and context system."
-          ui['longDescription'] = 'Use one GaiaOS front door for ordinary requests, with source-backed council routing, semantic navigation, diagnostics, and deeper read-only inspection tools on demand.'
-          ui['defaultPrompt'] = ['Use GaiaOS to help me with this request.','Ask GaiaOS to route the right council support for this.','Run the GaiaOS self-test and report only what fails.','Bring in the Gaia Council for this topic.']
-          p.write_text(json.dumps(plugin, indent=2) + '\n', encoding='utf-8')
-
-          p = Path('plugins/gaiaos/skills/gaiaos-council/SKILL.md')
-          s = p.read_text(encoding='utf-8')
-          old = '''1. Use `load_gaiaos` for a canonical boot/source receipt.\n2. Use `gaia_council` for the current Council source bundle.\n3. Use `gaia_operator` when one named operator is requested or materially sufficient.\n4. Use `gaia_dispatch` to select differentiated operators from explicit typed signals.\n5. Use `gaia_context` when source/path/owner ambiguity can change the answer.\n6. Use `gaia_brain` when broader cognitive support, continuity contracts, or chat-control context is material.\n\nDo not call every tool on every reply. Prefer the smallest sufficient support surface.'''
-          new = '''1. Use `gaia(request)` first for ordinary GaiaOS requests. Pass the user's natural request through substantially intact.\n2. Use `gaia_selftest()` when carrier integrity is in question.\n3. Use `load_gaiaos`, `gaia_council`, `gaia_operator`, `gaia_dispatch`, `gaia_context`, or `gaia_brain` only when explicit deep inspection is actually useful.\n\nDo not call every tool on every reply and do not make Naomi or Raven manually orchestrate subsystem tools. Prefer one front door plus the smallest sufficient deep inspection surface.'''
-          s = s.replace(old, new)
-          p.write_text(s, encoding='utf-8')
-
-          p = Path('GaiaOS/PLUGIN-READINESS.md')
-          s = p.read_text(encoding='utf-8')
-          s = s.replace('Read-only tools: `load_gaiaos`, `gaia_council`, `gaia_dispatch`, `gaia_operator`, `gaia_brain`, `gaia_context`.', 'Read-only tools include primary `gaia`, diagnostic `gaia_selftest`, and deep inspection surfaces `load_gaiaos`, `gaia_council`, `gaia_dispatch`, `gaia_operator`, `gaia_brain`, `gaia_context`.')
-          p.write_text(s, encoding='utf-8')
-
-      - name: Commit Wave 8 settlement
+      - name: Compile repaired carrier
+        run: |
+          python -m py_compile api/gaiaos_api.py api/gaiaos_app.py
+      - name: Commit startup repair
         run: |
           git config user.name 'GaiaOS Proof Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add api/gaiaos_app.py api/openapi.yaml GaiaOS/LOAD.v1.md GaiaOS/README.md GaiaOS/CURRENT.json GaiaOS/VERSION.json GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md GaiaOS/PLUGIN-READINESS.md plugins/gaiaos/README.md plugins/gaiaos/plugin.json plugins/gaiaos/skills/gaiaos-council/SKILL.md
+          git add api/gaiaos_api.py api/gaiaos_app.py
           if git diff --cached --quiet; then
-            echo 'No settlement changes required.'
+            echo 'No repair changes required.'
             exit 0
           fi
-          git commit -m 'Settle GaiaOS Wave 8 single front door'
+          git commit -m 'Fix GaiaOS 1.6 FastMCP startup instructions'
           git push
