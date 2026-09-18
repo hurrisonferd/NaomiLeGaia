@@ -49,7 +49,7 @@ DAEMONS = {
 def _sha(text: str) -> str:
     # Git blob SHA, allowing runtime proof to compare deployed files with Git.
     raw = text.encode("utf-8")
-    return hashlib.sha1(f"blob {len(raw)}\\0".encode() + raw).hexdigest()
+    return hashlib.sha1(f"blob {len(raw)}\0".encode() + raw).hexdigest()
 
 
 def _check(name: str, passed: bool, detail: str, **extra: Any) -> dict[str, Any]:
