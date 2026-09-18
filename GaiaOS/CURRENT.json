@@ -6,8 +6,8 @@
   "operator_call_sign": "Ligeia",
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
-  "platform_version": "v0.001.011-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_CONTINUITY_INTEGRITY",
+  "platform_version": "v0.001.012-dev",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_CONTINUITY_INTEGRITY",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -27,7 +27,8 @@
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Runtime/GAIAOS-CONTEXT-COMPASS.v1.py",
-    "always_addressable": true
+    "always_addressable": true,
+    "vaskon_neural_pathways": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json"
   },
   "convoos": {
     "current": "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json",
@@ -101,7 +102,7 @@
     "docker": "api/Dockerfile",
     "live_context_binding": "DEPLOYED_CHECKOUT"
   },
-  "proof_ceiling": "MemoryOS lifecycle plus executable CANDIPULL/MEMSAV browser command bridges are source-committed. Deployment of this revision and live execution of the command bridge remain unproven until independently observed.",
+  "proof_ceiling": "MemoryOS lifecycle plus executable bridges and VASKON neural pathway source are committed. Deployment of this revision, automatic host adoption, and live execution of the new pathway fabric remain unproven until independently observed.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "NAOMI == LIGEIA",
@@ -126,5 +127,5 @@
     "DURABLE RECORD != CONSCIOUSNESS",
     "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION"
   ],
-  "previous_platform_version": "v0.001.010-dev"
+  "previous_platform_version": "v0.001.011-dev"
 }
