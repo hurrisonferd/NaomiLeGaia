@@ -4,6 +4,11 @@ from __future__ import annotations
 import json
 import os
 import sqlite3
+
+try:
+    import libsql
+except ImportError:  # Local development may intentionally omit the remote driver.
+    libsql = None
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -13,6 +18,9 @@ DB_PATH = Path(os.getenv("MEMCONOS_DB_PATH", "/data/memconos.db"))
 SCHEMA_VERSION = "memconos.runtime.v2"
 BOOT_ID = "BOOT-" + uuid.uuid4().hex
 RENDER_INSTANCE_ID = os.getenv("RENDER_INSTANCE_ID", "").strip()
+TURSO_DATABASE_URL = os.getenv("TURSO_DATABASE_URL", "").strip()
+TURSO_AUTH_TOKEN = os.getenv("TURSO_AUTH_TOKEN", "").strip()
+STORAGE_BACKEND = "turso_libsql" if TURSO_DATABASE_URL and TURSO_AUTH_TOKEN else "local_sqlite"
 
 def _process_fingerprint() -> dict[str, Any]:
     """Return observable OS-level facts for the currently running carrier process."""
@@ -35,13 +43,43 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-def _db() -> sqlite3.Connection:
+def _db():
+    """Open the configured storage backend.
+
+    Turso is selected only when both remote credentials are present. Otherwise
+    local SQLite remains available for development. Production callers can
+    inspect storage_status() and must not describe local ephemeral storage as
+    durable merely because it is writable.
+    """
+    if STORAGE_BACKEND == "turso_libsql":
+        if libsql is None:
+            raise RuntimeError("Turso credentials are configured but the libsql driver is unavailable")
+        conn = libsql.connect(database=TURSO_DATABASE_URL, auth_token=TURSO_AUTH_TOKEN)
+        conn.row_factory = sqlite3.Row
+        conn.execute("PRAGMA foreign_keys=ON")
+        return conn
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH, timeout=10)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA journal_mode=WAL")
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
+
+
+def storage_status() -> dict[str, Any]:
+    """Return non-secret facts about the active memory storage backend."""
+    return {
+        "backend": STORAGE_BACKEND,
+        "remote_configured": bool(TURSO_DATABASE_URL and TURSO_AUTH_TOKEN),
+        "database_url_present": bool(TURSO_DATABASE_URL),
+        "auth_token_present": bool(TURSO_AUTH_TOKEN),
+        "local_path": str(DB_PATH) if STORAGE_BACKEND == "local_sqlite" else None,
+        "claim_ceiling": (
+            "Remote credentials are configured; durability still requires a post-restart canary PASS."
+            if STORAGE_BACKEND == "turso_libsql"
+            else "Local SQLite is writable but may be ephemeral on the current carrier."
+        ),
+    }
 
 
 def initialize() -> None:
@@ -167,7 +205,7 @@ def write_record(*, authority: str, record_type: str, scope: str, statement: str
             (record_id, authority, record_type, scope, statement, source, status,
              version, created, created, supersedes, notes),
         )
-    return {"record": get_record(record_id), "receipt": _receipt("WRITE", record_id, "SUCCESS", "Durably written to SQLite runtime store")}
+    return {"record": get_record(record_id), "receipt": _receipt("WRITE", record_id, "SUCCESS", "Written to configured runtime store")}
 
 
 def get_record(record_id: str) -> dict[str, Any] | None:
@@ -219,7 +257,7 @@ def update_record(record_id: str, *, authority: str, approved: bool, statement: 
             "UPDATE memory_records SET statement=?, status=?, notes=?, supersedes=?, updated_at=? WHERE record_id=?",
             (values["statement"], values["status"], values["notes"], values["supersedes"], values["updated_at"], record_id),
         )
-    return {"record": get_record(record_id), "receipt": _receipt("UPDATE", record_id, "SUCCESS", "Durably updated in SQLite runtime store")}
+    return {"record": get_record(record_id), "receipt": _receipt("UPDATE", record_id, "SUCCESS", "Updated in configured runtime store")}
 
 
 def create_session(session_id: str, source: str, subject: str = "") -> None:
@@ -490,7 +528,7 @@ def canary() -> dict[str, Any]:
     return {
         "schema": SCHEMA_VERSION,
         "canary_id": canary_id,
-        "runtime_store": str(DB_PATH),
+        "runtime_store": storage_status(),
         "record": existing,
         "read_receipt": read_receipt,
         "runtime_persistence": True,
