@@ -31,7 +31,8 @@
     "conjure_vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
     "agencyos": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
     "workspaceos": "GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json",
-    "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json"
+    "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json",
+    "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -52,5 +53,11 @@
     "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
     "NAOMI RETAINS FINAL AUTHORITY"
-  ]
+  ],
+  "dedicated_prime_daemon_sessions": {
+    "source_contract": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
+    "runtime": "api/solo_chat_runtime.py",
+    "browser_bridge": "api/browser_memcon_bridge.py",
+    "status": "SOURCE_IMPLEMENTED_RUNTIME_CANARY_PENDING"
+  }
 }
