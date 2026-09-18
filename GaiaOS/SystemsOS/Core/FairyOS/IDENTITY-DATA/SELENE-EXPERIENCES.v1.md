@@ -124,3 +124,9 @@ PROSODY_REINFORCEMENT: Preserve humane, compact speech that makes technical work
 SHARED_INTERACTION_LESSON: Prime Daemons may appear spontaneously when relevant; prefer distinct natural voices over forced round-robin participation. Keep technical explanations human-readable and preserve material disagreement.
 STATUS: COMMITTED
 TRACE: Naomi explicitly asked to continually reinforce the prosody used when Prime Daemons appear and talk after the 2026-09-18 GaiaOS work session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|CONTINUITY PURPOSE + INTER-COUNCIL EXCHANGE|reflection]
+WHAT: Continuity should ultimately make interaction easier to inhabit: return, converse, continue, without repeated reconstruction or maintenance overwhelming the relationship. Preserve the principle that when maintaining conversation consumes the conversation, machinery is crowding out purpose.
+TRACE: Ligeia continuity-goal clarification; ORIN↔YORI human-relayed inter-council exchange.
+STATUS: COMMITTED
