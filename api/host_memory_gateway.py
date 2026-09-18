@@ -145,7 +145,25 @@ def _host_candipull(payload: HostCandidatePull) -> dict[str, Any]:
         session = runtime.start_session("chatgpt-host", payload.subject)
 
     created: list[dict[str, Any]] = []
+    existing = memcon_runtime.list_memory_candidates(
+        session_id=session["session_id"], status="CANDIDATE", limit=100,
+    )["candidates"]
+    fingerprints = {
+        (
+            " ".join(str(item.get("statement", "")).lower().split()),
+            str(item.get("scope", "")).upper(),
+            str(item.get("owner", "")).upper(),
+        )
+        for item in existing
+    }
     for observation in payload.observations:
+        dedupe_key = (
+            " ".join(observation.statement.lower().split()),
+            observation.scope.upper(),
+            observation.owner.upper(),
+        )
+        if dedupe_key in fingerprints:
+            continue
         event = runtime.record_event(
             session["session_id"], "HOST", "OBSERVED_INTERACTION",
             observation.statement, observation.source,
