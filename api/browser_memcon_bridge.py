@@ -14,6 +14,7 @@ import gaiaos_app
 import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
+import host_memory_gateway  # registers host-facing MemoryOS MCP/HTTP tools
 
 app = memcon_entrypoint.app
 _original_chat = gaiaos_api.chat
@@ -117,7 +118,7 @@ def _handle_candipull(messages: list[dict], request: Request) -> dict:
 
 def _handle_memsav(command: str) -> dict:
     body = re.sub(r"^MEMSAV\s*", "", command, flags=re.IGNORECASE).rstrip(".").strip()
-    ids = [token for token in body.split() if token]
+    ids = [token.strip() for token in re.split(r"[,\\s]+", body) if token.strip()]
     if not ids:
         return _envelope("MEMSAV HOLD", {"status": "HOLD", "reason": "Exact candidate_id required; omitted ID does not mean save everything."})
     runtime = _memory_runtime()
