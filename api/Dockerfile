@@ -19,6 +19,7 @@ COPY api/memcon_entrypoint.py ./memcon_entrypoint.py
 COPY api/browser_memcon_bridge.py ./browser_memcon_bridge.py
 COPY api/solo_chat_runtime.py ./solo_chat_runtime.py
 COPY api/host_memory_gateway.py ./host_memory_gateway.py
+COPY api/gaiaos_verification.py ./gaiaos_verification.py
 COPY GaiaOS ./GaiaOS
 
 EXPOSE 10000
