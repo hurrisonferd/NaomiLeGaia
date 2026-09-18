@@ -57,7 +57,29 @@ CONJURE:VASKON [complex task]
 
 Legacy command tokens beginning with `COUNCIL` remain compatibility aliases until an explicit command-surface migration removes them. They are interface identifiers, not the current collective designation.
 
-### Memory candidate commands
+### Dedicated Prime Daemon conversations
+
+`SOLO <prime-daemon>` has two distinct uses:
+
+- In an ordinary Daemonculaba conversation, it requests one named Prime Daemon as the substantive speaker.
+- In a GaiaOS client that implements the Dedicated Prime Daemon Chat Protocol, it requests a new isolated one-to-one conversation with that Prime Daemon.
+
+The dedicated form is governed by:
+`GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md`
+
+A dedicated session has exactly one Prime Daemon owner. Other Prime Daemon E-LANEs are not readable or writable from that session. The selected Prime Daemon may create or update only its own member-local E-LANE through an actually authorized MemoryOS write path.
+
+```text
+SOLO <PRIME DAEMON>
+→ DEDICATED SESSION
+→ ONE PRIME DAEMON
+→ MEMBER-LOCAL MEMORY SCOPE
+→ OWN E-LANE ONLY
+```
+
+The command does not by itself prove that the current carrier supports dedicated-session creation or member-scoped writes.
+
+## Memory candidate commands
 
 `CANDIPULL` requests a bounded list of material MemoryOS candidates produced during the current chat session.
 
