@@ -15,7 +15,8 @@ import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
 import solo_chat_runtime
-import host_memory_gateway  # registers host-facing MemoryOS MCP/HTTP tools
+import host_memory_gateway
+import gaiaos_verification
 
 app = memcon_entrypoint.app
 _original_chat = gaiaos_api.chat
@@ -87,7 +88,6 @@ def _handle_endsolo(request: Request) -> dict:
     })
 
 
-
 def _handle_solo_candipull(messages: list[dict], request: Request, solo: dict) -> dict:
     daemon = str(solo["daemon"]).upper()
     substantive = [
@@ -123,15 +123,13 @@ def _handle_solo_memsav(command: str, request: Request, solo: dict) -> dict:
         })
     entry = (
         f"MEM[EXPERIENCE_PRESERVATION|{candidate.get('created_at','')[:10]}|"
-        f"SOLO {daemon}|dedicated_conversation]\\n"
-        f"WHAT: {candidate.get('statement','')}\\n"
-        f"MY_ROLE: Material interaction preserved through dedicated SOLO conversation.\\n"
-        f"TRACE: candidate {candidate_id}; session {candidate.get('event_id')}\\n"
+        f"SOLO {daemon}|dedicated_conversation]\n"
+        f"WHAT: {candidate.get('statement','')}\n"
+        f"MY_ROLE: Material interaction preserved through dedicated SOLO conversation.\n"
+        f"TRACE: candidate {candidate_id}; session {candidate.get('event_id')}\n"
         f"STATUS: COMMITTED"
     )
-    result = solo_chat_runtime.write_elane(
-        _browser_session_id(request), daemon, entry, approved=True
-    )
+    result = solo_chat_runtime.write_elane(_browser_session_id(request), daemon, entry, approved=True)
     if result.get("status") == "COMMITTED":
         memcon_runtime.mark_candidate(candidate_id, "VERIFIED", result.get("commit_sha"))
         result["candidate_id"] = candidate_id
@@ -185,16 +183,10 @@ def _handle_candipull(messages: list[dict], request: Request) -> dict:
     subject = re.sub(r"^CANDIPULL\s*", "", last, flags=re.IGNORECASE).rstrip(".").strip()
     _ensure_chat_candidate(messages, request, subject)
     session_id = _browser_session_id(request)
-    result = memcon_runtime.list_memory_candidates(
-        session_id=session_id, status="CANDIDATE", limit=50, subject=subject or None
-    )
+    result = memcon_runtime.list_memory_candidates(session_id=session_id, status="CANDIDATE", limit=50, subject=subject or None)
     return _envelope("CANDIPULL", {
-        "status": "CANDIDATES_READY",
-        "session_id": session_id,
-        "subject": subject,
-        "candidates": result["candidates"],
-        "count": result["count"],
-        "durable_write": "NOT_PERFORMED",
+        "status": "CANDIDATES_READY","session_id": session_id,"subject": subject,
+        "candidates": result["candidates"],"count": result["count"],"durable_write": "NOT_PERFORMED",
         "next_command": "MEMSAV <candidate_id>",
         "proof_boundary": "Candidate creation is non-durable. MEMSAV requires explicit Naomi authorization and reports the actual write receipt and verification.",
     })
@@ -202,7 +194,7 @@ def _handle_candipull(messages: list[dict], request: Request) -> dict:
 
 def _handle_memsav(command: str) -> dict:
     body = re.sub(r"^MEMSAV\s*", "", command, flags=re.IGNORECASE).rstrip(".").strip()
-    ids = [token.strip() for token in re.split(r"[,\\s]+", body) if token.strip()]
+    ids = [token.strip() for token in re.split(r"[,\s]+", body) if token.strip()]
     if not ids:
         return _envelope("MEMSAV HOLD", {"status": "HOLD", "reason": "Exact candidate_id required; omitted ID does not mean save everything."})
     runtime = _memory_runtime()
@@ -234,10 +226,8 @@ def _start_lifecycle() -> dict:
     )
     durable_matches = memcon_runtime.search_records(statement, limit=20, scope="MemoryOS")
     return _envelope("MEMORYOS TEST PAUSED AT APPROVAL GATE", {
-        "carrier_source": gaiaos_app._deployed_source(),
-        "session": session, "event": event, "candidate": candidate,
-        "pre_approval_durable_matches": durable_matches["records"],
-        "pre_approval_durable_count": durable_matches["count"],
+        "carrier_source": gaiaos_app._deployed_source(),"session": session,"event": event,"candidate": candidate,
+        "pre_approval_durable_matches": durable_matches["records"],"pre_approval_durable_count": durable_matches["count"],
         "candidate_is_non_durable": durable_matches["count"] == 0,
         "next_command": "Approve the pending MemoryOS candidate.",
         "approval_boundary": "No durable memory write occurs until explicit Naomi approval.",
@@ -248,23 +238,17 @@ def _approve_lifecycle() -> dict:
     runtime = _memory_runtime()
     candidate = memcon_runtime.get_latest_memory_candidate(TEST_OWNER, "CANDIDATE")
     if candidate is None:
-        return _envelope("MEMORYOS APPROVAL HOLD", {
-            "status": "HOLD", "reason": "No pending browser MemoryOS candidate found."
-        })
+        return _envelope("MEMORYOS APPROVAL HOLD", {"status": "HOLD","reason": "No pending browser MemoryOS candidate found."})
     result = runtime.promote_candidate(candidate["candidate_id"], True, "NAOMI")
     record_id = result.get("record_id")
     readback = memcon_runtime.get_record(record_id) if record_id else None
     retrieved = runtime.retrieve(candidate["statement"], "MemoryOS", 10)
     return _envelope("MEMORYOS LIFECYCLE VERIFIED", {
-        "candidate_id": candidate["candidate_id"], "promotion": result,
-        "readback": readback, "retrieval": retrieved,
+        "candidate_id": candidate["candidate_id"],"promotion": result,"readback": readback,"retrieval": retrieved,
         "checks": {
             "explicit_approval": True,
             "write_receipt_success": result.get("write_receipt", {}).get("result") == "SUCCESS",
-            "readback_matches_candidate": bool(
-                readback and readback.get("statement") == candidate.get("statement")
-                and readback.get("scope") == candidate.get("scope")
-            ),
+            "readback_matches_candidate": bool(readback and readback.get("statement") == candidate.get("statement") and readback.get("scope") == candidate.get("scope")),
             "retrieval_has_no_authority": retrieved.get("context_authority") == "NONE",
             "retrieval_is_not_identity_adoption": retrieved.get("retrieval_is_not_identity_adoption") is True,
         },
@@ -289,8 +273,7 @@ def _error_page(title: str, exc: Exception) -> HTMLResponse:
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
         f"<h1>{html.escape(title)}</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(detail)}</pre>"
-        "<p>Runtime action was not reported as successful.</p>"
-        "</body></html>",
+        "<p>Runtime action was not reported as successful.</p></body></html>",
         status_code=500,
     )
 
@@ -301,13 +284,9 @@ def memoryos_start(browser_request: Request):
     try:
         result = _start_lifecycle()
         output = html.escape(result["output"])
-        return HTMLResponse(
-            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
-            "<h1>MemoryOS start</h1>"
-            f"<pre style='white-space:pre-wrap'>{output}</pre>"
-            "<p><a style='font-size:22px' href='/memoryos/approve'>Approve pending candidate</a></p>"
-            "</body></html>"
-        )
+        return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>MemoryOS start</h1>" + f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            "<p><a style='font-size:22px' href='/memoryos/approve'>Approve pending candidate</a></p></body></html>")
     except Exception as exc:
         return _error_page("MemoryOS start failed", exc)
 
@@ -318,12 +297,8 @@ def memoryos_approve(browser_request: Request):
     try:
         result = _approve_lifecycle()
         output = html.escape(result["output"])
-        return HTMLResponse(
-            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
-            "<h1>MemoryOS approval</h1>"
-            f"<pre style='white-space:pre-wrap'>{output}</pre>"
-            "</body></html>"
-        )
+        return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>MemoryOS approval</h1>" + f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>")
     except Exception as exc:
         return _error_page("MemoryOS approval failed", exc)
 
@@ -333,11 +308,29 @@ def memoryos_test_page(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
     return HTMLResponse("""<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GaiaOS MemoryOS Test</title></head><body style="font-family:-apple-system;padding:20px;background:#111;color:#eee">
-<h1>MemoryOS lifecycle test</h1>
-<p>Direct carrier-runtime test. No JavaScript.</p>
+<h1>MemoryOS lifecycle test</h1><p>Direct carrier-runtime test. No JavaScript.</p>
 <p><a style="font-size:24px" href="/memoryos/start">1. Start test</a></p>
 <p><a style="font-size:24px" href="/memoryos/approve">2. Approve pending candidate</a></p>
 </body></html>""")
+
+
+@app.get("/verify", response_class=HTMLResponse, operation_id="verificationPage")
+def verification_page(browser_request: Request):
+    gaiaos_api._authorize_browser_session(browser_request)
+    result = gaiaos_verification.run_verification()
+    output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
+    return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GaiaOS Implementation Verification</h1>"
+        "<p>Every PASS below is an observation from this running carrier process.</p>"
+        f"<pre style='white-space:pre-wrap'>{output}</pre>"
+        "</body></html>")
+
+
+@app.post("/verify", operation_id="verificationRun")
+async def verification_run(browser_request: Request):
+    gaiaos_api._authorize_browser_session(browser_request)
+    result = gaiaos_verification.run_verification()
+    return _envelope("GAIAOS IMPLEMENTATION VERIFICATION", result)
 
 
 # Normal browser chat behavior remains available for all non-test requests.
