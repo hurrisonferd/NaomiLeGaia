@@ -240,6 +240,26 @@ def memory_observe(source: str, statement: str, owner: str, why_material: str,
         subject=subject, actor=actor, record_type=record_type, scope=scope,
     ))
 
+class MemoryCandidatePull(BaseModel):
+    session_id: str | None = None
+    status: str | None = "CANDIDATE"
+    limit: int = Field(default=50, ge=1, le=100)
+
+
+@app.get("/memoryos/candidates", operation_id="listMemoryCandidates")
+def memory_candidates_http(session_id: str | None = None, status: str | None = "CANDIDATE",
+                           limit: int = 50, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    return memcon_runtime.list_memory_candidates(session_id, status, limit)
+
+
+@app.post("/memoryos/candidates", operation_id="listMemoryCandidatesPost")
+def memory_candidates_post_http(payload: MemoryCandidatePull,
+                                authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    return memcon_runtime.list_memory_candidates(payload.session_id, payload.status, payload.limit)
+
+
 @mcp.tool()
 def memcon_read(record_id: str) -> dict[str, Any]:
     """Read one durable MemconOS record and return a runtime receipt."""
@@ -252,6 +272,12 @@ def memcon_read(record_id: str) -> dict[str, Any]:
 def memcon_search(query: str = "", limit: int = 20) -> dict[str, Any]:
     """Search durable MemconOS records."""
     return memcon_runtime.search_records(query,limit)
+
+@mcp.tool()
+def candipull(session_id: str | None = None, status: str | None = "CANDIDATE", limit: int = 50) -> dict[str, Any]:
+    """CANDIPULL: list bounded non-durable MemoryOS candidates."""
+    return memcon_runtime.list_memory_candidates(session_id, status, limit)
+
 
 @mcp.tool()
 def memory_canary() -> dict[str, Any]:
@@ -278,6 +304,12 @@ def memory_candidate(event_id: str, record_type: str, scope: str, statement: str
         statement=statement, source=source, owner=owner, why_material=why_material,
         other_voices=other_voices, tension=tension,
     )
+
+@mcp.tool()
+def memsav(candidate_id: str, approved: bool = False, authority: str = "NAOMI") -> dict[str, Any]:
+    """MEMSAV: explicitly promote one exact candidate through the gated MemoryOS lifecycle."""
+    return _memory_runtime().promote_candidate(candidate_id, approved, authority)
+
 
 @mcp.tool()
 def memory_promote(candidate_id: str, approved: bool = False, authority: str = "NAOMI") -> dict[str, Any]:
