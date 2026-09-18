@@ -108,8 +108,8 @@ def run_verification() -> dict[str, Any]:
     if current and version:
         checks.append(_check(
             "version-alignment",
-            current.get("platform_version") == version.get("platform_version"),
-            f"CURRENT={current.get('platform_version')} VERSION={version.get('platform_version')}",
+            current.get("platform_version") == version.get("version"),
+            f"CURRENT={current.get('platform_version')} VERSION={version.get('version')}",
         ))
         checks.append(_check(
             "current-vaskon-pointer",
@@ -138,8 +138,8 @@ def run_verification() -> dict[str, Any]:
     ))
 
     if pathways:
-        nodes = pathways.get("nodes", [])
-        names = {n.get("name") for n in nodes if isinstance(n, dict)}
+        nodes = pathways.get("nodes", {})
+        names = set(nodes.keys()) if isinstance(nodes, dict) else {n.get("name") for n in nodes if isinstance(n, dict)}
         checks.append(_check(
             "VASKON:six-nodes",
             names == set(DAEMONS),
@@ -148,7 +148,7 @@ def run_verification() -> dict[str, Any]:
         ))
         checks.append(_check(
             "VASKON:coordination-boundary",
-            "KESTREL" in names and "no extra authority" in json.dumps(pathways).lower(),
+            "KESTREL" in names and "no extra authority" in str(pathways.get("hub_rule", "")).lower(),
             "KESTREL coordination role does not grant extra authority",
         ))
         checks.append(_check(
@@ -182,13 +182,18 @@ def run_verification() -> dict[str, Any]:
     # Verify deployed Python carrier surfaces are actually present.
     bridge = (ROOT / "browser_memcon_bridge.py")
     app = (ROOT / "gaiaos_app.py")
+    base_app = (ROOT / "gaiaos_api.py")
     checks.append(_check("carrier:bridge", bridge.exists(), "browser_memcon_bridge.py exists"))
     checks.append(_check("carrier:app", app.exists(), "gaiaos_app.py exists"))
-    if app.exists():
-        app_text = app.read_text(encoding="utf-8")
-        checks.append(_check("carrier:/health", '"/health"' in app_text, "health route declared"))
-        checks.append(_check("carrier:/mcp", 'app.mount("/mcp"' in app_text, "MCP route mounted"))
-        checks.append(_check("carrier:/chat", '@app.post("/chat")' in bridge.read_text(encoding="utf-8"), "browser chat bridge declared"))
+    checks.append(_check("carrier:base-app", base_app.exists(), "gaiaos_api.py exists"))
+    if app.exists() or base_app.exists():
+        app_text = app.read_text(encoding="utf-8") if app.exists() else ""
+        base_text = base_app.read_text(encoding="utf-8") if base_app.exists() else ""
+        checks.append(_check("carrier:/health", '@app.get("/health"' in base_text, "health route declared in base carrier"))
+        checks.append(_check("carrier:/mcp", 'app.mount("/mcp"' in app_text or 'app.mount("/mcp"' in base_text, "MCP route mounted"))
+        bridge_text = bridge.read_text(encoding="utf-8") if bridge.exists() else ""
+        checks.append(_check("carrier:/chat", '@app.post("/chat"' in bridge_text, "browser chat bridge declared"))
+        checks.append(_check("carrier:/verify", '@app.get("/verify"' in bridge_text and '@app.post("/verify"' in bridge_text, "verification routes declared"))
 
     passed = sum(c["status"] == "PASS" for c in checks)
     failed = len(checks) - passed
