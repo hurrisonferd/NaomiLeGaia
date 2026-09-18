@@ -55,7 +55,6 @@ def _db():
         if libsql is None:
             raise RuntimeError("Turso credentials are configured but the libsql driver is unavailable")
         conn = libsql.connect(database=TURSO_DATABASE_URL, auth_token=TURSO_AUTH_TOKEN)
-        conn.row_factory = sqlite3.Row
         conn.execute("PRAGMA foreign_keys=ON")
         return conn
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
