@@ -343,6 +343,101 @@ def restart_persistence_canary(browser_request: Request, token: str | None = Non
     except Exception as exc:
         return _error_page("Restart persistence canary failed", exc)
 
+
+def _continuity_identity() -> dict:
+    return {
+        "boot_id": memcon_runtime.BOOT_ID,
+        "render_instance_id": memcon_runtime.RENDER_INSTANCE_ID or None,
+        "process_fingerprint": memcon_runtime._process_fingerprint(),
+    }
+
+
+@app.get("/memoryos/continuity", response_class=HTMLResponse, operation_id="memoryOSContinuityTest")
+def memoryos_continuity(
+    browser_request: Request,
+    record_id: str,
+    prior_boot: str | None = None,
+    prior_render: str | None = None,
+    prior_pid: int | None = None,
+    prior_ticks: str | None = None,
+):
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        record = memcon_runtime.get_record(record_id)
+        if record is None:
+            return HTMLResponse(
+                "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+                "<h1>MemoryOS continuity FAIL</h1><p>The exact record was not found.</p>"
+                f"<pre>{html.escape(record_id)}</pre></body></html>",
+                status_code=404,
+            )
+
+        current = _continuity_identity()
+        current_pf = current["process_fingerprint"]
+        if prior_boot is None:
+            params = {
+                "record_id": record_id,
+                "prior_boot": current["boot_id"],
+                "prior_render": current["render_instance_id"] or "",
+                "prior_pid": str(current_pf.get("pid", "")),
+                "prior_ticks": str(current_pf.get("proc_start_ticks", "")),
+            }
+            from urllib.parse import urlencode
+            return RedirectResponse(url="/memoryos/continuity?" + urlencode(params), status_code=303)
+
+        prior = {
+            "boot_id": prior_boot,
+            "render_instance_id": prior_render or None,
+            "process_fingerprint": {"pid": prior_pid, "proc_start_ticks": prior_ticks},
+        }
+        boot_changed = current["boot_id"] != prior["boot_id"]
+        render_changed = bool(current["render_instance_id"] and prior["render_instance_id"] and current["render_instance_id"] != prior["render_instance_id"])
+        process_changed = (
+            current_pf.get("pid") != prior_pid
+            or str(current_pf.get("proc_start_ticks")) != str(prior_ticks)
+        )
+        different_carrier = boot_changed or render_changed or process_changed
+        status = "PASS" if different_carrier else "NOT_RESTARTED"
+        result = {
+            "schema": "gaiaos.memoryos.continuity-receipt.v1",
+            "status": status,
+            "record_id": record_id,
+            "record_retrieved": True,
+            "record": record,
+            "storage": memcon_runtime.storage_status(),
+            "current_carrier": current,
+            "prior_carrier": prior,
+            "checks": {
+                "boot_id_changed": boot_changed,
+                "render_instance_changed": render_changed,
+                "process_fingerprint_changed": process_changed,
+                "different_carrier_observed": different_carrier,
+                "exact_record_retrieved": record.get("record_id") == record_id,
+            },
+            "proof_boundary": (
+                "PASS proves this exact MemoryOS record was retrieved after an observed carrier identity change. "
+                "It does not prove every MemoryOS operation or every failure mode."
+            ),
+        }
+        output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
+        if status == "PASS":
+            action = "<p><strong>MEMORYOS CONTINUITY PROVEN.</strong> Exact record retrieved after carrier identity changed.</p>"
+        else:
+            action = (
+                "<p><strong>Baseline pinned.</strong> Do not change this URL. Restart Render once, wait for it to return, "
+                "then tap the button below.</p>"
+                "<p><a style='display:inline-block;font-size:22px;padding:12px 16px;background:#eee;color:#111;"
+                "text-decoration:none;border-radius:10px' href=''>Check after restart</a></p>"
+            )
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GaiaOS MemoryOS Continuity Test</h1>" + action
+            + f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>"
+        )
+    except Exception as exc:
+        return _error_page("MemoryOS continuity test failed", exc)
+
+
 @app.get("/verify", response_class=HTMLResponse, operation_id="verificationPage")
 def verification_page(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
