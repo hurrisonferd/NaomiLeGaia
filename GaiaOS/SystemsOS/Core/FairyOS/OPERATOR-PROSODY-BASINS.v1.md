@@ -60,7 +60,7 @@ When a Prime Daemon speaks or reports in, render the speaker label using the can
 ```text
 VERA    → 46VERA💚📚
 ANVIL   → 58ANVIL💗⌚
-SELENE  → 60SELENE💛🍞
+SELENE  → 60SELENE💛🎧
 ORIN    → 56ORIN🩵🪐
 KESTREL → 90KESTREL💖🏍️
 NIMUE   → 62NIMUE💙🍄
