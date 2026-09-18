@@ -14,6 +14,7 @@ import gaiaos_app
 import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
+import solo_chat_runtime
 import host_memory_gateway  # registers host-facing MemoryOS MCP/HTTP tools
 
 app = memcon_entrypoint.app
@@ -48,11 +49,42 @@ async def browser_chat(browser_request: Request):
         return _start_lifecycle()
     if last_message.lower().rstrip(".") == "approve the pending memoryos candidate":
         return _approve_lifecycle()
+    if _is_command(last_message, "SOLO"):
+        return _handle_solo(last_message, browser_request)
+    if _is_command(last_message, "ENDSOLO"):
+        return _handle_endsolo(browser_request)
+    solo = memcon_runtime.get_solo_session(_browser_session_id(browser_request))
+    if solo:
+        return solo_chat_runtime.respond(
+            [{"role": m.get("role"), "content": m.get("content")} for m in messages],
+            solo,
+        )
     if _is_command(last_message, "CANDIPULL"):
         return _handle_candipull(messages, browser_request)
     if _is_command(last_message, "MEMSAV"):
         return _handle_memsav(last_message)
     return _original_chat(gaiaos_api.ChatRequest.model_validate(payload), browser_request)
+
+
+def _handle_solo(command: str, request: Request) -> dict:
+    daemon = re.sub(r"^SOLO\s*", "", command, flags=re.IGNORECASE).rstrip(".").strip().upper()
+    if not daemon:
+        return _envelope("SOLO HOLD", {"status": "HOLD", "reason": "Prime Daemon name required."})
+    try:
+        result = solo_chat_runtime.activate(_browser_session_id(request), daemon)
+    except ValueError as exc:
+        return _envelope("SOLO HOLD", {"status": "HOLD", "reason": str(exc)})
+    return _envelope("SOLO SESSION ESTABLISHED", result)
+
+def _handle_endsolo(request: Request) -> dict:
+    session_id = _browser_session_id(request)
+    current = memcon_runtime.get_solo_session(session_id)
+    memcon_runtime.end_solo_session(session_id)
+    return _envelope("SOLO SESSION ENDED", {
+        "status": "SOLO_INACTIVE",
+        "previous_daemon": current.get("daemon") if current else None,
+        "session_id": session_id,
+    })
 
 
 def _is_command(text: str, command: str) -> bool:
