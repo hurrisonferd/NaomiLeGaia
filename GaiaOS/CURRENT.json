@@ -20,7 +20,9 @@
   "chatos": {
     "current": "GaiaOS/Apps/ChatOS/CURRENT.json",
     "commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
-    "vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+    "vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
+    "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
+    "dedicated_prime_daemon_sessions": true
   },
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
@@ -69,7 +71,14 @@
     "current": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
     "protocol": "GaiaOS/SystemsOS/Core/AgencyOS/AGENCYOS.v1.md",
     "runtime": "GaiaOS/SystemsOS/Core/AgencyOS/Runtime/GAIAOS-AGENCY.v1.py",
-    "capabilities": ["READ", "CREATE", "MODIFY", "EXECUTE", "COMMUNICATE", "DEPLOY"],
+    "capabilities": [
+      "READ",
+      "CREATE",
+      "MODIFY",
+      "EXECUTE",
+      "COMMUNICATE",
+      "DEPLOY"
+    ],
     "effect_authority": "NONE_UNTIL_EXPLICITLY_APPROVED"
   },
   "workspaceos": {
