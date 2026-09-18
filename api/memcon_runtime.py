@@ -44,6 +44,7 @@ def _now() -> str:
 
 
 def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
+    """Normalize sqlite3.Row and libSQL tuple rows into plain dictionaries."""
     if row is None:
         return None
     if hasattr(row, "keys"):
@@ -52,6 +53,16 @@ def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
     if description:
         return {str(col[0]): value for col, value in zip(description, row)}
     raise TypeError("Database row could not be mapped to column names")
+
+
+def _fetchone_dict(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> dict[str, Any] | None:
+    cursor = conn.execute(sql, params)
+    return _row_dict(cursor.fetchone(), cursor)
+
+
+def _fetchall_dicts(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> list[dict[str, Any]]:
+    cursor = conn.execute(sql, params)
+    return [_row_dict(row, cursor) for row in cursor.fetchall()]
 
 
 def _db():
@@ -229,8 +240,8 @@ def write_record(*, authority: str, record_type: str, scope: str, statement: str
 def get_record(record_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute("SELECT * FROM memory_records WHERE record_id = ?", (record_id,)).fetchone()
-    return dict(row) if row else None
+        row = _fetchone_dict(conn, "SELECT * FROM memory_records WHERE record_id = ?", (record_id,))
+    return row
 
 
 def search_records(query: str, limit: int = 20, scope: str | None = None) -> dict[str, Any]:
@@ -239,19 +250,19 @@ def search_records(query: str, limit: int = 20, scope: str | None = None) -> dic
     limit = max(1, min(int(limit), 100))
     with _db() as conn:
         if scope:
-            rows = conn.execute(
+            rows = _fetchall_dicts(conn,
                 "SELECT * FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT ?",
                 (scope, limit),
-            ).fetchall()
+            )
         elif terms:
             pattern = "%" + "%".join(terms) + "%"
-            rows = conn.execute(
+            rows = _fetchall_dicts(conn,
                 "SELECT * FROM memory_records WHERE lower(statement) LIKE ? OR lower(notes) LIKE ? OR lower(record_id) LIKE ? OR lower(scope) LIKE ? ORDER BY created_at DESC LIMIT ?",
                 (pattern, pattern, pattern, pattern, limit),
-            ).fetchall()
+            )
         else:
-            rows = conn.execute("SELECT * FROM memory_records ORDER BY created_at DESC LIMIT ?", (limit,)).fetchall()
-    return {"records": [dict(row) for row in rows], "count": len(rows), "runtime": SCHEMA_VERSION}
+            rows = _fetchall_dicts(conn, "SELECT * FROM memory_records ORDER BY created_at DESC LIMIT ?", (limit,))
+    return {"records": rows, "count": len(rows), "runtime": SCHEMA_VERSION}
 
 
 def update_record(record_id: str, *, authority: str, approved: bool, statement: str | None = None,
@@ -298,19 +309,19 @@ def create_session_event(*, event_id: str, session_id: str, actor: str,
 def get_session_event(event_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute("SELECT * FROM session_events WHERE event_id=?",(event_id,)).fetchone()
-    return dict(row) if row else None
+        row = _fetchone_dict(conn, "SELECT * FROM session_events WHERE event_id=?", (event_id,))
+    return row
 
 
 def get_session(session_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        session = conn.execute("SELECT * FROM sessions WHERE session_id=?",(session_id,)).fetchone()
-        events = conn.execute("SELECT * FROM session_events WHERE session_id=? ORDER BY created_at",(session_id,)).fetchall()
+        session = _fetchone_dict(conn, "SELECT * FROM sessions WHERE session_id=?", (session_id,))
+        events = _fetchall_dicts(conn, "SELECT * FROM session_events WHERE session_id=? ORDER BY created_at", (session_id,))
     if session is None:
         return None
-    result = dict(session)
-    result["events"] = [dict(row) for row in events]
+    result = session
+    result["events"] = events
     return result
 
 
@@ -336,10 +347,10 @@ def create_memory_candidate(candidate: dict[str, Any]) -> None:
 def get_memory_candidate(candidate_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute("SELECT * FROM memory_candidates WHERE candidate_id=?",(candidate_id,)).fetchone()
+        row = _fetchone_dict(conn, "SELECT * FROM memory_candidates WHERE candidate_id=?", (candidate_id,))
     if row is None:
         return None
-    result = dict(row)
+    result = row
     result["other_voices"] = json.loads(result["other_voices"])
     return result
 
@@ -361,7 +372,7 @@ def list_memory_candidates(session_id: str | None = None, status: str | None = "
             clauses.append("s.subject LIKE ?")
             params.append(f"%{subject}%")
         where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
-        rows = conn.execute(
+        rows = _fetchall_dicts(conn,
             f"""SELECT c.*, e.session_id, s.subject
                 FROM memory_candidates c
                 JOIN session_events e ON e.event_id = c.event_id
@@ -370,10 +381,10 @@ def list_memory_candidates(session_id: str | None = None, status: str | None = "
                 ORDER BY c.created_at DESC
                 LIMIT ?""",
             (*params, limit),
-        ).fetchall()
+        )
     candidates = []
     for row in rows:
-        item = dict(row)
+        item = row
         item["other_voices"] = json.loads(item["other_voices"])
         candidates.append(item)
     return {
@@ -390,10 +401,10 @@ def list_memory_candidates(session_id: str | None = None, status: str | None = "
 def get_latest_memory_candidate(owner: str, status: str = "CANDIDATE") -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute(
+        row = _fetchone_dict(conn,
             "SELECT * FROM memory_candidates WHERE owner=? AND status=? ORDER BY created_at DESC LIMIT 1",
             (owner, status),
-        ).fetchone()
+        )
     if row is None:
         return None
     result = dict(row)
@@ -404,10 +415,10 @@ def get_latest_memory_candidate(owner: str, status: str = "CANDIDATE") -> dict[s
 def find_fingerprint(fingerprint: str) -> str | None:
     initialize()
     with _db() as conn:
-        row = conn.execute(
+        row = _fetchone_dict(conn,
             "SELECT record_id FROM memory_records WHERE lower(notes) LIKE ? LIMIT 1",
             (f'"fingerprint": "{fingerprint}"',),
-        ).fetchone()
+        )
     return row["record_id"] if row else None
 
 
@@ -437,11 +448,11 @@ def create_solo_session(session_id: str, daemon: str, source: str) -> dict[str, 
 def get_solo_session(session_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute(
+        row = _fetchone_dict(conn,
             "SELECT * FROM solo_sessions WHERE session_id=? AND active=1",
             (session_id,),
-        ).fetchone()
-    return dict(row) if row else None
+        )
+    return row
 
 
 def end_solo_session(session_id: str) -> None:
