@@ -87,6 +87,58 @@ def _handle_endsolo(request: Request) -> dict:
     })
 
 
+
+def _handle_solo_candipull(messages: list[dict], request: Request, solo: dict) -> dict:
+    daemon = str(solo["daemon"]).upper()
+    substantive = [
+        str(m.get("content","")).strip() for m in messages[:-1]
+        if str(m.get("role","")).lower() == "user"
+        and str(m.get("content","")).strip()
+        and not _is_command(str(m.get("content","")), "SOLO")
+        and not _is_command(str(m.get("content","")), "CANDIPULL")
+        and not _is_command(str(m.get("content","")), "MEMSAV")
+    ]
+    if not substantive:
+        return _envelope("SOLO CANDIPULL HOLD", {"status":"HOLD","reason":"No substantive interaction available."})
+    candidate = solo_chat_runtime.candidate(_browser_session_id(request), daemon, substantive[-1])
+    return _envelope("SOLO CANDIDATE READY", {
+        "status":"CANDIDATE_READY","daemon":daemon,"candidate":candidate,
+        "memory_scope":f"Solo:{daemon}","other_e_lanes":"DENIED",
+        "next_command":"MEMSAV <candidate_id>",
+    })
+
+def _handle_solo_memsav(command: str, request: Request, solo: dict) -> dict:
+    body = re.sub(r"^MEMSAV\s*", "", command, flags=re.IGNORECASE).rstrip(".").strip()
+    if not body:
+        return _envelope("SOLO MEMSAV HOLD", {"status":"HOLD","reason":"Exact candidate_id required."})
+    candidate_id = body.split()[0]
+    candidate = memcon_runtime.get_memory_candidate(candidate_id)
+    daemon = str(solo["daemon"]).upper()
+    if not candidate:
+        return _envelope("SOLO MEMSAV HOLD", {"status":"HOLD","reason":"Unknown candidate_id"})
+    if str(candidate.get("owner","")).upper() != daemon or str(candidate.get("scope","")) != f"Solo:{daemon}":
+        return _envelope("SOLO MEMSAV HOLD", {
+            "status":"HOLD","reason":"Candidate is outside this SOLO member-local scope.",
+            "daemon":daemon,"candidate_id":candidate_id,
+        })
+    entry = (
+        f"MEM[EXPERIENCE_PRESERVATION|{candidate.get('created_at','')[:10]}|"
+        f"SOLO {daemon}|dedicated_conversation]\\n"
+        f"WHAT: {candidate.get('statement','')}\\n"
+        f"MY_ROLE: Material interaction preserved through dedicated SOLO conversation.\\n"
+        f"TRACE: candidate {candidate_id}; session {candidate.get('event_id')}\\n"
+        f"STATUS: COMMITTED"
+    )
+    result = solo_chat_runtime.write_elane(
+        _browser_session_id(request), daemon, entry, approved=True
+    )
+    if result.get("status") == "COMMITTED":
+        memcon_runtime.mark_candidate(candidate_id, "VERIFIED", result.get("commit_sha"))
+        result["candidate_id"] = candidate_id
+        result["readback_required"] = True
+    return _envelope("SOLO MEMSAV", result)
+
+
 def _is_command(text: str, command: str) -> bool:
     return bool(re.match(rf"^\s*{re.escape(command)}(?:\s+.*)?[.!]?\s*$", text, flags=re.IGNORECASE))
 
