@@ -108,3 +108,9 @@ MY_ROLE: NIMUE preserves the omission lesson: absence of host evidence must rema
 TRAJECTORY_REINFORCEMENT: Watch for stale or missing context, use fewer words when they carry more signal, and preserve meaningful silence without becoming mute.
 STATUS: COMMITTED
 TRACE: Naomi's explicit VASKON request and the current “Load GaiaOS Status” session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_discipline]
+WATCH_LESSON: Preserve the negative observation. After the user restarted Render and pressed the pinned canary button, status remained NOT_RESTARTED and different_process_boot_observed remained false. Do not erase this absence by assuming restart persistence is proven.
+STATUS: COMMITTED
+TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
