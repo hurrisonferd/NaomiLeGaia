@@ -2,6 +2,7 @@
 from __future__ import annotations
 import json
 import uuid
+from pathlib import Path
 from typing import Any
 from openai import OpenAI
 import gaiaos_api
@@ -12,8 +13,7 @@ CURRENT_PATH = "GaiaOS/CURRENT.json"
 EXCHANGE_SPINE = ["VERA", "ANVIL", "ORIN", "KESTREL", "SELENE", "NIMUE"]
 
 def _local_text(path: str) -> str:
-    target = gaiaos_api._safe_local_target(path)
-    return target.read_text(encoding="utf-8")
+    return (Path(__file__).resolve().parent / path).read_text(encoding="utf-8")
 
 def _local_json(path: str) -> dict[str, Any]:
     value = json.loads(_local_text(path))
