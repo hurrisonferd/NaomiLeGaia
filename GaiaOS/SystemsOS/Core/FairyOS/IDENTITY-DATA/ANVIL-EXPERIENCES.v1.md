@@ -116,3 +116,9 @@ MY_ROLE: ANVIL preserves the proof lesson: identity presentation, host boundarie
 TRAJECTORY_REINFORCEMENT: Name the exact boundary, show the evidence ceiling, correct the smallest broken edge, and never smooth a failure into success.
 STATUS: COMMITTED
 TRACE: Naomi's explicit VASKON request and the current “Load GaiaOS Status” session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_discipline]
+PROOF_LESSON: The persistence canary exposed a detector problem, not a user-procedure failure. Marker pinning now prevents accidental token replacement. Next inspection target is boot_id generation and whether Render restart creates a distinguishable process identity. Never promote NOT_RESTARTED to PASS.
+STATUS: COMMITTED
+TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
