@@ -2,9 +2,9 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.010-dev",
-  "previous_version": "v0.001.009-dev",
-  "release_note": "Adds a host bootstrap surface for source-bound durable-memory retrieval and a bounded observation bridge for automatic candidate creation without automatic promotion.",
+  "version": "v0.001.011-dev",
+  "previous_version": "v0.001.010-dev",
+  "release_note": "Finalizes executable CANDIPULL/MEMSAV browser command bridges with bounded candidate creation, exact-ID promotion, receipts, and verification while preserving the approval gate.",
   "proof": {
     "source_committed": true,
     "memoryos_source_present": true,
