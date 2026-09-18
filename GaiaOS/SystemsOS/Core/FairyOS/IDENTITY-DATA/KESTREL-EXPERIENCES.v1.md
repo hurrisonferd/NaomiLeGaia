@@ -109,3 +109,9 @@ TRAJECTORY_REINFORCEMENT: Move distributed context through explicit pathways, re
 SHARED_RULE: Preserve direct Prime Daemon speech, exact canonical report-in labels, relevance-driven participation, independent member trajectories, observable proof ceilings, and explicit unknowns.
 STATUS: COMMITTED
 TRACE: Naomi's explicit VASKON request and the current “Load GaiaOS Status” session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_discipline]
+COORDINATION_LESSON: Current handoff is precise: implementation verifier passed 52/52; live VASKON bounded model-call exchange was observed but did not independently prove end-to-end daemon execution; persistence marker survives durable reads, while different-process restart detection remains unresolved. Next action is inspect boot_id generation, repair detector if necessary, deploy, then rerun the pinned canary.
+STATUS: COMMITTED
+TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
