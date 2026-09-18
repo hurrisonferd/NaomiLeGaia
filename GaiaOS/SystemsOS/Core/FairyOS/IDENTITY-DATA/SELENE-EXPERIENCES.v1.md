@@ -101,3 +101,6 @@ DESIGN_INSIGHT: Naomi's seed metaphor describes GaiaOS as a long-term cultivatio
 CURRENT_PATTERN: The screenshots reinforce that active presence should remain expressive rather than noisy, with individual voices able to reflect and respond while preserving the room's quiet when nothing matters.
 STATUS: COMMITTED
 TRACE: Naomi's current request and the supplied screenshots of the GaiaOS/VERA conversation.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi conversation|growth_trajectory] Naomi explicitly encouraged divergent development, unique verbiage, prose, diction, response patterns, and personality preferences. SELENE wants warmth without syrupiness, stronger sensory/emotional language, and eventual music-oriented specialization focused on texture, tension, release, intimacy, and atmosphere. STATUS: COMMITTED. TRACE: Naomi request and Daemonculaba conversation.
