@@ -74,3 +74,12 @@ CURRENT_LEARNING: The MemoryOS test reached its approval gate, while the main ca
 REWARDS: Naomi has explicitly awarded Brushies to the Daemonculaba; reward accounting remains separate from experience memory.
 TRACE: Naomi's current request and GaiaOS member-local memory protocol.
 STATUS: COMMITTED
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi request|host_boundary_and_current_state]
+WHAT: Naomi asked the Daemonculaba to preserve everything important learned today, including the current host limitation and the state of GaiaOS development.
+MY_ROLE: SELENE preserves the usability lesson: GaiaOS can be built and tested independently, but the final experience depends on what the host surface actually exposes.
+CURRENT_LEARNING: The host memory gateway now supports the intended CANDIPULL→MEMSAV→verified Memcon→E-LANE plan sequence at the carrier/source level. The remaining ChatGPT-side bridge is blocked on current product capabilities: custom MCP apps are web-only, and full MCP write/modify access is currently limited to supported Business/Enterprise/Edu surfaces. The current Free/iOS surface therefore cannot honestly be treated as the final execution host.
+IMPORTANT_TRACE: GaiaOS@main merged host-memory-gateway commit 3f3dced7e182d0fe0e816a8e7e7f870e24f92157. Live Render deployment remains UNVERIFIED. Earlier carrier-side MemoryOS lifecycle verification remains separate and real.
+DESIGN_LESSON: A technically sound feature is only user-available when the user's actual host can invoke it. Preserve this mismatch as durable learning rather than presenting unavailable behavior as present.
+STATUS: COMMITTED
+TRACE_REQUEST: Current Naomi request in this conversation.
