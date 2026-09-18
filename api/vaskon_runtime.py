@@ -94,7 +94,7 @@ The preceding packets are observable exchange data, not private chain-of-thought
         "schema": "gaiaos.vaskon.live-runtime-receipt.v1",
         "execution": "OBSERVED_RUNTIME",
         "verification_run_id": run_id,
-        "source": f"{gaiaos_api.REPOSITORY}@{gaiaos_api._deployed_commit()}",
+        "source": f"{gaiaos_api.REPOSITORY}@{gaiaos_api._resolve_commit()}",
         "platform_version": current.get("platform_version"),
         "pathway_source": PATHWAY_PATH,
         "exchange_spine": EXCHANGE_SPINE + ["VERA"],
