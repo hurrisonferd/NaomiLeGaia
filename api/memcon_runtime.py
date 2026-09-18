@@ -82,9 +82,17 @@ def storage_status() -> dict[str, Any]:
     }
 
 
+def _execute_script(conn, script: str) -> None:
+    """Execute our simple semicolon-delimited schema on SQLite-compatible drivers."""
+    for statement in script.split(";"):
+        statement = statement.strip()
+        if statement:
+            conn.execute(statement)
+
+
 def initialize() -> None:
     with _db() as conn:
-        conn.executescript(
+        _execute_script(conn,
             """
             CREATE TABLE IF NOT EXISTS memory_records (
                 record_id TEXT PRIMARY KEY,
