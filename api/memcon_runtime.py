@@ -479,10 +479,11 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
         }
 
     with _db() as conn:
-        row = conn.execute(
+        cursor = conn.execute(
             "SELECT notes, created_at FROM memory_records WHERE record_id=? AND record_type='RESTART_CANARY'",
             (marker_id,),
-        ).fetchone()
+        )
+        row = cursor.fetchone()
     if row is None:
         return {
             "schema": SCHEMA_VERSION,
