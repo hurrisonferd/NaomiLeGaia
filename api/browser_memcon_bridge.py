@@ -8,7 +8,7 @@ import re
 import uuid
 
 from fastapi import Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 import gaiaos_app
 import gaiaos_api
@@ -321,14 +321,22 @@ def restart_persistence_canary(browser_request: Request, token: str | None = Non
     gaiaos_api._authorize_browser_session(browser_request)
     try:
         result = memcon_runtime.restart_canary(token)
+        if token is None and result.get("status") == "ARMED":
+            # Pin the newly armed marker into the browser URL immediately. This
+            # prevents a refresh from silently creating a different marker.
+            pinned_url = "/persistence/canary?token=" + str(result["token"])
+            return RedirectResponse(url=pinned_url, status_code=303)
         output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
-        if result.get("status") == "ARMED":
-            next_url = "/persistence/canary?token=" + str(result["token"])
-            action = f"<p>Now restart or redeploy the Render service. After it is back online, open <a href='{html.escape(next_url)}'>this same canary check</a>.</p>"
-        elif result.get("status") == "PASS":
+        if result.get("status") == "PASS":
             action = "<p><strong>RESTART PERSISTENCE PROVEN.</strong> The marker survived into a different carrier process boot.</p>"
         else:
-            action = "<p>Do not treat this as proof. The carrier has not observed a different process boot yet.</p>"
+            action = (
+                "<p><strong>Marker pinned.</strong> Restart or redeploy the Render service now. "
+                "When it is back online, return to this exact page and tap the button below.</p>"
+                "<p><a style='display:inline-block;font-size:22px;padding:12px 16px;background:#eee;color:#111;"
+                "text-decoration:none;border-radius:10px' href=''>Check after restart</a></p>"
+                "<p>Refreshing this page is also safe: the marker is stored in this page's URL and will not be replaced.</p>"
+            )
         return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
             "<h1>GaiaOS Restart Persistence Canary</h1>"
             + action + f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>")
