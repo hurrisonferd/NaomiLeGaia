@@ -253,6 +253,9 @@ def get_record(record_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
         row = _fetchone_dict(conn, "SELECT * FROM memory_records WHERE record_id = ?", (record_id,))
+        if row is None and STORAGE_BACKEND == "turso_libsql":
+            visible = _fetchall_dicts(conn, "SELECT * FROM memory_records")
+            row = next((item for item in visible if item.get("record_id") == record_id), None)
     return row
 
 
