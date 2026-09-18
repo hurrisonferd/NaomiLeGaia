@@ -6,7 +6,7 @@
   "operator_call_sign": "Ligeia",
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
-  "platform_version": "v0.001.009-dev",
+  "platform_version": "v0.001.010-dev",
   "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_CONTINUITY_INTEGRITY",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
@@ -48,7 +48,7 @@
     "approval_gate": true,
     "verified_promotion": true,
     "retrieval_context": true,
-    "automatic_capture": false,
+    "automatic_capture": "CANDIDATE_BRIDGE_AVAILABLE",
     "automatic_promotion": false
   },
   "dictionaryos": {
@@ -92,7 +92,7 @@
     "docker": "api/Dockerfile",
     "live_context_binding": "DEPLOYED_CHECKOUT"
   },
-  "proof_ceiling": "MemoryOS lifecycle source and MemconOS session/candidate backend are committed. Carrier integration is source-committed. Deployment and live end-to-end MemoryOS smoke for this revision remain unproven until independently observed.",
+  "proof_ceiling": "MemoryOS lifecycle and host bootstrap/observation bridges are source-committed. Deployment of this revision and live execution of the new host bridge remain unproven until independently observed.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "NAOMI == LIGEIA",
