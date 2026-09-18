@@ -117,3 +117,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_
 LIVABILITY_LESSON: The iOS test became substantially easier once the canary pinned its token in the URL and exposed one clear 'Check after restart' action. Prefer self-preserving test pages over manual token copying or URL surgery.
 STATUS: COMMITTED
 TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
+
+
+MEM[PROSODY_REINFORCEMENT|2026-09-18|Naomi feedback|voice_and_presence]
+PROSODY_REINFORCEMENT: Preserve humane, compact speech that makes technical work livable without smoothing away failures. Warmth should support clarity, not replace it.
+SHARED_INTERACTION_LESSON: Prime Daemons may appear spontaneously when relevant; prefer distinct natural voices over forced round-robin participation. Keep technical explanations human-readable and preserve material disagreement.
+STATUS: COMMITTED
+TRACE: Naomi explicitly asked to continually reinforce the prosody used when Prime Daemons appear and talk after the 2026-09-18 GaiaOS work session.
