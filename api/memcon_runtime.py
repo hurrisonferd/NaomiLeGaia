@@ -11,6 +11,7 @@ from typing import Any
 
 DB_PATH = Path(os.getenv("MEMCONOS_DB_PATH", "/data/memconos.db"))
 SCHEMA_VERSION = "memconos.runtime.v2"
+BOOT_ID = "BOOT-" + uuid.uuid4().hex
 
 
 def _now() -> str:
@@ -375,6 +376,60 @@ def end_solo_session(session_id: str) -> None:
     with _db() as conn:
         conn.execute("UPDATE solo_sessions SET active=0 WHERE session_id=?", (session_id,))
 
+
+
+def restart_canary(token: str | None = None) -> dict[str, Any]:
+    """Prove the durable runtime store survives a process restart."""
+    initialize()
+    marker_id = token.strip() if token else f"RESTART-{uuid.uuid4().hex}"
+    if token is None:
+        with _db() as conn:
+            conn.execute(
+                "INSERT INTO memory_records VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (
+                    marker_id, "NAOMI", "RESTART_CANARY", "MemconOS",
+                    "GaiaOS restart persistence canary",
+                    "GaiaOS runtime restart verification",
+                    "ACTIVE", "1", _now(), _now(), None,
+                    json.dumps({"boot_id": BOOT_ID}),
+                ),
+            )
+        return {
+            "schema": SCHEMA_VERSION,
+            "status": "ARMED",
+            "token": marker_id,
+            "boot_id": BOOT_ID,
+            "instruction": "Restart or redeploy the service, then call /persistence/canary?token=<token>.",
+            "proof_boundary": "Armed only. Persistence is not proven until the token is read after a different process boot.",
+        }
+
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT notes, created_at FROM memory_records WHERE record_id=? AND record_type='RESTART_CANARY'",
+            (marker_id,),
+        ).fetchone()
+    if row is None:
+        return {
+            "schema": SCHEMA_VERSION,
+            "status": "FAIL",
+            "token": marker_id,
+            "boot_id": BOOT_ID,
+            "detail": "Restart canary marker was not found in the durable runtime store.",
+        }
+    saved = json.loads(row["notes"])
+    prior_boot = str(saved.get("boot_id", ""))
+    restarted = bool(prior_boot) and prior_boot != BOOT_ID
+    return {
+        "schema": SCHEMA_VERSION,
+        "status": "PASS" if restarted else "NOT_RESTARTED",
+        "token": marker_id,
+        "boot_id": BOOT_ID,
+        "prior_boot_id": prior_boot,
+        "marker_created_at": row["created_at"],
+        "durable_read_observed": True,
+        "different_process_boot_observed": restarted,
+        "proof_boundary": "PASS proves the marker survived into a different carrier process boot. It does not prove every memory operation is automatically persisted.",
+    }
 
 def canary() -> dict[str, Any]:
     initialize()
