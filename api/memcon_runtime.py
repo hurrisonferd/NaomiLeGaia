@@ -43,6 +43,17 @@ def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
+def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
+    if row is None:
+        return None
+    if hasattr(row, "keys"):
+        return dict(row)
+    description = getattr(cursor, "description", None)
+    if description:
+        return {str(col[0]): value for col, value in zip(description, row)}
+    raise TypeError("Database row could not be mapped to column names")
+
+
 def _db():
     """Open the configured storage backend.
 
@@ -482,7 +493,7 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
             "process_fingerprint": _process_fingerprint(),
             "detail": "Restart canary marker was not found in the durable runtime store.",
         }
-    saved = json.loads(row["notes"])
+    saved = json.loads(_row_dict(row, cursor)["notes"])
     prior_boot = str(saved.get("boot_id", ""))
     prior_render_instance = str(saved.get("render_instance_id", ""))
     prior_process = saved.get("process_fingerprint") or {}
@@ -512,7 +523,7 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
         "prior_process_fingerprint": prior_process or None,
         "process_fingerprint_changed": process_changed,
         "restart_predicate": "boot_id_changed OR render_instance_changed OR process_fingerprint_changed",
-        "marker_created_at": row["created_at"],
+        "marker_created_at": _row_dict(row, cursor)["created_at"],
         "durable_read_observed": True,
         "different_process_boot_observed": restarted,
         "proof_boundary": "PASS proves the marker survived into a different carrier process identity. It does not prove every memory operation is automatically persisted.",
