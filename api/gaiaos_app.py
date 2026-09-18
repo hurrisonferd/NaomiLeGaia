@@ -25,9 +25,6 @@ EXTENSION_VERSION = "1.6.0"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
 DEPLOYED_ROOT = Path(__file__).resolve().parent.parent
 
-# Preserve the original remote source functions as bounded fallbacks. The deployed
-# checkout is authoritative for the running build; GitHub is only consulted when a
-# canonical loader path is unexpectedly absent locally.
 _REMOTE_RESOLVE_COMMIT = base._resolve_commit
 _REMOTE_FETCH_FILE = base._fetch_file
 
@@ -85,8 +82,6 @@ def _deployed_fetch_file(commit: str, path: str) -> str:
     try:
         return target.read_text(encoding="utf-8")
     except FileNotFoundError:
-        # A missing deployed file is unusual, but keep the original source-backed
-        # behavior available rather than silently fabricating content.
         if commit != "DEPLOYED_CHECKOUT":
             return _REMOTE_FETCH_FILE(commit, path)
         raise HTTPException(status_code=500, detail=f"Deployed canonical source missing: {path}")
@@ -96,16 +91,12 @@ def _deployed_fetch_file(commit: str, path: str) -> str:
         raise HTTPException(status_code=500, detail=f"Unable to read deployed canonical source: {path}") from exc
 
 
-# All existing base loader/council/MCP route functions resolve these globals at call
-# time, so this single binding hardens the entire live source-reading surface.
 base._resolve_commit = _deployed_commit
 base._fetch_file = _deployed_fetch_file
 
 base.APP_VERSION = EXTENSION_VERSION
 app = base.app
 mcp = base.mcp
-# PRIMARY FRONT DOOR instructions are defined when FastMCP is constructed in
-# gaiaos_api.py. FastMCP 1.30 exposes instructions as a read-only property.
 app.version = EXTENSION_VERSION
 app.description = (
     "GaiaOS deployed-checkout source loader plus a compact Gaia front door, "
@@ -113,10 +104,6 @@ app.description = (
     "context navigation, warm-continuity surfaces, optional hosted chat, and MCP."
 )
 
-# The base carrier historically mounted FastMCP at /mcp while FastMCP itself also
-# used its default /mcp transport path, yielding /mcp/mcp. MCP Python SDK 1.x uses
-# the settings object for this mounted-path override. Replace only that Mount so the
-# public endpoint advertised by /health is genuinely /mcp.
 app.routes[:] = [
     route
     for route in app.routes
@@ -136,8 +123,6 @@ OPERATOR_PROFILES_PATH = "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.jso
 CURRENT_PATH = "GaiaOS/CURRENT.json"
 VERSION_PATH = "GaiaOS/VERSION.json"
 
-# Conservative natural-language hints. They only emit signals already present in the
-# Gaia-native dispatch matrix. No model call and no invisible identity mutation occur.
 SIGNAL_HINTS: dict[str, tuple[str, ...]] = {
     "PREMISE": ("premise", "assumption", "assuming"),
     "FRAME": ("frame", "framing", "perspective"),
@@ -201,21 +186,9 @@ def _context_packet(subject: str, limit: int = 10, depth: int = 1) -> dict[str, 
         raise HTTPException(status_code=422, detail="subject must not be empty")
     limit = max(1, min(int(limit), 10))
     depth = max(0, min(int(depth), 2))
-
-    registry = _navigation_json(
-        "GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json"
-    )
-    graph = _navigation_json(
-        "GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json"
-    )
-    packet = build_context_packet(
-        registry,
-        graph,
-        subject,
-        source=_deployed_source(),
-        limit=limit,
-        depth=depth,
-    )
+    registry = _navigation_json("GaiaOS/SystemsOS/Core/DictionaryOS/Registry/GAIA-TERMS.v1.json")
+    graph = _navigation_json("GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json")
+    packet = build_context_packet(registry, graph, subject, source=_deployed_source(), limit=limit, depth=depth)
     packet["carrier_mode"] = CONTEXT_MODE
     packet["carrier_version"] = EXTENSION_VERSION
     packet["source_binding"] = "DEPLOYED_CHECKOUT"
@@ -233,7 +206,6 @@ def _infer_signals(request: str) -> list[str]:
     for signal, hints in SIGNAL_HINTS.items():
         if any(_phrase_present(normalized, hint) for hint in hints):
             signals.append(signal)
-    # Bound routing density. Explicit member requests remain independent of this cap.
     return signals[:8]
 
 
@@ -285,7 +257,6 @@ def _frontdoor_packet(
         raise HTTPException(status_code=422, detail="request must not be empty")
     if len(request) > 20000:
         raise HTTPException(status_code=422, detail="request exceeds 20000 characters")
-
     commit = _deployed_commit()
     current = _read_local_json(CURRENT_PATH)
     version = _read_local_json(VERSION_PATH)
@@ -294,7 +265,6 @@ def _frontdoor_packet(
     dispatch = base._dispatch_packet(commit, signals, requested, max_members)
     selected = _compact_selected(dispatch)
     context = _context_packet(request, context_limit, context_depth) if include_context else None
-
     return {
         "schema": "gaiaos.frontdoor.packet.v1",
         "authority": "NAOMI",
@@ -343,7 +313,6 @@ def _selftest_packet(invocation_surface: str) -> dict[str, Any]:
         "GaiaOS/SystemsOS/Core/YggdrasilOS/Graph/GAIA-GRAPH.v1.json",
     ]
     checks["critical_source_files"] = all(_safe_local_target(path).is_file() for path in critical_paths)
-
     current = _read_local_json(CURRENT_PATH)
     version = _read_local_json(VERSION_PATH)
     matrix = _read_local_json(DISPATCH_MATRIX_PATH)
@@ -352,22 +321,14 @@ def _selftest_packet(invocation_surface: str) -> dict[str, Any]:
     profile_roster = [str(member).upper() for member in profiles.get("members", {}).keys()]
     checks["authority_is_naomi"] = current.get("authority") == "NAOMI"
     checks["roster_profile_alignment"] = set(roster) == set(profile_roster) and bool(roster)
-
-    dispatch = base._dispatch_packet(
-        _deployed_commit(),
-        ["FRAME", "PROOF_EDGE", "NEXT_STEP"],
-        [],
-        3,
-    )
+    dispatch = base._dispatch_packet(_deployed_commit(), ["FRAME", "PROOF_EDGE", "NEXT_STEP"], [], 3)
     observed = [entry.get("member") for entry in dispatch.get("selected", [])]
     checks["deterministic_dispatch"] = observed == ["KESTREL", "VERA", "ANVIL"]
-
     context = _context_packet("council operator", 5, 1)
     checks["context_source_binding"] = context.get("source_binding") == "DEPLOYED_CHECKOUT"
     checks["dictionary_candidates_present"] = bool(context.get("dictionary_candidates"))
     graph = context.get("graph") if isinstance(context.get("graph"), dict) else {}
     checks["graph_edges_present"] = bool(graph.get("edges"))
-
     passed = all(bool(value) for value in checks.values())
     return {
         "schema": "gaiaos.selftest.packet.v1",
@@ -405,21 +366,8 @@ def gaia(
     context_limit: int = 6,
     context_depth: int = 1,
 ) -> dict[str, Any]:
-    """PRIMARY GAIAOS FRONT DOOR. Pass Naomi's natural-language request here first.
-
-    GaiaOS will conservatively resolve semantic context and relevant council routing in
-    one compact read-only packet. Prefer this tool for ordinary GaiaOS use instead of
-    manually chaining load_gaiaos, gaia_context, gaia_brain, and gaia_dispatch.
-    The lower-level tools remain available for explicit diagnostics or deep inspection.
-    """
-    return _frontdoor_packet(
-        request,
-        requested_members,
-        max_members,
-        include_context,
-        context_limit,
-        context_depth,
-    )
+    """PRIMARY GAIAOS FRONT DOOR. Pass Naomi's natural-language request here first."""
+    return _frontdoor_packet(request, requested_members, max_members, include_context, context_limit, context_depth)
 
 
 @mcp.tool()
@@ -435,39 +383,19 @@ def gaia_context(subject: str, limit: int = 10, depth: int = 1) -> dict[str, Any
 
 
 @app.post("/gaiaos/assist", operation_id="assistGaiaOS")
-def gaia_assist_http(
-    payload: GaiaAssistRequest,
-    authorization: str | None = Header(default=None),
-) -> dict[str, Any]:
-    """Primary read-only GaiaOS front door for one natural-language request."""
+def gaia_assist_http(payload: GaiaAssistRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     base._authorize(authorization)
-    return _frontdoor_packet(
-        payload.request,
-        payload.requested_members,
-        payload.max_members,
-        payload.include_context,
-        payload.context_limit,
-        payload.context_depth,
-    )
+    return _frontdoor_packet(payload.request, payload.requested_members, payload.max_members, payload.include_context, payload.context_limit, payload.context_depth)
 
 
 @app.get("/gaiaos/selftest", operation_id="selfTestGaiaOS")
-def gaia_selftest_http(
-    authorization: str | None = Header(default=None),
-) -> dict[str, Any]:
-    """Run the deployed local GaiaOS diagnostic surface."""
+def gaia_selftest_http(authorization: str | None = Header(default=None)) -> dict[str, Any]:
     base._authorize(authorization)
     return _selftest_packet("HTTP")
 
 
 @app.get("/gaiaos/context", operation_id="getGaiaContext")
-def gaia_context_http(
-    subject: str,
-    limit: int = 10,
-    depth: int = 1,
-    authorization: str | None = Header(default=None),
-) -> dict[str, Any]:
-    """Read-only GaiaOS semantic context query bound to the deployed repository checkout."""
+def gaia_context_http(subject: str, limit: int = 10, depth: int = 1, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     base._authorize(authorization)
     return _context_packet(subject, limit, depth)
 
@@ -476,10 +404,21 @@ def gaia_context_http(
 import importlib.util as _importlib_util
 
 def _gaia_runtime(path: str, module_name: str):
-    module_path = _safe_local_target(path)
+    """Load a GaiaOS runtime from the deployed checkout, never from filesystem root."""
+    relative = str(path).lstrip("/")
+    module_path = (DEPLOYED_ROOT / relative).resolve()
+    try:
+        module_path.relative_to(DEPLOYED_ROOT)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=f"GaiaOS runtime escaped deployed source root: {path}") from exc
+    if not module_path.is_file():
+        raise HTTPException(
+            status_code=500,
+            detail=f"GaiaOS runtime missing from deployed checkout: {relative} (expected {module_path})",
+        )
     spec = _importlib_util.spec_from_file_location(module_name, module_path)
     if spec is None or spec.loader is None:
-        raise HTTPException(status_code=500, detail=f"Unable to load GaiaOS runtime: {path}")
+        raise HTTPException(status_code=500, detail=f"Unable to load GaiaOS runtime: {relative}")
     module = _importlib_util.module_from_spec(spec)
     spec.loader.exec_module(module)
     return module
