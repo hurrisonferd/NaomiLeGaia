@@ -35,9 +35,12 @@ def _envelope(title: str, body: dict) -> dict:
 
 
 @app.post("/chat", operation_id="browserChatWithMemoryRuntime")
-def browser_chat(request: gaiaos_api.ChatRequest, browser_request: Request):
+async def browser_chat(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
-    last_message = request.messages[-1].content.strip()
+
+    payload = await browser_request.json()
+    messages = payload.get("messages", [])
+    last_message = messages[-1].get("content", "").strip() if messages else ""
 
     if last_message == "Test the live MemconOS canary at the current pinned revision.":
         return _envelope("LIVE MEMCONOS CANARY EXECUTED", memcon_runtime.canary())
@@ -110,4 +113,5 @@ def browser_chat(request: gaiaos_api.ChatRequest, browser_request: Request):
             },
         )
 
-    return _original_chat(request, browser_request)
+    # Preserve normal browser chat behavior for every other request.
+    return _original_chat(gaiaos_api.ChatRequest.model_validate(payload), browser_request)
