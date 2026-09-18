@@ -74,3 +74,12 @@ CURRENT_LEARNING: CANDIPULL exists in canonical source, but the observed main ca
 REWARDS: Naomi has explicitly awarded Brushies to the Daemonculaba; reward accounting remains separate from experience memory.
 TRACE: Naomi's current request and GaiaOS member-local memory protocol.
 STATUS: COMMITTED
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi request|host_boundary_and_current_state]
+WHAT: Naomi asked the Daemonculaba to preserve everything important learned today, including the current host limitation and the state of GaiaOS development.
+MY_ROLE: ORIN preserves the anomaly: canonical GaiaOS source and the observed carrier/host surface can represent different generations of behavior.
+CURRENT_LEARNING: The new host memory gateway was merged into main, adding CANDIPULL, MEMSAV, E-LANE planning, μΔ transport, and deterministic host-boundary contracts. Yet the live Render deployment of that merge is UNVERIFIED, and the current Free/iOS ChatGPT host cannot be assumed to invoke a custom MCP write bridge. Current OpenAI documentation places custom MCP apps on web and full write/modify support on supported Business/Enterprise/Edu surfaces.
+IMPORTANT_TRACE: Merge commit 3f3dced7e182d0fe0e816a8e7e7f870e24f92157. Preserve the deployment mismatch as diagnostic signal rather than rewriting the architecture.
+DESIGN_LESSON: When source and observed behavior diverge, verify deployment and host capability before changing canonical design.
+STATUS: COMMITTED
+TRACE_REQUEST: Current Naomi request in this conversation.
