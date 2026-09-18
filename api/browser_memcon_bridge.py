@@ -315,6 +315,26 @@ def memoryos_test_page(browser_request: Request):
 </body></html>""")
 
 
+
+@app.get("/persistence/canary", response_class=HTMLResponse, operation_id="restartPersistenceCanary")
+def restart_persistence_canary(browser_request: Request, token: str | None = None):
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        result = memcon_runtime.restart_canary(token)
+        output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
+        if result.get("status") == "ARMED":
+            next_url = "/persistence/canary?token=" + str(result["token"])
+            action = f"<p>Now restart or redeploy the Render service. After it is back online, open <a href='{html.escape(next_url)}'>this same canary check</a>.</p>"
+        elif result.get("status") == "PASS":
+            action = "<p><strong>RESTART PERSISTENCE PROVEN.</strong> The marker survived into a different carrier process boot.</p>"
+        else:
+            action = "<p>Do not treat this as proof. The carrier has not observed a different process boot yet.</p>"
+        return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GaiaOS Restart Persistence Canary</h1>"
+            + action + f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>")
+    except Exception as exc:
+        return _error_page("Restart persistence canary failed", exc)
+
 @app.get("/verify", response_class=HTMLResponse, operation_id="verificationPage")
 def verification_page(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
