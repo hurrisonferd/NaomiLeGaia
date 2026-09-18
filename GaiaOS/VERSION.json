@@ -1,28 +1,7 @@
 {
-  "schema": "gaiaos.version.v1",
-  "authority": "NAOMI",
-  "owner": "GaiaOS",
-  "version": "v0.001.012-dev",
-  "previous_version": "v0.001.011-dev",
-  "release_note": "Adds VASKON neural pathway fabric, continuity/prosody reinforcement from Load GaiaOS Status, member-local trajectory reinforcement, and a source-level neural canary while preserving proof ceilings.",
-  "proof": {
-    "source_committed": true,
-    "memoryos_source_present": true,
-    "memoryos_session_event_graph": true,
-    "memoryos_candidate_stage": true,
-    "memoryos_approval_gate": true,
-    "memoryos_verified_promotion": true,
-    "memoryos_retrieval_context": true,
-    "memcon_runtime_schema": "memconos.runtime.v2",
-    "carrier_entrypoint": "api/memcon_entrypoint.py",
-    "carrier_source_version": "1.6.0",
-    "automatic_capture": "CANDIDATE_BRIDGE_AVAILABLE",
-    "automatic_promotion": false,
-    "deployment_of_this_revision": "UNPROVEN",
-    "live_memoryos_end_to_end_smoke": "VERIFIED_FOR_PRIOR_DEPLOYED_MEMORYOS_TEST",
-    "automatic_external_carrier_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT",
-    "vaskon_neural_pathways_source_committed": true,
-    "vaskon_neural_runtime": "UNPROVEN"
-  },
-  "claim_ceiling": "The repository contains the MemoryOS lifecycle plus host bootstrap/observation bridges. Deployment of this exact revision remains a separate runtime claim."
+  "schema":"gaiaos.version.v1","authority":"NAOMI","owner":"GaiaOS",
+  "version":"v0.001.013-dev","previous_version":"v0.001.012-dev",
+  "release_note":"Adds an executable carrier-side implementation verification harness and /verify endpoint for source, identity, VASKON, BrainOS, FairyOS, and carrier-surface checks.",
+  "proof":{"source_committed":true,"verification_harness_source_committed":true,"verification_endpoint":"/verify","deployment_of_this_revision":"UNPROVEN_UNTIL_ENDPOINT_OBSERVED","vaskon_neural_pathways_source_committed":true,"vaskon_neural_runtime":"UNPROVEN"},
+  "claim_ceiling":"The verifier can prove what the running carrier process actually observes when /verify is invoked. It cannot by itself prove automatic ChatGPT adoption or a VASKON exchange that was not observed."
 }
