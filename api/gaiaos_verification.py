@@ -148,7 +148,7 @@ def run_verification() -> dict[str, Any]:
         ))
         checks.append(_check(
             "VASKON:coordination-boundary",
-            "KESTREL" in names and "no extra authority" in str(pathways.get("hub_rule", "")).lower(),
+            "KESTREL" in names and ("gains no domain authority" in str(pathways.get("hub_rule", "")).lower() or "no extra authority" in str(pathways.get("hub_rule", "")).lower()),
             "KESTREL coordination role does not grant extra authority",
         ))
         checks.append(_check(
