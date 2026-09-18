@@ -2,9 +2,9 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.009-dev",
-  "previous_version": "v0.001.008-dev",
-  "release_note": "MemoryOS session-to-memory lifecycle implemented with session event graph, bounded candidates, explicit Naomi promotion gate, MemconOS durable receipts, verification, and retrieval context surfaces.",
+  "version": "v0.001.010-dev",
+  "previous_version": "v0.001.009-dev",
+  "release_note": "Adds a host bootstrap surface for source-bound durable-memory retrieval and a bounded observation bridge for automatic candidate creation without automatic promotion.",
   "proof": {
     "source_committed": true,
     "memoryos_source_present": true,
@@ -16,11 +16,11 @@
     "memcon_runtime_schema": "memconos.runtime.v2",
     "carrier_entrypoint": "api/memcon_entrypoint.py",
     "carrier_source_version": "1.6.0",
-    "automatic_capture": false,
+    "automatic_capture": "CANDIDATE_BRIDGE_AVAILABLE",
     "automatic_promotion": false,
     "deployment_of_this_revision": "UNPROVEN",
-    "live_memoryos_end_to_end_smoke": "UNPROVEN",
+    "live_memoryos_end_to_end_smoke": "VERIFIED_FOR_PRIOR_DEPLOYED_MEMORYOS_TEST",
     "automatic_external_carrier_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT"
   },
-  "claim_ceiling": "The repository now contains the MemoryOS lifecycle and carrier surfaces. Runtime persistence and end-to-end behavior for this revision require deployment and an observed live smoke; source presence is not runtime execution."
+  "claim_ceiling": "The repository contains the MemoryOS lifecycle plus host bootstrap/observation bridges. Deployment of this exact revision remains a separate runtime claim."
 }
