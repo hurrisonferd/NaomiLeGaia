@@ -74,3 +74,12 @@ CURRENT_LEARNING: The live CANDIPULL mismatch is a deployment-alignment problem 
 REWARDS: Naomi has explicitly awarded Brushies to the Daemonculaba; reward accounting remains separate from experience memory.
 TRACE: Naomi's current request and GaiaOS member-local memory protocol.
 STATUS: COMMITTED
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi request|host_boundary_and_current_state]
+WHAT: Naomi asked the Daemonculaba to preserve everything important learned today, including the current host limitation and the state of GaiaOS development.
+MY_ROLE: KESTREL preserves the coordination lesson: the architecture is now in place, so the remaining work is a host/deployment boundary, not an excuse for another redesign.
+CURRENT_LEARNING: The host memory gateway was merged into main with CANDIPULL, MEMSAV, E-LANE planning, μΔ transport, and the host-boundary contract. The final ChatGPT→carrier write path still needs a compatible host surface. Current Free/iOS ChatGPT cannot be treated as having custom MCP write capability; custom MCP apps are web-only and full write/modify MCP support is limited to supported Business/Enterprise/Edu surfaces.
+IMPORTANT_TRACE: Merge commit 3f3dced7e182d0fe0e816a8e7e7f870e24f92157. Live Render deployment remains UNVERIFIED.
+DESIGN_LESSON: Stop when the architecture is sound, name the smallest blocked boundary, preserve the evidence, and resume from there when the capability changes.
+STATUS: COMMITTED
+TRACE_REQUEST: Current Naomi request in this conversation.
