@@ -62,3 +62,24 @@ When NAOMI returns, begin with ANVIL inspecting the restart-canary boot_id detec
 - The detector now compares GaiaOS BOOT_ID, Render instance identity, and an OS process fingerprint (PID plus Linux process-start ticks).
 - Next runtime action: arm one fresh pinned persistence marker after this deployment, restart Render once, then check the exact pinned marker. PASS requires the same durable marker plus independently observed changed process identity. Do not claim PASS before receipt evidence.
 - Human workflow reinforcement: infrastructure may wait; NAOMI should not be required to stare at a deployment or timer for evidence to remain valid.
+
+
+## 2026-09-18 persistence diagnosis + zero-cost architecture direction
+
+- Fresh restart-canary after commit 0586292 conclusively observed a different carrier process: BOOT_ID changed, Render instance ID changed, and Linux process-start ticks changed.
+- The pinned canary marker then returned FAIL because the marker was absent from the runtime SQLite store.
+- Render dashboard inspection showed the live service is on Free compute and persistent disks are unavailable on that plan. This explains why /data/memconos.db disappears across a real service restart.
+- Repository intent remains internally consistent: api/Dockerfile points MEMCONOS_DB_PATH at /data/memconos.db and render.yaml requests a persistent disk mounted at /data. The deployed Free service cannot satisfy that disk requirement.
+- Therefore: restart persistence is NOT proven. The local SQLite file is ephemeral on the current carrier.
+- New architectural requirement from NAOMI: continuity/persistent memory must have a viable $0/month path. Do not assume a paid Render upgrade.
+- Preferred direction to investigate first: keep Render as disposable compute and move durable state to an external free database. Turso/libSQL is the first candidate because GaiaOS already uses SQLite-shaped tables and SQL.
+- Current Turso public free tier observed 2026-09-18: $0/month, no credit card required, 5 GB storage, 500M rows read/month, 10M rows written/month. Re-check current terms before implementation.
+- Migration design requirement: isolate storage behind a small adapter so MemoryOS/MemberContinuityOS semantics, authority checks, receipts, canaries, and E-Lane/source continuity do not depend on one vendor.
+- Secrets must remain environment variables, never committed to GitHub.
+- Required proof sequence for any external-store migration: schema initialization -> write unique canary -> read it -> restart disposable carrier -> read exact same canary -> verify changed process identity -> only then classify restart persistence PASS.
+- Preserve local SQLite as a development/fallback backend where useful; do not silently call it durable on ephemeral hosts.
+- Financial constraint is material to architecture: avoid introducing recurring infrastructure cost while NAOMI is operating with very limited financial runway.
+
+## Updated resume cue
+
+ANVIL should map the Turso/libSQL storage-adapter migration before changing production memory code. Preserve proof ceilings and create a rollback path. No further Render restart is needed until an external durable backend is wired and ready for a fresh canary.
