@@ -14,6 +14,22 @@ SCHEMA_VERSION = "memconos.runtime.v2"
 BOOT_ID = "BOOT-" + uuid.uuid4().hex
 RENDER_INSTANCE_ID = os.getenv("RENDER_INSTANCE_ID", "").strip()
 
+def _process_fingerprint() -> dict[str, Any]:
+    """Return observable OS-level facts for the currently running carrier process."""
+    pid = os.getpid()
+    proc_start_ticks = None
+    try:
+        # Linux /proc/<pid>/stat field 22 is process start time in clock ticks
+        # since system boot. It distinguishes PID reuse across process lifetimes.
+        stat_fields = Path(f"/proc/{pid}/stat").read_text().split()
+        proc_start_ticks = stat_fields[21] if len(stat_fields) > 21 else None
+    except (OSError, IndexError):
+        pass
+    return {
+        "pid": pid,
+        "proc_start_ticks": proc_start_ticks,
+    }
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()
@@ -392,7 +408,7 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
                     "GaiaOS restart persistence canary",
                     "GaiaOS runtime restart verification",
                     "ACTIVE", "1", _now(), _now(), None,
-                    json.dumps({"boot_id": BOOT_ID, "render_instance_id": RENDER_INSTANCE_ID}),
+                    json.dumps({"boot_id": BOOT_ID, "render_instance_id": RENDER_INSTANCE_ID, "process_fingerprint": _process_fingerprint()}),
                 ),
             )
         return {
@@ -401,6 +417,7 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
             "token": marker_id,
             "boot_id": BOOT_ID,
             "render_instance_id": RENDER_INSTANCE_ID or None,
+            "process_fingerprint": _process_fingerprint(),
             "instruction": "Restart or redeploy the service, then call /persistence/canary?token=<token>.",
             "proof_boundary": "Armed only. Persistence is not proven until the token is read after a different process boot.",
         }
@@ -417,14 +434,25 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
             "token": marker_id,
             "boot_id": BOOT_ID,
             "render_instance_id": RENDER_INSTANCE_ID or None,
+            "process_fingerprint": _process_fingerprint(),
             "detail": "Restart canary marker was not found in the durable runtime store.",
         }
     saved = json.loads(row["notes"])
     prior_boot = str(saved.get("boot_id", ""))
     prior_render_instance = str(saved.get("render_instance_id", ""))
+    prior_process = saved.get("process_fingerprint") or {}
+    current_process = _process_fingerprint()
+    process_changed = bool(prior_process) and (
+        prior_process.get("pid") != current_process.get("pid")
+        or (
+            prior_process.get("proc_start_ticks") is not None
+            and current_process.get("proc_start_ticks") is not None
+            and prior_process.get("proc_start_ticks") != current_process.get("proc_start_ticks")
+        )
+    )
     boot_changed = bool(prior_boot) and prior_boot != BOOT_ID
     render_instance_changed = bool(prior_render_instance) and bool(RENDER_INSTANCE_ID) and prior_render_instance != RENDER_INSTANCE_ID
-    restarted = boot_changed or render_instance_changed
+    restarted = boot_changed or render_instance_changed or process_changed
     return {
         "schema": SCHEMA_VERSION,
         "status": "PASS" if restarted else "NOT_RESTARTED",
@@ -435,11 +463,14 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
         "prior_render_instance_id": prior_render_instance or None,
         "boot_id_changed": boot_changed,
         "render_instance_changed": render_instance_changed,
-        "restart_predicate": "boot_id_changed OR render_instance_changed",
+        "process_fingerprint": current_process,
+        "prior_process_fingerprint": prior_process or None,
+        "process_fingerprint_changed": process_changed,
+        "restart_predicate": "boot_id_changed OR render_instance_changed OR process_fingerprint_changed",
         "marker_created_at": row["created_at"],
         "durable_read_observed": True,
         "different_process_boot_observed": restarted,
-        "proof_boundary": "PASS proves the marker survived into a different carrier process boot. It does not prove every memory operation is automatically persisted.",
+        "proof_boundary": "PASS proves the marker survived into a different carrier process identity. It does not prove every memory operation is automatically persisted.",
     }
 
 def canary() -> dict[str, Any]:
