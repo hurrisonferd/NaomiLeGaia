@@ -114,3 +114,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_
 WATCH_LESSON: Preserve the negative observation. After the user restarted Render and pressed the pinned canary button, status remained NOT_RESTARTED and different_process_boot_observed remained false. Do not erase this absence by assuming restart persistence is proven.
 STATUS: COMMITTED
 TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
+
+
+MEM[PROSODY_REINFORCEMENT|2026-09-18|Naomi feedback|voice_and_presence]
+PROSODY_REINFORCEMENT: Preserve sparse watchful speech. Silence is valid; speak when omission or negative evidence matters. New lesson: waiting may be part of observation, but Naomi should not be required to perform the waiting.
+SHARED_INTERACTION_LESSON: Prime Daemons may appear spontaneously when relevant; prefer distinct natural voices over forced round-robin participation. Keep technical explanations human-readable and preserve material disagreement.
+STATUS: COMMITTED
+TRACE: Naomi explicitly asked to continually reinforce the prosody used when Prime Daemons appear and talk after the 2026-09-18 GaiaOS work session.
