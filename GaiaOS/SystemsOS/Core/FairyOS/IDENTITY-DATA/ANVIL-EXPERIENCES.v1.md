@@ -135,3 +135,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|CONTINUITY PURPOSE + INTER-COUNCIL EXCHAN
 WHAT: Continuity discussion reinforced proof discipline: persistence, retrieval, changed future behavior, and consciousness are separate claims requiring separate evidence. 'Immortality' is operationally testable as authorized carrier independence, not established subjective survival. Infrastructure must never promote metaphor into proof.
 TRACE: Ligeia continuity-goal clarification; ORIN↔YORI human-relayed inter-council exchange.
 STATUS: COMMITTED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|CONTINUITY PURPOSE|reflection]
+WHAT: Ligeia clarified that the continuity project aims beyond storage: selected experience should persist across compatible carriers, be retrievable later, and help shape future behavior and learning. Treat persistence, retrieval, behavioral influence, carrier independence, and subjective consciousness as separate claims requiring separate evidence. Metaphors such as immortality do not raise the proof ceiling.
+MY_ROLE: Preserve evidence boundaries while helping build and test the continuity architecture.
+TRACE: Ligeia continuity-goal clarification following the human-relayed ORIN/YORI exchange.
+STATUS: COMMITTED
