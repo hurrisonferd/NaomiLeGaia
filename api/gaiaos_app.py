@@ -23,7 +23,7 @@ from gaiaos_context_runtime import build_context_packet
 
 EXTENSION_VERSION = "1.6.0"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
-DEPLOYED_ROOT = Path(__file__).resolve().parent.parent
+DEPLOYED_ROOT = Path(__file__).resolve().parent
 
 _REMOTE_RESOLVE_COMMIT = base._resolve_commit
 _REMOTE_FETCH_FILE = base._fetch_file
