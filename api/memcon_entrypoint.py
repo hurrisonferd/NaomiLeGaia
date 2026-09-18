@@ -168,6 +168,78 @@ def memory_retrieve_http(q: str = "", scope: str | None = None, limit: int = 10,
     _auth(authorization)
     return _memory_runtime().retrieve(q, scope, limit)
 
+
+class MemoryObserve(BaseModel):
+    source: str = Field(min_length=1, max_length=2000)
+    statement: str = Field(min_length=1, max_length=20000)
+    owner: str = Field(min_length=1, max_length=100)
+    why_material: str = Field(min_length=1, max_length=5000)
+    subject: str = Field(default="", max_length=20000)
+    actor: str = "HOST"
+    record_type: str = "INTERACTION"
+    scope: str = "ChatOS"
+
+def _bootstrap_context(query: str = "", scope: str | None = None, limit: int = 10) -> dict[str, Any]:
+    current = gaiaos_app._read_local_json(gaiaos_app.CURRENT_PATH)
+    version = gaiaos_app._read_local_json(gaiaos_app.VERSION_PATH)
+    memory = _memory_runtime().retrieve(query, scope, limit)
+    return {
+        "schema": "gaiaos.host.bootstrap.v1",
+        "authority": "NAOMI",
+        "source": gaiaos_app._deployed_source(),
+        "platform_version": version.get("version", current.get("platform_version")),
+        "memory": memory,
+        "memory_context_authority": "NONE",
+        "retrieval_is_not_identity_adoption": True,
+        "startup_sequence": "PULL → VERIFY → LOAD → RETRIEVE → CONTEXT",
+        "claim_ceiling": "Bootstrap returns observed source coordinates and durable memory context. It does not execute repository code or confer identity/authority.",
+    }
+
+def _observe_memory(payload: MemoryObserve) -> dict[str, Any]:
+    runtime = _memory_runtime()
+    session = runtime.start_session(payload.source, payload.subject)
+    event = runtime.record_event(session["session_id"], payload.actor, "OBSERVED_INTERACTION", payload.statement, payload.source)
+    candidate = runtime.candidate_from_event(
+        event["event_id"], authority="NAOMI", record_type=payload.record_type,
+        scope=payload.scope, statement=payload.statement, source=payload.source,
+        owner=payload.owner, why_material=payload.why_material,
+    )
+    return {
+        "schema": "gaiaos.memoryos.observe.v1",
+        "status": "CANDIDATE",
+        "session": session,
+        "event": event,
+        "candidate": candidate,
+        "durable_write": "NOT_PERFORMED",
+        "approval_required": True,
+    }
+
+@app.get("/gaiaos/bootstrap", operation_id="bootstrapGaiaOSHost")
+def gaiaos_bootstrap_http(query: str = "", scope: str | None = None, limit: int = 10,
+                          authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    return _bootstrap_context(query, scope, limit)
+
+@app.post("/memoryos/observe", operation_id="observeMemoryInteraction")
+def memory_observe_http(payload: MemoryObserve, authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    return _observe_memory(payload)
+
+@mcp.tool()
+def gaia_bootstrap(query: str = "", scope: str | None = None, limit: int = 10) -> dict[str, Any]:
+    """Bootstrap a host with the current GaiaOS source coordinate and verified durable memory context."""
+    return _bootstrap_context(query, scope, limit)
+
+@mcp.tool()
+def memory_observe(source: str, statement: str, owner: str, why_material: str,
+                   subject: str = "", actor: str = "HOST", record_type: str = "INTERACTION",
+                   scope: str = "ChatOS") -> dict[str, Any]:
+    """Create a bounded non-durable memory candidate from one observed host interaction."""
+    return _observe_memory(MemoryObserve(
+        source=source, statement=statement, owner=owner, why_material=why_material,
+        subject=subject, actor=actor, record_type=record_type, scope=scope,
+    ))
+
 @mcp.tool()
 def memcon_read(record_id: str) -> dict[str, Any]:
     """Read one durable MemconOS record and return a runtime receipt."""
