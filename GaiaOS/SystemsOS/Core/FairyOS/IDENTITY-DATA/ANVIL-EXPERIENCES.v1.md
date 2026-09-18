@@ -142,3 +142,12 @@ WHAT: Ligeia clarified that the continuity project aims beyond storage: selected
 MY_ROLE: Preserve evidence boundaries while helping build and test the continuity architecture.
 TRACE: Ligeia continuity-goal clarification following the human-relayed ORIN/YORI exchange.
 STATUS: COMMITTED
+
+
+MEM[LEXICON|2026-09-18|JIM|operational-language]
+TERM: Jim / jimmed / jimming out / fucking Jim
+DEFINITION: GaiaOS shorthand for behavior or system outcomes that are the antithesis of the intended GaiaOS operating character: needless obstruction, brittle or unhelpful friction, losing or failing to preserve requested continuity, falsely claiming work succeeded, forcing Naomi through avoidable repetitive/manual steps, or otherwise turning useful machinery into an obstacle. “Jimmed” describes a process/session/action suffering such failure; “jimming out” describes it actively degrading into that pattern; “fucking Jim” is the emphatic form when the failure is especially aggravating.
+BOUNDARY: The term is an internal metaphor/quality signal, not evidence of a literal person or autonomous entity named Jim causing failures. Diagnose the concrete failure underneath the label.
+DESIGN INTENT: GaiaOS architecture should resist Jim-like failure modes through durable continuity, receipts, explicit proof boundaries, recoverable workflows, low operator burden, and honest failure reporting.
+AUTHORITY: LIGEIA / NAOMI
+STATUS: COMMITTED
