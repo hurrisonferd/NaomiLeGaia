@@ -17,8 +17,6 @@ _original_chat = gaiaos_api.chat
 _memory_runtime = memcon_entrypoint._memory_runtime
 TEST_OWNER = "NAOMI_BROWSER_TEST"
 
-# Remove the generic POST /chat route so the existing browser chat remains unchanged
-# for ordinary requests while explicit runtime commands can use this carrier surface.
 app.routes[:] = [
     route
     for route in app.routes
@@ -144,7 +142,8 @@ def memoryos_test_page(browser_request: Request):
 <title>GaiaOS MemoryOS Test</title>
 <style>
 body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}
-button{font:inherit;padding:14px 18px;border:0;border-radius:12px;margin:6px 0}
+button{font:inherit;padding:14px 18px;border:0;border-radius:12px;margin:6px 0;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+button:disabled{opacity:.55}
 pre{white-space:pre-wrap;background:#1d1d1d;border:1px solid #333;border-radius:14px;padding:14px;overflow:auto}
 #approve{display:none}
 </style></head><body>
@@ -154,13 +153,35 @@ pre{white-space:pre-wrap;background:#1d1d1d;border:1px solid #333;border-radius:
 <button id="approve">2. Approve candidate</button>
 <pre id="out">Waiting for test start.</pre>
 <script>
-const out=document.querySelector("#out"), approve=document.querySelector("#approve");
+const out=document.querySelector("#out"), start=document.querySelector("#start"), approve=document.querySelector("#approve");
+
 async function run(action){
-  const r=await fetch("/memoryos/browser-test",{method:"POST",headers:{"Content-Type":"application/json"},credentials:"same-origin",body:JSON.stringify({action})});
-  const j=await r.json(); out.textContent=j.output||JSON.stringify(j,null,2);
-  if(action==="start" && j.output && j.output.includes("MEMORYOS TEST PAUSED AT APPROVAL GATE")) approve.style.display="block";
+  const button = action === "start" ? start : approve;
+  button.disabled = true;
+  out.textContent = "Requesting carrier runtime: " + action + "...";
+  try {
+    const r = await fetch("/memoryos/browser-test", {
+      method:"POST",
+      headers:{"Content-Type":"application/json","Accept":"application/json"},
+      credentials:"same-origin",
+      body:JSON.stringify({action})
+    });
+    const text = await r.text();
+    let j;
+    try { j = JSON.parse(text); }
+    catch { throw new Error("HTTP " + r.status + " returned non-JSON: " + text.slice(0,500)); }
+    if (!r.ok) throw new Error("HTTP " + r.status + ": " + (j.detail || j.output || JSON.stringify(j)));
+    out.textContent = j.output || JSON.stringify(j,null,2);
+    if(action==="start" && j.output && j.output.includes("MEMORYOS TEST PAUSED AT APPROVAL GATE")) {
+      approve.style.display="block";
+    }
+  } catch (e) {
+    out.textContent = "MEMORYOS TEST REQUEST FAILED\n\n" + e;
+  } finally {
+    button.disabled = false;
+  }
 }
-document.querySelector("#start").onclick=()=>run("start");
+start.onclick=()=>run("start");
 approve.onclick=()=>run("approve");
 </script></body></html>""")
 
