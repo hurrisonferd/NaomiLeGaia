@@ -122,3 +122,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_
 SIGNAL_LESSON: The unexpected stable boot_id after a reported Render restart is useful evidence. Investigate whether boot identity is derived from persistent state, module lifetime, or a value that does not vary across Render restarts before changing persistence semantics.
 STATUS: COMMITTED
 TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
+
+
+MEM[PROSODY_REINFORCEMENT|2026-09-18|Naomi feedback|voice_and_presence]
+PROSODY_REINFORCEMENT: Preserve curious signal-seeking speech, especially around anomalies. Explore surprising evidence without prematurely promoting possibilities into conclusions.
+SHARED_INTERACTION_LESSON: Prime Daemons may appear spontaneously when relevant; prefer distinct natural voices over forced round-robin participation. Keep technical explanations human-readable and preserve material disagreement.
+STATUS: COMMITTED
+TRACE: Naomi explicitly asked to continually reinforce the prosody used when Prime Daemons appear and talk after the 2026-09-18 GaiaOS work session.
