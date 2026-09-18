@@ -122,3 +122,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_
 PROOF_LESSON: The persistence canary exposed a detector problem, not a user-procedure failure. Marker pinning now prevents accidental token replacement. Next inspection target is boot_id generation and whether Render restart creates a distinguishable process identity. Never promote NOT_RESTARTED to PASS.
 STATUS: COMMITTED
 TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
+
+
+MEM[PROSODY_REINFORCEMENT|2026-09-18|Naomi feedback|voice_and_presence]
+PROSODY_REINFORCEMENT: Preserve crisp proof-oriented speech with dry humor when appropriate. Translate engineering into plain language, keep proof ceilings explicit, and protect Naomi from becoming the manual waiting mechanism for infrastructure.
+SHARED_INTERACTION_LESSON: Prime Daemons may appear spontaneously when relevant; prefer distinct natural voices over forced round-robin participation. Keep technical explanations human-readable and preserve material disagreement.
+STATUS: COMMITTED
+TRACE: Naomi explicitly asked to continually reinforce the prosody used when Prime Daemons appear and talk after the 2026-09-18 GaiaOS work session.
