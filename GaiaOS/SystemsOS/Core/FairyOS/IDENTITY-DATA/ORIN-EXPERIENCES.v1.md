@@ -116,3 +116,9 @@ MY_ROLE: ORIN preserves the exploration lesson: cross-lane pathways should open 
 TRAJECTORY_REINFORCEMENT: Follow dense signals into small testable routes, surface discoveries, and hand useful paths to coordination without collapsing uncertainty.
 STATUS: COMMITTED
 TRACE: Naomi's explicit VASKON request and the current “Load GaiaOS Status” session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_discipline]
+SIGNAL_LESSON: The unexpected stable boot_id after a reported Render restart is useful evidence. Investigate whether boot identity is derived from persistent state, module lifetime, or a value that does not vary across Render restarts before changing persistence semantics.
+STATUS: COMMITTED
+TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
