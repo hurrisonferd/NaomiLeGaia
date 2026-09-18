@@ -216,18 +216,15 @@ def create_session_event(*, event_id: str, session_id: str, actor: str,
 def get_session_event(event_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute("SELECT * FROM session_events WHERE event_id=?", (event_id,)).fetchone()
+        row = conn.execute("SELECT * FROM session_events WHERE event_id=?",(event_id,)).fetchone()
     return dict(row) if row else None
 
 
 def get_session(session_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        session = conn.execute("SELECT * FROM sessions WHERE session_id=?", (session_id,)).fetchone()
-        events = conn.execute(
-            "SELECT * FROM session_events WHERE session_id=? ORDER BY created_at",
-            (session_id,),
-        ).fetchall()
+        session = conn.execute("SELECT * FROM sessions WHERE session_id=?",(session_id,)).fetchone()
+        events = conn.execute("SELECT * FROM session_events WHERE session_id=? ORDER BY created_at",(session_id,)).fetchall()
     if session is None:
         return None
     result = dict(session)
@@ -257,7 +254,21 @@ def create_memory_candidate(candidate: dict[str, Any]) -> None:
 def get_memory_candidate(candidate_id: str) -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
-        row = conn.execute("SELECT * FROM memory_candidates WHERE candidate_id=?", (candidate_id,)).fetchone()
+        row = conn.execute("SELECT * FROM memory_candidates WHERE candidate_id=?",(candidate_id,)).fetchone()
+    if row is None:
+        return None
+    result = dict(row)
+    result["other_voices"] = json.loads(result["other_voices"])
+    return result
+
+
+def get_latest_memory_candidate(owner: str, status: str = "CANDIDATE") -> dict[str, Any] | None:
+    initialize()
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT * FROM memory_candidates WHERE owner=? AND status=? ORDER BY created_at DESC LIMIT 1",
+            (owner, status),
+        ).fetchone()
     if row is None:
         return None
     result = dict(row)
