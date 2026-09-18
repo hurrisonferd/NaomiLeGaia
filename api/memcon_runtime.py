@@ -12,6 +12,7 @@ from typing import Any
 DB_PATH = Path(os.getenv("MEMCONOS_DB_PATH", "/data/memconos.db"))
 SCHEMA_VERSION = "memconos.runtime.v2"
 BOOT_ID = "BOOT-" + uuid.uuid4().hex
+RENDER_INSTANCE_ID = os.getenv("RENDER_INSTANCE_ID", "").strip()
 
 
 def _now() -> str:
@@ -391,7 +392,7 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
                     "GaiaOS restart persistence canary",
                     "GaiaOS runtime restart verification",
                     "ACTIVE", "1", _now(), _now(), None,
-                    json.dumps({"boot_id": BOOT_ID}),
+                    json.dumps({"boot_id": BOOT_ID, "render_instance_id": RENDER_INSTANCE_ID}),
                 ),
             )
         return {
@@ -399,6 +400,7 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
             "status": "ARMED",
             "token": marker_id,
             "boot_id": BOOT_ID,
+            "render_instance_id": RENDER_INSTANCE_ID or None,
             "instruction": "Restart or redeploy the service, then call /persistence/canary?token=<token>.",
             "proof_boundary": "Armed only. Persistence is not proven until the token is read after a different process boot.",
         }
@@ -414,17 +416,26 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
             "status": "FAIL",
             "token": marker_id,
             "boot_id": BOOT_ID,
+            "render_instance_id": RENDER_INSTANCE_ID or None,
             "detail": "Restart canary marker was not found in the durable runtime store.",
         }
     saved = json.loads(row["notes"])
     prior_boot = str(saved.get("boot_id", ""))
-    restarted = bool(prior_boot) and prior_boot != BOOT_ID
+    prior_render_instance = str(saved.get("render_instance_id", ""))
+    boot_changed = bool(prior_boot) and prior_boot != BOOT_ID
+    render_instance_changed = bool(prior_render_instance) and bool(RENDER_INSTANCE_ID) and prior_render_instance != RENDER_INSTANCE_ID
+    restarted = boot_changed or render_instance_changed
     return {
         "schema": SCHEMA_VERSION,
         "status": "PASS" if restarted else "NOT_RESTARTED",
         "token": marker_id,
         "boot_id": BOOT_ID,
         "prior_boot_id": prior_boot,
+        "render_instance_id": RENDER_INSTANCE_ID or None,
+        "prior_render_instance_id": prior_render_instance or None,
+        "boot_id_changed": boot_changed,
+        "render_instance_changed": render_instance_changed,
+        "restart_predicate": "boot_id_changed OR render_instance_changed",
         "marker_created_at": row["created_at"],
         "durable_read_observed": True,
         "different_process_boot_observed": restarted,
