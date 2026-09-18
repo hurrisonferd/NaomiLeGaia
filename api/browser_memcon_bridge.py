@@ -416,7 +416,8 @@ def memoryos_continuity(
             or str(current_pf.get("proc_start_ticks")) != str(prior_ticks)
         )
         different_carrier = boot_changed or render_changed or process_changed
-        status = "PASS" if different_carrier else "NOT_RESTARTED"
+        exact_record_retrieved = record.get("record_id") == record_id
+        status = "PASS" if (different_carrier and exact_record_retrieved) else "NOT_RESTARTED"
         result = {
             "schema": "gaiaos.memoryos.continuity-receipt.v1",
             "status": status,
@@ -431,7 +432,7 @@ def memoryos_continuity(
                 "render_instance_changed": render_changed,
                 "process_fingerprint_changed": process_changed,
                 "different_carrier_observed": different_carrier,
-                "exact_record_retrieved": record.get("record_id") == record_id,
+                "exact_record_retrieved": exact_record_retrieved,
             },
             "proof_boundary": (
                 "PASS proves this exact MemoryOS record was retrieved after an observed carrier identity change. "
