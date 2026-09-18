@@ -10,10 +10,10 @@ import gaiaos_app
 import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
-import gaia_memory_runtime
 
 app = memcon_entrypoint.app
 _original_chat = gaiaos_api.chat
+_memory_runtime = memcon_entrypoint._memory_runtime
 TEST_OWNER = "NAOMI_BROWSER_TEST"
 
 # Remove the generic POST /chat route so explicit runtime test commands execute
@@ -46,11 +46,12 @@ def browser_chat(request: gaiaos_api.ChatRequest, browser_request: Request):
         token = uuid.uuid4().hex[:12]
         source = f"browser-memoryos-test:{token}"
         statement = f"Naomi approved a live MemoryOS lifecycle test marker {token}."
-        session = gaia_memory_runtime.start_session(source, "Live MemoryOS lifecycle verification")
-        event = gaia_memory_runtime.record_event(
+        runtime = _memory_runtime()
+        session = runtime.start_session(source, "Live MemoryOS lifecycle verification")
+        event = runtime.record_event(
             session["session_id"], "NAOMI", "TEST_INPUT", statement, source
         )
-        candidate = gaia_memory_runtime.candidate_from_event(
+        candidate = runtime.candidate_from_event(
             event["event_id"],
             authority="NAOMI",
             record_type="TEST",
@@ -77,16 +78,17 @@ def browser_chat(request: gaiaos_api.ChatRequest, browser_request: Request):
         )
 
     if last_message == "Approve the pending MemoryOS candidate.":
+        runtime = _memory_runtime()
         candidate = memcon_runtime.get_latest_memory_candidate(TEST_OWNER, "CANDIDATE")
         if candidate is None:
             return _envelope(
                 "MEMORYOS APPROVAL HOLD",
                 {"status": "HOLD", "reason": "No pending browser MemoryOS candidate found."},
             )
-        result = gaia_memory_runtime.promote_candidate(candidate["candidate_id"], True, "NAOMI")
+        result = runtime.promote_candidate(candidate["candidate_id"], True, "NAOMI")
         record_id = result.get("record_id")
         readback = memcon_runtime.get_record(record_id) if record_id else None
-        retrieved = gaia_memory_runtime.retrieve(candidate["statement"], "MemoryOS", 10)
+        retrieved = runtime.retrieve(candidate["statement"], "MemoryOS", 10)
         return _envelope(
             "MEMORYOS LIFECYCLE VERIFIED",
             {
