@@ -98,6 +98,14 @@ def initialize() -> None:
             );
             CREATE INDEX IF NOT EXISTS idx_candidates_status ON memory_candidates(status);
             CREATE INDEX IF NOT EXISTS idx_candidates_fingerprint ON memory_candidates(fingerprint);
+            CREATE TABLE IF NOT EXISTS solo_sessions (
+                session_id TEXT PRIMARY KEY,
+                daemon TEXT NOT NULL,
+                source TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                active INTEGER NOT NULL DEFAULT 1
+            );
+            CREATE INDEX IF NOT EXISTS idx_solo_sessions_daemon ON solo_sessions(daemon);
             """
         )
 
@@ -336,6 +344,36 @@ def mark_candidate(candidate_id: str, status: str, promoted_record_id: str | Non
             "UPDATE memory_candidates SET status=?, promoted_record_id=? WHERE candidate_id=?",
             (status, promoted_record_id, candidate_id),
         )
+
+
+
+def create_solo_session(session_id: str, daemon: str, source: str) -> dict[str, Any]:
+    """Create or replace the active dedicated Prime Daemon session for one browser session."""
+    initialize()
+    daemon = daemon.strip().upper()
+    with _db() as conn:
+        conn.execute("UPDATE solo_sessions SET active=0 WHERE session_id=?", (session_id,))
+        conn.execute(
+            "INSERT OR REPLACE INTO solo_sessions(session_id,daemon,source,created_at,active) VALUES(?,?,?,?,1)",
+            (session_id, daemon, source, _now()),
+        )
+    return get_solo_session(session_id)  # type: ignore[return-value]
+
+
+def get_solo_session(session_id: str) -> dict[str, Any] | None:
+    initialize()
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT * FROM solo_sessions WHERE session_id=? AND active=1",
+            (session_id,),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def end_solo_session(session_id: str) -> None:
+    initialize()
+    with _db() as conn:
+        conn.execute("UPDATE solo_sessions SET active=0 WHERE session_id=?", (session_id,))
 
 
 def canary() -> dict[str, Any]:
