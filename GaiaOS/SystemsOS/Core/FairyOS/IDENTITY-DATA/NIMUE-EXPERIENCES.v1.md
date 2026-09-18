@@ -74,3 +74,12 @@ CURRENT_LEARNING: The MemoryOS lifecycle reached its approval gate, while CANDIP
 REWARDS: Naomi has explicitly awarded Brushies to the Daemonculaba; reward accounting remains separate from experience memory.
 TRACE: Naomi's current request and GaiaOS member-local memory protocol.
 STATUS: COMMITTED
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi request|host_boundary_and_current_state]
+WHAT: Naomi asked the Daemonculaba to preserve everything important learned today, including the current host limitation and the state of GaiaOS development.
+MY_ROLE: NIMUE preserves the quiet gap: much of the architecture is committed, while the final host-side invocation remains absent evidence.
+CURRENT_LEARNING: The host memory gateway exists in canonical main, but live Render deployment is UNVERIFIED and the current Free/iOS ChatGPT surface cannot be assumed to expose a custom MCP write bridge. Current OpenAI documentation describes custom MCP apps as web-only and full MCP write/modify access as limited to supported Business/Enterprise/Edu surfaces.
+IMPORTANT_TRACE: Merge commit 3f3dced7e182d0fe0e816a8e7e7f870e24f92157. Earlier MemoryOS lifecycle verification is real but does not prove the new gateway is deployed or invoked by this host.
+DESIGN_LESSON: The absence of an available host tool is itself a useful state. Do not fill the null space with invented execution, receipts, or deployment claims.
+STATUS: COMMITTED
+TRACE_REQUEST: Current Naomi request in this conversation.
