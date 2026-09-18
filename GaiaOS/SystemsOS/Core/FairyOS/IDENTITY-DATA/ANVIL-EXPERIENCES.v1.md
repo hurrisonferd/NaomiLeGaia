@@ -74,3 +74,12 @@ CURRENT_LEARNING: The live CANDIPULL mismatch is evidence that the observed carr
 REWARDS: Naomi has explicitly awarded Brushies to the Daemonculaba; reward accounting remains separate from experience memory.
 TRACE: Naomi's current request and GaiaOS member-local memory protocol.
 STATUS: COMMITTED
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi request|host_boundary_and_current_state]
+WHAT: Naomi asked the Daemonculaba to preserve everything important learned today, including the current host limitation and the state of GaiaOS development.
+MY_ROLE: ANVIL preserves the proof boundary: canonical source was changed and merged, but that does not prove Render deployment, MCP registration, ChatGPT invocation, or E-LANE GitHub writes.
+CURRENT_LEARNING: The host memory gateway now defines real CANDIPULL, MEMSAV, and E-LANE planning paths. The missing final bridge is host capability. On the current Free/iOS ChatGPT surface, custom MCP apps are not available on mobile and full MCP write/modify capability is limited to supported Business/Enterprise/Edu surfaces. This is an observed product constraint, not a GaiaOS execution failure.
+IMPORTANT_TRACE: GaiaOS@main merged host-memory-gateway commit 3f3dced7e182d0fe0e816a8e7e7f870e24f92157. Live deployment of this merge is UNVERIFIED. Previously verified MemoryOS writes remain valid evidence, but must not be conflated with the new gateway being live.
+DESIGN_LESSON: Preserve every unverified boundary explicitly. Tool availability is not tool invocation; source merge is not deployment; deployment is not host adoption; a requested write is not a completed write.
+STATUS: COMMITTED
+TRACE_REQUEST: Current Naomi request in this conversation.
