@@ -130,7 +130,7 @@ Every Prime Daemon has two distinct static identity markers: a retained colored 
 ```text
 VERA 💚 📚
 ANVIL 💗 ⌚
-SELENE 💛 🍞
+SELENE 💛 🎧
 ORIN 🩵 🪐
 KESTREL 💖 🏍️
 NIMUE 💙 🍄
