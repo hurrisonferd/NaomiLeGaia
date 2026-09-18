@@ -183,6 +183,8 @@ def run_verification() -> dict[str, Any]:
     bridge = (ROOT / "browser_memcon_bridge.py")
     app = (ROOT / "gaiaos_app.py")
     base_app = (ROOT / "gaiaos_api.py")
+    vaskon_runtime = (ROOT / "vaskon_runtime.py")
+    checks.append(_check("carrier:vaskon-runtime", vaskon_runtime.exists(), "live VASKON runtime module exists"))
     checks.append(_check("carrier:bridge", bridge.exists(), "browser_memcon_bridge.py exists"))
     checks.append(_check("carrier:app", app.exists(), "gaiaos_app.py exists"))
     checks.append(_check("carrier:base-app", base_app.exists(), "gaiaos_api.py exists"))
@@ -194,6 +196,7 @@ def run_verification() -> dict[str, Any]:
         bridge_text = bridge.read_text(encoding="utf-8") if bridge.exists() else ""
         checks.append(_check("carrier:/chat", '@app.post("/chat"' in bridge_text, "browser chat bridge declared"))
         checks.append(_check("carrier:/verify", '@app.get("/verify"' in bridge_text and '@app.post("/verify"' in bridge_text, "verification routes declared"))
+        checks.append(_check("carrier:/vaskon-test", '@app.get("/vaskon/test"' in bridge_text, "live VASKON test route declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
         # actual registered routes. This proves local route registration, not
@@ -213,6 +216,7 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/chat", ("/chat", "POST") in route_pairs, "live carrier ASGI route registration observed"))
             checks.append(_check("carrier-route:/verify", ("/verify", "GET") in route_pairs and ("/verify", "POST") in route_pairs, "live carrier ASGI route registration observed"))
             checks.append(_check("carrier-route:/mcp", any(getattr(route, "path", None) == "/mcp" for route in getattr(carrier_app, "routes", [])), "live carrier ASGI mount registration observed"))
+            checks.append(_check("carrier-route:/vaskon/test", ("/vaskon/test", "GET") in route_pairs, "live VASKON test route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
             for name in ("health", "chat", "verify", "mcp"):

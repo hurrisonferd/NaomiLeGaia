@@ -1,7 +1,18 @@
 {
-  "schema":"gaiaos.version.v1","authority":"NAOMI","owner":"GaiaOS",
-  "version":"v0.001.013-dev","previous_version":"v0.001.012-dev",
-  "release_note":"Adds an executable carrier-side implementation verification harness and /verify endpoint for source, identity, VASKON, BrainOS, FairyOS, and carrier-surface checks.",
-  "proof":{"source_committed":true,"verification_harness_source_committed":true,"verification_endpoint":"/verify","deployment_of_this_revision":"UNPROVEN_UNTIL_ENDPOINT_OBSERVED","vaskon_neural_pathways_source_committed":true,"vaskon_neural_runtime":"UNPROVEN"},
-  "claim_ceiling":"The verifier can prove what the running carrier process actually observes when /verify is invoked. It cannot by itself prove automatic ChatGPT adoption or a VASKON exchange that was not observed."
+  "schema": "gaiaos.version.v1",
+  "authority": "NAOMI",
+  "owner": "GaiaOS",
+  "version": "v0.001.014-dev",
+  "previous_version": "v0.001.013-dev",
+  "release_note": "Adds a bounded live VASKON carrier runtime exercise with observable cross-daemon pathway packets and synthesis receipt.",
+  "proof": {
+    "source_committed": true,
+    "verification_harness_source_committed": true,
+    "verification_endpoint": "/verify",
+    "live_vaskon_endpoint": "/vaskon/test",
+    "deployment_of_this_revision": "UNPROVEN_UNTIL_ENDPOINT_OBSERVED",
+    "vaskon_neural_pathways_source_committed": true,
+    "vaskon_neural_runtime": "OBSERVABLE_ONLY_VIA_LIVE_RECEIPT"
+  },
+  "claim_ceiling": "The carrier can prove a bounded VASKON runtime exchange when /vaskon/test returns its receipt. It cannot by itself prove automatic ChatGPT adoption, autonomous consciousness, or restart persistence."
 }

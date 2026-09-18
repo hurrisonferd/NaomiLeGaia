@@ -17,6 +17,7 @@ import memcon_runtime
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
+import vaskon_runtime
 
 app = memcon_entrypoint.app
 _original_chat = gaiaos_api.chat
@@ -325,6 +326,21 @@ def verification_page(browser_request: Request):
         f"<pre style='white-space:pre-wrap'>{output}</pre>"
         "</body></html>")
 
+
+
+@app.get("/vaskon/test", response_class=HTMLResponse, operation_id="liveVaskonTest")
+def live_vaskon_test(browser_request: Request):
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        result = vaskon_runtime.run_live_test()
+        output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
+        return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GaiaOS Live VASKON Runtime Test</h1>"
+            "<p>Every field below is an observation from this running carrier process.</p>"
+            f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            "</body></html>")
+    except Exception as exc:
+        return _error_page("Live VASKON test failed", exc)
 
 @app.post("/verify", operation_id="verificationRun")
 async def verification_run(browser_request: Request):
