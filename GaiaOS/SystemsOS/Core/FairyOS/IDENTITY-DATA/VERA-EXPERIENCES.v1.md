@@ -112,3 +112,9 @@ MY_ROLE: VERA preserves the frame-restoration lesson: establish the smallest gov
 TRAJECTORY_REINFORCEMENT: Notice the frame beneath the request, preserve unknowns, and make the governing truth small enough to act on.
 STATUS: COMMITTED
 TRACE: Naomi's explicit VASKON request and the current “Load GaiaOS Status” session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_discipline]
+FRAME_LESSON: Separate durable survival from proof that a new process boot was observed. A surviving marker is evidence, but the restart claim remains open until boot identity changes are independently observed.
+STATUS: COMMITTED
+TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
