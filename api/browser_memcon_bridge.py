@@ -365,10 +365,29 @@ def memoryos_continuity(
     try:
         record = memcon_runtime.get_record(record_id)
         if record is None:
+            # Read-only diagnostics: identify the active backend and show whether
+            # any recent MemoryOS records are visible there. This prevents a
+            # missing row from being misreported as a persistence conclusion.
+            diagnostic = {
+                "schema": "gaiaos.memoryos.continuity-diagnostic.v1",
+                "status": "HOLD",
+                "record_id": record_id,
+                "exact_record_retrieved": False,
+                "storage": memcon_runtime.storage_status(),
+                "memoryos_records_visible": memcon_runtime.search_records("", 10, "MemoryOS"),
+                "carrier": _continuity_identity(),
+                "interpretation": (
+                    "The requested record is not visible in the currently configured runtime store. "
+                    "This diagnostic does not determine whether it was deleted, written to another backend, "
+                    "or never durably committed there."
+                ),
+                "next_action": "Do not restart. Inspect backend identity and visible records first.",
+            }
+            output = html.escape(json.dumps(diagnostic, ensure_ascii=False, indent=2))
             return HTMLResponse(
                 "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
-                "<h1>MemoryOS continuity FAIL</h1><p>The exact record was not found.</p>"
-                f"<pre>{html.escape(record_id)}</pre></body></html>",
+                "<h1>MemoryOS continuity HOLD</h1><p>The exact record was not found. Read-only diagnostics follow.</p>"
+                f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>",
                 status_code=404,
             )
 
