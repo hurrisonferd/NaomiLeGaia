@@ -29,8 +29,9 @@ def _assert_spine(pathways: dict[str, Any]) -> None:
     for source, target in zip(EXCHANGE_SPINE, EXCHANGE_SPINE[1:]):
         if (source, target) not in edges:
             raise ValueError(f"Required live pathway missing: {source}->{target}")
-    if ("NIMUE", "VERA") not in edges:
-        raise ValueError("Required live pathway missing: NIMUE->VERA")
+    closing_edge = (EXCHANGE_SPINE[-1], EXCHANGE_SPINE[0])
+    if closing_edge not in edges:
+        raise ValueError(f"Required live pathway missing: {closing_edge[0]}->{closing_edge[1]}")
 
 def _daemon_call(client: OpenAI, daemon: str, profile: dict[str, Any], task: str, inbound: dict[str, Any] | None) -> str:
     inbound_text = json.dumps(inbound, ensure_ascii=False, indent=2) if inbound else "NONE: first node; no inbound packet."
