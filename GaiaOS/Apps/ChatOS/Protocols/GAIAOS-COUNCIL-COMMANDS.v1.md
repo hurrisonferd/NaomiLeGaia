@@ -48,8 +48,8 @@ GAIAOS QUIET
 GAIAOS WILD
 GAIAOS STATUS
 GAIAOS MAP
-MEMCANDI
-MEMCANDI [subject]
+CANDIPULL
+CANDIPULL [subject]
 MEMSAV <candidate_id>
 MEMSAV <candidate_id> <candidate_id> ...
 CONJURE:VASKON [complex task]
@@ -59,9 +59,9 @@ Legacy command tokens beginning with `COUNCIL` remain compatibility aliases unti
 
 ### Memory candidate commands
 
-`MEMCANDI` requests a bounded list of material MemoryOS candidates produced during the current chat session.
+`CANDIPULL` requests a bounded list of material MemoryOS candidates produced during the current chat session.
 
-`MEMCANDI [subject]` requests the same list filtered to the supplied subject.
+`CANDIPULL [subject]` requests the same list filtered to the supplied subject.
 
 The response should identify each candidate by candidate ID, source event/session, owner lane, scope, record type, approval state, and durable status when those fields are available. A candidate remains non-durable unless an actual promotion/write receipt and verification exist.
 
