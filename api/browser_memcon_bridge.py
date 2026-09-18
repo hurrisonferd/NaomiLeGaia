@@ -1,8 +1,10 @@
 """Explicit browser bridge for live MemconOS and MemoryOS verification."""
 from __future__ import annotations
 
+import hashlib
 import html
 import json
+import re
 import uuid
 
 from fastapi import Request
@@ -45,7 +47,92 @@ async def browser_chat(browser_request: Request):
         return _start_lifecycle()
     if last_message.lower().rstrip(".") == "approve the pending memoryos candidate":
         return _approve_lifecycle()
+    if _is_command(last_message, "CANDIPULL"):
+        return _handle_candipull(messages, browser_request)
+    if _is_command(last_message, "MEMSAV"):
+        return _handle_memsav(last_message)
     return _original_chat(gaiaos_api.ChatRequest.model_validate(payload), browser_request)
+
+
+def _is_command(text: str, command: str) -> bool:
+    return bool(re.match(rf"^\s*{re.escape(command)}(?:\s+.*)?[.!]?\s*$", text, flags=re.IGNORECASE))
+
+
+def _browser_session_id(request: Request) -> str:
+    token = request.cookies.get(gaiaos_api.SESSION_COOKIE)
+    if not token:
+        raise ValueError("Browser session missing; reload the GaiaOS page")
+    return f"BROWSER-{hashlib.sha256(token.encode('utf-8')).hexdigest()[:24]}"
+
+
+def _ensure_chat_candidate(messages: list[dict], request: Request, subject: str = "") -> dict | None:
+    substantive = [
+        str(message.get("content", "")).strip()
+        for message in messages[:-1]
+        if str(message.get("role", "")).lower() == "user"
+        and str(message.get("content", "")).strip()
+        and not _is_command(str(message.get("content", "")), "CANDIPULL")
+        and not _is_command(str(message.get("content", "")), "MEMSAV")
+    ]
+    if not substantive:
+        return None
+    statement = substantive[-1]
+    session_id = _browser_session_id(request)
+    existing = memcon_runtime.list_memory_candidates(session_id=session_id, status="CANDIDATE", limit=100, subject=subject or None)
+    normalized = " ".join(statement.lower().split())
+    for item in existing["candidates"]:
+        if " ".join(str(item.get("statement", "")).lower().split()) == normalized:
+            return item
+    session = memcon_runtime.get_session(session_id)
+    if session is None:
+        memcon_runtime.create_session(session_id, "browser-chat", subject)
+    runtime = _memory_runtime()
+    event = runtime.record_event(session_id, "NAOMI", "CHAT_INTERACTION", statement, "browser-chat")
+    return runtime.candidate_from_event(
+        event["event_id"], authority="NAOMI", record_type="INTERACTION", scope="ChatOS",
+        statement=statement, source="browser-chat", owner="NAOMI",
+        why_material="Candidate created by explicit CANDIPULL from the current browser chat interaction.",
+    )
+
+
+def _handle_candipull(messages: list[dict], request: Request) -> dict:
+    last = str(messages[-1].get("content", "")).strip()
+    subject = re.sub(r"^CANDIPULL\s*", "", last, flags=re.IGNORECASE).rstrip(".").strip()
+    _ensure_chat_candidate(messages, request, subject)
+    session_id = _browser_session_id(request)
+    result = memcon_runtime.list_memory_candidates(
+        session_id=session_id, status="CANDIDATE", limit=50, subject=subject or None
+    )
+    return _envelope("CANDIPULL", {
+        "status": "CANDIDATES_READY",
+        "session_id": session_id,
+        "subject": subject,
+        "candidates": result["candidates"],
+        "count": result["count"],
+        "durable_write": "NOT_PERFORMED",
+        "next_command": "MEMSAV <candidate_id>",
+        "proof_boundary": "Candidate creation is non-durable. MEMSAV requires explicit Naomi authorization and reports the actual write receipt and verification.",
+    })
+
+
+def _handle_memsav(command: str) -> dict:
+    body = re.sub(r"^MEMSAV\s*", "", command, flags=re.IGNORECASE).rstrip(".").strip()
+    ids = [token for token in body.split() if token]
+    if not ids:
+        return _envelope("MEMSAV HOLD", {"status": "HOLD", "reason": "Exact candidate_id required; omitted ID does not mean save everything."})
+    runtime = _memory_runtime()
+    results = []
+    for candidate_id in ids:
+        candidate = memcon_runtime.get_memory_candidate(candidate_id)
+        if candidate is None:
+            results.append({"candidate_id": candidate_id, "status": "HOLD", "reason": "Unknown candidate_id"})
+            continue
+        results.append(runtime.promote_candidate(candidate_id, True, "NAOMI"))
+    return _envelope("MEMSAV", {
+        "status": "COMPLETED" if all(item.get("status") == "VERIFIED" for item in results) else "PARTIAL_OR_HOLD",
+        "results": results,
+        "proof_boundary": "Only VERIFIED results with an actual write receipt and read-back verification are durable.",
+    })
 
 
 def _start_lifecycle() -> dict:
