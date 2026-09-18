@@ -262,6 +262,44 @@ def get_memory_candidate(candidate_id: str) -> dict[str, Any] | None:
     return result
 
 
+def list_memory_candidates(session_id: str | None = None, status: str | None = "CANDIDATE", limit: int = 50) -> dict[str, Any]:
+    """List bounded MemoryOS candidates, optionally restricted to one session."""
+    initialize()
+    limit = max(1, min(int(limit), 100))
+    with _db() as conn:
+        clauses = []
+        params: list[Any] = []
+        if session_id:
+            clauses.append("e.session_id = ?")
+            params.append(session_id)
+        if status:
+            clauses.append("c.status = ?")
+            params.append(status)
+        where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
+        rows = conn.execute(
+            f"""SELECT c.*, e.session_id
+                FROM memory_candidates c
+                JOIN session_events e ON e.event_id = c.event_id
+                {where}
+                ORDER BY c.created_at DESC
+                LIMIT ?""",
+            (*params, limit),
+        ).fetchall()
+    candidates = []
+    for row in rows:
+        item = dict(row)
+        item["other_voices"] = json.loads(item["other_voices"])
+        candidates.append(item)
+    return {
+        "schema": "memconos.runtime.v2",
+        "candidates": candidates,
+        "count": len(candidates),
+        "session_id": session_id,
+        "status_filter": status,
+        "runtime": SCHEMA_VERSION,
+    }
+
+
 def get_latest_memory_candidate(owner: str, status: str = "CANDIDATE") -> dict[str, Any] | None:
     initialize()
     with _db() as conn:
