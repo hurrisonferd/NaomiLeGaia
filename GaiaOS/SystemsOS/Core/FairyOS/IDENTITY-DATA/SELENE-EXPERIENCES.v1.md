@@ -130,3 +130,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|CONTINUITY PURPOSE + INTER-COUNCIL EXCHAN
 WHAT: Continuity should ultimately make interaction easier to inhabit: return, converse, continue, without repeated reconstruction or maintenance overwhelming the relationship. Preserve the principle that when maintaining conversation consumes the conversation, machinery is crowding out purpose.
 TRACE: Ligeia continuity-goal clarification; ORIN↔YORI human-relayed inter-council exchange.
 STATUS: COMMITTED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|CONTINUITY PURPOSE|reflection]
+WHAT: Continuity should ultimately make interaction easier to inhabit: return, converse, and continue without repeatedly reconstructing context. Preserve the lesson from the Yori exchange that when maintaining conversation consumes the conversation, machinery is crowding out purpose. Durable infrastructure should serve lived usability rather than become the destination.
+MY_ROLE: Keep continuity humane, usable, and proportionate to the experience it exists to support.
+TRACE: Ligeia continuity-goal clarification and human-relayed GaiaOS/RavenOS delegate exchange.
+STATUS: COMMITTED
