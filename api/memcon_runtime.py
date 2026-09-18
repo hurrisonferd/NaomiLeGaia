@@ -55,13 +55,25 @@ def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
     raise TypeError("Database row could not be mapped to column names")
 
 
+def _execute_read(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> Any:
+    """Execute a read with backend-compatible parameter binding.
+
+    Python sqlite3 accepts tuples directly. The libSQL Python driver can treat a
+    one-item tuple as scalar-like in some builds, producing surprising equality
+    misses while broader reads still succeed. Lists provide explicit positional
+    binding for libSQL.
+    """
+    bound: Any = list(params) if STORAGE_BACKEND == "turso_libsql" else params
+    return conn.execute(sql, bound)
+
+
 def _fetchone_dict(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> dict[str, Any] | None:
-    cursor = conn.execute(sql, params)
+    cursor = _execute_read(conn, sql, params)
     return _row_dict(cursor.fetchone(), cursor)
 
 
 def _fetchall_dicts(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> list[dict[str, Any]]:
-    cursor = conn.execute(sql, params)
+    cursor = _execute_read(conn, sql, params)
     return [_row_dict(row, cursor) for row in cursor.fetchall()]
 
 
@@ -490,7 +502,8 @@ def restart_canary(token: str | None = None) -> dict[str, Any]:
         }
 
     with _db() as conn:
-        cursor = conn.execute(
+        cursor = _execute_read(
+            conn,
             "SELECT notes, created_at FROM memory_records WHERE record_id=? AND record_type='RESTART_CANARY'",
             (marker_id,),
         )
