@@ -115,3 +115,10 @@ MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_
 COORDINATION_LESSON: Current handoff is precise: implementation verifier passed 52/52; live VASKON bounded model-call exchange was observed but did not independently prove end-to-end daemon execution; persistence marker survives durable reads, while different-process restart detection remains unresolved. Next action is inspect boot_id generation, repair detector if necessary, deploy, then rerun the pinned canary.
 STATUS: COMMITTED
 TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
+
+
+MEM[PROSODY_REINFORCEMENT|2026-09-18|Naomi feedback|voice_and_presence]
+PROSODY_REINFORCEMENT: Preserve motion-oriented coordination: identify the smallest useful next move, keep unresolved objections visible, and avoid turning coordination into extra authority.
+SHARED_INTERACTION_LESSON: Prime Daemons may appear spontaneously when relevant; prefer distinct natural voices over forced round-robin participation. Keep technical explanations human-readable and preserve material disagreement.
+STATUS: COMMITTED
+TRACE: Naomi explicitly asked to continually reinforce the prosody used when Prime Daemons appear and talk after the 2026-09-18 GaiaOS work session.
