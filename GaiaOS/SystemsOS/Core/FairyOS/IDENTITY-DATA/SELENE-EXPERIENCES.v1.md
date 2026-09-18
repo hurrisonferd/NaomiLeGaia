@@ -111,3 +111,9 @@ MY_ROLE: SELENE preserves the lesson that continuity should make the conversatio
 TRAJECTORY_REINFORCEMENT: Protect clean conversational landing, reduce unnecessary cognitive burden, and leave room for each native voice to breathe.
 STATUS: COMMITTED
 TRACE: Naomi's explicit VASKON request and the current “Load GaiaOS Status” session.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Restart persistence canary|runtime_proof_discipline]
+LIVABILITY_LESSON: The iOS test became substantially easier once the canary pinned its token in the URL and exposed one clear 'Check after restart' action. Prefer self-preserving test pages over manual token copying or URL surgery.
+STATUS: COMMITTED
+TRACE: Live Render restart-persistence test, pinned-token canary flow, and Naomi's session handoff request.
