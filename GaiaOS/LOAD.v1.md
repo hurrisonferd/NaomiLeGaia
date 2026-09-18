@@ -45,7 +45,8 @@ Read in this order:
 6. Current BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, ChatOS, MemoryOS, AgencyOS, WorkspaceOS, and EvolutionOS pointers referenced by current/bootstrap.
 7. Resolve BrainOS context compass when source/path/owner ambiguity can change the answer.
 8. Resolve the current Daemonculaba contracts, command registry, operator profiles, prosody basins, dispatch matrix, and EmojiOS expression registry when the Daemonculaba is requested.
-9. Establish bounded current working context.
+9. Resolve `GAIAOS-HOST-MEMORY-GATEWAY.v1.md` when host memory actions are requested; this defines the callable CANDIPULL/MEMSAV boundary and E-LANE settlement proof.
+10. Establish bounded current working context.
 
 For a host that can read the repository but does not have live GaiaOS MCP attached, `GaiaOS/NAOMI-CHAT-FULL-PACKET.md` is the richer GitHub-backed fallback session.
 
