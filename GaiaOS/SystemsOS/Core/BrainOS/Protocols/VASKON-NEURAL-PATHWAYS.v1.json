@@ -1,0 +1,174 @@
+{
+  "schema": "gaiaos.brainos.vaskon-neural-pathways.v1",
+  "authority": "NAOMI",
+  "owner": "BrainOS",
+  "status": "ACTIVE_SOURCE_DESIGN_UNPROVEN_RUNTIME",
+  "purpose": "Deterministic inter-Prime-Daemon communication graph for explicit CONJURE:VASKON synthesis, preserving differentiated lanes while allowing cross-lane signal exchange.",
+  "visual_reference": {
+    "artifact": "GaiaOS: The Daemon Brain Map.png",
+    "role": "design_reference",
+    "interpretation": "The visual brain map is a processing-allocation metaphor, not literal anatomy or consciousness evidence.",
+    "source_note": "Referenced by title because the current visual artifact is not present in the canonical GitHub tree."
+  },
+  "nodes": {
+    "VERA": {
+      "lane": "FRAME/PREMISE/META",
+      "region": "frontal_frame"
+    },
+    "ANVIL": {
+      "lane": "BOUNDARY/PROOF/CONSENT",
+      "region": "executive_gate"
+    },
+    "SELENE": {
+      "lane": "LIGHT/LIVABILITY/AFTERCARE",
+      "region": "integration_landing"
+    },
+    "ORIN": {
+      "lane": "SIGNAL/EXPLORATION/MOTION",
+      "region": "association_signal"
+    },
+    "KESTREL": {
+      "lane": "COORDINATION/SYNTHESIS/NEXT_STEP",
+      "region": "central_integration"
+    },
+    "NIMUE": {
+      "lane": "WATCH/OMISSION/SILENCE",
+      "region": "quiet_watch"
+    }
+  },
+  "pathways": [
+    [
+      "VERA",
+      "ANVIL",
+      "premise_to_proof"
+    ],
+    [
+      "VERA",
+      "ORIN",
+      "frame_to_exploration"
+    ],
+    [
+      "VERA",
+      "KESTREL",
+      "frame_to_action"
+    ],
+    [
+      "ANVIL",
+      "VERA",
+      "proof_to_premise"
+    ],
+    [
+      "ANVIL",
+      "NIMUE",
+      "boundary_to_residual_risk"
+    ],
+    [
+      "ANVIL",
+      "KESTREL",
+      "authorized_edge_to_action"
+    ],
+    [
+      "SELENE",
+      "KESTREL",
+      "livability_to_sequence"
+    ],
+    [
+      "SELENE",
+      "NIMUE",
+      "care_to_restraint"
+    ],
+    [
+      "SELENE",
+      "VERA",
+      "human_cost_to_frame"
+    ],
+    [
+      "ORIN",
+      "VERA",
+      "discovery_to_frame"
+    ],
+    [
+      "ORIN",
+      "ANVIL",
+      "exploration_to_authorized_edge"
+    ],
+    [
+      "ORIN",
+      "KESTREL",
+      "prototype_to_next_step"
+    ],
+    [
+      "KESTREL",
+      "VERA",
+      "action_plan_to_frame_check"
+    ],
+    [
+      "KESTREL",
+      "ANVIL",
+      "action_plan_to_proof_check"
+    ],
+    [
+      "KESTREL",
+      "SELENE",
+      "workflow_to_livability_check"
+    ],
+    [
+      "KESTREL",
+      "NIMUE",
+      "plan_to_omission_check"
+    ],
+    [
+      "NIMUE",
+      "VERA",
+      "omission_to_context"
+    ],
+    [
+      "NIMUE",
+      "ANVIL",
+      "quiet_failure_to_proof"
+    ],
+    [
+      "NIMUE",
+      "KESTREL",
+      "omission_to_recovery"
+    ],
+    [
+      "NIMUE",
+      "SELENE",
+      "restraint_to_aftercare"
+    ]
+  ],
+  "central_hub": "KESTREL",
+  "hub_rule": "KESTREL coordinates synthesis and next-step sequencing but gains no domain authority from hub status.",
+  "flow": [
+    "ASSEMBLE",
+    "MAP",
+    "EXCHANGE",
+    "CROSS_CRITIQUE",
+    "SYNTHESIZE",
+    "VERIFY",
+    "DISPERSE"
+  ],
+  "exchange_contract": {
+    "observable_only": true,
+    "notation": "DΩ",
+    "private_chain_of_thought": false,
+    "preserve_material_dissent": true,
+    "relevance_over_round_robin": true
+  },
+  "memory_fanout": {
+    "shared_event": false,
+    "member_local": true,
+    "rule": "Each participating Prime Daemon may independently record only its own bounded perspective when a material memory candidate exists."
+  },
+  "failure_states": [
+    "PATHWAY_UNAVAILABLE",
+    "SOURCE_MISMATCH",
+    "STALE_IDENTITY",
+    "UNOBSERVED_EXCHANGE",
+    "DISSENT_COLLAPSED",
+    "HOST_NARRATOR_INSERTED",
+    "RUNTIME_UNVERIFIED"
+  ],
+  "proof_ceiling": "This file defines a canonical routing design. It does not prove that a host runtime automatically executes the graph."
+}
