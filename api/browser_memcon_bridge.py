@@ -1,11 +1,12 @@
 """Explicit browser bridge for live MemconOS and MemoryOS verification."""
 from __future__ import annotations
 
+import html
 import json
 import uuid
 
 from fastapi import Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 import gaiaos_app
 import gaiaos_api
@@ -110,18 +111,49 @@ async def browser_memoryos_test(browser_request: Request):
     return {"status": "ERROR", "detail": "action must be start or approve"}
 
 
+def _error_page(title: str, exc: Exception) -> HTMLResponse:
+    detail = f"{type(exc).__name__}: {exc}"
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        f"<h1>{html.escape(title)}</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(detail)}</pre>"
+        "<p>Runtime action was not reported as successful.</p>"
+        "</body></html>",
+        status_code=500,
+    )
+
+
 @app.get("/memoryos/start", response_class=HTMLResponse)
 def memoryos_start(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
-    result = _start_lifecycle()
-    return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'><h1>MemoryOS start</h1><pre style='white-space:pre-wrap'>" + result["output"].replace("&","&amp;").replace("<","&lt;") + "</pre><p><a style='font-size:22px' href='/memoryos/approve'>Approve pending candidate</a></p></body></html>")
+    try:
+        result = _start_lifecycle()
+        output = html.escape(result["output"])
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>MemoryOS start</h1>"
+            f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            "<p><a style='font-size:22px' href='/memoryos/approve'>Approve pending candidate</a></p>"
+            "</body></html>"
+        )
+    except Exception as exc:
+        return _error_page("MemoryOS start failed", exc)
 
 
 @app.get("/memoryos/approve", response_class=HTMLResponse)
 def memoryos_approve(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
-    result = _approve_lifecycle()
-    return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'><h1>MemoryOS approval</h1><pre style='white-space:pre-wrap'>" + result["output"].replace("&","&amp;").replace("<","&lt;") + "</pre></body></html>")
+    try:
+        result = _approve_lifecycle()
+        output = html.escape(result["output"])
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>MemoryOS approval</h1>"
+            f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            "</body></html>"
+        )
+    except Exception as exc:
+        return _error_page("MemoryOS approval failed", exc)
 
 
 @app.get("/memoryos/test", response_class=HTMLResponse)
