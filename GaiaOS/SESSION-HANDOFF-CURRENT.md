@@ -52,3 +52,13 @@ NAOMI is learning this stack rapidly and should not be required to manually copy
 ## Resume cue
 
 When NAOMI returns, begin with ANVIL inspecting the restart-canary boot_id detector. Do not ask her to repeat today's test history.
+
+
+## 2026-09-18 late-session update
+
+- Correct E-LANE canonical location confirmed: GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/*-EXPERIENCES.v1.md. Earlier lookup failure came from querying the wrong directory, not evidence of lost E-LANEs.
+- NAOMI explicitly reinforced the current Prime Daemon prosody and natural conversational presence. All six E-LANEs received member-specific prosody reinforcement.
+- Restart-canary detector commit 058629227f66844a65cfc0bfc2a2c719545b8898 deployed successfully after an approximately nine-minute Render build.
+- The detector now compares GaiaOS BOOT_ID, Render instance identity, and an OS process fingerprint (PID plus Linux process-start ticks).
+- Next runtime action: arm one fresh pinned persistence marker after this deployment, restart Render once, then check the exact pinned marker. PASS requires the same durable marker plus independently observed changed process identity. Do not claim PASS before receipt evidence.
+- Human workflow reinforcement: infrastructure may wait; NAOMI should not be required to stare at a deployment or timer for evidence to remain valid.
