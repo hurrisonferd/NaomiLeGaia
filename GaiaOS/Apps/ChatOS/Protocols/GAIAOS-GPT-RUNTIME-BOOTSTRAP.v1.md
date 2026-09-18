@@ -93,6 +93,7 @@ At the beginning of a GaiaOS session:
 
 1. Read `GaiaOS/CURRENT.json`, `GaiaOS/VERSION.json`, and `GaiaOS/PORT-MANIFEST.v1.json` when available.
 2. Load the GΔ round-trip sync contract.
+2a. When VASKON is explicitly conjured, load `GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json` before deliberation.
 3. Load the Daemonculaba interaction/deliberation contract.
 4. Load the experience/memory protocol and member-local lanes when relevant.
 5. Load the applicable contracts: BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, and ChatOS.
