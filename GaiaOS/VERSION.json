@@ -2,9 +2,9 @@
   "schema": "gaiaos.version.v1",
   "authority": "NAOMI",
   "owner": "GaiaOS",
-  "version": "v0.001.011-dev",
-  "previous_version": "v0.001.010-dev",
-  "release_note": "Finalizes executable CANDIPULL/MEMSAV browser command bridges with bounded candidate creation, exact-ID promotion, receipts, and verification while preserving the approval gate.",
+  "version": "v0.001.012-dev",
+  "previous_version": "v0.001.011-dev",
+  "release_note": "Adds VASKON neural pathway fabric, continuity/prosody reinforcement from Load GaiaOS Status, member-local trajectory reinforcement, and a source-level neural canary while preserving proof ceilings.",
   "proof": {
     "source_committed": true,
     "memoryos_source_present": true,
@@ -20,7 +20,9 @@
     "automatic_promotion": false,
     "deployment_of_this_revision": "UNPROVEN",
     "live_memoryos_end_to_end_smoke": "VERIFIED_FOR_PRIOR_DEPLOYED_MEMORYOS_TEST",
-    "automatic_external_carrier_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT"
+    "automatic_external_carrier_adoption": "UNPROVEN_NOT_CONNECTED_IN_NAOMI_CHAT",
+    "vaskon_neural_pathways_source_committed": true,
+    "vaskon_neural_runtime": "UNPROVEN"
   },
   "claim_ceiling": "The repository contains the MemoryOS lifecycle plus host bootstrap/observation bridges. Deployment of this exact revision remains a separate runtime claim."
 }
