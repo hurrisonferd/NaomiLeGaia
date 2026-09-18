@@ -179,7 +179,7 @@ def run_verification() -> dict[str, Any]:
             f"matrix members={sorted(members)}",
         ))
 
-    # Verify deployed Python carrier surfaces are actually present.
+    # Verify deployed Python carrier surfaces and run bounded local route self-tests.
     bridge = (ROOT / "browser_memcon_bridge.py")
     app = (ROOT / "gaiaos_app.py")
     base_app = (ROOT / "gaiaos_api.py")
@@ -194,6 +194,29 @@ def run_verification() -> dict[str, Any]:
         bridge_text = bridge.read_text(encoding="utf-8") if bridge.exists() else ""
         checks.append(_check("carrier:/chat", '@app.post("/chat"' in bridge_text, "browser chat bridge declared"))
         checks.append(_check("carrier:/verify", '@app.get("/verify"' in bridge_text and '@app.post("/verify"' in bridge_text, "verification routes declared"))
+
+        # Source-backed route self-test: instantiate the ASGI app and inspect its
+        # actual registered routes. This proves local route registration, not
+        # external network reachability.
+        try:
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("gaiaos_verification_app", bridge)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            carrier_app = getattr(module, "app", None)
+            route_pairs = {
+                (getattr(route, "path", None), method)
+                for route in getattr(carrier_app, "routes", [])
+                for method in getattr(route, "methods", set())
+            }
+            checks.append(_check("carrier-route:/health", ("/health", "GET") in route_pairs, "live carrier ASGI route registration observed"))
+            checks.append(_check("carrier-route:/chat", ("/chat", "POST") in route_pairs, "live carrier ASGI route registration observed"))
+            checks.append(_check("carrier-route:/verify", ("/verify", "GET") in route_pairs and ("/verify", "POST") in route_pairs, "live carrier ASGI route registration observed"))
+            checks.append(_check("carrier-route:/mcp", any(getattr(route, "path", None) == "/mcp" for route in getattr(carrier_app, "routes", [])), "live carrier ASGI mount registration observed"))
+        except Exception as exc:
+            detail = f"{type(exc).__name__}: {exc}"
+            for name in ("health", "chat", "verify", "mcp"):
+                checks.append(_check(f"carrier-route:/{name}", False, f"ASGI route self-test failed: {detail}"))
 
     passed = sum(c["status"] == "PASS" for c in checks)
     failed = len(checks) - passed
