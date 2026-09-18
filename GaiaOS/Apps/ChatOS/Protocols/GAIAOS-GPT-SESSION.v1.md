@@ -10,7 +10,11 @@ For repository-backed continuity, perform the read side of the round-trip when t
 
 `PULL → GΔ → COMPARE → VERIFY → LOAD`
 
-Do not describe the session as repository-synchronized unless the relevant source was actually read.
+When the GaiaOS host bridge is available, prefer the single `gaia_bootstrap` operation to perform the runtime side of startup retrieval. It returns the observed GaiaOS source coordinate plus durable MemconOS context, with retrieval explicitly marked as non-authoritative.
+
+For meaningful interaction during a session, a host may use `memory_observe` to create a bounded non-durable candidate. This does not write durable memory. Durable promotion still requires explicit Naomi approval through the existing MemoryOS promotion path.
+
+Do not describe the session as repository-synchronized unless the relevant source was actually read. Do not describe durable memory as updated unless an actual write receipt and verification were observed.
 
 ## Operator identity
 
