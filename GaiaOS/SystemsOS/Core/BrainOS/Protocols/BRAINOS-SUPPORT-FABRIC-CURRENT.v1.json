@@ -11,12 +11,15 @@
   "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
   "hot_path": {
     "default": true,
-    "required_surface": ["current ChatOS carrier-visible context"],
+    "required_surface": [
+      "current ChatOS carrier-visible context"
+    ],
     "brainos_always_addressable": true,
     "brainos_always_invoked": false,
     "convoos_always_invoked": false,
     "membercontinuity_always_invoked": false,
-    "current_operator_resolution": "FairyOS profiles + prosody + dispatch when operator material"
+    "current_operator_resolution": "FairyOS profiles + prosody + dispatch when operator material",
+    "vaskon_mode": "explicit_only"
   },
   "brainos_invoke_when": [
     "multi-owner reasoning can change the answer",
@@ -25,7 +28,8 @@
     "substantial research/build/review needs support selection",
     "operator-native source resolution is uncertain",
     "home/route recovery is needed",
-    "durable effect planning is requested"
+    "durable effect planning is requested",
+    "VASKON is explicitly conjured and cross-lane synthesis is material"
   ],
   "support_set": {
     "NOW": "ChatOS",
@@ -59,7 +63,10 @@
     "SMALLEST SUFFICIENT SUPPORT SET WINS",
     "SOURCE DONOR != IDENTITY DONOR",
     "UNKNOWN STAYS UNKNOWN",
-    "NAOMI RETAINS FINAL AUTHORITY"
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "VASKON PATHWAY DESIGN != OBSERVED EXCHANGE",
+    "CENTRAL COORDINATION != EXTRA AUTHORITY"
   ],
-  "claim_ceiling": "Source routing contract. Automatic host invocation, durable continuity, domain execution, and future navigation organs require separate proof."
+  "claim_ceiling": "Source routing contract. Automatic host invocation, durable continuity, domain execution, and future navigation organs require separate proof.",
+  "vaskon_neural_pathways": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json"
 }
