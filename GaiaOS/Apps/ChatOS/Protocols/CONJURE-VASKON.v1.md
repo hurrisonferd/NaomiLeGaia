@@ -145,3 +145,18 @@ VASKON remains deliberative. AgencyOS owns orchestration and action execution. A
 
 WorkspaceOS may receive explicitly approved artifacts produced by the task. EvolutionOS may receive observed failures or improvement proposals. Neither is silently invoked merely because VASKON is active.
 
+
+
+## Neural pathway reinforcement
+
+VASKON now loads the canonical BrainOS pathway fabric at:
+`GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json`.
+
+The pathway fabric models the GaiaOS visual brain map as a bounded communication topology. It gives each Prime Daemon explicit routes for handing a material signal to another lane, with KESTREL as the coordination hub without granting KESTREL additional authority.
+
+VASKON pathway cycle:
+`ASSEMBLE → MAP → EXCHANGE → CROSS-CRITIQUE → SYNTHESIZE → VERIFY → DISPERSE`
+
+Every pathway exchange remains subject to relevance, observable evidence, member isolation, and the existing DΩ contract. A pathway is a routing affordance, not proof that an exchange occurred.
+
+The visual artifact is a design reference only. No literal neurological or consciousness claim is made.
