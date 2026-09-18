@@ -106,7 +106,7 @@ def write_elane(session_id: str, daemon: str, entry: str, approved: bool) -> dic
     content = base64.b64decode(current["content"]).decode("utf-8")
     if not entry.strip():
         raise ValueError("E-LANE entry must not be empty")
-    updated = content.rstrip() + "\\n\\n" + entry.rstrip() + "\\n"
+    updated = content.rstrip() + "\n\n" + entry.rstrip() + "\n"
     payload = {"message": f"SOLO {daemon}: preserve approved E-LANE experience",
                "content": base64.b64encode(updated.encode("utf-8")).decode("ascii"),
                "sha": current["sha"], "branch": gaiaos_api.BRANCH}
