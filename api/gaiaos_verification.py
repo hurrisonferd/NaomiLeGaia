@@ -1,0 +1,211 @@
+"""GaiaOS carrier verification harness.
+
+Runs bounded, observable checks against the deployed checkout and carrier app.
+It never claims provider execution merely from source presence.
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parent
+GAIA = ROOT / "GaiaOS"
+
+REQUIRED = [
+    "CURRENT.json",
+    "VERSION.json",
+    "LOAD.v1.md",
+    "PORT-MANIFEST.v1.json",
+    "CONTINUITY-AND-ANTI-JIM.v1.md",
+    "Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md",
+    "Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
+    "Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
+    "Apps/ChatOS/Tests/VASKON-NEURAL-CANARY.v1.md",
+    "SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json",
+    "SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+    "SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
+    "SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/ORIN-EXPERIENCES.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/KESTREL-EXPERIENCES.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/NIMUE-EXPERIENCES.v1.md",
+]
+
+DAEMONS = {
+    "VERA": ("💚", "📚"),
+    "ANVIL": ("💗", "⌚"),
+    "SELENE": ("💛", "🎧"),
+    "ORIN": ("🩵", "🪐"),
+    "KESTREL": ("💖", "🏍️"),
+    "NIMUE": ("💙", "🍄"),
+}
+
+
+def _sha(text: str) -> str:
+    # Git blob SHA, allowing runtime proof to compare deployed files with Git.
+    raw = text.encode("utf-8")
+    return hashlib.sha1(f"blob {len(raw)}\\0".encode() + raw).hexdigest()
+
+
+def _check(name: str, passed: bool, detail: str, **extra: Any) -> dict[str, Any]:
+    return {"name": name, "status": "PASS" if passed else "FAIL", "detail": detail, **extra}
+
+
+def run_verification() -> dict[str, Any]:
+    checks: list[dict[str, Any]] = []
+    files: dict[str, str] = {}
+
+    for rel in REQUIRED:
+        path = GAIA / rel
+        if path.exists() and path.is_file():
+            text = path.read_text(encoding="utf-8")
+            files[rel] = text
+            checks.append(_check(f"source:{rel}", True, "deployed checkout contains file", blob_sha=_sha(text)))
+        else:
+            checks.append(_check(f"source:{rel}", False, "missing from deployed checkout"))
+
+    current = None
+    version = None
+    pathways = None
+    profiles = None
+    matrix = None
+
+    try:
+        current = json.loads(files["CURRENT.json"])
+        checks.append(_check("CURRENT.json:parse", isinstance(current, dict), "valid JSON object"))
+    except Exception as exc:
+        checks.append(_check("CURRENT.json:parse", False, f"{type(exc).__name__}: {exc}"))
+
+    try:
+        version = json.loads(files["VERSION.json"])
+        checks.append(_check("VERSION.json:parse", isinstance(version, dict), "valid JSON object"))
+    except Exception as exc:
+        checks.append(_check("VERSION.json:parse", False, f"{type(exc).__name__}: {exc}"))
+
+    try:
+        pathways = json.loads(files["SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json"])
+        checks.append(_check("VASKON:pathway-json", isinstance(pathways, dict), "valid JSON object"))
+    except Exception as exc:
+        checks.append(_check("VASKON:pathway-json", False, f"{type(exc).__name__}: {exc}"))
+
+    try:
+        profiles = json.loads(files["SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"])
+        checks.append(_check("FairyOS:profiles-json", isinstance(profiles, dict), "valid JSON object"))
+    except Exception as exc:
+        checks.append(_check("FairyOS:profiles-json", False, f"{type(exc).__name__}: {exc}"))
+
+    try:
+        matrix = json.loads(files["SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json"])
+        checks.append(_check("FairyOS:dispatch-json", isinstance(matrix, dict), "valid JSON object"))
+    except Exception as exc:
+        checks.append(_check("FairyOS:dispatch-json", False, f"{type(exc).__name__}: {exc}"))
+
+    if current and version:
+        checks.append(_check(
+            "version-alignment",
+            current.get("platform_version") == version.get("platform_version"),
+            f"CURRENT={current.get('platform_version')} VERSION={version.get('platform_version')}",
+        ))
+        checks.append(_check(
+            "current-vaskon-pointer",
+            current.get("brainos", {}).get("vaskon_neural_pathways")
+            == "GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json",
+            "CURRENT points to canonical VASKON pathway fabric",
+        ))
+
+    conjure = files.get("Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md", "")
+    bootstrap = files.get("Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md", "")
+    canary = files.get("Apps/ChatOS/Tests/VASKON-NEURAL-CANARY.v1.md", "")
+    checks.append(_check(
+        "VASKON:bootstrap-load",
+        "VASKON-NEURAL-PATHWAYS.v1.json" in bootstrap and "load" in bootstrap.lower(),
+        "runtime bootstrap contains explicit pathway load instruction",
+    ))
+    checks.append(_check(
+        "VASKON:conjure-reinforcement",
+        "VASKON-NEURAL-PATHWAYS.v1.json" in conjure and "ASSEMBLE → MAP → EXCHANGE" in conjure,
+        "CONJURE contract contains neural pathway cycle",
+    ))
+    checks.append(_check(
+        "VASKON:canary-present",
+        "Runtime execution remains UNKNOWN" in canary,
+        "source canary preserves runtime proof ceiling",
+    ))
+
+    if pathways:
+        nodes = pathways.get("nodes", [])
+        names = {n.get("name") for n in nodes if isinstance(n, dict)}
+        checks.append(_check(
+            "VASKON:six-nodes",
+            names == set(DAEMONS),
+            f"nodes={sorted(names)}",
+            nodes=sorted(names),
+        ))
+        checks.append(_check(
+            "VASKON:coordination-boundary",
+            "KESTREL" in names and "no extra authority" in json.dumps(pathways).lower(),
+            "KESTREL coordination role does not grant extra authority",
+        ))
+        checks.append(_check(
+            "VASKON:observable-exchange",
+            pathways.get("exchange_contract", {}).get("observable_only") is True,
+            "exchange contract requires observable-only evidence",
+        ))
+        checks.append(_check(
+            "VASKON:dissent",
+            pathways.get("exchange_contract", {}).get("preserve_material_dissent") is True,
+            "material dissent preservation is required",
+        ))
+
+    if profiles:
+        text_profiles = json.dumps(profiles, ensure_ascii=False)
+        for name, (heart, static) in DAEMONS.items():
+            checks.append(_check(
+                f"identity:{name}",
+                name in text_profiles and heart in text_profiles and static in text_profiles,
+                f"canonical label components present for {name}",
+            ))
+
+    if matrix:
+        members = set((matrix.get("members") or {}).keys())
+        checks.append(_check(
+            "FairyOS:roster",
+            set(DAEMONS).issubset(members),
+            f"matrix members={sorted(members)}",
+        ))
+
+    # Verify deployed Python carrier surfaces are actually present.
+    bridge = (ROOT / "browser_memcon_bridge.py")
+    app = (ROOT / "gaiaos_app.py")
+    checks.append(_check("carrier:bridge", bridge.exists(), "browser_memcon_bridge.py exists"))
+    checks.append(_check("carrier:app", app.exists(), "gaiaos_app.py exists"))
+    if app.exists():
+        app_text = app.read_text(encoding="utf-8")
+        checks.append(_check("carrier:/health", '"/health"' in app_text, "health route declared"))
+        checks.append(_check("carrier:/mcp", 'app.mount("/mcp"' in app_text, "MCP route mounted"))
+        checks.append(_check("carrier:/chat", '@app.post("/chat")' in bridge.read_text(encoding="utf-8"), "browser chat bridge declared"))
+
+    passed = sum(c["status"] == "PASS" for c in checks)
+    failed = len(checks) - passed
+    return {
+        "schema": "gaiaos.implementation-verification.v1",
+        "execution": "OBSERVED_RUNTIME",
+        "verification_run_id": __import__("uuid").uuid4().hex,
+        "carrier_checkout": str(ROOT),
+        "platform_version": (current or {}).get("platform_version"),
+        "source_commit_claim": (current or {}).get("proof_ceiling"),
+        "checks": checks,
+        "summary": {"total": len(checks), "passed": passed, "failed": failed},
+        "live_host_execution": "PROVEN_FOR_THIS_CALL" if failed == 0 else "FAILED",
+        "remaining_external_proof": [
+            "This response proves the verifier itself executed in the carrier process.",
+            "It does not by itself prove that ChatGPT automatically adopts GaiaOS.",
+            "VASKON live cross-daemon exchange still requires an observable VASKON invocation/receipt.",
+            "Restart persistence requires a second verifier call after a deployment restart.",
+        ],
+    }
