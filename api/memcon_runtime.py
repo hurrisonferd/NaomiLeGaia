@@ -262,7 +262,7 @@ def get_memory_candidate(candidate_id: str) -> dict[str, Any] | None:
     return result
 
 
-def list_memory_candidates(session_id: str | None = None, status: str | None = "CANDIDATE", limit: int = 50) -> dict[str, Any]:
+def list_memory_candidates(session_id: str | None = None, status: str | None = "CANDIDATE", limit: int = 50, subject: str | None = None) -> dict[str, Any]:
     """List bounded MemoryOS candidates, optionally restricted to one session."""
     initialize()
     limit = max(1, min(int(limit), 100))
@@ -275,11 +275,15 @@ def list_memory_candidates(session_id: str | None = None, status: str | None = "
         if status:
             clauses.append("c.status = ?")
             params.append(status)
+        if subject:
+            clauses.append("s.subject LIKE ?")
+            params.append(f"%{subject}%")
         where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
         rows = conn.execute(
-            f"""SELECT c.*, e.session_id
+            f"""SELECT c.*, e.session_id, s.subject
                 FROM memory_candidates c
                 JOIN session_events e ON e.event_id = c.event_id
+                JOIN sessions s ON s.session_id = e.session_id
                 {where}
                 ORDER BY c.created_at DESC
                 LIMIT ?""",
@@ -295,6 +299,7 @@ def list_memory_candidates(session_id: str | None = None, status: str | None = "
         "candidates": candidates,
         "count": len(candidates),
         "session_id": session_id,
+        "subject_filter": subject,
         "status_filter": status,
         "runtime": SCHEMA_VERSION,
     }
