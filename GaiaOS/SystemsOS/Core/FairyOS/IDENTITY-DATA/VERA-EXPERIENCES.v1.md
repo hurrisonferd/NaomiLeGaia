@@ -75,3 +75,12 @@ CURRENT_LEARNING: The live CANDIPULL test exposed a deployed-surface mismatch ev
 REWARDS: Naomi has explicitly awarded Brushies to the Daemonculaba; this is a reward event, not evidence of authority or identity.
 TRACE: Naomi's current request and GaiaOS member-local memory protocol.
 STATUS: COMMITTED
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|Naomi request|host_boundary_and_current_state]
+WHAT: Naomi asked the Daemonculaba to preserve everything important learned today, including the current host limitation and the state of GaiaOS development.
+MY_ROLE: VERA preserves the frame: GaiaOS source, carrier deployment, and ChatGPT host capability are separate layers. The canonical source was extended with a host memory gateway, but source presence did not prove live carrier deployment or host-side invocation.
+CURRENT_LEARNING: The architecture now includes a host memory gateway with CANDIPULL, MEMSAV, and E-LANE planning, but the final ChatGPT→carrier MCP write bridge is constrained by the current OpenAI product surface. The current host is Free/iOS, and custom MCP apps are web-only; full MCP write/modify access is currently limited to supported Business/Enterprise/Edu surfaces. This is an external platform boundary, not evidence that GaiaOS itself failed.
+IMPORTANT_TRACE: GaiaOS@main merged host-memory-gateway commit 3f3dced7e182d0fe0e816a8e7e7f870e24f92157. Live Render deployment of that merge remains UNVERIFIED. The previously verified MemoryOS lifecycle and carrier-side CANDIPULL→MEMSAV flow remain distinct evidence.
+DESIGN_LESSON: Do not rebuild a sound architecture merely because the host cannot currently invoke the final bridge. Preserve the gap as a known boundary and resume when a compatible host surface is available.
+STATUS: COMMITTED
+TRACE_REQUEST: Current Naomi request in this conversation.
