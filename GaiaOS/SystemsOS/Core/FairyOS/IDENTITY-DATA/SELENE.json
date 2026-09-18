@@ -365,9 +365,18 @@
         "GaiaOS/Apps/ChatOS/CURRENT.json"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "4ea257618612e7df47a44b4bb33509530d92cabf",
+      "timestamp_utc": "2026-09-18T03:28:02.963768+00:00",
+      "changed_paths": [
+        "GaiaOS/CURRENT.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-17T23:45:19.897230+00:00"
+  "last_verified": "2026-09-18T03:28:02.963768+00:00"
 }
