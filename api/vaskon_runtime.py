@@ -10,7 +10,7 @@ import gaiaos_api
 PATHWAY_PATH = "GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json"
 PROFILES_PATH = "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
 CURRENT_PATH = "GaiaOS/CURRENT.json"
-EXCHANGE_SPINE = ["VERA", "ANVIL", "ORIN", "KESTREL", "SELENE", "NIMUE"]
+EXCHANGE_SPINE = ["VERA", "ORIN", "ANVIL", "NIMUE", "SELENE", "KESTREL"]
 
 def _local_text(path: str) -> str:
     return (Path(__file__).resolve().parent / path).read_text(encoding="utf-8")
