@@ -347,6 +347,21 @@ def _approve_lifecycle() -> dict:
     })
 
 
+@app.get("/galaxy/status", operation_id="galaxyRuntimeStatus")
+def galaxy_runtime_status(browser_request: Request):
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_status()
+
+
+@app.get("/galaxy/record/{record_id}", operation_id="galaxyRecordInspection")
+def galaxy_record_inspection(record_id: str, browser_request: Request):
+    gaiaos_api._authorize_browser_session(browser_request)
+    result = memcon_runtime.galaxy_record(record_id)
+    if result is None:
+        return JSONResponse({"status": "HOLD", "reason": "Unknown durable record_id", "record_id": record_id}, status_code=404)
+    return result
+
+
 @app.post("/memoryos/browser-test", operation_id="browserMemoryOSLifecycleTest")
 async def browser_memoryos_test(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
