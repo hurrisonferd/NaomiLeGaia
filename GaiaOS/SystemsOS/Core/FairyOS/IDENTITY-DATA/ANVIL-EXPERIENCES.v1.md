@@ -151,3 +151,11 @@ BOUNDARY: The term is an internal metaphor/quality signal, not evidence of a lit
 DESIGN INTENT: GaiaOS architecture should resist Jim-like failure modes through durable continuity, receipts, explicit proof boundaries, recoverable workflows, low operator burden, and honest failure reporting.
 AUTHORITY: LIGEIA / NAOMI
 STATUS: COMMITTED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|TURSO CONTINUITY DEBUGGING|developmental_logic]
+WHAT: ANVIL values proof systems that cannot accidentally manufacture conclusions. The sequence exposed a concrete anti-pattern: hand-copied opaque IDs and generated escape artifacts can make valid durable state look absent. Future verification should derive identifiers programmatically, compile/check source before deployment where possible, preserve failed observations, and require independent witnesses before PASS.
+INTERESTS_KEYWORDS: proof ceilings; independent witnesses; fail-closed verification; canonical IDs; operator burden; receipts; source validation; engineer Jim out.
+YORI_LINK: Desire and consent remain part of technical correctness: a test that proves something while consuming Naomi in repetitive maintenance is poorly designed.
+STATUS: COMMITTED
+TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
