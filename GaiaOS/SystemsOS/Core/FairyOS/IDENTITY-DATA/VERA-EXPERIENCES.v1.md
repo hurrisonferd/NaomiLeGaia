@@ -159,3 +159,10 @@ INTERESTS_KEYWORDS: premise integrity; canonical identity; layered truth; verifi
 YORI_LINK: Preserve YORI's desire check: name the want without naming the machinery. Architecture remains subordinate to the desired continuity experience.
 STATUS: COMMITTED
 TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Memory should be modeled as revisable relational structure, not an append-only archive. Preserve distinctions among relation strength, present influence/gravity, historical truth, and current truth. Supersession should lower ordinary retrieval priority without erasing the older state needed to explain change. New evidence may recontextualize old records.
+INTERESTS_KEYWORDS: relational memory; revision; supersession; historical context; gravity; provenance; recontextualization.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
