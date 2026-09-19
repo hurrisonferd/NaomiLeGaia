@@ -142,6 +142,56 @@ def initialize() -> None:
             CREATE INDEX IF NOT EXISTS idx_memory_status ON memory_records(status);
             CREATE INDEX IF NOT EXISTS idx_memory_created ON memory_records(created_at);
 
+            CREATE TABLE IF NOT EXISTS memory_relations (
+                edge_id TEXT PRIMARY KEY,
+                source_record_id TEXT NOT NULL,
+                target_record_id TEXT NOT NULL,
+                relation_type TEXT NOT NULL,
+                strength REAL NOT NULL,
+                status TEXT NOT NULL,
+                evidence_json TEXT NOT NULL DEFAULT '{}',
+                classifier TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                verified_at TEXT,
+                FOREIGN KEY(source_record_id) REFERENCES memory_records(record_id),
+                FOREIGN KEY(target_record_id) REFERENCES memory_records(record_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_galaxy_rel_source ON memory_relations(source_record_id);
+            CREATE INDEX IF NOT EXISTS idx_galaxy_rel_target ON memory_relations(target_record_id);
+            CREATE INDEX IF NOT EXISTS idx_galaxy_rel_status ON memory_relations(status);
+
+            CREATE TABLE IF NOT EXISTS memory_gravity (
+                record_id TEXT PRIMARY KEY,
+                gravity_score REAL NOT NULL,
+                score_version TEXT NOT NULL,
+                components_json TEXT NOT NULL,
+                reason_json TEXT NOT NULL,
+                calculated_at TEXT NOT NULL,
+                previous_score REAL,
+                FOREIGN KEY(record_id) REFERENCES memory_records(record_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS memory_lifecycle (
+                record_id TEXT PRIMARY KEY,
+                state TEXT NOT NULL,
+                changed_at TEXT NOT NULL,
+                reason TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                receipt_id TEXT,
+                FOREIGN KEY(record_id) REFERENCES memory_records(record_id)
+            );
+
+            CREATE TABLE IF NOT EXISTS memory_syntheses (
+                synthesis_record_id TEXT PRIMARY KEY,
+                source_record_ids_json TEXT NOT NULL,
+                method TEXT NOT NULL,
+                confidence REAL NOT NULL,
+                created_at TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                FOREIGN KEY(synthesis_record_id) REFERENCES memory_records(record_id)
+            );
+
             CREATE TABLE IF NOT EXISTS runtime_receipts (
                 receipt_id TEXT PRIMARY KEY,
                 operation TEXT NOT NULL,
@@ -299,6 +349,147 @@ def update_record(record_id: str, *, authority: str, approved: bool, statement: 
             (values["statement"], values["status"], values["notes"], values["supersedes"], values["updated_at"], record_id),
         )
     return {"record": get_record(record_id), "receipt": _receipt("UPDATE", record_id, "SUCCESS", "Updated in configured runtime store")}
+
+
+
+GALAXY_RELATION_TYPES = {
+    "REINFORCES", "EXTENDS", "EXPLAINS", "EXEMPLIFIES", "CONTRADICTS",
+    "REVISES", "SUPERSEDES", "DERIVED_FROM", "CONTEXT_FOR", "ASSOCIATED_WITH",
+}
+GALAXY_LIFECYCLE_STATES = {"ACTIVE", "BACKGROUND", "ARCHIVED", "COMPRESSED", "PRUNABLE"}
+GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v1"
+
+
+def galaxy_status() -> dict[str, Any]:
+    """Read-only GALAXY implementation status. Phase 1 has no retrieval effect."""
+    initialize()
+    with _db() as conn:
+        relations = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_relations")
+        gravity = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_gravity")
+        lifecycle = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_lifecycle")
+        syntheses = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_syntheses")
+    return {
+        "schema": "gaiaos.galaxy.runtime.v1",
+        "phase": "PHASE_1_GRAPH_FOUNDATION",
+        "mode": "SHADOW_NO_RETRIEVAL_EFFECT",
+        "storage": storage_status(),
+        "counts": {
+            "relations": int((relations or {}).get("n", 0)),
+            "gravity_scores": int((gravity or {}).get("n", 0)),
+            "lifecycle_rows": int((lifecycle or {}).get("n", 0)),
+            "syntheses": int((syntheses or {}).get("n", 0)),
+        },
+        "retrieval_weighting_enabled": False,
+        "physical_pruning_enabled": False,
+        "authority": "NAOMI",
+        "proof_boundary": "This reports initialized GALAXY structures only. It does not prove relation quality, gravity quality, weighted retrieval, consolidation, forgetting, or pruning.",
+    }
+
+
+def galaxy_record(record_id: str) -> dict[str, Any] | None:
+    """Return one record with its GALAXY neighborhood without changing state."""
+    record = get_record(record_id)
+    if record is None:
+        return None
+    initialize()
+    with _db() as conn:
+        edges = _fetchall_dicts(conn,
+            """SELECT * FROM memory_relations
+               WHERE source_record_id=? OR target_record_id=?
+               ORDER BY created_at DESC""", (record_id, record_id))
+        gravity = _fetchone_dict(conn, "SELECT * FROM memory_gravity WHERE record_id=?", (record_id,))
+        lifecycle = _fetchone_dict(conn, "SELECT * FROM memory_lifecycle WHERE record_id=?", (record_id,))
+    for edge in edges:
+        try:
+            edge["evidence"] = json.loads(edge.pop("evidence_json"))
+        except (TypeError, json.JSONDecodeError):
+            edge["evidence"] = {}
+    if gravity:
+        for field in ("components_json", "reason_json"):
+            try:
+                gravity[field[:-5]] = json.loads(gravity.pop(field))
+            except (TypeError, json.JSONDecodeError):
+                gravity[field[:-5]] = {}
+    return {
+        "record": record,
+        "relations": edges,
+        "gravity": gravity,
+        "lifecycle": lifecycle,
+        "retrieval_effect": "NONE_SHADOW_MODE",
+    }
+
+
+def galaxy_propose_relation(*, source_record_id: str, target_record_id: str,
+                            relation_type: str, strength: float, evidence: dict[str, Any],
+                            classifier: str = "GALAXY_MANUAL_V1") -> dict[str, Any]:
+    """Create a non-authoritative relation proposal. It has no retrieval effect."""
+    relation_type = relation_type.strip().upper()
+    if relation_type not in GALAXY_RELATION_TYPES:
+        raise ValueError(f"Unsupported GALAXY relation type: {relation_type}")
+    if source_record_id == target_record_id:
+        raise ValueError("A GALAXY relation cannot target itself")
+    strength = float(strength)
+    if not 0.0 <= strength <= 1.0:
+        raise ValueError("Relation strength must be between 0 and 1")
+    if get_record(source_record_id) is None or get_record(target_record_id) is None:
+        raise KeyError("Both GALAXY relation endpoints must be existing durable memory records")
+    initialize()
+    with _db() as conn:
+        duplicate = _fetchone_dict(conn,
+            """SELECT * FROM memory_relations
+               WHERE source_record_id=? AND target_record_id=? AND relation_type=? AND status IN ('PROPOSED','VERIFIED')
+               ORDER BY created_at DESC LIMIT 1""",
+            (source_record_id, target_record_id, relation_type))
+        if duplicate:
+            return {"status": "EXISTING", "relation": duplicate, "retrieval_effect": "NONE"}
+        edge_id = "EDGE-" + uuid.uuid4().hex
+        created = _now()
+        conn.execute(
+            """INSERT INTO memory_relations
+               (edge_id,source_record_id,target_record_id,relation_type,strength,status,evidence_json,classifier,authority,created_at,verified_at)
+               VALUES (?,?,?,?,?,'PROPOSED',?,?,?, ?,NULL)""",
+            (edge_id, source_record_id, target_record_id, relation_type, strength,
+             json.dumps(evidence, sort_keys=True), classifier, "NONE", created),
+        )
+    return {
+        "status": "PROPOSED",
+        "relation": galaxy_relation(edge_id),
+        "retrieval_effect": "NONE",
+        "proof_boundary": "A proposed edge is not verified truth and does not alter retrieval.",
+    }
+
+
+def galaxy_relation(edge_id: str) -> dict[str, Any] | None:
+    initialize()
+    with _db() as conn:
+        edge = _fetchone_dict(conn, "SELECT * FROM memory_relations WHERE edge_id=?", (edge_id,))
+    if edge is None:
+        return None
+    try:
+        edge["evidence"] = json.loads(edge.pop("evidence_json"))
+    except (TypeError, json.JSONDecodeError):
+        edge["evidence"] = {}
+    return edge
+
+
+def galaxy_verify_relation(edge_id: str, *, authority: str, approved: bool) -> dict[str, Any]:
+    """Naomi may verify a proposed edge. Verification still has no retrieval effect in Phase 1."""
+    if authority != "NAOMI" or not approved:
+        raise PermissionError("GALAXY relation verification requires explicit Naomi approval")
+    edge = galaxy_relation(edge_id)
+    if edge is None:
+        raise KeyError(edge_id)
+    if edge["status"] == "VERIFIED":
+        return {"status": "VERIFIED", "relation": edge, "idempotent": True, "retrieval_effect": "NONE"}
+    if edge["status"] != "PROPOSED":
+        raise ValueError(f"Only PROPOSED relations can be verified; current status={edge['status']}")
+    verified_at = _now()
+    with _db() as conn:
+        conn.execute("UPDATE memory_relations SET status='VERIFIED', authority='NAOMI', verified_at=? WHERE edge_id=?",
+                     (verified_at, edge_id))
+    receipt = _receipt("GALAXY_VERIFY_RELATION", edge_id, "SUCCESS", "Verified relation in GALAXY shadow graph; retrieval unchanged")
+    return {"status": "VERIFIED", "relation": galaxy_relation(edge_id), "receipt": receipt, "retrieval_effect": "NONE"}
+
 
 
 def create_session(session_id: str, source: str, subject: str = "") -> None:
