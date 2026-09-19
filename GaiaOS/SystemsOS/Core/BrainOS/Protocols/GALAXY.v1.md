@@ -97,3 +97,30 @@ NIMUE: preserve contradiction and negative evidence.
 
 ## Success condition
 GALAXY succeeds when GaiaOS can preserve selected experience, relate it to prior experience, revise current models without erasing history, retrieve a small useful constellation rather than a dump, and allow old material to become quieter or newly relevant under explicit authority and auditable proof boundaries.
+
+
+## Implementation checkpoint 2026-09-18
+
+Phase 1 source implementation has begun.
+
+Implemented in source:
+- Turso/SQLite-compatible schema tables for memory_relations, memory_gravity, memory_lifecycle, and memory_syntheses.
+- Typed relation vocabulary and lifecycle constants.
+- Read-only GALAXY status and per-record neighborhood inspection.
+- Non-authoritative relation proposal primitive plus explicit Naomi verification primitive. Neither changes retrieval.
+- //PW:ORBIT// read-only runtime command.
+- //PW:GRAVITY// shadow inspection command. Phase 1 intentionally does not fabricate gravity scores.
+- /galaxy/status and /galaxy/record/{record_id} browser-authenticated inspection endpoints.
+
+Not yet claimed:
+- deployment of this checkpoint;
+- successful Turso schema initialization;
+- live relation proposal/verification;
+- gravity calculation quality;
+- retrieval weighting;
+- revision/supersession behavior;
+- synthesis/consolidation;
+- lifecycle attenuation;
+- pruning.
+
+Proof state: SOURCE_IMPLEMENTED_AWAITING_DEPLOYMENT_AND_RUNTIME_TEST.
