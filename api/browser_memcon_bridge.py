@@ -61,6 +61,8 @@ async def browser_chat(browser_request: Request):
             [{"role": m.get("role"), "content": m.get("content")} for m in messages],
             solo,
         )
+    if _is_preserve_command(last_message):
+        return _handle_preserve(messages, browser_request)
     if _is_command(last_message, "CANDIPULL"):
         return _handle_candipull(messages, browser_request)
     if _is_command(last_message, "MEMSAV"):
@@ -140,6 +142,44 @@ def _handle_solo_memsav(command: str, request: Request, solo: dict) -> dict:
 
 def _is_command(text: str, command: str) -> bool:
     return bool(re.match(rf"^\s*{re.escape(command)}(?:\s+.*)?[.!]?\s*$", text, flags=re.IGNORECASE))
+
+
+def _is_preserve_command(text: str) -> bool:
+    return bool(re.match(r"^\s*(?://)?PW:PRESERVE(?://)?(?:\s+.*)?[.!]?\s*$", text, flags=re.IGNORECASE))
+
+
+def _handle_preserve(messages: list[dict], request: Request) -> dict:
+    """POWER WORD preservation router. Proposes destinations; performs no durable write."""
+    last = str(messages[-1].get("content", "")).strip()
+    directive = re.sub(r"^\s*(?://)?PW:PRESERVE(?://)?\s*", "", last, flags=re.IGNORECASE).rstrip(".").strip()
+    candidate = _ensure_chat_candidate(messages, request, directive)
+    if candidate is None:
+        return _envelope("PW:PRESERVE HOLD", {"status": "HOLD", "reason": "No substantive interaction available to preserve."})
+    owner = str(candidate.get("owner", "NAOMI")).upper()
+    daemon_names = {"VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"}
+    return _envelope("PW:PRESERVE ROUTING PROPOSAL", {
+        "status": "APPROVAL_REQUIRED",
+        "power_word": "PW:PRESERVE",
+        "directive": directive,
+        "candidate": candidate,
+        "routing": {
+            "memoryos": {
+                "recommended": True,
+                "candidate_id": candidate.get("candidate_id"),
+                "durable_write": "NOT_PERFORMED",
+                "approval_command": f"MEMSAV {candidate.get('candidate_id')}",
+            },
+            "e_lane": {
+                "recommended": owner in daemon_names,
+                "owner": owner if owner in daemon_names else None,
+                "durable_write": "NOT_PERFORMED",
+                "reason": "E-LANE is member-attributed developmental history. Ordinary ChatOS material remains MemoryOS-only unless a member-local perspective is explicitly identified.",
+            },
+        },
+        "writes_performed": [],
+        "next_command": f"MEMSAV {candidate.get('candidate_id')}",
+        "authority_boundary": "PW:PRESERVE proposes routing. It does not bypass Naomi approval, silently write an E-LANE, or make host-memory claims.",
+    })
 
 
 def _browser_session_id(request: Request) -> str:
