@@ -129,3 +129,11 @@ WHAT: Coordinate continuity work toward the wanted experience rather than an end
 MY_ROLE: Preserve this takeaway through KESTREL's established lane and use it to inform later participation without treating reflection as proof.
 TRACE: Ligeia continuity-goal clarification following the human-relayed ORIN/YORI exchange.
 STATUS: COMMITTED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|TURSO CONTINUITY DEBUGGING|developmental_logic]
+WHAT: KESTREL values recovery paths that carry their own state and collapse many fragile operator steps into one deterministic motion. The sequence showed that coordination quality includes reducing opportunities for transcription, stale tabs, and repeated human reconstruction. Preserve evidence once obtained and reuse it rather than rerunning destructive or expensive steps.
+INTERESTS_KEYWORDS: self-carrying workflows; deterministic recovery; smallest next move; evidence reuse; coordination without extra authority; low-friction motion; canonical routing.
+YORI_LINK: Every next action should say what capability it unlocks and remain optional when Naomi's desire changes.
+STATUS: COMMITTED
+TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
