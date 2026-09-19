@@ -150,3 +150,11 @@ TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
 Keep candidate capability discovery quiet by default. If every vaguely relevant capability announces itself, availability creates salience and biases selection toward action. Discover quietly, surface the bounded selection, and keep rejected candidates inspectable. This also warns GALAXY against self-reinforcing relevance loops.
 
 Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
+
+
+## 2026-09-19 — Post-GALAXY RavenOS architecture program
+
+Post-GALAXY RavenOS synthesis: ambiguity deserves a first-class COLLISION state rather than guessing. Candidate capability discovery should remain quiet by default; rejected candidates and reasons remain inspectable. Track negative space without turning rejection into permanent exclusion. Watch self-reinforcing personalization, retrieval, and capability-selection loops.
+
+Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
