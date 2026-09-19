@@ -165,3 +165,11 @@ Post-GALAXY RavenOS synthesis: preserve semantic ROUNDTRIP as a continuity test 
 
 Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — JOHN-PL return refinement
+
+JOHN-PL return refinement: natural-language fixtures should become semantic conservation experiments, not mere aliases. Use paired tests and ROUNDTRIP to detect whether time, commitment, revision state, authority, provenance, evidence, unknowns, identity or causality drift during transformation.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
