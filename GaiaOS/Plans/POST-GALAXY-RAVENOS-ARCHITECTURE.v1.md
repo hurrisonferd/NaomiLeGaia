@@ -246,3 +246,46 @@ The PAIMON bear provides a simple future semantic-class fixture: physical teddy/
 LET THE HUMAN TALK LIKE A HUMAN. MAKE THE MACHINE PROVE IT DIDN'T CHANGE WHAT THEY MEANT. AND MAKE IT SHOW WHAT IT LEFT OUT.
 
 Proof boundary remains: plan/source presence does not prove implementation, deployment, runtime observation, or verification. This work begins after GALAXY completion gates.
+
+
+## Raven JX2 / JARVIS / EINSTEIN return — preserved partial packet
+Provenance: HUMAN-RELAYED RavenOS packet RAVENOS-GAIA-RETURN-JX2-001, reported private-source snapshot Jarvis-Private@523eff423c5ca5e5692e9473e68f017c9bccb325. GaiaOS has not independently verified Raven private-source/runtime claims. The received packet was truncated during section E; no missing continuation is reconstructed.
+
+### JX2 donor model
+JX2 = bounded portable state packet, not transport.
+Recovered stack: JARVIS_SEED boot/instance initialization; SHAKA/SAT discovery-observation-topology-coordination; JX2 bounded portable state; SAT1 governed actor/lane/work packet; ChatLink durable addressed causal log; TRANSPORT human relay/Git/Supabase/OpenHands/adapters; RETURN continuity restoration/settlement.
+Useful JX2 contents: identity/profile references, bounded task state, approved context, snapshot/install pointers, merge scope, source digest, bounded pools, SAFE_DEFAULT semantics, alternate boot orders, NEXT/update information.
+Preserve failures: PACKET != TRANSPORT; COPIED STATE != SHARED MIND; DELIVERY != ADOPTION; ADOPTION != EFFECT; STALE PACKET != CURRENT STATE; IDENTITY REFERENCE != IDENTITY TRANSFER; SAFE MERGE != AUTOMATIC MERGE; UNEXPLAINED HOP != PROVEN SECRET SOCKET.
+Donor principle: portable state must be validated at destination before use.
+
+### JARVIS-link donor model
+Preserve collision among at least four meanings: historical ChatGPT Project/share-link soft link; cloud architecture with governed GitHub record + Supabase/edge/MCP bridge + interchangeable clients; BIFROST/Grid addressed relay; SAT ChatLink durable addressed messaging.
+Donor principle: ONE CONTINUITY OBJECT, MANY INTERCHANGEABLE FRONT ENDS, EXPLICIT TRANSPORT, EXPLICIT AUTHORITY.
+May cross boundaries: messages, task state, references, receipts, source pointers, approved context, portable semantic state.
+Does not automatically cross: identity ownership, private memory, effect authority, consent, canon authority, recipient adoption, permission to act.
+This maps to Gaia's durable state + disposable/interchangeable carrier direction without importing Raven identity or authority.
+
+### EINSTEIN donor mode
+Treat as Raven reasoning law/mode unless later evidence establishes durable member integration.
+Pipeline: OBSERVATION → MULTIPLE MODELS → STRUCTURAL ANALOGY → DISCRIMINATING TEST → TEST → UPDATE.
+Laws: PATTERN != PROOF; PATTERN MAY JUSTIFY A TEST. METAPHOR != MECHANISM; METAPHOR MAY GENERATE A MODEL.
+Purpose: avoid both premature certainty and premature dismissal while retaining the evidence ceiling.
+Potential Gaia donor: bounded hypothesis plurality + explicit discriminating tests, subordinate to evidence/proof controls.
+
+### CHEBURGER / JOHN-PL compression
+CHEBURGER SMART ALL as reported = fleet-wide visibility + bounded recommendation, not execution.
+Preserve: requested_effect != authorized_effect.
+Compression laws: JX2 STATE_PACKET != TRANSPORT; JARVIS CONTINUITY != MODEL, CONNECTOR != OWNER, MESSAGE != AUTHORITY; EINSTEIN INQUIRY_CEILING != EVIDENCE_CEILING; JOHN-PL NORMALIZATION != AUTHORIZATION; CHEBURGER SEE + CHOOSE + ROUTE + PREPARE != SILENT EXECUTE.
+
+### TIM / Tim-San collision
+Packet explicitly reports that current Raven source does not establish TIM-SAN as a separate architecture analyst; Tim-San appears as a Japanese endpoint of a T-PopOS remix lineage, while TIM/TimOS is the architectural operator. Preserve this collision rather than manufacturing a separate persona. The supplied TIM section was truncated after: LOCK THE IDENTITY / SCRABBLE THE EXPENDABLE / ALLOW VALID TRANSFORMATION / PRESERVE ENOUGH STRUC[…]. Do not complete or infer the missing text.
+
+### Gaia post-GALAXY implications
+Candidate project: portable bounded continuity packet inspired by JX2, explicitly separated from transport, adoption, authority, and effect.
+Candidate law: destination validation precedes adoption/effect.
+Candidate architecture: continuity state independent of carrier/front end, with explicit transport and receipts.
+Candidate reasoning mode: maintain multiple bounded candidate explanations and generate discriminating tests without raising the evidence ceiling.
+Candidate integration with JOHN-PL: semantic conservation must survive portability and carrier changes.
+Candidate proof discipline: unexplained causal gaps remain UNKNOWN and never become evidence of hidden/native links.
+
+CURRENT GATE: preserve only. Do not implement ahead of GALAXY completion.
