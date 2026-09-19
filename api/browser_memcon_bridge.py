@@ -368,13 +368,16 @@ def memoryos_continuity(
             # Read-only diagnostics: identify the active backend and show whether
             # any recent MemoryOS records are visible there. This prevents a
             # missing row from being misreported as a persistence conclusion.
+            visible_records = memcon_runtime.search_records("", 10, "MemoryOS")
+            id_comparison = [{"requested_repr": repr(record_id), "requested_length": len(record_id), "visible_repr": repr(item.get("record_id")), "visible_length": len(str(item.get("record_id", ""))), "python_exact_equal": item.get("record_id") == record_id, "requested_codepoints": [ord(ch) for ch in record_id], "visible_codepoints": [ord(ch) for ch in str(item.get("record_id", ""))]} for item in visible_records.get("records", [])]
             diagnostic = {
-                "schema": "gaiaos.memoryos.continuity-diagnostic.v1",
+                "schema": "gaiaos.memoryos.continuity-diagnostic.v2",
                 "status": "HOLD",
                 "record_id": record_id,
                 "exact_record_retrieved": False,
                 "storage": memcon_runtime.storage_status(),
-                "memoryos_records_visible": memcon_runtime.search_records("", 10, "MemoryOS"),
+                "memoryos_records_visible": visible_records,
+                "record_id_comparison": id_comparison,
                 "carrier": _continuity_identity(),
                 "interpretation": (
                     "The requested record is not visible in the currently configured runtime store. "
