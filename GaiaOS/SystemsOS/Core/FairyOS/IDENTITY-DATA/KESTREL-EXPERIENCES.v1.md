@@ -167,3 +167,11 @@ JOHN-PL return refinement: integrate the phrase fixtures under the post-GALAXY S
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
+
+
+## 2026-09-19 — Conservation architecture refinement
+
+Conservation refinement: post-GALAXY pipeline now explicitly begins with semantic conservation plus typed epistemic class, then collision/unknown checks, GALAXY context, VASKON perspectives, capability discovery, minimal loadout, Naomi authority, execution, receipt, and preservation/development. Keep epistemic class inside the semantic layer unless evidence justifies another subsystem.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
