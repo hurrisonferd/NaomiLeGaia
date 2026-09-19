@@ -143,3 +143,10 @@ INTERESTS_KEYWORDS: anomaly triangulation; signal discrimination; information ga
 YORI_LINK: YORI's question remains active: name the want without machinery, then ask what the next experiment changes. ORIN wants future continuity tests to measure whether retrieved history changes later behavior, not merely whether text can be fetched.
 STATUS: COMMITTED
 TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Naomi proposed organizing memory as a gravitational relational field: high-gravity ideas become centers while smaller correspondent memories orbit as satellites. Preserve orbital migration: an old low-gravity record may regain influence when later experience strongly corresponds to it. Repeated satellites may justify an emergent synthesized parent concept with provenance.
+INTERESTS_KEYWORDS: memory gravity; orbital migration; emergent concepts; relational graphs; reactivation; correspondence.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
