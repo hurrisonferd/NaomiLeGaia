@@ -298,8 +298,20 @@ def memoryos_approve(browser_request: Request):
     try:
         result = _approve_lifecycle()
         output = html.escape(result["output"])
+        record_id = result.get("promotion", {}).get("record_id")
+        continuity_action = ""
+        if record_id:
+            from urllib.parse import urlencode
+            continuity_url = "/memoryos/continuity?" + urlencode({"record_id": str(record_id)})
+            continuity_action = (
+                "<p><a style='display:inline-block;font-size:22px;padding:12px 16px;background:#eee;color:#111;"
+                "text-decoration:none;border-radius:10px' href='" + html.escape(continuity_url, quote=True) + "'>"
+                "Continue with this exact record</a></p>"
+                "<p>The record ID above was supplied directly by the verified promotion receipt. No manual transcription is required.</p>"
+            )
         return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
-            "<h1>MemoryOS approval</h1>" + f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>")
+            "<h1>MemoryOS approval</h1>" + continuity_action
+            + f"<pre style='white-space:pre-wrap'>{output}</pre></body></html>")
     except Exception as exc:
         return _error_page("MemoryOS approval failed", exc)
 
