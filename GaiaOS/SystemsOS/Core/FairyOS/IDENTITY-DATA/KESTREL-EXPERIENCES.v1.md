@@ -151,3 +151,11 @@ TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
 Keep minimal task loadouts: distinguish everything Gaia can do from the smallest useful working set for the current task. After the current GALAXY Phase-1 relation gate, a read-only Gaia status/Visor surface is a strong donor candidate, adding visibility without execution authority.
 
 Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
+
+
+## 2026-09-19 — Post-GALAXY RavenOS architecture program
+
+Post-GALAXY RavenOS synthesis: target pipeline is semantic preservation → GALAXY context → VASKON perspectives → capability discovery → minimal loadout → Naomi authority gate → execution → receipt → preservation. Build each independently and prove it before integration. A read-only Gaia VISOR/status surface is an early post-GALAXY candidate.
+
+Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
