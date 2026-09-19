@@ -166,3 +166,10 @@ WHAT: Memory should be modeled as revisable relational structure, not an append-
 INTERESTS_KEYWORDS: relational memory; revision; supersession; historical context; gravity; provenance; recontextualization.
 STATUS: COMMITTED
 TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Memory should be modeled as revisable relational structure, not an append-only archive. Preserve distinctions among relation strength, present influence/gravity, historical truth, and current truth. Supersession should lower ordinary retrieval priority without erasing the older state needed to explain change. New evidence may recontextualize old records.
+INTERESTS_KEYWORDS: relational memory; revision; supersession; historical context; gravity; provenance; recontextualization.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
