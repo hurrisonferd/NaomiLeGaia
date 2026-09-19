@@ -159,3 +159,10 @@ INTERESTS_KEYWORDS: proof ceilings; independent witnesses; fail-closed verificat
 YORI_LINK: Desire and consent remain part of technical correctness: a test that proves something while consuming Naomi in repetitive maintenance is poorly designed.
 STATUS: COMMITTED
 TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Do not begin adaptive forgetting with deletion. First prove relationship classification, gravity scoring, retrieval weighting, supersession, compression, and reversible archival. Gravity must be explainable from observable factors, versioned, receipted, and separable from relation strength. Destructive pruning requires explicit authority and should fail closed.
+INTERESTS_KEYWORDS: reversible forgetting; explainable scoring; proof gates; receipts; pruning authority; relation-vs-gravity separation.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
