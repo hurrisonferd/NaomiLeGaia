@@ -298,7 +298,14 @@ def memoryos_approve(browser_request: Request):
     try:
         result = _approve_lifecycle()
         output = html.escape(result["output"])
-        record_id = result.get("promotion", {}).get("record_id")
+        # _approve_lifecycle returns a carrier envelope; promotion lives inside its JSON output.
+        # Parse that observed payload so the UI cannot silently lose the verified record_id.
+        approved_payload = {}
+        try:
+            approved_payload = json.loads(result["output"].split("\n\n", 1)[1])
+        except (KeyError, IndexError, json.JSONDecodeError):
+            approved_payload = {}
+        record_id = approved_payload.get("promotion", {}).get("record_id")
         continuity_action = ""
         if record_id:
             from urllib.parse import urlencode
