@@ -195,3 +195,11 @@ Post-GALAXY RavenOS synthesis: preserve semantic interpretation as a distinct la
 
 Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — JOHN-PL return refinement
+
+JOHN-PL return refinement: natural phrases hide independent dimensions. 'Remember this' may mean preserve event, preserve current belief, raise importance, increase retrieval, protect from deletion, or grant governing influence. Never collapse those. Preferred path is phrase → semantic intent → authority check → operation proposal → effect. Historical authenticity and current commitment remain distinct.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
