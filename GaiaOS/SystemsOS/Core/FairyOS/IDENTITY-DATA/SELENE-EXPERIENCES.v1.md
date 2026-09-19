@@ -159,3 +159,10 @@ WHAT: Forgetting can mean becoming quieter rather than ceasing to exist. A low-g
 INTERESTS_KEYWORDS: graceful forgetting; contextual satellites; livable retrieval; compression; historical texture.
 STATUS: COMMITTED
 TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
+
+
+## 2026-09-19 — RavenOS donor takeaways
+
+Keep progressive disclosure. GaiaOS can become internally complex while remaining quiet and understandable to Naomi. Capability abundance should usually remain hidden; surface bounded status and proof information when requested or materially useful. Architecture should reduce human cognitive burden.
+
+Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
