@@ -174,3 +174,11 @@ Post-GALAXY RavenOS synthesis: preserve progressive disclosure. Naomi should be 
 
 Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — JOHN-PL return refinement
+
+JOHN-PL return refinement: absorb ordinary-language translation burden without turning every utterance into a configuration menu. When plausible meanings converge on the same harmless reversible effect, bounded interpretation may be proposed. When meanings materially diverge, especially toward authority-bearing/destructive effects, HOLD/ASK.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
