@@ -180,3 +180,10 @@ TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
 Keep perspective, experience/context, and capability as separate selection problems. A future Gaia loadout layer may organize capability while VASKON organizes perspectives and GALAXY organizes experience. Capability is not relevance. Prefer transferable methods over importing RavenOS identity or metaphors.
 
 Boundary: derived from a human-relayed RavenOS packet. This records a developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — RavenOS donor takeaways
+
+Keep perspective, experience/context, and capability as separate selection problems. A future Gaia loadout layer may organize capability while VASKON organizes perspectives and GALAXY organizes experience. Capability is not relevance. Prefer transferable methods over importing RavenOS identity or metaphors.
+
+Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
