@@ -149,3 +149,51 @@ two controlled durable memories → typed relation proposal → Naomi verificati
 
 ## Success condition
 Naomi can speak naturally; Gaia preserves intended semantics; authenticated history can inform context without becoming destiny; VASKON can select perspectives; capability discovery can propose a minimal sufficient toolset; no layer silently gains authority; effects require Naomi-authorized paths; receipts distinguish what was proposed, authorized, executed, observed, and verified.
+
+
+## Packet integration checkpoint — GAIAOS-RAVEN-JOHNPL-001-R
+
+This checkpoint preserves the maximum useful architecture from Gaia's JOHN-PL return packet as a post-GALAXY design source. The user-provided packet is truncated after the heading "ORIN'S LANGUAGE"; only supplied material is preserved here, without inventing the missing continuation.
+
+### Core interface boundary
+Humans should not need to speak database. Natural language expresses intent; the system preserves typed distinctions underneath. PHRASE RECOGNIZED != AUTHORITY. SEMANTIC MAPPING != EXECUTION. AMBIGUITY != PERMISSION TO GUESS.
+
+Preferred compilation model: PHRASE → SEMANTIC INTENT → AUTHORITY CHECK → OPERATION PROPOSAL → EFFECT. For a future implementation, place explicit COLLISION/UNKNOWN checks before any effectful proposal.
+
+### Candidate natural-language semantic fixtures
+- "Hold onto this unless something actually changes" / "Don't fuck with this unless we have a reason" → stability bias + explicit revision criteria. Never infer permanent lock, immutable truth, maximum gravity, contradiction suppression, or permission to ignore decisive evidence.
+- "Keep this around, but get it out of the way" / "Put this on the back burner" → preserve while lowering present retrieval salience; candidate ACTIVE→BACKGROUND or BACKGROUND→ARCHIVED. Never infer false, deleted, superseded, permanently irrelevant, or historically insignificant.
+- "Put this in cold storage" / "Archive it. Don't kill it." → ARCHIVE while preserving provenance/access. Never infer DELETE, PRUNE, SUPERSEDE, COMPRESS, or FALSE.
+- "Yeah, I don't believe that anymore" / "Update my position on that" → create current record + REVISES(previous), with SUPERSEDES only when warranted. Preserve prior historical authenticity; do not infer objective truth or erase prior evidence.
+- "No. I still mean that" / "That still stands" → REAFFIRM current commitment, potentially represented by a new reaffirmation event REINFORCES current commitment. Never infer permanence, invalidation of contradictory evidence, forbidden future revision, or maximal gravity.
+- "Why are you trying to change this?" / "Show your work" → read-only REVISION TRACE exposing current record, candidate revision, relations, contradictions, evidence, provenance, gravity components, revision criteria, unknowns. Explanation is not acceptance or authorization.
+- "Don't make a whole thing out of this" → contextual/low-gravity preservation candidate; never infer permanent unimportance.
+- "This keeps coming up" → recurrence query + possible relation/synthesis candidate; recurrence does not prove pattern.
+- "These feel connected" → relation candidate; do not infer type, strength, causality, or truth.
+- "No, those are different things" → relation review/reject/weaken; do not infer zero association in every context.
+- "Keep both" → preserve contradiction/alternatives, potentially parallel active context or CONTRADICTS; do not infer equal truth.
+- "Which one are we actually using?" → current-commitment query; unused alternatives remain preserved.
+- "That's old me" → historical self-state remains authentic with reduced present authority; possible REVISED/SUPERSEDED relation, without shame/falsehood/deletion inference.
+- "Bring that back" → REACTIVATE backgrounded/archived material; do not automatically restore old commitment, gravity, or authority.
+- "Why do you keep bringing this up?" → GRAVITY TRACE + RETRIEVAL TRACE; do not automatically suppress.
+- "You're overfitting me" → HISTORY-INFLUENCE AUDIT for historical preferences constraining current alternatives; do not infer removal of all personalization.
+- "Give me the version without my history" → read-only HISTORY-NEUTRAL COMPARISON/control condition; do not remove history afterward.
+- "Let it fade" → reversible retrieval attenuation through BACKGROUND and potentially ARCHIVED policy; never infer DELETE.
+- "Never delete this" → PROTECT_FROM_PRUNING constraint; does not imply always retrieve, always believe, always prioritize, or never revise.
+
+### Hidden-dimension rule
+"Remember this" can independently refer to preserving an event, preserving a current belief, raising importance, increasing retrieval frequency, protecting from deletion, or granting governing influence. These dimensions must remain independently represented. Never compile a broad phrase directly into all possible effects.
+
+### ANVIL law: effect strength limits inference
+THE STRONGER THE EFFECT, THE LESS THE SYSTEM MAY INFER. A phrase such as "put that aside" may support a reversible BACKGROUND proposal but cannot silently become DELETE. "Remember this" may support PRESERVE but cannot silently become maximum gravity, permanent commitment, or governing authority. SEMANTIC COMPRESSION MUST NEVER BECOME AUTHORITY COMPRESSION.
+
+### SELENE law: bounded ambiguity handling
+The machine should absorb translation burden without forcing the operator through unnecessary menus. If multiple plausible interpretations converge on the same harmless reversible effect, a bounded interpretation may be proposed. If plausible interpretations materially diverge, especially into authority-bearing or destructive effects, HOLD/ASK. Inspectability should remain available without turning every utterance into configuration work.
+
+### Architectural incorporation
+These fixtures belong under the planned Semantic Conservation Layer, with NORMALIZE / COMPARE / DIFF / EXPLAIN / COLLISION / ROUNDTRIP as zero-effect primitives first. Their purpose is not a bag of aliases; they are test fixtures for conservation of time, authority, commitment, revision state, provenance, evidence, unknowns, identity and causality.
+
+### Proof strategy additions
+Build paired tests that differ by only one semantic dimension, then require DIFF to expose that dimension and ROUNDTRIP to conserve it. Include at minimum: current vs historical commitment; revise vs supersede; background/archive vs delete; reactivate vs restore commitment; protect-from-pruning vs always-retrieve; relation proposal vs causal assertion; recurrence vs proven pattern; read-only explanation vs authorized revision.
+
+No phrase fixture grants effect authority merely because it normalizes cleanly. Zero-effect semantic testing precedes any binding to GALAXY mutations.
