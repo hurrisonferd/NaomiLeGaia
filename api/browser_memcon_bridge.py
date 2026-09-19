@@ -434,7 +434,7 @@ def memoryos_continuity(
                     "This diagnostic does not determine whether it was deleted, written to another backend, "
                     "or never durably committed there."
                 ),
-                "next_action": "Do not restart. Inspect backend identity and visible records first.",
+                "next_action": "Do not restart. Use the canonical record_id from the visible durable record if this request contains a transcription error.",
             }
             output = html.escape(json.dumps(diagnostic, ensure_ascii=False, indent=2))
             return HTMLResponse(
