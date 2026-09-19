@@ -362,12 +362,22 @@ def _safe_debug_value(value):
 def _memoryos_raw_read_diagnostic(record_id: str) -> dict:
     """Read-only backend interrogation. Never returns credentials."""
     with memcon_runtime._db() as conn:
-        exact_cursor = conn.execute("SELECT * FROM memory_records WHERE record_id = ?", [record_id] if memcon_runtime.STORAGE_BACKEND == "turso_libsql" else (record_id,))
+        exact_cursor = conn.execute("SELECT * FROM memory_records WHERE record_id = ?", (record_id,))
         exact_description = getattr(exact_cursor, "description", None)
         exact_rows = exact_cursor.fetchall()
-        broad_cursor = conn.execute("SELECT * FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT ?", ["MemoryOS", 10] if memcon_runtime.STORAGE_BACKEND == "turso_libsql" else ("MemoryOS", 10))
+        broad_cursor = conn.execute("SELECT * FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT ?", ("MemoryOS", 10))
         broad_description = getattr(broad_cursor, "description", None)
         broad_rows = broad_cursor.fetchall()
+        sql_probe_cursor = conn.execute(
+            """SELECT record_id, length(record_id), hex(record_id), quote(record_id),
+                      typeof(record_id), record_id = ?,
+                      length(?) AS requested_length, hex(?) AS requested_hex,
+                      quote(?) AS requested_quote, typeof(?) AS requested_type
+               FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT 10""",
+            (record_id, record_id, record_id, record_id, record_id, "MemoryOS"),
+        )
+        sql_probe_description = getattr(sql_probe_cursor, "description", None)
+        sql_probe_rows = sql_probe_cursor.fetchall()
     def describe(desc):
         return [{"type": type(col).__name__, "repr": repr(col), "name": getattr(col, "name", None)} for col in (desc or [])]
     def rows(raw):
@@ -377,9 +387,9 @@ def _memoryos_raw_read_diagnostic(record_id: str) -> dict:
         "requested": {"repr": repr(record_id), "length": len(record_id), "codepoints": [ord(ch) for ch in record_id]},
         "exact_query": {"description": describe(exact_description), "row_count": len(exact_rows), "rows": rows(exact_rows)},
         "broad_query": {"description": describe(broad_description), "row_count": len(broad_rows), "rows": rows(broad_rows)},
-        "proof_boundary": "Read-only raw driver evidence. No persistence conclusion is implied by this diagnostic alone.",
+        "sql_value_probe": {"description": describe(sql_probe_description), "row_count": len(sql_probe_rows), "rows": rows(sql_probe_rows)},
+        "proof_boundary": "Read-only raw driver and SQL value evidence. No persistence conclusion is implied by this diagnostic alone.",
     }
-
 
 @app.get("/memoryos/raw-diagnostic", response_class=HTMLResponse, operation_id="memoryOSRawDiagnostic")
 def memoryos_raw_diagnostic(browser_request: Request, record_id: str):
