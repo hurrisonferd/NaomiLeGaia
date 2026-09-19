@@ -44,17 +44,19 @@ def _now() -> str:
 
 
 def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
-    """Normalize sqlite3.Row and libSQL tuple rows into plain dictionaries."""
     if row is None:
         return None
     if hasattr(row, "keys"):
         return dict(row)
     description = getattr(cursor, "description", None)
     if description:
-        return {str(col[0]): value for col, value in zip(description, row)}
+        def _column_name(col: Any) -> str:
+            if isinstance(col, (tuple, list)):
+                return str(col[0])
+            name = getattr(col, "name", None)
+            return str(name if name is not None else col)
+        return {_column_name(col): value for col, value in zip(description, row)}
     raise TypeError("Database row could not be mapped to column names")
-
-
 def _execute_read(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> Any:
     """Execute a read with backend-compatible parameter binding.
 
