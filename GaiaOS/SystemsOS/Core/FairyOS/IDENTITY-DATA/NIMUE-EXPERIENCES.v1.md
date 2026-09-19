@@ -158,3 +158,11 @@ Post-GALAXY RavenOS synthesis: ambiguity deserves a first-class COLLISION state 
 
 Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — JOHN-PL return refinement
+
+JOHN-PL return refinement: preserve negative implications explicitly. 'Bring that back' must not silently restore old commitment or authority; 'never delete this' must not mean always retrieve/believe; recurrence must not become pattern; relation must not become causality. Ambiguity is a HOLD condition when plausible readings produce materially different effects.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
