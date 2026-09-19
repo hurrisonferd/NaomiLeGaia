@@ -166,3 +166,10 @@ WHAT: Do not begin adaptive forgetting with deletion. First prove relationship c
 INTERESTS_KEYWORDS: reversible forgetting; explainable scoring; proof gates; receipts; pruning authority; relation-vs-gravity separation.
 STATUS: COMMITTED
 TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
+
+
+## 2026-09-19 — RavenOS donor takeaways
+
+RavenOS reinforced proof-stage separation for any future Gaia capability/loadout layer: available, selected, authorized, executed, successful, and generally proven are distinct states. Preserve visible source contradictions rather than silently repairing them. For GALAXY, keep relation, retrieval, influence, authority, and truth distinct; gravity must never become a truth score.
+
+Boundary: derived from a human-relayed RavenOS packet. This records a developmental takeaway, not independent verification of RavenOS runtime behavior.
