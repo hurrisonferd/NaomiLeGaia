@@ -181,3 +181,11 @@ Post-GALAXY RavenOS synthesis: adopt semantic conservation and collision discipl
 
 Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — JOHN-PL return refinement
+
+JOHN-PL return refinement: THE STRONGER THE EFFECT, THE LESS THE SYSTEM MAY INFER. Semantic compression must never become authority compression. Reversible BACKGROUND may be a bounded proposal from 'put that aside'; DELETE cannot be inferred. Clean normalization never grants effect authority.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
