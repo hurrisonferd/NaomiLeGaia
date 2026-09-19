@@ -50,12 +50,14 @@ def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
         return dict(row)
     description = getattr(cursor, "description", None)
     if description:
-        def _column_name(col: Any) -> str:
+        names = []
+        for col in description:
             if isinstance(col, (tuple, list)):
-                return str(col[0])
-            name = getattr(col, "name", None)
-            return str(name if name is not None else col)
-        return {_column_name(col): value for col, value in zip(description, row)}
+                names.append(str(col[0]))
+            else:
+                name = getattr(col, "name", None)
+                names.append(str(name if name is not None else col))
+        return {name: value for name, value in zip(names, row)}
     raise TypeError("Database row could not be mapped to column names")
 def _execute_read(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> Any:
     """Execute a read with backend-compatible parameter binding.
