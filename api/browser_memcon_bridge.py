@@ -63,6 +63,10 @@ async def browser_chat(browser_request: Request):
         )
     if _is_preserve_command(last_message):
         return _handle_preserve(messages, browser_request)
+    if _is_galaxy_command(last_message, "ORBIT"):
+        return _handle_galaxy_orbit(last_message)
+    if _is_galaxy_command(last_message, "GRAVITY"):
+        return _handle_galaxy_gravity(last_message)
     if _is_command(last_message, "CANDIPULL"):
         return _handle_candipull(messages, browser_request)
     if _is_command(last_message, "MEMSAV"):
@@ -142,6 +146,53 @@ def _handle_solo_memsav(command: str, request: Request, solo: dict) -> dict:
 
 def _is_command(text: str, command: str) -> bool:
     return bool(re.match(rf"^\s*{re.escape(command)}(?:\s+.*)?[.!]?\s*$", text, flags=re.IGNORECASE))
+
+
+def _is_galaxy_command(text: str, word: str) -> bool:
+    return bool(re.match(rf"^\s*(?://)?PW:{re.escape(word)}(?://)?(?:\s+.*)?[.!]?\s*$", text, flags=re.IGNORECASE))
+
+
+def _galaxy_command_body(command: str, word: str) -> str:
+    return re.sub(rf"^\s*(?://)?PW:{re.escape(word)}(?://)?\s*", "", command, flags=re.IGNORECASE).rstrip(".").strip()
+
+
+def _handle_galaxy_orbit(command: str) -> dict:
+    """Read-only Phase 1 inspection. No edge is inferred or written by this command."""
+    record_id = _galaxy_command_body(command, "ORBIT").split()[0] if _galaxy_command_body(command, "ORBIT") else ""
+    if not record_id:
+        return _envelope("PW:ORBIT", {
+            "status": "READY",
+            "galaxy": memcon_runtime.galaxy_status(),
+            "usage": "//PW:ORBIT// MEM-<record_id>",
+            "writes_performed": [],
+        })
+    result = memcon_runtime.galaxy_record(record_id)
+    if result is None:
+        return _envelope("PW:ORBIT HOLD", {"status": "HOLD", "reason": "Unknown durable record_id", "record_id": record_id})
+    return _envelope("PW:ORBIT", {"status": "OBSERVED", "record_id": record_id, "orbit": result, "writes_performed": []})
+
+
+def _handle_galaxy_gravity(command: str) -> dict:
+    """Shadow-mode gravity inspection. Phase 1 intentionally performs no scoring."""
+    record_id = _galaxy_command_body(command, "GRAVITY").split()[0] if _galaxy_command_body(command, "GRAVITY") else ""
+    if not record_id:
+        return _envelope("PW:GRAVITY", {
+            "status": "SHADOW_NOT_SCORED",
+            "galaxy": memcon_runtime.galaxy_status(),
+            "usage": "//PW:GRAVITY// MEM-<record_id>",
+            "writes_performed": [],
+            "proof_boundary": "Phase 1 installs the gravity data surface but does not invent scores.",
+        })
+    result = memcon_runtime.galaxy_record(record_id)
+    if result is None:
+        return _envelope("PW:GRAVITY HOLD", {"status": "HOLD", "reason": "Unknown durable record_id", "record_id": record_id})
+    return _envelope("PW:GRAVITY", {
+        "status": "SHADOW_NOT_SCORED" if result.get("gravity") is None else "OBSERVED",
+        "record_id": record_id,
+        "gravity": result.get("gravity"),
+        "retrieval_effect": "NONE_SHADOW_MODE",
+        "writes_performed": [],
+    })
 
 
 def _is_preserve_command(text: str) -> bool:
