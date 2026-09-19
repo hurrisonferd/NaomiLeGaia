@@ -124,3 +124,116 @@ Not yet claimed:
 - pruning.
 
 Proof state: SOURCE_IMPLEMENTED_AWAITING_DEPLOYMENT_AND_RUNTIME_TEST.
+
+
+## Resume checkpoint 2026-09-19 00:16 EDT
+
+PURPOSE: Clean future recall of GALAXY architecture, implementation order, observed proof state, and exact next gate.
+
+### Architecture to preserve
+
+GALAXY = Gravitational Adaptive Learning Archive & conteXt sYstem.
+
+Memory remains durable evidence-bearing records. GALAXY layers a relational graph over those records:
+1. typed relationships between records;
+2. relation strength separate from gravity;
+3. gravity as explainable present retrieval influence;
+4. revision/supersession without historical erasure;
+5. provenance-backed synthesis/consolidation;
+6. reversible lifecycle attenuation before any destructive pruning;
+7. orbital migration/reactivation when later evidence makes quiet memories relevant again.
+
+Lifecycle target:
+ACTIVE → BACKGROUND → ARCHIVED → COMPRESSED → PRUNABLE.
+PRUNABLE is review eligibility, not permission to delete.
+
+### Implementation sequence
+
+PHASE 0: Preserve existing MemoryOS/Turso and PW:PRESERVE/MEMSAV proof baseline. DONE for previously tested paths.
+
+PHASE 1: Graph foundation with no retrieval effect.
+- add memory_relations, memory_gravity, memory_lifecycle, memory_syntheses;
+- expose read-only status and record-neighborhood inspection;
+- relation proposal must remain non-authoritative;
+- relation verification requires explicit Naomi approval;
+- ORBIT inspection performs no writes;
+- GRAVITY remains shadow/no fabricated score.
+SOURCE IMPLEMENTED and DEPLOYED. Runtime structure and ORBIT read-only inspection OBSERVED for tested path.
+
+NEXT PHASE-1 GATE:
+- create two controlled durable MemoryOS records;
+- propose one typed relationship between them;
+- inspect proposal;
+- explicitly approve/verify edge as NAOMI;
+- ORBIT the record again;
+- verify edge readback;
+- verify retrieval remains unchanged;
+- retain receipt/proof boundary.
+
+PHASE 2: Gravity shadow mode.
+- define versioned explainable scoring components;
+- calculate scores without affecting retrieval;
+- inspect/calibrate against observed usefulness;
+- prevent feedback loops, recency domination, and arbitrary permanent weights.
+
+PHASE 3: Weighted retrieval experiment.
+- combine semantic relevance, gravity, graph path relevance, lifecycle state, and provenance/source confidence in a bounded test;
+- compare against existing retrieval control;
+- preserve contradiction and exploration slots;
+- prove retrieved history changes a subsequent bounded output in the predicted way without granting retrieved context authority.
+
+PHASE 4: Revision/supersession.
+- B REVISES A and, only when warranted, B SUPERSEDES A;
+- retain A as historical truth/provenance;
+- lower A for ordinary current-state retrieval while preserving historical retrieval;
+- newer never automatically means truer.
+
+PHASE 5: Synthesis/consolidation.
+- repeated satellites may produce a proposed parent concept;
+- synthesis is a new record with explicit source IDs;
+- originals remain provenance satellites;
+- no silent rewriting.
+
+PHASE 6: Reversible forgetting.
+- enable BACKGROUND/ARCHIVED/COMPRESSED and reactivation;
+- forgetting initially means reduced retrieval priority, not destruction;
+- future evidence can increase an old record's gravity again.
+
+PHASE 7: Pruning research only.
+- no physical deletion until dependency checks, tombstones, rollback, provenance sufficiency, destructive canaries, and explicit Naomi policy are separately proven.
+
+### Observed live proof state
+
+Deployed source checkpoint: commit 2a80503dc4e8f2e1a5e70a2a0c0d0e011a20153f.
+Render service observed Live after deployment.
+
+Live /galaxy/status observed:
+- schema gaiaos.galaxy.runtime.v1
+- phase PHASE_1_GRAPH_FOUNDATION
+- mode SHADOW_NO_RETRIEVAL_EFFECT
+- storage backend turso_libsql
+- remote_configured true
+- relations 0
+- gravity_scores 0
+- lifecycle_rows 0
+- syntheses 0
+- retrieval_weighting_enabled false
+- physical_pruning_enabled false
+
+Live PW:ORBIT tested against existing durable record:
+MEM-3ef2a79223c54def85800a563c62cf78
+
+Observed:
+- status OBSERVED
+- correct durable MemoryOS record returned
+- relations []
+- gravity null
+- lifecycle null
+- retrieval_effect NONE_SHADOW_MODE
+- writes_performed []
+
+Bounded conclusion: GALAXY Phase 1 structures are live on the configured Turso/libSQL runtime, and read-only ORBIT integration was observed for this tested record without writes or retrieval influence. Relation quality, gravity, weighted retrieval, revision, consolidation, forgetting, and pruning remain unproven.
+
+### Resume instruction
+
+On return, do not rebuild or repeat the already observed foundation tests unless evidence requires it. Resume at the NEXT PHASE-1 GATE: controlled two-memory relation proposal → Naomi verification → edge readback through ORBIT → confirm retrieval still unchanged.
