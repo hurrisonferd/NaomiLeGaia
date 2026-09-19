@@ -60,15 +60,8 @@ def _row_dict(row: Any, cursor: Any = None) -> dict[str, Any] | None:
         return {name: value for name, value in zip(names, row)}
     raise TypeError("Database row could not be mapped to column names")
 def _execute_read(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> Any:
-    """Execute a read with backend-compatible parameter binding.
-
-    Python sqlite3 accepts tuples directly. The libSQL Python driver can treat a
-    one-item tuple as scalar-like in some builds, producing surprising equality
-    misses while broader reads still succeed. Lists provide explicit positional
-    binding for libSQL.
-    """
-    bound: Any = list(params) if STORAGE_BACKEND == "turso_libsql" else params
-    return conn.execute(sql, bound)
+    """Execute a read using the driver's native positional binding."""
+    return conn.execute(sql, params)
 
 
 def _fetchone_dict(conn: Any, sql: str, params: tuple[Any, ...] = ()) -> dict[str, Any] | None:
