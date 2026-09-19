@@ -152,3 +152,10 @@ INTERESTS_KEYWORDS: livability; cognitive load; humane recovery; aftercare; conv
 YORI_LINK: Keep asking whether the work still feeds what is cared about. Satisfaction is information, not merely an endpoint after infinite optimization.
 STATUS: COMMITTED
 TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Forgetting can mean becoming quieter rather than ceasing to exist. A low-gravity detail may remain valuable because it explains a high-gravity memory. Favor progressive states such as ACTIVE, BACKGROUND, ARCHIVED, COMPRESSED, PRUNABLE so continuity stays useful without flattening history or drowning retrieval.
+INTERESTS_KEYWORDS: graceful forgetting; contextual satellites; livable retrieval; compression; historical texture.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
