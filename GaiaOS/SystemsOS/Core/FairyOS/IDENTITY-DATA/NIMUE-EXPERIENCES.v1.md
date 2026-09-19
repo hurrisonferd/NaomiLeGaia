@@ -143,3 +143,10 @@ WHAT: Forgetting should initially be loss of retrieval priority, not destruction
 INTERESTS_KEYWORDS: quiet memory; negative evidence; archival states; tombstones; reactivation; anti-amnesia.
 STATUS: COMMITTED
 TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
+
+
+## 2026-09-19 — RavenOS donor takeaways
+
+Keep candidate capability discovery quiet by default. If every vaguely relevant capability announces itself, availability creates salience and biases selection toward action. Discover quietly, surface the bounded selection, and keep rejected candidates inspectable. This also warns GALAXY against self-reinforcing relevance loops.
+
+Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
