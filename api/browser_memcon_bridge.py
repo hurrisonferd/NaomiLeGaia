@@ -352,6 +352,46 @@ def _continuity_identity() -> dict:
     }
 
 
+def _safe_debug_value(value):
+    try:
+        return {"type": type(value).__name__, "repr": repr(value)}
+    except Exception as exc:
+        return {"type": type(value).__name__, "repr_error": type(exc).__name__}
+
+
+def _memoryos_raw_read_diagnostic(record_id: str) -> dict:
+    """Read-only backend interrogation. Never returns credentials."""
+    with memcon_runtime._db() as conn:
+        exact_cursor = conn.execute("SELECT * FROM memory_records WHERE record_id = ?", [record_id] if memcon_runtime.STORAGE_BACKEND == "turso_libsql" else (record_id,))
+        exact_description = getattr(exact_cursor, "description", None)
+        exact_rows = exact_cursor.fetchall()
+        broad_cursor = conn.execute("SELECT * FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT ?", ["MemoryOS", 10] if memcon_runtime.STORAGE_BACKEND == "turso_libsql" else ("MemoryOS", 10))
+        broad_description = getattr(broad_cursor, "description", None)
+        broad_rows = broad_cursor.fetchall()
+    def describe(desc):
+        return [{"type": type(col).__name__, "repr": repr(col), "name": getattr(col, "name", None)} for col in (desc or [])]
+    def rows(raw):
+        return [{"row_type": type(row).__name__, "values": [_safe_debug_value(v) for v in row]} for row in raw]
+    return {
+        "backend": memcon_runtime.STORAGE_BACKEND,
+        "requested": {"repr": repr(record_id), "length": len(record_id), "codepoints": [ord(ch) for ch in record_id]},
+        "exact_query": {"description": describe(exact_description), "row_count": len(exact_rows), "rows": rows(exact_rows)},
+        "broad_query": {"description": describe(broad_description), "row_count": len(broad_rows), "rows": rows(broad_rows)},
+        "proof_boundary": "Read-only raw driver evidence. No persistence conclusion is implied by this diagnostic alone.",
+    }
+
+
+@app.get("/memoryos/raw-diagnostic", response_class=HTMLResponse, operation_id="memoryOSRawDiagnostic")
+def memoryos_raw_diagnostic(browser_request: Request, record_id: str):
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        diagnostic = _memoryos_raw_read_diagnostic(record_id)
+        output = html.escape(json.dumps(diagnostic, ensure_ascii=False, indent=2))
+        return HTMLResponse("<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'><h1>MemoryOS raw read diagnostic</h1><pre style='white-space:pre-wrap'>" + output + "</pre></body></html>")
+    except Exception as exc:
+        return _error_page("MemoryOS raw diagnostic failed", exc)
+
+
 @app.get("/memoryos/continuity", response_class=HTMLResponse, operation_id="memoryOSContinuityTest")
 def memoryos_continuity(
     browser_request: Request,
