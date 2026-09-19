@@ -535,7 +535,17 @@ def memoryos_continuity_recover(browser_request: Request):
     """Read-only recovery for a lost pinned tab using an independently preserved pre-restart baseline."""
     gaiaos_api._authorize_browser_session(browser_request)
     try:
-        # Resolve the canonical record from durable evidence, not a hand-copied ID.\n        expected_source = "browser-memoryos-test:371a6d98a3bd"\n        with memcon_runtime._db() as conn:\n            canonical_cursor = conn.execute(\n                "SELECT record_id FROM memory_records WHERE scope = ? AND source = ? ORDER BY created_at DESC LIMIT 1",\n                ("MemoryOS", expected_source),\n            )\n            canonical_row = canonical_cursor.fetchone()\n        if canonical_row is None:\n            raise RuntimeError("Canonical continuity record was not found by its durable source marker")\n        record_id = str(canonical_row[0])
+        # Resolve the canonical record from durable evidence, not a hand-copied ID.
+        expected_source = "browser-memoryos-test:371a6d98a3bd"
+        with memcon_runtime._db() as conn:
+            canonical_cursor = conn.execute(
+                "SELECT record_id FROM memory_records WHERE scope = ? AND source = ? ORDER BY created_at DESC LIMIT 1",
+                ("MemoryOS", expected_source),
+            )
+            canonical_row = canonical_cursor.fetchone()
+        if canonical_row is None:
+            raise RuntimeError("Canonical continuity record was not found by its durable source marker")
+        record_id = str(canonical_row[0])
         prior = {
             "boot_id": "BOOT-bf2621aa5b3c49039789b452515a98bd",
             "render_instance_id": "srv-dafvq6ijnfac739rih70-hibernate-66bc89c57-5k4kv",
