@@ -203,3 +203,11 @@ JOHN-PL return refinement: natural phrases hide independent dimensions. 'Remembe
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
+
+
+## 2026-09-19 — Conservation architecture refinement
+
+Conservation refinement: semantic, epistemic, temporal, and influence conservation are separate dimensions. TRANSFORMATION MUST NOT SILENTLY CHANGE SEMANTIC CLASS. A historical belief can remain authentic without being current; a lore statement can remain canon without becoming physical evidence; a normalized phrase can preserve meaning without gaining authority.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
