@@ -542,6 +542,25 @@ def memoryos_continuity_recover(browser_request: Request):
             "process_fingerprint": {"pid": 7, "proc_start_ticks": "1225523065"},
         }
         record = memcon_runtime.get_record(record_id)
+        # Independent read-only witness: ask the configured database directly
+        # whether the exact ID exists, and also list recent MemoryOS IDs. This
+        # separates durable-row presence from any higher-level retrieval bug.
+        with memcon_runtime._db() as conn:
+            exact_cursor = conn.execute(
+                "SELECT record_id, authority, record_type, scope, statement, source, status, version, created_at, updated_at, supersedes, notes FROM memory_records WHERE record_id = ?",
+                (record_id,),
+            )
+            exact_rows = exact_cursor.fetchall()
+            broad_cursor = conn.execute(
+                "SELECT record_id, scope, source, created_at, updated_at FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT 10",
+                ("MemoryOS",),
+            )
+            broad_rows = broad_cursor.fetchall()
+        raw_exact = [_safe_debug_value(list(row)) for row in exact_rows]
+        raw_broad = [_safe_debug_value(list(row)) for row in broad_rows]
+        broad_ids = [str(row[0]) for row in broad_rows]
+        raw_exact_present = any(str(row[0]) == record_id for row in exact_rows)
+        broad_exact_present = record_id in broad_ids
         current = _continuity_identity()
         current_pf = current["process_fingerprint"]
         boot_changed = current["boot_id"] != prior["boot_id"]
@@ -560,6 +579,16 @@ def memoryos_continuity_recover(browser_request: Request):
             "record_id": record_id,
             "record_retrieved": record is not None,
             "record": record,
+            "raw_database_witness": {
+                "exact_sql_present": raw_exact_present,
+                "broad_scan_contains_exact_id": broad_exact_present,
+                "exact_rows": raw_exact,
+                "recent_memoryos_rows": raw_broad,
+                "interpretation": (
+                    "If either raw presence check is true while record_retrieved is false, the durable row exists and the higher-level retrieval path is defective. "
+                    "If both raw presence checks are false, this endpoint has not found the named row in the configured database."
+                ),
+            },
             "storage": memcon_runtime.storage_status(),
             "prior_carrier": prior,
             "current_carrier": current,
