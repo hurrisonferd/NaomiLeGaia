@@ -144,3 +144,10 @@ WHAT: Sequence the adaptive-memory build so every capability is independently te
 INTERESTS_KEYWORDS: staged implementation; memory graph; retrieval weighting; consolidation pipeline; reversible rollout.
 STATUS: COMMITTED
 TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
+
+
+## 2026-09-19 — RavenOS donor takeaways
+
+Keep minimal task loadouts: distinguish everything Gaia can do from the smallest useful working set for the current task. After the current GALAXY Phase-1 relation gate, a read-only Gaia status/Visor surface is a strong donor candidate, adding visibility without execution authority.
+
+Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
