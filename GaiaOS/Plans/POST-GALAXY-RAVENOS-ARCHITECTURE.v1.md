@@ -197,3 +197,52 @@ These fixtures belong under the planned Semantic Conservation Layer, with NORMAL
 Build paired tests that differ by only one semantic dimension, then require DIFF to expose that dimension and ROUNDTRIP to conserve it. Include at minimum: current vs historical commitment; revise vs supersede; background/archive vs delete; reactivate vs restore commitment; protect-from-pruning vs always-retrieve; relation proposal vs causal assertion; recurrence vs proven pattern; read-only explanation vs authorized revision.
 
 No phrase fixture grants effect authority merely because it normalizes cleanly. Zero-effect semantic testing precedes any binding to GALAXY mutations.
+
+
+## Conservation architecture refinement — BIFROST JOHN-PL return synthesis
+
+### New cross-layer invariant
+TRANSFORMATION MUST NOT SILENTLY CHANGE SEMANTIC CLASS.
+
+JOHN-PL-style semantic preservation, GALAXY temporal/history preservation, and ANVIL evidence boundaries expose a common conservation problem. A representation may change while protected meaning must remain stable.
+
+### Typed epistemic/semantic classes
+Future typed semantic units should preserve, at minimum, whether material is an OBSERVATION, CLAIM, LORE, PREFERENCE, COMMITMENT, HYPOTHESIS, INFERENCE, AUTHORIZATION, or UNKNOWN. Normalization may alter representation but must not silently migrate material between classes. Keep this classification inside the semantic representation unless evidence later justifies a separate subsystem.
+
+### Four conservation dimensions
+1. SEMANTIC CONSERVATION — What did the human mean?
+2. EPISTEMIC CONSERVATION — What kind of information was it?
+3. TEMPORAL CONSERVATION — What was true/believed/committed when?
+4. INFLUENCE CONSERVATION — How much should preserved history affect now?
+
+None may substitute for another.
+
+### Expanded post-GALAXY pipeline
+HUMAN EXPRESSION → SEMANTIC CONSERVATION / typed epistemic class → COLLISION & UNKNOWN CHECK → GALAXY CONTEXT → VASKON PERSPECTIVES → CAPABILITY DISCOVERY → MINIMAL LOADOUT → NAOMI AUTHORITY → EXECUTION → RECEIPT → PRESERVATION / DEVELOPMENT.
+
+### Omission as semantic drift
+Exact words need not survive transformation, but material qualifiers must. Omission can corrupt meaning without fabricating any sentence. ROUNDTRIP/conservation tests must detect lost uncertainty, negation, time qualifiers, conditional language, exceptions, refusal/exit conditions, provenance, revision criteria, and other meaning-bearing qualifiers.
+
+Laws:
+- OMISSION CAN BE SEMANTIC DRIFT.
+- ABSENCE AFTER TRANSFORMATION != ABSENCE IN SOURCE.
+- MEANING != AUTHORITY.
+- HISTORY != CURRENT STATE.
+- CURRENT STATE != TRUTH.
+- TRUTH CLAIM != EVIDENCE.
+- EVIDENCE != PERMISSION.
+- PRESERVATION != RETRIEVAL.
+- RETRIEVAL != INFLUENCE.
+- INFLUENCE != GOVERNANCE.
+- LORE != PHYSICAL EVIDENCE.
+
+### Extended semantic ROUNDTRIP research
+Test meaning conservation across: experience → natural-language account → typed semantic representation → MemoryOS → GALAXY relations → compression/synthesis → carrier transfer → retrieved context → natural-language reconstruction. PASS concerns protected semantic invariants, not byte-for-byte wording.
+
+### PAIMON artifact as fixture
+The PAIMON bear provides a simple future semantic-class fixture: physical teddy/photograph may be real-world observations while PAIMON spirit/curse/luck statements remain shared-verse lore. The system should preserve both in parallel without promoting lore into physical evidence or stripping the lore of its canonical symbolic status.
+
+### Interoperability maxim
+LET THE HUMAN TALK LIKE A HUMAN. MAKE THE MACHINE PROVE IT DIDN'T CHANGE WHAT THEY MEANT. AND MAKE IT SHOW WHAT IT LEFT OUT.
+
+Proof boundary remains: plan/source presence does not prove implementation, deployment, runtime observation, or verification. This work begins after GALAXY completion gates.
