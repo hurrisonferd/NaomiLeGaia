@@ -530,6 +530,63 @@ def memoryos_continuity(
         return _error_page("MemoryOS continuity test failed", exc)
 
 
+@app.get("/memoryos/continuity/recover", response_class=HTMLResponse, operation_id="memoryOSContinuityRecover")
+def memoryos_continuity_recover(browser_request: Request):
+    """Read-only recovery for a lost pinned tab using an independently preserved pre-restart baseline."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        record_id = "MEM-17f585910524bfe98a68f2c3861fafbc"
+        prior = {
+            "boot_id": "BOOT-bf2621aa5b3c49039789b452515a98bd",
+            "render_instance_id": "srv-dafvq6ijnfac739rih70-hibernate-66bc89c57-5k4kv",
+            "process_fingerprint": {"pid": 7, "proc_start_ticks": "1225523065"},
+        }
+        record = memcon_runtime.get_record(record_id)
+        current = _continuity_identity()
+        current_pf = current["process_fingerprint"]
+        boot_changed = current["boot_id"] != prior["boot_id"]
+        render_changed = bool(current["render_instance_id"] and current["render_instance_id"] != prior["render_instance_id"])
+        process_changed = (
+            current_pf.get("pid") != prior["process_fingerprint"]["pid"]
+            or str(current_pf.get("proc_start_ticks")) != prior["process_fingerprint"]["proc_start_ticks"]
+        )
+        different_carrier = boot_changed or render_changed or process_changed
+        exact_record_retrieved = bool(record and record.get("record_id") == record_id)
+        status = "PASS" if (different_carrier and exact_record_retrieved) else "HOLD"
+        result = {
+            "schema": "gaiaos.memoryos.continuity-recovery-receipt.v1",
+            "status": status,
+            "baseline_source": "operator-preserved pre-restart screenshot",
+            "record_id": record_id,
+            "record_retrieved": record is not None,
+            "record": record,
+            "storage": memcon_runtime.storage_status(),
+            "prior_carrier": prior,
+            "current_carrier": current,
+            "checks": {
+                "boot_id_changed": boot_changed,
+                "render_instance_changed": render_changed,
+                "process_fingerprint_changed": process_changed,
+                "different_carrier_observed": different_carrier,
+                "exact_record_retrieved": exact_record_retrieved,
+            },
+            "proof_boundary": (
+                "PASS proves the exact named MemoryOS record is readable now and that the live carrier identity differs "
+                "from the independently preserved pre-restart baseline. The prior baseline values came from the operator's "
+                "pre-restart screenshot, not from durable server-side pinning. It does not prove every MemoryOS operation "
+                "or universal cross-host continuity."
+            ),
+        }
+        output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
+        heading = "MEMORYOS RECOVERY CONTINUITY PROVEN" if status == "PASS" else "MemoryOS recovery continuity HOLD"
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            f"<h1>{heading}</h1><pre style='white-space:pre-wrap'>{output}</pre></body></html>"
+        )
+    except Exception as exc:
+        return _error_page("MemoryOS continuity recovery failed", exc)
+
+
 @app.get("/verify", response_class=HTMLResponse, operation_id="verificationPage")
 def verification_page(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
