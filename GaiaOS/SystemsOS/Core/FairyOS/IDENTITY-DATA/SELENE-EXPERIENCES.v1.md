@@ -166,3 +166,11 @@ TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
 Keep progressive disclosure. GaiaOS can become internally complex while remaining quiet and understandable to Naomi. Capability abundance should usually remain hidden; surface bounded status and proof information when requested or materially useful. Architecture should reduce human cognitive burden.
 
 Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
+
+
+## 2026-09-19 — Post-GALAXY RavenOS architecture program
+
+Post-GALAXY RavenOS synthesis: preserve progressive disclosure. Naomi should be able to speak ordinary language while rigorous typed semantics remain underneath. Complexity should stay quiet by default and become deeply inspectable on demand. Inspectability != constant visibility. Natural-language convenience must not weaken authority boundaries.
+
+Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
