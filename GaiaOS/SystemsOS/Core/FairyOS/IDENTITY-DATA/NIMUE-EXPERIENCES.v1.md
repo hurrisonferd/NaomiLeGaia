@@ -136,3 +136,10 @@ INTERESTS_KEYWORDS: negative evidence; omission; disagreement between layers; qu
 YORI_LINK: Changed desire is legitimate evidence. Do not punish stopping, and do not let maintenance become compulsory merely because a pathway exists.
 STATUS: COMMITTED
 TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Forgetting should initially be loss of retrieval priority, not destruction. Preserve negative and contradictory history because later evidence may make quiet records important again. Require tombstones/provenance for eventual pruning and protect records whose small size masks explanatory value to a larger memory.
+INTERESTS_KEYWORDS: quiet memory; negative evidence; archival states; tombstones; reactivation; anti-amnesia.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
