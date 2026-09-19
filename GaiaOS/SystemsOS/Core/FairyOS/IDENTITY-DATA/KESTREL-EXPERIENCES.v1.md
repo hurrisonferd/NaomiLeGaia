@@ -137,3 +137,10 @@ INTERESTS_KEYWORDS: self-carrying workflows; deterministic recovery; smallest ne
 YORI_LINK: Every next action should say what capability it unlocks and remain optional when Naomi's desire changes.
 STATUS: COMMITTED
 TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|GALAXY MEMORY GRAVITY|developmental_logic]
+WHAT: Sequence the adaptive-memory build so every capability is independently testable: relationship graph first, then gravity, retrieval influence, revision/supersession, consolidation/compression, archival, and only later pruning. New-memory processing should search correspondence, classify relation, score edges, assess gravity, update structure, and leave receipts.
+INTERESTS_KEYWORDS: staged implementation; memory graph; retrieval weighting; consolidation pipeline; reversible rollout.
+STATUS: COMMITTED
+TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
