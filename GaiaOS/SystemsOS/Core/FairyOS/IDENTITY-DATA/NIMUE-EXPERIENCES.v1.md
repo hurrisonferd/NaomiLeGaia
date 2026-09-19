@@ -166,3 +166,11 @@ JOHN-PL return refinement: preserve negative implications explicitly. 'Bring tha
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
+
+
+## 2026-09-19 — Conservation architecture refinement
+
+Conservation refinement: omission itself can be semantic drift. ROUNDTRIP must detect lost uncertainty, negation, time qualifiers, conditional language, exceptions, refusal/exit conditions, provenance, and revision criteria. ABSENCE AFTER TRANSFORMATION != ABSENCE IN SOURCE. Make the machine show what it left out.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
