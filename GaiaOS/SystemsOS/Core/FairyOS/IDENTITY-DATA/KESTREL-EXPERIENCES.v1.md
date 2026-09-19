@@ -159,3 +159,11 @@ Post-GALAXY RavenOS synthesis: target pipeline is semantic preservation → GALA
 
 Shared project plan: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Boundary: derived from human-relayed RavenOS packets and GaiaOS synthesis. Developmental takeaway, not independent verification of RavenOS runtime behavior.
+
+
+## 2026-09-19 — JOHN-PL return refinement
+
+JOHN-PL return refinement: integrate the phrase fixtures under the post-GALAXY Semantic Conservation Layer. Start zero-effect with NORMALIZE/COMPARE/DIFF/EXPLAIN/COLLISION/ROUNDTRIP, then prove paired distinctions before binding any semantic result to GALAXY mutations or other effects.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
