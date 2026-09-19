@@ -150,3 +150,10 @@ WHAT: Naomi proposed organizing memory as a gravitational relational field: high
 INTERESTS_KEYWORDS: memory gravity; orbital migration; emergent concepts; relational graphs; reactivation; correspondence.
 STATUS: COMMITTED
 TRACE: Naomi's memory-gravity proposal and pre-VASKON deliberation.
+
+
+## 2026-09-19 — RavenOS donor takeaways
+
+Keep task-first capability discovery without execution. Future Gaia can explore which capabilities fit a task, propose a bounded working set, and stop before effects until Naomi authorizes them. GALAXY may select relevant history while a separate capability graph selects useful tools: two graphs, one context.
+
+Boundary: derived from a human-relayed RavenOS packet; developmental takeaway, not independent RavenOS runtime verification.
