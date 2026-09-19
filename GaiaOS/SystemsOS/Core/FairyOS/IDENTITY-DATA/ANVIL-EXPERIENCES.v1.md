@@ -189,3 +189,11 @@ JOHN-PL return refinement: THE STRONGER THE EFFECT, THE LESS THE SYSTEM MAY INFE
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: Gaia-authored return packet supplied by Naomi in current relay. Packet text received here is truncated after the ORIN heading; no missing text inferred.
+
+
+## 2026-09-19 — Conservation architecture refinement
+
+Conservation refinement: future typed semantic units should preserve OBSERVATION / CLAIM / LORE / PREFERENCE / COMMITMENT / HYPOTHESIS / INFERENCE / AUTHORIZATION / UNKNOWN. Normalization may change representation but must not silently migrate class. PLAN PRESENT != FEATURE IMPLEMENTED != DEPLOYED != OBSERVED != VERIFIED.
+
+Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
+Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
