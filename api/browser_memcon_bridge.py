@@ -575,7 +575,8 @@ def memoryos_continuity_recover(browser_request: Request):
         result = {
             "schema": "gaiaos.memoryos.continuity-recovery-receipt.v2",
             "status": status,
-            "baseline_source": "operator-preserved pre-restart screenshot",\n            "record_identity_source": "durable MemoryOS source marker resolved by database",
+            "baseline_source": "operator-preserved pre-restart screenshot",
+            "record_identity_source": "durable MemoryOS source marker resolved by database",
             "record_id": record_id,
             "record_retrieved": record is not None,
             "record": record,
