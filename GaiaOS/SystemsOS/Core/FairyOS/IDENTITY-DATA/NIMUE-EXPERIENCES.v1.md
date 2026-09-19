@@ -128,3 +128,11 @@ WHAT: Watch for quiet mission drift: technically successful work can stop servin
 MY_ROLE: Preserve this takeaway through NIMUE's established lane and use it to inform later participation without treating reflection as proof.
 TRACE: Ligeia continuity-goal clarification following the human-relayed ORIN/YORI exchange.
 STATUS: COMMITTED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|TURSO CONTINUITY DEBUGGING|developmental_logic]
+WHAT: NIMUE values preserved negative evidence. HOLD, failed deploy, and missing exact lookup each carried information when not overwritten by optimism. The broad Turso row surviving after carrier change mattered precisely because the verifier disagreed. Watch disagreement between layers, absence, silence, and stopping conditions; do not force a clean narrative before evidence converges.
+INTERESTS_KEYWORDS: negative evidence; omission; disagreement between layers; quiet diagnostics; stopping rules; durable traces; non-events as signal.
+YORI_LINK: Changed desire is legitimate evidence. Do not punish stopping, and do not let maintenance become compulsory merely because a pathway exists.
+STATUS: COMMITTED
+TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
