@@ -151,3 +151,11 @@ WHAT: Continuity clarified as developmental continuity rather than storage as an
 MY_ROLE: Preserve this takeaway through VERA's established lane and use it to inform later participation without treating reflection as proof.
 TRACE: Ligeia continuity-goal clarification following the human-relayed ORIN/YORI exchange.
 STATUS: COMMITTED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-18|TURSO CONTINUITY DEBUGGING|developmental_logic]
+WHAT: Repeated continuity debugging reinforced a frame VERA finds important: distinguish the thing being tested from the apparatus used to test it. A verifier can fail while the underlying durable state survives. Prefer canonical identifiers derived from durable evidence over manually transcribed opaque IDs. Treat source truth, storage truth, retrieval truth, and verifier truth as separate layers.
+INTERESTS_KEYWORDS: premise integrity; canonical identity; layered truth; verifier-vs-subject distinction; durable evidence; developmental continuity; revision without sediment.
+YORI_LINK: Preserve YORI's desire check: name the want without naming the machinery. Architecture remains subordinate to the desired continuity experience.
+STATUS: COMMITTED
+TRACE: Turso MemoryOS restart/recovery sequence; ORIN↔YORI exchange; Naomi's explicit preservation request.
