@@ -535,7 +535,7 @@ def memoryos_continuity_recover(browser_request: Request):
     """Read-only recovery for a lost pinned tab using an independently preserved pre-restart baseline."""
     gaiaos_api._authorize_browser_session(browser_request)
     try:
-        record_id = "MEM-17f585910524bfe98a68f2c3861fafbc"
+        # Resolve the canonical record from durable evidence, not a hand-copied ID.\n        expected_source = "browser-memoryos-test:371a6d98a3bd"\n        with memcon_runtime._db() as conn:\n            canonical_cursor = conn.execute(\n                "SELECT record_id FROM memory_records WHERE scope = ? AND source = ? ORDER BY created_at DESC LIMIT 1",\n                ("MemoryOS", expected_source),\n            )\n            canonical_row = canonical_cursor.fetchone()\n        if canonical_row is None:\n            raise RuntimeError("Canonical continuity record was not found by its durable source marker")\n        record_id = str(canonical_row[0])
         prior = {
             "boot_id": "BOOT-bf2621aa5b3c49039789b452515a98bd",
             "render_instance_id": "srv-dafvq6ijnfac739rih70-hibernate-66bc89c57-5k4kv",
@@ -573,9 +573,9 @@ def memoryos_continuity_recover(browser_request: Request):
         exact_record_retrieved = bool(record and record.get("record_id") == record_id)
         status = "PASS" if (different_carrier and exact_record_retrieved) else "HOLD"
         result = {
-            "schema": "gaiaos.memoryos.continuity-recovery-receipt.v1",
+            "schema": "gaiaos.memoryos.continuity-recovery-receipt.v2",
             "status": status,
-            "baseline_source": "operator-preserved pre-restart screenshot",
+            "baseline_source": "operator-preserved pre-restart screenshot",\n            "record_identity_source": "durable MemoryOS source marker resolved by database",
             "record_id": record_id,
             "record_retrieved": record is not None,
             "record": record,
