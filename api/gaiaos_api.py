@@ -1417,7 +1417,7 @@ def galaxy_gravity_real_calibration_preview(
     browser_request: Request,
     limit: int = GALAXY_REAL_CALIBRATION_LIMIT,
 ):
-    """Observe shadow-v1 over existing non-test memories. Performs zero writes."""
+    """Observe the active Phase-2 shadow profile over existing non-test memories. Performs zero writes."""
     bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
     if not bootstrap_session:
         _authorize_browser_session(browser_request)
@@ -1484,6 +1484,10 @@ def galaxy_gravity_real_calibration_preview(
     payload = {
         "status": "REAL_MEMORY_SHADOW_PREVIEW",
         "phase": "PHASE_2_GRAVITY_SHADOW",
+        "score_version": memcon_runtime.GALAXY_SCORE_VERSION,
+        "active_shadow_weight_profile": memcon_runtime.GALAXY_WEIGHT_PROFILE,
+        "active_shadow_weights": memcon_runtime.GALAXY_SHADOW_WEIGHTS,
+        "explicit_importance_weighting_enabled": True,
         "population_diagnostics": diagnostics,
         "sample": sample,
         "writes_performed": [],
@@ -3061,8 +3065,11 @@ def galaxy_gravity_real_importance_set(
         "shadow_preview_comparison": {
             "before": pre_preview,
             "after": post_preview,
-            "unchanged_under_shadow_v1": pre_preview["gravity_score"] == post_preview["gravity_score"],
-            "reason": "Stored explicit importance is intentionally not active in the rejected shadow-v1 weight profile.",
+            "unchanged": pre_preview["gravity_score"] == post_preview["gravity_score"],
+            "reason": (
+                "Stored explicit importance is active in the approved NERGAL_475_PARITY Phase-2 shadow profile, "
+                "so an importance change may change the shadow preview while ordinary retrieval remains unchanged."
+            ),
         },
         "retrieval_comparison": {
             "before_record_ids": pre_ids,
@@ -3075,14 +3082,14 @@ def galaxy_gravity_real_importance_set(
         "retrieval_weighting_enabled": False,
         "authority_boundary": (
             "This click authorizes only the exact Seven Gates importance signal shown in the preceding review. "
-            "It does not authorize a new gravity weight profile or weighted retrieval."
+            "The approved NERGAL_475_PARITY shadow formula may reflect that signal, but weighted retrieval remains unauthorized."
         ),
     }
     return HTMLResponse(
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
         "<h1>GALAXY real-memory Seven Gates importance set</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
-        "<p>The signal is stored, but shadow-v1 and ordinary retrieval remain unchanged until a later weight-profile gate.</p>"
+        "<p>The signal is stored and is eligible to influence the approved Phase-2 shadow formula. Ordinary retrieval remains unchanged.</p>"
         "</body></html>"
     )
 
@@ -3373,15 +3380,19 @@ def galaxy_gravity_real_importance_weight_profile_review(browser_request: Reques
         },
         "stored_importance": stored,
         "profiles": rows,
-        "selection_performed": False,
-        "weight_profile_activated": False,
+        "active_shadow_weight_profile": memcon_runtime.GALAXY_WEIGHT_PROFILE,
+        "active_shadow_score_version": memcon_runtime.GALAXY_SCORE_VERSION,
+        "active_shadow_weights": memcon_runtime.GALAXY_SHADOW_WEIGHTS,
+        "current_active_shadow_preview": current,
+        "selection_performed": True,
+        "weight_profile_activated": True,
         "writes_performed": [],
         "gravity_rows_mutated": [],
         "relations_mutated": [],
         "retrieval_weighting_enabled": False,
         "proof_boundary": (
-            "This page compares replacement shadow-weight profiles against the real stored importance signal only. "
-            "It does not activate any profile, write gravity, alter relations, or change retrieval."
+            "This page is read-only. NERGAL_475_PARITY is already the approved active Phase-2 shadow profile. "
+            "The page does not write gravity, alter relations, or change retrieval."
         ),
     }
 
@@ -3389,7 +3400,7 @@ def galaxy_gravity_real_importance_weight_profile_review(browser_request: Reques
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
         "<h1>GALAXY Phase 2 replacement weight-profile review</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
-        "<p>No profile is selected here. This review uses the real stored Seven Gates signal rather than hypothetical maximum importance.</p>"
+        "<p>NERGAL_475_PARITY is now the approved active Phase-2 shadow profile. This page remains read-only and retrieval remains unweighted.</p>"
         "</body></html>"
     )
     if bootstrap_session:
