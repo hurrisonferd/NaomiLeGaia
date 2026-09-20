@@ -1079,3 +1079,33 @@ Guardrails:
 This intake exists so calibration coverage can be supplied deliberately by Naomi rather than manufactured from test artifacts.
 
 Durable promotion remains a separate future gate after exact candidate inspection.
+
+
+### Phase-2 explicit real-memory seed live candidate result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_CANDIDATE_CREATED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Source: `galaxy-real-seed:0c9a49379d31`
+- Subject: `GALAXY memory philosophy`
+- Event: `EVENT-58f608aaa9f74fa08ec8a25fdd39c34b`
+- Candidate: `CANDIDATE-94243e7f8f7349b61815331551a173ac7`
+- Candidate owner: `NAOMI_REAL_MEMORY_SEED`
+- Record type: `INTERACTION`
+- Scope: `MemoryOS`
+- Candidate status: `CANDIDATE`
+- Candidate statement preserves the GALAXY principle that historical memory must not make past state permanent destiny and that revision/supersession must remain possible.
+- Durable memory write: `false`
+- Candidate promotion: `false`
+- Relation mutations: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+
+CONCLUSION:
+
+The explicit seed-intake candidate gate is live and PASS. A real semantic memory can enter the bounded MemoryOS review path without becoming durable and without affecting GALAXY retrieval behavior.
+
+NEXT GATE:
+
+Exact-candidate durable-promotion review followed by a separate Naomi-authorized promotion click. Promotion must write only the selected durable MemoryOS record and must not create relations, write gravity, or alter retrieval weighting.
