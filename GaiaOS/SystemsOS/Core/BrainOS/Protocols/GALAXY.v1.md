@@ -3084,3 +3084,38 @@ The adversarial review phrase `intended authority boundary` is replaced with:
 because explicit Seven Gates importance controls contextual influence, not authority.
 
 `IMPORTANCE != AUTHORITY`
+
+
+### Query-first retrieval contract live PASS 2026-09-20
+
+Observed live proof:
+
+- status: `GALAXY_QUERY_FIRST_RETRIEVAL_CONTRACT_PROOF`
+- contract: `galaxy.retrieval.contract.v1`
+- relevant query: `gravity estimate contextual influence`
+- influential authority-boundary record appeared in the candidate pool;
+- irrelevant query produced an empty candidate pool;
+- the same influential record did not appear for the irrelevant query;
+- `query_relevance_first_class: true`
+- `zero_relevance_not_rescued_by_gravity: true`
+- `gravity_may_rerank_only_within_candidate_pool: true`
+- `gravity_may_introduce_nonmatching_candidates: false`
+- writes: none;
+- retrieval weighting: disabled;
+- Phase 3 authorization: false.
+
+Result:
+
+`QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_LIVE_PROVEN`
+
+This closes the final known pre-Phase-3 retrieval-contract gate.
+
+PRE-PHASE-3 STATUS:
+
+`phase3_blockers: []`
+
+`phase3_ready_for_authorization: true`
+
+`phase3_authorized: false`
+
+Phase 3 remains opt-in only. No weighted retrieval is enabled until explicit Naomi authorization.
