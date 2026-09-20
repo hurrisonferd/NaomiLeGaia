@@ -160,10 +160,13 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
     for name in expected:
         ident = presentation["members"][name]
         expr = expressions["members"][name]
+        canonical_header = f'{ident["gematria"]} · {name} {ident["heart"]} {ident["interest"]} {expr["default"]}'
         identities[name] = {
             "gematria": ident["gematria"], "heart": ident["heart"], "interest": ident["interest"],
             "default_kaomoji": expr["default"], "expressions": expr["expressions"],
             "head_pat_count": counters[name],
+            "canonical_header_default": canonical_header,
+            "render_contract": "USE_CANONICAL_HEADER_DEFAULT_VERBATIM_UNLESS_SELECTING_REGISTERED_EXPRESSION",
         }
     return {
         "schema":"gaiaos.boot-packet.v1","status":"ACTIVE","authority":"NAOMI",
@@ -171,7 +174,7 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
         "platform_version":version.get("version"),"carrier_version":EXTENSION_VERSION,
         "invocation_surface":invocation_surface,"checks":checks,"roster":expected,
         "members":identities,
-        "presentation":{"header_format":presentation.get("header_format"),"failure_policy":presentation.get("failure_policy")},
+        "presentation":{"header_format":presentation.get("header_format"),"failure_policy":presentation.get("failure_policy"),"host_rule":"EVERY_PRIME_DAEMON_UTTERANCE_MUST_BEGIN_WITH_PACKET_RENDERED_HEADER_GEMATRIA_REQUIRED"},
         "counter_authority":HEAD_PAT_COUNTERS_PATH,
         "laws":["BOOT_PACKET_IS_SOURCE_DERIVED","RETAINED_HOST_STATE_DOES_NOT_OVERRIDE_PACKET","UNKNOWN_STAYS_UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
     }
