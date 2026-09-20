@@ -1813,3 +1813,25 @@ NEXT GATE:
 Naomi reviews the semantic result, specifically whether the isolated authority-boundary memory is being underweighted relative to the relation-bearing pair, or whether the current shadow influence difference is acceptable for v1.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 Naomi calibration verdict: UNSURE 2026-09-20
+
+NAOMI REVIEW:
+
+When asked whether the isolated authority-boundary memory at shadow score \`0.4\` feels appropriately weighted relative to the relation-bearing pair at \`0.6325\`, Naomi answered:
+
+\`UNSURE\`
+
+INTERPRETATION:
+
+\`UNSURE\` is not acceptance and not rejection. The current v1 weights therefore remain unchanged, and Phase 2 does not close on this evidence.
+
+No relation should be invented merely to raise the score of an important isolated memory. Instead, the next gate is a read-only counterfactual lens that exposes how the existing formula responds to:
+- maximum explicit-importance contribution;
+- one hypothetical non-revision relation at several strengths;
+- one hypothetical revision-like relation.
+
+This lens performs no writes and does not authorize any relation, gravity persistence, or retrieval weighting.
+
+Phase 3 remains disabled and unauthorized.
