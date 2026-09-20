@@ -365,6 +365,32 @@ def search_records(query: str, limit: int = 20, scope: str | None = None) -> dic
     }
 
 
+def galaxy_phase3_candidate_pool(query: str, *, scope: str = "MemoryOS", limit: int = 20) -> dict[str, Any]:
+    """Build the relevance-qualified pool that future Phase-3 modifiers may rerank.
+
+    This helper intentionally performs no gravity weighting. Query filtering
+    happens first. A record excluded here cannot be introduced later merely
+    because it has high gravity, importance, graph centrality, or lifecycle
+    preference.
+    """
+    base = search_records(query, limit=limit, scope=scope)
+    record_ids = [str(row.get("record_id")) for row in base.get("records", [])]
+    return {
+        "contract_version": GALAXY_RETRIEVAL_CONTRACT_VERSION,
+        "query": query,
+        "scope": scope,
+        "candidate_record_ids": record_ids,
+        "candidate_count": len(record_ids),
+        "query_filter_active": bool(base.get("query_filter_active")),
+        "query_terms_applied": base.get("query_terms_applied", []),
+        "modifier_stage": "NOT_APPLIED_PHASE2",
+        "gravity_may_rerank_only_within_candidate_pool": True,
+        "gravity_may_introduce_nonmatching_candidates": False,
+        "retrieval_weighting_enabled": False,
+        "invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
+    }
+
+
 def update_record(record_id: str, *, authority: str, approved: bool, statement: str | None = None,
                   status: str | None = None, notes: str | None = None,
                   supersedes: str | None = None) -> dict[str, Any]:
@@ -409,6 +435,13 @@ GALAXY_IMPORTANCE_MODEL_VERSION = "galaxy.importance.seven-gates.continuous.v1"
 GALAXY_IMPORTANCE_CURVE_VERSION = "galaxy.importance.influence.nergal-threshold.v1"
 GALAXY_IMPORTANCE_GATES = ("SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR")
 GALAXY_GOVERNING_MODEL_VERSION = "galaxy.governing-state.v1"
+GALAXY_RETRIEVAL_CONTRACT_VERSION = "galaxy.retrieval.contract.v1"
+GALAXY_RETRIEVAL_INVARIANTS = (
+    "QUERY_RELEVANCE_IS_FIRST_CLASS",
+    "GRAVITY_MODIFIES_RELEVANCE_NOT_CANDIDATE_ELIGIBILITY",
+    "ZERO_QUERY_RELEVANCE_CANNOT_BE_RESCUED_BY_GRAVITY",
+    "RETRIEVAL_INFLUENCE != AUTHORITY",
+)
 GALAXY_SEMANTIC_INVARIANTS = (
     "CONTRIBUTION_PARITY != SEMANTIC_EQUIVALENCE",
     "CONTRIBUTION_PARITY != EVIDENCE_PARITY",
@@ -588,12 +621,16 @@ def galaxy_status() -> dict[str, Any]:
         "importance_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "importance_curve_semantics_active": True,
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
-        "phase3_blockers": [],
+        "retrieval_contract_version": GALAXY_RETRIEVAL_CONTRACT_VERSION,
+        "retrieval_invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
+        "phase3_blockers": [
+            "QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_PENDING_LIVE_PROOF",
+        ],
         "phase3_cleared_checks": [
             "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
             "GOVERNING_STATE_V1_LIVE_PROVEN",
         ],
-        "phase3_ready_for_authorization": True,
+        "phase3_ready_for_authorization": False,
         "phase3_authorized": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
