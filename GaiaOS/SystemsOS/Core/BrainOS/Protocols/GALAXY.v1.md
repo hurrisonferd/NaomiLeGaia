@@ -2823,3 +2823,52 @@ Expected corrected result:
 This was a validation-surface bug, not a runtime scoring bug.
 
 A fresh deployed adversarial rerun is required to verify the corrected proof surface before closing this Phase-2 validation subsection.
+
+
+### Phase-2 adversarial validation closed; scoped search blocker moved to live-proof state 2026-09-20
+
+FINAL LIVE ADVERSARIAL RESULT:
+
+Active profile:
+`NERGAL_475_PARITY_QUALITY_CONDITIONED`
+
+Score version:
+`galaxy.gravity.shadow.v3.nergal-475-parity-quality-conditioned`
+
+Validated:
+- four weak `0.20` relations no longer outweigh one `0.85` relation;
+- redundant weak-link flooding is capped;
+- fixed revision-significance remains categorical and applies only to `REVISES` / `SUPERSEDES`;
+- equal-strength `CONTRADICTS` and reinforcing topology now produce equal graph contribution;
+- contradiction premium is `0.0`;
+- isolated ADAR versus dense ordinary graph behavior remains acceptable for Phase-2 shadow calibration.
+
+The Phase-2 adversarial calibration subsection is CLOSED.
+
+REMAINING PHASE-3 BLOCKERS:
+
+1. `GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED`
+2. scoped retrieval must prove query terms remain active under a scope filter.
+
+SCOPED SEARCH SOURCE FIX:
+
+The prior `search_records(query, scope=...)` branch ignored query terms and returned newest records in scope.
+
+It has been replaced with conjunctive per-term filtering:
+- optional scope narrows the candidate population;
+- every non-empty query term must match at least one searchable field on the same record;
+- scope never disables query filtering.
+
+Source status:
+`SCOPE_FILTERED_SEARCH_FIX_PENDING_LIVE_PROOF`
+
+Read-only proof route:
+`/galaxy/retrieval/scoped-search-proof`
+
+Expected pass:
+- the known authority-boundary memory is found by a scoped target query;
+- an impossible scoped query returns zero records;
+- no writes occur;
+- retrieval weighting remains disabled.
+
+Weighted retrieval remains unauthorized until the live proof passes and the governing-state blocker is separately resolved.
