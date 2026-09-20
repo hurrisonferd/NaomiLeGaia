@@ -177,6 +177,16 @@ def initialize() -> None:
                 FOREIGN KEY(record_id) REFERENCES memory_records(record_id)
             );
 
+            CREATE TABLE IF NOT EXISTS memory_importance (
+                record_id TEXT PRIMARY KEY,
+                gate_units INTEGER NOT NULL,
+                model_version TEXT NOT NULL,
+                updated_at TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                previous_units INTEGER,
+                FOREIGN KEY(record_id) REFERENCES memory_records(record_id)
+            );
+
             CREATE TABLE IF NOT EXISTS memory_lifecycle (
                 record_id TEXT PRIMARY KEY,
                 state TEXT NOT NULL,
@@ -364,6 +374,111 @@ GALAXY_RELATION_TYPES = {
 }
 GALAXY_LIFECYCLE_STATES = {"ACTIVE", "BACKGROUND", "ARCHIVED", "COMPRESSED", "PRUNABLE"}
 GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v1"
+GALAXY_IMPORTANCE_MODEL_VERSION = "galaxy.importance.seven-gates.continuous.v1"
+GALAXY_IMPORTANCE_GATES = ("SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR")
+
+
+def galaxy_importance_descriptor(gate_units: int) -> dict[str, Any]:
+    """Describe one exact Seven Gates importance position without changing state."""
+    if isinstance(gate_units, bool):
+        raise ValueError("gate_units must be an integer from 0 through 7000")
+    try:
+        gate_units = int(gate_units)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("gate_units must be an integer from 0 through 7000") from exc
+    if gate_units < 0 or gate_units > 7000:
+        raise ValueError("gate_units must be in 0..7000")
+    gate_index = 6 if gate_units == 7000 else gate_units // 1000
+    return {
+        "gate_units": gate_units,
+        "gate_position": round(gate_units / 1000.0, 3),
+        "display_position": f"{gate_units / 1000.0:.3f}",
+        "gate_index": gate_index,
+        "gate": GALAXY_IMPORTANCE_GATES[gate_index],
+        "normalized_importance": round(gate_units / 7000.0, 6),
+        "model_version": GALAXY_IMPORTANCE_MODEL_VERSION,
+    }
+
+
+def galaxy_importance(record_id: str) -> dict[str, Any] | None:
+    """Read the explicit Naomi importance signal for one memory."""
+    initialize()
+    with _db() as conn:
+        row = _fetchone_dict(conn, "SELECT * FROM memory_importance WHERE record_id=?", (record_id,))
+    if row is None:
+        return None
+    return {**row, **galaxy_importance_descriptor(int(row["gate_units"]))}
+
+
+def galaxy_set_importance(record_id: str, gate_units: int, *, authority: str, approved: bool) -> dict[str, Any]:
+    """Persist one exact Naomi-approved Seven Gates importance signal."""
+    if authority != "NAOMI" or not approved:
+        raise PermissionError("GALAXY explicit importance requires explicit Naomi approval")
+    if get_record(record_id) is None:
+        raise KeyError(record_id)
+    descriptor = galaxy_importance_descriptor(gate_units)
+    previous = galaxy_importance(record_id)
+    if previous is not None and int(previous["gate_units"]) == int(descriptor["gate_units"]):
+        return {
+            "status": "IMPORTANCE_SET",
+            "importance": previous,
+            "previous": previous,
+            "receipt": None,
+            "idempotent": True,
+            "retrieval_effect": "NONE",
+            "gravity_effect": "NONE_UNTIL_WEIGHT_PROFILE_REVISION",
+        }
+
+    updated_at = _now()
+    previous_units = int(previous["gate_units"]) if previous is not None else None
+    with _db() as conn:
+        if previous is None:
+            conn.execute(
+                """INSERT INTO memory_importance
+                   (record_id,gate_units,model_version,updated_at,authority,previous_units)
+                   VALUES (?,?,?,?,?,NULL)""",
+                (
+                    record_id,
+                    int(descriptor["gate_units"]),
+                    GALAXY_IMPORTANCE_MODEL_VERSION,
+                    updated_at,
+                    authority,
+                ),
+            )
+        else:
+            conn.execute(
+                """UPDATE memory_importance
+                   SET gate_units=?, model_version=?, updated_at=?, authority=?, previous_units=?
+                   WHERE record_id=?""",
+                (
+                    int(descriptor["gate_units"]),
+                    GALAXY_IMPORTANCE_MODEL_VERSION,
+                    updated_at,
+                    authority,
+                    previous_units,
+                    record_id,
+                ),
+            )
+
+    receipt = _receipt(
+        "GALAXY_SET_IMPORTANCE",
+        record_id,
+        "SUCCESS",
+        (
+            f"Set explicit importance to {descriptor['display_position']} {descriptor['gate']} "
+            f"under {GALAXY_IMPORTANCE_MODEL_VERSION}; retrieval and shadow-v1 weighting unchanged"
+        ),
+    )
+    return {
+        "status": "IMPORTANCE_SET",
+        "importance": galaxy_importance(record_id),
+        "previous": previous,
+        "receipt": receipt,
+        "idempotent": False,
+        "retrieval_effect": "NONE",
+        "gravity_effect": "NONE_UNTIL_WEIGHT_PROFILE_REVISION",
+    }
+
 
 
 def galaxy_status() -> dict[str, Any]:
@@ -374,6 +489,7 @@ def galaxy_status() -> dict[str, Any]:
         gravity = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_gravity")
         lifecycle = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_lifecycle")
         syntheses = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_syntheses")
+        importance = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_importance")
     return {
         "schema": "gaiaos.galaxy.runtime.v1",
         "phase": "PHASE_2_GRAVITY_SHADOW",
@@ -384,6 +500,7 @@ def galaxy_status() -> dict[str, Any]:
             "gravity_scores": int((gravity or {}).get("n", 0)),
             "lifecycle_rows": int((lifecycle or {}).get("n", 0)),
             "syntheses": int((syntheses or {}).get("n", 0)),
+            "importance_signals": int((importance or {}).get("n", 0)),
         },
         "retrieval_weighting_enabled": False,
         "physical_pruning_enabled": False,
@@ -405,6 +522,7 @@ def galaxy_record(record_id: str) -> dict[str, Any] | None:
                ORDER BY created_at DESC""", (record_id, record_id))
         gravity = _fetchone_dict(conn, "SELECT * FROM memory_gravity WHERE record_id=?", (record_id,))
         lifecycle = _fetchone_dict(conn, "SELECT * FROM memory_lifecycle WHERE record_id=?", (record_id,))
+        importance = _fetchone_dict(conn, "SELECT * FROM memory_importance WHERE record_id=?", (record_id,))
     for edge in edges:
         try:
             edge["evidence"] = json.loads(edge.pop("evidence_json"))
@@ -421,6 +539,7 @@ def galaxy_record(record_id: str) -> dict[str, Any] | None:
         "relations": edges,
         "gravity": gravity,
         "lifecycle": lifecycle,
+        "importance": ({**importance, **galaxy_importance_descriptor(int(importance["gate_units"]))} if importance else None),
         "retrieval_effect": "NONE_SHADOW_MODE",
     }
 
@@ -468,6 +587,7 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
     significant_types = {"CONTRADICTS", "REVISES", "SUPERSEDES"}
     significant_count = sum(1 for edge in verified_edges if str(edge.get("relation_type") or "") in significant_types)
     revision_significance = min(significant_count / 2.0, 1.0)
+    stored_importance = galaxy_importance(record_id)
 
     normalized = {
         "durable_active": 1.0 if str(record.get("status") or "").upper() == "ACTIVE" else 0.0,
@@ -500,7 +620,8 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         "verified_relation_types": relation_types,
         "mean_verified_relation_strength": round(mean_strength, 6),
         "revision_significance_edges": significant_count,
-        "explicit_importance_basis": "No explicit Naomi importance signal is defined yet, so this component is fixed at 0.0.",
+        "explicit_importance_basis": "A stored Naomi importance signal is reported separately when present, but shadow-v1 keeps this component fixed at 0.0 until a replacement weight profile is explicitly selected.",
+        "stored_explicit_importance": stored_importance,
         "omitted_from_v1": {
             "recency": "Excluded to prevent uncalibrated recency domination.",
             "retrieval_usefulness": "Excluded until Phase 3 supplies observed behavioral evidence.",
