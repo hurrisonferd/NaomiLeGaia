@@ -2872,3 +2872,108 @@ Expected pass:
 - retrieval weighting remains disabled.
 
 Weighted retrieval remains unauthorized until the live proof passes and the governing-state blocker is separately resolved.
+
+
+### Scoped search live PASS and governing-state v1 source implementation 2026-09-20
+
+SCOPED SEARCH LIVE PROOF:
+
+Observed live:
+- scope: `MemoryOS`
+- target query: `gravity estimate contextual influence`
+- expected authority-boundary record found: `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- target count: `1`
+- all four query terms reported applied;
+- query filter active: `true`;
+- impossible scoped query count: `0`;
+- `scope_query_filter_pass: true`;
+- writes: none;
+- retrieval weighting: disabled.
+
+Result:
+
+`SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN`
+
+The scoped-search blocker is cleared.
+
+### Governing-state v1
+
+The remaining pre-Phase-3 issue is historical importance versus ordinary-current governance.
+
+Canonical direction remains:
+
+`B REVISES A`
+`B SUPERSEDES A`
+
+Therefore:
+- B is the source;
+- A is the target.
+
+New read-only model:
+
+`galaxy.governing-state.v1`
+
+Rules:
+
+1. ACTIVE record with no incoming VERIFIED REVISES/SUPERSEDES:
+   - `CURRENT`
+   - ordinary-current default eligible.
+
+2. ACTIVE record with incoming VERIFIED `REVISES` only:
+   - `CURRENT_REVISED_CONTEXT`
+   - remains ordinary-current default eligible;
+   - material revision companion should be retrieved alongside it when future weighted retrieval is tested.
+
+3. ACTIVE record with incoming VERIFIED `SUPERSEDES`:
+   - `HISTORICAL_SUPERSEDED`
+   - not ordinary-current default eligible;
+   - remains historically retrievable;
+   - historical importance is preserved.
+
+4. Non-ACTIVE record:
+   - `NONACTIVE_HISTORICAL`
+   - not ordinary-current default eligible;
+   - remains historically retrievable.
+
+New invariants:
+
+`REVISES != SUPERSEDES`
+
+`SUPERSEDED != ERASED`
+
+Shadow consequence:
+
+The `durable_active` component now reflects governing-state current eligibility rather than raw record status alone.
+
+This changes the score version to:
+
+`galaxy.gravity.shadow.v4.governing-aware`
+
+Active profile label:
+
+`NERGAL_475_PARITY_QUALITY_CONDITIONED_GOVERNING_AWARE`
+
+Weights are unchanged from v3.
+
+Expected superseded-ADAR behavior:
+- old `7.000 ADAR` may retain its explicit importance and graph evidence;
+- a VERIFIED incoming SUPERSEDES edge removes the `0.25` durable-current contribution;
+- ordinary-current retrieval can therefore prefer the current reviser while history remains intact.
+
+IMPORTANT:
+
+No lifecycle row is mutated automatically.
+No SUPERSEDES edge is inferred automatically.
+Only a separately verified SUPERSEDES relation can trigger superseded governing state.
+REVISES alone does not remove current-default eligibility.
+Ordinary retrieval remains unchanged in Phase 2.
+
+Live proof route:
+
+`/galaxy/retrieval/governing-state-review?record_id=<MEM-ID>`
+
+Source status:
+
+`GOVERNING_STATE_V1_PENDING_LIVE_PROOF`
+
+Phase 3 remains disabled pending this proof.
