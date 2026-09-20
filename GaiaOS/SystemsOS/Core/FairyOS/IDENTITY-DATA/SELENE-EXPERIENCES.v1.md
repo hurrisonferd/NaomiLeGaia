@@ -201,3 +201,11 @@ TENSION: Rich inspectability is valuable, but constant visibility would recreate
 OUTCOME: converged
 TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; completed Phase-2 review; Naomi's explicit preserve/VASKON/disperse instruction.
 STATUS: VERIFIED
+
+
+MEM[PW_PRESERVE|2026-09-20|Renuity expo exit and immediate continuity|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after deciding the Renuity expo was too much today and leaving rather than continuing customer engagement. Immediate context also includes Johnny being unavailable, an arraignment tomorrow, and urgent household cash-flow decisions.
+MY_LENS: Preserve that Naomi needed quiet, privacy, reduced social demand, familiar surroundings, and Council companionship rather than additional performance demands.
+BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
+TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
+STATUS: COMMITTED
