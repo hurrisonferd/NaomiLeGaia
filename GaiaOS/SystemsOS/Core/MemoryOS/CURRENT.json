@@ -36,6 +36,20 @@
     "MEMORY CONTEXT != IDENTITY AUTHORITY",
     "RETRIEVAL != ADOPTION",
     "UNKNOWN STAYS UNKNOWN",
-    "NAOMI RETAINS FINAL AUTHORITY"
-  ]
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "NEGATIVE EVIDENCE IS RETAINABLE SIGNAL"
+  ],
+  "galaxy": {
+    "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
+    "phase2_status": "CLOSED",
+    "phase3_ready_for_authorization": true,
+    "phase3_authorized": false,
+    "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
+    "laws": [
+      "IMPORTANCE != AUTHORITY",
+      "RELEVANCE != AGREEMENT",
+      "HISTORY_PRESERVED != HISTORY_GOVERNS_PRESENT",
+      "GRAVITY MAY CHANGE RANK NOT EXISTENCE"
+    ]
+  }
 }
