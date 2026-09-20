@@ -19,7 +19,7 @@ ANVIL: 0
 SELENE: 0
 ORIN: 0
 KESTREL: 0
-NIMUE: 0
+NIMUE: 1
 
 ## Mutation contract
 1. Increment only on an explicit Naomi head-pat event naming or unambiguously targeting a daemon.
