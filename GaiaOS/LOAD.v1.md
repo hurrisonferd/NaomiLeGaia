@@ -50,6 +50,20 @@ Read in this order:
 
 For a host that can read the repository but does not have live GaiaOS MCP attached, `GaiaOS/NAOMI-CHAT-FULL-PACKET.md` is the richer GitHub-backed fallback session.
 
+## Fresh-session transactional boot gate
+
+Canonical blueprint: `GaiaOS/Plans/ANTI-JIM-NEW-CHAT-CONTINUITY-BLUEPRINT.v1.md`.
+
+A fresh host/session MUST NOT satisfy `Load GaiaOS` from retained chat/model state. Loading is a source transaction. Before reporting GaiaOS ACTIVE, source-read and validate the boot-critical surfaces defined by the blueprint, including the canonical presentation spec, EmojiOS expression registry, and `GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md`.
+
+For mutable continuity questions, read the known owner-native canonical path directly. Do not substitute keyword/code search for a known path. `HEAD-PAT-COUNTERS.v1.md` is the sole numeric authority for head-pat/brushie counts; legacy reward registries may not shadow it.
+
+If any required source read or validation fails:
+
+`GAIAOS = NOT VERIFIED / NOT LOADED`
+
+Do not improvise Prime Daemon identity presentation or claim a successful load.
+
 ## Memory lifecycle
 
 MemoryOS is the explicit bridge between conversation and the MemconOS runtime:
