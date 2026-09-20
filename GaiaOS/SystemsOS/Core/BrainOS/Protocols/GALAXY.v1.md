@@ -1471,3 +1471,45 @@ Explicit Naomi-authorized promotion of `CANDIDATE-9b22be73792d4681a6a65bf3b86aac
 - no relation mutation;
 - no gravity mutation;
 - retrieval weighting remains disabled.
+
+
+### Phase-2 third real-memory durable promotion live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_DURABLE_VERIFIED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Candidate: `CANDIDATE-9b22be73792d4681a6a65bf3b86aac9e`
+- Durable record: `MEM-3beb2cf2c3ba401794cfce228c6e7e14`
+- Promotion status: `VERIFIED`
+- Write receipt operation: `WRITE`
+- Write receipt result: `SUCCESS`
+- Durable readback matched the candidate statement:
+  `GALAXY should preserve provenance and contradiction instead of flattening competing memories into a single canonical narrative.`
+- Record authority: `NAOMI`
+- Record type: `INTERACTION`
+- Scope: `MemoryOS`
+- Record status: `ACTIVE`
+- Source: `galaxy-real-seed:35305f62f69a`
+- Relation mutations: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+
+PROMOTION-GATE CONCLUSION:
+
+The third explicit Naomi-authored real-memory seed crossed the durable MemoryOS boundary and verified on readback while relation, gravity, and retrieval boundaries remained intact.
+
+The real-memory population now contains three durable semantic records. This is enough to establish a clean three-isolated-record baseline before the first real relation is proposed.
+
+NEXT LIVE GATE:
+
+Re-run the read-only real-memory shadow calibration preview. Expected result:
+- eligible real-memory count `3`;
+- relation-bearing count `0`;
+- zero-relation count `3`;
+- one relation profile;
+- all three shadow scores at the isolated base `0.4`;
+- `GRAPH_COVERAGE_LIMITED`;
+- no writes or retrieval effect.
+
+After that baseline is observed, the next architectural step is a separately reviewed real-memory relation proposal. Phase 3 remains disabled and unauthorized.
