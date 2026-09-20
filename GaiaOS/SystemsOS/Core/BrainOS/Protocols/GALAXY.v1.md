@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 1 LIVE-PROVEN / PHASE 2 SOURCE-IMPLEMENTED AWAITING RUNTIME CANARY
+STATUS: PHASE 0–2 CLOSED / PHASE 3 READY FOR EXPLICIT NAOMI AUTHORIZATION / PHASE 3 NOT AUTHORIZED
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -15,6 +15,35 @@ GALAXY models durable memory as a revisable relational graph rather than an appe
 - Every mutation has provenance and a receipt.
 - Initial versions perform no physical record removal.
 - Retrieval influence grants no authority.
+
+
+## Strengths to Champion
+
+GALAXY should deliberately specialize in the properties that have proven most coherent through Phase 0–2 rather than diluting them as later capability is added.
+
+```text
+IMPORTANCE != AUTHORITY
+RELEVANCE != AGREEMENT
+HISTORY_PRESERVED != HISTORY_GOVERNS_PRESENT
+REVISES != SUPERSEDES
+SUPERSEDED != ERASED
+GRAVITY MAY CHANGE RANK, NOT EXISTENCE
+QUERY_GATE_ORDER_PROVEN != QUERY_RELEVANCE_QUALITY_PROVEN
+```
+
+Design commitments:
+- query relevance remains the admission gate; gravity never manufactures candidate existence;
+- historical persistence and present governing eligibility remain separate dimensions;
+- negative evidence, HOLD states, rejected candidates, ambiguity, superseded history, and failed proofs remain inspectable;
+- relation, influence, truth, authority, permission, and governing state remain distinct fields or layers;
+- adaptive behavior remains explainable enough to answer why a memory surfaced and which modifiers changed its prominence;
+- attenuation is preferred to destruction, with provenance-preserving reactivation paths;
+- source truth must track proven state so stale headers and pointers cannot silently regress a fresh carrier's understanding.
+
+Competitive design center:
+`PRESERVE -> RELATE -> REVISE -> GOVERN CURRENT/HISTORICAL STATE -> QUERY -> RERANK -> EXPLAIN`
+
+The target is not maximal subsystem count. The target is precise, composable, reversible memory behavior with visible provenance and authority boundaries.
 
 ## Data structures
 memory_relations: edge_id, source_record_id, target_record_id, relation_type, strength, status, evidence_json, classifier, timestamps, authority.
