@@ -375,11 +375,43 @@ GALAXY_RELATION_TYPES = {
 GALAXY_LIFECYCLE_STATES = {"ACTIVE", "BACKGROUND", "ARCHIVED", "COMPRESSED", "PRUNABLE"}
 GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v1"
 GALAXY_IMPORTANCE_MODEL_VERSION = "galaxy.importance.seven-gates.continuous.v1"
+GALAXY_IMPORTANCE_CURVE_VERSION = "galaxy.importance.influence.nergal-threshold.v1"
 GALAXY_IMPORTANCE_GATES = ("SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR")
+GALAXY_IMPORTANCE_CURVE_ANCHORS = (
+    (0, 0.00),
+    (1000, 0.08),
+    (2000, 0.16),
+    (3000, 0.24),
+    (4000, 0.34),
+    (5000, 0.62),
+    (6000, 0.82),
+    (7000, 1.00),
+)
+
+
+def galaxy_importance_influence(gate_units: int) -> float:
+    """Map one exact Seven Gates position onto Naomi's approved nonlinear influence curve."""
+    if isinstance(gate_units, bool):
+        raise ValueError("gate_units must be an integer from 0 through 7000")
+    try:
+        gate_units = int(gate_units)
+    except (TypeError, ValueError) as exc:
+        raise ValueError("gate_units must be an integer from 0 through 7000") from exc
+    if gate_units < 0 or gate_units > 7000:
+        raise ValueError("gate_units must be in 0..7000")
+    if gate_units == 7000:
+        return 1.0
+
+    left_index = gate_units // 1000
+    left_units, left_value = GALAXY_IMPORTANCE_CURVE_ANCHORS[left_index]
+    right_units, right_value = GALAXY_IMPORTANCE_CURVE_ANCHORS[left_index + 1]
+    span = right_units - left_units
+    t = (gate_units - left_units) / span
+    return round(float(left_value) + ((float(right_value) - float(left_value)) * t), 6)
 
 
 def galaxy_importance_descriptor(gate_units: int) -> dict[str, Any]:
-    """Describe one exact Seven Gates importance position without changing state."""
+    """Describe one exact Seven Gates importance position and its approved influence."""
     if isinstance(gate_units, bool):
         raise ValueError("gate_units must be an integer from 0 through 7000")
     try:
@@ -389,13 +421,17 @@ def galaxy_importance_descriptor(gate_units: int) -> dict[str, Any]:
     if gate_units < 0 or gate_units > 7000:
         raise ValueError("gate_units must be in 0..7000")
     gate_index = 6 if gate_units == 7000 else gate_units // 1000
+    linear_normalized_position = round(gate_units / 7000.0, 6)
     return {
         "gate_units": gate_units,
         "gate_position": round(gate_units / 1000.0, 3),
         "display_position": f"{gate_units / 1000.0:.3f}",
         "gate_index": gate_index,
         "gate": GALAXY_IMPORTANCE_GATES[gate_index],
-        "normalized_importance": round(gate_units / 7000.0, 6),
+        "linear_normalized_position": linear_normalized_position,
+        "normalized_importance": linear_normalized_position,
+        "effective_influence": galaxy_importance_influence(gate_units),
+        "influence_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "model_version": GALAXY_IMPORTANCE_MODEL_VERSION,
     }
 
@@ -503,6 +539,10 @@ def galaxy_status() -> dict[str, Any]:
             "importance_signals": int((importance or {}).get("n", 0)),
         },
         "retrieval_weighting_enabled": False,
+        "explicit_importance_weighting_enabled": False,
+        "importance_model_version": GALAXY_IMPORTANCE_MODEL_VERSION,
+        "importance_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
+        "importance_curve_semantics_active": True,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
         "proof_boundary": "Gravity scoring is shadow-only and does not affect ordinary retrieval. Counts prove stored rows exist, not that score quality, weighted retrieval, consolidation, forgetting, or pruning are proven.",
@@ -620,7 +660,7 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         "verified_relation_types": relation_types,
         "mean_verified_relation_strength": round(mean_strength, 6),
         "revision_significance_edges": significant_count,
-        "explicit_importance_basis": "A stored Naomi importance signal is reported separately when present, but shadow-v1 keeps this component fixed at 0.0 until a replacement weight profile is explicitly selected.",
+        "explicit_importance_basis": "A stored Naomi Seven Gates signal is mapped through the approved NERGAL-threshold influence curve and reported separately when present, but shadow-v1 keeps this scoring component fixed at 0.0 until a replacement weight profile is explicitly selected.",
         "stored_explicit_importance": stored_importance,
         "omitted_from_v1": {
             "recency": "Excluded to prevent uncalibrated recency domination.",
