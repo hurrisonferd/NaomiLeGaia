@@ -2696,3 +2696,81 @@ The active Phase-2 profile remains `NERGAL_475_PARITY`.
 The adversarial route exists to identify which edge cases require an explicit semantic decision before Phase 3 weighted retrieval can be authorized.
 
 No Phase-3 retrieval weighting is enabled.
+
+
+### RavenOS adversarial review: accepted fixes applied 2026-09-20
+
+The post-activation adversarial review exposed two concrete scoring defects and one unresolved architectural dependency.
+
+#### FIX 1: weak-link breadth inflation
+
+Observed problem under v2:
+- one relation at `0.85` contributed `0.1375`;
+- four weak relations at `0.20` contributed `0.15`;
+- therefore weak relation count could slightly outrank one strong relation.
+
+Accepted fix:
+
+The graph-breadth signal is now strength-conditioned:
+
+`strength_conditioned_degree = min(relation_count / 4, 1) * mean_verified_relation_strength`
+
+This preserves breadth as a distinct signal while refusing full breadth credit to weak links.
+
+To preserve the previously approved `4.750 NERGAL` contribution parity with one `0.85` ordinary relation, graph weights were rebalanced within the same total `0.25` graph budget:
+
+- verified_graph_degree: `0.117647`
+- verified_relation_strength: `0.132353`
+
+The total Phase-2 profile remains normalized to `1.0`.
+
+Expected landmarks under the revised graph math:
+- one `0.85` relation: approximately `0.1375`;
+- four `0.20` relations: `0.05`;
+- twenty `0.20` relations: `0.05` because the breadth cap is already saturated;
+- four `0.50` relations: `0.125`;
+- four `0.85` relations: `0.2125`.
+
+Active profile name:
+
+`NERGAL_475_PARITY_QUALITY_CONDITIONED`
+
+Score version:
+
+`galaxy.gravity.shadow.v3.nergal-475-parity-quality-conditioned`
+
+#### FIX 2: contradiction was receiving a governing-history premium
+
+Observed problem under v2:
+
+`CONTRADICTS`, `REVISES`, and `SUPERSEDES` all counted toward revision significance.
+
+Accepted fix:
+
+Only:
+- `REVISES`
+- `SUPERSEDES`
+
+now receive revision-significance weight.
+
+`CONTRADICTS` remains graph evidence but does not receive the governing-history premium.
+
+The fixed revision increment is intentionally retained for verified revision/supersession edges because revision significance is being treated as categorical structural importance; relation strength remains a separate dimension.
+
+#### UNRESOLVED, NOW EXPLICITLY BLOCKING PHASE 3
+
+The superseded-ADAR test showed that an old high-importance record can remain too influential if it remains ACTIVE despite being revised/superseded.
+
+GALAXY therefore now exposes this blocker explicitly:
+
+`GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED`
+
+The pre-existing retrieval defect is also formalized as a blocker:
+
+`SCOPE_FILTERED_SEARCH_CURRENTLY_IGNORES_QUERY_TERMS`
+
+Weighted retrieval must not activate while either blocker remains.
+
+No lifecycle rule was invented here because the correct governing-state semantics require dedicated design rather than silently conflating historical preservation with current authority.
+
+Phase 3 remains disabled and unauthorized.
