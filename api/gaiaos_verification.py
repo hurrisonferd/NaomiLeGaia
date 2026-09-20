@@ -302,7 +302,7 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/chat", '@app.post("/chat"' in bridge_text, "browser chat bridge declared"))
         checks.append(_check("carrier:/verify", '@app.get("/verify"' in bridge_text and '@app.post("/verify"' in bridge_text, "verification routes declared"))
         checks.append(_check("carrier:/vaskon-test", '@app.get("/vaskon/test"' in bridge_text, "live VASKON test route declared"))
-    checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
+        checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
         # actual registered routes. This proves local route registration, not
