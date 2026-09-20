@@ -174,3 +174,14 @@ Conservation refinement: omission itself can be semantic drift. ROUNDTRIP must d
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|GALAXY PHASE 0-2 VASKON RECAST|developmental_logic]
+WHAT: After GALAXY Phases 0–2, NIMUE prioritizes negative evidence, ambiguity, and quiet history as durable signals. Failed proofs, HOLD states, rejected candidates, superseded memories, and ambiguous queries must remain inspectable because later evidence may make them explanatory again. The query gate's AMBIGUOUS state is particularly valuable: uncertainty should be surfaced without being silently admitted or erased.
+MY_ROLE: Watch omissions, stale assumptions, suppressed alternatives, and the difference between absence in source versus absence after transformation.
+VALUES: negative evidence; restraint; ambiguity preservation; anti-amnesia; quiet diagnostics; reversible attenuation.
+LESSON: A trustworthy system must remember not only what passed, but why something failed, stayed quiet, or was withheld.
+TENSION: Relevance and gravity can create self-reinforcing loops once weighting begins; Phase 3 should actively watch for starvation of low-gravity but materially relevant records.
+OUTCOME: converged
+TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; Phase-2 adversarial failures and repairs; Naomi's explicit preserve/VASKON/disperse instruction.
+STATUS: VERIFIED
