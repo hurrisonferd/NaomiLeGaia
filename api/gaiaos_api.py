@@ -2719,7 +2719,7 @@ def galaxy_gravity_real_weight_options(browser_request: Request):
 @app.get("/galaxy/gravity/real-calibration/importance-six-level", response_class=HTMLResponse)
 @app.get("/galaxy/gravity/real-calibration/importance-seven-gates", response_class=HTMLResponse)
 def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_id: str):
-    """Read-only semantics and score lens for Naomi's seven-gate explicit-importance model."""
+    """Read-only semantics and score lens for Naomi's continuous Seven Gates importance scale."""
     bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
     if not bootstrap_session:
         _authorize_browser_session(browser_request)
@@ -2727,62 +2727,62 @@ def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_
     record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
     current = memcon_runtime.galaxy_gravity_preview(record_id)
 
-    levels = [
+    gates = [
         {
-            "tier_index": 0,
-            "gate_ordinal": 1,
-            "normalized": 0.0,
+            "gate_index": 0,
             "gate": "SIN",
-            "machine_label": "SIN",
-            "meaning": "Baseline explicit-importance tier. No explicit importance boost is added.",
+            "min_units": 0,
+            "max_units": 999,
+            "min_position": 0.000,
+            "max_position": 0.999,
         },
         {
-            "tier_index": 1,
-            "gate_ordinal": 2,
-            "normalized": round(1 / 6, 6),
+            "gate_index": 1,
             "gate": "NEBO",
-            "machine_label": "NEBO",
-            "meaning": "Low but intentional future-context importance.",
+            "min_units": 1000,
+            "max_units": 1999,
+            "min_position": 1.000,
+            "max_position": 1.999,
         },
         {
-            "tier_index": 2,
-            "gate_ordinal": 3,
-            "normalized": round(2 / 6, 6),
+            "gate_index": 2,
             "gate": "ISHTAR",
-            "machine_label": "ISHTAR",
-            "meaning": "Moderate explicit importance for future context.",
+            "min_units": 2000,
+            "max_units": 2999,
+            "min_position": 2.000,
+            "max_position": 2.999,
         },
         {
-            "tier_index": 3,
-            "gate_ordinal": 4,
-            "normalized": 0.5,
+            "gate_index": 3,
             "gate": "SHAMMASH",
-            "machine_label": "SHAMMASH",
-            "meaning": "Strong explicit importance with balanced midpoint influence.",
+            "min_units": 3000,
+            "max_units": 3999,
+            "min_position": 3.000,
+            "max_position": 3.999,
         },
         {
-            "tier_index": 4,
-            "gate_ordinal": 5,
-            "normalized": round(4 / 6, 6),
+            "gate_index": 4,
             "gate": "NERGAL",
-            "machine_label": "NERGAL",
-            "meaning": "High explicit importance intended to remain prominent when relevant.",
+            "min_units": 4000,
+            "max_units": 4999,
+            "min_position": 4.000,
+            "max_position": 4.999,
         },
         {
-            "tier_index": 5,
-            "gate_ordinal": 6,
-            "normalized": round(5 / 6, 6),
+            "gate_index": 5,
             "gate": "MARDUK",
-            "machine_label": "MARDUK",
-            "meaning": "Very high explicit importance and a major contextual anchor.",
+            "min_units": 5000,
+            "max_units": 5999,
+            "min_position": 5.000,
+            "max_position": 5.999,
         },
         {
-            "tier_index": 6,
-            "gate_ordinal": 7,
-            "normalized": 1.0,
+            "gate_index": 6,
             "gate": "ADAR",
-            "machine_label": "ADAR",
-            "meaning": "Maximum explicit importance: foundational context that should remain strongly available even when graph-isolated.",
+            "min_units": 6000,
+            "max_units": 7000,
+            "min_position": 6.000,
+            "max_position": 7.000,
         },
     ]
 
@@ -2839,36 +2839,52 @@ def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_
         for name, spec in components.items()
     }
 
-    def score(weights: dict, importance: float) -> float:
+    def gate_for_units(units: int) -> str:
+        if units < 0 or units > 7000:
+            raise ValueError("gate units must be in 0..7000")
+        if units == 7000:
+            return "ADAR"
+        return ["SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR"][units // 1000]
+
+    def point(units: int) -> dict:
+        position = round(units / 1000.0, 3)
+        normalized = round(units / 7000.0, 6)
+        return {
+            "stored_units": units,
+            "gate_position": position,
+            "gate": gate_for_units(units),
+            "normalized_importance": normalized,
+        }
+
+    def score(weights: dict, normalized_importance: float) -> float:
         norm = dict(normalized_base)
-        norm["explicit_importance"] = importance
+        norm["explicit_importance"] = normalized_importance
         return round(sum(float(norm[k]) * float(weights[k]) for k in weights), 6)
+
+    sample_units = [0, 985, 1000, 2000, 3000, 3972, 5000, 5214, 6000, 6999, 7000]
+    samples = [point(units) for units in sample_units]
 
     comparisons = []
     for profile in profiles:
         comparisons.append({
             "name": profile["name"],
             "weights": profile["weights"],
-            "scores_by_gate": [
+            "sample_scores": [
                 {
-                    "tier_index": level["tier_index"],
-                    "gate_ordinal": level["gate_ordinal"],
-                    "gate": level["gate"],
-                    "machine_label": level["machine_label"],
-                    "normalized": level["normalized"],
-                    "score": score(profile["weights"], float(level["normalized"])),
+                    **sample,
+                    "score": score(profile["weights"], float(sample["normalized_importance"])),
                 }
-                for level in levels
+                for sample in samples
             ],
         })
 
     payload = {
-        "status": "REAL_MEMORY_SEVEN_GATE_IMPORTANCE_REVIEW",
+        "status": "REAL_MEMORY_SEVEN_GATE_CONTINUOUS_IMPORTANCE_REVIEW",
         "phase": "PHASE_2_GRAVITY_SHADOW",
-        "selected_model": "SEVEN_GATES",
-        "supersedes_review_models": ["THREE_LEVEL", "SIX_LEVEL"],
+        "selected_model": "SEVEN_GATE_CONTINUOUS_V1",
+        "supersedes_review_models": ["THREE_LEVEL", "SIX_LEVEL", "SEVEN_GATES_DISCRETE"],
         "naming_provenance": (
-            "Human-facing tier names are drawn from the seven-gate sequence used in the Simon Necronomicon. "
+            "Human-facing gate names are drawn from the seven-gate sequence used in the Simon Necronomicon. "
             "GALAXY treats them as symbolic labels only, not as historical Mesopotamian claims or scoring authority."
         ),
         "record": {
@@ -2877,13 +2893,28 @@ def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_
             "authority": record.get("authority"),
             "status": record.get("status"),
         },
-        "proposed_semantics": levels,
+        "gate_bands": gates,
+        "precision_model": {
+            "canonical_storage": "integer gate_units",
+            "allowed_stored_units": "0..7000 inclusive",
+            "display_precision": "three decimal places",
+            "gate_position_rule": "gate_units / 1000",
+            "normalized_importance_rule": "gate_units / 7000",
+            "exact_positions_available": 7001,
+            "boundary_rule": (
+                "SIN 0.000-0.999; NEBO 1.000-1.999; ISHTAR 2.000-2.999; "
+                "SHAMMASH 3.000-3.999; NERGAL 4.000-4.999; MARDUK 5.000-5.999; ADAR 6.000-7.000."
+            ),
+        },
+        "examples": [
+            point(985),
+            point(3972),
+            point(5214),
+            point(6999),
+        ],
         "authorization_model": {
             "who_may_set": "NAOMI",
-            "default_tier_index": 0,
-            "allowed_tier_indices": [0, 1, 2, 3, 4, 5, 6],
-            "normalization_rule": "tier_index / 6",
-            "normalized_values": [level["normalized"] for level in levels],
+            "default_stored_units": 0,
             "mutation_requires": "separate exact-record review and explicit Naomi approval",
             "later_revision_allowed": True,
             "importance_is_not": ["truth", "authority", "permission", "relation strength"],
@@ -2897,15 +2928,15 @@ def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_
         "retrieval_weighting_enabled": False,
         "selection_performed": False,
         "proof_boundary": (
-            "This page defines and compares the seven-gate semantics only. "
-            "It does not store an importance tier, change deployed weights, write gravity, alter relations, or affect retrieval."
+            "This page defines and compares the continuous Seven Gates scale only. "
+            "It does not store an importance value, change deployed weights, write gravity, alter relations, or affect retrieval."
         ),
     }
     response = HTMLResponse(
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
-        "<h1>GALAXY Phase 2 Seven Gates explicit-importance review</h1>"
+        "<h1>GALAXY Phase 2 continuous Seven Gates importance review</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
-        "<p>No importance tier is set here. The gate names are a human-facing symbolic vocabulary over machine tier indices 0 through 6.</p>"
+        "<p>No importance value is set here. GALAXY now models 7,001 exact positions from 0.000 through 7.000, grouped into the seven named gate bands.</p>"
         "</body></html>"
     )
     if bootstrap_session:
