@@ -823,19 +823,19 @@ def galaxy_status() -> dict[str, Any]:
         "retrieval_contract_version": GALAXY_RETRIEVAL_CONTRACT_VERSION,
         "retrieval_invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
         "query_relevance_model_version": GALAXY_QUERY_RELEVANCE_MODEL_VERSION,
-        "phase3_blockers": [
-            "QUERY_RELEVANCE_QUALITY_V1_PENDING_ADVERSARIAL_LIVE_PROOF",
-        ],
+        "phase2_status": "CLOSED",
+        "phase3_blockers": [],
         "phase3_cleared_checks": [
             "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
             "GOVERNING_STATE_V1_LIVE_PROVEN",
             "QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_LIVE_PROVEN",
+            "QUERY_RELEVANCE_QUALITY_V1_ADVERSARIAL_LIVE_PROVEN",
         ],
-        "phase3_ready_for_authorization": False,
+        "phase3_ready_for_authorization": True,
         "phase3_authorized": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
-        "proof_boundary": "Gravity scoring is shadow-only and does not affect ordinary retrieval. Counts prove stored rows exist, not that score quality, weighted retrieval, consolidation, forgetting, or pruning are proven.",
+        "proof_boundary": "Phase 2 is closed after bounded live proofs of gravity shadow behavior, governing-state semantics, query-first candidate admission, and the explicit query-relevance adversarial suite. This does not prove universal semantic understanding, weighted retrieval behavior, consolidation, forgetting, or pruning.",
     }
 
 
