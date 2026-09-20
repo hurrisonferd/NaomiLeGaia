@@ -2774,3 +2774,52 @@ Weighted retrieval must not activate while either blocker remains.
 No lifecycle rule was invented here because the correct governing-state semantics require dedicated design rather than silently conflating historical preservation with current authority.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 adversarial rerun: v3 validation and harness correction 2026-09-20
+
+LIVE V3 RESULTS:
+
+Active profile:
+`NERGAL_475_PARITY_QUALITY_CONDITIONED`
+
+Score version:
+`galaxy.gravity.shadow.v3.nergal-475-parity-quality-conditioned`
+
+Weak-link breadth fix passed:
+- one `0.85` relation: `0.1375`
+- four `0.20` relations: `0.05`
+- twenty `0.20` relations: `0.05`
+- four weak links no longer outweigh one strong relation;
+- the four-edge cap prevents redundant weak-link flooding from growing further.
+
+Revision semantics remain intentional:
+- verified REVISES/SUPERSEDES receive a fixed categorical revision-significance increment;
+- edge strength remains a separate graph signal.
+
+Superseded-history behavior:
+- a non-ACTIVE historical `7.000 ADAR` counterfactual scores below the current `4.200 NERGAL` reviser;
+- an old `7.000 ADAR` record left ACTIVE can still dominate;
+- governing-state/lifecycle semantics therefore remain an explicit Phase-3 blocker.
+
+Isolated-ADAR behavior remains acceptable for Phase-2 shadow calibration:
+- isolated active `7.000 ADAR`: `0.65`
+- dense ordinary four-edge `0.85` graph with no explicit importance: `0.6125`
+
+HARNESS DEFECT FOUND:
+
+The adversarial endpoint still simulated the contradiction topology with `revision_count=4`, even though runtime v3 correctly excludes `CONTRADICTS` from revision significance.
+
+This produced a false `0.1` contradiction premium in the test output while the accompanying explanation correctly said no such premium exists.
+
+The test harness was corrected so equal-count/equal-strength CONTRADICTS and reinforcing topologies both use zero revision-significance count.
+
+Expected corrected result:
+- reinforcing graph contribution: `0.2125`
+- contradictory graph contribution: `0.2125`
+- contradiction premium: `0.0`
+- `no_revision_premium_pass: true`
+
+This was a validation-surface bug, not a runtime scoring bug.
+
+A fresh deployed adversarial rerun is required to verify the corrected proof surface before closing this Phase-2 validation subsection.
