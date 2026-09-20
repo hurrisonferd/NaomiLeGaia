@@ -2495,6 +2495,80 @@ def galaxy_gravity_real_relation_verify(browser_request: Request, edge_id: str):
     )
 
 
+@app.get("/galaxy/gravity/real-calibration/uncertainty-review", response_class=HTMLResponse)
+def galaxy_gravity_real_uncertainty_review(browser_request: Request, record_id: str):
+    """Read-only Phase-2 counterfactual lens for an uncertain calibration judgment."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    current = memcon_runtime.galaxy_gravity_preview(record_id)
+
+    current_score = float(current["gravity_score"])
+    base_without_explicit = round(current_score, 6)
+    max_explicit_only = round(current_score + 0.05, 6)
+
+    def one_relation_score(strength: float, *, revision: bool = False) -> float:
+        # Counterfactual math only for a currently isolated ACTIVE/NAOMI record.
+        # One relation adds degree contribution 0.25*(1/4), mean-strength 0.20*strength,
+        # and a revision-like relation additionally adds 0.10*(1/2).
+        score = 0.25 + 0.15 + (0.25 * 0.25) + (0.20 * strength)
+        if revision:
+            score += 0.10 * 0.5
+        return round(score, 6)
+
+    payload = {
+        "status": "REAL_MEMORY_CALIBRATION_UNCERTAINTY_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "record": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+            "authority": record.get("authority"),
+            "status": record.get("status"),
+        },
+        "current_shadow_preview": current,
+        "counterfactual_math_only": {
+            "current_score": base_without_explicit,
+            "max_explicit_importance_only": {
+                "hypothetical_explicit_importance_normalized": 1.0,
+                "score": max_explicit_only,
+                "note": "Uses the existing v1 explicit-importance weight of 0.05. No importance signal is written or activated.",
+            },
+            "one_nonrevision_relation": [
+                {"strength": 0.50, "score": one_relation_score(0.50)},
+                {"strength": 0.85, "score": one_relation_score(0.85)},
+                {"strength": 1.00, "score": one_relation_score(1.00)},
+            ],
+            "one_revision_like_relation_at_0_85": {
+                "score": one_relation_score(0.85, revision=True),
+                "note": "Illustrates the current revision-significance weight only. No relation is proposed or written.",
+            },
+        },
+        "interpretation_boundary": (
+            "These are counterfactual arithmetic probes against the current shadow-v1 weights, not recommendations, "
+            "semantic relation proposals, or evidence that any score is correct. They exist to make Naomi's uncertainty inspectable."
+        ),
+        "writes_performed": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+    }
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY Phase 2 calibration uncertainty review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No action is offered here. This page changes nothing; it only exposes how strongly the current v1 weights respond to different inputs.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
