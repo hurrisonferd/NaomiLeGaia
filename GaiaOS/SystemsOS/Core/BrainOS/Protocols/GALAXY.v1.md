@@ -2095,16 +2095,16 @@ MACHINE REPRESENTATION:
 
 SEVEN GATES:
 
-1. \`tier 0 / 0.000000 / NANNA / SIN\`
+1. \`tier 0 / 0.000000 / SIN\`
    - baseline explicit-importance tier; no explicit importance boost.
 
 2. \`tier 1 / 0.166667 / NEBO\`
    - low but intentional future-context importance.
 
-3. \`tier 2 / 0.333333 / INANNA / ISHTAR\`
+3. \`tier 2 / 0.333333 / ISHTAR\`
    - moderate explicit importance.
 
-4. \`tier 3 / 0.500000 / SHAMMASH / UDDU\`
+4. \`tier 3 / 0.500000 / SHAMMASH\`
    - strong midpoint explicit importance.
 
 5. \`tier 4 / 0.666667 / NERGAL\`
@@ -2113,7 +2113,7 @@ SEVEN GATES:
 6. \`tier 5 / 0.833333 / MARDUK\`
    - very high explicit importance and major contextual-anchor tier.
 
-7. \`tier 6 / 1.000000 / NINIB / ADAR\`
+7. \`tier 6 / 1.000000 / ADAR\`
    - maximum explicit importance; foundational future context.
 
 NAMING PROVENANCE:
@@ -2136,3 +2136,23 @@ Both aliases now render the Seven Gates review surface so stale links do not sil
 No importance tier has been stored. No weight profile has been selected. No gravity row, relation mutation, or retrieval behavior is changed.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Seven Gates naming simplification 2026-09-20
+
+NAOMI REVISION:
+
+For cleaner GALAXY presentation, four compound gate labels are simplified to the single names Naomi selected:
+
+- tier 0: `SIN`
+- tier 2: `ISHTAR`
+- tier 3: `SHAMMASH`
+- tier 6: `ADAR`
+
+Unchanged:
+
+- tier 1: `NEBO`
+- tier 4: `NERGAL`
+- tier 5: `MARDUK`
+
+The tier indices, normalization rule `tier_index / 6`, authorization model, and scoring behavior are unchanged.
