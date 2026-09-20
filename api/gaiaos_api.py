@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import contextlib
 import hashlib
+import html
 import hmac
 import json
 import os
@@ -571,6 +572,156 @@ def gaia_brain_http(authorization: str | None = Header(default=None)) -> dict[st
         "warm_candidate_buffer": council["warm_candidate_buffer"],
         "effect_authority": "NONE_READ_ONLY",
     }
+
+
+
+def _galaxy_runtime():
+    """Lazy-load MemoryOS/GALAXY runtime to avoid API import cycles."""
+    import memcon_runtime
+    import memcon_entrypoint
+    return memcon_runtime, memcon_entrypoint._memory_runtime()
+
+
+def _galaxy_retrieval_ids(runtime, record: dict) -> list[str]:
+    scope = str(record.get("scope") or "MemoryOS")
+    result = runtime.retrieve(str(record.get("statement", "")), scope, 10)
+    rows = result.get("retrieval", {}).get("records", [])
+    return [str(row.get("record_id")) for row in rows if row.get("record_id")]
+
+
+@app.get("/galaxy/canary/start", response_class=HTMLResponse)
+def galaxy_canary_start(browser_request: Request):
+    """Direct canary entrypoint that does not depend on OPENAI_API_KEY."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    token = secrets.token_hex(6)
+    source = f"galaxy-phase1-canary:{token}"
+    session = runtime.start_session(source, f"GALAXY Phase 1 two-memory relation canary {token}")
+    statement_a = f"GALAXY-CANARY-A [{token}]: The test beacon emits a cyan signal."
+    statement_b = f"GALAXY-CANARY-B [{token}]: The cyan signal from Canary A is part of the same controlled GALAXY test."
+    event_a = runtime.record_event(session["session_id"], "NAOMI", "GALAXY_CANARY_INPUT", statement_a, source)
+    event_b = runtime.record_event(session["session_id"], "NAOMI", "GALAXY_CANARY_INPUT", statement_b, source)
+    candidate_a = runtime.candidate_from_event(
+        event_a["event_id"], authority="NAOMI", record_type="TEST", scope="MemoryOS",
+        statement=statement_a, source=source, owner="GALAXY_CANARY_A",
+        why_material="Controlled durable endpoint A for the GALAXY Phase-1 relation canary.",
+    )
+    candidate_b = runtime.candidate_from_event(
+        event_b["event_id"], authority="NAOMI", record_type="TEST", scope="MemoryOS",
+        statement=statement_b, source=source, owner="GALAXY_CANARY_B",
+        why_material="Controlled durable endpoint B for the GALAXY Phase-1 relation canary.",
+    )
+    payload = {
+        "status": "APPROVAL_REQUIRED",
+        "token": token,
+        "candidate_a": candidate_a,
+        "candidate_b": candidate_b,
+        "durable_writes_performed": [],
+        "relation_write_performed": False,
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY two-memory canary</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p><a style='font-size:22px' href='/galaxy/canary/approve'>Approve the two controlled memories</a></p>"
+        "<p>START created candidates only. No durable memory or relation has been written.</p>"
+        "</body></html>"
+    )
+
+
+@app.get("/galaxy/canary/approve", response_class=HTMLResponse)
+def galaxy_canary_approve(browser_request: Request):
+    """Explicitly promote the paired memories, then create only a PROPOSED shadow edge."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    candidate_a = memcon_runtime.get_latest_memory_candidate("GALAXY_CANARY_A", "CANDIDATE")
+    candidate_b = memcon_runtime.get_latest_memory_candidate("GALAXY_CANARY_B", "CANDIDATE")
+    if candidate_a is None or candidate_b is None:
+        raise HTTPException(status_code=409, detail="No paired pending GALAXY canary. Start a new canary first.")
+    event_a = memcon_runtime.get_session_event(str(candidate_a.get("event_id")))
+    event_b = memcon_runtime.get_session_event(str(candidate_b.get("event_id")))
+    if not event_a or not event_b or event_a.get("session_id") != event_b.get("session_id"):
+        raise HTTPException(status_code=409, detail="Latest canary candidates are not a matched pair.")
+
+    promotion_a = runtime.promote_candidate(str(candidate_a["candidate_id"]), True, "NAOMI")
+    promotion_b = runtime.promote_candidate(str(candidate_b["candidate_id"]), True, "NAOMI")
+    if promotion_a.get("status") != "VERIFIED" or promotion_b.get("status") != "VERIFIED":
+        raise HTTPException(status_code=409, detail="Both canary memories must verify before relation proposal.")
+
+    record_a = memcon_runtime.get_record(str(promotion_a["record_id"]))
+    record_b = memcon_runtime.get_record(str(promotion_b["record_id"]))
+    if record_a is None or record_b is None:
+        raise HTTPException(status_code=500, detail="Durable record readback failed.")
+
+    pre_ids = _galaxy_retrieval_ids(runtime, record_b)
+    relation = memcon_runtime.galaxy_propose_relation(
+        source_record_id=str(record_b["record_id"]),
+        target_record_id=str(record_a["record_id"]),
+        relation_type="CONTEXT_FOR",
+        strength=1.0,
+        evidence={
+            "source": "galaxy-phase1-two-memory-canary",
+            "basis": "Controlled B CONTEXT_FOR A relation.",
+            "session_id": event_a.get("session_id"),
+            "pre_verification_retrieval_record_ids": pre_ids,
+        },
+        classifier="GALAXY_CONTROLLED_CANARY_V1",
+    )
+    edge_id = (relation.get("relation") or {}).get("edge_id")
+    payload = {
+        "status": "RELATION_PROPOSED",
+        "memory_a_record_id": record_a["record_id"],
+        "memory_b_record_id": record_b["record_id"],
+        "relation": relation,
+        "pre_verification_retrieval_record_ids": pre_ids,
+    }
+    verify = (
+        f"<p><a style='font-size:22px' href='/galaxy/canary/verify/{html.escape(str(edge_id))}'>Verify proposed GALAXY edge</a></p>"
+        if edge_id else "<p>No edge_id returned. Verification is not available.</p>"
+    )
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY canary approval</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + verify +
+        "<p>The relation is still PROPOSED and has no retrieval effect.</p>"
+        "</body></html>"
+    )
+
+
+@app.get("/galaxy/canary/verify/{edge_id}", response_class=HTMLResponse)
+def galaxy_canary_verify(edge_id: str, browser_request: Request):
+    """Verify one proposed edge and compare ordinary MemoryOS retrieval before and after."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    before = memcon_runtime.galaxy_relation(edge_id)
+    if before is None:
+        raise HTTPException(status_code=404, detail="Unknown GALAXY edge_id.")
+    source = memcon_runtime.get_record(str(before.get("source_record_id")))
+    target = memcon_runtime.get_record(str(before.get("target_record_id")))
+    if source is None or target is None:
+        raise HTTPException(status_code=409, detail="GALAXY relation endpoint missing.")
+    pre_ids = list((before.get("evidence") or {}).get("pre_verification_retrieval_record_ids") or [])
+    verified = memcon_runtime.galaxy_verify_relation(edge_id, authority="NAOMI", approved=True)
+    post_ids = _galaxy_retrieval_ids(runtime, source)
+    payload = {
+        "status": "VERIFIED",
+        "verification": verified,
+        "source_orbit": memcon_runtime.galaxy_record(str(source["record_id"])),
+        "target_orbit": memcon_runtime.galaxy_record(str(target["record_id"])),
+        "retrieval_comparison": {
+            "before_record_ids": pre_ids,
+            "after_record_ids": post_ids,
+            "unchanged": bool(pre_ids) and pre_ids == post_ids,
+            "retrieval_weighting_enabled": memcon_runtime.galaxy_status().get("retrieval_weighting_enabled"),
+        },
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY edge verification</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "</body></html>"
+    )
 
 
 @app.post("/chat")
