@@ -526,6 +526,22 @@ def galaxy_calculate_gravity(record_id: str, *, authority: str, approved: bool) 
         raise PermissionError("GALAXY shadow gravity calculation requires explicit Naomi approval")
     preview = galaxy_gravity_preview(record_id)
     previous = galaxy_gravity(record_id)
+    if (
+        previous is not None
+        and previous.get("score_version") == preview.get("score_version")
+        and float(previous.get("gravity_score") or 0.0) == float(preview.get("gravity_score") or 0.0)
+        and previous.get("components") == preview.get("components")
+    ):
+        return {
+            "status": "SHADOW_SCORED",
+            "gravity": previous,
+            "previous": previous,
+            "receipt": None,
+            "idempotent": True,
+            "retrieval_effect": "NONE",
+            "retrieval_weighting_enabled": False,
+            "authority_boundary": "The current identical shadow score was already stored; no new mutation was performed.",
+        }
     calculated_at = _now()
     with _db() as conn:
         if previous is None:
