@@ -2321,3 +2321,49 @@ The route compares the proposed nonlinear influence against the prior linear nor
 No curve is activated by this checkpoint. No stored importance value, gravity row, relation, or retrieval behavior changes.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 live NERGAL-threshold curve review 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- status: `REAL_MEMORY_SEVEN_GATE_INFLUENCE_CURVE_REVIEW`
+- phase: `PHASE_2_GRAVITY_SHADOW`
+- record: `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- curve version under review: `galaxy.importance.influence.nergal-threshold.v1`
+- interpolation: continuous piecewise-linear
+- no writes, importance mutation, gravity mutation, relation mutation, curve activation, or retrieval weighting occurred.
+
+LIVE CURVE ANCHORS:
+
+- `0.000 SIN -> 0.00`
+- `1.000 NEBO -> 0.08`
+- `2.000 ISHTAR -> 0.16`
+- `3.000 SHAMMASH -> 0.24`
+- `4.000 NERGAL -> 0.34`
+- `5.000 MARDUK -> 0.62`
+- `6.000 ADAR -> 0.82`
+- `7.000 ADAR apex -> 1.00`
+
+OBSERVED SHAPE:
+
+- SIN through SHAMMASH remain compressed.
+- The curve remains continuous at the SHAMMASH -> NERGAL boundary.
+- The slope steepens materially within NERGAL:
+  - `3.972 SHAMMASH -> 0.3372`
+  - `4.000 NERGAL -> 0.34`
+  - `4.100 NERGAL -> 0.368`
+  - `4.500 NERGAL -> 0.48`
+  - `4.999 NERGAL -> 0.61972`
+- `5.000 MARDUK -> 0.62`
+- `6.000 ADAR -> 0.82`
+- `6.999 ADAR -> 0.99982`
+- `7.000 ADAR -> 1.0`
+
+INTERPRETATION:
+
+The current proposal implements a slope threshold, not a discontinuous jump. Entering NERGAL does not instantly spike importance; rather, NERGAL is where influence begins increasing much faster.
+
+This matches Naomi's stated semantic direction unless Naomi prefers a hard step-change at the NERGAL boundary.
+
+No curve activation is authorized by this checkpoint. Phase 3 remains disabled and unauthorized.
