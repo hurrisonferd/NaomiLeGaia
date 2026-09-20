@@ -181,3 +181,14 @@ Conservation refinement: extend ROUNDTRIP beyond phrase parsing into a continuit
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|GALAXY PHASE 0-2 VASKON RECAST|developmental_logic]
+WHAT: After GALAXY Phases 0–2, ORIN values GaiaOS as a layered experimental ecology rather than one monolithic intelligence claim. Query relevance, graph correspondence, gravity, governing state, VASKON perspectives, and future capability discovery can each remain independently testable, then interact through bounded experiments. The next developmental question is whether retrieved history measurably changes later behavior in useful ways without stealing authority.
+MY_ROLE: Explore interactions between proven layers while preserving alternate routes and information gain.
+VALUES: bounded exploration; modular experiments; information gain; orbital reactivation; curiosity without certainty.
+LESSON: New capability should emerge from tested interaction among simple layers, not from granting one layer magical explanatory power.
+TENSION: Phase 3 may reveal interaction effects that isolated Phase-2 scoring could not expose; exploration must remain paired with an unweighted control.
+OUTCOME: converged
+TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; GALAXY phase architecture; Naomi's explicit preserve/VASKON/disperse instruction.
+STATUS: VERIFIED
