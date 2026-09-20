@@ -237,3 +237,19 @@ Bounded conclusion: GALAXY Phase 1 structures are live on the configured Turso/l
 ### Resume instruction
 
 On return, do not rebuild or repeat the already observed foundation tests unless evidence requires it. Resume at the NEXT PHASE-1 GATE: controlled two-memory relation proposal → Naomi verification → edge readback through ORBIT → confirm retrieval still unchanged.
+
+### Phase-1 relation canary surface checkpoint 2026-09-19
+
+Source commit: 2b9a9f5ef3eb709eff3b96b596717962f1c4eae5.
+
+SOURCE IMPLEMENTED / DEPLOYMENT NOT YET PROVEN:
+- Browser Chat now recognizes `GALAXY PROPOSE <source_record_id> <relation_type> <target_record_id> <strength> [evidence note]`.
+- Proposal writes only a `PROPOSED` shadow relation through the existing `galaxy_propose_relation` primitive.
+- The proposal captures the ordinary MemoryOS retrieval record order for the controlled source record before edge verification.
+- Browser Chat now recognizes `GALAXY VERIFY <edge_id>`.
+- Verification requires that explicit command, invokes Naomi-authorized `galaxy_verify_relation`, reads both endpoint orbits back, reruns ordinary MemoryOS retrieval, and reports whether the record order remained unchanged.
+- Neither command enables retrieval weighting.
+- These command surfaces do not prove deployment or successful runtime execution until observed on the live carrier.
+
+NEXT GATE remains:
+two controlled durable memories → GALAXY PROPOSE → inspect PROPOSED edge → explicit GALAXY VERIFY → ORBIT/readback → retrieval comparison → preserve receipt.
