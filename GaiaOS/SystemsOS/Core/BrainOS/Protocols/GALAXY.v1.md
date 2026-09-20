@@ -2503,3 +2503,50 @@ NEXT GATE:
 Compare candidate replacement shadow-weight profiles against the real stored `4.750 NERGAL / 0.55 effective influence` signal rather than against hypothetical maximum importance.
 
 No replacement weight profile is authorized yet. Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 real stored importance weight-profile review PASS 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+The replacement-weight review used the real stored signal for
+`MEM-3883f8127bcd40e28255fdbfa4c98309`:
+
+- `4.750 NERGAL`
+- effective influence: `0.55`
+
+Candidate leverage against one verified non-revision relation at strength `0.85`:
+
+- CURRENT_V1:
+  - importance contribution: `0.0275`
+  - relation contribution: `0.2325`
+  - relation / importance: `8.454545`
+- SOFT_REBALANCE:
+  - importance contribution: `0.0825`
+  - relation contribution: `0.1775`
+  - ratio: `2.151515`
+- MAX_IMPORTANCE_PARITY:
+  - importance contribution: `0.097581`
+  - relation contribution: `0.177419`
+  - ratio: `1.818172`
+- IMPORTANCE_LEADING:
+  - importance contribution: `0.11`
+  - relation contribution: `0.165`
+  - ratio: `1.5`
+- NERGAL_475_PARITY:
+  - importance contribution: `0.1375`
+  - relation contribution: `0.1375`
+  - ratio: `1.0`
+
+No profile was selected or activated; no writes, gravity mutations, relation mutations, or retrieval weighting occurred.
+
+INTERPRETATION:
+
+`NERGAL_475_PARITY` is the first candidate that directly expresses the tested semantic proposition that a clearly influential mid/high NERGAL memory can equal one strong verified semantic relation.
+
+Before activation, it requires a broader stress review across:
+- lower and higher Gate positions;
+- multiple verified relation counts;
+- revision-like relations, which also receive revision-significance weight.
+
+No replacement profile is authorized yet. Phase 3 remains disabled.
