@@ -3747,6 +3747,66 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
     return response
 
 
+@app.get("/galaxy/retrieval/scoped-search-proof", response_class=HTMLResponse)
+def galaxy_scoped_search_proof(browser_request: Request):
+    """Read-only proof that scoped retrieval still applies query terms."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    target_query = "gravity estimate contextual influence"
+    impossible_query = "GALAXY_QUERY_TERM_THAT_DOES_NOT_EXIST_7X91"
+    scope = "MemoryOS"
+
+    target = memcon_runtime.search_records(target_query, limit=20, scope=scope)
+    impossible = memcon_runtime.search_records(impossible_query, limit=20, scope=scope)
+    target_ids = [row.get("record_id") for row in target.get("records", [])]
+    expected_id = "MEM-3883f8127bcd40e28255fdbfa4c98309"
+
+    payload = {
+        "status": "GALAXY_SCOPED_SEARCH_QUERY_PROOF",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "scope": scope,
+        "target_query": target_query,
+        "expected_record_id": expected_id,
+        "target_record_ids": target_ids,
+        "target_match_found": expected_id in target_ids,
+        "target_count": target.get("count"),
+        "target_query_terms_applied": target.get("query_terms_applied"),
+        "target_query_filter_active": target.get("query_filter_active"),
+        "impossible_query": impossible_query,
+        "impossible_count": impossible.get("count"),
+        "impossible_record_ids": [row.get("record_id") for row in impossible.get("records", [])],
+        "scope_query_filter_pass": (
+            expected_id in target_ids
+            and bool(target.get("query_filter_active"))
+            and impossible.get("count") == 0
+        ),
+        "writes_performed": [],
+        "retrieval_weighting_enabled": False,
+        "phase3_authorized": False,
+        "proof_boundary": (
+            "This page proves query terms remain active when scope is supplied. "
+            "It does not enable gravity-weighted retrieval or mutate memory."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY scoped search query proof</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>Expected pass: target memory is found and the impossible scoped query returns zero records.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
