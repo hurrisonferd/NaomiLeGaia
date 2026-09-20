@@ -441,3 +441,35 @@ PHASE-2 REMAINING GATE:
 Repeat the exact same controlled canary with unchanged inputs. It must return the existing identical scores idempotently, perform no new gravity mutation, and preserve ordinary retrieval order. Only after that rerun is observed should the controlled Phase-2 canary be marked fully PASS.
 
 Phase 3 weighted retrieval remains disabled and unauthorized.
+
+
+### Phase-2 controlled shadow-gravity canary PASS 2026-09-20
+
+OBSERVED LIVE IDEMPOTENCY RESULT:
+
+- Controlled edge remained `EDGE-bf3ab5952c4e41b1bd3cad5019bd676c`.
+- Source score remained `0.6625`.
+- Target score remained `0.6625`.
+- Both score version values remained `galaxy.gravity.shadow.v1`.
+- Both recalculations returned `idempotent: true`.
+- Both recalculations returned `receipt: null`.
+- Authority boundary reported that no new mutation was performed for identical unchanged shadow scores.
+- Source and target ORBIT readbacks still exposed the same stored gravity rows.
+- Ordinary MemoryOS retrieval order before and after the idempotent rerun remained identical.
+- `unchanged: true`
+- `retrieval_weighting_enabled: false`
+- `gravity_is_authority: false`
+- `stored_gravity_feeds_its_own_score: false`
+- `recency_component_enabled: false`
+- `physical_pruning_enabled: false`
+
+PHASE-2 CONTROLLED CANARY CONCLUSION:
+
+`PREVIEW NO-WRITE → FIRST SHADOW SCORE WRITE + RECEIPTS → ORBIT READBACK → RETRIEVAL UNCHANGED → IDENTICAL RERUN IDEMPOTENT / NO NEW RECEIPTS → RETRIEVAL STILL UNCHANGED`
+
+is now observed live on the deployed carrier for the controlled two-memory pair.
+
+This closes the controlled Phase-2 shadow-gravity canary gate.
+
+NEXT PHASE-2 WORK:
+broader bounded calibration across records with meaningfully different graph structures and evidence profiles. This is still shadow-only. Phase 3 weighted retrieval remains disabled and unauthorized until calibration is reviewed and a separate Phase-3 proof harness is designed.
