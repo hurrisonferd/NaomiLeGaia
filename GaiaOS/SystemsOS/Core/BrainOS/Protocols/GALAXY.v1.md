@@ -3190,3 +3190,65 @@ blocks Phase-3 authorization.
 
 No gravity changes were made.
 No weighted retrieval is enabled.
+
+
+### FINAL PHASE-2 CLOSURE: query relevance quality live PASS 2026-09-20
+
+LIVE MODEL:
+`galaxy.query-relevance.explainable.v1`
+
+Observed adversarial suite results:
+
+1. PARAPHRASE RECALL: PASS
+   - `Can GALAXY importance ever become permission?` -> RELEVANT
+   - `Does memory gravity determine what is true?` -> RELEVANT
+   - `How much should contextual importance affect recall?` -> RELEVANT
+   - `Is gravity allowed to act like authority?` -> RELEVANT
+
+2. LEXICAL-OVERLAP FALSE POSITIVES: PASS
+   - planetary/orbital gravity query -> IRRELEVANT
+   - falling-object gravity query -> IRRELEVANT
+   - contextual-advertising authority query -> IRRELEVANT
+
+3. NEGATION / POLARITY: PASS
+   - `Does GALAXY gravity grant permission?` -> RELEVANT
+   - `agreement_inferred: false`
+   - confirms `QUERY_RELEVANCE != CLAIM_AGREEMENT`
+
+4. AMBIGUITY: PASS
+   - `gravity` -> AMBIGUOUS
+   - target not silently admitted into candidate pool
+   - ambiguous candidates remain inspectable
+
+5. SCOPE + QUERY CONJUNCTION: PASS
+   - `MemoryOS + contextual influence` retrieves the target memory
+   - `MemoryOS + pumpkin carving` returns zero candidates
+
+Observed aggregate:
+`query_relevance_quality_v1_adversarial_suite_pass: true`
+
+Observed retrieval-contract state:
+`gravity_is_contractually_confined_to_candidate_pool: true`
+`gravity_reranking_observed: false`
+
+Evidence ceiling remains explicit:
+
+`QUERY_GATE_ORDER_PROVEN != QUERY_RELEVANCE_QUALITY_PROVEN`
+
+The live adversarial pass proves bounded behavior on the named suite. It does NOT establish universal semantic understanding.
+
+No writes occurred.
+No gravity rows were mutated.
+No relations were mutated.
+Retrieval weighting remained disabled.
+Phase 3 remained unauthorized during proof.
+
+FINAL PHASE-2 STATE:
+
+`phase2_status: CLOSED`
+`phase3_blockers: []`
+`phase3_ready_for_authorization: true`
+`phase3_authorized: false`
+
+Phase 2 is complete.
+Phase 3 remains opt-in and must begin with explicit Naomi authorization.
