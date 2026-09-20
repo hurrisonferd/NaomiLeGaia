@@ -1709,6 +1709,10 @@ def _galaxy_real_event_review(event: dict) -> dict:
     if "pw:preserve" in statement_lower:
         soft_review_flags.append("PW_PRESERVE_CONTEXT")
 
+    calibration_hold_flags = []
+    if "STATEMENT_MENTIONS_TEST" in soft_review_flags and "PW_PRESERVE_CONTEXT" in soft_review_flags:
+        calibration_hold_flags.append("CONTROL_COMMAND_TEST_CONTEXT")
+
     if hard_test_flags:
         disposition = "TEST_LIKE_HOLD"
         candidate_creation_allowed = False
@@ -1716,12 +1720,20 @@ def _galaxy_real_event_review(event: dict) -> dict:
             "Event is structurally test-like by event type or source and is held out of real-memory "
             "candidate creation unless the ingestion policy is deliberately changed."
         )
+    elif calibration_hold_flags:
+        disposition = "CALIBRATION_SUITABILITY_HOLD"
+        candidate_creation_allowed = False
+        reason = (
+            "Event is a real browser interaction but its content is itself a control-command test. "
+            "It is held out of the real-memory calibration sample so test context is not relabeled as "
+            "representative semantic memory merely to create coverage."
+        )
     else:
         disposition = "NAOMI_REVIEW_REQUIRED"
         candidate_creation_allowed = True
         reason = (
-            "Event is not structurally classified as test data. Candidate creation is available only "
-            "as an explicit Naomi action and remains non-durable."
+            "Event is not structurally classified as test data and is not held by the current calibration "
+            "suitability filter. Candidate creation is available only as an explicit Naomi action and remains non-durable."
         )
 
     return {
@@ -1730,6 +1742,7 @@ def _galaxy_real_event_review(event: dict) -> dict:
         "candidate_creation_allowed": candidate_creation_allowed,
         "hard_test_flags": hard_test_flags,
         "soft_review_flags": soft_review_flags,
+        "calibration_hold_flags": calibration_hold_flags,
         "reason": reason,
     }
 
@@ -1778,9 +1791,11 @@ def galaxy_gravity_real_candidate_review(
         "phase": "PHASE_2_GRAVITY_SHADOW",
         "reviewed_event_count": len(reviews),
         "candidate_creation_options_count": len(eligible),
-        "test_like_held_count": len(held),
+        "held_event_count": len(held),
+        "structural_test_hold_count": sum(1 for item in held if item["disposition"] == "TEST_LIKE_HOLD"),
+        "calibration_suitability_hold_count": sum(1 for item in held if item["disposition"] == "CALIBRATION_SUITABILITY_HOLD"),
         "candidate_creation_options": eligible,
-        "test_like_held_events": held,
+        "held_events": held,
         "writes_performed": [],
         "candidates_created": [],
         "candidates_promoted": [],
@@ -1788,8 +1803,9 @@ def galaxy_gravity_real_candidate_review(
         "gravity_rows_mutated": [],
         "retrieval_weighting_enabled": False,
         "review_boundary": (
-            "This page classifies existing session events for Naomi review. Structural test events are held out. "
-            "A reviewable event can become only a non-durable MemoryOS candidate after a separate explicit click."
+            "This page classifies existing session events for Naomi review. Structural test events and real interactions "
+            "whose content is itself control-test context can be held out of calibration. A reviewable event can become "
+            "only a non-durable MemoryOS candidate after a separate explicit click."
         ),
     }
 
