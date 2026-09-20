@@ -2717,8 +2717,9 @@ def galaxy_gravity_real_weight_options(browser_request: Request):
 
 @app.get("/galaxy/gravity/real-calibration/importance-three-level", response_class=HTMLResponse)
 @app.get("/galaxy/gravity/real-calibration/importance-six-level", response_class=HTMLResponse)
-def galaxy_gravity_real_importance_six_level(browser_request: Request, record_id: str):
-    """Read-only semantics and score lens for Naomi's revised six-level explicit-importance model."""
+@app.get("/galaxy/gravity/real-calibration/importance-seven-gates", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_id: str):
+    """Read-only semantics and score lens for Naomi's seven-gate explicit-importance model."""
     bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
     if not bootstrap_session:
         _authorize_browser_session(browser_request)
@@ -2728,34 +2729,60 @@ def galaxy_gravity_real_importance_six_level(browser_request: Request, record_id
 
     levels = [
         {
-            "value": 0.0,
-            "label": "NORMAL",
-            "meaning": "No explicit importance boost. The memory is governed by durability, provenance, graph structure, and revision signals only.",
+            "tier_index": 0,
+            "gate_ordinal": 1,
+            "normalized": 0.0,
+            "gate": "NANNA / SIN",
+            "machine_label": "NANNA_SIN",
+            "meaning": "Baseline explicit-importance tier. No explicit importance boost is added.",
         },
         {
-            "value": 0.2,
-            "label": "NOTABLE",
-            "meaning": "Naomi marks the memory as worth somewhat greater future-context visibility, without making it a governing anchor.",
+            "tier_index": 1,
+            "gate_ordinal": 2,
+            "normalized": round(1 / 6, 6),
+            "gate": "NEBO",
+            "machine_label": "NEBO",
+            "meaning": "Low but intentional future-context importance.",
         },
         {
-            "value": 0.4,
-            "label": "IMPORTANT",
-            "meaning": "Naomi marks the memory as materially important for future context.",
+            "tier_index": 2,
+            "gate_ordinal": 3,
+            "normalized": round(2 / 6, 6),
+            "gate": "INANNA / ISHTAR",
+            "machine_label": "INANNA_ISHTAR",
+            "meaning": "Moderate explicit importance for future context.",
         },
         {
-            "value": 0.6,
-            "label": "HIGH",
-            "meaning": "Naomi marks the memory as strongly important across future context and worthy of elevated influence when relevant.",
+            "tier_index": 3,
+            "gate_ordinal": 4,
+            "normalized": 0.5,
+            "gate": "SHAMMASH / UDDU",
+            "machine_label": "SHAMMASH_UDDU",
+            "meaning": "Strong explicit importance with balanced midpoint influence.",
         },
         {
-            "value": 0.8,
-            "label": "ANCHOR",
-            "meaning": "Naomi marks the memory as a major contextual anchor that should remain highly available even with sparse graph support.",
+            "tier_index": 4,
+            "gate_ordinal": 5,
+            "normalized": round(4 / 6, 6),
+            "gate": "NERGAL",
+            "machine_label": "NERGAL",
+            "meaning": "High explicit importance intended to remain prominent when relevant.",
         },
         {
-            "value": 1.0,
-            "label": "FOUNDATIONAL",
-            "meaning": "Naomi marks the memory as foundational context that should remain strongly available even when graph-isolated.",
+            "tier_index": 5,
+            "gate_ordinal": 6,
+            "normalized": round(5 / 6, 6),
+            "gate": "MARDUK",
+            "machine_label": "MARDUK",
+            "meaning": "Very high explicit importance and a major contextual anchor.",
+        },
+        {
+            "tier_index": 6,
+            "gate_ordinal": 7,
+            "normalized": 1.0,
+            "gate": "NINIB / ADAR",
+            "machine_label": "NINIB_ADAR",
+            "meaning": "Maximum explicit importance: foundational context that should remain strongly available even when graph-isolated.",
         },
     ]
 
@@ -2822,21 +2849,28 @@ def galaxy_gravity_real_importance_six_level(browser_request: Request, record_id
         comparisons.append({
             "name": profile["name"],
             "weights": profile["weights"],
-            "scores_by_importance_level": [
+            "scores_by_gate": [
                 {
-                    "value": level["value"],
-                    "label": level["label"],
-                    "score": score(profile["weights"], float(level["value"])),
+                    "tier_index": level["tier_index"],
+                    "gate_ordinal": level["gate_ordinal"],
+                    "gate": level["gate"],
+                    "machine_label": level["machine_label"],
+                    "normalized": level["normalized"],
+                    "score": score(profile["weights"], float(level["normalized"])),
                 }
                 for level in levels
             ],
         })
 
     payload = {
-        "status": "REAL_MEMORY_SIX_LEVEL_IMPORTANCE_REVIEW",
+        "status": "REAL_MEMORY_SEVEN_GATE_IMPORTANCE_REVIEW",
         "phase": "PHASE_2_GRAVITY_SHADOW",
-        "selected_model": "SIX_LEVEL",
-        "supersedes_review_model": "THREE_LEVEL",
+        "selected_model": "SEVEN_GATES",
+        "supersedes_review_models": ["THREE_LEVEL", "SIX_LEVEL"],
+        "naming_provenance": (
+            "Human-facing tier names are drawn from the seven-gate sequence used in the Simon Necronomicon. "
+            "GALAXY treats them as symbolic labels only, not as historical Mesopotamian claims or scoring authority."
+        ),
         "record": {
             "record_id": record.get("record_id"),
             "statement": record.get("statement"),
@@ -2846,9 +2880,10 @@ def galaxy_gravity_real_importance_six_level(browser_request: Request, record_id
         "proposed_semantics": levels,
         "authorization_model": {
             "who_may_set": "NAOMI",
-            "default": 0.0,
-            "allowed_values": [0.0, 0.2, 0.4, 0.6, 0.8, 1.0],
-            "step_size": 0.2,
+            "default_tier_index": 0,
+            "allowed_tier_indices": [0, 1, 2, 3, 4, 5, 6],
+            "normalization_rule": "tier_index / 6",
+            "normalized_values": [level["normalized"] for level in levels],
             "mutation_requires": "separate exact-record review and explicit Naomi approval",
             "later_revision_allowed": True,
             "importance_is_not": ["truth", "authority", "permission", "relation strength"],
@@ -2862,15 +2897,15 @@ def galaxy_gravity_real_importance_six_level(browser_request: Request, record_id
         "retrieval_weighting_enabled": False,
         "selection_performed": False,
         "proof_boundary": (
-            "This page defines and compares the revised six-level semantics only. "
-            "It does not store an importance value, change deployed weights, write gravity, alter relations, or affect retrieval."
+            "This page defines and compares the seven-gate semantics only. "
+            "It does not store an importance tier, change deployed weights, write gravity, alter relations, or affect retrieval."
         ),
     }
     response = HTMLResponse(
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
-        "<h1>GALAXY Phase 2 six-level explicit-importance review</h1>"
+        "<h1>GALAXY Phase 2 Seven Gates explicit-importance review</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
-        "<p>No importance value is set here. Review NORMAL, NOTABLE, IMPORTANT, HIGH, ANCHOR, and FOUNDATIONAL before any storage design is authorized.</p>"
+        "<p>No importance tier is set here. The gate names are a human-facing symbolic vocabulary over machine tier indices 0 through 6.</p>"
         "</body></html>"
     )
     if bootstrap_session:
