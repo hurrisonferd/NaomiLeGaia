@@ -179,6 +179,34 @@ def run_verification() -> dict[str, Any]:
             f"matrix members={sorted(members)}",
         ))
 
+    # Canonical Council presentation contract and fail-closed renderer.
+    presentation_spec_path = GAIA / "SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
+    presentation_renderer_path = GAIA / "SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py"
+    presentation_spec = _read_json(presentation_spec_path, checks, "presentation:spec")
+    checks.append(_check("presentation:renderer", presentation_renderer_path.exists(), "deterministic presentation renderer exists"))
+    if presentation_spec and presentation_renderer_path.exists():
+        try:
+            import importlib.util
+            pspec = importlib.util.spec_from_file_location("gaiaos_presentation_renderer", presentation_renderer_path)
+            pmod = importlib.util.module_from_spec(pspec)
+            pspec.loader.exec_module(pmod)
+            pmod.validate_spec(presentation_spec)
+            expected = {
+                "VERA":"46 · VERA 💚 📚", "ANVIL":"58 · ANVIL 💗 ⌚",
+                "SELENE":"60 · SELENE 💛 🎧", "ORIN":"56 · ORIN 🩵 🪐",
+                "KESTREL":"90 · KESTREL 💖 🏍️", "NIMUE":"62 · NIMUE 💙 🍄",
+            }
+            headers_ok = all(pmod.canonical_header(n, presentation_spec) == h for n,h in expected.items())
+            checks.append(_check("presentation:canonical-headers", headers_ok, "all six canonical headers rendered exactly"))
+            corrupt_rejected = False
+            try:
+                pmod.validate_header("ANVIL", "58 · ANVIL 💚 📚", presentation_spec)
+            except pmod.PresentationError:
+                corrupt_rejected = True
+            checks.append(_check("presentation:fail-closed", corrupt_rejected, "corrupted identity header rejected"))
+        except Exception as exc:
+            checks.append(_check("presentation:runtime", False, f"{type(exc).__name__}: {exc}"))
+
     # Verify deployed Python carrier surfaces and run bounded local route self-tests.
     bridge = (ROOT / "browser_memcon_bridge.py")
     app = (ROOT / "gaiaos_app.py")
