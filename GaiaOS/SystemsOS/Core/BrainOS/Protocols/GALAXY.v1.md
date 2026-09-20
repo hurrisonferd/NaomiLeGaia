@@ -2637,3 +2637,62 @@ It does NOT:
 - make gravity truth, authority, or permission.
 
 A fresh deployed real-memory shadow preview is required to prove live runtime activation before Phase 2 is closed.
+
+
+### RavenOS critique adoption: semantic conservation and adversarial gates 2026-09-20
+
+ADOPTED CRITICISM:
+
+The following RavenOS observations were accepted because they materially improve semantic safety or expose untested leverage behavior.
+
+#### Semantic conservation laws
+
+`CONTRIBUTION_PARITY != SEMANTIC_EQUIVALENCE`
+
+`CONTRIBUTION_PARITY != EVIDENCE_PARITY`
+
+`CONTRIBUTION_PARITY != AUTHORITY_PARITY`
+
+Equal numerical contribution inside one scoring profile does not imply that operator importance, graph structure, evidence, or authority are interchangeable.
+
+The previous field name `semantic_target` is retired for the NERGAL calibration reference. The correct term is `contribution_parity_target`.
+
+#### Precision law
+
+`STORAGE_PRECISION != EPISTEMIC_PRECISION`
+
+A coordinate such as `4.750 NERGAL` is stored exactly because GALAXY preserves the operator's chosen coordinate. Three-decimal storage is not a claim of three-decimal scientific certainty.
+
+#### Historical-governance law
+
+`HISTORY_PRESERVED != HISTORY_GOVERNS_PRESENT`
+
+A historically important record may retain its historical importance after revision or supersession without automatically remaining the governing retrieval context.
+
+This law is especially important for future Phase-4 revision/supersession work and is now treated as a Phase-3 safety dependency.
+
+#### Post-activation adversarial validation
+
+A new read-only route tests the active `NERGAL_475_PARITY` Phase-2 profile:
+
+`/galaxy/gravity/real-calibration/adversarial-review?record_id=<MEM-ID>`
+
+It covers:
+
+1. weak-link breadth versus relation quality;
+2. weak versus strong revision-like relations;
+3. superseded ADAR versus a current revising memory;
+4. isolated ADAR versus dense ordinary graph evidence;
+5. contradictory topology versus reinforcing topology.
+
+The route is counterfactual and performs zero writes.
+
+IMPORTANT:
+
+The criticism is not being allowed to smuggle in unreviewed scoring changes.
+
+The active Phase-2 profile remains `NERGAL_475_PARITY`.
+
+The adversarial route exists to identify which edge cases require an explicit semantic decision before Phase 3 weighted retrieval can be authorized.
+
+No Phase-3 retrieval weighting is enabled.
