@@ -677,3 +677,44 @@ persist the five shadow scores and run before/after ordinary retrieval controls 
 - retrieval weighting remains disabled;
 - ORBIT readback exposes stored gravity;
 - reopening the exact same run URL must then produce five idempotent results and no new receipts.
+
+
+### Phase-2 broader calibration live FIRST WRITE/RETRIEVAL gate 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `BROADER_SHADOW_CALIBRATION_RAN`
+- Session: `SESSION-3814cd13ab0d48779fd108c4809fabc1`
+- Stored scores matched preview:
+  - REVISION: `0.785`
+  - CORE: `0.7775`
+  - REINFORCER: `0.725`
+  - SATELLITE: `0.5425`
+  - ISOLATED: `0.4`
+- Five first-write `GALAXY_SHADOW_GRAVITY` receipts returned SUCCESS.
+- ORBIT readback exposed stored gravity for the controlled constellation.
+- `all_retrieval_orders_unchanged: true`
+- `new_receipt_count: 5`
+- `idempotent_count: 0`
+- `all_five_idempotent: false`
+- `retrieval_weighting_enabled: false`
+- Guardrails remained:
+  - `gravity_is_authority: false`
+  - `stored_gravity_feeds_its_own_score: false`
+  - `recency_component_enabled: false`
+  - `physical_pruning_enabled: false`
+
+FIRST-WRITE/RETRIEVAL CONCLUSION:
+
+The broader synthetic Phase-2 calibration can persist five distinct shadow scores and read them back without changing ordinary retrieval order.
+
+REMAINING LIVE GATE:
+
+Reopen the exact same calibration run URL with unchanged inputs. Expected:
+- `new_receipt_count: 0`
+- `idempotent_count: 5`
+- `all_five_idempotent: true`
+- all retrieval orders remain unchanged;
+- retrieval weighting remains disabled.
+
+Only after that observation should the bounded broader-calibration mechanics gate be marked fully PASS. Real-memory usefulness calibration remains separate.
