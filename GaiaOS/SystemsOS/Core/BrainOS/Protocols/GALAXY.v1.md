@@ -3119,3 +3119,74 @@ PRE-PHASE-3 STATUS:
 `phase3_authorized: false`
 
 Phase 3 remains opt-in only. No weighted retrieval is enabled until explicit Naomi authorization.
+
+
+### Final Phase-2 onion layer: query relevance quality v1 2026-09-20
+
+RavenOS correctly separated two claims:
+
+`QUERY_GATE_ORDER_PROVEN != QUERY_RELEVANCE_QUALITY_PROVEN`
+
+The gate order and gravity confinement are already live-proven. The remaining task is to test whether the bounded query gate itself behaves sensibly on difficult language.
+
+A new explainable relevance model is implemented:
+
+`galaxy.query-relevance.explainable.v1`
+
+It is intentionally conservative and auditable. It is not presented as universal semantic understanding.
+
+Candidate admission now proceeds as:
+
+`SCOPE -> EXPLAINABLE QUERY RELEVANCE -> CANDIDATE POOL -> FUTURE CONTEXTUAL MODIFIERS`
+
+The relevance model:
+- normalizes bounded concept aliases for memory/retrieval, gravity, contextual influence, truth, authority/permission, and GALAXY;
+- treats MemoryOS scope as a real memory-domain fact;
+- ignores common function words;
+- requires multiple meaningful matches for automatic admission;
+- surfaces single-term or partial matches as `AMBIGUOUS` rather than silently admitting them;
+- uses a narrow external-domain disambiguation list for the explicit Phase-2 false-positive probes;
+- never consults gravity or explicit importance;
+- never infers claim agreement from relevance.
+
+New invariant:
+
+`QUERY_RELEVANCE != CLAIM_AGREEMENT`
+
+Evidence ceiling:
+
+A pass demonstrates bounded behavior on the explicit adversarial suite only. It does not establish general-purpose semantic understanding.
+
+Eligibility vocabulary is now explicit:
+- `scope_eligible`
+- `query_candidate_eligible`
+- `current_context_eligible`
+- `historical_context_eligible`
+
+The old proof claim is narrowed:
+
+`gravity_is_contractually_confined_to_candidate_pool = true`
+
+`gravity_reranking_observed = false`
+
+because no active weighted reranking has yet occurred.
+
+Final Phase-2 live review route:
+
+`/galaxy/retrieval/query-relevance-quality-review`
+
+Adversarial suite:
+1. paraphrase recall;
+2. lexical-overlap false positives;
+3. negation/polarity relevance without agreement;
+4. ambiguous one-term query handling;
+5. scope + query conjunction.
+
+Until that suite passes live:
+
+`QUERY_RELEVANCE_QUALITY_V1_PENDING_ADVERSARIAL_LIVE_PROOF`
+
+blocks Phase-3 authorization.
+
+No gravity changes were made.
+No weighted retrieval is enabled.
