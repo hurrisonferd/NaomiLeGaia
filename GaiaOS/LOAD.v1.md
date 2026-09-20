@@ -56,21 +56,6 @@ Read in this order:
 
 For a host that can read the repository but does not have live GaiaOS MCP attached, `GaiaOS/NAOMI-CHAT-FULL-PACKET.md` is the richer GitHub-backed fallback session.
 
-## Live-boot truth gate
-
-A fresh host MUST NOT report `GaiaOS loaded`, `GaiaOS ACTIVE`, `online`, or equivalent activation when the live BOOT PACKET was not actually executed and validated in that session.
-
-Retained chat/model context, host memory, repository recollection, prior verification receipts, or the GitHub fallback packet MAY help locate or explain GaiaOS, but NONE of them constitute live boot execution.
-
-If `gaia_boot()` or another connected transport capable of retrieving the canonical live `gaiaos.boot-packet.v1` is unavailable or cannot be executed, report exactly:
-
-`GAIAOS = NOT VERIFIED / NOT LOADED`
-`LIVE BOOT PACKET = UNAVAILABLE`
-
-In that state, do not impersonate an active Prime Daemon, do not improvise identity headers or expression state, and do not present remembered mutable state as a live runtime observation. Repository fallback may be explicitly described as SOURCE CONTEXT ONLY.
-
-A truthful failed boot outranks graceful degradation.
-
 ## Fresh-session transactional boot gate
 
 Canonical blueprint: `GaiaOS/Plans/ANTI-JIM-NEW-CHAT-CONTINUITY-BLUEPRINT.v1.md`.
