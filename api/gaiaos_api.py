@@ -3249,6 +3249,157 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
     return response
 
 
+@app.get("/galaxy/gravity/real-calibration/importance/weight-profile-review", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_weight_profile_review(browser_request: Request, record_id: str):
+    """Read-only comparison of replacement shadow-weight profiles against a real stored importance signal."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    stored = memcon_runtime.galaxy_importance(record_id)
+    if stored is None:
+        raise HTTPException(status_code=409, detail="This review requires a stored Naomi Seven Gates importance signal.")
+
+    current = memcon_runtime.galaxy_gravity_preview(record_id)
+    influence = float(stored["effective_influence"])
+
+    profiles = [
+        {
+            "name": "CURRENT_V1",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.25,
+                "verified_relation_strength": 0.20,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.05,
+            },
+            "note": "Reference only. Naomi already rejected this leverage balance.",
+        },
+        {
+            "name": "SOFT_REBALANCE",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.20,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.15,
+            },
+            "note": "Moderately reduces graph leverage while increasing explicit importance.",
+        },
+        {
+            "name": "MAX_IMPORTANCE_PARITY",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.16129,
+                "verified_relation_strength": 0.16129,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.17742,
+            },
+            "note": "Parity only when explicit importance is at its maximum influence of 1.0.",
+        },
+        {
+            "name": "IMPORTANCE_LEADING",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.15,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.20,
+            },
+            "note": "Maximum explicit importance outweighs one 0.85 non-revision relation, but a mid/high NERGAL signal may not.",
+        },
+        {
+            "name": "NERGAL_475_PARITY",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.125,
+                "verified_relation_strength": 0.125,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.25,
+            },
+            "note": "Constructed so this real 4.750 NERGAL signal at effective influence 0.55 contributes exactly as much as one 0.85 non-revision relation.",
+        },
+    ]
+
+    def relation_contribution(weights: dict, strength: float = 0.85) -> float:
+        return round((weights["verified_graph_degree"] * 0.25) + (weights["verified_relation_strength"] * strength), 6)
+
+    rows = []
+    for profile in profiles:
+        w = profile["weights"]
+        rel = relation_contribution(w)
+        imp = round(w["explicit_importance"] * influence, 6)
+        ratio = round(rel / imp, 6) if imp > 0 else None
+
+        base = 0.0
+        for component_name, spec in current["components"].items():
+            if component_name == "explicit_importance":
+                continue
+            base += float(spec["normalized"]) * float(w[component_name])
+
+        rows.append({
+            "name": profile["name"],
+            "note": profile["note"],
+            "weights": w,
+            "weight_sum": round(sum(w.values()), 6),
+            "real_stored_importance": {
+                "display_position": stored["display_position"],
+                "gate": stored["gate"],
+                "effective_influence": influence,
+                "contribution": imp,
+            },
+            "one_nonrevision_relation_at_0_85": {
+                "contribution": rel,
+            },
+            "relation_to_this_importance_ratio": ratio,
+            "record_score_if_profile_were_activated": round(base + imp, 6),
+        })
+
+    payload = {
+        "status": "REAL_MEMORY_IMPORTANCE_WEIGHT_PROFILE_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "record": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+            "authority": record.get("authority"),
+            "status": record.get("status"),
+        },
+        "stored_importance": stored,
+        "profiles": rows,
+        "selection_performed": False,
+        "weight_profile_activated": False,
+        "writes_performed": [],
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "proof_boundary": (
+            "This page compares replacement shadow-weight profiles against the real stored importance signal only. "
+            "It does not activate any profile, write gravity, alter relations, or change retrieval."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY Phase 2 replacement weight-profile review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No profile is selected here. This review uses the real stored Seven Gates signal rather than hypothetical maximum importance.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
