@@ -1517,6 +1517,175 @@ def galaxy_gravity_real_calibration_preview(
     return response
 
 
+
+GALAXY_REAL_INVENTORY_LIMIT = 12
+
+
+def _galaxy_real_candidate_inventory(memcon_runtime, limit: int) -> dict:
+    """Inspect latent non-test MemoryOS material without creating or promoting anything."""
+    memcon_runtime.initialize()
+    limit = max(1, min(int(limit), GALAXY_REAL_INVENTORY_LIMIT))
+    with memcon_runtime._db() as conn:
+        candidate_rows = memcon_runtime._fetchall_dicts(
+            conn,
+            """SELECT c.*, e.session_id, e.actor, e.event_type, e.created_at AS event_created_at,
+                      s.subject
+               FROM memory_candidates c
+               JOIN session_events e ON e.event_id = c.event_id
+               JOIN sessions s ON s.session_id = e.session_id
+               WHERE upper(c.record_type) <> 'TEST'
+                 AND c.scope='MemoryOS'
+                 AND c.source NOT LIKE 'galaxy-phase1-canary:%'
+                 AND c.source NOT LIKE 'galaxy-phase2-calibration:%'
+               ORDER BY c.created_at DESC""",
+        )
+        event_rows = memcon_runtime._fetchall_dicts(
+            conn,
+            """SELECT e.*, s.subject
+               FROM session_events e
+               JOIN sessions s ON s.session_id = e.session_id
+               WHERE e.source NOT LIKE 'galaxy-phase1-canary:%'
+                 AND e.source NOT LIKE 'galaxy-phase2-calibration:%'
+               ORDER BY e.created_at DESC""",
+        )
+        linked_event_rows = memcon_runtime._fetchall_dicts(
+            conn,
+            """SELECT event_id FROM memory_candidates
+               WHERE upper(record_type) <> 'TEST'
+                 AND scope='MemoryOS'
+                 AND source NOT LIKE 'galaxy-phase1-canary:%'
+                 AND source NOT LIKE 'galaxy-phase2-calibration:%'""",
+        )
+
+    linked_event_ids = {str(row["event_id"]) for row in linked_event_rows}
+    unrepresented_events = [
+        event for event in event_rows
+        if str(event.get("event_id")) not in linked_event_ids
+    ]
+    pending_candidates = [
+        row for row in candidate_rows
+        if str(row.get("status") or "") == "CANDIDATE"
+    ]
+    already_promoted = [
+        row for row in candidate_rows
+        if str(row.get("status") or "") != "CANDIDATE"
+    ]
+
+    def candidate_view(row: dict) -> dict:
+        other_voices = []
+        try:
+            other_voices = json.loads(str(row.get("other_voices") or "[]"))
+        except (TypeError, json.JSONDecodeError):
+            other_voices = []
+        return {
+            "candidate_id": row.get("candidate_id"),
+            "event_id": row.get("event_id"),
+            "session_id": row.get("session_id"),
+            "subject": row.get("subject"),
+            "actor": row.get("actor"),
+            "event_type": row.get("event_type"),
+            "authority": row.get("authority"),
+            "record_type": row.get("record_type"),
+            "scope": row.get("scope"),
+            "statement": row.get("statement"),
+            "source": row.get("source"),
+            "owner": row.get("owner"),
+            "why_material": row.get("why_material"),
+            "other_voices": other_voices,
+            "tension": row.get("tension"),
+            "status": row.get("status"),
+            "duplicate_of": row.get("duplicate_of"),
+            "promoted_record_id": row.get("promoted_record_id"),
+            "created_at": row.get("created_at"),
+        }
+
+    def event_view(row: dict) -> dict:
+        return {
+            "event_id": row.get("event_id"),
+            "session_id": row.get("session_id"),
+            "subject": row.get("subject"),
+            "actor": row.get("actor"),
+            "event_type": row.get("event_type"),
+            "statement": row.get("statement"),
+            "source": row.get("source"),
+            "relation": row.get("relation"),
+            "created_at": row.get("created_at"),
+        }
+
+    return {
+        "non_test_memoryos_candidate_count": len(candidate_rows),
+        "pending_non_test_candidate_count": len(pending_candidates),
+        "already_nonpending_candidate_count": len(already_promoted),
+        "non_test_session_event_count": len(event_rows),
+        "session_events_without_non_test_memoryos_candidate_count": len(unrepresented_events),
+        "pending_candidates": [candidate_view(row) for row in pending_candidates[:limit]],
+        "recent_unrepresented_session_events": [event_view(row) for row in unrepresented_events[:limit]],
+        "diagnostic": (
+            "LATENT_MEMORY_CANDIDATES_AVAILABLE"
+            if pending_candidates
+            else (
+                "UNREPRESENTED_SESSION_EVENTS_AVAILABLE"
+                if unrepresented_events
+                else "NO_LATENT_REAL_MEMORY_MATERIAL_FOUND"
+            )
+        ),
+    }
+
+
+@app.get("/galaxy/gravity/real-calibration/inventory", response_class=HTMLResponse)
+def galaxy_gravity_real_calibration_inventory(
+    browser_request: Request,
+    limit: int = GALAXY_REAL_INVENTORY_LIMIT,
+):
+    """Read-only inventory of latent real-memory material already inside MemconOS."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    inventory = _galaxy_real_candidate_inventory(memcon_runtime, limit)
+    payload = {
+        "status": "REAL_MEMORY_LATENT_INVENTORY",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "inventory": inventory,
+        "writes_performed": [],
+        "candidates_promoted": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "next_step_interpretation": {
+            "LATENT_MEMORY_CANDIDATES_AVAILABLE": (
+                "Existing non-test MemoryOS candidates are available for Naomi review. "
+                "Do not auto-promote them."
+            ),
+            "UNREPRESENTED_SESSION_EVENTS_AVAILABLE": (
+                "MemconOS contains non-test session events that have not yet become MemoryOS candidates. "
+                "A separate candidate-creation review surface should be built before any durable promotion."
+            ),
+            "NO_LATENT_REAL_MEMORY_MATERIAL_FOUND": (
+                "No eligible non-test candidates or session events are currently available in MemconOS. "
+                "Real-memory calibration must wait for real memory ingestion or an explicitly supplied source."
+            ),
+        }.get(inventory["diagnostic"]),
+        "proof_boundary": (
+            "Inventory only. This endpoint does not create candidates, promote memory, create or verify relations, "
+            "write gravity, or alter retrieval."
+        ),
+    }
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY Phase 2 latent real-memory inventory</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No action button is exposed. The inventory determines the next safe ingestion step.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
