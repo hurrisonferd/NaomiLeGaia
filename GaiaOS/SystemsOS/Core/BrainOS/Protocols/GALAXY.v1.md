@@ -1967,3 +1967,49 @@ Candidate signal designs should remain bounded and inspectable, for example:
 No importance signal, weight revision, gravity write, relation mutation, or retrieval weighting is authorized yet.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 explicit-importance model choice: THREE-LEVEL 2026-09-20
+
+NAOMI CHOICE:
+
+\`THREE-LEVEL\`
+
+The explicit-importance signal model will be explored as the bounded set:
+
+\`0.0 / 0.5 / 1.0\`
+
+No value semantics or storage mutation are considered final solely from this choice.
+
+PROPOSED SEMANTICS FOR REVIEW:
+
+- \`0.0 NORMAL\`
+  - no explicit importance boost;
+  - memory influence comes from durability, provenance, graph structure, and revision signals.
+
+- \`0.5 IMPORTANT\`
+  - Naomi marks the memory as materially important for future context;
+  - this increases contextual influence but does not make the memory truth, authority, or permission.
+
+- \`1.0 FOUNDATIONAL\`
+  - Naomi marks the memory as foundational context that should remain strongly available even when graph-isolated;
+  - it still does not override provenance, contradiction, revision, or Naomi's later changes.
+
+PROPOSED AUTHORIZATION MODEL:
+
+- only Naomi may set or revise explicit importance;
+- default is \`0.0\`;
+- only \`0.0\`, \`0.5\`, or \`1.0\` are accepted;
+- setting a value requires a separate exact-record review and explicit approval;
+- later revision is allowed;
+- importance is not truth, authority, permission, or relation strength.
+
+SOURCE LENS:
+
+\`/galaxy/gravity/real-calibration/importance-three-level?record_id=<MEM-ID>\`
+
+The lens is read-only and compares the three levels across current-v1, soft-rebalance, parity, and importance-leading weight profiles.
+
+No importance value, new weight profile, gravity row, relation mutation, or retrieval weighting is authorized yet.
+
+Phase 3 remains disabled and unauthorized.
