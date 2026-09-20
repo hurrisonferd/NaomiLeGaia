@@ -628,3 +628,52 @@ The broader calibration graph is now live and verified without writing gravity. 
 
 NEXT LIVE GATE:
 read-only broader shadow-gravity preview across CORE / SATELLITE / REINFORCER / REVISION / ISOLATED. The preview must perform zero gravity writes, expose component variation, produce multiple distinct scores, and report the synthetic discrimination checks before any score is persisted.
+
+
+### Phase-2 broader calibration live PREVIEW gate 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `BROADER_SHADOW_PREVIEW`
+- Session: `SESSION-3814cd13ab0d48779fd108c4809fabc1`
+- Gravity writes performed: `[]`
+- Retrieval weighting enabled: `false`
+
+Observed shadow scores:
+- REVISION: `0.785`
+- CORE: `0.7775`
+- REINFORCER: `0.725`
+- SATELLITE: `0.5425`
+- ISOLATED: `0.4`
+
+Observed score characteristics:
+- `unique_score_count: 5`
+- `score_spread: 0.385`
+- durable_active remained constant across all five records
+- provenance_confidence remained constant across all five records
+- explicit_importance remained constant at 0.0 across all five records
+- revision_significance varied across the constellation
+- verified_graph_degree varied across the constellation
+- verified_relation_strength varied across the constellation
+
+Synthetic discrimination checks all passed:
+- ISOLATED < SATELLITE
+- SATELLITE < REINFORCER
+- REINFORCER < CORE
+- CORE < REVISION
+- `all_synthetic_discrimination_checks_pass: true`
+
+PREVIEW-GATE CONCLUSION:
+
+The shadow-v1 formula discriminated five deliberately different graph/evidence structures while fixed components remained fixed. This is evidence that the formula is structurally responsive and explainable under the controlled synthetic calibration.
+
+This does NOT prove that the current weights predict real-world usefulness, memory salience, or retrieval quality.
+
+NEXT LIVE GATE:
+persist the five shadow scores and run before/after ordinary retrieval controls for all five records. Required observations:
+- five stored/read-back shadow scores matching preview values;
+- successful receipts for first writes;
+- all five ordinary retrieval orders unchanged;
+- retrieval weighting remains disabled;
+- ORBIT readback exposes stored gravity;
+- reopening the exact same run URL must then produce five idempotent results and no new receipts.
