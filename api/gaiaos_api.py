@@ -1318,7 +1318,7 @@ def _galaxy_real_memory_population(memcon_runtime) -> tuple[list[dict], list[dic
     real_edges = [
         edge for edge in edges
         if str(edge.get("source_record_id")) in record_ids
-        or str(edge.get("target_record_id")) in record_ids
+        and str(edge.get("target_record_id")) in record_ids
     ]
     return records, real_edges
 
