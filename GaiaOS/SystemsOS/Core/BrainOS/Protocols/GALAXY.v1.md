@@ -569,3 +569,35 @@ The broader calibration harness is live and preserves the candidate-only safety 
 
 NEXT LIVE GATE:
 explicit approval of the five controlled memories and proposal of exactly four calibration relations, which must remain PROPOSED until the subsequent separate verification step.
+
+
+### Phase-2 broader calibration live APPROVAL/PROPOSAL gate 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `CALIBRATION_GRAPH_PROPOSED`
+- Session: `SESSION-3814cd13ab0d48779fd108c4809fabc1`
+- Five controlled candidates promoted to VERIFIED durable MemoryOS records with successful write receipts:
+  - CORE: `MEM-00b3fbfd4d73404f97a95c238596ab94`
+  - SATELLITE: `MEM-1d0092cb66f44996b74604670a853a21`
+  - REINFORCER: `MEM-61f21fbb37f0419dbae2af6586d4ecc9`
+  - REVISION: `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e`
+  - ISOLATED: `MEM-1e8f6987d2b34f3786db585c36bf9bf3`
+- Four calibration relations were proposed:
+  - SATELLITE `CONTEXT_FOR` CORE at 0.40
+  - REINFORCER `REINFORCES` CORE at 0.80
+  - REVISION `REVISES` CORE at 0.90
+  - REVISION `CONTRADICTS` REINFORCER at 0.70
+- All four relation statuses were `PROPOSED`.
+- All four relation authorities were `NONE`.
+- `verified_edge_count: 0`
+- `retrieval_weighting_enabled: false`
+- No gravity score was written by this step.
+
+APPROVAL/PROPOSAL CONCLUSION:
+
+The live broader-calibration approval gate preserved the intended separation:
+`DURABLE MEMORY APPROVAL != RELATION VERIFICATION != GRAVITY SCORING`.
+
+NEXT LIVE GATE:
+explicit Naomi-authorized verification of exactly these four controlled calibration edges, followed by readback confirming all four are VERIFIED while gravity remains unwritten and retrieval weighting remains disabled.
