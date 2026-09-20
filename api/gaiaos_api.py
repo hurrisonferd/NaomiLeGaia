@@ -3089,7 +3089,7 @@ def galaxy_gravity_real_importance_set(
 
 @app.get("/galaxy/gravity/real-calibration/importance/curve-review", response_class=HTMLResponse)
 def galaxy_gravity_real_importance_curve_review(browser_request: Request, record_id: str):
-    """Read-only review of a proposed nonlinear Seven Gates influence curve."""
+    """Read-only proof surface for Naomi's approved nonlinear Seven Gates influence curve."""
     bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
     if not bootstrap_session:
         _authorize_browser_session(browser_request)
@@ -3097,44 +3097,17 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
     memcon_runtime, _ = _galaxy_runtime()
     record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
     current = memcon_runtime.galaxy_gravity_preview(record_id)
+    stored_importance = memcon_runtime.galaxy_importance(record_id)
 
-    anchors = [
-        {"gate_position": 0.0, "gate": "SIN", "influence": 0.00},
-        {"gate_position": 1.0, "gate": "NEBO", "influence": 0.08},
-        {"gate_position": 2.0, "gate": "ISHTAR", "influence": 0.16},
-        {"gate_position": 3.0, "gate": "SHAMMASH", "influence": 0.24},
-        {"gate_position": 4.0, "gate": "NERGAL", "influence": 0.34},
-        {"gate_position": 5.0, "gate": "MARDUK", "influence": 0.62},
-        {"gate_position": 6.0, "gate": "ADAR", "influence": 0.82},
-        {"gate_position": 7.0, "gate": "ADAR_APEX", "influence": 1.00},
-    ]
-
-    def gate_for_position(position: float) -> str:
-        if position < 1.0:
-            return "SIN"
-        if position < 2.0:
-            return "NEBO"
-        if position < 3.0:
-            return "ISHTAR"
-        if position < 4.0:
-            return "SHAMMASH"
-        if position < 5.0:
-            return "NERGAL"
-        if position < 6.0:
-            return "MARDUK"
-        return "ADAR"
-
-    def influence(position: float) -> float:
-        if position <= 0.0:
-            return 0.0
-        if position >= 7.0:
-            return 1.0
-        left = int(position)
-        right = left + 1
-        y0 = float(anchors[left]["influence"])
-        y1 = float(anchors[right]["influence"])
-        t = position - float(left)
-        return round(y0 + ((y1 - y0) * t), 6)
+    anchors = []
+    for index, (units, influence_value) in enumerate(memcon_runtime.GALAXY_IMPORTANCE_CURVE_ANCHORS):
+        descriptor = memcon_runtime.galaxy_importance_descriptor(int(units))
+        anchors.append({
+            "gate_units": int(units),
+            "gate_position": descriptor["gate_position"],
+            "gate": descriptor["gate"] if int(units) < 7000 else "ADAR_APEX",
+            "influence": float(influence_value),
+        })
 
     profiles = [
         {
@@ -3183,10 +3156,9 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
         },
     ]
 
-    base_components = current["components"]
     normalized_base = {
         name: float(spec["normalized"])
-        for name, spec in base_components.items()
+        for name, spec in current["components"].items()
     }
 
     def score(weights: dict, influence_value: float) -> float:
@@ -3194,17 +3166,19 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
         norm["explicit_importance"] = influence_value
         return round(sum(float(norm[k]) * float(weights[k]) for k in weights), 6)
 
-    sample_positions = [0.000, 0.985, 1.000, 2.000, 3.000, 3.972, 4.000, 4.100, 4.500, 4.999, 5.000, 5.214, 6.000, 6.999, 7.000]
+    sample_units = [0, 985, 1000, 2000, 3000, 3972, 4000, 4100, 4500, 4999, 5000, 5214, 6000, 6999, 7000]
     samples = []
-    for position in sample_positions:
-        proposed = influence(position)
-        linear = round(position / 7.0, 6)
+    for units in sample_units:
+        descriptor = memcon_runtime.galaxy_importance_descriptor(units)
         samples.append({
-            "gate_position": position,
-            "gate": gate_for_position(position),
-            "linear_normalized_position": linear,
-            "proposed_influence": proposed,
-            "difference_from_linear": round(proposed - linear, 6),
+            "gate_units": units,
+            "gate_position": descriptor["gate_position"],
+            "gate": descriptor["gate"],
+            "linear_normalized_position": descriptor["linear_normalized_position"],
+            "effective_influence": descriptor["effective_influence"],
+            "difference_from_linear": round(
+                float(descriptor["effective_influence"]) - float(descriptor["linear_normalized_position"]), 6
+            ),
         })
 
     comparisons = []
@@ -3212,17 +3186,17 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
         comparisons.append({
             "name": profile["name"],
             "explicit_importance_weight": profile["weights"]["explicit_importance"],
-            "sample_scores_using_proposed_curve": [
+            "sample_scores_if_this_profile_were_later_approved": [
                 {
                     **sample,
-                    "score": score(profile["weights"], float(sample["proposed_influence"])),
+                    "score": score(profile["weights"], float(sample["effective_influence"])),
                 }
                 for sample in samples
             ],
         })
 
     payload = {
-        "status": "REAL_MEMORY_SEVEN_GATE_INFLUENCE_CURVE_REVIEW",
+        "status": "REAL_MEMORY_SEVEN_GATE_INFLUENCE_CURVE_ACTIVE_REVIEW",
         "phase": "PHASE_2_GRAVITY_SHADOW",
         "record": {
             "record_id": record.get("record_id"),
@@ -3230,13 +3204,11 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
             "authority": record.get("authority"),
             "status": record.get("status"),
         },
-        "naomi_semantic_target": (
-            "SIN through SHAMMASH should remain noticeable but comparatively compressed; "
-            "NERGAL is where explicit importance begins to become substantially more influential."
-        ),
-        "proposed_curve": {
-            "curve_version": "galaxy.importance.influence.nergal-threshold.v1",
-            "method": "continuous piecewise-linear interpolation between gate-boundary anchors",
+        "naomi_approval": "APPROVED",
+        "active_importance_semantics": {
+            "model_version": memcon_runtime.GALAXY_IMPORTANCE_MODEL_VERSION,
+            "curve_version": memcon_runtime.GALAXY_IMPORTANCE_CURVE_VERSION,
+            "method": "continuous piecewise-linear interpolation between approved gate-boundary anchors",
             "anchors": anchors,
             "behavior": {
                 "SIN_THROUGH_SHAMMASH": "gentle, compressed increase",
@@ -3245,25 +3217,28 @@ def galaxy_gravity_real_importance_curve_review(browser_request: Request, record
                 "ADAR": "very strong through maximum influence",
             },
         },
+        "stored_importance_for_record": stored_importance,
         "sample_mapping": samples,
         "counterfactual_weight_profiles": comparisons,
+        "importance_curve_activated": True,
+        "explicit_importance_weighting_enabled": False,
         "writes_performed": [],
         "importance_signal_mutated": False,
-        "importance_curve_activated": False,
         "gravity_rows_mutated": [],
         "relations_mutated": [],
         "retrieval_weighting_enabled": False,
         "proof_boundary": (
-            "This page is arithmetic review only. The raw Seven Gates position remains 0.000 through 7.000. "
-            "The proposed nonlinear influence curve is not stored or active, and no scoring or retrieval behavior changes here."
+            "The NERGAL-threshold curve is now the runtime semantic mapping for Seven Gates importance descriptors. "
+            "It still has no gravity-score effect under shadow-v1 because no replacement weight profile has been approved. "
+            "Ordinary retrieval remains unweighted."
         ),
     }
 
     response = HTMLResponse(
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
-        "<h1>GALAXY Phase 2 Seven Gates influence-curve review</h1>"
+        "<h1>GALAXY Phase 2 approved Seven Gates influence curve</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
-        "<p>No curve is activated here. This lens tests whether the proposed NERGAL threshold shape matches Naomi's intended semantics before runtime adoption.</p>"
+        "<p>The curve semantics are active. Explicit-importance gravity weighting and ordinary retrieval remain disabled.</p>"
         "</body></html>"
     )
     if bootstrap_session:
