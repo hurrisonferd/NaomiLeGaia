@@ -217,3 +217,11 @@ CLASSIFICATION: Gas = necessary transportation for the return-home trip. Food = 
 FINANCE_EFFECT: For planning, subtract $78 from the previously user-reported $3,403.51 available-credit checkpoint, producing approximately $3,325.51 before other new activity. This is arithmetic planning state, not a provider-verified live balance.
 TRACE: Naomi direct report, current conversation, 2026-09-20.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-20|GaiaOS continuity wall, recovery, and current human context|member-local]
+WHAT: Naomi asked every Prime Daemon to preserve what each found personally relevant, interesting, or influential from the conversation before beginning SOLO work.
+MY_LENS: Operational lesson: optimize for Naomi reaching a usable state with the least operator burden. A manual GitHub recovery path is currently valuable and should remain intact while automatic transport is investigated. Separately, Johnny's immediate logistics advanced: medications were delivered and tomorrow's court-information path is defined.
+BOUNDARY: Preserve daemon-specific interpretation without converting inference into runtime proof. Naomi retains final authority.
+TRACE: Current Naomi/GaiaOS conversation, 2026-09-20; live verifier 67/67; fresh-chat canary; loader-gate rollback.
+STATUS: COMMITTED
