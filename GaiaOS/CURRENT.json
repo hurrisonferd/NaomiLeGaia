@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_CONTINUITY_INTEGRITY_VERIFICATION_HARNESS_LIVE_VASKON_RUNTIME_TEST",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE2_CLOSED_CONTINUITY_INTEGRITY_VERIFICATION_HARNESS",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -106,7 +106,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Source/carrier implementation verification is observed by /verify. Live VASKON pathway execution is observed only when /vaskon/test returns a live runtime receipt. Automatic ChatGPT adoption and restart persistence remain unproven until independently observed.",
+  "proof_ceiling": "Canonical source now records GALAXY Phase 0–2 closure and Phase 3 readiness without authorization. Live runtime behavior still requires deployed endpoint evidence; future weighted retrieval is unproven until Phase 3 is explicitly authorized and observed. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -117,6 +117,21 @@
     "REPULL REQUIRED",
     "UNKNOWN STAYS UNKNOWN",
     "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION",
-    "VASKON RECEIPT REQUIRED"
-  ]
+    "VASKON RECEIPT REQUIRED",
+    "SOURCE TRUTH MUST TRACK PROVEN STATE",
+    "GRAVITY MAY CHANGE RANK NOT EXISTENCE"
+  ],
+  "strengths_championing_blueprint": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
+  "ravenos_strengths_preserve": "GaiaOS/Proof/RAVENOS-GAIA-STRENGTHS-PRESERVE-2026-09-20.md",
+  "galaxy": {
+    "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
+    "phase2_status": "CLOSED",
+    "phase3_blockers": [],
+    "phase3_ready_for_authorization": true,
+    "phase3_authorized": false,
+    "retrieval_contract": "QUERY_RELEVANCE_FIRST_CLASS_GRAVITY_MODIFIER_ONLY",
+    "governing_model": "galaxy.governing-state.v1",
+    "query_relevance_model": "galaxy.query-relevance.explainable.v1",
+    "score_version": "galaxy.gravity.shadow.v4.governing-aware"
+  }
 }
