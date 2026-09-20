@@ -2947,6 +2947,146 @@ def galaxy_gravity_real_importance_seven_gates(browser_request: Request, record_
     return response
 
 
+def _galaxy_real_importance_spec(memcon_runtime, record_id: str, gate_position: str) -> dict:
+    """Validate one exact three-decimal Seven Gates position for a real MemoryOS record."""
+    from decimal import Decimal, InvalidOperation
+
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    raw = str(gate_position).strip()
+    try:
+        value = Decimal(raw)
+    except InvalidOperation as exc:
+        raise HTTPException(status_code=400, detail="gate_position must be numeric from 0.000 through 7.000.") from exc
+    if value < Decimal("0") or value > Decimal("7"):
+        raise HTTPException(status_code=400, detail="gate_position must be between 0.000 and 7.000.")
+    units_decimal = value * Decimal("1000")
+    if units_decimal != units_decimal.to_integral_value():
+        raise HTTPException(status_code=400, detail="gate_position supports at most three decimal places.")
+    units = int(units_decimal)
+    descriptor = memcon_runtime.galaxy_importance_descriptor(units)
+    return {
+        "record": record,
+        "gate_units": units,
+        "importance": descriptor,
+    }
+
+
+@app.get("/galaxy/gravity/real-calibration/importance/review", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_review(
+    browser_request: Request,
+    record_id: str,
+    gate_position: str,
+):
+    """Read-only exact-record review before writing a Seven Gates importance signal."""
+    from urllib.parse import urlencode
+
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    spec = _galaxy_real_importance_spec(memcon_runtime, record_id, gate_position)
+    existing = memcon_runtime.galaxy_importance(record_id)
+    set_available = existing is None or int(existing["gate_units"]) != int(spec["gate_units"])
+    payload = {
+        "status": "REAL_MEMORY_IMPORTANCE_SET_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "model": memcon_runtime.GALAXY_IMPORTANCE_MODEL_VERSION,
+        "record": spec["record"],
+        "current_stored_importance": existing,
+        "proposed_importance": spec["importance"],
+        "set_available": set_available,
+        "writes_performed": [],
+        "importance_signal_mutated": False,
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "review_boundary": (
+            "This page is read-only. Setting importance requires a separate Naomi click for this exact record and exact gate position. "
+            "The stored signal does not alter shadow-v1 weighting or ordinary retrieval until a later weight-profile revision is separately approved."
+        ),
+    }
+    if set_available:
+        href = "/galaxy/gravity/real-calibration/importance/set?" + urlencode({
+            "record_id": record_id,
+            "gate_position": spec["importance"]["display_position"],
+        })
+        action = (
+            "<p><a style='font-size:22px' href='" + html.escape(href, quote=True) + "'>"
+            "Set this exact Seven Gates importance position</a></p>"
+        )
+    else:
+        action = "<p>This exact importance position is already stored. No mutation action is offered.</p>"
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY real-memory Seven Gates importance review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + action +
+        "<p>Review is deliberately separate from mutation.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/importance/set", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_set(
+    browser_request: Request,
+    record_id: str,
+    gate_position: str,
+):
+    """Explicit Naomi mutation of one exact Seven Gates importance signal."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    spec = _galaxy_real_importance_spec(memcon_runtime, record_id, gate_position)
+    pre_ids = _galaxy_retrieval_ids(runtime, spec["record"])
+    pre_preview = memcon_runtime.galaxy_gravity_preview(record_id)
+    result = memcon_runtime.galaxy_set_importance(
+        record_id,
+        spec["gate_units"],
+        authority="NAOMI",
+        approved=True,
+    )
+    readback = memcon_runtime.galaxy_importance(record_id)
+    post_preview = memcon_runtime.galaxy_gravity_preview(record_id)
+    post_ids = _galaxy_retrieval_ids(runtime, spec["record"])
+    payload = {
+        "status": "REAL_MEMORY_IMPORTANCE_SET",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "result": result,
+        "importance_readback": readback,
+        "shadow_preview_comparison": {
+            "before": pre_preview,
+            "after": post_preview,
+            "unchanged_under_shadow_v1": pre_preview["gravity_score"] == post_preview["gravity_score"],
+            "reason": "Stored explicit importance is intentionally not active in the rejected shadow-v1 weight profile.",
+        },
+        "retrieval_comparison": {
+            "before_record_ids": pre_ids,
+            "after_record_ids": post_ids,
+            "unchanged": pre_ids == post_ids,
+            "retrieval_weighting_enabled": False,
+        },
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "This click authorizes only the exact Seven Gates importance signal shown in the preceding review. "
+            "It does not authorize a new gravity weight profile or weighted retrieval."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY real-memory Seven Gates importance set</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>The signal is stored, but shadow-v1 and ordinary retrieval remain unchanged until a later weight-profile gate.</p>"
+        "</body></html>"
+    )
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
