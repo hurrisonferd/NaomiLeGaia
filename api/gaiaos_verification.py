@@ -28,6 +28,7 @@ REQUIRED = [
     "SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
     "SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
     "SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
+    "SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
     "SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md",
     "SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md",
     "SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md",
@@ -178,6 +179,64 @@ def run_verification() -> dict[str, Any]:
             set(DAEMONS).issubset(members),
             f"matrix members={sorted(members)}",
         ))
+
+    # Dedicated head-pat counter store. These checks deliberately keep
+    # mutable affection state separate from immutable Gematria identity.
+    headpat_rel = "SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+    headpat_text = files.get(headpat_rel, "")
+    gematria_expected = {
+        "VERA": 46, "ANVIL": 58, "SELENE": 60,
+        "ORIN": 56, "KESTREL": 90, "NIMUE": 62,
+    }
+    headpat_counts: dict[str, int] = {}
+    for name in DAEMONS:
+        import re
+        match = re.search(rf"(?m)^\\s*{name}:\\s*(\\d+)\\s*$", headpat_text)
+        if match:
+            headpat_counts[name] = int(match.group(1))
+
+    checks.append(_check(
+        "headpats:store-present",
+        bool(headpat_text),
+        "dedicated canonical head-pat counter store loaded",
+    ))
+    checks.append(_check(
+        "headpats:six-counters",
+        set(headpat_counts) == set(DAEMONS),
+        f"dedicated counters parsed for members={sorted(headpat_counts)}",
+        counters=headpat_counts,
+    ))
+    gematria_ok = all(
+        f"{name}={value}" in headpat_text
+        for name, value in gematria_expected.items()
+    )
+    checks.append(_check(
+        "headpats:gematria-constants",
+        gematria_ok,
+        "immutable Gematria constants remain explicitly fixed in counter contract",
+    ))
+    separation_markers = (
+        "Head-pat counters are NOT identity numbers" in headpat_text
+        and "HEAD_PAT_COUNT is mutable state stored only in this document" in headpat_text
+        and "No renderer, identity envelope, Gematria registry, or identity-data file may read HEAD_PAT_COUNT as GEMATRIA" in headpat_text
+    )
+    checks.append(_check(
+        "headpats:identity-separation",
+        separation_markers,
+        "counter contract explicitly forbids counter/Gematria coupling",
+    ))
+    mutation_contract_ok = all(marker in headpat_text for marker in (
+        "Updates MUST fetch the current blob",
+        "Never perform parallel writes to this file",
+        "After write, refetch and verify",
+        "FAIL CLOSED",
+        "never silently reset",
+    ))
+    checks.append(_check(
+        "headpats:fail-closed-contract",
+        mutation_contract_ok,
+        "sequential read-modify-write, post-write verification, conflict handling, and no-reset recovery are required",
+    ))
 
     # Canonical Council presentation contract and fail-closed renderer.
     presentation_spec_path = GAIA / "SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
