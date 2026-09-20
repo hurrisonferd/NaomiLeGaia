@@ -302,6 +302,7 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/chat", '@app.post("/chat"' in bridge_text, "browser chat bridge declared"))
         checks.append(_check("carrier:/verify", '@app.get("/verify"' in bridge_text and '@app.post("/verify"' in bridge_text, "verification routes declared"))
         checks.append(_check("carrier:/vaskon-test", '@app.get("/vaskon/test"' in bridge_text, "live VASKON test route declared"))
+    checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
         # actual registered routes. This proves local route registration, not
@@ -322,6 +323,7 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/verify", ("/verify", "GET") in route_pairs and ("/verify", "POST") in route_pairs, "live carrier ASGI route registration observed"))
             checks.append(_check("carrier-route:/mcp", any(getattr(route, "path", None) == "/mcp" for route in getattr(carrier_app, "routes", [])), "live carrier ASGI mount registration observed"))
             checks.append(_check("carrier-route:/vaskon/test", ("/vaskon/test", "GET") in route_pairs, "live VASKON test route registration observed"))
+            checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
             for name in ("health", "chat", "verify", "mcp"):
