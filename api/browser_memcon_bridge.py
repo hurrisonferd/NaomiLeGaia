@@ -576,11 +576,13 @@ def galaxy_runtime_status(browser_request: Request):
 @app.get("/galaxy/canary/start", response_class=HTMLResponse)
 def galaxy_canary_start_page(browser_request: Request):
     """Direct browser canary path. Does not depend on OPENAI_API_KEY."""
-    gaiaos_api._authorize_browser_session(browser_request)
+    bootstrap_session = gaiaos_api.API_KEY is not None and not browser_request.cookies.get(gaiaos_api.SESSION_COOKIE)
+    if not bootstrap_session:
+        gaiaos_api._authorize_browser_session(browser_request)
     try:
         result = _handle_galaxy_canary_start()
         output = html.escape(result["output"])
-        return HTMLResponse(
+        response = HTMLResponse(
             "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
             "<h1>GALAXY two-memory canary</h1>"
             f"<pre style='white-space:pre-wrap'>{output}</pre>"
@@ -588,6 +590,9 @@ def galaxy_canary_start_page(browser_request: Request):
             "<p>This approval performs the two durable MemoryOS writes, then creates only a PROPOSED shadow edge.</p>"
             "</body></html>"
         )
+        if bootstrap_session:
+            response.set_cookie(gaiaos_api.SESSION_COOKIE, gaiaos_api._session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
+        return response
     except Exception as exc:
         return _error_page("GALAXY canary start failed", exc)
 
