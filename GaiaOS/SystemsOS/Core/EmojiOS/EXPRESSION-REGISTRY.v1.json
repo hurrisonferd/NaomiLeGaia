@@ -1,21 +1,21 @@
 {
   "schema": "gaiaos.emojios.expression-registry.v1",
+  "version": "1.1.0",
   "authority": "NAOMI",
   "owner": "EmojiOS",
   "identity_owner": "FairyOS",
   "static_identity_emoji_registry": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json",
-  "status": "ACTIVE_SEMANTIC_EXPRESSION_REGISTRY_GAIA_NATIVE_NO_RAVEN_BINARY_ASSETS",
+  "status": "ACTIVE_SEMANTIC_KAOMOJI_EXPRESSION_REGISTRY",
   "token_format": ":MEMBER:EXPRESSION:",
-  "identity_rendering_rule": "Prime Daemon proper name + retained colored heart + fixed static-interest emoji; dynamic expressions are additional and never replace identity markers.",
+  "identity_rendering_rule": "Every Prime Daemon utterance renders proper name + gematria + retained colored heart + fixed interest emoji + exactly one legal member Kaomoji. Dynamic state may change the Kaomoji but never remove it.",
   "members": {
-    "VERA": {"expressions":["HMM","I_SEE_IT","EXACTLY","BIG_BRAIN","SUS","ALL_GOOD"]},
-    "ANVIL": {"expressions":["YES","NO","SAY_IT","BOUNDARIES","EXCUSE_ME","REAL_TALK"]},
-    "SELENE": {"expressions":["GOOD_MORNING","YOU_GOT_THIS","COMFY","ITS_OKAY","BEAUTIFUL","HOME"]},
-    "ORIN": {"expressions":["LETS_EXPLORE","SO_COOL","IDEA","ZOOM","CURIOUS","NEW_PATH"]},
-    "KESTREL": {"expressions":["HI","LETS_GO","ON_IT","HEHE","BONK","SUS"]},
-    "NIMUE": {"expressions":["DEFAULT","WATCHING","UNDERSTOOD","REST","NOTED","LATER"]}
+    "VERA": {"default":"(˘‿˘)","expressions":{"HMM":"(¬_¬)","I_SEE_IT":"(˘‿˘)","EXACTLY":"(•̀ᴗ•́)و","BIG_BRAIN":"(⌐■_■)","SUS":"(눈_눈)","ALL_GOOD":"(˘◡˘)"}},
+    "ANVIL": {"default":"(¬‿¬)","expressions":{"YES":"(•̀ᴗ•́)و","NO":"(¬_¬)","SAY_IT":"(¬‿¬)","BOUNDARIES":"(ಠ_ಠ)","EXCUSE_ME":"(눈_눈)","REAL_TALK":"(•̀_•́)"}},
+    "SELENE": {"default":"(˶ᵔ ᵕ ᵔ˶)","expressions":{"GOOD_MORNING":"(˶ᵔ ᵕ ᵔ˶)","YOU_GOT_THIS":"(ง ˙˘˙ )ว","COMFY":"(◡‿◡✿)","ITS_OKAY":"(っ˘ω˘ς )","BEAUTIFUL":"(✿◠‿◠)","HOME":"(˘⌣˘)♡"}},
+    "ORIN": {"default":"(☆▽☆)","expressions":{"LETS_EXPLORE":"(☆▽☆)","SO_COOL":"(✧ω✧)","IDEA":"(☞ﾟヮﾟ)☞","ZOOM":"ᕕ( ᐛ )ᕗ","CURIOUS":"(・_・?)","NEW_PATH":"(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧"}},
+    "KESTREL": {"default":"(•̀ᴗ•́)و","expressions":{"HI":"(＾▽＾)","LETS_GO":"(•̀ᴗ•́)و","ON_IT":"ᕦ(ò_óˇ)ᕤ","HEHE":"(¬‿¬)","BONK":"(╯°□°)╯","SUS":"(눈_눈)"}},
+    "NIMUE": {"default":"(－‸ლ)","expressions":{"DEFAULT":"(－‸ლ)","WATCHING":"( ͡° ͜ʖ ͡°)","UNDERSTOOD":"(._.)","REST":"(-_-) zzz","NOTED":"(._.)φ","LATER":"(－_－) zzZ"}}
   },
-  "expression_semantics": {"HI":"greeting / present","LETS_GO":"coordinate / start moving","ON_IT":"executing now","HEHE":"playful / teasing joy","BONK":"playful correction","SUS":"suspicious / friction detected","HMM":"premise question / pondering","I_SEE_IT":"frame seen / understood","EXACTLY":"precise agreement","BIG_BRAIN":"pattern recognized","ALL_GOOD":"frame settles clean","YES":"authorized / affirmative","NO":"boundary / negative","SAY_IT":"state the direct truth","BOUNDARIES":"edge named","EXCUSE_ME":"reversibility / re-check","REAL_TALK":"direct honest claim","GOOD_MORNING":"soft warm opening","YOU_GOT_THIS":"reassurance / capable","COMFY":"load softened / comfortable","ITS_OKAY":"aftercare / it is fine","BEAUTIFUL":"settled result salience","HOME":"belonging / settled space","LETS_EXPLORE":"curiosity opening","SO_COOL":"discovery delight","IDEA":"prototype / new thought","ZOOM":"motion / fast route","CURIOUS":"interest / wonder","NEW_PATH":"fresh route found","DEFAULT":"neutral present","WATCHING":"low-noise observation","UNDERSTOOD":"acknowledged quietly","REST":"rest window / pause","NOTED":"recorded / held","LATER":"deferred / low-noise return"},
-  "rendering": {"rendering_engine":"semantic_tokens_only","binary_atlas":"NOT_PORTED","lookup":"deterministic_expression_id_per_member","visual_engine_may_port_later":true,"visual_identity_does_not_auto_port":true},
-  "laws":["EMOJIOS OWNS PRESENTATION LOOKUP","FAIRYOS OWNS PRIME DAEMON IDENTITY","STATIC INTEREST EMOJI IS FIXED_PER_PRIME_DAEMON","STATIC INTEREST EMOJI != COLORED HEART","DYNAMIC EXPRESSION != IDENTITY EMOJI","NAOMI RETAINS FINAL AUTHORITY"]
+  "rendering":{"rendering_engine":"deterministic_member_kaomoji","fallback":"MEMBER_DEFAULT","exactly_one_kaomoji_required":true,"binary_atlas":"NOT_REQUIRED","lookup":"member_plus_expression_state"},
+  "laws":["EMOJIOS OWNS KAOMOJI LOOKUP","FAIRYOS OWNS PRIME DAEMON IDENTITY","STATIC INTEREST EMOJI IS FIXED_PER_PRIME_DAEMON","DYNAMIC KAOMOJI != IDENTITY EMOJI","KAOMOJI PRESENCE IS MANDATORY","UNKNOWN EXPRESSION FALLS BACK TO MEMBER DEFAULT","NAOMI RETAINS FINAL AUTHORITY"]
 }
