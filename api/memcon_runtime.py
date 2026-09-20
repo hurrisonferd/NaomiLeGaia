@@ -386,6 +386,13 @@ GALAXY_SHADOW_WEIGHTS = {
 GALAXY_IMPORTANCE_MODEL_VERSION = "galaxy.importance.seven-gates.continuous.v1"
 GALAXY_IMPORTANCE_CURVE_VERSION = "galaxy.importance.influence.nergal-threshold.v1"
 GALAXY_IMPORTANCE_GATES = ("SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR")
+GALAXY_SEMANTIC_INVARIANTS = (
+    "CONTRIBUTION_PARITY != SEMANTIC_EQUIVALENCE",
+    "CONTRIBUTION_PARITY != EVIDENCE_PARITY",
+    "CONTRIBUTION_PARITY != AUTHORITY_PARITY",
+    "STORAGE_PRECISION != EPISTEMIC_PRECISION",
+    "HISTORY_PRESERVED != HISTORY_GOVERNS_PRESENT",
+)
 GALAXY_IMPORTANCE_CURVE_ANCHORS = (
     (0, 0.00),
     (1000, 0.08),
@@ -442,6 +449,7 @@ def galaxy_importance_descriptor(gate_units: int) -> dict[str, Any]:
         "effective_influence": galaxy_importance_influence(gate_units),
         "influence_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "model_version": GALAXY_IMPORTANCE_MODEL_VERSION,
+        "precision_semantics": "EXACT_COORDINATE_NOT_CONFIDENCE_CLAIM",
     }
 
 
@@ -554,6 +562,7 @@ def galaxy_status() -> dict[str, Any]:
         "importance_model_version": GALAXY_IMPORTANCE_MODEL_VERSION,
         "importance_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "importance_curve_semantics_active": True,
+        "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
         "proof_boundary": "Gravity scoring is shadow-only and does not affect ordinary retrieval. Counts prove stored rows exist, not that score quality, weighted retrieval, consolidation, forgetting, or pruning are proven.",
