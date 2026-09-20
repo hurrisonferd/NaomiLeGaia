@@ -2460,3 +2460,46 @@ The mutation is authorized only for:
 This does not authorize a replacement gravity weight profile or weighted retrieval.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 first durable Seven Gates importance write PASS 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- status: `REAL_MEMORY_IMPORTANCE_SET`
+- phase: `PHASE_2_GRAVITY_SHADOW`
+- record: `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- operation: `GALAXY_SET_IMPORTANCE`
+- receipt: `MEMREC-a9744cda2af84704a2b4215ec20727bc`
+- result: `SUCCESS`
+- stored units: `4750`
+- display position: `4.750`
+- gate: `NERGAL`
+- linear normalized position: `0.678571`
+- approved nonlinear effective influence: `0.55`
+- importance model: `galaxy.importance.seven-gates.continuous.v1`
+- influence curve: `galaxy.importance.influence.nergal-threshold.v1`
+- previous importance: `null`
+- idempotent: `false`
+
+ISOLATION PROOF:
+
+- shadow-v1 score before: `0.4`
+- shadow-v1 score after: `0.4`
+- shadow-v1 unchanged: `true`
+- retrieval ordering unchanged: `true`
+- retrieval weighting enabled: `false`
+- gravity rows mutated: none
+- relations mutated: none
+
+GATE RESULT:
+
+PASS.
+
+GALAXY can now durably store a Naomi-approved exact Seven Gates importance position, read it back with the approved nonlinear effective influence, and keep it isolated from the rejected shadow-v1 scoring profile and ordinary retrieval.
+
+NEXT GATE:
+
+Compare candidate replacement shadow-weight profiles against the real stored `4.750 NERGAL / 0.55 effective influence` signal rather than against hypothetical maximum importance.
+
+No replacement weight profile is authorized yet. Phase 3 remains disabled and unauthorized.
