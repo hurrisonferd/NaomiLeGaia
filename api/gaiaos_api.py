@@ -3087,6 +3087,193 @@ def galaxy_gravity_real_importance_set(
     )
 
 
+@app.get("/galaxy/gravity/real-calibration/importance/curve-review", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_curve_review(browser_request: Request, record_id: str):
+    """Read-only review of a proposed nonlinear Seven Gates influence curve."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    current = memcon_runtime.galaxy_gravity_preview(record_id)
+
+    anchors = [
+        {"gate_position": 0.0, "gate": "SIN", "influence": 0.00},
+        {"gate_position": 1.0, "gate": "NEBO", "influence": 0.08},
+        {"gate_position": 2.0, "gate": "ISHTAR", "influence": 0.16},
+        {"gate_position": 3.0, "gate": "SHAMMASH", "influence": 0.24},
+        {"gate_position": 4.0, "gate": "NERGAL", "influence": 0.34},
+        {"gate_position": 5.0, "gate": "MARDUK", "influence": 0.62},
+        {"gate_position": 6.0, "gate": "ADAR", "influence": 0.82},
+        {"gate_position": 7.0, "gate": "ADAR_APEX", "influence": 1.00},
+    ]
+
+    def gate_for_position(position: float) -> str:
+        if position < 1.0:
+            return "SIN"
+        if position < 2.0:
+            return "NEBO"
+        if position < 3.0:
+            return "ISHTAR"
+        if position < 4.0:
+            return "SHAMMASH"
+        if position < 5.0:
+            return "NERGAL"
+        if position < 6.0:
+            return "MARDUK"
+        return "ADAR"
+
+    def influence(position: float) -> float:
+        if position <= 0.0:
+            return 0.0
+        if position >= 7.0:
+            return 1.0
+        left = int(position)
+        right = left + 1
+        y0 = float(anchors[left]["influence"])
+        y1 = float(anchors[right]["influence"])
+        t = position - float(left)
+        return round(y0 + ((y1 - y0) * t), 6)
+
+    profiles = [
+        {
+            "name": "CURRENT_V1",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.25,
+                "verified_relation_strength": 0.20,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.05,
+            },
+        },
+        {
+            "name": "SOFT_REBALANCE",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.20,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.15,
+            },
+        },
+        {
+            "name": "PARITY_AT_ONE_085_RELATION",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.16129,
+                "verified_relation_strength": 0.16129,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.17742,
+            },
+        },
+        {
+            "name": "IMPORTANCE_LEADING",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.15,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.20,
+            },
+        },
+    ]
+
+    base_components = current["components"]
+    normalized_base = {
+        name: float(spec["normalized"])
+        for name, spec in base_components.items()
+    }
+
+    def score(weights: dict, influence_value: float) -> float:
+        norm = dict(normalized_base)
+        norm["explicit_importance"] = influence_value
+        return round(sum(float(norm[k]) * float(weights[k]) for k in weights), 6)
+
+    sample_positions = [0.000, 0.985, 1.000, 2.000, 3.000, 3.972, 4.000, 4.100, 4.500, 4.999, 5.000, 5.214, 6.000, 6.999, 7.000]
+    samples = []
+    for position in sample_positions:
+        proposed = influence(position)
+        linear = round(position / 7.0, 6)
+        samples.append({
+            "gate_position": position,
+            "gate": gate_for_position(position),
+            "linear_normalized_position": linear,
+            "proposed_influence": proposed,
+            "difference_from_linear": round(proposed - linear, 6),
+        })
+
+    comparisons = []
+    for profile in profiles:
+        comparisons.append({
+            "name": profile["name"],
+            "explicit_importance_weight": profile["weights"]["explicit_importance"],
+            "sample_scores_using_proposed_curve": [
+                {
+                    **sample,
+                    "score": score(profile["weights"], float(sample["proposed_influence"])),
+                }
+                for sample in samples
+            ],
+        })
+
+    payload = {
+        "status": "REAL_MEMORY_SEVEN_GATE_INFLUENCE_CURVE_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "record": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+            "authority": record.get("authority"),
+            "status": record.get("status"),
+        },
+        "naomi_semantic_target": (
+            "SIN through SHAMMASH should remain noticeable but comparatively compressed; "
+            "NERGAL is where explicit importance begins to become substantially more influential."
+        ),
+        "proposed_curve": {
+            "curve_version": "galaxy.importance.influence.nergal-threshold.v1",
+            "method": "continuous piecewise-linear interpolation between gate-boundary anchors",
+            "anchors": anchors,
+            "behavior": {
+                "SIN_THROUGH_SHAMMASH": "gentle, compressed increase",
+                "NERGAL": "onset of steeper influence growth",
+                "MARDUK": "strong influence",
+                "ADAR": "very strong through maximum influence",
+            },
+        },
+        "sample_mapping": samples,
+        "counterfactual_weight_profiles": comparisons,
+        "writes_performed": [],
+        "importance_signal_mutated": False,
+        "importance_curve_activated": False,
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "proof_boundary": (
+            "This page is arithmetic review only. The raw Seven Gates position remains 0.000 through 7.000. "
+            "The proposed nonlinear influence curve is not stored or active, and no scoring or retrieval behavior changes here."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY Phase 2 Seven Gates influence-curve review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No curve is activated here. This lens tests whether the proposed NERGAL threshold shape matches Naomi's intended semantics before runtime adoption.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
