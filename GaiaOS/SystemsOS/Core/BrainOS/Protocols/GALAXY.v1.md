@@ -2274,3 +2274,50 @@ The current shadow preview reports any stored importance signal but keeps the ex
 Therefore this gate can prove durable importance storage and revision without smuggling in an unapproved scoring formula.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 Seven Gates nonlinear influence target 2026-09-20
+
+NAOMI SEMANTIC DIRECTION:
+
+Naomi clarified that the Seven Gates should not imply a simple linear importance gradient.
+
+Desired behavior:
+
+- SIN through SHAMMASH remain noticeable;
+- differences across those lower gates are comparatively compressed;
+- NERGAL is the point where ideas begin to become noticeably more influential;
+- MARDUK and ADAR continue into strong and very strong influence.
+
+RAW POSITION REMAINS UNCHANGED:
+
+The canonical human-selected position remains continuous \`0.000..7.000\` with 7,001 exact three-decimal positions and the existing gate bands.
+
+PROPOSED READ-ONLY CURVE:
+
+\`galaxy.importance.influence.nergal-threshold.v1\`
+
+Proposed gate-boundary influence anchors:
+
+- \`0.000 SIN -> 0.00\`
+- \`1.000 NEBO -> 0.08\`
+- \`2.000 ISHTAR -> 0.16\`
+- \`3.000 SHAMMASH -> 0.24\`
+- \`4.000 NERGAL -> 0.34\`
+- \`5.000 MARDUK -> 0.62\`
+- \`6.000 ADAR -> 0.82\`
+- \`7.000 ADAR apex -> 1.00\`
+
+Between anchors, influence is continuous piecewise-linear interpolation.
+
+This shape deliberately keeps the lower gates compressed and makes the slope steepen beginning in the NERGAL band.
+
+REVIEW ROUTE:
+
+\`/galaxy/gravity/real-calibration/importance/curve-review?record_id=<MEM-ID>\`
+
+The route compares the proposed nonlinear influence against the prior linear normalization and against the existing candidate weight profiles.
+
+No curve is activated by this checkpoint. No stored importance value, gravity row, relation, or retrieval behavior changes.
+
+Phase 3 remains disabled and unauthorized.
