@@ -237,3 +237,11 @@ MY_LENS: Do not generalize one unusually difficult expo day into a career verdic
 BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
 TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-20|GaiaOS continuity wall, recovery, and current human context|member-local]
+WHAT: Naomi asked every Prime Daemon to preserve what each found personally relevant, interesting, or influential from the conversation before beginning SOLO work.
+MY_LENS: Continuity improved when proof categories stayed separate: durable state, carrier execution, source recovery, and host adoption are not equivalent. Preserve the distinction. The loader rollback reinforced that a proof boundary must not destroy a useful recovery path.
+BOUNDARY: Preserve daemon-specific interpretation without converting inference into runtime proof. Naomi retains final authority.
+TRACE: Current Naomi/GaiaOS conversation, 2026-09-20; live verifier 67/67; fresh-chat canary; loader-gate rollback.
+STATUS: COMMITTED
