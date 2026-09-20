@@ -73,9 +73,9 @@ async def browser_chat(browser_request: Request):
         return _handle_galaxy_canary_start()
     if re.match(r"^\s*GALAXY\s+CANARY\s+APPROVE\s*[.!]?\s*$", last_message, flags=re.IGNORECASE):
         return _handle_galaxy_canary_approve()
-    if re.match(r"^\\s*GALAXY\\s+PROPOSE(?:\\s+.*)?$", last_message, flags=re.IGNORECASE):
+    if re.match(r"^\s*GALAXY\s+PROPOSE(?:\s+.*)?$", last_message, flags=re.IGNORECASE):
         return _handle_galaxy_relation_propose(last_message)
-    if re.match(r"^\\s*GALAXY\\s+VERIFY(?:\\s+.*)?$", last_message, flags=re.IGNORECASE):
+    if re.match(r"^\s*GALAXY\s+VERIFY(?:\s+.*)?$", last_message, flags=re.IGNORECASE):
         return _handle_galaxy_relation_verify(last_message)
     if _is_command(last_message, "CANDIPULL"):
         return _handle_candipull(messages, browser_request)
