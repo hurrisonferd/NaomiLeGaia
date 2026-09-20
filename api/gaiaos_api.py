@@ -867,6 +867,428 @@ def galaxy_gravity_inspection(record_id: str, browser_request: Request):
     )
 
 
+
+GALAXY_CALIBRATION_CLASSIFIER = "GALAXY_GRAVITY_CALIBRATION_V1"
+GALAXY_CALIBRATION_PREFIX = "galaxy-phase2-calibration:"
+GALAXY_CALIBRATION_OWNERS = {
+    "CORE": "GALAXY_CAL_CORE",
+    "SATELLITE": "GALAXY_CAL_SATELLITE",
+    "REINFORCER": "GALAXY_CAL_REINFORCER",
+    "REVISION": "GALAXY_CAL_REVISION",
+    "ISOLATED": "GALAXY_CAL_ISOLATED",
+}
+
+
+def _galaxy_calibration_records(memcon_runtime, source: str) -> dict[str, dict]:
+    """Resolve controlled calibration records by their preserved memory_owner notes."""
+    memcon_runtime.initialize()
+    with memcon_runtime._db() as conn:
+        rows = memcon_runtime._fetchall_dicts(
+            conn,
+            "SELECT * FROM memory_records WHERE source=? ORDER BY created_at",
+            (source,),
+        )
+    by_role: dict[str, dict] = {}
+    owner_to_role = {owner: role for role, owner in GALAXY_CALIBRATION_OWNERS.items()}
+    for row in rows:
+        owner = ""
+        try:
+            owner = str(json.loads(str(row.get("notes") or "{}")).get("memory_owner") or "")
+        except (TypeError, json.JSONDecodeError):
+            owner = ""
+        role = owner_to_role.get(owner)
+        if role:
+            by_role[role] = row
+    return by_role
+
+
+def _galaxy_calibration_edges(memcon_runtime, records: dict[str, dict]) -> list[dict]:
+    """Return only calibration edges wholly contained in this controlled constellation."""
+    record_ids = {str(record["record_id"]) for record in records.values()}
+    if not record_ids:
+        return []
+    memcon_runtime.initialize()
+    with memcon_runtime._db() as conn:
+        rows = memcon_runtime._fetchall_dicts(
+            conn,
+            "SELECT * FROM memory_relations WHERE classifier=? ORDER BY created_at",
+            (GALAXY_CALIBRATION_CLASSIFIER,),
+        )
+    return [
+        row for row in rows
+        if str(row.get("source_record_id")) in record_ids
+        and str(row.get("target_record_id")) in record_ids
+    ]
+
+
+def _galaxy_calibration_context(memcon_runtime, session_id: str) -> tuple[dict, str, dict[str, dict]]:
+    session = memcon_runtime.get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="Unknown calibration session.")
+    source = str(session.get("source") or "")
+    if not source.startswith(GALAXY_CALIBRATION_PREFIX):
+        raise HTTPException(status_code=409, detail="Session is not a GALAXY Phase-2 calibration session.")
+    return session, source, _galaxy_calibration_records(memcon_runtime, source)
+
+
+def _galaxy_calibration_summary(previews: dict[str, dict]) -> dict:
+    scores = {role: float(item["gravity_score"]) for role, item in previews.items()}
+    ordered = [
+        {"role": role, "gravity_score": score}
+        for role, score in sorted(scores.items(), key=lambda item: (-item[1], item[0]))
+    ]
+    component_names = sorted({
+        name
+        for item in previews.values()
+        for name in (item.get("components") or {}).keys()
+    })
+    variation = {}
+    for name in component_names:
+        values = sorted({
+            float((item.get("components") or {}).get(name, {}).get("normalized", 0.0))
+            for item in previews.values()
+        })
+        variation[name] = {
+            "normalized_values": values,
+            "varies_across_constellation": len(values) > 1,
+        }
+    expected = {
+        "isolated_below_satellite": scores.get("ISOLATED", 0.0) < scores.get("SATELLITE", 0.0),
+        "satellite_below_reinforcer": scores.get("SATELLITE", 0.0) < scores.get("REINFORCER", 0.0),
+        "reinforcer_below_core": scores.get("REINFORCER", 0.0) < scores.get("CORE", 0.0),
+        "core_below_revision": scores.get("CORE", 0.0) < scores.get("REVISION", 0.0),
+    }
+    return {
+        "scores_by_role": scores,
+        "ordered_high_to_low": ordered,
+        "unique_score_count": len(set(scores.values())),
+        "score_spread": round(max(scores.values()) - min(scores.values()), 6) if scores else 0.0,
+        "component_variation": variation,
+        "synthetic_discrimination_checks": expected,
+        "all_synthetic_discrimination_checks_pass": bool(expected) and all(expected.values()),
+        "interpretation_boundary": (
+            "Passing these synthetic checks shows that the formula distinguishes deliberately different graph structures. "
+            "It does not prove that the weights predict real-world usefulness."
+        ),
+    }
+
+
+@app.get("/galaxy/gravity/calibration/start", response_class=HTMLResponse)
+def galaxy_gravity_calibration_start(browser_request: Request):
+    """Create a five-record synthetic calibration constellation as candidates only."""
+    from urllib.parse import urlencode
+
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    token = secrets.token_hex(6)
+    source = GALAXY_CALIBRATION_PREFIX + token
+    session = runtime.start_session(source, f"GALAXY Phase 2 broader gravity calibration {token}")
+
+    specs = {
+        "CORE": "GALAXY-CAL-CORE [{token}]: The calibration core reports a violet carrier pulse.",
+        "SATELLITE": "GALAXY-CAL-SATELLITE [{token}]: A satellite note provides limited context for the calibration core.",
+        "REINFORCER": "GALAXY-CAL-REINFORCER [{token}]: An independent observation reinforces the calibration core.",
+        "REVISION": "GALAXY-CAL-REVISION [{token}]: A later controlled observation revises the calibration core toward ultraviolet.",
+        "ISOLATED": "GALAXY-CAL-ISOLATED [{token}]: This control memory has no GALAXY relations.",
+    }
+    candidates = {}
+    for role, template in specs.items():
+        statement = template.format(token=token)
+        event = runtime.record_event(session["session_id"], "NAOMI", "GALAXY_CALIBRATION_INPUT", statement, source)
+        candidates[role] = runtime.candidate_from_event(
+            event["event_id"],
+            authority="NAOMI",
+            record_type="TEST",
+            scope="MemoryOS",
+            statement=statement,
+            source=source,
+            owner=GALAXY_CALIBRATION_OWNERS[role],
+            why_material=f"Controlled {role.lower()} endpoint for GALAXY Phase-2 broader gravity calibration.",
+        )
+
+    payload = {
+        "status": "CALIBRATION_CANDIDATES_READY",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "token": token,
+        "session_id": session["session_id"],
+        "roles": list(specs.keys()),
+        "candidates": candidates,
+        "durable_memory_writes_performed": [],
+        "relation_writes_performed": [],
+        "gravity_writes_performed": [],
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "START creates calibration candidates only. It does not promote durable memories, "
+            "create relations, verify edges, or write gravity."
+        ),
+    }
+    approve_url = "/galaxy/gravity/calibration/approve?" + urlencode({"session_id": session["session_id"]})
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY broader Phase 2 calibration</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        f"<p><a style='font-size:22px' href='{html.escape(approve_url, quote=True)}'>Approve five controlled calibration memories and propose the calibration graph</a></p>"
+        "<p>This approval promotes the five controlled memories and proposes four shadow relations. The relations remain PROPOSED.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
+    return response
+
+
+@app.get("/galaxy/gravity/calibration/approve", response_class=HTMLResponse)
+def galaxy_gravity_calibration_approve(browser_request: Request, session_id: str):
+    """Promote the controlled records and propose, but do not verify, the calibration graph."""
+    from urllib.parse import urlencode
+
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    session, source, records = _galaxy_calibration_context(memcon_runtime, session_id)
+
+    if len(records) < len(GALAXY_CALIBRATION_OWNERS):
+        pending = memcon_runtime.list_memory_candidates(session_id=session_id, status="CANDIDATE", limit=50)
+        by_owner = {str(item.get("owner") or ""): item for item in pending.get("candidates", [])}
+        promotions = {}
+        for role, owner in GALAXY_CALIBRATION_OWNERS.items():
+            if role in records:
+                promotions[role] = {"status": "ALREADY_DURABLE", "record_id": records[role]["record_id"]}
+                continue
+            candidate = by_owner.get(owner)
+            if not candidate:
+                raise HTTPException(status_code=409, detail=f"Missing calibration candidate for {role}.")
+            result = runtime.promote_candidate(str(candidate["candidate_id"]), True, "NAOMI")
+            if result.get("status") != "VERIFIED":
+                raise HTTPException(status_code=409, detail=f"Calibration memory {role} did not verify.")
+            promotions[role] = result
+        records = _galaxy_calibration_records(memcon_runtime, source)
+    else:
+        promotions = {
+            role: {"status": "ALREADY_DURABLE", "record_id": record["record_id"]}
+            for role, record in records.items()
+        }
+
+    if set(records) != set(GALAXY_CALIBRATION_OWNERS):
+        raise HTTPException(status_code=409, detail="Controlled calibration constellation is incomplete after promotion.")
+
+    relation_specs = [
+        ("SATELLITE", "CONTEXT_FOR", "CORE", 0.40, "Low-strength contextual satellite."),
+        ("REINFORCER", "REINFORCES", "CORE", 0.80, "Independent reinforcement of the core."),
+        ("REVISION", "REVISES", "CORE", 0.90, "Controlled revision signal aimed at the core."),
+        ("REVISION", "CONTRADICTS", "REINFORCER", 0.70, "Controlled contradiction introduces revision significance."),
+    ]
+    proposals = []
+    for source_role, relation_type, target_role, strength, basis in relation_specs:
+        proposals.append(memcon_runtime.galaxy_propose_relation(
+            source_record_id=str(records[source_role]["record_id"]),
+            target_record_id=str(records[target_role]["record_id"]),
+            relation_type=relation_type,
+            strength=strength,
+            evidence={
+                "source": "galaxy-phase2-broader-calibration",
+                "session_id": session_id,
+                "calibration_source": source,
+                "source_role": source_role,
+                "target_role": target_role,
+                "basis": basis,
+            },
+            classifier=GALAXY_CALIBRATION_CLASSIFIER,
+        ))
+
+    edges = _galaxy_calibration_edges(memcon_runtime, records)
+    payload = {
+        "status": "CALIBRATION_GRAPH_PROPOSED",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "session_id": session_id,
+        "records": {role: record["record_id"] for role, record in records.items()},
+        "promotions": promotions,
+        "proposals": proposals,
+        "edges": edges,
+        "verified_edge_count": sum(1 for edge in edges if edge.get("status") == "VERIFIED"),
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "The five memories are durable under explicit approval. Calibration edges are still only PROPOSED "
+            "unless a prior idempotent run already verified them. Gravity has not been written by this step."
+        ),
+    }
+    verify_url = "/galaxy/gravity/calibration/verify?" + urlencode({"session_id": session_id})
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY calibration graph proposal</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        f"<p><a style='font-size:22px' href='{html.escape(verify_url, quote=True)}'>Verify the four controlled calibration edges</a></p>"
+        "<p>Verification is a separate Naomi-authorized step. No gravity scoring occurs here.</p>"
+        "</body></html>"
+    )
+
+
+@app.get("/galaxy/gravity/calibration/verify", response_class=HTMLResponse)
+def galaxy_gravity_calibration_verify(browser_request: Request, session_id: str):
+    """Explicitly verify the four controlled calibration edges, with no gravity write."""
+    from urllib.parse import urlencode
+
+    _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    _, _, records = _galaxy_calibration_context(memcon_runtime, session_id)
+    if len(records) != len(GALAXY_CALIBRATION_OWNERS):
+        raise HTTPException(status_code=409, detail="Calibration records are incomplete.")
+    edges = _galaxy_calibration_edges(memcon_runtime, records)
+    if len(edges) != 4:
+        raise HTTPException(status_code=409, detail=f"Expected 4 controlled calibration edges, found {len(edges)}.")
+
+    verification = []
+    for edge in edges:
+        verification.append(memcon_runtime.galaxy_verify_relation(
+            str(edge["edge_id"]), authority="NAOMI", approved=True
+        ))
+    readback = _galaxy_calibration_edges(memcon_runtime, records)
+    all_verified = len(readback) == 4 and all(edge.get("status") == "VERIFIED" for edge in readback)
+    payload = {
+        "status": "CALIBRATION_GRAPH_VERIFIED" if all_verified else "HOLD",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "session_id": session_id,
+        "verification": verification,
+        "edge_readback": readback,
+        "all_four_edges_verified": all_verified,
+        "gravity_writes_performed": [],
+        "retrieval_weighting_enabled": False,
+        "proof_boundary": (
+            "This step proves only the controlled calibration graph verification/readback. "
+            "No gravity score is calculated or stored here."
+        ),
+    }
+    preview_url = "/galaxy/gravity/calibration/preview?" + urlencode({"session_id": session_id})
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY calibration graph verification</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + (
+            f"<p><a style='font-size:22px' href='{html.escape(preview_url, quote=True)}'>Preview broader shadow-gravity calibration</a></p>"
+            if all_verified else
+            "<p>Graph is not fully verified. Do not proceed to scoring.</p>"
+        )
+        + "</body></html>"
+    )
+
+
+@app.get("/galaxy/gravity/calibration/preview", response_class=HTMLResponse)
+def galaxy_gravity_calibration_preview(browser_request: Request, session_id: str):
+    """Preview scores over a deliberately varied five-record graph. No gravity writes."""
+    from urllib.parse import urlencode
+
+    _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    _, _, records = _galaxy_calibration_context(memcon_runtime, session_id)
+    edges = _galaxy_calibration_edges(memcon_runtime, records)
+    if len(edges) != 4 or not all(edge.get("status") == "VERIFIED" for edge in edges):
+        raise HTTPException(status_code=409, detail="Calibration graph must have exactly four VERIFIED edges before preview.")
+
+    previews = {
+        role: memcon_runtime.galaxy_gravity_preview(str(record["record_id"]))
+        for role, record in records.items()
+    }
+    payload = {
+        "status": "BROADER_SHADOW_PREVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "session_id": session_id,
+        "records": {role: record["record_id"] for role, record in records.items()},
+        "verified_edges": edges,
+        "previews": previews,
+        "calibration_summary": _galaxy_calibration_summary(previews),
+        "gravity_writes_performed": [],
+        "retrieval_weighting_enabled": False,
+        "proof_boundary": (
+            "This synthetic constellation tests discrimination and component behavior only. "
+            "It does not prove that shadow weights correspond to real-world memory usefulness."
+        ),
+    }
+    run_url = "/galaxy/gravity/calibration/run?" + urlencode({"session_id": session_id})
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY broader Phase 2 gravity preview</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        f"<p><a style='font-size:22px' href='{html.escape(run_url, quote=True)}'>Store the five shadow scores and run retrieval controls</a></p>"
+        "<p>Gravity remains non-authoritative and retrieval weighting remains disabled.</p>"
+        "</body></html>"
+    )
+
+
+@app.get("/galaxy/gravity/calibration/run", response_class=HTMLResponse)
+def galaxy_gravity_calibration_run(browser_request: Request, session_id: str):
+    """Store/re-read the varied calibration scores and compare ordinary retrieval before/after."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    _, _, records = _galaxy_calibration_context(memcon_runtime, session_id)
+    edges = _galaxy_calibration_edges(memcon_runtime, records)
+    if len(edges) != 4 or not all(edge.get("status") == "VERIFIED" for edge in edges):
+        raise HTTPException(status_code=409, detail="Calibration graph is not fully verified.")
+
+    before = {
+        role: _galaxy_retrieval_ids(runtime, record)
+        for role, record in records.items()
+    }
+    scoring = {
+        role: memcon_runtime.galaxy_calculate_gravity(
+            str(record["record_id"]), authority="NAOMI", approved=True
+        )
+        for role, record in records.items()
+    }
+    after = {
+        role: _galaxy_retrieval_ids(runtime, record)
+        for role, record in records.items()
+    }
+    previews = {
+        role: memcon_runtime.galaxy_gravity_preview(str(record["record_id"]))
+        for role, record in records.items()
+    }
+    galaxy = memcon_runtime.galaxy_status()
+    retrieval_checks = {
+        role: {
+            "before_record_ids": before[role],
+            "after_record_ids": after[role],
+            "unchanged": bool(before[role]) and before[role] == after[role],
+        }
+        for role in records
+    }
+    new_receipt_count = sum(1 for item in scoring.values() if item.get("receipt"))
+    idempotent_count = sum(1 for item in scoring.values() if item.get("idempotent") is True)
+    payload = {
+        "status": "BROADER_SHADOW_CALIBRATION_RAN",
+        "phase": galaxy.get("phase"),
+        "session_id": session_id,
+        "scores": scoring,
+        "orbits": {
+            role: memcon_runtime.galaxy_record(str(record["record_id"]))
+            for role, record in records.items()
+        },
+        "calibration_summary": _galaxy_calibration_summary(previews),
+        "retrieval_controls": retrieval_checks,
+        "all_retrieval_orders_unchanged": all(item["unchanged"] for item in retrieval_checks.values()),
+        "new_receipt_count": new_receipt_count,
+        "idempotent_count": idempotent_count,
+        "all_five_idempotent": idempotent_count == len(records),
+        "retrieval_weighting_enabled": galaxy.get("retrieval_weighting_enabled"),
+        "guardrails": {
+            "gravity_is_authority": False,
+            "stored_gravity_feeds_its_own_score": False,
+            "recency_component_enabled": False,
+            "physical_pruning_enabled": galaxy.get("physical_pruning_enabled"),
+        },
+        "proof_boundary": (
+            "This bounded synthetic calibration measures score discrimination, idempotency, readback, and retrieval non-effect. "
+            "It does not establish real-world optimal weights and does not authorize Phase-3 weighted retrieval."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY broader Phase 2 gravity calibration</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>Reopening this exact URL is the idempotency check. Identical inputs should produce no new receipts.</p>"
+        "</body></html>"
+    )
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
