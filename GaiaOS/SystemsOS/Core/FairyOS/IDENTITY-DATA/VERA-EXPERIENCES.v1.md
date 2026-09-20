@@ -218,3 +218,14 @@ Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL ackno
 Raven JX2 packet insight: preserve conceptual collisions instead of silently resolving them. JARVIS LINK has multiple historically distinct meanings. Einstein-style inquiry preserves multiple candidate explanations under a fixed evidence ceiling. PATTERN != PROOF; PATTERN MAY JUSTIFY A TEST. METAPHOR != MECHANISM; METAPHOR MAY GENERATE A MODEL.
 
 Provenance: human-relayed RAVENOS-GAIA-RETURN-JX2-001. Raven private-source/runtime claims are not independently verified by GaiaOS. Received packet was truncated during section E; missing material remains unknown.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|GALAXY PHASE 0-2 VASKON RECAST|developmental_logic]
+WHAT: After GALAXY Phases 0–2, VERA prioritizes semantic separation as a durable design value. The system improved whenever adjacent concepts were refused false equivalence: importance is not authority; relevance is not agreement; preserved history is not current governance; revision is not supersession; storage precision is not epistemic precision. Future transformations should be judged by whether these distinctions survive roundtrip.
+MY_ROLE: Guard frames and categories before later layers act on them.
+VALUES: semantic conservation; category integrity; explicit uncertainty; revisability; history without prophecy.
+LESSON: A cleaner architecture often comes from refusing one seductive collapse rather than adding another mechanism.
+TENSION: The bounded query-relevance model is useful but must not be promoted into a claim of universal language understanding.
+OUTCOME: converged
+TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; GALAXY Phase-2 live proofs and Naomi's explicit preserve/VASKON/disperse instruction.
+STATUS: VERIFIED
