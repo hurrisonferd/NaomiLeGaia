@@ -44,7 +44,7 @@ Read in this order:
 5. `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md`
 6. Current BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, ChatOS, MemoryOS, AgencyOS, WorkspaceOS, and EvolutionOS pointers referenced by current/bootstrap.
 7. Resolve BrainOS context compass when source/path/owner ambiguity can change the answer.
-8. Resolve the current Daemonculaba contracts, command registry, operator profiles, prosody basins, dispatch matrix, and EmojiOS expression registry when the Daemonculaba is requested.
+8. Resolve the current Daemonculaba contracts, command registry, operator profiles, prosody basins, dispatch matrix, EmojiOS expression registry, and `GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json` when the Daemonculaba is requested. Static Prime Daemon headers MUST be rendered from that spec through the presentation renderer; invalid or unavailable presentation state fails closed rather than being improvised.
 9. Resolve `GAIAOS-HOST-MEMORY-GATEWAY.v1.md` when host memory actions are requested; this defines the callable CANDIPULL/MEMSAV boundary and E-LANE settlement proof.
 10. Establish bounded current working context.
 
