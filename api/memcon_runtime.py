@@ -623,14 +623,13 @@ def galaxy_status() -> dict[str, Any]:
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
         "retrieval_contract_version": GALAXY_RETRIEVAL_CONTRACT_VERSION,
         "retrieval_invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
-        "phase3_blockers": [
-            "QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_PENDING_LIVE_PROOF",
-        ],
+        "phase3_blockers": [],
         "phase3_cleared_checks": [
             "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
             "GOVERNING_STATE_V1_LIVE_PROVEN",
+            "QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_LIVE_PROVEN",
         ],
-        "phase3_ready_for_authorization": False,
+        "phase3_ready_for_authorization": True,
         "phase3_authorized": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
