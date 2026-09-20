@@ -768,3 +768,61 @@ WHAT THIS DOES NOT PROVE:
 
 NEXT PHASE-2 WORK:
 bounded real-memory calibration in observation-only mode. Select existing durable records with naturally different relation profiles, preview current shadow-v1 scores without mutating their relations, compare explainability against Naomi review, and document mismatches before any Phase-3 design begins.
+
+
+### Phase-2 real-memory shadow calibration harness checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME OBSERVATION NOT YET CLAIMED.
+
+A new read-only real-memory calibration surface is implemented at:
+
+`/galaxy/gravity/real-calibration/preview`
+
+Purpose:
+
+Move Phase 2 beyond synthetic graph mechanics and inspect shadow-v1 against existing durable non-test MemoryOS records without altering those records, their relations, stored gravity, or retrieval.
+
+Population boundary:
+
+- scope must be `MemoryOS`;
+- `record_type=TEST` is excluded;
+- controlled GALAXY Phase-1/Phase-2 test sources are excluded;
+- only VERIFIED relations whose source and target are both inside the eligible real-memory population are considered;
+- no candidate, memory, relation, gravity, lifecycle, synthesis, or retrieval mutation occurs.
+
+Bounded sampling:
+
+- maximum sample size: 8;
+- deterministic selection favors naturally distinct VERIFIED relation profiles;
+- one newest representative per relation profile is selected first;
+- remaining slots are filled with newest eligible records;
+- graph profile dimensions include verified relation count, relation types, mean verified relation strength, revision-significance edge count, authority, and record status.
+
+The preview reports:
+
+- eligible real-memory population count;
+- relation-bearing vs zero-relation real-memory counts;
+- unique natural relation-profile count;
+- bounded selected records with statements and provenance;
+- current shadow-v1 preview for each selected record;
+- any pre-existing stored shadow gravity row without modifying it;
+- sample score spread and unique-score count;
+- sample relation-count variation;
+- calibration readiness:
+  - `OBSERVABLE_GRAPH_DIVERSITY`, or
+  - `GRAPH_COVERAGE_LIMITED`.
+
+Important interpretation boundary:
+
+If real memories lack naturally varied VERIFIED GALAXY relations, equal or near-equal scores are a graph-coverage finding. They must not be interpreted as evidence that shadow-v1 is well calibrated.
+
+Naomi review questions are surfaced directly:
+
+- Do higher scores correspond to memories Naomi considers more broadly useful or important?
+- Is relation-rich but low-value material inflated by graph density?
+- Is isolated but important material underweighted because graph coverage is sparse?
+- Is revision/contradiction influence too strong or too weak?
+
+No action button is exposed on this page intentionally. Observation and Naomi review precede any real-memory graph mutation or Phase-3 design.
+
+Phase 3 remains disabled and unauthorized.
