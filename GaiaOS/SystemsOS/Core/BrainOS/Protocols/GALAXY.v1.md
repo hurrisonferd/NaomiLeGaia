@@ -2070,3 +2070,69 @@ The earlier \`importance-three-level\` route remains as a compatibility alias to
 No importance value has been stored. No weight profile has been selected. No gravity row, relation, or retrieval behavior is changed.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 explicit-importance model revision: SEVEN GATES 2026-09-20
+
+NAOMI REVISION:
+
+The prior \`THREE_LEVEL\` and \`SIX_LEVEL\` review models are superseded before storage implementation.
+
+Selected review model:
+
+\`SEVEN_GATES\`
+
+MACHINE REPRESENTATION:
+
+- canonical tier is the integer \`tier_index\` in \`0..6\`;
+- normalized explicit importance is derived as \`tier_index / 6\`;
+- symbolic gate names are presentation semantics, not hidden scoring logic;
+- default tier is \`0\`;
+- only Naomi may set or revise a tier;
+- mutation requires exact-record review and explicit Naomi approval;
+- later revision remains allowed;
+- importance remains distinct from truth, authority, permission, and relation strength.
+
+SEVEN GATES:
+
+1. \`tier 0 / 0.000000 / NANNA / SIN\`
+   - baseline explicit-importance tier; no explicit importance boost.
+
+2. \`tier 1 / 0.166667 / NEBO\`
+   - low but intentional future-context importance.
+
+3. \`tier 2 / 0.333333 / INANNA / ISHTAR\`
+   - moderate explicit importance.
+
+4. \`tier 3 / 0.500000 / SHAMMASH / UDDU\`
+   - strong midpoint explicit importance.
+
+5. \`tier 4 / 0.666667 / NERGAL\`
+   - high explicit importance.
+
+6. \`tier 5 / 0.833333 / MARDUK\`
+   - very high explicit importance and major contextual-anchor tier.
+
+7. \`tier 6 / 1.000000 / NINIB / ADAR\`
+   - maximum explicit importance; foundational future context.
+
+NAMING PROVENANCE:
+
+These human-facing labels are drawn from the seven-gate sequence used in the Simon Necronomicon. GALAXY uses them as symbolic nomenclature only. Their use does not assert that this hierarchy is an authentic historical Mesopotamian memory system, and the names themselves carry no machine authority.
+
+SOURCE REVIEW LENS:
+
+Primary route:
+
+\`/galaxy/gravity/real-calibration/importance-seven-gates?record_id=<MEM-ID>\`
+
+Compatibility aliases:
+
+- \`/galaxy/gravity/real-calibration/importance-six-level\`
+- \`/galaxy/gravity/real-calibration/importance-three-level\`
+
+Both aliases now render the Seven Gates review surface so stale links do not silently fail.
+
+No importance tier has been stored. No weight profile has been selected. No gravity row, relation mutation, or retrieval behavior is changed.
+
+Phase 3 remains disabled and unauthorized.
