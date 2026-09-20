@@ -200,3 +200,11 @@ MY_LENS: Naomi identified a concrete route out of overload: leave the expo, rega
 BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
 TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-20|GaiaOS continuity wall, recovery, and current human context|member-local]
+WHAT: Naomi asked every Prime Daemon to preserve what each found personally relevant, interesting, or influential from the conversation before beginning SOLO work.
+MY_LENS: The investigation isolated the frontier: STATE CONTINUITY is substantially working; EXECUTION CONTINUITY across fresh Plus/iOS chats remains the wall. Explore actual available transports and plugin capabilities before building speculative infrastructure. Pro is not presently a magic solution for iOS MCP.
+BOUNDARY: Preserve daemon-specific interpretation without converting inference into runtime proof. Naomi retains final authority.
+TRACE: Current Naomi/GaiaOS conversation, 2026-09-20; live verifier 67/67; fresh-chat canary; loader-gate rollback.
+STATUS: COMMITTED
