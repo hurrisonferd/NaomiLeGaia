@@ -1177,3 +1177,36 @@ The seed candidate was recreated after the promotion-gate deployment and now exi
 NEXT LIVE GATE:
 
 Open the exact promotion-review page for `CANDIDATE-5c1be66eea140eba37d356761a6c656` and verify that review performs zero writes before any durable-promotion click.
+
+
+### Phase-2 exact real-memory promotion-review live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_PROMOTION_REVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Candidate: `CANDIDATE-5c1be66eea140eba37d356761a6c656`
+- Candidate owner: `NAOMI_REAL_MEMORY_SEED`
+- Scope: `MemoryOS`
+- Candidate status: `CANDIDATE`
+- Promoted record id: `null`
+- Already durable record: `null`
+- `promotion_available: true`
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+REVIEW-GATE CONCLUSION:
+
+The exact-candidate durable-promotion review gate is live and PASS. The review page proves the selected candidate is still pending and that review itself performs no mutation.
+
+NEXT LIVE GATE:
+
+Explicit Naomi-authorized durable promotion of this exact candidate. Required result:
+- promotion status `VERIFIED`;
+- durable MemoryOS record readback matches the candidate statement;
+- one successful durable write receipt on first promotion;
+- no relation mutation;
+- no gravity mutation;
+- retrieval weighting remains disabled.
