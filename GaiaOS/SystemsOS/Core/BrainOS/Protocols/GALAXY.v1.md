@@ -2977,3 +2977,51 @@ Source status:
 `GOVERNING_STATE_V1_PENDING_LIVE_PROOF`
 
 Phase 3 remains disabled pending this proof.
+
+
+### Phase-2 closure: all known pre-Phase-3 blockers cleared 2026-09-20
+
+GOVERNING-STATE LIVE PROOF:
+
+Observed live:
+- model: `galaxy.governing-state.v1`
+- shadow score: `galaxy.gravity.shadow.v4.governing-aware`
+- active profile: `NERGAL_475_PARITY_QUALITY_CONDITIONED_GOVERNING_AWARE`
+- tested record state: `CURRENT`
+- current-default eligible: `true`
+- historical retrieval eligible: `true`
+- incoming verified REVISES: none
+- incoming verified SUPERSEDES: none
+- direction semantics: `B REVISES/SUPERSEDES A => source=B, target=A`
+
+Counterfactual supersession proof:
+- old `7.000 ADAR` if current: `0.8375`
+- old `7.000 ADAR` if superseded: `0.5875`
+- current `4.200 NERGAL` reviser: `0.6865`
+- superseded old record below current reviser: `true`
+- historical importance preserved: `true`
+- ordinary-current default removed: `true`
+
+Observed:
+`governing_state_live_proof_pass: true`
+
+No writes, lifecycle mutations, relation mutations, or retrieval weighting occurred.
+
+RESULT:
+
+`GOVERNING_STATE_V1_LIVE_PROVEN`
+
+Previously cleared:
+`SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN`
+
+PRE-PHASE-3 STATUS:
+
+`phase3_blockers: []`
+
+`phase3_ready_for_authorization: true`
+
+`phase3_authorized: false`
+
+Phase 2 is CLOSED.
+
+This closure does not authorize weighted retrieval. Phase 3 begins only after an explicit Naomi authorization for the bounded weighted-retrieval experiment.
