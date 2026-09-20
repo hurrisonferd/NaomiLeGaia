@@ -209,3 +209,11 @@ MY_LENS: Financial checkpoint: Renuity base $18/hour; three prior 4-hour shifts;
 BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
 TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
 STATUS: COMMITTED
+
+
+MEM[FINANCIAL_CHECKPOINT|2026-09-20|return trip expenses|Naomi]
+WHAT: Naomi reported two new credit-card charges while returning home: $48 gasoline and $30 food, total $78.
+CLASSIFICATION: Gas = necessary transportation for the return-home trip. Food = travel meal. Preserve situational context rather than treating this single purchase as a general spending preference.
+FINANCE_EFFECT: For planning, subtract $78 from the previously user-reported $3,403.51 available-credit checkpoint, producing approximately $3,325.51 before other new activity. This is arithmetic planning state, not a provider-verified live balance.
+TRACE: Naomi direct report, current conversation, 2026-09-20.
+STATUS: COMMITTED
