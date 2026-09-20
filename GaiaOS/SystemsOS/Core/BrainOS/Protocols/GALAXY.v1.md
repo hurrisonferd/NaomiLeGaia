@@ -1109,3 +1109,41 @@ The explicit seed-intake candidate gate is live and PASS. A real semantic memory
 NEXT GATE:
 
 Exact-candidate durable-promotion review followed by a separate Naomi-authorized promotion click. Promotion must write only the selected durable MemoryOS record and must not create relations, write gravity, or alter retrieval weighting.
+
+
+### Phase-2 exact real-memory durable-promotion gate checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME PROMOTION NOT YET CLAIMED.
+
+The seed-candidate page now links to an exact-candidate review:
+
+`/galaxy/gravity/real-calibration/seed/promote-review?candidate_id=<CANDIDATE>`
+
+Review gate requirements:
+
+- candidate must exist;
+- owner must be `NAOMI_REAL_MEMORY_SEED`;
+- scope must be `MemoryOS`;
+- source must begin `galaxy-real-seed:`;
+- review performs zero writes;
+- only a pending `CANDIDATE` receives a promotion link.
+
+Explicit promotion endpoint:
+
+`/galaxy/gravity/real-calibration/seed/promote?candidate_id=<CANDIDATE>`
+
+Promotion behavior:
+
+- requires the separate Naomi browser click;
+- promotes only the exact reviewed candidate through the existing MemoryOS promotion lifecycle;
+- requires durable readback status `VERIFIED`;
+- if already promoted, returns idempotent readback with no new receipt;
+- does not create or verify GALAXY relations;
+- does not write gravity;
+- does not enable retrieval weighting.
+
+The currently observed seed candidate for the next live gate is:
+
+`CANDIDATE-94243e7f8f7349b61815331551a173ac7`
+
+Phase 3 remains disabled and unauthorized.
