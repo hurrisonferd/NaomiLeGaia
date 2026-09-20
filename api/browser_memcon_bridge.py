@@ -573,6 +573,73 @@ def galaxy_runtime_status(browser_request: Request):
     return memcon_runtime.galaxy_status()
 
 
+@app.get("/galaxy/canary/start", response_class=HTMLResponse)
+def galaxy_canary_start_page(browser_request: Request):
+    """Direct browser canary path. Does not depend on OPENAI_API_KEY."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        result = _handle_galaxy_canary_start()
+        output = html.escape(result["output"])
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GALAXY two-memory canary</h1>"
+            f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            "<p><a style='font-size:22px' href='/galaxy/canary/approve'>Approve the two controlled memories</a></p>"
+            "<p>This approval performs the two durable MemoryOS writes, then creates only a PROPOSED shadow edge.</p>"
+            "</body></html>"
+        )
+    except Exception as exc:
+        return _error_page("GALAXY canary start failed", exc)
+
+
+@app.get("/galaxy/canary/approve", response_class=HTMLResponse)
+def galaxy_canary_approve_page(browser_request: Request):
+    """Explicit browser approval step for the paired controlled memories."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        result = _handle_galaxy_canary_approve()
+        output = html.escape(result["output"])
+        payload = {}
+        try:
+            payload = json.loads(result["output"].split("\n\n", 1)[1])
+        except (ValueError, json.JSONDecodeError, IndexError):
+            payload = {}
+        edge_id = ((payload.get("relation") or {}).get("relation") or {}).get("edge_id")
+        verify_link = (
+            f"<p><a style='font-size:22px' href='/galaxy/canary/verify/{html.escape(str(edge_id))}'>Verify proposed GALAXY edge</a></p>"
+            if edge_id else
+            "<p>No edge_id was returned. Do not claim verification.</p>"
+        )
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GALAXY canary approval</h1>"
+            f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            + verify_link +
+            "<p>The edge remains PROPOSED until the separate verification click.</p>"
+            "</body></html>"
+        )
+    except Exception as exc:
+        return _error_page("GALAXY canary approval failed", exc)
+
+
+@app.get("/galaxy/canary/verify/{edge_id}", response_class=HTMLResponse)
+def galaxy_canary_verify_page(edge_id: str, browser_request: Request):
+    """Explicit edge verification plus ORBIT/readback/retrieval comparison, no OpenAI dependency."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        result = _handle_galaxy_relation_verify(f"GALAXY VERIFY {edge_id}")
+        output = html.escape(result["output"])
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GALAXY edge verification</h1>"
+            f"<pre style='white-space:pre-wrap'>{output}</pre>"
+            "<p><a href='/galaxy/status'>View GALAXY status</a></p>"
+            "</body></html>"
+        )
+    except Exception as exc:
+        return _error_page("GALAXY edge verification failed", exc)
+
+
 @app.get("/galaxy/record/{record_id}", operation_id="galaxyRecordInspection")
 def galaxy_record_inspection(record_id: str, browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
