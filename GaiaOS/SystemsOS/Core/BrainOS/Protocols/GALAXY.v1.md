@@ -2593,3 +2593,47 @@ The profile preserves a meaningful hierarchy:
 The stress review therefore passes the intended leverage semantics for Phase 2 shadow experimentation.
 
 No profile activation is authorized by this checkpoint. Weighted retrieval remains disabled. Phase 3 remains disabled.
+
+
+### Phase-2 NERGAL_475_PARITY approved and activated 2026-09-20
+
+NAOMI VERDICT:
+
+`APPROVE`
+
+ACTIVE PHASE-2 SHADOW PROFILE:
+
+`NERGAL_475_PARITY`
+
+Score version:
+
+`galaxy.gravity.shadow.v2.nergal-475-parity`
+
+Weights:
+
+- durable_active: `0.25`
+- verified_graph_degree: `0.125`
+- verified_relation_strength: `0.125`
+- provenance_confidence: `0.15`
+- revision_significance: `0.10`
+- explicit_importance: `0.25`
+
+The explicit-importance component now uses the stored Seven Gates value's approved nonlinear `effective_influence`.
+
+For the existing authority-boundary memory:
+- stored position: `4.750 NERGAL`
+- effective influence: `0.55`
+- explicit-importance contribution under the active profile: `0.1375`
+
+AUTHORITY AND EFFECT BOUNDARY:
+
+This activation changes Phase-2 shadow-score previews only.
+
+It does NOT:
+- enable weighted retrieval;
+- mutate any relation;
+- automatically persist gravity rows;
+- authorize Phase 3;
+- make gravity truth, authority, or permission.
+
+A fresh deployed real-memory shadow preview is required to prove live runtime activation before Phase 2 is closed.
