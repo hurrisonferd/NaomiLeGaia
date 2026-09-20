@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sqlite3
 
 try:
@@ -365,28 +366,224 @@ def search_records(query: str, limit: int = 20, scope: str | None = None) -> dic
     }
 
 
+GALAXY_QUERY_RELEVANCE_MODEL_VERSION = "galaxy.query-relevance.explainable.v1"
+
+GALAXY_QUERY_STOPWORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "can", "could", "does", "do",
+    "ever", "for", "from", "how", "i", "in", "is", "it", "like", "much", "of",
+    "on", "or", "should", "that", "the", "this", "to", "what", "when", "where",
+    "which", "who", "why", "with", "would", "act", "become",
+}
+
+GALAXY_QUERY_CONCEPT_ALIASES = {
+    "galaxy": "galaxy",
+    "memory": "memory",
+    "memories": "memory",
+    "recall": "memory",
+    "remember": "memory",
+    "retrieval": "memory",
+    "retrieve": "memory",
+    "gravity": "gravity",
+    "influence": "influence",
+    "influential": "influence",
+    "importance": "influence",
+    "important": "influence",
+    "prominence": "influence",
+    "affect": "influence",
+    "affects": "influence",
+    "context": "context",
+    "contextual": "context",
+    "authority": "authority",
+    "permission": "authority",
+    "permit": "authority",
+    "allowed": "authority",
+    "allow": "authority",
+    "grant": "authority",
+    "govern": "authority",
+    "governs": "authority",
+    "truth": "truth",
+    "true": "truth",
+    "correct": "truth",
+    "estimate": "estimate",
+    "estimated": "estimate",
+}
+
+# These are deliberately narrow disambiguators for obvious external-domain uses
+# represented in the Phase-2 adversarial suite. They do not claim universal
+# domain classification.
+GALAXY_QUERY_EXTERNAL_DOMAIN_TERMS = {
+    "planetary", "trajectory", "trajectories", "falling", "advertising",
+}
+
+
+def _galaxy_query_tokens(text: str) -> list[str]:
+    return [
+        token for token in re.findall(r"[a-z0-9]+", str(text or "").lower())
+        if token and token not in GALAXY_QUERY_STOPWORDS
+    ]
+
+
+def _galaxy_query_concept(token: str) -> str:
+    return GALAXY_QUERY_CONCEPT_ALIASES.get(token, token)
+
+
+def galaxy_query_relevance(record: dict[str, Any], query: str) -> dict[str, Any]:
+    """Explain bounded query relevance without using gravity or importance.
+
+    This is intentionally conservative and inspectable. It is not a claim of
+    universal semantic understanding. RELEVANT records may enter the Phase-3
+    candidate pool; AMBIGUOUS records are surfaced for inspection but are not
+    silently admitted; IRRELEVANT records are excluded.
+    """
+    query_tokens = _galaxy_query_tokens(query)
+    statement_tokens = _galaxy_query_tokens(
+        f"{record.get('statement') or ''} {record.get('notes') or ''}"
+    )
+
+    record_concepts = {_galaxy_query_concept(token) for token in statement_tokens}
+    if str(record.get("scope") or "").lower() == "memoryos":
+        # Scope supplies a real domain fact, not a fabricated lexical match.
+        record_concepts.add("memory")
+
+    matches = []
+    unmatched = []
+    for token in query_tokens:
+        concept = _galaxy_query_concept(token)
+        if token in statement_tokens or concept in record_concepts:
+            matches.append({"token": token, "concept": concept})
+        else:
+            unmatched.append({"token": token, "concept": concept})
+
+    matched_count = len(matches)
+    meaningful_count = len(query_tokens)
+    coverage = (matched_count / meaningful_count) if meaningful_count else 0.0
+    distinct_matched_concepts = sorted({item["concept"] for item in matches})
+    external_domain_terms = sorted(
+        token for token in query_tokens if token in GALAXY_QUERY_EXTERNAL_DOMAIN_TERMS
+    )
+
+    if not meaningful_count:
+        classification = "AMBIGUOUS"
+        rationale = "No meaningful query terms remain after normalization."
+    elif external_domain_terms:
+        classification = "IRRELEVANT"
+        rationale = (
+            "The query contains an explicit external-domain disambiguator from the bounded "
+            "Phase-2 relevance model; shared words cannot admit the record."
+        )
+    elif meaningful_count == 1 and matched_count == 1:
+        classification = "AMBIGUOUS"
+        rationale = (
+            "A one-term match is too ambiguous for automatic candidate admission."
+        )
+    elif matched_count >= 2 and coverage >= 0.60:
+        classification = "RELEVANT"
+        rationale = (
+            "Multiple meaningful query terms/concepts match with sufficient coverage."
+        )
+    elif matched_count >= 3 and coverage >= 0.50:
+        classification = "RELEVANT"
+        rationale = (
+            "At least three meaningful concepts match despite additional unmatched wording."
+        )
+    elif matched_count >= 1 and coverage >= 0.35:
+        classification = "AMBIGUOUS"
+        rationale = (
+            "Some relevance signal exists, but not enough for automatic admission."
+        )
+    else:
+        classification = "IRRELEVANT"
+        rationale = "Insufficient query-to-record concept coverage."
+
+    return {
+        "model_version": GALAXY_QUERY_RELEVANCE_MODEL_VERSION,
+        "record_id": record.get("record_id"),
+        "query": query,
+        "classification": classification,
+        "query_candidate_eligible": classification == "RELEVANT",
+        "coverage": round(coverage, 6),
+        "meaningful_query_terms": query_tokens,
+        "matched_terms": matches,
+        "unmatched_terms": unmatched,
+        "matched_concepts": distinct_matched_concepts,
+        "external_domain_terms": external_domain_terms,
+        "gravity_used": False,
+        "importance_used": False,
+        "agreement_inferred": False,
+        "rationale": rationale,
+        "evidence_ceiling": (
+            "Bounded explainable relevance heuristic v1; passing this gate does not prove "
+            "claim agreement, truth, authority, or universal semantic understanding."
+        ),
+    }
+
+
 def galaxy_phase3_candidate_pool(query: str, *, scope: str = "MemoryOS", limit: int = 20) -> dict[str, Any]:
     """Build the relevance-qualified pool that future Phase-3 modifiers may rerank.
 
-    This helper intentionally performs no gravity weighting. Query filtering
-    happens first. A record excluded here cannot be introduced later merely
-    because it has high gravity, importance, graph centrality, or lifecycle
-    preference.
+    Scope narrows the inspected population. Query relevance then determines
+    candidate admission without consulting gravity or explicit importance.
     """
-    base = search_records(query, limit=limit, scope=scope)
-    record_ids = [str(row.get("record_id")) for row in base.get("records", [])]
+    initialize()
+    scan_limit = max(20, min(max(int(limit) * 5, 50), 100))
+    with _db() as conn:
+        rows = _fetchall_dicts(
+            conn,
+            "SELECT * FROM memory_records WHERE scope=? ORDER BY created_at DESC LIMIT ?",
+            (scope, scan_limit),
+        )
+
+    relevant = []
+    ambiguous = []
+    irrelevant = []
+    for row in rows:
+        relevance = galaxy_query_relevance(row, query)
+        item = {
+            "record_id": str(row.get("record_id")),
+            "statement": row.get("statement"),
+            "scope": row.get("scope"),
+            "relevance": relevance,
+        }
+        if relevance["classification"] == "RELEVANT":
+            relevant.append(item)
+        elif relevance["classification"] == "AMBIGUOUS":
+            ambiguous.append(item)
+        else:
+            irrelevant.append(item)
+
+    relevant.sort(
+        key=lambda item: (
+            float(item["relevance"]["coverage"]),
+            len(item["relevance"]["matched_concepts"]),
+        ),
+        reverse=True,
+    )
+    selected = relevant[: max(1, min(int(limit), 100))]
+    record_ids = [item["record_id"] for item in selected]
+
     return {
         "contract_version": GALAXY_RETRIEVAL_CONTRACT_VERSION,
+        "relevance_model_version": GALAXY_QUERY_RELEVANCE_MODEL_VERSION,
         "query": query,
         "scope": scope,
+        "scope_eligible_population_count": len(rows),
         "candidate_record_ids": record_ids,
         "candidate_count": len(record_ids),
-        "query_filter_active": bool(base.get("query_filter_active")),
-        "query_terms_applied": base.get("query_terms_applied", []),
+        "candidates": selected,
+        "ambiguous_record_ids": [item["record_id"] for item in ambiguous],
+        "ambiguous_count": len(ambiguous),
+        "query_filter_active": bool(_galaxy_query_tokens(query)),
         "modifier_stage": "NOT_APPLIED_PHASE2",
-        "gravity_may_rerank_only_within_candidate_pool": True,
+        "gravity_is_contractually_confined_to_candidate_pool": True,
+        "gravity_reranking_observed": False,
         "gravity_may_introduce_nonmatching_candidates": False,
         "retrieval_weighting_enabled": False,
+        "eligibility_dimensions": {
+            "scope_eligible": "record is inside the requested scope",
+            "query_candidate_eligible": "bounded relevance model classified the record RELEVANT",
+            "current_context_eligible": "resolved separately by galaxy.governing-state.v1",
+            "historical_context_eligible": "resolved separately by galaxy.governing-state.v1",
+        },
         "invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
     }
 
@@ -441,6 +638,8 @@ GALAXY_RETRIEVAL_INVARIANTS = (
     "GRAVITY_MODIFIES_RELEVANCE_NOT_CANDIDATE_ELIGIBILITY",
     "ZERO_QUERY_RELEVANCE_CANNOT_BE_RESCUED_BY_GRAVITY",
     "RETRIEVAL_INFLUENCE != AUTHORITY",
+    "QUERY_GATE_ORDER_PROVEN != QUERY_RELEVANCE_QUALITY_PROVEN",
+    "QUERY_RELEVANCE != CLAIM_AGREEMENT",
 )
 GALAXY_SEMANTIC_INVARIANTS = (
     "CONTRIBUTION_PARITY != SEMANTIC_EQUIVALENCE",
@@ -623,13 +822,16 @@ def galaxy_status() -> dict[str, Any]:
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
         "retrieval_contract_version": GALAXY_RETRIEVAL_CONTRACT_VERSION,
         "retrieval_invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
-        "phase3_blockers": [],
+        "query_relevance_model_version": GALAXY_QUERY_RELEVANCE_MODEL_VERSION,
+        "phase3_blockers": [
+            "QUERY_RELEVANCE_QUALITY_V1_PENDING_ADVERSARIAL_LIVE_PROOF",
+        ],
         "phase3_cleared_checks": [
             "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
             "GOVERNING_STATE_V1_LIVE_PROVEN",
             "QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_LIVE_PROVEN",
         ],
-        "phase3_ready_for_authorization": True,
+        "phase3_ready_for_authorization": False,
         "phase3_authorized": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
