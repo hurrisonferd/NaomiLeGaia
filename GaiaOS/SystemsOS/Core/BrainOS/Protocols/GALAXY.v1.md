@@ -2218,3 +2218,59 @@ All aliases now render the continuous Seven Gates review surface.
 No importance value has been stored. No weight profile has been selected. No gravity row, relation mutation, or retrieval behavior is changed.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Continuous Seven Gates live review PASS and storage gate 2026-09-20
+
+LIVE REVIEW OBSERVED:
+
+- status: \`REAL_MEMORY_SEVEN_GATE_CONTINUOUS_IMPORTANCE_REVIEW\`
+- selected model: \`SEVEN_GATE_CONTINUOUS_V1\`
+- exact positions: \`7001\`
+- canonical storage design: integer \`gate_units\` in \`0..7000\`
+- display position: \`gate_units / 1000\`, three decimal places
+- normalized importance: \`gate_units / 7000\`
+- gate bands:
+  - SIN \`0.000..0.999\`
+  - NEBO \`1.000..1.999\`
+  - ISHTAR \`2.000..2.999\`
+  - SHAMMASH \`3.000..3.999\`
+  - NERGAL \`4.000..4.999\`
+  - MARDUK \`5.000..5.999\`
+  - ADAR \`6.000..7.000\`
+- the live review performed no importance mutation, gravity mutation, relation mutation, or retrieval weighting.
+
+GATE RESULT:
+
+The continuous Seven Gates representation gate is PASS.
+
+IMPLEMENTED NEXT GATE:
+
+A durable \`memory_importance\` table now stores:
+- exact \`gate_units\`;
+- model version;
+- update timestamp;
+- Naomi authority;
+- previous units for revision inspection.
+
+Runtime helpers:
+- \`galaxy_importance_descriptor\`
+- \`galaxy_importance\`
+- \`galaxy_set_importance\`
+
+Exact-record browser gate:
+- read-only review:
+  \`/galaxy/gravity/real-calibration/importance/review?record_id=<MEM-ID>&gate_position=<0.000..7.000>\`
+- explicit mutation:
+  \`/galaxy/gravity/real-calibration/importance/set\`
+  reached only from the exact review surface.
+
+IMPORTANT WEIGHT BOUNDARY:
+
+Stored explicit importance is deliberately NOT activated in \`galaxy.gravity.shadow.v1\`, because Naomi already rejected that profile's relation-to-importance leverage.
+
+The current shadow preview reports any stored importance signal but keeps the explicit-importance scoring component at zero until a replacement weight profile is separately selected and approved.
+
+Therefore this gate can prove durable importance storage and revision without smuggling in an unapproved scoring formula.
+
+Phase 3 remains disabled and unauthorized.
