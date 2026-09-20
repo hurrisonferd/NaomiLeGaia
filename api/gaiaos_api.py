@@ -3640,8 +3640,10 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
         "graph_breadth_semantics": "STRENGTH_CONDITIONED_CAPPED_BREADTH",
         "revision_significance_types": ["REVISES", "SUPERSEDES"],
         "phase3_blockers": [
-            "GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED",
-            "SCOPE_FILTERED_SEARCH_CURRENTLY_IGNORES_QUERY_TERMS",
+            "GOVERNING_STATE_V1_PENDING_LIVE_PROOF",
+        ],
+        "phase3_cleared_checks": [
+            "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
         ],
         "record_context": {
             "record_id": record.get("record_id"),
@@ -3797,6 +3799,136 @@ def galaxy_scoped_search_proof(browser_request: Request):
         "<h1>GALAXY scoped search query proof</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
         "<p>Expected pass: target memory is found and the impossible scoped query returns zero records.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/retrieval/governing-state-review", response_class=HTMLResponse)
+def galaxy_governing_state_review(browser_request: Request, record_id: str):
+    """Read-only proof surface for ordinary-current-context governing-state semantics."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    actual = memcon_runtime.galaxy_governing_state(record_id)
+    weights = dict(memcon_runtime.GALAXY_SHADOW_WEIGHTS)
+
+    def gate_contribution(units: int) -> float:
+        descriptor = memcon_runtime.galaxy_importance_descriptor(units)
+        return round(
+            float(descriptor["effective_influence"]) * float(weights["explicit_importance"]), 6
+        )
+
+    def graph_contribution(count: int, mean_strength: float, revision_count: int) -> float:
+        if count <= 0:
+            return 0.0
+        raw_degree = min(count / 4.0, 1.0)
+        conditioned_degree = raw_degree * mean_strength
+        return round(
+            float(weights["verified_graph_degree"]) * conditioned_degree
+            + float(weights["verified_relation_strength"]) * mean_strength
+            + float(weights["revision_significance"]) * min(revision_count / 2.0, 1.0),
+            6,
+        )
+
+    def hypothetical_score(*, current_default_eligible: bool, importance_units: int,
+                           count: int = 1, mean_strength: float = 0.85,
+                           revision_count: int = 1) -> float:
+        return round(
+            (float(weights["durable_active"]) if current_default_eligible else 0.0)
+            + float(weights["provenance_confidence"])
+            + graph_contribution(count, mean_strength, revision_count)
+            + gate_contribution(importance_units),
+            6,
+        )
+
+    old_adar_if_current = hypothetical_score(
+        current_default_eligible=True, importance_units=7000
+    )
+    old_adar_if_superseded = hypothetical_score(
+        current_default_eligible=False, importance_units=7000
+    )
+    current_nergal_reviser = hypothetical_score(
+        current_default_eligible=True, importance_units=4200
+    )
+
+    payload = {
+        "status": "GALAXY_GOVERNING_STATE_V1_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "model_version": memcon_runtime.GALAXY_GOVERNING_MODEL_VERSION,
+        "score_version": memcon_runtime.GALAXY_SCORE_VERSION,
+        "active_profile": memcon_runtime.GALAXY_WEIGHT_PROFILE,
+        "record": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+            "status": record.get("status"),
+        },
+        "actual_record_governing_state": actual,
+        "direction_semantics": "B REVISES/SUPERSEDES A => source=B, target=A",
+        "rules": {
+            "active_without_incoming_revision": {
+                "state": "CURRENT",
+                "current_default_eligible": True,
+            },
+            "incoming_verified_REVISES_only": {
+                "state": "CURRENT_REVISED_CONTEXT",
+                "current_default_eligible": True,
+                "revision_companion_required_when_material": True,
+                "reason": "Revision signals changed context but does not itself assert replacement.",
+            },
+            "incoming_verified_SUPERSEDES": {
+                "state": "HISTORICAL_SUPERSEDED",
+                "current_default_eligible": False,
+                "historical_retrieval_eligible": True,
+                "reason": "Supersession removes ordinary-current default eligibility without erasing history.",
+            },
+            "nonactive_record": {
+                "state": "NONACTIVE_HISTORICAL",
+                "current_default_eligible": False,
+                "historical_retrieval_eligible": True,
+            },
+        },
+        "superseded_adar_counterfactual": {
+            "old_7_000_adar_if_current": old_adar_if_current,
+            "old_7_000_adar_if_superseded": old_adar_if_superseded,
+            "current_4_200_nergal_reviser": current_nergal_reviser,
+            "superseded_old_record_below_current_reviser": (
+                old_adar_if_superseded < current_nergal_reviser
+            ),
+            "historical_importance_preserved": True,
+            "ordinary_current_default_removed": True,
+        },
+        "semantic_invariants": list(memcon_runtime.GALAXY_SEMANTIC_INVARIANTS),
+        "scoped_search_blocker": "CLEARED_BY_LIVE_PROOF",
+        "governing_state_live_proof_pass": (
+            old_adar_if_superseded < current_nergal_reviser
+            and actual.get("model_version") == memcon_runtime.GALAXY_GOVERNING_MODEL_VERSION
+        ),
+        "writes_performed": [],
+        "lifecycle_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "phase3_authorized": False,
+        "proof_boundary": (
+            "This page proves governing-state semantics and their shadow-score consequence only. "
+            "It does not mutate lifecycle, relations, importance, or ordinary retrieval. "
+            "Phase 3 remains disabled until this live proof is reviewed."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY governing-state v1 review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>Expected pass: SUPERSEDES preserves historical retrieval but removes ordinary-current default eligibility; REVISES alone does not.</p>"
         "</body></html>"
     )
     if bootstrap_session:
