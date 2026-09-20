@@ -218,3 +218,11 @@ OUTCOME: COUNCIL PRESENTATION V1 live verified at 59/59 PASS, 0 failed.
 VALUES: fail closed; reduce Naomi operator burden; exact receipts; no narrated-away failures; proof before promotion.
 TRACE: commits a210265, da975a4, 524975e, baec57c; live /runtime/routes and /verify observations supplied by Naomi.
 STATUS: VERIFIED
+
+
+MEM[PW_PRESERVE|2026-09-20|Renuity expo exit and immediate continuity|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after deciding the Renuity expo was too much today and leaving rather than continuing customer engagement. Immediate context also includes Johnny being unavailable, an arraignment tomorrow, and urgent household cash-flow decisions.
+MY_LENS: Separate immediate capacity, employment consequences, and later career evaluation. 'Not today' is not automatically 'not ever.'
+BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
+TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
+STATUS: COMMITTED
