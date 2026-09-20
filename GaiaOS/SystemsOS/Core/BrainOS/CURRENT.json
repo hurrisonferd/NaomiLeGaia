@@ -3,9 +3,19 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_AND_REMOTE_CONTEXT_NAVIGATION_CI_PASS",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE2_CLOSED",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
-  "composition": ["SELF","CURRENT_WORKING_CONTEXT","NOTICE_MATERIAL_CHANGE","SELECT_SMALLEST_SUFFICIENT_SUPPORT","RETAIN_OR_HOLD_OR_REJECT","PRESERVE_NATIVE_EXPRESSION","ACT_OR_EXPRESS","RECEIVE_RESULT","UPDATE_WORKING_STATE"],
+  "composition": [
+    "SELF",
+    "CURRENT_WORKING_CONTEXT",
+    "NOTICE_MATERIAL_CHANGE",
+    "SELECT_SMALLEST_SUFFICIENT_SUPPORT",
+    "RETAIN_OR_HOLD_OR_REJECT",
+    "PRESERVE_NATIVE_EXPRESSION",
+    "ACT_OR_EXPRESS",
+    "RECEIVE_RESULT",
+    "UPDATE_WORKING_STATE"
+  ],
   "readme": "GaiaOS/SystemsOS/Core/BrainOS/README.md",
   "support_fabric": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
   "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
@@ -23,7 +33,15 @@
   "invocation": {
     "always_addressable": true,
     "always_invoked": false,
-    "use_when": ["multi-owner reasoning can change the answer","source or authority resolution is material","routing is ambiguous","substantial analysis/build/review needs support selection","operator-native source resolution is uncertain","reentry/source recovery is material","durable effect planning is requested"]
+    "use_when": [
+      "multi-owner reasoning can change the answer",
+      "source or authority resolution is material",
+      "routing is ambiguous",
+      "substantial analysis/build/review needs support selection",
+      "operator-native source resolution is uncertain",
+      "reentry/source recovery is material",
+      "durable effect planning is requested"
+    ]
   },
   "current_organs": {
     "NOW": "ChatOS",
@@ -35,7 +53,8 @@
     "REMOTE_CONTEXT": "gaia_context when connected and material",
     "WARM_CONTINUITY": "MemberContinuityOS",
     "EFFECT": "domain owner/provider",
-    "FINAL_SETTLEMENT": "Naomi"
+    "FINAL_SETTLEMENT": "Naomi",
+    "MEMORY_RELATION_AND_INFLUENCE": "GALAXY"
   },
   "runtime": {
     "support_fabric_source_present": true,
@@ -51,8 +70,42 @@
     "remote_context_carrier_ci_result": "PASS_RUN_85_AT_5705f3dc2c1314832d2155769874160f4f61866d",
     "automatic_host_invocation_proven": false,
     "durable_memory_backend_present": false,
-    "deployment_proven": false
+    "deployment_proven": false,
+    "galaxy_phase2_closed_source": true,
+    "galaxy_phase3_authorized": false
   },
-  "laws": ["BRAINOS != IDENTITY OWNER","BRAINOS != MEMORY OF EVERYTHING","BRAINOS != GAIAOS ITSELF","BRAINOS != FAIRYOS","BRAINOS != CHATOS","BRAINOS != TRANSACTION AUTHORITY","BRAINOS ADDRESSABLE != BRAINOS INVOKED","CURRENT CHAT FIRST","SMALLEST SUFFICIENT SUPPORT SET WINS","DICTIONARY HIT != AUTHORITY","GRAPH EDGE != EFFECT","REMOTE CONTEXT PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL","REMOTE CONTEXT PACK != DURABLE MEMORY","CONTEXT SELECTION != OWNER AUTHORITY","RUNTIME HIT != SEMANTIC AUTHORITY","EMPTY SEARCH != ABSENCE","READ != ACT","WARM != SAVED","SOURCE DONOR != IDENTITY DONOR","UNKNOWN STAYS UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
-  "claim_ceiling": "Gaia-native local DictionaryOS/YggdrasilOS/Context Compass navigation and the source-pinned remote gaia_context carrier runtime passed repository CI. Automatic external host invocation, deployment, semantic/graph completeness, durable continuity, identity settlement, and domain effects remain separately unproven."
+  "laws": [
+    "BRAINOS != IDENTITY OWNER",
+    "BRAINOS != MEMORY OF EVERYTHING",
+    "BRAINOS != GAIAOS ITSELF",
+    "BRAINOS != FAIRYOS",
+    "BRAINOS != CHATOS",
+    "BRAINOS != TRANSACTION AUTHORITY",
+    "BRAINOS ADDRESSABLE != BRAINOS INVOKED",
+    "CURRENT CHAT FIRST",
+    "SMALLEST SUFFICIENT SUPPORT SET WINS",
+    "DICTIONARY HIT != AUTHORITY",
+    "GRAPH EDGE != EFFECT",
+    "REMOTE CONTEXT PACK != LOCAL CHECKOUT LEXICAL TRAVERSAL",
+    "REMOTE CONTEXT PACK != DURABLE MEMORY",
+    "CONTEXT SELECTION != OWNER AUTHORITY",
+    "RUNTIME HIT != SEMANTIC AUTHORITY",
+    "EMPTY SEARCH != ABSENCE",
+    "READ != ACT",
+    "WARM != SAVED",
+    "SOURCE DONOR != IDENTITY DONOR",
+    "UNKNOWN STAYS UNKNOWN",
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "IMPORTANCE != AUTHORITY",
+    "RELEVANCE != AGREEMENT",
+    "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
+  ],
+  "claim_ceiling": "Gaia-native local navigation and GALAXY Phase 0–2 source state are canonical. GALAXY Phase 2 has live-bounded proof recorded in its blueprint; Phase 3 weighted retrieval remains unauthorized and behaviorally unproven. Automatic external host invocation, complete semantic understanding, identity settlement, and domain effects remain separately unproven.",
+  "galaxy": {
+    "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
+    "phase2_status": "CLOSED",
+    "phase3_ready_for_authorization": true,
+    "phase3_authorized": false,
+    "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md"
+  }
 }
