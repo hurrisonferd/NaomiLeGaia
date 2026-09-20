@@ -1438,3 +1438,36 @@ The third explicit real-memory seed entered the non-durable review lane cleanly.
 NEXT LIVE GATE:
 
 Open the exact promotion-review page for `CANDIDATE-9b22be73792d4681a6a65bf3b86aac9e` and verify zero writes before any promotion click.
+
+
+### Phase-2 third real-memory promotion-review live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_PROMOTION_REVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Candidate: `CANDIDATE-9b22be73792d4681a6a65bf3b86aac9e`
+- Owner: `NAOMI_REAL_MEMORY_SEED`
+- Scope: `MemoryOS`
+- Candidate status: `CANDIDATE`
+- Promoted record id: `null`
+- Already durable record: `null`
+- `promotion_available: true`
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+REVIEW-GATE CONCLUSION:
+
+The third real-memory seed is correctly staged for exact durable promotion. Review itself performed no mutation.
+
+NEXT LIVE GATE:
+
+Explicit Naomi-authorized promotion of `CANDIDATE-9b22be73792d4681a6a65bf3b86aac9e`. Required result:
+- promotion `VERIFIED`;
+- successful durable write receipt;
+- durable record readback exactly matching the candidate statement;
+- no relation mutation;
+- no gravity mutation;
+- retrieval weighting remains disabled.
