@@ -1147,3 +1147,33 @@ The currently observed seed candidate for the next live gate is:
 `CANDIDATE-94243e7f8f7349b61815331551a173ac7`
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 post-deploy real-memory seed candidate live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_CANDIDATE_CREATED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Session: `SESSION-1f761f1a832e450c9b0de6f1e6041ed2`
+- Source: `galaxy-real-seed:99f6c5c6c890`
+- Subject: `GALAXY memory philosophy`
+- Event: `EVENT-ea0b3db003c84d54848bdbeee96b5c75`
+- Candidate: `CANDIDATE-5c1be66eea140eba37d356761a6c656`
+- Owner: `NAOMI_REAL_MEMORY_SEED`
+- Scope: `MemoryOS`
+- Status: `CANDIDATE`
+- Durable memory write: `false`
+- Candidate promotion: `false`
+- Relation mutations: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+- The page exposed an exact-candidate durable-promotion review link.
+
+CONCLUSION:
+
+The seed candidate was recreated after the promotion-gate deployment and now exists in the same live runtime that exposes the exact-candidate review surface.
+
+NEXT LIVE GATE:
+
+Open the exact promotion-review page for `CANDIDATE-5c1be66eea140eba37d356761a6c656` and verify that review performs zero writes before any durable-promotion click.
