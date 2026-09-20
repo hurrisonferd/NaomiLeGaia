@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: SOURCE BLUEPRINT / IMPLEMENTATION NOT YET PROVEN
+STATUS: PHASE 1 LIVE-PROVEN / PHASE 2 SOURCE-IMPLEMENTED AWAITING RUNTIME CANARY
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -323,3 +323,78 @@ NEXT PHASE:
 `PHASE_2_GRAVITY_SHADOW_SCORING`
 
 Phase 2 must begin with explainable shadow-only gravity calculation. Scores must remain non-authoritative and must not affect ordinary retrieval until a separately observed later gate enables weighted retrieval.
+
+
+## Phase-2 shadow gravity implementation checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME NOT YET CLAIMED.
+
+Phase 2 keeps gravity strictly in shadow mode. Stored gravity rows are observable metadata only and are not consulted by ordinary MemoryOS retrieval.
+
+### Shadow score v1
+
+Score version: `galaxy.gravity.shadow.v1`
+
+The first score is intentionally conservative and evidence-limited:
+
+- durable active state: weight 0.25
+- verified graph degree: weight 0.25, normalized to a maximum at four verified incident edges
+- mean verified relation strength: weight 0.20
+- Naomi provenance confidence: weight 0.15
+- revision significance from VERIFIED CONTRADICTS / REVISES / SUPERSEDES edges: weight 0.10
+- explicit Naomi importance: weight 0.05, fixed at 0.0 until an explicit importance signal is separately defined
+
+The score is bounded to observable current facts. It does not recursively consume stored gravity.
+
+Explicitly omitted from shadow v1:
+- recency, to prevent uncalibrated recency domination;
+- observed retrieval usefulness, until Phase 3 produces behavioral evidence;
+- redundancy, until correspondence quality is separately tested;
+- staleness, until lifecycle attenuation exists.
+
+Gravity is not truth, authority, identity, or permission.
+
+### Runtime primitives added
+
+- `galaxy_gravity(record_id)` reads a stored shadow score.
+- `galaxy_gravity_preview(record_id)` calculates the explainable score without writing.
+- `galaxy_calculate_gravity(record_id, authority="NAOMI", approved=True)` stores the shadow row and writes a receipt.
+- identical recalculation is idempotent and performs no new mutation.
+- `PW:GRAVITY` now exposes stored score plus live preview without silently writing.
+
+### Controlled Phase-2 canary
+
+Direct browser path:
+
+1. `/galaxy/gravity/canary/preview`
+   - resolves the newest VERIFIED `GALAXY_CONTROLLED_CANARY_V1` edge from the proven Phase-1 path;
+   - previews both endpoint scores;
+   - performs no writes;
+   - keeps retrieval weighting disabled.
+
+2. `/galaxy/gravity/canary/run?edge_id=<EDGE-ID>`
+   - requires the edge to remain VERIFIED and controlled;
+   - captures ordinary MemoryOS retrieval order before scoring;
+   - stores explainable shadow gravity for both endpoints under explicit Naomi authority;
+   - reads both ORBITs back;
+   - captures ordinary retrieval order after scoring;
+   - reports whether order is unchanged;
+   - reports anti-feedback, recency-off, and pruning-off guardrails.
+
+3. `/galaxy/gravity/<record_id>`
+   - read-only stored/preview inspection.
+
+### Phase-2 proof gate
+
+Do not claim Phase 2 runtime success until the deployed carrier visibly demonstrates all of the following:
+
+- preview returns explainable component weights and contributions;
+- preview performs zero writes;
+- run stores both gravity rows with `galaxy.gravity.shadow.v1`;
+- receipts/readback are present for actual writes;
+- ORBIT exposes the stored gravity rows;
+- before/after ordinary retrieval record IDs are identical;
+- `retrieval_weighting_enabled == false`;
+- repeated canary execution is idempotent for unchanged inputs.
+
+Only after this gate passes may Phase 2 proceed to calibration across a broader bounded sample. Phase 3 weighted retrieval remains prohibited until separately designed, deployed, and behaviorally tested.
