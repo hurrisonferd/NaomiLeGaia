@@ -958,3 +958,31 @@ Candidate creation remains distinct from durable promotion:
 No promotion control is exposed by this harness. A durable promotion gate may be built only after Naomi inspects the exact candidate.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 real-memory candidate-review live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_CANDIDATE_REVIEW`
+- Reviewed latent events: `6`
+- Structurally held test events: `5`
+- Candidate-creation options: `1`
+- The sole reviewable event was:
+  - event `EVENT-78b3836d65674b00bbabff5ce0e05064`
+  - source `browser-chat`
+  - event type `CHAT_INTERACTION`
+  - statement: `We are about to carry out the very first test of the PW:PRESERVE command function.`
+  - soft flags: `STATEMENT_MENTIONS_TEST`, `PW_PRESERVE_CONTEXT`
+- No candidates were created.
+- No durable promotions occurred.
+- No relations or gravity rows were mutated.
+- Retrieval weighting remained disabled.
+
+INTERPRETATION:
+
+The structural classifier correctly held the five explicit lifecycle TEST_INPUT events, but the only remaining browser-chat event is itself test-context material and is not a useful real-memory calibration exemplar.
+
+Therefore it should not be promoted merely to populate the real-memory graph. Candidate review needs a calibration-suitability distinction in addition to structural test detection.
+
+Phase 3 remains disabled and unauthorized.
