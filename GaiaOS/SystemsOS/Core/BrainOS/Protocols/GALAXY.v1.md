@@ -1864,3 +1864,51 @@ NAOMI'S PRIOR VERDICT REMAINS:
 `UNSURE`
 
 No weights are changed and Phase 2 remains open. Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 Naomi leverage verdict: NO 2026-09-20
+
+NAOMI REVIEW:
+
+Question:
+
+\`Should one verified semantic relation be allowed to outweigh the entire explicit-importance signal by the current amount?\`
+
+Answer:
+
+\`NO\`
+
+INTERPRETATION:
+
+This rejects the currently observed leverage ratio, not the existence of graph influence itself.
+
+Current shadow-v1:
+- one non-revision relation at strength \`0.85\` contributes \`0.2325\`;
+- maximum explicit importance contributes \`0.05\`;
+- ratio: \`4.65x\`.
+
+RESOLVED:
+
+The current \`4.65x\` graph-relation-to-explicit-importance leverage is not acceptable to Naomi.
+
+UNRESOLVED:
+
+- the desired ratio;
+- whether graph leverage should remain somewhat stronger, reach parity, or become weaker than explicit importance;
+- how an explicit importance signal should itself be represented and authorized.
+
+ACTION:
+
+Do not mutate the live v1 weights yet.
+
+A new read-only \`/galaxy/gravity/real-calibration/weight-options\` lens compares:
+- current v1;
+- a soft rebalance;
+- approximate parity for one \`0.85\` non-revision relation;
+- an importance-leading profile.
+
+The comparison also exposes a critical constraint: increasing the explicit-importance weight has no effect on currently isolated records until an explicit importance signal exists. No such signal is currently defined or written.
+
+No formula revision, gravity write, relation mutation, or retrieval weighting is authorized by this verdict.
+
+Phase 3 remains disabled and unauthorized.
