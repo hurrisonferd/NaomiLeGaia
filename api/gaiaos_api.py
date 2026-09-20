@@ -2176,6 +2176,325 @@ def galaxy_gravity_real_seed_promote(browser_request: Request, candidate_id: str
     )
 
 
+GALAXY_REAL_RELATION_CLASSIFIER = "GALAXY_REAL_CALIBRATION_V1"
+
+
+def _galaxy_real_relation_endpoint(memcon_runtime, record_id: str) -> dict:
+    """Require one durable non-test MemoryOS endpoint for real calibration."""
+    record = memcon_runtime.get_record(record_id)
+    if record is None:
+        raise HTTPException(status_code=404, detail=f"Unknown durable record: {record_id}")
+    if str(record.get("scope") or "") != "MemoryOS":
+        raise HTTPException(status_code=409, detail=f"Record {record_id} is outside MemoryOS.")
+    if str(record.get("record_type") or "").upper() == "TEST":
+        raise HTTPException(status_code=409, detail=f"Record {record_id} is test material and cannot enter real calibration.")
+    source = str(record.get("source") or "")
+    if source.startswith("galaxy-phase1-canary:") or source.startswith("galaxy-phase2-calibration:"):
+        raise HTTPException(status_code=409, detail=f"Record {record_id} is synthetic calibration material.")
+    if str(record.get("authority") or "") != "NAOMI":
+        raise HTTPException(status_code=409, detail=f"Record {record_id} is outside the Naomi-authorized real-memory lane.")
+    return record
+
+
+def _galaxy_real_matching_relation(memcon_runtime, source_record_id: str, target_record_id: str, relation_type: str):
+    orbit = memcon_runtime.galaxy_record(source_record_id) or {}
+    for edge in orbit.get("relations", []):
+        if (
+            str(edge.get("source_record_id")) == source_record_id
+            and str(edge.get("target_record_id")) == target_record_id
+            and str(edge.get("relation_type") or "").upper() == relation_type.upper()
+            and str(edge.get("status") or "") in {"PROPOSED", "VERIFIED"}
+        ):
+            return edge
+    return None
+
+
+def _galaxy_real_relation_spec(memcon_runtime, source_record_id: str, target_record_id: str,
+                               relation_type: str, strength: float, basis: str) -> dict:
+    source = _galaxy_real_relation_endpoint(memcon_runtime, source_record_id)
+    target = _galaxy_real_relation_endpoint(memcon_runtime, target_record_id)
+    relation_type = relation_type.strip().upper()
+    if relation_type not in memcon_runtime.GALAXY_RELATION_TYPES:
+        raise HTTPException(status_code=400, detail=f"Unsupported GALAXY relation type: {relation_type}")
+    if source_record_id == target_record_id:
+        raise HTTPException(status_code=400, detail="A real-memory calibration relation cannot target itself.")
+    try:
+        strength = float(strength)
+    except (TypeError, ValueError) as exc:
+        raise HTTPException(status_code=400, detail="Relation strength must be numeric.") from exc
+    if not 0.0 <= strength <= 1.0:
+        raise HTTPException(status_code=400, detail="Relation strength must be between 0.0 and 1.0.")
+    basis = basis.strip()
+    if not basis:
+        raise HTTPException(status_code=400, detail="A bounded human-readable relation basis is required.")
+    if len(basis) > 1200:
+        raise HTTPException(status_code=400, detail="Relation basis exceeds the 1200-character calibration limit.")
+    return {
+        "source": source,
+        "target": target,
+        "relation_type": relation_type,
+        "strength": strength,
+        "basis": basis,
+    }
+
+
+@app.get("/galaxy/gravity/real-calibration/relation/review", response_class=HTMLResponse)
+def galaxy_gravity_real_relation_review(
+    browser_request: Request,
+    source_record_id: str,
+    target_record_id: str,
+    relation_type: str,
+    strength: float,
+    basis: str,
+):
+    """Read exact real-memory endpoints and proposed semantics before any edge write."""
+    from urllib.parse import urlencode
+
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    spec = _galaxy_real_relation_spec(
+        memcon_runtime, source_record_id, target_record_id, relation_type, strength, basis
+    )
+    existing = _galaxy_real_matching_relation(
+        memcon_runtime, source_record_id, target_record_id, spec["relation_type"]
+    )
+    proposal_available = existing is None
+    payload = {
+        "status": "REAL_MEMORY_RELATION_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "source_record": spec["source"],
+        "target_record": spec["target"],
+        "proposed_relation": {
+            "source_record_id": source_record_id,
+            "relation_type": spec["relation_type"],
+            "target_record_id": target_record_id,
+            "strength": spec["strength"],
+            "basis": spec["basis"],
+            "classifier": GALAXY_REAL_RELATION_CLASSIFIER,
+        },
+        "existing_matching_relation": existing,
+        "proposal_available": proposal_available,
+        "writes_performed": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "review_boundary": (
+            "This page is read-only. It validates the two real-memory endpoints and the exact proposed semantic edge. "
+            "Creating a PROPOSED edge requires a separate Naomi click. PROPOSED is not VERIFIED, and neither state changes retrieval in Phase 2."
+        ),
+    }
+    if proposal_available:
+        href = "/galaxy/gravity/real-calibration/relation/propose?" + urlencode({
+            "source_record_id": source_record_id,
+            "target_record_id": target_record_id,
+            "relation_type": spec["relation_type"],
+            "strength": str(spec["strength"]),
+            "basis": spec["basis"],
+        })
+        action = (
+            "<p><a style='font-size:22px' href='" + html.escape(href, quote=True) + "'>"
+            "Create this exact relation as PROPOSED</a></p>"
+        )
+    else:
+        action = "<p>An equivalent PROPOSED or VERIFIED edge already exists. No proposal action is offered.</p>"
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY real-memory relation review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + action +
+        "<p>Review is deliberately separate from proposal and verification.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/relation/propose", response_class=HTMLResponse)
+def galaxy_gravity_real_relation_propose(
+    browser_request: Request,
+    source_record_id: str,
+    target_record_id: str,
+    relation_type: str,
+    strength: float,
+    basis: str,
+):
+    """Explicitly write one PROPOSED real-calibration edge. No verification or gravity write."""
+    from urllib.parse import urlencode
+
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    spec = _galaxy_real_relation_spec(
+        memcon_runtime, source_record_id, target_record_id, relation_type, strength, basis
+    )
+    pre_ids = _galaxy_retrieval_ids(runtime, spec["source"])
+    result = memcon_runtime.galaxy_propose_relation(
+        source_record_id=source_record_id,
+        target_record_id=target_record_id,
+        relation_type=spec["relation_type"],
+        strength=spec["strength"],
+        evidence={
+            "source": "galaxy-real-calibration",
+            "basis": spec["basis"],
+            "phase": "PHASE_2_GRAVITY_SHADOW",
+            "naomi_reviewed_proposal": True,
+            "pre_verification_retrieval_record_ids": pre_ids,
+        },
+        classifier=GALAXY_REAL_RELATION_CLASSIFIER,
+    )
+    relation = result.get("relation") or {}
+    edge_id = str(relation.get("edge_id") or "")
+    relation_status = str(relation.get("status") or "")
+    payload = {
+        "status": "REAL_MEMORY_RELATION_PROPOSED" if relation_status == "PROPOSED" else "REAL_MEMORY_RELATION_EXISTING",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "proposal_result": result,
+        "pre_verification_retrieval_record_ids": pre_ids,
+        "relation_verified": relation_status == "VERIFIED",
+        "durable_memory_writes_performed": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "Only the exact reviewed edge may be written here. A PROPOSED relation is non-authoritative and has no retrieval effect. "
+            "Verification remains a separate Naomi-authorized gate."
+        ),
+    }
+    if edge_id and relation_status == "PROPOSED":
+        href = "/galaxy/gravity/real-calibration/relation/verify-review?" + urlencode({"edge_id": edge_id})
+        action = (
+            "<p><a style='font-size:22px' href='" + html.escape(href, quote=True) + "'>"
+            "Review this exact proposed edge for verification</a></p>"
+        )
+    else:
+        action = "<p>No new verification action is required from this proposal response.</p>"
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY real-memory relation proposal</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + action +
+        "<p>No gravity score is written and retrieval remains unweighted.</p>"
+        "</body></html>"
+    )
+
+
+def _galaxy_real_calibration_edge(memcon_runtime, edge_id: str) -> dict:
+    relation = memcon_runtime.galaxy_relation(edge_id)
+    if relation is None:
+        raise HTTPException(status_code=404, detail="Unknown GALAXY relation edge.")
+    if str(relation.get("classifier") or "") != GALAXY_REAL_RELATION_CLASSIFIER:
+        raise HTTPException(status_code=409, detail="Edge is outside the real-memory calibration classifier.")
+    _galaxy_real_relation_endpoint(memcon_runtime, str(relation.get("source_record_id") or ""))
+    _galaxy_real_relation_endpoint(memcon_runtime, str(relation.get("target_record_id") or ""))
+    return relation
+
+
+@app.get("/galaxy/gravity/real-calibration/relation/verify-review", response_class=HTMLResponse)
+def galaxy_gravity_real_relation_verify_review(browser_request: Request, edge_id: str):
+    """Read one exact proposed real-calibration edge before verification."""
+    from urllib.parse import urlencode
+
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    relation = _galaxy_real_calibration_edge(memcon_runtime, edge_id)
+    source = memcon_runtime.get_record(str(relation["source_record_id"]))
+    target = memcon_runtime.get_record(str(relation["target_record_id"]))
+    verification_available = str(relation.get("status") or "") == "PROPOSED"
+    payload = {
+        "status": "REAL_MEMORY_RELATION_VERIFICATION_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "relation": relation,
+        "source_record": source,
+        "target_record": target,
+        "verification_available": verification_available,
+        "writes_performed": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "review_boundary": (
+            "This page reads one exact PROPOSED real-calibration edge. Verification requires a separate Naomi click. "
+            "Verification does not write gravity and does not enable weighted retrieval."
+        ),
+    }
+    if verification_available:
+        href = "/galaxy/gravity/real-calibration/relation/verify?" + urlencode({"edge_id": edge_id})
+        action = (
+            "<p><a style='font-size:22px' href='" + html.escape(href, quote=True) + "'>"
+            "Verify this exact real-memory relation</a></p>"
+        )
+    else:
+        action = "<p>This edge is not pending verification.</p>"
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY real-memory relation verification review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + action +
+        "<p>No gravity or retrieval action is coupled to verification review.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/relation/verify", response_class=HTMLResponse)
+def galaxy_gravity_real_relation_verify(browser_request: Request, edge_id: str):
+    """Explicit Naomi verification of one exact real-memory calibration edge."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    before = _galaxy_real_calibration_edge(memcon_runtime, edge_id)
+    source = memcon_runtime.get_record(str(before["source_record_id"]))
+    target = memcon_runtime.get_record(str(before["target_record_id"]))
+    pre_ids = list((before.get("evidence") or {}).get("pre_verification_retrieval_record_ids") or [])
+    result = memcon_runtime.galaxy_verify_relation(edge_id, authority="NAOMI", approved=True)
+    relation = result.get("relation") or memcon_runtime.galaxy_relation(edge_id)
+    post_ids = _galaxy_retrieval_ids(runtime, source)
+    source_orbit = memcon_runtime.galaxy_record(str(source["record_id"]))
+    target_orbit = memcon_runtime.galaxy_record(str(target["record_id"]))
+    source_preview = memcon_runtime.galaxy_gravity_preview(str(source["record_id"]))
+    target_preview = memcon_runtime.galaxy_gravity_preview(str(target["record_id"]))
+    payload = {
+        "status": "REAL_MEMORY_RELATION_VERIFIED",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "verification": result,
+        "relation_readback": relation,
+        "source_orbit": source_orbit,
+        "target_orbit": target_orbit,
+        "source_shadow_preview": source_preview,
+        "target_shadow_preview": target_preview,
+        "retrieval_comparison": {
+            "before_record_ids": pre_ids,
+            "after_record_ids": post_ids,
+            "unchanged": pre_ids == post_ids,
+            "retrieval_weighting_enabled": False,
+        },
+        "durable_memory_writes_performed": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "Verification authorizes only this exact semantic edge. Gravity remains shadow-only and unstored here; "
+            "ordinary retrieval remains unweighted."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1100px'>"
+        "<h1>GALAXY real-memory relation verification</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/preview'>Re-run real-memory shadow calibration preview</a></p>"
+        "<p>The verified edge may change shadow score previews because graph structure changed. It still does not change retrieval.</p>"
+        "</body></html>"
+    )
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
