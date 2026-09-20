@@ -457,11 +457,20 @@
         "GaiaOS/CURRENT.json"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "d3d4e375a6e03fea7d9d51c00517d596f711053d",
+      "timestamp_utc": "2026-09-20T05:35:08.122305+00:00",
+      "changed_paths": [
+        "GaiaOS/SystemsOS/Core/MemberContinuityOS/CURRENT.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-20T05:33:59.537970+00:00",
+  "last_verified": "2026-09-20T05:35:08.122305+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
