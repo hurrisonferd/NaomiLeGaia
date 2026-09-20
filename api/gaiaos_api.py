@@ -1927,6 +1927,116 @@ def galaxy_gravity_real_candidate_create(browser_request: Request, event_id: str
     )
 
 
+
+@app.get("/galaxy/gravity/real-calibration/seed", response_class=HTMLResponse)
+def galaxy_gravity_real_seed_form(browser_request: Request):
+    """Render an explicit Naomi-authored real-memory seed intake. No mutation."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    body = """
+    <html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:900px'>
+    <h1>GALAXY Phase 2 real-memory seed intake</h1>
+    <p>Use this only for a real semantic memory you want represented in MemoryOS calibration.
+    Submission creates a <strong>non-durable candidate only</strong>. It does not promote memory,
+    create relations, write gravity, or change retrieval.</p>
+    <form method='get' action='/galaxy/gravity/real-calibration/seed/create'>
+      <label>Memory statement</label><br/>
+      <textarea name='statement' rows='5' maxlength='4000' required
+        style='width:100%;font-size:17px;margin:8px 0 18px 0'></textarea>
+      <label>Why this memory matters for future context</label><br/>
+      <textarea name='why_material' rows='3' maxlength='1200' required
+        style='width:100%;font-size:17px;margin:8px 0 18px 0'></textarea>
+      <label>Optional subject</label><br/>
+      <input name='subject' maxlength='300' style='width:100%;font-size:17px;margin:8px 0 18px 0'/>
+      <button type='submit' style='font-size:20px;padding:10px 16px'>Create non-durable calibration candidate</button>
+    </form>
+    <p style='margin-top:24px'>Do not use synthetic canaries or control-test markers here. The goal is representative real memory.</p>
+    </body></html>
+    """
+    response = HTMLResponse(body)
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/seed/create", response_class=HTMLResponse)
+def galaxy_gravity_real_seed_create(
+    browser_request: Request,
+    statement: str,
+    why_material: str,
+    subject: str = "",
+):
+    """Create one explicit Naomi-authored non-durable MemoryOS seed candidate."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+
+    statement = statement.strip()
+    why_material = why_material.strip()
+    subject = subject.strip()
+    if not statement:
+        raise HTTPException(status_code=400, detail="Memory statement must not be empty.")
+    if not why_material:
+        raise HTTPException(status_code=400, detail="why_material must not be empty.")
+    if len(statement) > 4000 or len(why_material) > 1200 or len(subject) > 300:
+        raise HTTPException(status_code=400, detail="Seed fields exceed bounded calibration limits.")
+
+    token = secrets.token_hex(6)
+    source = f"galaxy-real-seed:{token}"
+    session = runtime.start_session(
+        source,
+        subject or f"GALAXY Phase 2 real-memory seed {token}",
+    )
+    event = runtime.record_event(
+        session["session_id"],
+        "NAOMI",
+        "REAL_MEMORY_SEED_INPUT",
+        statement,
+        source,
+    )
+    candidate = runtime.candidate_from_event(
+        event["event_id"],
+        authority="NAOMI",
+        record_type="INTERACTION",
+        scope="MemoryOS",
+        statement=statement,
+        source=source,
+        owner="NAOMI_REAL_MEMORY_SEED",
+        why_material=why_material,
+        other_voices=[],
+        tension="Explicit calibration seed; requires separate Naomi review before durable promotion.",
+    )
+    payload = {
+        "status": "REAL_MEMORY_SEED_CANDIDATE_CREATED",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "session": session,
+        "event": event,
+        "candidate": candidate,
+        "durable_memory_write_performed": False,
+        "candidate_promotion_performed": False,
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "Naomi authored this seed explicitly. It is only a non-durable MemoryOS candidate. "
+            "Durable promotion, graph relation creation, gravity scoring, and retrieval weighting remain separate gates."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:900px'>"
+        "<h1>GALAXY real-memory seed candidate</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/seed'>Add another real-memory seed</a></p>"
+        "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/inventory'>Inspect latent candidate inventory</a></p>"
+        "<p>No promotion control is exposed yet. Review the candidate first.</p>"
+        "</body></html>"
+    )
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
