@@ -182,7 +182,15 @@ def run_verification() -> dict[str, Any]:
     # Canonical Council presentation contract and fail-closed renderer.
     presentation_spec_path = GAIA / "SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
     presentation_renderer_path = GAIA / "SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py"
-    presentation_spec = _read_json(presentation_spec_path, checks, "presentation:spec")
+    presentation_spec = None
+    if presentation_spec_path.exists():
+        try:
+            presentation_spec = json.loads(presentation_spec_path.read_text(encoding="utf-8"))
+            checks.append(_check("presentation:spec", isinstance(presentation_spec, dict), "canonical presentation spec is valid JSON object"))
+        except Exception as exc:
+            checks.append(_check("presentation:spec", False, f"{type(exc).__name__}: {exc}"))
+    else:
+        checks.append(_check("presentation:spec", False, "canonical presentation spec missing"))
     checks.append(_check("presentation:renderer", presentation_renderer_path.exists(), "deterministic presentation renderer exists"))
     if presentation_spec and presentation_renderer_path.exists():
         try:
