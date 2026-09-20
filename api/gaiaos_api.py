@@ -1686,6 +1686,231 @@ def galaxy_gravity_real_calibration_inventory(
     return response
 
 
+
+def _galaxy_real_event_review(event: dict) -> dict:
+    """Classify latent session events for human review without creating candidates."""
+    event_type = str(event.get("event_type") or "")
+    source = str(event.get("source") or "")
+    statement = str(event.get("statement") or "")
+    event_type_upper = event_type.upper()
+    source_lower = source.lower()
+    statement_lower = statement.lower()
+
+    hard_test_flags = []
+    soft_review_flags = []
+    if "TEST" in event_type_upper:
+        hard_test_flags.append("EVENT_TYPE_IS_TEST")
+    if "test" in source_lower or "canary" in source_lower:
+        hard_test_flags.append("SOURCE_IS_TEST_OR_CANARY")
+    if source_lower.startswith("galaxy-phase"):
+        hard_test_flags.append("SOURCE_IS_GALAXY_CONTROLLED_TEST")
+    if "test" in statement_lower:
+        soft_review_flags.append("STATEMENT_MENTIONS_TEST")
+    if "pw:preserve" in statement_lower:
+        soft_review_flags.append("PW_PRESERVE_CONTEXT")
+
+    if hard_test_flags:
+        disposition = "TEST_LIKE_HOLD"
+        candidate_creation_allowed = False
+        reason = (
+            "Event is structurally test-like by event type or source and is held out of real-memory "
+            "candidate creation unless the ingestion policy is deliberately changed."
+        )
+    else:
+        disposition = "NAOMI_REVIEW_REQUIRED"
+        candidate_creation_allowed = True
+        reason = (
+            "Event is not structurally classified as test data. Candidate creation is available only "
+            "as an explicit Naomi action and remains non-durable."
+        )
+
+    return {
+        "event": event,
+        "disposition": disposition,
+        "candidate_creation_allowed": candidate_creation_allowed,
+        "hard_test_flags": hard_test_flags,
+        "soft_review_flags": soft_review_flags,
+        "reason": reason,
+    }
+
+
+def _galaxy_event_existing_candidate(memcon_runtime, event_id: str) -> dict | None:
+    memcon_runtime.initialize()
+    with memcon_runtime._db() as conn:
+        row = memcon_runtime._fetchone_dict(
+            conn,
+            """SELECT * FROM memory_candidates
+               WHERE event_id=? AND scope='MemoryOS'
+               ORDER BY created_at DESC LIMIT 1""",
+            (event_id,),
+        )
+    if row is None:
+        return None
+    try:
+        row["other_voices"] = json.loads(str(row.get("other_voices") or "[]"))
+    except (TypeError, json.JSONDecodeError):
+        row["other_voices"] = []
+    return row
+
+
+@app.get("/galaxy/gravity/real-calibration/candidate-review", response_class=HTMLResponse)
+def galaxy_gravity_real_candidate_review(
+    browser_request: Request,
+    limit: int = GALAXY_REAL_INVENTORY_LIMIT,
+):
+    """Review latent session events before any candidate creation."""
+    from urllib.parse import urlencode
+
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    inventory = _galaxy_real_candidate_inventory(memcon_runtime, limit)
+    reviews = [
+        _galaxy_real_event_review(event)
+        for event in inventory["recent_unrepresented_session_events"]
+    ]
+
+    eligible = [item for item in reviews if item["candidate_creation_allowed"]]
+    held = [item for item in reviews if not item["candidate_creation_allowed"]]
+    payload = {
+        "status": "REAL_MEMORY_CANDIDATE_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "reviewed_event_count": len(reviews),
+        "candidate_creation_options_count": len(eligible),
+        "test_like_held_count": len(held),
+        "candidate_creation_options": eligible,
+        "test_like_held_events": held,
+        "writes_performed": [],
+        "candidates_created": [],
+        "candidates_promoted": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "review_boundary": (
+            "This page classifies existing session events for Naomi review. Structural test events are held out. "
+            "A reviewable event can become only a non-durable MemoryOS candidate after a separate explicit click."
+        ),
+    }
+
+    links = []
+    for item in eligible:
+        event = item["event"]
+        event_id = str(event.get("event_id") or "")
+        href = "/galaxy/gravity/real-calibration/candidate-create?" + urlencode({"event_id": event_id})
+        links.append(
+            "<li><a href='" + html.escape(href, quote=True) + "'>"
+            + html.escape(f"Create non-durable candidate from {event_id}")
+            + "</a></li>"
+        )
+    actions = (
+        "<h2>Explicit candidate-creation options</h2><ul>" + "".join(links) + "</ul>"
+        if links else
+        "<p>No event currently passes the structural test-data hold for candidate creation.</p>"
+    )
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY real-memory candidate review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + actions +
+        "<p>No durable promotion occurs on this page or by candidate creation.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/candidate-create", response_class=HTMLResponse)
+def galaxy_gravity_real_candidate_create(browser_request: Request, event_id: str):
+    """Explicitly create one non-durable real-memory candidate from a reviewed event."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    event = memcon_runtime.get_session_event(event_id)
+    if event is None:
+        raise HTTPException(status_code=404, detail="Unknown session event.")
+
+    existing = _galaxy_event_existing_candidate(memcon_runtime, event_id)
+    if existing is not None:
+        payload = {
+            "status": "CANDIDATE_ALREADY_EXISTS",
+            "event_id": event_id,
+            "candidate": existing,
+            "idempotent": True,
+            "durable_memory_write_performed": False,
+            "candidate_promotion_performed": False,
+            "retrieval_weighting_enabled": False,
+        }
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+            "<h1>GALAXY real-memory candidate creation</h1>"
+            f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+            "<p>An existing candidate already represents this event. No duplicate was created.</p>"
+            "</body></html>"
+        )
+
+    review = _galaxy_real_event_review({
+        "event_id": event.get("event_id"),
+        "session_id": event.get("session_id"),
+        "subject": "",
+        "actor": event.get("actor"),
+        "event_type": event.get("event_type"),
+        "statement": event.get("statement"),
+        "source": event.get("source"),
+        "relation": event.get("relation"),
+        "created_at": event.get("created_at"),
+    })
+    if not review["candidate_creation_allowed"]:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": "Structurally test-like event is held out of real-memory candidate creation.",
+                "hard_test_flags": review["hard_test_flags"],
+            },
+        )
+
+    candidate = runtime.candidate_from_event(
+        event_id,
+        authority="NAOMI",
+        record_type="INTERACTION",
+        scope="MemoryOS",
+        statement=str(event.get("statement") or ""),
+        source=str(event.get("source") or ""),
+        owner="NAOMI_REAL_MEMORY_REVIEW",
+        why_material=(
+            "Naomi explicitly selected this existing MemconOS session event for bounded real-memory "
+            "calibration review. Candidate creation is non-durable and does not imply promotion."
+        ),
+        other_voices=[],
+        tension="Candidate requires separate Naomi review before any durable promotion.",
+    )
+    payload = {
+        "status": "REAL_MEMORY_CANDIDATE_CREATED",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "source_event_review": review,
+        "candidate": candidate,
+        "durable_memory_write_performed": False,
+        "candidate_promotion_performed": False,
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "next_step": (
+            "Inspect this exact candidate. No promotion control is exposed yet; durable promotion requires "
+            "a separate explicit Naomi-reviewed gate."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY real-memory candidate creation</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>Candidate created only. It is not durable memory and has no GALAXY gravity or retrieval effect.</p>"
+        "</body></html>"
+    )
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
