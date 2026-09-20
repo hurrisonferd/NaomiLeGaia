@@ -986,3 +986,31 @@ The structural classifier correctly held the five explicit lifecycle TEST_INPUT 
 Therefore it should not be promoted merely to populate the real-memory graph. Candidate review needs a calibration-suitability distinction in addition to structural test detection.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 calibration-suitability refinement 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME RECHECK NOT YET CLAIMED.
+
+The live candidate-review gate revealed one browser-chat event that was structurally non-test but semantically still control-test material:
+
+`We are about to carry out the very first test of the PW:PRESERVE command function.`
+
+The review classifier now distinguishes three outcomes:
+
+- `TEST_LIKE_HOLD`
+  - structurally test-like by event type/source;
+- `CALIBRATION_SUITABILITY_HOLD`
+  - real interaction provenance, but content is itself control-test context unsuitable as a representative real-memory calibration exemplar;
+- `NAOMI_REVIEW_REQUIRED`
+  - not structurally test-like and not held by current calibration-suitability rules.
+
+Current suitability rule:
+
+`STATEMENT_MENTIONS_TEST + PW_PRESERVE_CONTEXT -> CONTROL_COMMAND_TEST_CONTEXT -> CALIBRATION_SUITABILITY_HOLD`
+
+This does not claim such an interaction is unreal. It only prevents it from being used to manufacture real-memory calibration coverage.
+
+Candidate creation remains blocked for both hold classes.
+
+Phase 3 remains disabled and unauthorized.
