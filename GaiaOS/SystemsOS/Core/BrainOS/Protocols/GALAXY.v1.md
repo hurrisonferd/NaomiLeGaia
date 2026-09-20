@@ -1341,3 +1341,36 @@ Explicit Naomi-authorized promotion of `CANDIDATE-a80f6bc9eb0b41a18370ebb0c0eba5
 - no relation mutation;
 - no gravity mutation;
 - retrieval weighting remains disabled.
+
+
+### Phase-2 second real-memory durable promotion live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_DURABLE_VERIFIED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Candidate: `CANDIDATE-a80f6bc9eb0b41a18370ebb0c0eba500`
+- Durable record: `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- Promotion status: `VERIFIED`
+- Write receipt operation: `WRITE`
+- Write receipt result: `SUCCESS`
+- Durable readback matched the candidate statement:
+  `GALAXY gravity must remain an estimate of contextual influence, never truth, authority, or permission.`
+- Record authority: `NAOMI`
+- Record type: `INTERACTION`
+- Scope: `MemoryOS`
+- Record status: `ACTIVE`
+- Source: `galaxy-real-seed:4e20e21b6da7`
+- Relation mutations: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+
+PROMOTION-GATE CONCLUSION:
+
+The second explicit Naomi-authored real-memory seed crossed the durable MemoryOS boundary and verified on readback while relation, gravity, and retrieval boundaries remained intact.
+
+The real-memory population now contains two durable semantic records suitable for the next topology observation.
+
+NEXT LIVE GATE:
+
+Re-run the read-only real-memory shadow calibration preview. With two durable real memories and no verified real-memory relations, expected result is two isolated records with the same base shadow score and `GRAPH_COVERAGE_LIMITED`. This remains a topology finding, not score-quality evidence.
