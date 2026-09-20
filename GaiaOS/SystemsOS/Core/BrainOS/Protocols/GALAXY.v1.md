@@ -851,3 +851,46 @@ The current durable MemoryOS population contains no eligible non-test records un
 No claim is made that GaiaOS lacks real conversational material elsewhere in MemconOS. The next diagnostic must inspect existing non-test MemoryOS candidates and session-event material without promoting or mutating anything.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 latent real-memory inventory harness checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME OBSERVATION NOT YET CLAIMED.
+
+Because the first real-memory preview observed zero eligible durable non-test MemoryOS records, Phase 2 now includes a read-only latent-material inventory:
+
+`/galaxy/gravity/real-calibration/inventory`
+
+The inventory inspects existing MemconOS state for:
+
+- non-test MemoryOS candidates;
+- pending non-test candidates awaiting Naomi review;
+- non-test session events;
+- session events not yet represented by a non-test MemoryOS candidate.
+
+It returns one of three diagnostics:
+
+- `LATENT_MEMORY_CANDIDATES_AVAILABLE`
+- `UNREPRESENTED_SESSION_EVENTS_AVAILABLE`
+- `NO_LATENT_REAL_MEMORY_MATERIAL_FOUND`
+
+No automatic ingestion is allowed.
+
+Guardrails:
+
+- no candidate creation;
+- no candidate promotion;
+- no durable memory write;
+- no relation proposal or verification;
+- no gravity write;
+- no retrieval effect.
+
+Decision rule:
+
+- if pending real candidates exist, surface them for explicit Naomi review before promotion;
+- if only unrepresented real session events exist, build a separate candidate-creation review step before promotion;
+- if neither exists, real-memory calibration pauses until real material enters MemconOS or Naomi explicitly supplies a source.
+
+This prevents synthetic test data from being silently reclassified as real memory merely to satisfy calibration coverage.
+
+Phase 3 remains disabled and unauthorized.
