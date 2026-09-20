@@ -373,12 +373,12 @@ GALAXY_RELATION_TYPES = {
     "REVISES", "SUPERSEDES", "DERIVED_FROM", "CONTEXT_FOR", "ASSOCIATED_WITH",
 }
 GALAXY_LIFECYCLE_STATES = {"ACTIVE", "BACKGROUND", "ARCHIVED", "COMPRESSED", "PRUNABLE"}
-GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v2.nergal-475-parity"
-GALAXY_WEIGHT_PROFILE = "NERGAL_475_PARITY"
+GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v3.nergal-475-parity-quality-conditioned"
+GALAXY_WEIGHT_PROFILE = "NERGAL_475_PARITY_QUALITY_CONDITIONED"
 GALAXY_SHADOW_WEIGHTS = {
     "durable_active": 0.25,
-    "verified_graph_degree": 0.125,
-    "verified_relation_strength": 0.125,
+    "verified_graph_degree": 0.117647,
+    "verified_relation_strength": 0.132353,
     "provenance_confidence": 0.15,
     "revision_significance": 0.10,
     "explicit_importance": 0.25,
@@ -563,6 +563,10 @@ def galaxy_status() -> dict[str, Any]:
         "importance_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "importance_curve_semantics_active": True,
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
+        "phase3_blockers": [
+            "GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED",
+            "SCOPE_FILTERED_SEARCH_CURRENTLY_IGNORES_QUERY_TERMS",
+        ],
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
         "proof_boundary": "Gravity scoring is shadow-only and does not affect ordinary retrieval. Counts prove stored rows exist, not that score quality, weighted retrieval, consolidation, forgetting, or pruning are proven.",
@@ -641,10 +645,11 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         )
 
     degree = len(verified_edges)
-    degree_norm = min(degree / 4.0, 1.0)
     strengths = [max(0.0, min(float(edge.get("strength") or 0.0), 1.0)) for edge in verified_edges]
     mean_strength = (sum(strengths) / len(strengths)) if strengths else 0.0
-    significant_types = {"CONTRADICTS", "REVISES", "SUPERSEDES"}
+    raw_degree_norm = min(degree / 4.0, 1.0)
+    degree_norm = raw_degree_norm * mean_strength
+    significant_types = {"REVISES", "SUPERSEDES"}
     significant_count = sum(1 for edge in verified_edges if str(edge.get("relation_type") or "") in significant_types)
     revision_significance = min(significant_count / 2.0, 1.0)
     stored_importance = galaxy_importance(record_id)
@@ -677,7 +682,15 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         "verified_relation_count": degree,
         "verified_relation_types": relation_types,
         "mean_verified_relation_strength": round(mean_strength, 6),
+        "raw_degree_normalized": round(raw_degree_norm, 6),
+        "strength_conditioned_degree_normalized": round(degree_norm, 6),
+        "verified_graph_degree_semantics": (
+            "Capped relation breadth multiplied by mean verified relation strength. "
+            "This prevents weak-link count from receiving full breadth credit."
+        ),
         "revision_significance_edges": significant_count,
+        "revision_significance_types": ["REVISES", "SUPERSEDES"],
+        "contradicts_receives_revision_premium": False,
         "active_weight_profile": GALAXY_WEIGHT_PROFILE,
         "explicit_importance_basis": (
             "A stored Naomi Seven Gates signal is mapped through the approved NERGAL-threshold influence curve "
