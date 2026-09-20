@@ -2421,3 +2421,42 @@ The current shadow-v1 explicit-importance component remains fixed at zero until 
 The existing curve review route is now a proof surface for the active runtime mapping rather than a proposal-only lens.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 first real Seven Gates importance review PASS 2026-09-20
+
+OBSERVED LIVE REVIEW:
+
+- status: `REAL_MEMORY_IMPORTANCE_SET_REVIEW`
+- phase: `PHASE_2_GRAVITY_SHADOW`
+- model: `galaxy.importance.seven-gates.continuous.v1`
+- record: `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- current stored importance: `null`
+- proposed exact position:
+  - gate units: `4750`
+  - display position: `4.750`
+  - gate: `NERGAL`
+  - linear normalized position: `0.678571`
+  - approved nonlinear effective influence: `0.55`
+  - curve: `galaxy.importance.influence.nergal-threshold.v1`
+- set available: `true`
+- no writes, importance mutation, gravity mutation, relation mutation, or retrieval weighting occurred.
+
+REVIEW RESULT:
+
+PASS.
+
+The exact-record review correctly resolves `4.750 NERGAL` to `4750` canonical units and `0.55` effective influence under the approved NERGAL-threshold curve.
+
+NEXT AUTHORIZED GATE:
+
+Naomi may explicitly click the exact mutation link for this reviewed record and position.
+
+The mutation is authorized only for:
+- record `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- gate position `4.750`
+- canonical units `4750`
+
+This does not authorize a replacement gravity weight profile or weighted retrieval.
+
+Phase 3 remains disabled and unauthorized.
