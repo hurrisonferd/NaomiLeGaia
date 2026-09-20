@@ -1835,3 +1835,32 @@ No relation should be invented merely to raise the score of an important isolate
 This lens performs no writes and does not authorize any relation, gravity persistence, or retrieval weighting.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 live calibration uncertainty lens result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_CALIBRATION_UNCERTAINTY_REVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Record: `MEM-3883f8127bcd40e28255fdbfa4c98309`
+- Current shadow score: `0.4`
+- Maximum explicit-importance-only counterfactual: `0.45`
+- One non-revision relation counterfactual:
+  - strength `0.50` -> `0.5625`
+  - strength `0.85` -> `0.6325`
+  - strength `1.00` -> `0.6625`
+- One revision-like relation at strength `0.85` -> `0.6825`
+- No writes, relation mutations, gravity mutations, or retrieval weighting occurred.
+
+INTERPRETATION:
+
+The current v1 formula gives graph structure substantially more leverage than explicit importance. A single verified non-revision relation at strength `0.85` contributes `+0.2325` over the isolated base, while the entire explicit-importance channel can contribute at most `+0.05`.
+
+This does not establish that the weights are wrong. It sharpens the human calibration question: whether one real semantic edge should have roughly 4.65x the maximum influence of explicit importance in shadow-v1.
+
+NAOMI'S PRIOR VERDICT REMAINS:
+
+`UNSURE`
+
+No weights are changed and Phase 2 remains open. Phase 3 remains disabled and unauthorized.
