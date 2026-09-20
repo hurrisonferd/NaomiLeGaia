@@ -1,10 +1,34 @@
 # POST-GALAXY ARCHITECTURE PROGRAM
-Status: PLANNED / POST-GALAXY
+Status: PLANNED / GALAXY PHASE 0–2 CLOSED / POST-GALAXY IMPLEMENTATION NOT YET AUTHORIZED
 Authority: NAOMI / LIGEIA
 Provenance: GaiaOS synthesis of human-relayed RavenOS packets. RavenOS runtime claims remain source-attested/user-relayed unless independently verified by GaiaOS.
 
 ## Mission
 After the current GALAXY program reaches its defined completion gates, incorporate transferable RavenOS architectural ideas without importing RavenOS identity, authority, or unsupported runtime claims.
+
+
+## Strengths-first inheritance
+
+Future GaiaOS architecture must inherit and deepen the strengths proven or strongly clarified during GALAXY Phase 0–2 rather than treating them as temporary scaffolding.
+
+Required inheritance:
+- epistemic separation before scoring or action;
+- query relevance before contextual influence;
+- historical persistence separate from current governing state;
+- negative evidence, rejected candidates, ambiguity, and failed proofs remain inspectable;
+- differentiated Prime Daemon interpretations remain member-local;
+- adaptive behavior remains explainable;
+- reversible state transitions precede destructive ones;
+- source truth and canonical pointers must track proven state;
+- precision and bounded ownership are preferred to subsystem proliferation.
+
+Canonical strategy:
+`GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md`
+
+RavenOS strengths preserve:
+`GaiaOS/Proof/RAVENOS-GAIA-STRENGTHS-PRESERVE-2026-09-20.md`
+
+Any donor feature that weakens these properties should be rejected or redesigned even if it increases nominal capability.
 
 ## Donor packets
 - RAVENOS Omni/Kaiba/OmniVisor/OmniDeck/OmniBelt capability architecture packet.
@@ -288,4 +312,26 @@ Candidate reasoning mode: maintain multiple bounded candidate explanations and g
 Candidate integration with JOHN-PL: semantic conservation must survive portability and carrier changes.
 Candidate proof discipline: unexplained causal gaps remain UNKNOWN and never become evidence of hidden/native links.
 
-CURRENT GATE: preserve only. Do not implement ahead of GALAXY completion.
+CURRENT GATE: GALAXY Phase 0–2 is closed. This post-GALAXY program remains preservation/design-only until the full GALAXY program reaches its completion gates or Naomi explicitly reorders implementation. Do not let donor capability bypass GALAXY authority, relevance, provenance, or reversibility laws.
+
+
+## RavenOS strengths assessment adoption — 2026-09-20
+
+The latest human-relayed RavenOS assessment identified several GaiaOS strengths worth deliberately amplifying:
+
+1. **Epistemic constitution**: importance, authority, relevance, agreement, history, current governance, revision, supersession, and erasure remain distinct.
+2. **Query-first retrieval**: candidate admission is decided before gravity; influence cannot manufacture relevance.
+3. **Temporal semantics**: historical existence and present governing state are separate.
+4. **Negative-evidence retention**: failed proofs, HOLD states, ambiguity, rejection, and superseded history remain available as evidence.
+5. **Differentiated continuity**: six Prime Daemon lanes preserve distinct interpretations of shared events without identity merge.
+6. **Memory specialization**: GaiaOS is strongest when it preserves, relates, revises, governs current-vs-historical state, queries, reranks, and explains.
+7. **Precision over proliferation**: new mechanisms should compose with existing owners unless a genuinely distinct ontology/authority/lifecycle requires a new subsystem.
+8. **Reversible control**: attenuation, archival, supersession, and provenance-preserving return are preferred to destructive simplification.
+
+Future Semantic Conservation, capability discovery, loadout, VISOR, JX2-inspired portability, and carrier work should be reviewed against these strengths before adoption.
+
+```text
+DONOR INSIGHT != DONOR AUTHORITY
+PLAY TO STRENGTHS != STOP ADVERSARIAL TESTING
+CAPABILITY GROWTH MUST NOT DILUTE EPISTEMIC DISCIPLINE
+```
