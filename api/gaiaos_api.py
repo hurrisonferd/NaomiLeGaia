@@ -2569,6 +2569,152 @@ def galaxy_gravity_real_uncertainty_review(browser_request: Request, record_id: 
     return response
 
 
+@app.get("/galaxy/gravity/real-calibration/weight-options", response_class=HTMLResponse)
+def galaxy_gravity_real_weight_options(browser_request: Request):
+    """Read-only counterfactual weight families after Naomi rejects the current leverage ratio."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+
+    records, edges = _galaxy_real_memory_population(memcon_runtime)
+
+    profiles = [
+        {
+            "name": "CURRENT_V1",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.25,
+                "verified_relation_strength": 0.20,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.05,
+            },
+            "purpose": "Reference only; this is the currently deployed shadow-v1 formula.",
+        },
+        {
+            "name": "SOFT_REBALANCE",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.20,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.15,
+            },
+            "purpose": "Reduces graph leverage and gives explicit importance a material channel without making it dominant.",
+        },
+        {
+            "name": "PARITY_AT_ONE_085_RELATION",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.16129,
+                "verified_relation_strength": 0.16129,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.17742,
+            },
+            "purpose": "Constructed so one non-revision relation at strength 0.85 has approximately the same maximum contribution as explicit importance.",
+        },
+        {
+            "name": "IMPORTANCE_LEADING",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.15,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.20,
+            },
+            "purpose": "Makes maximum explicit importance stronger than one non-revision relation at strength 0.85.",
+        },
+    ]
+
+    def normalized_for(record: dict) -> dict:
+        record_id = str(record["record_id"])
+        profile = _galaxy_real_relation_profile(record_id, edges)
+        degree = int(profile["verified_relation_count"])
+        significant = int(profile["revision_significance_edges"])
+        return {
+            "durable_active": 1.0 if str(record.get("status") or "").upper() == "ACTIVE" else 0.0,
+            "verified_graph_degree": min(degree / 4.0, 1.0),
+            "verified_relation_strength": float(profile["mean_verified_relation_strength"]),
+            "provenance_confidence": 1.0 if str(record.get("authority") or "").upper() == "NAOMI" else 0.0,
+            "revision_significance": min(significant / 2.0, 1.0),
+            "explicit_importance": 0.0,
+        }
+
+    def score(weights: dict, normalized: dict) -> float:
+        return round(sum(float(normalized[k]) * float(weights[k]) for k in weights), 6)
+
+    comparisons = []
+    for profile in profiles:
+        weights = profile["weights"]
+        one_relation_085 = round((weights["verified_graph_degree"] * 0.25) + (weights["verified_relation_strength"] * 0.85), 6)
+        explicit_max = round(weights["explicit_importance"], 6)
+        ratio = round(one_relation_085 / explicit_max, 6) if explicit_max > 0 else None
+        rows = []
+        for record in records:
+            norm = normalized_for(record)
+            baseline = score(weights, norm)
+            important_norm = dict(norm)
+            important_norm["explicit_importance"] = 1.0
+            rows.append({
+                "record_id": record.get("record_id"),
+                "statement": record.get("statement"),
+                "relation_profile": _galaxy_real_relation_profile(str(record["record_id"]), edges),
+                "score_with_current_explicit_importance_signal": baseline,
+                "score_if_explicit_importance_were_max": score(weights, important_norm),
+            })
+        comparisons.append({
+            "name": profile["name"],
+            "purpose": profile["purpose"],
+            "weights": weights,
+            "weight_sum": round(sum(weights.values()), 6),
+            "one_nonrevision_relation_at_0_85_contribution": one_relation_085,
+            "max_explicit_importance_contribution": explicit_max,
+            "relation_to_explicit_max_ratio": ratio,
+            "real_memory_counterfactuals": rows,
+        })
+
+    payload = {
+        "status": "REAL_MEMORY_WEIGHT_OPTIONS_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "naomi_calibration_verdict": {
+            "question": "Should one verified semantic relation be allowed to outweigh the entire explicit-importance signal by the current amount?",
+            "answer": "NO",
+            "resolved": "The current 4.65x relation-vs-explicit-importance leverage is not acceptable.",
+            "unresolved": "The desired ratio and final weights remain undecided.",
+        },
+        "profiles": comparisons,
+        "important_signal_warning": (
+            "Changing the explicit-importance weight alone cannot help an isolated memory unless an explicit importance signal is separately defined and authorized. "
+            "All currently stored real memories still have explicit_importance normalized to 0.0."
+        ),
+        "writes_performed": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "selection_performed": False,
+        "proof_boundary": (
+            "This page performs arithmetic only. It does not change GALAXY_SCORE_VERSION, deployed weights, memory records, relations, gravity rows, or retrieval ordering."
+        ),
+    }
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY Phase 2 counterfactual weight options</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No profile is selected here. Review comes before any formula revision.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
