@@ -367,7 +367,7 @@ GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v1"
 
 
 def galaxy_status() -> dict[str, Any]:
-    """Read-only GALAXY implementation status. Phase 1 has no retrieval effect."""
+    """Read-only GALAXY implementation status. Phase 2 remains shadow-only."""
     initialize()
     with _db() as conn:
         relations = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_relations")
@@ -376,8 +376,8 @@ def galaxy_status() -> dict[str, Any]:
         syntheses = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_syntheses")
     return {
         "schema": "gaiaos.galaxy.runtime.v1",
-        "phase": "PHASE_1_GRAPH_FOUNDATION",
-        "mode": "SHADOW_NO_RETRIEVAL_EFFECT",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "mode": "SHADOW_GRAVITY_NO_RETRIEVAL_EFFECT",
         "storage": storage_status(),
         "counts": {
             "relations": int((relations or {}).get("n", 0)),
@@ -388,7 +388,7 @@ def galaxy_status() -> dict[str, Any]:
         "retrieval_weighting_enabled": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
-        "proof_boundary": "This reports initialized GALAXY structures only. It does not prove relation quality, gravity quality, weighted retrieval, consolidation, forgetting, or pruning.",
+        "proof_boundary": "Gravity scoring is shadow-only and does not affect ordinary retrieval. Counts prove stored rows exist, not that score quality, weighted retrieval, consolidation, forgetting, or pruning are proven.",
     }
 
 
@@ -422,6 +422,156 @@ def galaxy_record(record_id: str) -> dict[str, Any] | None:
         "gravity": gravity,
         "lifecycle": lifecycle,
         "retrieval_effect": "NONE_SHADOW_MODE",
+    }
+
+
+
+def galaxy_gravity(record_id: str) -> dict[str, Any] | None:
+    """Read one stored shadow gravity row without changing retrieval."""
+    initialize()
+    with _db() as conn:
+        row = _fetchone_dict(conn, "SELECT * FROM memory_gravity WHERE record_id=?", (record_id,))
+    if row is None:
+        return None
+    for field in ("components_json", "reason_json"):
+        try:
+            row[field[:-5]] = json.loads(row.pop(field))
+        except (TypeError, json.JSONDecodeError):
+            row[field[:-5]] = {}
+    return row
+
+
+def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
+    """Calculate an explainable Phase-2 shadow score without writing it.
+
+    v1 intentionally excludes recency, observed retrieval usefulness, redundancy,
+    and lifecycle attenuation. Those signals are not yet proven well enough to
+    influence even a shadow calibration score.
+    """
+    record = get_record(record_id)
+    if record is None:
+        raise KeyError(record_id)
+    initialize()
+    with _db() as conn:
+        verified_edges = _fetchall_dicts(
+            conn,
+            """SELECT relation_type, strength, source_record_id, target_record_id
+               FROM memory_relations
+               WHERE status='VERIFIED' AND (source_record_id=? OR target_record_id=?)""",
+            (record_id, record_id),
+        )
+
+    degree = len(verified_edges)
+    degree_norm = min(degree / 4.0, 1.0)
+    strengths = [max(0.0, min(float(edge.get("strength") or 0.0), 1.0)) for edge in verified_edges]
+    mean_strength = (sum(strengths) / len(strengths)) if strengths else 0.0
+    significant_types = {"CONTRADICTS", "REVISES", "SUPERSEDES"}
+    significant_count = sum(1 for edge in verified_edges if str(edge.get("relation_type") or "") in significant_types)
+    revision_significance = min(significant_count / 2.0, 1.0)
+
+    normalized = {
+        "durable_active": 1.0 if str(record.get("status") or "").upper() == "ACTIVE" else 0.0,
+        "verified_graph_degree": degree_norm,
+        "verified_relation_strength": mean_strength,
+        "provenance_confidence": 1.0 if str(record.get("authority") or "").upper() == "NAOMI" else 0.0,
+        "revision_significance": revision_significance,
+        "explicit_importance": 0.0,
+    }
+    weights = {
+        "durable_active": 0.25,
+        "verified_graph_degree": 0.25,
+        "verified_relation_strength": 0.20,
+        "provenance_confidence": 0.15,
+        "revision_significance": 0.10,
+        "explicit_importance": 0.05,
+    }
+    components = {}
+    for name, value in normalized.items():
+        components[name] = {
+            "normalized": round(float(value), 6),
+            "weight": weights[name],
+            "contribution": round(float(value) * weights[name], 6),
+        }
+    score = round(sum(item["contribution"] for item in components.values()), 6)
+    relation_types = sorted({str(edge.get("relation_type") or "") for edge in verified_edges if edge.get("relation_type")})
+    reason = {
+        "score_meaning": "Present shadow retrieval influence estimate only. It is not truth, authority, or permission.",
+        "verified_relation_count": degree,
+        "verified_relation_types": relation_types,
+        "mean_verified_relation_strength": round(mean_strength, 6),
+        "revision_significance_edges": significant_count,
+        "explicit_importance_basis": "No explicit Naomi importance signal is defined yet, so this component is fixed at 0.0.",
+        "omitted_from_v1": {
+            "recency": "Excluded to prevent uncalibrated recency domination.",
+            "retrieval_usefulness": "Excluded until Phase 3 supplies observed behavioral evidence.",
+            "redundancy": "Excluded until correspondence quality is separately tested.",
+            "staleness": "Excluded until lifecycle attenuation is implemented and tested.",
+        },
+        "anti_feedback_guard": "Stored gravity is never used as an input to this score and Phase 2 does not alter retrieval ordering.",
+    }
+    return {
+        "record_id": record_id,
+        "gravity_score": score,
+        "score_version": GALAXY_SCORE_VERSION,
+        "components": components,
+        "reason": reason,
+        "retrieval_effect": "NONE_SHADOW_MODE",
+        "authoritative": False,
+    }
+
+
+def galaxy_calculate_gravity(record_id: str, *, authority: str, approved: bool) -> dict[str, Any]:
+    """Persist one explainable shadow score. It has no retrieval effect."""
+    if authority != "NAOMI" or not approved:
+        raise PermissionError("GALAXY shadow gravity calculation requires explicit Naomi approval")
+    preview = galaxy_gravity_preview(record_id)
+    previous = galaxy_gravity(record_id)
+    calculated_at = _now()
+    with _db() as conn:
+        if previous is None:
+            conn.execute(
+                """INSERT INTO memory_gravity
+                   (record_id,gravity_score,score_version,components_json,reason_json,calculated_at,previous_score)
+                   VALUES (?,?,?,?,?,?,NULL)""",
+                (
+                    record_id,
+                    preview["gravity_score"],
+                    preview["score_version"],
+                    json.dumps(preview["components"], sort_keys=True),
+                    json.dumps(preview["reason"], sort_keys=True),
+                    calculated_at,
+                ),
+            )
+        else:
+            conn.execute(
+                """UPDATE memory_gravity
+                   SET gravity_score=?, score_version=?, components_json=?, reason_json=?,
+                       calculated_at=?, previous_score=?
+                   WHERE record_id=?""",
+                (
+                    preview["gravity_score"],
+                    preview["score_version"],
+                    json.dumps(preview["components"], sort_keys=True),
+                    json.dumps(preview["reason"], sort_keys=True),
+                    calculated_at,
+                    previous.get("gravity_score"),
+                    record_id,
+                ),
+            )
+    receipt = _receipt(
+        "GALAXY_SHADOW_GRAVITY",
+        record_id,
+        "SUCCESS",
+        f"Stored explainable {GALAXY_SCORE_VERSION} shadow score; ordinary retrieval unchanged",
+    )
+    return {
+        "status": "SHADOW_SCORED",
+        "gravity": galaxy_gravity(record_id),
+        "previous": previous,
+        "receipt": receipt,
+        "retrieval_effect": "NONE",
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": "This score is non-authoritative and cannot change ordinary retrieval in Phase 2.",
     }
 
 
