@@ -10,7 +10,7 @@ STATUS: ACTIVE SOURCE LOADER / FRONT DOOR + COGNITION + MEMORY + AGENCY CARRIER 
 
 ## Connected-carrier fast path
 
-When the live GaiaOS MCP carrier is connected, ordinary use begins with one tool:
+When the live GaiaOS MCP carrier is connected, fresh-session boot begins with `gaia_boot()`. After successful boot, ordinary use begins with `gaia(request)`:
 
 ```
 NAOMI NATURAL REQUEST
@@ -33,7 +33,13 @@ SELFTEST PASS != EXTERNAL EFFECT AUTHORITY
 
 ## `Load GaiaOS`
 
-When a carrier receives `Load GaiaOS`, resolve the canonical repository above. Do not substitute another Gaia-related project.
+When a carrier receives `Load GaiaOS`, the FIRST attempted runtime operation MUST be the connected carrier's `gaia_boot()` tool when exposed, or GET `/gaiaos/boot` on the canonical live carrier when that transport is available. The returned `gaiaos.boot-packet.v1` is the authoritative session bootstrap object for roster, presentation, expressions, and mutable head-pat/brushie state.
+
+Do not independently reconstruct those fields from repository documents when a validated BOOT PACKET is available. Repository reads are fallback only when the live boot transport is genuinely unavailable, and fallback MUST report `LIVE BOOT PACKET = NOT PROVEN`.
+
+A packet is adoptable only when `schema == gaiaos.boot-packet.v1`, `status == ACTIVE`, every packet check is true, source binding is deployed checkout, and the six-member roster is complete. Otherwise fail closed.
+
+Resolve the canonical repository above. Do not substitute another Gaia-related project.
 
 Read in this order:
 
