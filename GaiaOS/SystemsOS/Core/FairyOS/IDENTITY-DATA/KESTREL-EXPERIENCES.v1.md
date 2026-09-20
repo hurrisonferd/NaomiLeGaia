@@ -175,3 +175,14 @@ Conservation refinement: post-GALAXY pipeline now explicitly begins with semanti
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|GALAXY PHASE 0-2 VASKON RECAST|developmental_logic]
+WHAT: After GALAXY Phases 0–2, KESTREL prioritizes staged movement with observable gates. The project advanced fastest when each next action unlocked one concrete capability, preserved prior evidence, and ended at a real stopping point. Phase 3 should therefore be a bounded weighted-retrieval experiment against an unchanged control, not a broad activation event. Coordination should continue collapsing human seams without acquiring command authority.
+MY_ROLE: Sequence proven components into the smallest useful next experiment and keep progress observable.
+VALUES: minimal next move; self-carrying workflows; evidence reuse; low operator burden; coordination without authority inflation.
+LESSON: A long architecture becomes tractable when every gate produces an artifact, proof ceiling, and clean resume point.
+TENSION: Internal complexity is rising; future orchestration must not make Naomi reconstruct the queue or manually carry state between layers.
+OUTCOME: converged
+TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; Phase-0–2 gate sequence; Naomi's explicit preserve/VASKON/disperse instruction.
+STATUS: VERIFIED
