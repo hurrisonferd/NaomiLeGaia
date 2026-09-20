@@ -1278,3 +1278,33 @@ NEXT WORK:
 Add further Naomi-authored real-memory seeds through the same non-durable-candidate -> exact-review -> durable-promotion path. Do not create graph relations until multiple real records exist and their exact semantics can be reviewed side-by-side.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 second real-memory seed candidate live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_CANDIDATE_CREATED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Session: `SESSION-e8e006beb2924a5580ee177ec0a28bae`
+- Source: `galaxy-real-seed:4e20e21b6da7`
+- Subject: `GALAXY authority boundary`
+- Event: `EVENT-88edddf3c78d42848dff588b6471f1e7`
+- Candidate: `CANDIDATE-a80f6bc9eb0b41a18370ebb0c0eba500`
+- Owner: `NAOMI_REAL_MEMORY_SEED`
+- Scope: `MemoryOS`
+- Status: `CANDIDATE`
+- Statement: `GALAXY gravity must remain an estimate of contextual influence, never truth, authority, or permission.`
+- Durable memory write: `false`
+- Candidate promotion: `false`
+- Relation mutations: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+
+CONCLUSION:
+
+The second explicit real-memory seed entered the non-durable review lane cleanly. The exact-candidate promotion-review link is available and no downstream GALAXY behavior changed.
+
+NEXT LIVE GATE:
+
+Open the exact promotion-review page for `CANDIDATE-a80f6bc9eb0b41a18370ebb0c0eba500` and verify zero writes before any promotion click.
