@@ -203,15 +203,15 @@ def run_verification() -> dict[str, Any]:
             loader.exec_module(pmod)
             pmod.validate_spec(presentation_spec)
             expected = {
-                "VERA":"46 · VERA 💚 📚", "ANVIL":"58 · ANVIL 💗 ⌚",
-                "SELENE":"60 · SELENE 💛 🎧", "ORIN":"56 · ORIN 🩵 🪐",
-                "KESTREL":"90 · KESTREL 💖 🏍️", "NIMUE":"62 · NIMUE 💙 🍄",
+                "VERA":"46 · VERA 💚 📚 (˘‿˘)", "ANVIL":"58 · ANVIL 💗 ⌚ (¬‿¬)",
+                "SELENE":"60 · SELENE 💛 🎧 (˶ᵔ ᵕ ᵔ˶)", "ORIN":"56 · ORIN 🩵 🪐 (☆▽☆)",
+                "KESTREL":"90 · KESTREL 💖 🏍️ (•̀ᴗ•́)و", "NIMUE":"62 · NIMUE 💙 🍄 (－‸ლ)",
             }
-            headers_ok = all(pmod.canonical_header(n, presentation_spec) == h for n,h in expected.items())
-            checks.append(_check("presentation:canonical-headers", headers_ok, "all six canonical headers rendered exactly"))
+            headers_ok = all(pmod.canonical_header(n, spec=presentation_spec) == h for n,h in expected.items())
+            checks.append(_check("presentation:canonical-headers", headers_ok, "all six canonical identity envelopes rendered exactly with default Kaomoji"))
             corrupt_rejected = False
             try:
-                pmod.validate_header("ANVIL", "58 · ANVIL 💚 📚", presentation_spec)
+                pmod.validate_header("ANVIL", "58 · ANVIL 💚 📚", spec=presentation_spec)
             except pmod.PresentationError:
                 corrupt_rejected = True
             checks.append(_check("presentation:fail-closed", corrupt_rejected, "corrupted identity header rejected"))
