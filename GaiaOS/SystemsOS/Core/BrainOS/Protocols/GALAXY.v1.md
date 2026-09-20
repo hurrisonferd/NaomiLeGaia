@@ -253,3 +253,32 @@ SOURCE IMPLEMENTED / DEPLOYMENT NOT YET PROVEN:
 
 NEXT GATE remains:
 two controlled durable memories → GALAXY PROPOSE → inspect PROPOSED edge → explicit GALAXY VERIFY → ORBIT/readback → retrieval comparison → preserve receipt.
+
+
+### Two-memory relation canary harness 2026-09-19
+
+Source implementation commits:
+- 1e7faabd3da47ce5ef5581fea61e13a7dbcf9a9a — staged two-memory canary flow.
+- d104c4e79a633ad41e7d10c0d047e969b8e6d61d — corrected GALAXY PROPOSE / GALAXY VERIFY command routing.
+
+Browser Chat command flow:
+1. `GALAXY CANARY START`
+   - creates one bounded canary session;
+   - creates candidate A and candidate B only;
+   - performs no durable memory write;
+   - performs no relation write.
+2. `GALAXY CANARY APPROVE`
+   - requires the two latest canary candidates to belong to the same session;
+   - explicitly promotes both through the canonical Naomi-authorized MemoryOS path;
+   - requires both readbacks to reach VERIFIED;
+   - proposes `B CONTEXT_FOR A` at strength 1.0;
+   - captures ordinary MemoryOS retrieval order before edge verification;
+   - leaves the relation at PROPOSED with zero retrieval effect.
+3. `GALAXY VERIFY <edge_id>`
+   - separately verifies the proposed edge under Naomi authority;
+   - reads both endpoint ORBIT neighborhoods back;
+   - reruns ordinary MemoryOS retrieval;
+   - reports whether retrieval record order remained unchanged;
+   - retrieval weighting remains disabled.
+
+Proof boundary: SOURCE IMPLEMENTED. Deployment and runtime success must still be observed after the relevant commit is deployed.
