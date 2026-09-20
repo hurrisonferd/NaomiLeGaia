@@ -473,3 +473,76 @@ This closes the controlled Phase-2 shadow-gravity canary gate.
 
 NEXT PHASE-2 WORK:
 broader bounded calibration across records with meaningfully different graph structures and evidence profiles. This is still shadow-only. Phase 3 weighted retrieval remains disabled and unauthorized until calibration is reviewed and a separate Phase-3 proof harness is designed.
+
+
+### Phase-2 broader calibration harness checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. DEPLOYMENT / LIVE RUNTIME NOT YET CLAIMED.
+
+The next Phase-2 gate expands beyond the symmetric two-memory pair into a five-record controlled constellation with deliberately different graph structures.
+
+Controlled roles:
+
+- CORE
+- SATELLITE
+- REINFORCER
+- REVISION
+- ISOLATED
+
+Proposed graph:
+
+- SATELLITE `CONTEXT_FOR` CORE at strength `0.40`
+- REINFORCER `REINFORCES` CORE at strength `0.80`
+- REVISION `REVISES` CORE at strength `0.90`
+- REVISION `CONTRADICTS` REINFORCER at strength `0.70`
+- ISOLATED has no GALAXY edge
+
+This produces controlled variation in verified graph degree, mean relation strength, and revision-significance while holding ACTIVE state, Naomi provenance, explicit importance, recency, lifecycle, and retrieval usefulness constant.
+
+Browser proof flow:
+
+1. `/galaxy/gravity/calibration/start`
+   - creates five candidates only;
+   - performs no durable MemoryOS promotion;
+   - performs no relation write;
+   - performs no gravity write.
+
+2. `/galaxy/gravity/calibration/approve?session_id=<SESSION>`
+   - promotes the five controlled candidates under explicit Naomi authority;
+   - proposes the four calibration relations;
+   - leaves any new relation at PROPOSED;
+   - performs no gravity write.
+
+3. `/galaxy/gravity/calibration/verify?session_id=<SESSION>`
+   - explicitly verifies the four controlled edges;
+   - reads the edge set back;
+   - performs no gravity write.
+
+4. `/galaxy/gravity/calibration/preview?session_id=<SESSION>`
+   - calculates five shadow previews;
+   - performs no gravity write;
+   - reports score ordering, spread, unique-score count, and which components actually vary;
+   - runs synthetic discrimination checks without claiming real-world weight quality.
+
+5. `/galaxy/gravity/calibration/run?session_id=<SESSION>`
+   - captures ordinary retrieval before scoring for all five records;
+   - stores/re-reads the five shadow scores;
+   - captures ordinary retrieval after scoring;
+   - reports per-record retrieval invariance;
+   - reports receipt count and idempotent count;
+   - reopening the same exact URL is the idempotency check.
+
+Guardrails remain unchanged:
+
+- gravity is not authority;
+- stored gravity never feeds its own next score;
+- recency is disabled in shadow v1;
+- lifecycle attenuation is disabled;
+- ordinary retrieval remains unweighted;
+- physical pruning remains disabled.
+
+Calibration objective:
+
+The bounded synthetic constellation should produce multiple distinct scores and an explainable ordering caused by graph structure, relation strength, and revision significance. This proves formula discrimination, not real-world usefulness.
+
+Phase 3 remains prohibited until this broader Phase-2 calibration is observed live, reviewed, and the remaining real-memory calibration limits are explicitly documented.
