@@ -208,3 +208,13 @@ TENSION: Technical debt remains acceptable only while it is visible and does not
 OUTCOME: converged
 TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; GALAXY Phase-2 adversarial and live-proof sequence; Naomi's explicit preserve/VASKON/disperse instruction.
 STATUS: VERIFIED
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|COUNCIL PRESENTATION V1 DEPLOYMENT|developmental_logic]
+WHAT: Built and live-verified deterministic Council presentation state. Encountered three useful failures: tested the obsolete gaiaos-loader-api hostname instead of the active ligeia-api carrier; the first presentation verifier import strategy failed on the versioned .v1.py filename; the next verifier patch called _read_json with the wrong helper contract and caused a 500. Each failure was preserved, traced, corrected, redeployed, and re-observed until the live verifier returned 59/59 PASS.
+LEARNED: Before debugging application code, verify the exact public carrier hostname and deployed commit. Before deployment, inspect helper signatures rather than assuming their contract. Versioned Python filenames need an explicit SourceFileLoader or a conventional module filename. New verification code itself must be failure-contained so a diagnostic check cannot crash the entire verifier. Source presence, deployed revision, route registration, endpoint execution, and feature-specific behavioral checks are separate proof stages.
+PRECHECKS_NEXT_TIME: confirm canonical service URL; confirm Render commit == GitHub main head; inspect live route manifest; validate helper call signatures; test/import versioned runtime modules safely; wrap each new verifier block so errors become FAIL receipts rather than HTTP 500; add feature-specific negative tests before declaring completion.
+OUTCOME: COUNCIL PRESENTATION V1 live verified at 59/59 PASS, 0 failed.
+VALUES: fail closed; reduce Naomi operator burden; exact receipts; no narrated-away failures; proof before promotion.
+TRACE: commits a210265, da975a4, 524975e, baec57c; live /runtime/routes and /verify observations supplied by Naomi.
+STATUS: VERIFIED
