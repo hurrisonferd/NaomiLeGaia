@@ -601,3 +601,30 @@ The live broader-calibration approval gate preserved the intended separation:
 
 NEXT LIVE GATE:
 explicit Naomi-authorized verification of exactly these four controlled calibration edges, followed by readback confirming all four are VERIFIED while gravity remains unwritten and retrieval weighting remains disabled.
+
+
+### Phase-2 broader calibration live GRAPH VERIFICATION gate 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `CALIBRATION_GRAPH_VERIFIED`
+- Session: `SESSION-3814cd13ab0d48779fd108c4809fabc1`
+- Exactly four controlled calibration edges were verified under `NAOMI` authority.
+- Verified edges:
+  - `EDGE-f7be805051934c218089c2f818d8caee`: SATELLITE `CONTEXT_FOR` CORE, strength `0.40`
+  - `EDGE-72a2818f91034db5b929f36abb230160`: REINFORCER `REINFORCES` CORE, strength `0.80`
+  - `EDGE-324a405c6e534400a6f594c987e6ab4f`: REVISION `REVISES` CORE, strength `0.90`
+  - `EDGE-72a03a65017c46efa0d982c42be3f6e8`: REVISION `CONTRADICTS` REINFORCER, strength `0.70`
+- Each verification returned a successful `GALAXY_VERIFY_RELATION` receipt.
+- Edge readback showed all four as `VERIFIED` with authority `NAOMI`.
+- `all_four_edges_verified: true`
+- `gravity_writes_performed: []`
+- `retrieval_weighting_enabled: false`
+
+GRAPH-VERIFICATION CONCLUSION:
+
+The broader calibration graph is now live and verified without writing gravity. The intended separation remains intact:
+`RELATION VERIFICATION != GRAVITY CALCULATION != RETRIEVAL WEIGHTING`.
+
+NEXT LIVE GATE:
+read-only broader shadow-gravity preview across CORE / SATELLITE / REINFORCER / REVISION / ISOLATED. The preview must perform zero gravity writes, expose component variation, produce multiple distinct scores, and report the synthetic discrimination checks before any score is persisted.
