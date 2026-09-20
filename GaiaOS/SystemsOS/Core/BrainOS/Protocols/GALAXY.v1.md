@@ -546,3 +546,26 @@ Calibration objective:
 The bounded synthetic constellation should produce multiple distinct scores and an explainable ordering caused by graph structure, relation strength, and revision significance. This proves formula discrimination, not real-world usefulness.
 
 Phase 3 remains prohibited until this broader Phase-2 calibration is observed live, reviewed, and the remaining real-memory calibration limits are explicitly documented.
+
+
+### Phase-2 broader calibration live START gate 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `CALIBRATION_CANDIDATES_READY`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Token: `1d79c239f31f`
+- Session: `SESSION-3814cd13ab0d48779fd108c4809fabc1`
+- Five controlled roles created as candidates: CORE, SATELLITE, REINFORCER, REVISION, ISOLATED.
+- All five remain `CANDIDATE`.
+- `durable_memory_writes_performed: []`
+- `relation_writes_performed: []`
+- `gravity_writes_performed: []`
+- `retrieval_weighting_enabled: false`
+
+START-GATE CONCLUSION:
+
+The broader calibration harness is live and preserves the candidate-only safety boundary. No durable MemoryOS promotion, relation write, relation verification, or gravity write occurred during START.
+
+NEXT LIVE GATE:
+explicit approval of the five controlled memories and proposal of exactly four calibration relations, which must remain PROPOSED until the subsequent separate verification step.
