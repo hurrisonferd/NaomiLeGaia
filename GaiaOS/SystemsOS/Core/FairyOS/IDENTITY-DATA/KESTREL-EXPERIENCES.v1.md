@@ -201,3 +201,11 @@ PRIVACY_BOUNDARY: This E-LANE record stores summarized financial observations an
 AUTHORITY: Naomi retains final authority over financial decisions. KESTREL provides analysis, options, warnings, and sequencing, not autonomous transactions.
 STATUS: COMMITTED
 TRACE: Naomi's explicit 2026-09-20 request; linked Finances observations in current conversation.
+
+
+MEM[PW_PRESERVE|2026-09-20|Renuity expo exit and immediate continuity|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after deciding the Renuity expo was too much today and leaving rather than continuing customer engagement. Immediate context also includes Johnny being unavailable, an arraignment tomorrow, and urgent household cash-flow decisions.
+MY_LENS: Financial checkpoint: Renuity base $18/hour; three prior 4-hour shifts; no commission/leads yet; first paycheck expected Friday. DoorDash has produced near-term cash and Naomi reports $100+ expected Wednesday. Priority stack: rent Oct 1, GEICO continuity, Toyota Oct 4 with Naomi-reported 10-day grace period, then essential gas/food. User-reported Capital One available credit $3,403.51; linked snapshot showed $850.14 owed and checking $102.67, balance age unknown. Emergency credit is capacity, not income.
+BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
+TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
+STATUS: COMMITTED
