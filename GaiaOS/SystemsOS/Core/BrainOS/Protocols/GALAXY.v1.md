@@ -1244,3 +1244,37 @@ The separation remained intact:
 NEXT LIVE GATE:
 
 Re-run the read-only real-memory shadow calibration preview. With one eligible durable real-memory record and no verified real-memory relations yet, expected readiness remains `GRAPH_COVERAGE_LIMITED`. This should be treated as a population/topology finding, not a score-quality result.
+
+
+### Phase-2 first real-memory shadow-preview live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SHADOW_PREVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Eligible real-memory records: `1`
+- Relation-bearing real-memory records: `0`
+- Zero-relation real-memory records: `1`
+- Unique relation profiles: `1`
+- Selected sample count: `1`
+- Calibration readiness: `GRAPH_COVERAGE_LIMITED`
+- Record: `MEM-2940611cdf924de5bc12fb36947517ab`
+- Current shadow score: `0.4`
+- Verified relation count: `0`
+- Stored shadow gravity: `null`
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+INTERPRETATION:
+
+The first real durable MemoryOS record is now visible to Phase-2 shadow preview. Its `0.4` score is the v1 base produced by ACTIVE durable status plus NAOMI provenance while graph-derived components remain zero.
+
+This is a population/topology finding, not a calibration-quality result. One isolated real memory cannot test whether relation density, relation strength, or revision significance correspond to real usefulness.
+
+NEXT WORK:
+
+Add further Naomi-authored real-memory seeds through the same non-durable-candidate -> exact-review -> durable-promotion path. Do not create graph relations until multiple real records exist and their exact semantics can be reviewed side-by-side.
+
+Phase 3 remains disabled and unauthorized.
