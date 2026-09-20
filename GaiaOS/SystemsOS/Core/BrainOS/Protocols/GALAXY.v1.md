@@ -1513,3 +1513,71 @@ Re-run the read-only real-memory shadow calibration preview. Expected result:
 - no writes or retrieval effect.
 
 After that baseline is observed, the next architectural step is a separately reviewed real-memory relation proposal. Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 three-real-memory isolated baseline and relation gate 2026-09-20
+
+OBSERVED LIVE BASELINE:
+
+- Status: \`REAL_MEMORY_SHADOW_PREVIEW\`
+- Phase: \`PHASE_2_GRAVITY_SHADOW\`
+- Eligible real-memory records: \`3\`
+- Relation-bearing real-memory records: \`0\`
+- Zero-relation real-memory records: \`3\`
+- Unique relation profiles: \`1\`
+- Selected sample count: \`3\`
+- Unique shadow scores: \`1\`
+- Score values: \`[0.4]\`
+- Score spread: \`0.0\`
+- Relation-count values: \`[0]\`
+- Calibration readiness: \`GRAPH_COVERAGE_LIMITED\`
+- All three records are ACTIVE, NAOMI-authorized, non-test MemoryOS records.
+- All three have \`stored_shadow_gravity: null\`.
+- No writes, relation mutations, gravity mutations, or retrieval weighting occurred.
+
+BASELINE CONCLUSION:
+
+The three-record isolated baseline is PASS. Shadow-v1 is stable across equal topology: every isolated real memory receives the same \`0.4\` base composed of ACTIVE durability (\`0.25\`) plus Naomi provenance (\`0.15\`). The result still says nothing about whether graph-derived weights are useful because no real semantic edge has yet been verified.
+
+FIRST REAL RELATION EXPERIMENT:
+
+Keep one memory isolated as the control and relate the other two only where their actual semantics justify it.
+
+Proposed exact edge:
+
+- source: \`MEM-3beb2cf2c3ba401794cfce228c6e7e14\`
+  - provenance-and-contradiction preservation principle
+- relation: \`EXTENDS\`
+- target: \`MEM-2940611cdf924de5bc12fb36947517ab\`
+  - historical-memory / revision-and-supersession principle
+- proposed strength: \`0.85\`
+- basis: \`Preserving provenance and contradiction operationally extends the broader requirement that historical memory remain evidence without becoming permanent destiny.\`
+- classifier: \`GALAXY_REAL_CALIBRATION_V1\`
+
+\`MEM-3883f8127bcd40e28255fdbfa4c98309\` remains isolated as the first real topology control.
+
+NEW SOURCE GATE:
+
+The carrier now exposes four separated real-memory relation surfaces:
+
+1. \`/galaxy/gravity/real-calibration/relation/review\`
+   - validates exact real endpoints and semantics;
+   - read-only;
+   - no edge write.
+2. \`/galaxy/gravity/real-calibration/relation/propose\`
+   - explicit Naomi click;
+   - creates only a \`PROPOSED\` edge;
+   - no verification, gravity write, or retrieval effect.
+3. \`/galaxy/gravity/real-calibration/relation/verify-review\`
+   - reads one exact proposed edge;
+   - zero writes.
+4. \`/galaxy/gravity/real-calibration/relation/verify\`
+   - explicit Naomi verification of that exact edge;
+   - reports relation readback, ORBIT state, shadow previews, and retrieval before/after;
+   - writes no gravity and enables no retrieval weighting.
+
+BOUNDARY:
+
+\`REVIEW != PROPOSE != VERIFY != GRAVITY WRITE != RETRIEVAL WEIGHTING\`
+
+Phase 3 remains disabled and unauthorized.
