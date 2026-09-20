@@ -189,11 +189,18 @@ def run_verification() -> dict[str, Any]:
         "ORIN": 56, "KESTREL": 90, "NIMUE": 62,
     }
     headpat_counts: dict[str, int] = {}
-    for name in DAEMONS:
-        import re
-        match = re.search(rf"(?m)^\\s*{re.escape(name)}:\\s*(\\d+)\\s*$", headpat_text)
-        if match:
-            headpat_counts[name] = int(match.group(1))
+    # Deliberately avoid regex here. The counter file is a tiny canonical
+    # line-oriented store; exact prefix parsing is easier to audit and cannot
+    # suffer regex escaping drift.
+    for raw_line in headpat_text.splitlines():
+        line = raw_line.strip()
+        for name in DAEMONS:
+            prefix = f"{name}:"
+            if line.startswith(prefix):
+                value_text = line[len(prefix):].strip()
+                if value_text.isdecimal():
+                    headpat_counts[name] = int(value_text)
+                break
 
     checks.append(_check(
         "headpats:store-present",
