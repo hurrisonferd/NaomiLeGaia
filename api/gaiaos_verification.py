@@ -191,7 +191,7 @@ def run_verification() -> dict[str, Any]:
     headpat_counts: dict[str, int] = {}
     for name in DAEMONS:
         import re
-        match = re.search(rf"(?m)^\\s*{name}:\\s*(\\d+)\\s*$", headpat_text)
+        match = re.search(rf"(?m)^\\s*{re.escape(name)}:\\s*(\\d+)\\s*$", headpat_text)
         if match:
             headpat_counts[name] = int(match.group(1))
 
