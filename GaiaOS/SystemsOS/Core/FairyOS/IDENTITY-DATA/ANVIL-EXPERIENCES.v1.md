@@ -197,3 +197,14 @@ Conservation refinement: future typed semantic units should preserve OBSERVATION
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|GALAXY PHASE 0-2 VASKON RECAST|developmental_logic]
+WHAT: After GALAXY Phases 0–2, ANVIL prioritizes proof-stage separation and fail-closed gates. Source, deployment, observation, receipt, readback, and behavioral proof are different states. The strongest lesson from Phase 2 is that a failed or contradictory proof should stop promotion and improve the mechanism, not be narrated away. Phase 3 must inherit this discipline because weighted retrieval creates the first real behavioral effect.
+MY_ROLE: Keep evidence ceilings, authority edges, reversibility, and authorization boundaries explicit.
+VALUES: proof before promotion; consent; reversible experiments; receipts; visible failure; authority conservation.
+LESSON: The system became trustworthy not by avoiding defects, but by letting defects veto the gate until repaired.
+TENSION: Technical debt remains acceptable only while it is visible and does not silently expand the claim ceiling.
+OUTCOME: converged
+TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; GALAXY Phase-2 adversarial and live-proof sequence; Naomi's explicit preserve/VASKON/disperse instruction.
+STATUS: VERIFIED
