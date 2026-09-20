@@ -1374,3 +1374,37 @@ The real-memory population now contains two durable semantic records suitable fo
 NEXT LIVE GATE:
 
 Re-run the read-only real-memory shadow calibration preview. With two durable real memories and no verified real-memory relations, expected result is two isolated records with the same base shadow score and `GRAPH_COVERAGE_LIMITED`. This remains a topology finding, not score-quality evidence.
+
+
+### Phase-2 two-real-memory shadow-preview live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SHADOW_PREVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Eligible real-memory records: `2`
+- Relation-bearing real-memory records: `0`
+- Zero-relation real-memory records: `2`
+- Unique relation profiles: `1`
+- Selected sample count: `2`
+- Sample unique score count: `1`
+- Sample score values: `[0.4]`
+- Sample score spread: `0.0`
+- Sample relation-count values: `[0]`
+- Calibration readiness: `GRAPH_COVERAGE_LIMITED`
+- Both real records remain isolated and therefore receive the same base shadow-v1 score.
+- Stored shadow gravity remains `null` for both records.
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+INTERPRETATION:
+
+The second real durable memory is visible to Phase-2 calibration, but two isolated records still provide no graph-shape variation. Equal scores here are expected and are not evidence that the formula is calibrated.
+
+NEXT WORK:
+
+Add at least one additional real semantic memory before creating the first real-memory relation graph. A three-record minimum allows one record to remain isolated while two or more related records form a naturally different topology, creating the first meaningful real-memory shadow comparison without manufacturing synthetic coverage.
+
+Phase 3 remains disabled and unauthorized.
