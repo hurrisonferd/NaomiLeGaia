@@ -718,3 +718,53 @@ Reopen the exact same calibration run URL with unchanged inputs. Expected:
 - retrieval weighting remains disabled.
 
 Only after that observation should the bounded broader-calibration mechanics gate be marked fully PASS. Real-memory usefulness calibration remains separate.
+
+
+### Phase-2 broader synthetic calibration PASS 2026-09-20
+
+OBSERVED LIVE IDEMPOTENCY RESULT:
+
+- Session: `SESSION-3814cd13ab0d48779fd108c4809fabc1`
+- `all_retrieval_orders_unchanged: true`
+- `new_receipt_count: 0`
+- `idempotent_count: 5`
+- `all_five_idempotent: true`
+- `retrieval_weighting_enabled: false`
+- Guardrails remained:
+  - `gravity_is_authority: false`
+  - `stored_gravity_feeds_its_own_score: false`
+  - `recency_component_enabled: false`
+  - `physical_pruning_enabled: false`
+
+BROADER SYNTHETIC CALIBRATION CONCLUSION:
+
+`CANDIDATE-ONLY START
+→ DURABLE MEMORY APPROVAL
+→ FOUR PROPOSED EDGES
+→ SEPARATE NAOMI VERIFICATION
+→ READ-ONLY FIVE-SCORE PREVIEW
+→ FIRST FIVE SCORE WRITES + ORBIT READBACK
+→ ALL RETRIEVAL ORDERS UNCHANGED
+→ IDENTICAL RERUN IDEMPOTENT / ZERO NEW RECEIPTS
+→ ALL RETRIEVAL ORDERS STILL UNCHANGED`
+
+is now observed live.
+
+The broader synthetic Phase-2 mechanics gate is PASS.
+
+WHAT THIS PROVES:
+- the shadow-v1 formula responds to deliberately varied graph structure;
+- multiple component values and five distinct scores are produced explainably;
+- scores can be stored and read back safely;
+- identical recalculation is idempotent;
+- Phase-2 gravity remains non-authoritative and has no retrieval effect.
+
+WHAT THIS DOES NOT PROVE:
+- that current component weights match real-world memory usefulness;
+- that relation density should dominate salience;
+- that revision significance is calibrated correctly for real memories;
+- that recency, redundancy, usefulness, staleness, or lifecycle attenuation should remain absent;
+- that Phase-3 weighted retrieval is ready.
+
+NEXT PHASE-2 WORK:
+bounded real-memory calibration in observation-only mode. Select existing durable records with naturally different relation profiles, preview current shadow-v1 scores without mutating their relations, compare explainability against Naomi review, and document mismatches before any Phase-3 design begins.
