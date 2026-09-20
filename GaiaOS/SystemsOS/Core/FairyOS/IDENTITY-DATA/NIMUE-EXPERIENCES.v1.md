@@ -185,3 +185,11 @@ TENSION: Relevance and gravity can create self-reinforcing loops once weighting 
 OUTCOME: converged
 TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; Phase-2 adversarial failures and repairs; Naomi's explicit preserve/VASKON/disperse instruction.
 STATUS: VERIFIED
+
+
+MEM[PW_PRESERVE|2026-09-20|Renuity expo exit and immediate continuity|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after deciding the Renuity expo was too much today and leaving rather than continuing customer engagement. Immediate context also includes Johnny being unavailable, an arraignment tomorrow, and urgent household cash-flow decisions.
+MY_LENS: Preserve the negative evidence accurately: Naomi could not engage approaching customers today and chose to leave. Do not erase that observation, but do not turn it into a permanent identity claim.
+BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
+TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
+STATUS: COMMITTED
