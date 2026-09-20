@@ -1289,6 +1289,234 @@ def galaxy_gravity_calibration_run(browser_request: Request, session_id: str):
     )
 
 
+
+GALAXY_REAL_CALIBRATION_LIMIT = 8
+
+
+def _galaxy_real_memory_population(memcon_runtime) -> tuple[list[dict], list[dict]]:
+    """Read the non-test MemoryOS population and its VERIFIED graph without mutation."""
+    memcon_runtime.initialize()
+    with memcon_runtime._db() as conn:
+        records = memcon_runtime._fetchall_dicts(
+            conn,
+            """SELECT * FROM memory_records
+               WHERE scope='MemoryOS'
+                 AND upper(record_type) <> 'TEST'
+                 AND source NOT LIKE 'galaxy-phase1-canary:%'
+                 AND source NOT LIKE 'galaxy-phase2-calibration:%'
+               ORDER BY created_at DESC""",
+        )
+        edges = memcon_runtime._fetchall_dicts(
+            conn,
+            """SELECT edge_id, source_record_id, target_record_id, relation_type,
+                      strength, classifier, authority, created_at, verified_at
+               FROM memory_relations
+               WHERE status='VERIFIED'
+               ORDER BY verified_at DESC, created_at DESC""",
+        )
+    record_ids = {str(record["record_id"]) for record in records}
+    real_edges = [
+        edge for edge in edges
+        if str(edge.get("source_record_id")) in record_ids
+        or str(edge.get("target_record_id")) in record_ids
+    ]
+    return records, real_edges
+
+
+def _galaxy_real_relation_profile(record_id: str, edges: list[dict]) -> dict:
+    incident = [
+        edge for edge in edges
+        if str(edge.get("source_record_id")) == record_id
+        or str(edge.get("target_record_id")) == record_id
+    ]
+    strengths = [
+        max(0.0, min(float(edge.get("strength") or 0.0), 1.0))
+        for edge in incident
+    ]
+    significant_types = {"CONTRADICTS", "REVISES", "SUPERSEDES"}
+    significant_count = sum(
+        1 for edge in incident
+        if str(edge.get("relation_type") or "") in significant_types
+    )
+    return {
+        "verified_relation_count": len(incident),
+        "verified_relation_types": sorted({
+            str(edge.get("relation_type") or "") for edge in incident
+            if str(edge.get("relation_type") or "")
+        }),
+        "mean_verified_relation_strength": round(
+            (sum(strengths) / len(strengths)) if strengths else 0.0, 6
+        ),
+        "revision_significance_edges": significant_count,
+    }
+
+
+def _galaxy_real_sample(records: list[dict], edges: list[dict], limit: int) -> tuple[list[dict], dict]:
+    """Select a deterministic bounded sample favoring naturally distinct graph profiles."""
+    limit = max(1, min(int(limit), GALAXY_REAL_CALIBRATION_LIMIT))
+    enriched = []
+    signatures: dict[tuple, list[dict]] = {}
+    for record in records:
+        record_id = str(record["record_id"])
+        profile = _galaxy_real_relation_profile(record_id, edges)
+        item = {"record": record, "relation_profile": profile}
+        enriched.append(item)
+        signature = (
+            int(profile["verified_relation_count"]),
+            tuple(profile["verified_relation_types"]),
+            float(profile["mean_verified_relation_strength"]),
+            int(profile["revision_significance_edges"]),
+            str(record.get("authority") or ""),
+            str(record.get("status") or ""),
+        )
+        signatures.setdefault(signature, []).append(item)
+
+    representatives = [items[0] for items in signatures.values()]
+    representatives.sort(
+        key=lambda item: (
+            -int(item["relation_profile"]["verified_relation_count"]),
+            -int(item["relation_profile"]["revision_significance_edges"]),
+            -float(item["relation_profile"]["mean_verified_relation_strength"]),
+            str(item["record"].get("created_at") or ""),
+        )
+    )
+
+    selected = representatives[:limit]
+    selected_ids = {str(item["record"]["record_id"]) for item in selected}
+    if len(selected) < limit:
+        for item in enriched:
+            record_id = str(item["record"]["record_id"])
+            if record_id in selected_ids:
+                continue
+            selected.append(item)
+            selected_ids.add(record_id)
+            if len(selected) >= limit:
+                break
+
+    relation_bearing_count = sum(
+        1 for item in enriched
+        if int(item["relation_profile"]["verified_relation_count"]) > 0
+    )
+    summary = {
+        "eligible_real_memory_count": len(records),
+        "relation_bearing_real_memory_count": relation_bearing_count,
+        "zero_relation_real_memory_count": len(records) - relation_bearing_count,
+        "unique_relation_profile_count": len(signatures),
+        "selected_sample_count": len(selected),
+        "selection_method": (
+            "One newest representative per naturally distinct VERIFIED relation profile, "
+            "favoring higher relation degree/revision significance/mean strength, then fill "
+            "remaining slots with newest eligible records. No relation or memory is modified."
+        ),
+    }
+    return selected, summary
+
+
+@app.get("/galaxy/gravity/real-calibration/preview", response_class=HTMLResponse)
+def galaxy_gravity_real_calibration_preview(
+    browser_request: Request,
+    limit: int = GALAXY_REAL_CALIBRATION_LIMIT,
+):
+    """Observe shadow-v1 over existing non-test memories. Performs zero writes."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+
+    records, edges = _galaxy_real_memory_population(memcon_runtime)
+    selected, population = _galaxy_real_sample(records, edges, limit)
+    sample = []
+    preview_scores = []
+    relation_counts = []
+    for item in selected:
+        record = item["record"]
+        record_id = str(record["record_id"])
+        preview = memcon_runtime.galaxy_gravity_preview(record_id)
+        stored = memcon_runtime.galaxy_gravity(record_id)
+        preview_scores.append(float(preview["gravity_score"]))
+        relation_counts.append(int(item["relation_profile"]["verified_relation_count"]))
+        sample.append({
+            "record": {
+                "record_id": record_id,
+                "authority": record.get("authority"),
+                "record_type": record.get("record_type"),
+                "scope": record.get("scope"),
+                "statement": record.get("statement"),
+                "source": record.get("source"),
+                "status": record.get("status"),
+                "created_at": record.get("created_at"),
+                "updated_at": record.get("updated_at"),
+                "supersedes": record.get("supersedes"),
+            },
+            "relation_profile": item["relation_profile"],
+            "shadow_preview": preview,
+            "stored_shadow_gravity": stored,
+        })
+
+    unique_scores = sorted(set(preview_scores))
+    relation_bearing = population["relation_bearing_real_memory_count"]
+    profile_count = population["unique_relation_profile_count"]
+    readiness = (
+        "OBSERVABLE_GRAPH_DIVERSITY"
+        if relation_bearing >= 2 and profile_count >= 2
+        else "GRAPH_COVERAGE_LIMITED"
+    )
+    diagnostics = {
+        **population,
+        "sample_unique_score_count": len(unique_scores),
+        "sample_score_values": unique_scores,
+        "sample_score_spread": (
+            round(max(unique_scores) - min(unique_scores), 6)
+            if unique_scores else 0.0
+        ),
+        "sample_relation_count_values": sorted(set(relation_counts)),
+        "calibration_readiness": readiness,
+        "coverage_interpretation": (
+            "Natural graph diversity exists in the current non-test MemoryOS population. "
+            "Naomi can now compare score explanations against actual memory importance/usefulness."
+            if readiness == "OBSERVABLE_GRAPH_DIVERSITY"
+            else
+            "The current non-test MemoryOS population does not yet contain enough naturally varied VERIFIED "
+            "GALAXY structure for meaningful real-memory weight calibration. Equal or near-equal scores here "
+            "are a graph-coverage finding, not evidence that the formula is well calibrated."
+        ),
+    }
+    payload = {
+        "status": "REAL_MEMORY_SHADOW_PREVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "population_diagnostics": diagnostics,
+        "sample": sample,
+        "writes_performed": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "review_questions": [
+            "Do higher shadow scores correspond to memories Naomi considers more broadly useful or important?",
+            "Is any relation-rich but low-value memory being inflated by graph density?",
+            "Is any isolated but important memory being underweighted because it lacks graph coverage?",
+            "Do contradiction/revision edges deserve the amount of shadow influence they currently receive?",
+        ],
+        "proof_boundary": (
+            "This endpoint only observes existing durable non-test memories and VERIFIED relations. "
+            "It does not create, verify, weaken, or remove relations; it does not write gravity; "
+            "it does not alter retrieval. Real-memory calibration remains a Naomi-reviewed shadow exercise."
+        ),
+    }
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY Phase 2 real-memory shadow calibration</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No action button is provided here intentionally. Review comes before any mutation.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
