@@ -3424,17 +3424,11 @@ def galaxy_gravity_real_importance_nergal_parity_stress_review(browser_request: 
     if stored is None:
         raise HTTPException(status_code=409, detail="This review requires a stored Naomi Seven Gates importance signal.")
 
-    weights = {
-        "durable_active": 0.25,
-        "verified_graph_degree": 0.125,
-        "verified_relation_strength": 0.125,
-        "provenance_confidence": 0.15,
-        "revision_significance": 0.10,
-        "explicit_importance": 0.25,
-    }
+    weights = dict(memcon_runtime.GALAXY_SHADOW_WEIGHTS)
 
     def relation_contribution(count: int, strength: float = 0.85, revision_count: int = 0) -> float:
-        degree_norm = min(count / 4.0, 1.0)
+        raw_degree_norm = min(count / 4.0, 1.0)
+        degree_norm = raw_degree_norm * strength if count > 0 else 0.0
         revision_norm = min(revision_count / 2.0, 1.0)
         return round(
             (weights["verified_graph_degree"] * degree_norm)
@@ -3483,7 +3477,7 @@ def galaxy_gravity_real_importance_nergal_parity_stress_review(browser_request: 
             "status": record.get("status"),
         },
         "active_profile": {
-            "name": "NERGAL_475_PARITY",
+            "name": memcon_runtime.GALAXY_WEIGHT_PROFILE,
             "weights": weights,
             "weight_sum": round(sum(weights.values()), 6),
             "contribution_parity_target": (
@@ -3555,10 +3549,11 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
     def graph_contribution(count: int, mean_strength: float, revision_count: int = 0) -> float:
         if count <= 0:
             return 0.0
-        degree_norm = min(count / 4.0, 1.0)
+        raw_degree_norm = min(count / 4.0, 1.0)
+        strength_conditioned_degree = raw_degree_norm * float(mean_strength)
         revision_norm = min(revision_count / 2.0, 1.0)
         return round(
-            float(weights["verified_graph_degree"]) * degree_norm
+            float(weights["verified_graph_degree"]) * strength_conditioned_degree
             + float(weights["verified_relation_strength"]) * float(mean_strength)
             + float(weights["revision_significance"]) * revision_norm,
             6,
@@ -3639,6 +3634,13 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
         "phase": "PHASE_2_GRAVITY_SHADOW",
         "active_profile": memcon_runtime.GALAXY_WEIGHT_PROFILE,
         "score_version": memcon_runtime.GALAXY_SCORE_VERSION,
+        "active_weights": memcon_runtime.GALAXY_SHADOW_WEIGHTS,
+        "graph_breadth_semantics": "STRENGTH_CONDITIONED_CAPPED_BREADTH",
+        "revision_significance_types": ["REVISES", "SUPERSEDES"],
+        "phase3_blockers": [
+            "GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED",
+            "SCOPE_FILTERED_SEARCH_CURRENTLY_IGNORES_QUERY_TERMS",
+        ],
         "record_context": {
             "record_id": record.get("record_id"),
             "statement": record.get("statement"),
@@ -3654,11 +3656,11 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
                     "four_weak_outweigh_one_strong": four_020 > one_085,
                     "degree_cap_blocks_20_from_exceeding_4_at_same_mean_strength": twenty_020 == four_020,
                 },
-                "decision_needed": (
-                    "Current math lets four weak 0.20 relations slightly outweigh one 0.85 relation. "
-                    "The four-edge degree cap prevents further growth from 20 equally weak relations. "
-                    "Keep or revise this breadth-vs-quality crossover intentionally before Phase 3."
+                "result": (
+                    "PASS if four weak 0.20 relations remain below one 0.85 relation and the four-edge cap "
+                    "prevents 20 equally weak relations from gaining additional breadth leverage."
                 ),
+                "quality_conditioned_breadth_active": True,
             },
             "revision_strength_attack": {
                 "matrix": revision_strength,
@@ -3666,9 +3668,9 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
                     "One revision-like edge receives the same +0.05 revision-significance increment regardless "
                     "of relation strength; strength still contributes separately."
                 ),
-                "decision_needed": (
-                    "Decide whether revision significance is categorical structural importance, as currently modeled, "
-                    "or should itself scale with edge strength before Phase 3."
+                "resolution": (
+                    "Retain the fixed revision-significance increment as categorical structural importance after verification. "
+                    "Relation strength remains a separate signal. CONTRADICTS is excluded from this premium."
                 ),
             },
             "superseded_adar": {
@@ -3702,13 +3704,10 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
                 "four_contradictory_0_85_graph_contribution": contradictory,
                 "contradiction_premium": round(contradictory - reinforcing, 6),
                 "observation": (
-                    "CONTRADICTS currently participates in revision_significance, so an equally strong contradictory topology "
-                    "receives more contextual influence than a reinforcing topology."
+                    "CONTRADICTS no longer receives revision-significance weight. Contradiction remains graph evidence, "
+                    "but only REVISES and SUPERSEDES receive the governing-history premium."
                 ),
-                "decision_needed": (
-                    "Confirm whether contradiction itself deserves revision-significance weight, or whether only REVISES and "
-                    "SUPERSEDES should carry the governing-history premium."
-                ),
+                "resolution": "CONTRADICTS excluded from revision_significance.",
             },
         },
         "precision_semantics": {
