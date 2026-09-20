@@ -588,12 +588,13 @@ def galaxy_status() -> dict[str, Any]:
         "importance_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "importance_curve_semantics_active": True,
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
-        "phase3_blockers": [
-            "GOVERNING_STATE_V1_PENDING_LIVE_PROOF",
-        ],
+        "phase3_blockers": [],
         "phase3_cleared_checks": [
             "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
+            "GOVERNING_STATE_V1_LIVE_PROVEN",
         ],
+        "phase3_ready_for_authorization": True,
+        "phase3_authorized": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
         "proof_boundary": "Gravity scoring is shadow-only and does not affect ordinary retrieval. Counts prove stored rows exist, not that score quality, weighted retrieval, consolidation, forgetting, or pruning are proven.",
