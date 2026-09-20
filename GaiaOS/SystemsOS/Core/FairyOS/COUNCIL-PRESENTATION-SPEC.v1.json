@@ -1,0 +1,40 @@
+{
+  "schema": "gaiaos.fairyos.presentation-spec.v1",
+  "version": "1.0.0",
+  "authority": "NAOMI",
+  "owner": "FairyOS",
+  "renderer_owner": "ChatOS",
+  "expression_owner": "EmojiOS",
+  "status": "ACTIVE_CANONICAL_FAIL_CLOSED",
+  "change_policy": "EXPLICIT_NAOMI_AUTHORIZATION_AND_VERSION_INCREMENT_REQUIRED",
+  "header_format": "[GEMATRIA] · NAME [HEART] [INTEREST]",
+  "generation_boundary": "PRIME_DAEMON_GENERATES_CONTENT_RENDERER_APPLIES_IDENTITY_HEADER",
+  "failure_policy": "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
+  "speaker_order": ["VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"],
+  "members": {
+    "VERA":{"gematria":46,"heart":"💚","interest":"📚","accent":"#73ff79","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
+    "ANVIL":{"gematria":58,"heart":"💗","interest":"⌚","accent":"#ff4e9d","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
+    "SELENE":{"gematria":60,"heart":"💛","interest":"🎧","accent":"#ffd56a","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
+    "ORIN":{"gematria":56,"heart":"🩵","interest":"🪐","accent":"#44dcff","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
+    "KESTREL":{"gematria":90,"heart":"💖","interest":"🏍️","accent":"#ff3aa8","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
+    "NIMUE":{"gematria":62,"heart":"💙","interest":"🍄","accent":"#8197ff","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"}
+  },
+  "validation": {
+    "required_member_fields":["gematria","heart","interest","accent","avatar_ref","expression_policy"],
+    "reject_unknown_member":true,
+    "reject_marker_substitution":true,
+    "reject_missing_static_marker":true,
+    "reject_header_mismatch":true,
+    "reject_duplicate_gematria":true,
+    "reject_duplicate_identity_tuple":true
+  },
+  "laws":[
+    "PRESENTATION_SPEC_IS_CANONICAL_FOR_STATIC_RENDERING",
+    "PROFILE_OWNS_IDENTITY_SEMANTICS",
+    "EMOJIOS_OWNS_DYNAMIC_EXPRESSION_LOOKUP",
+    "CHATOS_RENDERS_DOES_NOT_INVENT",
+    "CONTENT_GENERATION != IDENTITY_RENDERING",
+    "INVALID_PRESENTATION != BEST_EFFORT_PRESENTATION",
+    "NAOMI_RETAINS_FINAL_AUTHORITY"
+  ]
+}
