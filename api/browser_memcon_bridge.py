@@ -183,23 +183,26 @@ def _handle_galaxy_orbit(command: str) -> dict:
 
 
 def _handle_galaxy_gravity(command: str) -> dict:
-    """Shadow-mode gravity inspection. Phase 1 intentionally performs no scoring."""
+    """Read/preview Phase-2 gravity without silently writing a score."""
     record_id = _galaxy_command_body(command, "GRAVITY").split()[0] if _galaxy_command_body(command, "GRAVITY") else ""
     if not record_id:
         return _envelope("PW:GRAVITY", {
-            "status": "SHADOW_NOT_SCORED",
+            "status": "PHASE_2_SHADOW_READY",
             "galaxy": memcon_runtime.galaxy_status(),
             "usage": "//PW:GRAVITY// MEM-<record_id>",
             "writes_performed": [],
-            "proof_boundary": "Phase 1 installs the gravity data surface but does not invent scores.",
+            "proof_boundary": "PW:GRAVITY is inspection-only. Shadow scoring must be explicitly run through the Phase-2 canary or another approved scoring surface.",
         })
-    result = memcon_runtime.galaxy_record(record_id)
-    if result is None:
+    try:
+        preview = memcon_runtime.galaxy_gravity_preview(record_id)
+    except KeyError:
         return _envelope("PW:GRAVITY HOLD", {"status": "HOLD", "reason": "Unknown durable record_id", "record_id": record_id})
+    stored = memcon_runtime.galaxy_gravity(record_id)
     return _envelope("PW:GRAVITY", {
-        "status": "SHADOW_NOT_SCORED" if result.get("gravity") is None else "OBSERVED",
+        "status": "OBSERVED" if stored is not None else "SHADOW_PREVIEW_ONLY",
         "record_id": record_id,
-        "gravity": result.get("gravity"),
+        "stored_gravity": stored,
+        "preview": preview,
         "retrieval_effect": "NONE_SHADOW_MODE",
         "writes_performed": [],
     })
