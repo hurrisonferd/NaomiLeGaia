@@ -1912,3 +1912,58 @@ The comparison also exposes a critical constraint: increasing the explicit-impor
 No formula revision, gravity write, relation mutation, or retrieval weighting is authorized by this verdict.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 live counterfactual weight-options result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_WEIGHT_OPTIONS_REVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Naomi verdict preserved: current `4.65x` relation-vs-explicit-importance leverage is not acceptable.
+- No profile selected and no formula mutation performed.
+
+Counterfactual profiles:
+
+1. `CURRENT_V1`
+   - relation contribution at one non-revision edge strength `0.85`: `0.2325`
+   - max explicit importance: `0.05`
+   - ratio: `4.65x`
+
+2. `SOFT_REBALANCE`
+   - relation contribution: `0.1775`
+   - max explicit importance: `0.15`
+   - ratio: `1.183333x`
+
+3. `PARITY_AT_ONE_085_RELATION`
+   - relation contribution: `0.177419`
+   - max explicit importance: `0.17742`
+   - ratio: approximately `1.0x`
+
+4. `IMPORTANCE_LEADING`
+   - relation contribution: `0.165`
+   - max explicit importance: `0.20`
+   - ratio: `0.825x`
+
+CRITICAL CONSTRAINT:
+
+All currently stored real memories still have normalized explicit importance `0.0`.
+
+Therefore, selecting a new weight profile before defining the explicit-importance signal would not solve the isolated-memory calibration question. Under every profile, the isolated authority-boundary memory remains at its base score until Naomi has a defined, reviewable way to supply an explicit importance signal.
+
+CONCLUSION:
+
+Do not select or deploy new weights yet.
+
+NEXT DESIGN GATE:
+
+Define the semantics and authorization model for explicit importance first, then re-run the same counterfactual profiles using a real Naomi-supplied importance signal.
+
+Candidate signal designs should remain bounded and inspectable, for example:
+- binary `0/1`;
+- three-level `0/0.5/1`;
+- continuous `0..1`.
+
+No importance signal, weight revision, gravity write, relation mutation, or retrieval weighting is authorized yet.
+
+Phase 3 remains disabled and unauthorized.
