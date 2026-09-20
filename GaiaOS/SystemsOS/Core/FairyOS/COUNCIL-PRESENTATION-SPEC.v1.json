@@ -1,14 +1,17 @@
 {
   "schema": "gaiaos.fairyos.presentation-spec.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "authority": "NAOMI",
   "owner": "FairyOS",
   "renderer_owner": "ChatOS",
   "expression_owner": "EmojiOS",
   "status": "ACTIVE_CANONICAL_FAIL_CLOSED",
   "change_policy": "EXPLICIT_NAOMI_AUTHORIZATION_AND_VERSION_INCREMENT_REQUIRED",
-  "header_format": "[GEMATRIA] · NAME [HEART] [INTEREST]",
-  "generation_boundary": "PRIME_DAEMON_GENERATES_CONTENT_RENDERER_APPLIES_IDENTITY_HEADER",
+  "header_format": "[GEMATRIA] · NAME [HEART] [INTEREST] [KAOMOJI]",
+  "identity_envelope": "GEMATRIA_NAME_HEART_INTEREST_KAOMOJI_ATOMIC",
+  "kaomoji_presence": "MANDATORY_ONE_PER_DAEMON_UTTERANCE",
+  "kaomoji_variation": "DYNAMIC_FROM_EMOJIOS_ALLOWLIST_WITH_MEMBER_DEFAULT_FALLBACK",
+  "generation_boundary": "PRIME_DAEMON_GENERATES_CONTENT_ONLY_RENDERER_CONSTRUCTS_COMPLETE_IDENTITY_ENVELOPE",
   "failure_policy": "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
   "speaker_order": ["VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"],
   "members": {
@@ -24,7 +27,11 @@
     "reject_unknown_member":true,
     "reject_marker_substitution":true,
     "reject_missing_static_marker":true,
+    "reject_missing_kaomoji":true,
+    "reject_multiple_kaomoji":true,
+    "reject_unregistered_kaomoji":true,
     "reject_header_mismatch":true,
+    "reject_hand_authored_header":true,
     "reject_duplicate_gematria":true,
     "reject_duplicate_identity_tuple":true
   },
@@ -34,7 +41,12 @@
     "EMOJIOS_OWNS_DYNAMIC_EXPRESSION_LOOKUP",
     "CHATOS_RENDERS_DOES_NOT_INVENT",
     "CONTENT_GENERATION != IDENTITY_RENDERING",
+    "IDENTITY_ENVELOPE_MAY_NOT_VARY",
+    "KAOMOJI_VALUE_MAY_VARY_KAOMOJI_PRESENCE_MAY_NOT",
+    "NO_EXPRESSION_MATCH_USES_MEMBER_DEFAULT_KAOMOJI",
+    "NO_NAKED_DAEMON_NAME_REACHES_PRESENTATION",
     "INVALID_PRESENTATION != BEST_EFFORT_PRESENTATION",
+    "HOST_DOES_NOT_REFORMAT_DAEMON_OUTPUT",
     "NAOMI_RETAINS_FINAL_AUTHORITY"
   ]
 }
