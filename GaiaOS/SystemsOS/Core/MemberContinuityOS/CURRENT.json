@@ -42,9 +42,13 @@
     "INTENDED STATE != OBSERVED STATE",
     "CLAIMED RECEIPT != ACTUAL RECEIPT",
     "NEVER HIDE A TRACEABLE GAP",
-    "NAOMI RETAINS FINAL AUTHORITY"
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "SHARED EVENT != SHARED MEMORY",
+    "FAILED PROOF MAY BE DURABLE EVIDENCE"
   ],
   "claim_ceiling": "GitHub remains the canonical source record when committed and repulled; MemconOS now provides a durable SQLite runtime store when the carrier is deployed with its persistent /data disk. Automatic capture from every conversation remains unproven.",
   "runtime_backend": "api/memcon_runtime.py",
-  "runtime_entrypoint": "api/memcon_entrypoint.py"
+  "runtime_entrypoint": "api/memcon_entrypoint.py",
+  "ravenos_strengths_preserve": "GaiaOS/Proof/RAVENOS-GAIA-STRENGTHS-PRESERVE-2026-09-20.md",
+  "strengths_championing_blueprint": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md"
 }
