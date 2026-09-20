@@ -1663,3 +1663,48 @@ Open the exact verification-review page for `EDGE-bf16fa990bf84d3197c954178592aa
 - retrieval weighting remains disabled.
 
 Do not verify the edge until this read-only review passes.
+
+
+### Phase-2 first real-memory relation verification-review live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_RELATION_VERIFICATION_REVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Edge: `EDGE-bf16fa990bf84d3197c954178592aa5c`
+- Source record: `MEM-3beb2cf2c3ba401794cfce228c6e7e14`
+- Target record: `MEM-2940611cdf924de5bc12fb36947517ab`
+- Relation type: `EXTENDS`
+- Strength: `0.85`
+- Status: `PROPOSED`
+- Classifier: `GALAXY_REAL_CALIBRATION_V1`
+- Authority: `NONE`
+- Verified at: `null`
+- `verification_available: true`
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+VERIFICATION-REVIEW CONCLUSION:
+
+The exact first real-memory edge is still only `PROPOSED`. The read-only verification review resolved the original source, target, type, strength, classifier, evidence, and preserved pre-verification retrieval order without mutation.
+
+NEXT LIVE GATE:
+
+Explicit Naomi-authorized verification of `EDGE-bf16fa990bf84d3197c954178592aa5c`.
+
+Required result:
+- verification status `VERIFIED`;
+- relation authority becomes `NAOMI`;
+- `verified_at` is populated;
+- relation readback preserves exact semantics;
+- source/target ORBIT readback includes the verified edge;
+- source and target shadow previews may change because graph topology changed;
+- gravity rows remain unwritten;
+- retrieval before/after remains unchanged;
+- retrieval weighting remains disabled.
+
+BOUNDARY:
+
+`VERIFY EDGE != WRITE GRAVITY != ENABLE RETRIEVAL WEIGHTING`
