@@ -373,7 +373,16 @@ GALAXY_RELATION_TYPES = {
     "REVISES", "SUPERSEDES", "DERIVED_FROM", "CONTEXT_FOR", "ASSOCIATED_WITH",
 }
 GALAXY_LIFECYCLE_STATES = {"ACTIVE", "BACKGROUND", "ARCHIVED", "COMPRESSED", "PRUNABLE"}
-GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v1"
+GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v2.nergal-475-parity"
+GALAXY_WEIGHT_PROFILE = "NERGAL_475_PARITY"
+GALAXY_SHADOW_WEIGHTS = {
+    "durable_active": 0.25,
+    "verified_graph_degree": 0.125,
+    "verified_relation_strength": 0.125,
+    "provenance_confidence": 0.15,
+    "revision_significance": 0.10,
+    "explicit_importance": 0.25,
+}
 GALAXY_IMPORTANCE_MODEL_VERSION = "galaxy.importance.seven-gates.continuous.v1"
 GALAXY_IMPORTANCE_CURVE_VERSION = "galaxy.importance.influence.nergal-threshold.v1"
 GALAXY_IMPORTANCE_GATES = ("SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR")
@@ -462,7 +471,7 @@ def galaxy_set_importance(record_id: str, gate_units: int, *, authority: str, ap
             "receipt": None,
             "idempotent": True,
             "retrieval_effect": "NONE",
-            "gravity_effect": "NONE_UNTIL_WEIGHT_PROFILE_REVISION",
+            "gravity_effect": "SHADOW_PREVIEW_ONLY_NO_RETRIEVAL_EFFECT",
         }
 
     updated_at = _now()
@@ -502,7 +511,7 @@ def galaxy_set_importance(record_id: str, gate_units: int, *, authority: str, ap
         "SUCCESS",
         (
             f"Set explicit importance to {descriptor['display_position']} {descriptor['gate']} "
-            f"under {GALAXY_IMPORTANCE_MODEL_VERSION}; retrieval and shadow-v1 weighting unchanged"
+            f"under {GALAXY_IMPORTANCE_MODEL_VERSION}; retrieval unchanged; active Phase-2 shadow preview may change"
         ),
     )
     return {
@@ -539,7 +548,9 @@ def galaxy_status() -> dict[str, Any]:
             "importance_signals": int((importance or {}).get("n", 0)),
         },
         "retrieval_weighting_enabled": False,
-        "explicit_importance_weighting_enabled": False,
+        "explicit_importance_weighting_enabled": True,
+        "active_shadow_weight_profile": GALAXY_WEIGHT_PROFILE,
+        "active_shadow_score_version": GALAXY_SCORE_VERSION,
         "importance_model_version": GALAXY_IMPORTANCE_MODEL_VERSION,
         "importance_curve_version": GALAXY_IMPORTANCE_CURVE_VERSION,
         "importance_curve_semantics_active": True,
@@ -601,11 +612,11 @@ def galaxy_gravity(record_id: str) -> dict[str, Any] | None:
 
 
 def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
-    """Calculate an explainable Phase-2 shadow score without writing it.
+    """Calculate the approved Phase-2 NERGAL_475_PARITY shadow score without writing it.
 
-    v1 intentionally excludes recency, observed retrieval usefulness, redundancy,
-    and lifecycle attenuation. Those signals are not yet proven well enough to
-    influence even a shadow calibration score.
+    The score may use Naomi's stored Seven Gates importance through the approved
+    nonlinear NERGAL-threshold curve. It remains shadow-only and cannot alter
+    ordinary retrieval in Phase 2.
     """
     record = get_record(record_id)
     if record is None:
@@ -629,22 +640,20 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
     revision_significance = min(significant_count / 2.0, 1.0)
     stored_importance = galaxy_importance(record_id)
 
+    explicit_importance = (
+        float(stored_importance.get("effective_influence") or 0.0)
+        if stored_importance is not None
+        else 0.0
+    )
     normalized = {
         "durable_active": 1.0 if str(record.get("status") or "").upper() == "ACTIVE" else 0.0,
         "verified_graph_degree": degree_norm,
         "verified_relation_strength": mean_strength,
         "provenance_confidence": 1.0 if str(record.get("authority") or "").upper() == "NAOMI" else 0.0,
         "revision_significance": revision_significance,
-        "explicit_importance": 0.0,
+        "explicit_importance": explicit_importance,
     }
-    weights = {
-        "durable_active": 0.25,
-        "verified_graph_degree": 0.25,
-        "verified_relation_strength": 0.20,
-        "provenance_confidence": 0.15,
-        "revision_significance": 0.10,
-        "explicit_importance": 0.05,
-    }
+    weights = dict(GALAXY_SHADOW_WEIGHTS)
     components = {}
     for name, value in normalized.items():
         components[name] = {
@@ -660,9 +669,14 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         "verified_relation_types": relation_types,
         "mean_verified_relation_strength": round(mean_strength, 6),
         "revision_significance_edges": significant_count,
-        "explicit_importance_basis": "A stored Naomi Seven Gates signal is mapped through the approved NERGAL-threshold influence curve and reported separately when present, but shadow-v1 keeps this scoring component fixed at 0.0 until a replacement weight profile is explicitly selected.",
+        "active_weight_profile": GALAXY_WEIGHT_PROFILE,
+        "explicit_importance_basis": (
+            "A stored Naomi Seven Gates signal is mapped through the approved NERGAL-threshold influence curve "
+            "and is active inside the Phase-2 NERGAL_475_PARITY shadow formula. This remains non-authoritative "
+            "and has no ordinary retrieval effect."
+        ),
         "stored_explicit_importance": stored_importance,
-        "omitted_from_v1": {
+        "omitted_from_current_shadow_profile": {
             "recency": "Excluded to prevent uncalibrated recency domination.",
             "retrieval_usefulness": "Excluded until Phase 3 supplies observed behavioral evidence.",
             "redundancy": "Excluded until correspondence quality is separately tested.",
