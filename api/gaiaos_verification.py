@@ -187,9 +187,12 @@ def run_verification() -> dict[str, Any]:
     if presentation_spec and presentation_renderer_path.exists():
         try:
             import importlib.util
-            pspec = importlib.util.spec_from_file_location("gaiaos_presentation_renderer", presentation_renderer_path)
-            pmod = importlib.util.module_from_spec(pspec)
-            pspec.loader.exec_module(pmod)
+            from importlib.machinery import SourceFileLoader
+            from importlib.util import spec_from_loader, module_from_spec
+            loader = SourceFileLoader("gaiaos_presentation_renderer", str(presentation_renderer_path))
+            pspec = spec_from_loader(loader.name, loader)
+            pmod = module_from_spec(pspec)
+            loader.exec_module(pmod)
             pmod.validate_spec(presentation_spec)
             expected = {
                 "VERA":"46 · VERA 💚 📚", "ANVIL":"58 · ANVIL 💗 ⌚",
