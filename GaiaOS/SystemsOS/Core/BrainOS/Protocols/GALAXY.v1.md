@@ -919,3 +919,42 @@ INTERPRETATION:
 MemconOS contains latent session-event material, but no pending non-test MemoryOS candidates. The next safe step is not promotion. It is a read-only candidate-creation review surface that distinguishes clearly test-like events from potentially reviewable real interactions before any candidate row is created.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 real-memory candidate-review harness checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME OBSERVATION NOT YET CLAIMED.
+
+A new two-step candidate-review surface is implemented:
+
+1. `/galaxy/gravity/real-calibration/candidate-review`
+   - read-only review of recent unrepresented session events;
+   - structurally test-like events are explicitly held out;
+   - candidate creation options are shown only for events that are not structurally test-classified;
+   - performs zero writes.
+
+2. `/galaxy/gravity/real-calibration/candidate-create?event_id=<EVENT>`
+   - available only after an explicit Naomi click from the review page;
+   - creates one non-durable `MemoryOS` candidate from the exact reviewed event;
+   - refuses structurally test-like events;
+   - returns existing candidate idempotently if that event is already represented;
+   - performs no durable promotion;
+   - performs no relation mutation;
+   - performs no gravity write;
+   - does not alter retrieval.
+
+Structural test holds currently include:
+
+- event types containing `TEST`;
+- sources containing `test` or `canary`;
+- controlled `galaxy-phase*` sources.
+
+Statement-level test language is surfaced as a softer review flag rather than silently discarding a browser-chat interaction.
+
+Candidate creation remains distinct from durable promotion:
+
+`SESSION EVENT -> HUMAN REVIEW -> NON-DURABLE CANDIDATE != DURABLE MEMORY`
+
+No promotion control is exposed by this harness. A durable promotion gate may be built only after Naomi inspects the exact candidate.
+
+Phase 3 remains disabled and unauthorized.
