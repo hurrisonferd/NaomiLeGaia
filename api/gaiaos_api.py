@@ -2715,6 +2715,154 @@ def galaxy_gravity_real_weight_options(browser_request: Request):
     return response
 
 
+@app.get("/galaxy/gravity/real-calibration/importance-three-level", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_three_level(browser_request: Request, record_id: str):
+    """Read-only semantics and score lens for Naomi's chosen three-level explicit-importance model."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    current = memcon_runtime.galaxy_gravity_preview(record_id)
+
+    levels = [
+        {
+            "value": 0.0,
+            "label": "NORMAL",
+            "meaning": "No explicit importance boost. The memory is governed by durability, provenance, graph structure, and revision signals only.",
+        },
+        {
+            "value": 0.5,
+            "label": "IMPORTANT",
+            "meaning": "Naomi marks the memory as materially important for future context. This increases contextual influence but does not make the memory truth, authority, or permission.",
+        },
+        {
+            "value": 1.0,
+            "label": "FOUNDATIONAL",
+            "meaning": "Naomi marks the memory as foundational context that should remain strongly available even when graph-isolated. This still does not override provenance, contradiction, revision, or Naomi's later changes.",
+        },
+    ]
+
+    profiles = [
+        {
+            "name": "CURRENT_V1",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.25,
+                "verified_relation_strength": 0.20,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.05,
+            },
+        },
+        {
+            "name": "SOFT_REBALANCE",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.20,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.15,
+            },
+        },
+        {
+            "name": "PARITY_AT_ONE_085_RELATION",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.16129,
+                "verified_relation_strength": 0.16129,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.17742,
+            },
+        },
+        {
+            "name": "IMPORTANCE_LEADING",
+            "weights": {
+                "durable_active": 0.25,
+                "verified_graph_degree": 0.15,
+                "verified_relation_strength": 0.15,
+                "provenance_confidence": 0.15,
+                "revision_significance": 0.10,
+                "explicit_importance": 0.20,
+            },
+        },
+    ]
+
+    components = current["components"]
+    normalized_base = {
+        name: float(spec["normalized"])
+        for name, spec in components.items()
+    }
+
+    def score(weights: dict, importance: float) -> float:
+        norm = dict(normalized_base)
+        norm["explicit_importance"] = importance
+        return round(sum(float(norm[k]) * float(weights[k]) for k in weights), 6)
+
+    comparisons = []
+    for profile in profiles:
+        comparisons.append({
+            "name": profile["name"],
+            "weights": profile["weights"],
+            "scores_by_importance_level": [
+                {
+                    "value": level["value"],
+                    "label": level["label"],
+                    "score": score(profile["weights"], float(level["value"])),
+                }
+                for level in levels
+            ],
+        })
+
+    payload = {
+        "status": "REAL_MEMORY_THREE_LEVEL_IMPORTANCE_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "selected_model": "THREE_LEVEL",
+        "record": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+            "authority": record.get("authority"),
+            "status": record.get("status"),
+        },
+        "proposed_semantics": levels,
+        "authorization_model": {
+            "who_may_set": "NAOMI",
+            "default": 0.0,
+            "allowed_values": [0.0, 0.5, 1.0],
+            "mutation_requires": "separate exact-record review and explicit Naomi approval",
+            "later_revision_allowed": True,
+            "importance_is_not": ["truth", "authority", "permission", "relation strength"],
+        },
+        "current_shadow_preview": current,
+        "counterfactual_profile_scores": comparisons,
+        "writes_performed": [],
+        "importance_signal_mutated": False,
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "selection_performed": False,
+        "proof_boundary": (
+            "This page defines and compares the proposed three-level semantics only. "
+            "It does not store an importance value, change deployed weights, write gravity, alter relations, or affect retrieval."
+        ),
+    }
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY Phase 2 three-level explicit-importance review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No importance value is set here. Review the meanings of NORMAL, IMPORTANT, and FOUNDATIONAL before any storage design is authorized.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
