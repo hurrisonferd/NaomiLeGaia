@@ -1041,3 +1041,41 @@ NEXT SAFE INGESTION STEP:
 Provide an explicit Naomi-authored real-memory seed intake that creates non-durable MemoryOS candidates only. Seed intake must not auto-promote, auto-relate, write gravity, or alter retrieval. It exists to let Naomi deliberately supply representative semantic material rather than manufacture coverage from test artifacts.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 explicit real-memory seed intake checkpoint 2026-09-20
+
+SOURCE IMPLEMENTED. LIVE RUNTIME OBSERVATION NOT YET CLAIMED.
+
+Because passive discovery found no suitable real-memory calibration exemplar, Phase 2 now exposes an explicit Naomi-authored seed intake:
+
+`/galaxy/gravity/real-calibration/seed`
+
+The form accepts:
+
+- one bounded real-memory statement;
+- one required `why_material` explanation;
+- an optional subject.
+
+Submission goes to:
+
+`/galaxy/gravity/real-calibration/seed/create`
+
+and creates:
+
+- a new provenance-bearing MemconOS session;
+- a `REAL_MEMORY_SEED_INPUT` event;
+- one non-durable `MemoryOS` candidate owned by `NAOMI_REAL_MEMORY_SEED`.
+
+Guardrails:
+
+- candidate only;
+- no durable promotion;
+- no relation proposal or verification;
+- no gravity write;
+- no retrieval effect;
+- no Phase-3 weighting.
+
+This intake exists so calibration coverage can be supplied deliberately by Naomi rather than manufactured from test artifacts.
+
+Durable promotion remains a separate future gate after exact candidate inspection.
