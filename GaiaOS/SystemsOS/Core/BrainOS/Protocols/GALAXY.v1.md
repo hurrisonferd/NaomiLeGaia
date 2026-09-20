@@ -1581,3 +1581,44 @@ BOUNDARY:
 \`REVIEW != PROPOSE != VERIFY != GRAVITY WRITE != RETRIEVAL WEIGHTING\`
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 first real-memory relation review live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_RELATION_REVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Source record: `MEM-3beb2cf2c3ba401794cfce228c6e7e14`
+- Source statement: provenance-and-contradiction preservation principle.
+- Target record: `MEM-2940611cdf924de5bc12fb36947517ab`
+- Target statement: historical-memory / revision-and-supersession principle.
+- Proposed relation: `EXTENDS`
+- Proposed strength: `0.85`
+- Classifier: `GALAXY_REAL_CALIBRATION_V1`
+- Existing matching relation: `null`
+- `proposal_available: true`
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+REVIEW-GATE CONCLUSION:
+
+The first real-memory semantic relation review is live and PASS. The exact endpoints and exact semantics were resolved without writing an edge.
+
+NEXT LIVE GATE:
+
+Explicit Naomi-authorized creation of this exact edge as `PROPOSED`.
+
+Required result:
+- relation status `PROPOSED`;
+- classifier `GALAXY_REAL_CALIBRATION_V1`;
+- exact source/target/type/strength preserved;
+- no verification yet;
+- no gravity write;
+- retrieval weighting remains disabled.
+
+BOUNDARY:
+
+`REVIEW != PROPOSE != VERIFY != GRAVITY WRITE != RETRIEVAL WEIGHTING`
