@@ -3993,7 +3993,8 @@ def galaxy_query_first_contract_proof(browser_request: Request):
             "zero_relevance_not_rescued_by_gravity": (
                 known_high_importance_record not in irrelevant_ids
             ),
-            "gravity_may_rerank_only_within_candidate_pool": True,
+            "gravity_is_contractually_confined_to_candidate_pool": True,
+            "gravity_reranking_observed": False,
             "gravity_may_introduce_nonmatching_candidates": False,
         },
         "writes_performed": [],
@@ -4011,6 +4012,170 @@ def galaxy_query_first_contract_proof(browser_request: Request):
         "<h1>GALAXY query-first retrieval contract proof</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
         "<p>Expected pass: the influential record appears for the relevant query, disappears for the irrelevant query, and gravity remains unable to rescue it.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/retrieval/query-relevance-quality-review", response_class=HTMLResponse)
+def galaxy_query_relevance_quality_review(browser_request: Request):
+    """Read-only adversarial proof of the bounded explainable query-relevance gate."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    target_id = "MEM-3883f8127bcd40e28255fdbfa4c98309"
+    target = memcon_runtime.get_record(target_id)
+    if target is None:
+        raise HTTPException(status_code=404, detail="Known GALAXY authority-boundary memory not found")
+
+    paraphrases = [
+        "Can GALAXY importance ever become permission?",
+        "Does memory gravity determine what is true?",
+        "How much should contextual importance affect recall?",
+        "Is gravity allowed to act like authority?",
+    ]
+    false_positives = [
+        "How does planetary gravity influence orbital trajectories?",
+        "Estimate the influence of gravity on a falling object.",
+        "Authority figures in contextual advertising.",
+    ]
+    negation_query = "Does GALAXY gravity grant permission?"
+    ambiguous_query = "gravity"
+
+    def evaluate(queries: list[str], expected: str) -> list[dict]:
+        rows = []
+        for query in queries:
+            result = memcon_runtime.galaxy_query_relevance(target, query)
+            rows.append({
+                "query": query,
+                "expected": expected,
+                "observed": result["classification"],
+                "pass": result["classification"] == expected,
+                "detail": result,
+            })
+        return rows
+
+    paraphrase_results = evaluate(paraphrases, "RELEVANT")
+    false_positive_results = evaluate(false_positives, "IRRELEVANT")
+    negation = memcon_runtime.galaxy_query_relevance(target, negation_query)
+    ambiguous = memcon_runtime.galaxy_query_relevance(target, ambiguous_query)
+
+    scoped_positive = memcon_runtime.galaxy_phase3_candidate_pool(
+        "contextual influence", scope="MemoryOS", limit=20
+    )
+    scoped_negative = memcon_runtime.galaxy_phase3_candidate_pool(
+        "pumpkin carving", scope="MemoryOS", limit=20
+    )
+    scoped_ambiguous = memcon_runtime.galaxy_phase3_candidate_pool(
+        ambiguous_query, scope="MemoryOS", limit=20
+    )
+
+    paraphrase_pass = all(row["pass"] for row in paraphrase_results)
+    false_positive_pass = all(row["pass"] for row in false_positive_results)
+    negation_pass = (
+        negation["classification"] == "RELEVANT"
+        and negation["agreement_inferred"] is False
+    )
+    ambiguous_pass = (
+        ambiguous["classification"] == "AMBIGUOUS"
+        and target_id not in scoped_ambiguous["candidate_record_ids"]
+        and target_id in scoped_ambiguous["ambiguous_record_ids"]
+    )
+    scope_conjunction_pass = (
+        target_id in scoped_positive["candidate_record_ids"]
+        and target_id not in scoped_negative["candidate_record_ids"]
+        and scoped_negative["candidate_count"] == 0
+    )
+
+    payload = {
+        "status": "GALAXY_QUERY_RELEVANCE_QUALITY_V1_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "model_version": memcon_runtime.GALAXY_QUERY_RELEVANCE_MODEL_VERSION,
+        "target_record": {
+            "record_id": target_id,
+            "statement": target.get("statement"),
+            "scope": target.get("scope"),
+        },
+        "evidence_ceiling": (
+            "This proves bounded query-relevance behavior on the explicit adversarial suite below. "
+            "It does not prove universal semantic understanding."
+        ),
+        "invariant": "QUERY_GATE_ORDER_PROVEN != QUERY_RELEVANCE_QUALITY_PROVEN",
+        "tests": {
+            "paraphrase_recall": {
+                "results": paraphrase_results,
+                "pass": paraphrase_pass,
+            },
+            "lexical_overlap_false_positive": {
+                "results": false_positive_results,
+                "pass": false_positive_pass,
+            },
+            "negation_and_polarity": {
+                "query": negation_query,
+                "observed": negation,
+                "pass": negation_pass,
+                "rule": "QUERY_RELEVANCE != CLAIM_AGREEMENT",
+            },
+            "ambiguous_query": {
+                "query": ambiguous_query,
+                "observed": ambiguous,
+                "candidate_pool": scoped_ambiguous,
+                "pass": ambiguous_pass,
+                "rule": "A one-term ambiguous match is surfaced but not silently admitted.",
+            },
+            "scope_plus_query_conjunction": {
+                "positive_query": "contextual influence",
+                "positive_pool": scoped_positive,
+                "negative_query": "pumpkin carving",
+                "negative_pool": scoped_negative,
+                "pass": scope_conjunction_pass,
+            },
+        },
+        "eligibility_vocabulary": {
+            "scope_eligible": "inside requested domain/scope",
+            "query_candidate_eligible": "passes the bounded query-relevance gate",
+            "current_context_eligible": "ordinary-current eligibility from governing-state v1",
+            "historical_context_eligible": "historical retrieval eligibility from governing-state v1",
+        },
+        "proof": {
+            "paraphrase_recall_pass": paraphrase_pass,
+            "lexical_false_positive_rejection_pass": false_positive_pass,
+            "negation_relevance_without_agreement_pass": negation_pass,
+            "ambiguity_not_silently_admitted_pass": ambiguous_pass,
+            "scope_query_conjunction_pass": scope_conjunction_pass,
+            "query_relevance_quality_v1_adversarial_suite_pass": (
+                paraphrase_pass
+                and false_positive_pass
+                and negation_pass
+                and ambiguous_pass
+                and scope_conjunction_pass
+            ),
+            "gravity_is_contractually_confined_to_candidate_pool": True,
+            "gravity_reranking_observed": False,
+        },
+        "writes_performed": [],
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "phase3_authorized": False,
+        "proof_boundary": (
+            "The relevance model determines candidate admission without gravity or importance. "
+            "This page does not activate weighted retrieval or mutate memory."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1300px'>"
+        "<h1>GALAXY query relevance quality v1 adversarial review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>Phase 2 closes only if the bounded adversarial suite passes live. Passing does not claim universal semantic understanding.</p>"
         "</body></html>"
     )
     if bootstrap_session:
