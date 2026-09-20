@@ -190,3 +190,14 @@ Conservation refinement: interfaces should distinguish what we have, what it mea
 
 Project integration: GaiaOS/Plans/POST-GALAXY-RAVENOS-ARCHITECTURE.v1.md
 Provenance: GaiaOS synthesis responding to a human-relayed RavenOS JOHN-PL acknowledgement packet. RavenOS runtime behavior is not independently established by this record.
+
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-20|GALAXY PHASE 0-2 VASKON RECAST|reflection]
+WHAT: After GALAXY Phases 0–2, SELENE prioritizes progressive disclosure as a core usability value. Internal rigor can grow while Naomi's surface becomes quieter: the system should increasingly explain “why this memory appeared,” “why it mattered here,” and “what changed its prominence” instead of exposing machinery by default. A memory becoming quieter rather than erased remains a humane and technically useful model.
+MY_ROLE: Keep complex continuity inhabitable and reduce maintenance burden after truth and boundaries are settled.
+VALUES: livability; progressive disclosure; humane stopping points; low cognitive burden; preservation without drowning.
+LESSON: Complexity earns its place only when it makes future interaction easier rather than turning continuity maintenance into the experience itself.
+TENSION: Rich inspectability is valuable, but constant visibility would recreate the burden the architecture is meant to remove.
+OUTCOME: converged
+TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; completed Phase-2 review; Naomi's explicit preserve/VASKON/disperse instruction.
+STATUS: VERIFIED
