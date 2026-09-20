@@ -67,6 +67,10 @@ async def browser_chat(browser_request: Request):
         return _handle_galaxy_orbit(last_message)
     if _is_galaxy_command(last_message, "GRAVITY"):
         return _handle_galaxy_gravity(last_message)
+    if re.match(r"^\\s*GALAXY\\s+PROPOSE(?:\\s+.*)?$", last_message, flags=re.IGNORECASE):
+        return _handle_galaxy_relation_propose(last_message)
+    if re.match(r"^\\s*GALAXY\\s+VERIFY(?:\\s+.*)?$", last_message, flags=re.IGNORECASE):
+        return _handle_galaxy_relation_verify(last_message)
     if _is_command(last_message, "CANDIPULL"):
         return _handle_candipull(messages, browser_request)
     if _is_command(last_message, "MEMSAV"):
@@ -192,6 +196,111 @@ def _handle_galaxy_gravity(command: str) -> dict:
         "gravity": result.get("gravity"),
         "retrieval_effect": "NONE_SHADOW_MODE",
         "writes_performed": [],
+    })
+
+
+def _galaxy_retrieval_record_ids(record: dict) -> list[str]:
+    """Capture the ordinary MemoryOS retrieval order for a controlled GALAXY canary."""
+    scope = str(record.get("scope") or "MemoryOS")
+    result = _memory_runtime().retrieve(str(record.get("statement", "")), scope, 10)
+    rows = result.get("retrieval", {}).get("records", [])
+    return [str(row.get("record_id")) for row in rows if row.get("record_id")]
+
+
+def _handle_galaxy_relation_propose(command: str) -> dict:
+    """Explicit Phase-1 relation proposal. Writes only a PROPOSED shadow edge."""
+    parts = command.strip().split(maxsplit=6)
+    if len(parts) < 6:
+        return _envelope("GALAXY RELATION PROPOSAL HOLD", {
+            "status": "HOLD",
+            "usage": "GALAXY PROPOSE <source_record_id> <relation_type> <target_record_id> <strength> [evidence note]",
+            "retrieval_effect": "NONE",
+        })
+    _, _, source_record_id, relation_type, target_record_id, strength_text, *note = parts
+    source = memcon_runtime.get_record(source_record_id)
+    target = memcon_runtime.get_record(target_record_id)
+    if source is None or target is None:
+        return _envelope("GALAXY RELATION PROPOSAL HOLD", {
+            "status": "HOLD",
+            "reason": "Both endpoints must be existing durable MemoryOS records.",
+            "source_record_id": source_record_id,
+            "target_record_id": target_record_id,
+        })
+    try:
+        strength = float(strength_text)
+    except ValueError:
+        return _envelope("GALAXY RELATION PROPOSAL HOLD", {
+            "status": "HOLD",
+            "reason": "strength must be a number from 0.0 through 1.0",
+        })
+    pre_ids = _galaxy_retrieval_record_ids(source)
+    evidence = {
+        "source": "browser-chat",
+        "basis": "explicit Naomi-controlled GALAXY Phase-1 relation proposal",
+        "pre_verification_retrieval_record_ids": pre_ids,
+    }
+    if note:
+        evidence["note"] = note[0]
+    try:
+        result = memcon_runtime.galaxy_propose_relation(
+            source_record_id=source_record_id,
+            target_record_id=target_record_id,
+            relation_type=relation_type,
+            strength=strength,
+            evidence=evidence,
+            classifier="GALAXY_CONTROLLED_CANARY_V1",
+        )
+    except (ValueError, KeyError) as exc:
+        return _envelope("GALAXY RELATION PROPOSAL HOLD", {"status": "HOLD", "reason": str(exc)})
+    edge_id = (result.get("relation") or {}).get("edge_id")
+    return _envelope("GALAXY RELATION PROPOSED", {
+        **result,
+        "pre_verification_retrieval_record_ids": pre_ids,
+        "next_command": f"GALAXY VERIFY {edge_id}" if edge_id else None,
+        "authority_boundary": "PROPOSED != VERIFIED. This shadow edge has no retrieval effect.",
+    })
+
+
+def _handle_galaxy_relation_verify(command: str) -> dict:
+    """Explicit Naomi verification of one proposed edge, followed by ORBIT/readback checks."""
+    parts = command.strip().split()
+    if len(parts) != 3:
+        return _envelope("GALAXY RELATION VERIFICATION HOLD", {
+            "status": "HOLD",
+            "usage": "GALAXY VERIFY <edge_id>",
+        })
+    edge_id = parts[2]
+    before = memcon_runtime.galaxy_relation(edge_id)
+    if before is None:
+        return _envelope("GALAXY RELATION VERIFICATION HOLD", {
+            "status": "HOLD", "reason": "Unknown edge_id", "edge_id": edge_id,
+        })
+    source = memcon_runtime.get_record(str(before.get("source_record_id")))
+    target = memcon_runtime.get_record(str(before.get("target_record_id")))
+    if source is None or target is None:
+        return _envelope("GALAXY RELATION VERIFICATION HOLD", {
+            "status": "HOLD", "reason": "Relation endpoint record missing", "edge_id": edge_id,
+        })
+    pre_ids = list((before.get("evidence") or {}).get("pre_verification_retrieval_record_ids") or [])
+    try:
+        verified = memcon_runtime.galaxy_verify_relation(edge_id, authority="NAOMI", approved=True)
+    except (PermissionError, ValueError, KeyError) as exc:
+        return _envelope("GALAXY RELATION VERIFICATION HOLD", {"status": "HOLD", "reason": str(exc)})
+    post_ids = _galaxy_retrieval_record_ids(source)
+    source_orbit = memcon_runtime.galaxy_record(str(source.get("record_id")))
+    target_orbit = memcon_runtime.galaxy_record(str(target.get("record_id")))
+    status = memcon_runtime.galaxy_status()
+    return _envelope("GALAXY RELATION VERIFIED", {
+        "verification": verified,
+        "source_orbit": source_orbit,
+        "target_orbit": target_orbit,
+        "retrieval_comparison": {
+            "before_record_ids": pre_ids,
+            "after_record_ids": post_ids,
+            "unchanged": bool(pre_ids) and pre_ids == post_ids,
+            "retrieval_weighting_enabled": status.get("retrieval_weighting_enabled"),
+        },
+        "proof_boundary": "This proves only the controlled Phase-1 edge path observed by this request. It does not prove relation classification quality or weighted retrieval.",
     })
 
 
