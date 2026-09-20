@@ -2367,3 +2367,57 @@ The current proposal implements a slope threshold, not a discontinuous jump. Ent
 This matches Naomi's stated semantic direction unless Naomi prefers a hard step-change at the NERGAL boundary.
 
 No curve activation is authorized by this checkpoint. Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 NERGAL-threshold curve approval and runtime adoption 2026-09-20
+
+NAOMI VERDICT:
+
+\`APPROVE\`
+
+The smooth NERGAL-threshold curve is approved.
+
+APPROVED CURVE:
+
+\`galaxy.importance.influence.nergal-threshold.v1\`
+
+Anchors:
+
+- \`0.000 SIN -> 0.00\`
+- \`1.000 NEBO -> 0.08\`
+- \`2.000 ISHTAR -> 0.16\`
+- \`3.000 SHAMMASH -> 0.24\`
+- \`4.000 NERGAL -> 0.34\`
+- \`5.000 MARDUK -> 0.62\`
+- \`6.000 ADAR -> 0.82\`
+- \`7.000 ADAR apex -> 1.00\`
+
+RUNTIME ADOPTION:
+
+The runtime now exposes the approved mapping through:
+
+- \`GALAXY_IMPORTANCE_CURVE_VERSION\`
+- \`GALAXY_IMPORTANCE_CURVE_ANCHORS\`
+- \`galaxy_importance_influence(gate_units)\`
+
+Every \`galaxy_importance_descriptor\` now reports both:
+- the raw linear normalized position;
+- the approved nonlinear \`effective_influence\`.
+
+AUTHORITY BOUNDARY:
+
+This approval activates the semantic mapping only.
+
+It does NOT:
+- select a replacement gravity weight profile;
+- activate explicit importance inside \`galaxy.gravity.shadow.v1\`;
+- mutate an importance value for any record;
+- write a gravity score;
+- change relations;
+- enable weighted retrieval.
+
+The current shadow-v1 explicit-importance component remains fixed at zero until Naomi separately approves a replacement weight profile.
+
+The existing curve review route is now a proof surface for the active runtime mapping rather than a proposal-only lens.
+
+Phase 3 remains disabled and unauthorized.
