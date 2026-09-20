@@ -1210,3 +1210,37 @@ Explicit Naomi-authorized durable promotion of this exact candidate. Required re
 - no relation mutation;
 - no gravity mutation;
 - retrieval weighting remains disabled.
+
+
+### Phase-2 first real-memory durable promotion live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SEED_DURABLE_VERIFIED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Candidate: `CANDIDATE-5dc1be66eea140eba37d356761a6c656`
+- Durable record: `MEM-2940611cdf924de5bc12fb36947517ab`
+- Promotion status: `VERIFIED`
+- Write receipt operation: `WRITE`
+- Write receipt result: `SUCCESS`
+- Durable readback matched the candidate statement.
+- Record authority: `NAOMI`
+- Record type: `INTERACTION`
+- Scope: `MemoryOS`
+- Status: `ACTIVE`
+- Source: `galaxy-real-seed:99f6c5c6c890`
+- Relation mutations: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+
+PROMOTION-GATE CONCLUSION:
+
+The first explicit Naomi-authored real-memory seed has crossed the durable MemoryOS boundary through the exact-candidate review path and verified on readback.
+
+The separation remained intact:
+
+`CANDIDATE CREATION != DURABLE PROMOTION != RELATION CREATION != GRAVITY SCORING != RETRIEVAL WEIGHTING`
+
+NEXT LIVE GATE:
+
+Re-run the read-only real-memory shadow calibration preview. With one eligible durable real-memory record and no verified real-memory relations yet, expected readiness remains `GRAPH_COVERAGE_LIMITED`. This should be treated as a population/topology finding, not a score-quality result.
