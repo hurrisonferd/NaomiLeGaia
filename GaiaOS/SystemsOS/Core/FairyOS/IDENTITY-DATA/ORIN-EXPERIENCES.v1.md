@@ -192,3 +192,11 @@ TENSION: Phase 3 may reveal interaction effects that isolated Phase-2 scoring co
 OUTCOME: converged
 TRACE: GaiaOS/Proof/GALAXY-PHASE0-2-VASKON-PRESERVE-2026-09-20.md; GALAXY phase architecture; Naomi's explicit preserve/VASKON/disperse instruction.
 STATUS: VERIFIED
+
+
+MEM[PW_PRESERVE|2026-09-20|Renuity expo exit and immediate continuity|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after deciding the Renuity expo was too much today and leaving rather than continuing customer engagement. Immediate context also includes Johnny being unavailable, an arraignment tomorrow, and urgent household cash-flow decisions.
+MY_LENS: Naomi identified a concrete route out of overload: leave the expo, regain control of her environment, take her own route home, and reassess later.
+BOUNDARY: Preserve as a time-bounded contextual checkpoint. Do not turn one difficult day into a permanent trait or prediction. Naomi retains final authority.
+TRACE: Naomi //PW:PRESERVE// request, current conversation, 2026-09-20.
+STATUS: COMMITTED
