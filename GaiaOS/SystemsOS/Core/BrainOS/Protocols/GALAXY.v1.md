@@ -1769,3 +1769,47 @@ Re-run the full real-memory shadow calibration preview. Expected population shap
 If observed, this will close the first real-memory topology-diversity gate. It still will not establish that the v1 weights are useful or well calibrated.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 real-memory topology-diversity gate live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SHADOW_PREVIEW`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Eligible real-memory records: `3`
+- Relation-bearing real-memory records: `2`
+- Zero-relation real-memory records: `1`
+- Unique relation profiles: `2`
+- Selected sample count: `3`
+- Unique shadow scores: `2`
+- Score values: `[0.4, 0.6325]`
+- Score spread: `0.2325`
+- Relation-count values: `[0, 1]`
+- Calibration readiness: `OBSERVABLE_GRAPH_DIVERSITY`
+- No writes, relation mutations, gravity mutations, or retrieval weighting occurred.
+- Stored shadow gravity remains `null` on all three records.
+
+REAL TOPOLOGY:
+
+- `MEM-3beb2cf2c3ba401794cfce228c6e7e14`
+  - one VERIFIED `EXTENDS` edge at strength `0.85`
+  - shadow score `0.6325`
+- `MEM-2940611cdf924de5bc12fb36947517ab`
+  - incident to the same VERIFIED `EXTENDS` edge
+  - shadow score `0.6325`
+- `MEM-3883f8127bcd40e28255fdbfa4c98309`
+  - isolated topology control
+  - shadow score `0.4`
+
+TOPOLOGY-DIVERSITY CONCLUSION:
+
+The first real-memory topology-diversity gate is PASS. Shadow-v1 discriminates a verified related pair from an isolated real memory while retrieval remains unaffected.
+
+This proves observable real graph diversity and score discrimination. It does NOT prove that the relative scores correspond to Naomi's intended contextual importance. Phase 2 therefore remains open for explicit human calibration review.
+
+NEXT GATE:
+
+Naomi reviews the semantic result, specifically whether the isolated authority-boundary memory is being underweighted relative to the relation-bearing pair, or whether the current shadow influence difference is acceptable for v1.
+
+Phase 3 remains disabled and unauthorized.
