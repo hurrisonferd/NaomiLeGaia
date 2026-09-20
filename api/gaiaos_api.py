@@ -731,6 +731,142 @@ def galaxy_canary_verify(edge_id: str, browser_request: Request):
     )
 
 
+
+def _galaxy_latest_controlled_verified_edge(memcon_runtime):
+    """Resolve the newest verified Phase-1 canary edge for bounded Phase-2 calibration."""
+    memcon_runtime.initialize()
+    with memcon_runtime._db() as conn:
+        row = memcon_runtime._fetchone_dict(
+            conn,
+            """SELECT edge_id FROM memory_relations
+               WHERE status='VERIFIED' AND classifier='GALAXY_CONTROLLED_CANARY_V1'
+               ORDER BY verified_at DESC, created_at DESC LIMIT 1""",
+        )
+    if not row:
+        return None
+    return memcon_runtime.galaxy_relation(str(row["edge_id"]))
+
+
+@app.get("/galaxy/gravity/canary/preview", response_class=HTMLResponse)
+def galaxy_gravity_canary_preview(browser_request: Request):
+    """Preview Phase-2 scores for the proven Phase-1 pair. Performs no write."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    relation = _galaxy_latest_controlled_verified_edge(memcon_runtime)
+    if relation is None:
+        raise HTTPException(status_code=409, detail="No verified controlled GALAXY canary edge is available.")
+    source_id = str(relation["source_record_id"])
+    target_id = str(relation["target_record_id"])
+    payload = {
+        "status": "SHADOW_PREVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "edge_id": relation["edge_id"],
+        "source_preview": memcon_runtime.galaxy_gravity_preview(source_id),
+        "target_preview": memcon_runtime.galaxy_gravity_preview(target_id),
+        "writes_performed": [],
+        "retrieval_weighting_enabled": False,
+        "proof_boundary": (
+            "These are deterministic shadow previews only. They are not authority, truth, or retrieval ordering. "
+            "No gravity row is written by this preview."
+        ),
+    }
+    run_url = "/galaxy/gravity/canary/run?edge_id=" + html.escape(str(relation["edge_id"]), quote=True)
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY Phase 2 gravity preview</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        f"<p><a style='font-size:22px' href='{run_url}'>Store these two shadow scores and run the retrieval control</a></p>"
+        "<p>This next action writes only explainable shadow gravity rows. Ordinary retrieval remains unweighted.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
+    return response
+
+
+@app.get("/galaxy/gravity/canary/run", response_class=HTMLResponse)
+def galaxy_gravity_canary_run(browser_request: Request, edge_id: str | None = None):
+    """Persist two shadow scores and prove ordinary retrieval ordering is unchanged."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    relation = memcon_runtime.galaxy_relation(edge_id) if edge_id else _galaxy_latest_controlled_verified_edge(memcon_runtime)
+    if relation is None:
+        raise HTTPException(status_code=404, detail="Unknown or unavailable GALAXY edge.")
+    if relation.get("status") != "VERIFIED" or relation.get("classifier") != "GALAXY_CONTROLLED_CANARY_V1":
+        raise HTTPException(status_code=409, detail="Phase-2 canary requires a VERIFIED controlled Phase-1 edge.")
+
+    source_id = str(relation["source_record_id"])
+    target_id = str(relation["target_record_id"])
+    source = memcon_runtime.get_record(source_id)
+    target = memcon_runtime.get_record(target_id)
+    if source is None or target is None:
+        raise HTTPException(status_code=409, detail="Controlled relation endpoint is missing.")
+
+    before_ids = _galaxy_retrieval_ids(runtime, source)
+    source_score = memcon_runtime.galaxy_calculate_gravity(source_id, authority="NAOMI", approved=True)
+    target_score = memcon_runtime.galaxy_calculate_gravity(target_id, authority="NAOMI", approved=True)
+    after_ids = _galaxy_retrieval_ids(runtime, source)
+    galaxy = memcon_runtime.galaxy_status()
+
+    payload = {
+        "status": "SHADOW_GRAVITY_CALCULATED",
+        "phase": galaxy.get("phase"),
+        "edge_id": relation["edge_id"],
+        "source_score": source_score,
+        "target_score": target_score,
+        "source_orbit": memcon_runtime.galaxy_record(source_id),
+        "target_orbit": memcon_runtime.galaxy_record(target_id),
+        "retrieval_control": {
+            "before_record_ids": before_ids,
+            "after_record_ids": after_ids,
+            "unchanged": bool(before_ids) and before_ids == after_ids,
+            "retrieval_weighting_enabled": galaxy.get("retrieval_weighting_enabled"),
+        },
+        "guardrails": {
+            "gravity_is_authority": False,
+            "stored_gravity_feeds_its_own_score": False,
+            "recency_component_enabled": False,
+            "physical_pruning_enabled": galaxy.get("physical_pruning_enabled"),
+        },
+        "proof_boundary": (
+            "This canary proves only that explainable shadow scores can be stored/read back for the controlled pair "
+            "while ordinary retrieval remains unchanged. It does not prove score quality or authorize Phase-3 weighting."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY Phase 2 gravity canary</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "</body></html>"
+    )
+
+
+@app.get("/galaxy/gravity/{record_id}", response_class=HTMLResponse)
+def galaxy_gravity_inspection(record_id: str, browser_request: Request):
+    """Read stored and preview shadow gravity for one record. No write."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    try:
+        preview = memcon_runtime.galaxy_gravity_preview(record_id)
+    except KeyError:
+        raise HTTPException(status_code=404, detail="Unknown durable record_id.")
+    payload = {
+        "status": "OBSERVED" if memcon_runtime.galaxy_gravity(record_id) is not None else "SHADOW_PREVIEW_ONLY",
+        "stored": memcon_runtime.galaxy_gravity(record_id),
+        "preview": preview,
+        "retrieval_effect": "NONE_SHADOW_MODE",
+        "writes_performed": [],
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+        "<h1>GALAXY gravity inspection</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "</body></html>"
+    )
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
