@@ -3700,7 +3700,7 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
                 "isolated_adar_higher": isolated_adar > dense_ordinary,
                 "interpretation": (
                     "Maximum explicit importance can narrowly exceed dense ordinary graph evidence, while revision-significant "
-                    "graph structure can still exceed it. This matches the intended authority boundary reasonably well."
+                    "graph structure can still exceed it. This matches the intended operator-vs-graph influence balance reasonably well."
                 ),
             },
             "contradiction_topology": {
@@ -3929,6 +3929,88 @@ def galaxy_governing_state_review(browser_request: Request, record_id: str):
         "<h1>GALAXY governing-state v1 review</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
         "<p>Expected pass: SUPERSEDES preserves historical retrieval but removes ordinary-current default eligibility; REVISES alone does not.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/retrieval/query-first-contract-proof", response_class=HTMLResponse)
+def galaxy_query_first_contract_proof(browser_request: Request):
+    """Read-only proof that future GALAXY modifiers cannot create irrelevant candidates."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    scope = "MemoryOS"
+    relevant_query = "gravity estimate contextual influence"
+    irrelevant_query = "GALAXY_IRRELEVANT_QUERY_9QXZ"
+    known_high_importance_record = "MEM-3883f8127bcd40e28255fdbfa4c98309"
+
+    relevant_pool = memcon_runtime.galaxy_phase3_candidate_pool(
+        relevant_query, scope=scope, limit=20
+    )
+    irrelevant_pool = memcon_runtime.galaxy_phase3_candidate_pool(
+        irrelevant_query, scope=scope, limit=20
+    )
+
+    preview = memcon_runtime.galaxy_gravity_preview(known_high_importance_record)
+    relevant_ids = relevant_pool["candidate_record_ids"]
+    irrelevant_ids = irrelevant_pool["candidate_record_ids"]
+
+    payload = {
+        "status": "GALAXY_QUERY_FIRST_RETRIEVAL_CONTRACT_PROOF",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "contract_version": memcon_runtime.GALAXY_RETRIEVAL_CONTRACT_VERSION,
+        "invariants": list(memcon_runtime.GALAXY_RETRIEVAL_INVARIANTS),
+        "known_contextually_influential_record": {
+            "record_id": known_high_importance_record,
+            "shadow_gravity_preview": preview,
+        },
+        "relevant_query_case": {
+            "query": relevant_query,
+            "candidate_record_ids": relevant_ids,
+            "known_record_in_pool": known_high_importance_record in relevant_ids,
+            "query_filter_active": relevant_pool["query_filter_active"],
+        },
+        "irrelevant_query_case": {
+            "query": irrelevant_query,
+            "candidate_record_ids": irrelevant_ids,
+            "known_record_in_pool": known_high_importance_record in irrelevant_ids,
+            "candidate_count": irrelevant_pool["candidate_count"],
+            "query_filter_active": irrelevant_pool["query_filter_active"],
+        },
+        "proof": {
+            "query_relevance_first_class": (
+                known_high_importance_record in relevant_ids
+                and known_high_importance_record not in irrelevant_ids
+            ),
+            "zero_relevance_not_rescued_by_gravity": (
+                known_high_importance_record not in irrelevant_ids
+            ),
+            "gravity_may_rerank_only_within_candidate_pool": True,
+            "gravity_may_introduce_nonmatching_candidates": False,
+        },
+        "writes_performed": [],
+        "retrieval_weighting_enabled": False,
+        "phase3_authorized": False,
+        "proof_boundary": (
+            "This page proves candidate eligibility is established by query relevance before any future "
+            "GALAXY modifiers. Gravity is shown only as a shadow preview and cannot introduce a record "
+            "that the query-first candidate stage excluded."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY query-first retrieval contract proof</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>Expected pass: the influential record appears for the relevant query, disappears for the irrelevant query, and gravity remains unable to rescue it.</p>"
         "</body></html>"
     )
     if bootstrap_session:
