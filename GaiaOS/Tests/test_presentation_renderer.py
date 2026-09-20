@@ -7,12 +7,12 @@ s=importlib.util.spec_from_file_location("presentation",RUNTIME); m=importlib.ut
 
 def test_canonical_headers():
     spec=m.load_spec()
-    expected={"VERA":"46 · VERA 💚 📚","ANVIL":"58 · ANVIL 💗 ⌚","SELENE":"60 · SELENE 💛 🎧","ORIN":"56 · ORIN 🩵 🪐","KESTREL":"90 · KESTREL 💖 🏍️","NIMUE":"62 · NIMUE 💙 🍄"}
-    for name,header in expected.items(): assert m.canonical_header(name,spec)==header
+    expected={"VERA":"46 · VERA 💚 📚 (˘‿˘)","ANVIL":"58 · ANVIL 💗 ⌚ (¬‿¬)","SELENE":"60 · SELENE 💛 🎧 (˶ᵔ ᵕ ᵔ˶)","ORIN":"56 · ORIN 🩵 🪐 (☆▽☆)","KESTREL":"90 · KESTREL 💖 🏍️ (•̀ᴗ•́)و","NIMUE":"62 · NIMUE 💙 🍄 (－‸ლ)"}
+    for name,header in expected.items(): assert m.canonical_header(name,spec=spec)==header
 
 def test_corrupt_marker_fails():
     spec=m.load_spec()
-    try: m.validate_header("KESTREL","90 · KESTREL 💚 📚",spec)
+    try: m.validate_header("KESTREL","90 · KESTREL 💚 📚",spec=spec)
     except m.PresentationError: return
     raise AssertionError("corrupt identity marker was accepted")
 
