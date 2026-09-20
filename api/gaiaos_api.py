@@ -3400,6 +3400,126 @@ def galaxy_gravity_real_importance_weight_profile_review(browser_request: Reques
     return response
 
 
+@app.get("/galaxy/gravity/real-calibration/importance/nergal-parity-stress-review", response_class=HTMLResponse)
+def galaxy_gravity_real_importance_nergal_parity_stress_review(browser_request: Request, record_id: str):
+    """Read-only stress review of the NERGAL_475_PARITY replacement shadow profile."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    stored = memcon_runtime.galaxy_importance(record_id)
+    if stored is None:
+        raise HTTPException(status_code=409, detail="This review requires a stored Naomi Seven Gates importance signal.")
+
+    weights = {
+        "durable_active": 0.25,
+        "verified_graph_degree": 0.125,
+        "verified_relation_strength": 0.125,
+        "provenance_confidence": 0.15,
+        "revision_significance": 0.10,
+        "explicit_importance": 0.25,
+    }
+
+    def relation_contribution(count: int, strength: float = 0.85, revision_count: int = 0) -> float:
+        degree_norm = min(count / 4.0, 1.0)
+        revision_norm = min(revision_count / 2.0, 1.0)
+        return round(
+            (weights["verified_graph_degree"] * degree_norm)
+            + (weights["verified_relation_strength"] * strength if count > 0 else 0.0)
+            + (weights["revision_significance"] * revision_norm),
+            6,
+        )
+
+    sample_units = [985, 1000, 2000, 3000, 3972, 4000, 4500, 4750, 4999, 5000, 5214, 6000, 6999, 7000]
+    gate_samples = []
+    for units in sample_units:
+        descriptor = memcon_runtime.galaxy_importance_descriptor(units)
+        importance_contribution = round(float(descriptor["effective_influence"]) * weights["explicit_importance"], 6)
+        gate_samples.append({
+            "gate_units": units,
+            "display_position": descriptor["display_position"],
+            "gate": descriptor["gate"],
+            "effective_influence": descriptor["effective_influence"],
+            "importance_contribution": importance_contribution,
+            "vs_one_085_nonrevision_relation": round(
+                importance_contribution / relation_contribution(1, 0.85, 0), 6
+            ),
+            "vs_one_085_revision_like_relation": round(
+                importance_contribution / relation_contribution(1, 0.85, 1), 6
+            ),
+        })
+
+    relation_cases = []
+    for count in [0, 1, 2, 3, 4, 6]:
+        relation_cases.append({
+            "verified_relation_count": count,
+            "mean_strength": 0.85 if count else 0.0,
+            "nonrevision_contribution": relation_contribution(count, 0.85, 0),
+            "one_revision_like_edge_contribution": relation_contribution(count, 0.85, 1) if count else 0.0,
+            "two_or_more_revision_like_edges_contribution": relation_contribution(count, 0.85, 2) if count else 0.0,
+        })
+
+    stored_importance_contribution = round(float(stored["effective_influence"]) * weights["explicit_importance"], 6)
+    payload = {
+        "status": "REAL_MEMORY_NERGAL_475_PARITY_STRESS_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "record": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+            "authority": record.get("authority"),
+            "status": record.get("status"),
+        },
+        "candidate_profile": {
+            "name": "NERGAL_475_PARITY",
+            "weights": weights,
+            "weight_sum": round(sum(weights.values()), 6),
+            "semantic_target": (
+                "The stored 4.750 NERGAL signal at effective influence 0.55 equals one verified "
+                "non-revision semantic relation at strength 0.85."
+            ),
+        },
+        "stored_signal": {
+            **stored,
+            "candidate_profile_contribution": stored_importance_contribution,
+        },
+        "gate_stress_samples": gate_samples,
+        "relation_count_stress": relation_cases,
+        "reference_equalities": {
+            "stored_4_750_nergal": stored_importance_contribution,
+            "one_085_nonrevision_relation": relation_contribution(1, 0.85, 0),
+            "one_085_revision_like_relation": relation_contribution(1, 0.85, 1),
+            "two_085_nonrevision_relations": relation_contribution(2, 0.85, 0),
+            "four_085_nonrevision_relations": relation_contribution(4, 0.85, 0),
+        },
+        "selection_performed": False,
+        "weight_profile_activated": False,
+        "writes_performed": [],
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "proof_boundary": (
+            "This page stress-tests one candidate replacement shadow profile only. "
+            "It does not activate the profile, write gravity, alter relations, or change retrieval."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY Phase 2 NERGAL parity stress review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>No profile is selected here. This is the final leverage stress test before any replacement shadow-weight activation decision.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
     _authorize_browser_session(browser_request)
