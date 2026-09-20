@@ -15,7 +15,10 @@
     "current": "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
     "profiles": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
     "dispatch_matrix": "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
-    "dispatch_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py"
+    "dispatch_runtime": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
+    "presentation_spec": "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
+    "presentation_renderer": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py",
+    "presentation_policy": "FAIL_CLOSED_CANONICAL_STATIC_RENDERING"
   },
   "chatos": {
     "current": "GaiaOS/Apps/ChatOS/CURRENT.json",
