@@ -21,6 +21,7 @@ RENDER_INSTANCE_ID = os.getenv("RENDER_INSTANCE_ID", "").strip()
 TURSO_DATABASE_URL = os.getenv("TURSO_DATABASE_URL", "").strip()
 TURSO_AUTH_TOKEN = os.getenv("TURSO_AUTH_TOKEN", "").strip()
 STORAGE_BACKEND = "turso_libsql" if TURSO_DATABASE_URL and TURSO_AUTH_TOKEN else "local_sqlite"
+_INITIALIZED = False
 
 def _process_fingerprint() -> dict[str, Any]:
     """Return observable OS-level facts for the currently running carrier process."""
@@ -121,6 +122,10 @@ def _execute_script(conn, script: str) -> None:
 
 
 def initialize() -> None:
+    """Initialize the schema once per carrier process, not before every query."""
+    global _INITIALIZED
+    if _INITIALIZED:
+        return
     with _db() as conn:
         _execute_script(conn,
             """
@@ -252,6 +257,7 @@ def initialize() -> None:
             CREATE INDEX IF NOT EXISTS idx_solo_sessions_daemon ON solo_sessions(daemon);
             """
         )
+    _INITIALIZED = True
 
 
 def _receipt(operation: str, record_id: str, result: str, detail: str) -> dict[str, Any]:
