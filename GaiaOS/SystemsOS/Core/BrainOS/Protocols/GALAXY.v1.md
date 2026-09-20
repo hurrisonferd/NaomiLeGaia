@@ -2550,3 +2550,46 @@ Before activation, it requires a broader stress review across:
 - revision-like relations, which also receive revision-significance weight.
 
 No replacement profile is authorized yet. Phase 3 remains disabled.
+
+
+### Phase-2 NERGAL_475_PARITY stress review PASS 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+Candidate: `NERGAL_475_PARITY`
+
+Weights:
+- durable_active: `0.25`
+- verified_graph_degree: `0.125`
+- verified_relation_strength: `0.125`
+- provenance_confidence: `0.15`
+- revision_significance: `0.10`
+- explicit_importance: `0.25`
+
+Weight sum: `1.0`.
+
+Key stress results:
+- `4.750 NERGAL` contribution: `0.1375`
+- one verified non-revision relation at `0.85`: `0.1375`
+- one verified revision-like relation at `0.85`: `0.1875`
+- two verified non-revision relations at `0.85`: `0.16875`
+- four verified non-revision relations at `0.85`: `0.23125`
+
+Gate behavior:
+- lower gates remain clearly below one strong relation;
+- `4.750 NERGAL` reaches exact parity with one strong non-revision relation;
+- upper NERGAL and MARDUK can outweigh one strong non-revision relation;
+- ADAR can outweigh one strong revision-like relation;
+- dense or revision-significant graph evidence can still exceed explicit importance.
+
+Interpretation:
+
+The profile preserves a meaningful hierarchy:
+- weak/low-Gate explicit importance is subordinate to strong verified graph evidence;
+- mid/high NERGAL is materially influential;
+- MARDUK and ADAR can dominate a single ordinary relation;
+- multiple verified relations and revision-significance retain substantial aggregate leverage.
+
+The stress review therefore passes the intended leverage semantics for Phase 2 shadow experimentation.
+
+No profile activation is authorized by this checkpoint. Weighted retrieval remains disabled. Phase 3 remains disabled.
