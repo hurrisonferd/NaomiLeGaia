@@ -2030,9 +2030,148 @@ def galaxy_gravity_real_seed_create(
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:900px'>"
         "<h1>GALAXY real-memory seed candidate</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/seed/promote-review?candidate_id="
+        + html.escape(str(candidate["candidate_id"]), quote=True)
+        + "'>Review this exact candidate for durable promotion</a></p>"
         "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/seed'>Add another real-memory seed</a></p>"
         "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/inventory'>Inspect latent candidate inventory</a></p>"
-        "<p>No promotion control is exposed yet. Review the candidate first.</p>"
+        "<p>Promotion remains a separate Naomi-authorized gate.</p>"
+        "</body></html>"
+    )
+
+
+
+def _galaxy_real_seed_candidate(memcon_runtime, candidate_id: str) -> dict:
+    candidate = memcon_runtime.get_memory_candidate(candidate_id)
+    if candidate is None:
+        raise HTTPException(status_code=404, detail="Unknown real-memory seed candidate.")
+    if str(candidate.get("owner") or "") != "NAOMI_REAL_MEMORY_SEED":
+        raise HTTPException(status_code=409, detail="Candidate is not owned by the explicit real-memory seed lane.")
+    if str(candidate.get("scope") or "") != "MemoryOS":
+        raise HTTPException(status_code=409, detail="Candidate is outside MemoryOS.")
+    if not str(candidate.get("source") or "").startswith("galaxy-real-seed:"):
+        raise HTTPException(status_code=409, detail="Candidate source is not an explicit GALAXY real-memory seed.")
+    return candidate
+
+
+@app.get("/galaxy/gravity/real-calibration/seed/promote-review", response_class=HTMLResponse)
+def galaxy_gravity_real_seed_promote_review(browser_request: Request, candidate_id: str):
+    """Read one exact seed candidate before any durable promotion."""
+    from urllib.parse import urlencode
+
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+    memcon_runtime, _ = _galaxy_runtime()
+    candidate = _galaxy_real_seed_candidate(memcon_runtime, candidate_id)
+    event = memcon_runtime.get_session_event(str(candidate.get("event_id") or ""))
+    promoted_record_id = candidate.get("promoted_record_id")
+    durable_record = (
+        memcon_runtime.get_record(str(promoted_record_id))
+        if promoted_record_id else None
+    )
+    promotable = str(candidate.get("status") or "") == "CANDIDATE" and not promoted_record_id
+    payload = {
+        "status": "REAL_MEMORY_SEED_PROMOTION_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "candidate": candidate,
+        "source_event": event,
+        "already_durable_record": durable_record,
+        "promotion_available": promotable,
+        "writes_performed": [],
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "review_boundary": (
+            "This page reads the exact candidate only. Durable promotion requires the separate explicit Naomi click below. "
+            "Promotion does not authorize relation creation, gravity scoring, or retrieval weighting."
+        ),
+    }
+    if promotable:
+        promote_url = "/galaxy/gravity/real-calibration/seed/promote?" + urlencode({"candidate_id": candidate_id})
+        action = (
+            "<p><a style='font-size:22px' href='" + html.escape(promote_url, quote=True) + "'>"
+            "Approve durable promotion of this exact candidate</a></p>"
+        )
+    else:
+        action = "<p>This candidate is not pending promotion.</p>"
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1000px'>"
+        "<h1>GALAXY real-memory durable-promotion review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        + action +
+        "<p>No relation or gravity action is coupled to promotion.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/seed/promote", response_class=HTMLResponse)
+def galaxy_gravity_real_seed_promote(browser_request: Request, candidate_id: str):
+    """Explicitly promote one exact seed candidate to durable MemoryOS."""
+    _authorize_browser_session(browser_request)
+    memcon_runtime, runtime = _galaxy_runtime()
+    candidate = _galaxy_real_seed_candidate(memcon_runtime, candidate_id)
+
+    existing_record_id = candidate.get("promoted_record_id")
+    if str(candidate.get("status") or "") != "CANDIDATE" and existing_record_id:
+        record = memcon_runtime.get_record(str(existing_record_id))
+        payload = {
+            "status": "REAL_MEMORY_SEED_ALREADY_DURABLE",
+            "phase": "PHASE_2_GRAVITY_SHADOW",
+            "candidate_id": candidate_id,
+            "record": record,
+            "idempotent": True,
+            "new_write_receipt": None,
+            "relations_mutated": [],
+            "gravity_rows_mutated": [],
+            "retrieval_weighting_enabled": False,
+        }
+        return HTMLResponse(
+            "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1000px'>"
+            "<h1>GALAXY real-memory durable promotion</h1>"
+            f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+            "<p>The candidate was already durable. No new mutation occurred.</p>"
+            "</body></html>"
+        )
+
+    if str(candidate.get("status") or "") != "CANDIDATE":
+        raise HTTPException(
+            status_code=409,
+            detail=f"Candidate is not promotable from status {candidate.get('status')}.",
+        )
+
+    result = runtime.promote_candidate(candidate_id, True, "NAOMI")
+    if result.get("status") != "VERIFIED":
+        raise HTTPException(status_code=409, detail={"message": "Durable promotion did not verify.", "result": result})
+
+    record_id = str(result["record_id"])
+    record = memcon_runtime.get_record(record_id)
+    payload = {
+        "status": "REAL_MEMORY_SEED_DURABLE_VERIFIED",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "candidate_id": candidate_id,
+        "promotion": result,
+        "record_readback": record,
+        "relations_mutated": [],
+        "gravity_rows_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "authority_boundary": (
+            "Only this exact Naomi-reviewed seed candidate was promoted to durable MemoryOS. "
+            "No GALAXY relation was created or verified, no gravity was written, and retrieval remains unweighted."
+        ),
+    }
+    return HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1000px'>"
+        "<h1>GALAXY real-memory durable promotion</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p><a style='font-size:20px' href='/galaxy/gravity/real-calibration/preview'>Re-run real-memory shadow calibration preview</a></p>"
+        "<p>Do not infer calibration quality yet. One durable real memory is only the first population point.</p>"
         "</body></html>"
     )
 
