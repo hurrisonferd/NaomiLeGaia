@@ -3627,7 +3627,9 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
     )
 
     reinforcing = graph_contribution(4, 0.85, 0)
-    contradictory = graph_contribution(4, 0.85, 4)
+    # CONTRADICTS is deliberately ordinary graph evidence here. It must not be
+    # simulated as revision-significant after the runtime removed that premium.
+    contradictory = graph_contribution(4, 0.85, 0)
 
     payload = {
         "status": "GALAXY_PHASE2_POST_ACTIVATION_ADVERSARIAL_REVIEW",
@@ -3703,11 +3705,13 @@ def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
                 "four_reinforcing_0_85_graph_contribution": reinforcing,
                 "four_contradictory_0_85_graph_contribution": contradictory,
                 "contradiction_premium": round(contradictory - reinforcing, 6),
+                "no_revision_premium_pass": round(contradictory - reinforcing, 6) == 0.0,
                 "observation": (
-                    "CONTRADICTS no longer receives revision-significance weight. Contradiction remains graph evidence, "
-                    "but only REVISES and SUPERSEDES receive the governing-history premium."
+                    "At equal count and strength, contradictory and reinforcing topology now receive the same graph "
+                    "contribution. CONTRADICTS remains graph evidence, while only REVISES and SUPERSEDES receive "
+                    "the governing-history premium."
                 ),
-                "resolution": "CONTRADICTS excluded from revision_significance.",
+                "resolution": "CONTRADICTS excluded from revision_significance; expected contradiction premium is 0.0.",
             },
         },
         "precision_semantics": {
