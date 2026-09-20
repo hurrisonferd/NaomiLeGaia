@@ -1028,6 +1028,24 @@ def memoryos_continuity_recover(browser_request: Request):
         return _error_page("MemoryOS continuity recovery failed", exc)
 
 
+@app.get("/runtime/routes", operation_id="runtimeRouteManifest")
+def runtime_route_manifest():
+    """Unauthenticated bounded route manifest for deployment verification."""
+    routes = []
+    for route in app.routes:
+        path = getattr(route, "path", None)
+        methods = sorted(getattr(route, "methods", set()) or [])
+        if path in {"/health", "/verify", "/runtime/routes"}:
+            routes.append({"path": path, "methods": methods})
+    return {
+        "status": "ok",
+        "service": "gaiaos-carrier",
+        "source": gaiaos_app._deployed_source(),
+        "routes": routes,
+        "verify_registered": any(r["path"] == "/verify" and "GET" in r["methods"] for r in routes),
+    }
+
+
 @app.get("/verify", response_class=HTMLResponse, operation_id="verificationPage")
 def verification_page(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
