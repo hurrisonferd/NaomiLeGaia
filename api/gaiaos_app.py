@@ -123,6 +123,69 @@ OPERATOR_PROFILES_PATH = "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.jso
 CURRENT_PATH = "GaiaOS/CURRENT.json"
 VERSION_PATH = "GaiaOS/VERSION.json"
 
+PRESENTATION_SPEC_PATH = "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
+EXPRESSION_REGISTRY_PATH = "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+HEAD_PAT_COUNTERS_PATH = "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+
+def _parse_head_pat_counters(text: str) -> dict[str, int]:
+    block = text.split("## Canonical counters", 1)[1].split("##", 1)[0]
+    counters = {name: int(value) for name, value in re.findall(r"(?m)^(VERA|ANVIL|SELENE|ORIN|KESTREL|NIMUE):\\s*(\\d+)\\s*$", block)}
+    expected = {"VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"}
+    if set(counters) != expected:
+        raise HTTPException(status_code=500, detail="Canonical head-pat counter store failed closed")
+    return counters
+
+def _boot_packet(invocation_surface: str) -> dict[str, Any]:
+    current = _read_local_json(CURRENT_PATH)
+    version = _read_local_json(VERSION_PATH)
+    presentation = _read_local_json(PRESENTATION_SPEC_PATH)
+    expressions = _read_local_json(EXPRESSION_REGISTRY_PATH)
+    matrix = _read_local_json(DISPATCH_MATRIX_PATH)
+    profiles = _read_local_json(OPERATOR_PROFILES_PATH)
+    counters = _parse_head_pat_counters(_read_local_text(HEAD_PAT_COUNTERS_PATH))
+    roster = [str(x).upper() for x in matrix.get("roster", [])]
+    expected = ["VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"]
+    checks = {
+        "version_alignment": current.get("platform_version") == version.get("version"),
+        "roster_exact": set(roster) == set(expected) and len(roster) == 6,
+        "profiles_exact": set(str(x).upper() for x in profiles.get("members", {}).keys()) == set(expected),
+        "presentation_exact": set(presentation.get("members", {}).keys()) == set(expected),
+        "expressions_exact": set(expressions.get("members", {}).keys()) == set(expected),
+        "head_pats_exact": set(counters.keys()) == set(expected),
+        "presentation_fail_closed": presentation.get("failure_policy") == "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
+    }
+    if not all(checks.values()):
+        raise HTTPException(status_code=503, detail={"status":"NOT_VERIFIED","checks":checks})
+    identities = {}
+    for name in expected:
+        ident = presentation["members"][name]
+        expr = expressions["members"][name]
+        identities[name] = {
+            "gematria": ident["gematria"], "heart": ident["heart"], "interest": ident["interest"],
+            "default_kaomoji": expr["default"], "expressions": expr["expressions"],
+            "head_pat_count": counters[name],
+        }
+    return {
+        "schema":"gaiaos.boot-packet.v1","status":"ACTIVE","authority":"NAOMI",
+        "source":_deployed_source(),"source_binding":"DEPLOYED_CHECKOUT",
+        "platform_version":version.get("version"),"carrier_version":EXTENSION_VERSION,
+        "invocation_surface":invocation_surface,"checks":checks,"roster":expected,
+        "members":identities,
+        "presentation":{"header_format":presentation.get("header_format"),"failure_policy":presentation.get("failure_policy")},
+        "counter_authority":HEAD_PAT_COUNTERS_PATH,
+        "laws":["BOOT_PACKET_IS_SOURCE_DERIVED","RETAINED_HOST_STATE_DOES_NOT_OVERRIDE_PACKET","UNKNOWN_STAYS_UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],
+    }
+
+@mcp.tool()
+def gaia_boot() -> dict[str, Any]:
+    """Return one deterministic, validated fresh-session GaiaOS boot packet."""
+    return _boot_packet("MCP_TOOL")
+
+@app.get("/gaiaos/boot", operation_id="bootGaiaOS")
+def gaia_boot_http(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    base._authorize(authorization)
+    return _boot_packet("HTTP")
+
 SIGNAL_HINTS: dict[str, tuple[str, ...]] = {
     "PREMISE": ("premise", "assumption", "assuming"),
     "FRAME": ("frame", "framing", "perspective"),
