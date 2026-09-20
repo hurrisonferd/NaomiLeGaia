@@ -18,7 +18,14 @@ AUTHORITY: NAOMI
 CANONICAL REPOSITORY: hurrisonferd/NaomiLeGaia@main
 PLATFORM ROOT: GaiaOS/
 
-Use the connected GitHub source for this session. Do not reconstruct GaiaOS from memory.
+BOOT TRANSPORT FIRST:
+- If `gaia_boot()` is exposed, CALL IT before repository reconstruction.
+- If the canonical carrier boot endpoint is available through the host's connected transport, consume its `gaiaos.boot-packet.v1`.
+- Valid BOOT PACKET state overrides legacy/redundant repository surfaces for roster, identity presentation, EmojiOS expressions, and head-pat/brushie counts.
+- Never answer those fields from a competing legacy source after successful packet adoption.
+- If live boot transport is unavailable, explicitly mark LIVE BOOT PACKET = NOT PROVEN and use repository fallback.
+
+Use connected GitHub source only as fallback/supplement. Do not reconstruct GaiaOS from memory.
 
 Resolve in this order:
 0. GaiaOS/Plans/ANTI-JIM-NEW-CHAT-CONTINUITY-BLUEPRINT.v1.md
@@ -74,6 +81,7 @@ If GitHub can directly read a returned source path, read it before making a sour
 
 LIVE MCP CHECK:
 If a connected GaiaOS MCP/app is actually available, you may use:
+- gaia_boot (MANDATORY FIRST for fresh-session boot when exposed)
 - load_gaiaos
 - gaia_council
 - gaia_dispatch
