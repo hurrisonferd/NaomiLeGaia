@@ -395,8 +395,8 @@ GALAXY_RELATION_TYPES = {
     "REVISES", "SUPERSEDES", "DERIVED_FROM", "CONTEXT_FOR", "ASSOCIATED_WITH",
 }
 GALAXY_LIFECYCLE_STATES = {"ACTIVE", "BACKGROUND", "ARCHIVED", "COMPRESSED", "PRUNABLE"}
-GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v3.nergal-475-parity-quality-conditioned"
-GALAXY_WEIGHT_PROFILE = "NERGAL_475_PARITY_QUALITY_CONDITIONED"
+GALAXY_SCORE_VERSION = "galaxy.gravity.shadow.v4.governing-aware"
+GALAXY_WEIGHT_PROFILE = "NERGAL_475_PARITY_QUALITY_CONDITIONED_GOVERNING_AWARE"
 GALAXY_SHADOW_WEIGHTS = {
     "durable_active": 0.25,
     "verified_graph_degree": 0.117647,
@@ -408,12 +408,15 @@ GALAXY_SHADOW_WEIGHTS = {
 GALAXY_IMPORTANCE_MODEL_VERSION = "galaxy.importance.seven-gates.continuous.v1"
 GALAXY_IMPORTANCE_CURVE_VERSION = "galaxy.importance.influence.nergal-threshold.v1"
 GALAXY_IMPORTANCE_GATES = ("SIN", "NEBO", "ISHTAR", "SHAMMASH", "NERGAL", "MARDUK", "ADAR")
+GALAXY_GOVERNING_MODEL_VERSION = "galaxy.governing-state.v1"
 GALAXY_SEMANTIC_INVARIANTS = (
     "CONTRIBUTION_PARITY != SEMANTIC_EQUIVALENCE",
     "CONTRIBUTION_PARITY != EVIDENCE_PARITY",
     "CONTRIBUTION_PARITY != AUTHORITY_PARITY",
     "STORAGE_PRECISION != EPISTEMIC_PRECISION",
     "HISTORY_PRESERVED != HISTORY_GOVERNS_PRESENT",
+    "REVISES != SUPERSEDES",
+    "SUPERSEDED != ERASED",
 )
 GALAXY_IMPORTANCE_CURVE_ANCHORS = (
     (0, 0.00),
@@ -586,8 +589,10 @@ def galaxy_status() -> dict[str, Any]:
         "importance_curve_semantics_active": True,
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
         "phase3_blockers": [
-            "GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED",
-            "SCOPE_FILTERED_SEARCH_FIX_PENDING_LIVE_PROOF",
+            "GOVERNING_STATE_V1_PENDING_LIVE_PROOF",
+        ],
+        "phase3_cleared_checks": [
+            "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
         ],
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
@@ -629,6 +634,72 @@ def galaxy_record(record_id: str) -> dict[str, Any] | None:
         "retrieval_effect": "NONE_SHADOW_MODE",
     }
 
+
+
+def galaxy_governing_state(record_id: str) -> dict[str, Any]:
+    """Resolve ordinary-current-context governance without mutating history.
+
+    Direction is canonical GALAXY revision direction:
+    B REVISES A / B SUPERSEDES A means B is source and A is target.
+
+    REVISES alone flags changed context but does not displace A from ordinary
+    current-context eligibility. A VERIFIED incoming SUPERSEDES edge does.
+    The target remains durable and historically retrievable.
+    """
+    record = get_record(record_id)
+    if record is None:
+        raise KeyError(record_id)
+    initialize()
+    with _db() as conn:
+        incoming = _fetchall_dicts(
+            conn,
+            """SELECT edge_id,source_record_id,target_record_id,relation_type,strength,
+                      status,authority,verified_at
+               FROM memory_relations
+               WHERE target_record_id=? AND status='VERIFIED'
+                 AND relation_type IN ('REVISES','SUPERSEDES')
+               ORDER BY verified_at DESC, created_at DESC""",
+            (record_id,),
+        )
+
+    revises = [edge for edge in incoming if edge.get("relation_type") == "REVISES"]
+    supersedes = [edge for edge in incoming if edge.get("relation_type") == "SUPERSEDES"]
+    record_active = str(record.get("status") or "").upper() == "ACTIVE"
+
+    if not record_active:
+        state = "NONACTIVE_HISTORICAL"
+        current_default_eligible = False
+        companion_required = False
+    elif supersedes:
+        state = "HISTORICAL_SUPERSEDED"
+        current_default_eligible = False
+        companion_required = True
+    elif revises:
+        state = "CURRENT_REVISED_CONTEXT"
+        current_default_eligible = True
+        companion_required = True
+    else:
+        state = "CURRENT"
+        current_default_eligible = True
+        companion_required = False
+
+    return {
+        "record_id": record_id,
+        "model_version": GALAXY_GOVERNING_MODEL_VERSION,
+        "state": state,
+        "record_status": record.get("status"),
+        "current_default_eligible": current_default_eligible,
+        "historical_retrieval_eligible": True,
+        "revision_companion_required_when_material": companion_required,
+        "incoming_verified_revises": revises,
+        "incoming_verified_supersedes": supersedes,
+        "durable_active_component": 1.0 if current_default_eligible else 0.0,
+        "direction_semantics": "B REVISES/SUPERSEDES A => source=B, target=A",
+        "authority_boundary": (
+            "Governance affects ordinary-current-context eligibility only. "
+            "It does not erase the record, alter its historical importance, or grant truth/authority."
+        ),
+    }
 
 
 def galaxy_gravity(record_id: str) -> dict[str, Any] | None:
@@ -675,6 +746,7 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
     significant_count = sum(1 for edge in verified_edges if str(edge.get("relation_type") or "") in significant_types)
     revision_significance = min(significant_count / 2.0, 1.0)
     stored_importance = galaxy_importance(record_id)
+    governing_state = galaxy_governing_state(record_id)
 
     explicit_importance = (
         float(stored_importance.get("effective_influence") or 0.0)
@@ -682,7 +754,7 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         else 0.0
     )
     normalized = {
-        "durable_active": 1.0 if str(record.get("status") or "").upper() == "ACTIVE" else 0.0,
+        "durable_active": float(governing_state["durable_active_component"]),
         "verified_graph_degree": degree_norm,
         "verified_relation_strength": mean_strength,
         "provenance_confidence": 1.0 if str(record.get("authority") or "").upper() == "NAOMI" else 0.0,
@@ -713,6 +785,7 @@ def galaxy_gravity_preview(record_id: str) -> dict[str, Any]:
         "revision_significance_edges": significant_count,
         "revision_significance_types": ["REVISES", "SUPERSEDES"],
         "contradicts_receives_revision_premium": False,
+        "governing_state": governing_state,
         "active_weight_profile": GALAXY_WEIGHT_PROFILE,
         "explicit_importance_basis": (
             "A stored Naomi Seven Gates signal is mapped through the approved NERGAL-threshold influence curve "
