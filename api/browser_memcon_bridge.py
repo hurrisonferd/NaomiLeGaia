@@ -23,6 +23,8 @@ app = memcon_entrypoint.app
 _original_chat = gaiaos_api.chat
 _memory_runtime = memcon_entrypoint._memory_runtime
 TEST_OWNER = "NAOMI_BROWSER_TEST"
+GALAXY_CANARY_OWNER_A = "GALAXY_CANARY_A"
+GALAXY_CANARY_OWNER_B = "GALAXY_CANARY_B"
 
 app.routes[:] = [
     route for route in app.routes
@@ -67,6 +69,10 @@ async def browser_chat(browser_request: Request):
         return _handle_galaxy_orbit(last_message)
     if _is_galaxy_command(last_message, "GRAVITY"):
         return _handle_galaxy_gravity(last_message)
+    if re.match(r"^\s*GALAXY\s+CANARY\s+START\s*[.!]?\s*$", last_message, flags=re.IGNORECASE):
+        return _handle_galaxy_canary_start()
+    if re.match(r"^\s*GALAXY\s+CANARY\s+APPROVE\s*[.!]?\s*$", last_message, flags=re.IGNORECASE):
+        return _handle_galaxy_canary_approve()
     if re.match(r"^\\s*GALAXY\\s+PROPOSE(?:\\s+.*)?$", last_message, flags=re.IGNORECASE):
         return _handle_galaxy_relation_propose(last_message)
     if re.match(r"^\\s*GALAXY\\s+VERIFY(?:\\s+.*)?$", last_message, flags=re.IGNORECASE):
@@ -205,6 +211,111 @@ def _galaxy_retrieval_record_ids(record: dict) -> list[str]:
     result = _memory_runtime().retrieve(str(record.get("statement", "")), scope, 10)
     rows = result.get("retrieval", {}).get("records", [])
     return [str(row.get("record_id")) for row in rows if row.get("record_id")]
+
+
+def _handle_galaxy_canary_start() -> dict:
+    """Create two non-durable controlled MemoryOS candidates for the Phase-1 relation canary."""
+    token = uuid.uuid4().hex[:12]
+    source = f"galaxy-phase1-canary:{token}"
+    runtime = _memory_runtime()
+    session = runtime.start_session(source, f"GALAXY Phase 1 two-memory relation canary {token}")
+
+    statement_a = f"GALAXY-CANARY-A [{token}]: The test beacon emits a cyan signal."
+    statement_b = f"GALAXY-CANARY-B [{token}]: The cyan signal from Canary A is part of the same controlled GALAXY test."
+
+    event_a = runtime.record_event(session["session_id"], "NAOMI", "GALAXY_CANARY_INPUT", statement_a, source)
+    event_b = runtime.record_event(session["session_id"], "NAOMI", "GALAXY_CANARY_INPUT", statement_b, source)
+
+    candidate_a = runtime.candidate_from_event(
+        event_a["event_id"], authority="NAOMI", record_type="TEST", scope="MemoryOS",
+        statement=statement_a, source=source, owner=GALAXY_CANARY_OWNER_A,
+        why_material="Controlled durable endpoint A for the GALAXY Phase-1 relation canary.",
+    )
+    candidate_b = runtime.candidate_from_event(
+        event_b["event_id"], authority="NAOMI", record_type="TEST", scope="MemoryOS",
+        statement=statement_b, source=source, owner=GALAXY_CANARY_OWNER_B,
+        why_material="Controlled durable endpoint B for the GALAXY Phase-1 relation canary.",
+    )
+
+    return _envelope("GALAXY TWO-MEMORY CANARY PAUSED AT APPROVAL", {
+        "status": "APPROVAL_REQUIRED",
+        "token": token,
+        "session": session,
+        "candidate_a": candidate_a,
+        "candidate_b": candidate_b,
+        "durable_writes_performed": [],
+        "relation_write_performed": False,
+        "next_command": "GALAXY CANARY APPROVE",
+        "authority_boundary": "START creates candidates only. No durable memory or GALAXY relation is written until a later explicit Naomi approval command.",
+    })
+
+
+def _handle_galaxy_canary_approve() -> dict:
+    """Promote the latest paired canary candidates, then propose one non-authoritative shadow edge."""
+    runtime = _memory_runtime()
+    candidate_a = memcon_runtime.get_latest_memory_candidate(GALAXY_CANARY_OWNER_A, "CANDIDATE")
+    candidate_b = memcon_runtime.get_latest_memory_candidate(GALAXY_CANARY_OWNER_B, "CANDIDATE")
+    if candidate_a is None or candidate_b is None:
+        return _envelope("GALAXY TWO-MEMORY CANARY HOLD", {
+            "status": "HOLD",
+            "reason": "A paired pending GALAXY canary was not found. Run GALAXY CANARY START first.",
+        })
+
+    event_a = memcon_runtime.get_session_event(str(candidate_a.get("event_id")))
+    event_b = memcon_runtime.get_session_event(str(candidate_b.get("event_id")))
+    if not event_a or not event_b or event_a.get("session_id") != event_b.get("session_id"):
+        return _envelope("GALAXY TWO-MEMORY CANARY HOLD", {
+            "status": "HOLD",
+            "reason": "Latest canary candidates are not a matched pair. Run GALAXY CANARY START again.",
+            "candidate_a": candidate_a.get("candidate_id"),
+            "candidate_b": candidate_b.get("candidate_id"),
+        })
+
+    promotion_a = runtime.promote_candidate(str(candidate_a["candidate_id"]), True, "NAOMI")
+    promotion_b = runtime.promote_candidate(str(candidate_b["candidate_id"]), True, "NAOMI")
+    if promotion_a.get("status") != "VERIFIED" or promotion_b.get("status") != "VERIFIED":
+        return _envelope("GALAXY TWO-MEMORY CANARY HOLD", {
+            "status": "HOLD",
+            "reason": "Both controlled memories must reach VERIFIED before a relation is proposed.",
+            "promotion_a": promotion_a,
+            "promotion_b": promotion_b,
+            "relation_write_performed": False,
+        })
+
+    record_a = memcon_runtime.get_record(str(promotion_a["record_id"]))
+    record_b = memcon_runtime.get_record(str(promotion_b["record_id"]))
+    if record_a is None or record_b is None:
+        return _envelope("GALAXY TWO-MEMORY CANARY HOLD", {
+            "status": "HOLD",
+            "reason": "Durable record readback failed after promotion.",
+            "promotion_a": promotion_a,
+            "promotion_b": promotion_b,
+        })
+
+    pre_ids = _galaxy_retrieval_record_ids(record_b)
+    relation = memcon_runtime.galaxy_propose_relation(
+        source_record_id=str(record_b["record_id"]),
+        target_record_id=str(record_a["record_id"]),
+        relation_type="CONTEXT_FOR",
+        strength=1.0,
+        evidence={
+            "source": "galaxy-phase1-two-memory-canary",
+            "basis": "Controlled B CONTEXT_FOR A relation; proposed only after both endpoints were durably verified.",
+            "session_id": event_a.get("session_id"),
+            "pre_verification_retrieval_record_ids": pre_ids,
+        },
+        classifier="GALAXY_CONTROLLED_CANARY_V1",
+    )
+    edge_id = (relation.get("relation") or {}).get("edge_id")
+    return _envelope("GALAXY TWO-MEMORY CANARY READY FOR EDGE VERIFICATION", {
+        "status": "RELATION_PROPOSED",
+        "memory_a": {"candidate": candidate_a, "promotion": promotion_a, "record": record_a},
+        "memory_b": {"candidate": candidate_b, "promotion": promotion_b, "record": record_b},
+        "relation": relation,
+        "pre_verification_retrieval_record_ids": pre_ids,
+        "next_command": f"GALAXY VERIFY {edge_id}" if edge_id else None,
+        "authority_boundary": "The two memories are durable by explicit approval. The relation is still only PROPOSED and has no retrieval effect until separately verified.",
+    })
 
 
 def _handle_galaxy_relation_propose(command: str) -> dict:
