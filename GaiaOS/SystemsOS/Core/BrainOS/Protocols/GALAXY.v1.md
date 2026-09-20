@@ -398,3 +398,46 @@ Do not claim Phase 2 runtime success until the deployed carrier visibly demonstr
 - repeated canary execution is idempotent for unchanged inputs.
 
 Only after this gate passes may Phase 2 proceed to calibration across a broader bounded sample. Phase 3 weighted retrieval remains prohibited until separately designed, deployed, and behaviorally tested.
+
+
+### Phase-2 live shadow-gravity canary FIRST PASS 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `SHADOW_GRAVITY_CALCULATED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Controlled edge: `EDGE-bf3ab5952c4e41b1bd3cad5019bd676c`
+- Source record: `MEM-afc1f8f71e83451dbd14a46fa3229d8d`
+- Target record: `MEM-295d635c8a2643fdbce3629370120303`
+- Source score: `0.6625`
+- Target score: `0.6625`
+- Score version: `galaxy.gravity.shadow.v1`
+- Both first-write gravity receipts returned `SUCCESS`.
+- Source receipt: `MEMREC-9c135747b9674021a5740010a57c9b47`
+- Target receipt: `MEMREC-1cf1eaa5c5ce4f87b66256e2686cc0b2`
+- Both ORBIT readbacks exposed the stored gravity rows.
+- Ordinary MemoryOS retrieval order before and after scoring was identical.
+- `unchanged: true`
+- `retrieval_weighting_enabled: false`
+- `gravity_is_authority: false`
+- `stored_gravity_feeds_its_own_score: false`
+- `recency_component_enabled: false`
+- `physical_pruning_enabled: false`
+
+Observed retrieval order remained:
+
+`MEM-afc1f8f71e83451dbd14a46fa3229d8d`
+→ `MEM-295d635c8a2643fdbce3629370120303`
+→ `MEM-17ff585910524bfe98a68f2c386fafbc`
+→ `MEM-c05a2642dc1a4cdf8ba3f1568b037bcf`
+→ `MEM-6fd682a5e64f4e5a94c333a4bc3b5082`
+
+INTERPRETATION:
+
+The first live Phase-2 write/readback/retrieval-control path passed. Shadow gravity can be calculated, stored, receipted, and read back without changing ordinary retrieval behavior.
+
+PHASE-2 REMAINING GATE:
+
+Repeat the exact same controlled canary with unchanged inputs. It must return the existing identical scores idempotently, perform no new gravity mutation, and preserve ordinary retrieval order. Only after that rerun is observed should the controlled Phase-2 canary be marked fully PASS.
+
+Phase 3 weighted retrieval remains disabled and unauthorized.
