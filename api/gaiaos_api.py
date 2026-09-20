@@ -591,8 +591,12 @@ def _galaxy_retrieval_ids(runtime, record: dict) -> list[str]:
 
 @app.get("/galaxy/canary/start", response_class=HTMLResponse)
 def galaxy_canary_start(browser_request: Request):
-    """Direct canary entrypoint that does not depend on OPENAI_API_KEY."""
-    _authorize_browser_session(browser_request)
+    """Direct canary entrypoint that does not depend on OPENAI_API_KEY.
+    If opened directly, bootstrap the same signed browser session used by the GaiaOS home page.
+    """
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
     memcon_runtime, runtime = _galaxy_runtime()
     token = secrets.token_hex(6)
     source = f"galaxy-phase1-canary:{token}"
@@ -619,7 +623,7 @@ def galaxy_canary_start(browser_request: Request):
         "durable_writes_performed": [],
         "relation_write_performed": False,
     }
-    return HTMLResponse(
+    response = HTMLResponse(
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
         "<h1>GALAXY two-memory canary</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
@@ -627,6 +631,9 @@ def galaxy_canary_start(browser_request: Request):
         "<p>START created candidates only. No durable memory or relation has been written.</p>"
         "</body></html>"
     )
+    if bootstrap_session:
+        response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
+    return response
 
 
 @app.get("/galaxy/canary/approve", response_class=HTMLResponse)
