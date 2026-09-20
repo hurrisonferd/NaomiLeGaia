@@ -826,3 +826,28 @@ Naomi review questions are surfaced directly:
 No action button is exposed on this page intentionally. Observation and Naomi review precede any real-memory graph mutation or Phase-3 design.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 real-memory live coverage finding 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_SHADOW_PREVIEW`
+- Eligible non-test MemoryOS records: `0`
+- Relation-bearing real-memory records: `0`
+- Zero-relation real-memory records: `0`
+- Unique natural relation profiles: `0`
+- Selected sample count: `0`
+- Calibration readiness: `GRAPH_COVERAGE_LIMITED`
+- `writes_performed: []`
+- `relations_mutated: []`
+- `gravity_rows_mutated: []`
+- `retrieval_weighting_enabled: false`
+
+INTERPRETATION:
+
+The current durable MemoryOS population contains no eligible non-test records under the real-memory calibration boundary. This is a coverage finding, not a score-quality result.
+
+No claim is made that GaiaOS lacks real conversational material elsewhere in MemconOS. The next diagnostic must inspect existing non-test MemoryOS candidates and session-event material without promoting or mutating anything.
+
+Phase 3 remains disabled and unauthorized.
