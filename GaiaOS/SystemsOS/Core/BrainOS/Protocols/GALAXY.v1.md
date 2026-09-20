@@ -1622,3 +1622,44 @@ Required result:
 BOUNDARY:
 
 `REVIEW != PROPOSE != VERIFY != GRAVITY WRITE != RETRIEVAL WEIGHTING`
+
+
+### Phase-2 first real-memory relation proposal live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_RELATION_PROPOSED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Edge: `EDGE-bf16fa990bf84d3197c954178592aa5c`
+- Source record: `MEM-3beb2cf2c3ba401794cfce228c6e7e14`
+- Target record: `MEM-2940611cdf924de5bc12fb36947517ab`
+- Relation type: `EXTENDS`
+- Strength: `0.85`
+- Relation status: `PROPOSED`
+- Classifier: `GALAXY_REAL_CALIBRATION_V1`
+- Relation authority: `NONE`
+- Verified at: `null`
+- Evidence records `naomi_reviewed_proposal: true`
+- Retrieval effect: `NONE`
+- Relation verified: `false`
+- Durable memory writes: `[]`
+- Gravity mutations: `[]`
+- Retrieval weighting: `false`
+
+PROPOSAL-GATE CONCLUSION:
+
+The first real-memory semantic edge was written only as a non-authoritative `PROPOSED` relation. It has not been verified and has no retrieval effect.
+
+The captured pre-verification retrieval order is preserved in the edge evidence for later before/after comparison.
+
+NEXT LIVE GATE:
+
+Open the exact verification-review page for `EDGE-bf16fa990bf84d3197c954178592aa5c` and verify:
+- exact source/target/type/strength/classifier;
+- status still `PROPOSED`;
+- `verification_available: true`;
+- zero writes on review;
+- no gravity mutation;
+- retrieval weighting remains disabled.
+
+Do not verify the edge until this read-only review passes.
