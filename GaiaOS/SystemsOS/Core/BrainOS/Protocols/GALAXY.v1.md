@@ -2156,3 +2156,65 @@ Unchanged:
 - tier 5: `MARDUK`
 
 The tier indices, normalization rule `tier_index / 6`, authorization model, and scoring behavior are unchanged.
+
+
+### Phase-2 explicit-importance model revision: CONTINUOUS SEVEN GATES 2026-09-20
+
+NAOMI REVISION:
+
+The earlier discrete \`THREE_LEVEL\`, \`SIX_LEVEL\`, and seven-position \`SEVEN_GATES\` review models are superseded before storage implementation.
+
+Selected canonical review model:
+
+\`SEVEN_GATE_CONTINUOUS_V1\`
+
+MACHINE REPRESENTATION:
+
+- canonical storage candidate: integer \`gate_units\` in \`0..7000\`;
+- display position: \`gate_units / 1000\`;
+- display precision: exactly three decimal places;
+- normalized explicit importance: \`gate_units / 7000\`;
+- available exact positions: \`7001\`;
+- no floating-point value is proposed as the canonical persisted representation.
+
+GATE BANDS:
+
+- \`0.000..0.999 = SIN\`
+- \`1.000..1.999 = NEBO\`
+- \`2.000..2.999 = ISHTAR\`
+- \`3.000..3.999 = SHAMMASH\`
+- \`4.000..4.999 = NERGAL\`
+- \`5.000..5.999 = MARDUK\`
+- \`6.000..7.000 = ADAR\`
+
+EXAMPLES:
+
+- \`985 -> 0.985 / SIN\`
+- \`3972 -> 3.972 / SHAMMASH\`
+- \`5214 -> 5.214 / MARDUK\`
+- \`6999 -> 6.999 / ADAR\`
+
+The named Gate is a human-facing band. The precise position inside that band remains numerically meaningful.
+
+AUTHORIZATION MODEL:
+
+- Naomi alone may set or revise explicit importance.
+- Default storage candidate is \`0\` units, displaying \`0.000 SIN\`.
+- A future mutation requires a separate exact-record review and explicit Naomi approval.
+- Later revision remains allowed.
+- Explicit importance remains distinct from truth, authority, permission, relation strength, and gravity itself.
+
+SOURCE REVIEW LENS:
+
+\`/galaxy/gravity/real-calibration/importance-seven-gates?record_id=<MEM-ID>\`
+
+Compatibility aliases remain:
+
+- \`/galaxy/gravity/real-calibration/importance-six-level\`
+- \`/galaxy/gravity/real-calibration/importance-three-level\`
+
+All aliases now render the continuous Seven Gates review surface.
+
+No importance value has been stored. No weight profile has been selected. No gravity row, relation mutation, or retrieval behavior is changed.
+
+Phase 3 remains disabled and unauthorized.
