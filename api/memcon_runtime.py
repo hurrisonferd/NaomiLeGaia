@@ -323,24 +323,46 @@ def get_record(record_id: str) -> dict[str, Any] | None:
 
 
 def search_records(query: str, limit: int = 20, scope: str | None = None) -> dict[str, Any]:
+    """Search durable records while preserving query semantics inside an optional scope.
+
+    Every non-empty query term must match at least one indexed text field on the
+    same record. Supplying scope narrows the candidate population; it never
+    disables query filtering.
+    """
     initialize()
     terms = [term.strip().lower() for term in query.split() if term.strip()]
     limit = max(1, min(int(limit), 100))
+
+    clauses: list[str] = []
+    params: list[Any] = []
+
+    if scope:
+        clauses.append("scope = ?")
+        params.append(scope)
+
+    for term in terms:
+        pattern = f"%{term}%"
+        clauses.append(
+            "(lower(statement) LIKE ? OR lower(notes) LIKE ? OR lower(record_id) LIKE ? OR lower(scope) LIKE ?)"
+        )
+        params.extend([pattern, pattern, pattern, pattern])
+
+    sql = "SELECT * FROM memory_records"
+    if clauses:
+        sql += " WHERE " + " AND ".join(clauses)
+    sql += " ORDER BY created_at DESC LIMIT ?"
+    params.append(limit)
+
     with _db() as conn:
-        if scope:
-            rows = _fetchall_dicts(conn,
-                "SELECT * FROM memory_records WHERE scope = ? ORDER BY created_at DESC LIMIT ?",
-                (scope, limit),
-            )
-        elif terms:
-            pattern = "%" + "%".join(terms) + "%"
-            rows = _fetchall_dicts(conn,
-                "SELECT * FROM memory_records WHERE lower(statement) LIKE ? OR lower(notes) LIKE ? OR lower(record_id) LIKE ? OR lower(scope) LIKE ? ORDER BY created_at DESC LIMIT ?",
-                (pattern, pattern, pattern, pattern, limit),
-            )
-        else:
-            rows = _fetchall_dicts(conn, "SELECT * FROM memory_records ORDER BY created_at DESC LIMIT ?", (limit,))
-    return {"records": rows, "count": len(rows), "runtime": SCHEMA_VERSION}
+        rows = _fetchall_dicts(conn, sql, tuple(params))
+    return {
+        "records": rows,
+        "count": len(rows),
+        "runtime": SCHEMA_VERSION,
+        "query_terms_applied": terms,
+        "scope_applied": scope,
+        "query_filter_active": bool(terms),
+    }
 
 
 def update_record(record_id: str, *, authority: str, approved: bool, statement: str | None = None,
@@ -565,7 +587,7 @@ def galaxy_status() -> dict[str, Any]:
         "semantic_invariants": list(GALAXY_SEMANTIC_INVARIANTS),
         "phase3_blockers": [
             "GOVERNING_STATE_FOR_REVISED_OR_SUPERSEDED_HISTORY_UNRESOLVED",
-            "SCOPE_FILTERED_SEARCH_CURRENTLY_IGNORES_QUERY_TERMS",
+            "SCOPE_FILTERED_SEARCH_FIX_PENDING_LIVE_PROOF",
         ],
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
