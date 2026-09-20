@@ -1708,3 +1708,64 @@ Required result:
 BOUNDARY:
 
 `VERIFY EDGE != WRITE GRAVITY != ENABLE RETRIEVAL WEIGHTING`
+
+
+### Phase-2 first real-memory relation verification live result 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Status: `REAL_MEMORY_RELATION_VERIFIED`
+- Phase: `PHASE_2_GRAVITY_SHADOW`
+- Edge: `EDGE-bf16fa990bf84d3197c954178592aa5c`
+- Source: `MEM-3beb2cf2c3ba401794cfce228c6e7e14`
+- Target: `MEM-2940611cdf924de5bc12fb36947517ab`
+- Relation: `EXTENDS`
+- Strength: `0.85`
+- Classifier: `GALAXY_REAL_CALIBRATION_V1`
+- Verification status: `VERIFIED`
+- Relation authority: `NAOMI`
+- Verification receipt: `SUCCESS`
+- Relation readback preserved exact semantics.
+- Source ORBIT and target ORBIT both include the verified edge.
+- Source shadow preview: `0.6325`
+- Target shadow preview: `0.6325`
+- Both previews reflect:
+  - ACTIVE durability contribution `0.25`
+  - graph degree contribution `0.0625`
+  - relation strength contribution `0.17`
+  - Naomi provenance contribution `0.15`
+  - revision significance contribution `0.0`
+  - explicit importance contribution `0.0`
+- Stored gravity remains `null` on both endpoints.
+- Retrieval order before and after verification is identical.
+- `retrieval_weighting_enabled: false`
+- Durable-memory writes during verification: `[]`
+- Gravity mutations: `[]`
+
+VERIFICATION-GATE CONCLUSION:
+
+The first real semantic topology change is live and PASS.
+
+The verified real edge changed only the shadow score preview of its incident records, from isolated baseline `0.4` to `0.6325`, while ordinary retrieval remained unchanged and no gravity row was written.
+
+This establishes the first real-memory Phase-2 topology discrimination point:
+
+- related pair: expected shadow-v1 `0.6325`
+- isolated control: expected shadow-v1 `0.4`
+
+NEXT LIVE GATE:
+
+Re-run the full real-memory shadow calibration preview. Expected population shape:
+- eligible real-memory count `3`;
+- relation-bearing count `2`;
+- zero-relation count `1`;
+- at least two relation profiles;
+- score values `[0.4, 0.6325]`;
+- positive score spread;
+- readiness `OBSERVABLE_GRAPH_DIVERSITY`;
+- no writes;
+- retrieval weighting remains disabled.
+
+If observed, this will close the first real-memory topology-diversity gate. It still will not establish that the v1 weights are useful or well calibrated.
+
+Phase 3 remains disabled and unauthorized.
