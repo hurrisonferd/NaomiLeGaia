@@ -2013,3 +2013,60 @@ The lens is read-only and compares the three levels across current-v1, soft-reba
 No importance value, new weight profile, gravity row, relation mutation, or retrieval weighting is authorized yet.
 
 Phase 3 remains disabled and unauthorized.
+
+
+### Phase-2 explicit-importance model revision: SIX-LEVEL 2026-09-20
+
+NAOMI REVISION:
+
+The prior \`THREE-LEVEL\` review model is superseded before storage implementation.
+
+Selected review model:
+
+\`SIX_LEVEL\`
+
+Allowed values:
+
+\`0.0 / 0.2 / 0.4 / 0.6 / 0.8 / 1.0\`
+
+Proposed labels and semantics:
+
+- \`0.0 NORMAL\`
+  - no explicit importance boost.
+
+- \`0.2 NOTABLE\`
+  - somewhat greater future-context visibility without becoming a governing anchor.
+
+- \`0.4 IMPORTANT\`
+  - materially important for future context.
+
+- \`0.6 HIGH\`
+  - strongly important across future context and worthy of elevated influence when relevant.
+
+- \`0.8 ANCHOR\`
+  - a major contextual anchor that should remain highly available even with sparse graph support.
+
+- \`1.0 FOUNDATIONAL\`
+  - foundational context that should remain strongly available even when graph-isolated.
+
+AUTHORIZATION MODEL:
+
+- Naomi alone may set or revise explicit importance.
+- Default remains \`0.0\`.
+- Only the six allowed values are accepted.
+- Step size is exactly \`0.2\`.
+- Setting or revising a value requires a separate exact-record review and explicit Naomi approval.
+- Importance is not truth, authority, permission, or relation strength.
+- Later revision remains allowed.
+
+SOURCE REVIEW LENS:
+
+Primary route:
+
+\`/galaxy/gravity/real-calibration/importance-six-level?record_id=<MEM-ID>\`
+
+The earlier \`importance-three-level\` route remains as a compatibility alias to the revised six-level review surface so stale links do not silently fail.
+
+No importance value has been stored. No weight profile has been selected. No gravity row, relation, or retrieval behavior is changed.
+
+Phase 3 remains disabled and unauthorized.
