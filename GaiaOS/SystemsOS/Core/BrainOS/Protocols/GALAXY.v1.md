@@ -282,3 +282,44 @@ Browser Chat command flow:
    - retrieval weighting remains disabled.
 
 Proof boundary: SOURCE IMPLEMENTED. Deployment and runtime success must still be observed after the relevant commit is deployed.
+
+### Phase-1 live relation canary PASS 2026-09-20
+
+OBSERVED LIVE RESULT:
+
+- Controlled durable endpoint B: `MEM-afc1f8f71e83451dbd14a46fa3229d8d`
+- Controlled durable endpoint A: `MEM-295d635c8a2643fdbce3629370120303`
+- Verified edge: `EDGE-bf3ab5952c4e41b1bd3cad5019bd676c`
+- Relation: `B CONTEXT_FOR A`
+- Strength: `1.0`
+- Classifier: `GALAXY_CONTROLLED_CANARY_V1`
+- Authority after verification: `NAOMI`
+- Edge created: `2026-09-20T01:04:08.338834+00:00`
+- Edge verified: `2026-09-20T01:26:40.200674+00:00`
+- Verification readback returned `idempotent: true`, proving the earlier long-running request had already completed the verification write before the later readback request.
+- Both source and target ORBIT readbacks returned the same verified relation.
+- `gravity: null`
+- `lifecycle: null`
+- `retrieval_effect: NONE_SHADOW_MODE`
+- Pre-verification and post-verification ordinary MemoryOS retrieval record IDs were identical.
+- `unchanged: true`
+- `retrieval_weighting_enabled: false`
+
+Observed retrieval order before and after:
+
+`MEM-afc1f8f71e83451dbd14a46fa3229d8d`
+→ `MEM-295d635c8a2643fdbce3629370120303`
+→ `MEM-17ff585910524bfe98a68f2c386fafbc`
+→ `MEM-c05a2642dc1a4cdf8ba3f1568b037bcf`
+→ `MEM-6fd682a5e64f4e5a94c333a4bc3b5082`
+
+PHASE-1 CONCLUSION:
+
+`PROPOSED → NAOMI VERIFIED → ORBIT READBACK → RETRIEVAL UNCHANGED` is now observed live on the deployed carrier.
+
+This closes the Phase-1 graph-foundation gate for the controlled two-memory relation path. It does not prove automatic relation classification quality, gravity quality, weighted retrieval, synthesis, lifecycle migration, forgetting, or pruning.
+
+NEXT PHASE:
+`PHASE_2_GRAVITY_SHADOW_SCORING`
+
+Phase 2 must begin with explainable shadow-only gravity calculation. Scores must remain non-authoritative and must not affect ordinary retrieval until a separately observed later gate enables weighted retrieval.
