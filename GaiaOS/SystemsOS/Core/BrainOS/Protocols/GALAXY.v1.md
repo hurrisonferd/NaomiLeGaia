@@ -44,7 +44,11 @@ A low-gravity satellite may have a strong EXPLAINS edge to a major memory and re
 When B revises A, retain A and add B REVISES A. If supported, separately add B SUPERSEDES A. Raise B's current retrieval influence and lower A's ordinary-current-context influence while preserving A for chronology, causality, provenance, and rollback. Newer never automatically means truer.
 
 ## Retrieval
-Return a bounded constellation: focal relevant/high-gravity records, only useful satellites, active contradictions/revisions, and material provenance. Archived memories require stronger relevance or graph activation to surface. Retrieved context has no independent authority.
+Query relevance is first-class. Build a relevance-qualified candidate pool before applying GALAXY modifiers. Gravity, graph structure, lifecycle state, and provenance may rerank or shape that qualified pool, but they must not introduce a record that failed the relevance gate merely because it has high contextual influence.
+
+`QUERY RELEVANCE -> CANDIDATE ELIGIBILITY -> CONTEXTUAL MODIFIERS -> BOUNDED CONSTELLATION`
+
+Return a bounded constellation: focal relevant/high-gravity records, only useful satellites, active contradictions/revisions, and material provenance. Archived memories require stronger relevance or graph activation to surface within an already relevant neighborhood. Retrieved context has no independent authority.
 
 ## Consolidation
 When records form a stable cluster, GALAXY may propose a synthesis parent citing its source record IDs. The synthesis may become the default retrieval target while originals remain provenance satellites.
@@ -177,7 +181,9 @@ PHASE 2: Gravity shadow mode.
 - prevent feedback loops, recency domination, and arbitrary permanent weights.
 
 PHASE 3: Weighted retrieval experiment.
-- combine semantic relevance, gravity, graph path relevance, lifecycle state, and provenance/source confidence in a bounded test;
+- query relevance remains the candidate-eligibility gate and first-class retrieval signal;
+- gravity, graph path relevance, lifecycle state, and provenance/source confidence may modify/rerank only relevance-qualified candidates;
+- zero-query-relevance material cannot be rescued into the candidate set by gravity alone;
 - compare against existing retrieval control;
 - preserve contradiction and exploration slots;
 - prove retrieved history changes a subsequent bounded output in the predicted way without granting retrieved context authority.
@@ -3025,3 +3031,56 @@ PRE-PHASE-3 STATUS:
 Phase 2 is CLOSED.
 
 This closure does not authorize weighted retrieval. Phase 3 begins only after an explicit Naomi authorization for the bounded weighted-retrieval experiment.
+
+
+### RavenOS query-first retrieval contract adoption 2026-09-20
+
+A final RavenOS critique was accepted because it identifies a core Phase-3 failure mode:
+
+High gravity must not be allowed to substitute for query relevance.
+
+The earlier scoped-search implementation bug has already been fixed and live-proven:
+`SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN`
+
+The stronger architectural rule is now explicit:
+
+`QUERY_RELEVANCE_IS_FIRST_CLASS`
+
+`GRAVITY_MODIFIES_RELEVANCE_NOT_CANDIDATE_ELIGIBILITY`
+
+`ZERO_QUERY_RELEVANCE_CANNOT_BE_RESCUED_BY_GRAVITY`
+
+`RETRIEVAL_INFLUENCE != AUTHORITY`
+
+Retrieval staging contract:
+
+`QUERY RELEVANCE -> CANDIDATE ELIGIBILITY -> CONTEXTUAL MODIFIERS -> BOUNDED CONSTELLATION`
+
+A new runtime helper, `galaxy_phase3_candidate_pool(...)`, creates the relevance-qualified pool before any gravity weighting. In Phase 2 it performs no modifier scoring and no weighted retrieval.
+
+A new read-only proof route:
+
+`/galaxy/retrieval/query-first-contract-proof`
+
+demonstrates that:
+- the known influential authority-boundary record is eligible for a relevant query;
+- the same record is absent from an irrelevant-query candidate pool;
+- its shadow gravity cannot rescue it after query exclusion;
+- zero writes occur;
+- weighted retrieval remains disabled.
+
+Until that proof is observed live:
+
+`QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_PENDING_LIVE_PROOF`
+
+temporarily blocks Phase-3 authorization.
+
+Terminology correction adopted:
+
+The adversarial review phrase `intended authority boundary` is replaced with:
+
+`intended operator-vs-graph influence balance`
+
+because explicit Seven Gates importance controls contextual influence, not authority.
+
+`IMPORTANCE != AUTHORITY`
