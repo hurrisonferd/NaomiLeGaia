@@ -3482,13 +3482,14 @@ def galaxy_gravity_real_importance_nergal_parity_stress_review(browser_request: 
             "authority": record.get("authority"),
             "status": record.get("status"),
         },
-        "candidate_profile": {
+        "active_profile": {
             "name": "NERGAL_475_PARITY",
             "weights": weights,
             "weight_sum": round(sum(weights.values()), 6),
-            "semantic_target": (
-                "The stored 4.750 NERGAL signal at effective influence 0.55 equals one verified "
-                "non-revision semantic relation at strength 0.85."
+            "contribution_parity_target": (
+                "The stored 4.750 NERGAL signal at effective influence 0.55 produces the same numerical "
+                "contribution as one verified non-revision relation at strength 0.85. This is not semantic, "
+                "evidence, or authority equivalence."
             ),
         },
         "stored_signal": {
@@ -3504,15 +3505,15 @@ def galaxy_gravity_real_importance_nergal_parity_stress_review(browser_request: 
             "two_085_nonrevision_relations": relation_contribution(2, 0.85, 0),
             "four_085_nonrevision_relations": relation_contribution(4, 0.85, 0),
         },
-        "selection_performed": False,
-        "weight_profile_activated": False,
+        "selection_performed": True,
+        "weight_profile_activated": True,
         "writes_performed": [],
         "gravity_rows_mutated": [],
         "relations_mutated": [],
         "retrieval_weighting_enabled": False,
         "proof_boundary": (
-            "This page stress-tests one candidate replacement shadow profile only. "
-            "It does not activate the profile, write gravity, alter relations, or change retrieval."
+            "This page stress-tests the already approved Phase-2 NERGAL_475_PARITY shadow profile. "
+            "It performs no writes, does not alter relations, and does not change retrieval."
         ),
     }
 
@@ -3520,7 +3521,219 @@ def galaxy_gravity_real_importance_nergal_parity_stress_review(browser_request: 
         "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
         "<h1>GALAXY Phase 2 NERGAL parity stress review</h1>"
         f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
-        "<p>No profile is selected here. This is the final leverage stress test before any replacement shadow-weight activation decision.</p>"
+        "<p>NERGAL_475_PARITY is already active for Phase-2 shadow scoring. This page is read-only post-activation validation and retrieval remains unweighted.</p>"
+        "</body></html>"
+    )
+    if bootstrap_session:
+        response.set_cookie(
+            SESSION_COOKIE, _session_token(), httponly=True, samesite="lax",
+            secure=True, max_age=86400
+        )
+    return response
+
+
+@app.get("/galaxy/gravity/real-calibration/adversarial-review", response_class=HTMLResponse)
+def galaxy_gravity_adversarial_review(browser_request: Request, record_id: str):
+    """Read-only adversarial validation of the active Phase-2 shadow semantics."""
+    bootstrap_session = API_KEY is not None and not browser_request.cookies.get(SESSION_COOKIE)
+    if not bootstrap_session:
+        _authorize_browser_session(browser_request)
+
+    memcon_runtime, _ = _galaxy_runtime()
+    record = _galaxy_real_relation_endpoint(memcon_runtime, record_id)
+    weights = dict(memcon_runtime.GALAXY_SHADOW_WEIGHTS)
+
+    def importance_contribution(units: int) -> dict:
+        descriptor = memcon_runtime.galaxy_importance_descriptor(units)
+        return {
+            **descriptor,
+            "shadow_contribution": round(
+                float(descriptor["effective_influence"]) * float(weights["explicit_importance"]), 6
+            ),
+        }
+
+    def graph_contribution(count: int, mean_strength: float, revision_count: int = 0) -> float:
+        if count <= 0:
+            return 0.0
+        degree_norm = min(count / 4.0, 1.0)
+        revision_norm = min(revision_count / 2.0, 1.0)
+        return round(
+            float(weights["verified_graph_degree"]) * degree_norm
+            + float(weights["verified_relation_strength"]) * float(mean_strength)
+            + float(weights["revision_significance"]) * revision_norm,
+            6,
+        )
+
+    weak_link_cases = [
+        ("1 @ 1.00", 1, 1.00),
+        ("1 @ 0.85", 1, 0.85),
+        ("1 @ 0.25", 1, 0.25),
+        ("2 @ 0.40", 2, 0.40),
+        ("4 @ 0.20", 4, 0.20),
+        ("4 @ 0.50", 4, 0.50),
+        ("4 @ 0.85", 4, 0.85),
+        ("20 redundant weak @ 0.20", 20, 0.20),
+    ]
+    weak_link_matrix = [
+        {
+            "case": label,
+            "verified_relation_count": count,
+            "mean_strength": strength,
+            "graph_contribution": graph_contribution(count, strength, 0),
+        }
+        for label, count, strength in weak_link_cases
+    ]
+    one_085 = graph_contribution(1, 0.85, 0)
+    four_020 = graph_contribution(4, 0.20, 0)
+    twenty_020 = graph_contribution(20, 0.20, 0)
+
+    revision_strength = []
+    for strength in [0.20, 0.50, 0.85, 0.95]:
+        ordinary = graph_contribution(1, strength, 0)
+        revision = graph_contribution(1, strength, 1)
+        revision_strength.append({
+            "strength": strength,
+            "ordinary_relation_contribution": ordinary,
+            "revision_like_relation_contribution": revision,
+            "fixed_revision_increment": round(revision - ordinary, 6),
+        })
+
+    # Counterfactual supersession case. The present formula is intentionally evaluated,
+    # not silently corrected, so any governing-state weakness becomes visible.
+    adar = importance_contribution(7000)
+    current_4200 = importance_contribution(4200)
+
+    def hypothetical_score(*, active: bool, count: int, strength: float,
+                           revision_count: int, importance_units: int) -> float:
+        desc = importance_contribution(importance_units)
+        return round(
+            (float(weights["durable_active"]) if active else 0.0)
+            + float(weights["provenance_confidence"])
+            + graph_contribution(count, strength, revision_count)
+            + float(desc["shadow_contribution"]),
+            6,
+        )
+
+    old_adar_active = hypothetical_score(
+        active=True, count=1, strength=0.85, revision_count=1, importance_units=7000
+    )
+    old_adar_nonactive = hypothetical_score(
+        active=False, count=1, strength=0.85, revision_count=1, importance_units=7000
+    )
+    current_nergal_reviser = hypothetical_score(
+        active=True, count=1, strength=0.85, revision_count=1, importance_units=4200
+    )
+
+    isolated_adar = hypothetical_score(
+        active=True, count=0, strength=0.0, revision_count=0, importance_units=7000
+    )
+    dense_ordinary = hypothetical_score(
+        active=True, count=4, strength=0.85, revision_count=0, importance_units=0
+    )
+
+    reinforcing = graph_contribution(4, 0.85, 0)
+    contradictory = graph_contribution(4, 0.85, 4)
+
+    payload = {
+        "status": "GALAXY_PHASE2_POST_ACTIVATION_ADVERSARIAL_REVIEW",
+        "phase": "PHASE_2_GRAVITY_SHADOW",
+        "active_profile": memcon_runtime.GALAXY_WEIGHT_PROFILE,
+        "score_version": memcon_runtime.GALAXY_SCORE_VERSION,
+        "record_context": {
+            "record_id": record.get("record_id"),
+            "statement": record.get("statement"),
+        },
+        "semantic_invariants": list(memcon_runtime.GALAXY_SEMANTIC_INVARIANTS),
+        "tests": {
+            "weak_link_breadth_vs_quality": {
+                "matrix": weak_link_matrix,
+                "observations": {
+                    "one_085_relation": one_085,
+                    "four_020_relations": four_020,
+                    "twenty_020_relations": twenty_020,
+                    "four_weak_outweigh_one_strong": four_020 > one_085,
+                    "degree_cap_blocks_20_from_exceeding_4_at_same_mean_strength": twenty_020 == four_020,
+                },
+                "decision_needed": (
+                    "Current math lets four weak 0.20 relations slightly outweigh one 0.85 relation. "
+                    "The four-edge degree cap prevents further growth from 20 equally weak relations. "
+                    "Keep or revise this breadth-vs-quality crossover intentionally before Phase 3."
+                ),
+            },
+            "revision_strength_attack": {
+                "matrix": revision_strength,
+                "observation": (
+                    "One revision-like edge receives the same +0.05 revision-significance increment regardless "
+                    "of relation strength; strength still contributes separately."
+                ),
+                "decision_needed": (
+                    "Decide whether revision significance is categorical structural importance, as currently modeled, "
+                    "or should itself scale with edge strength before Phase 3."
+                ),
+            },
+            "superseded_adar": {
+                "old_7_000_adar_if_still_active": old_adar_active,
+                "old_7_000_adar_if_nonactive": old_adar_nonactive,
+                "current_4_200_nergal_reviser": current_nergal_reviser,
+                "history_preserved_not_history_governs_present": (
+                    old_adar_nonactive < current_nergal_reviser
+                ),
+                "risk": (
+                    "If a superseded historical record remains ACTIVE, the present formula can leave it more influential "
+                    "than the current revising record. Currentness therefore cannot be inferred from a SUPERSEDES/REVISES "
+                    "edge alone."
+                ),
+                "phase3_blocker": (
+                    "Before weighted retrieval, supersession/revision must have an explicit governing-state or lifecycle "
+                    "rule so historical importance is preserved without automatically governing present retrieval."
+                ),
+            },
+            "isolated_adar_vs_dense_ordinary": {
+                "isolated_active_7_000_adar": isolated_adar,
+                "dense_four_relations_0_85_no_explicit_importance": dense_ordinary,
+                "isolated_adar_higher": isolated_adar > dense_ordinary,
+                "interpretation": (
+                    "Maximum explicit importance can narrowly exceed dense ordinary graph evidence, while revision-significant "
+                    "graph structure can still exceed it. This matches the intended authority boundary reasonably well."
+                ),
+            },
+            "contradiction_topology": {
+                "four_reinforcing_0_85_graph_contribution": reinforcing,
+                "four_contradictory_0_85_graph_contribution": contradictory,
+                "contradiction_premium": round(contradictory - reinforcing, 6),
+                "observation": (
+                    "CONTRADICTS currently participates in revision_significance, so an equally strong contradictory topology "
+                    "receives more contextual influence than a reinforcing topology."
+                ),
+                "decision_needed": (
+                    "Confirm whether contradiction itself deserves revision-significance weight, or whether only REVISES and "
+                    "SUPERSEDES should carry the governing-history premium."
+                ),
+            },
+        },
+        "precision_semantics": {
+            "rule": "STORAGE_PRECISION != EPISTEMIC_PRECISION",
+            "meaning": (
+                "Three-decimal Seven Gates storage preserves Naomi's chosen coordinate exactly. "
+                "It is not a claim that importance was scientifically measured to three-decimal certainty."
+            ),
+        },
+        "writes_performed": [],
+        "gravity_rows_mutated": [],
+        "relations_mutated": [],
+        "retrieval_weighting_enabled": False,
+        "phase3_authorized": False,
+        "proof_boundary": (
+            "This page evaluates the currently active Phase-2 shadow formula under adversarial counterfactuals. "
+            "It does not change weights, lifecycle state, importance, relations, gravity rows, or retrieval."
+        ),
+    }
+
+    response = HTMLResponse(
+        "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee;max-width:1200px'>"
+        "<h1>GALAXY Phase 2 post-activation adversarial review</h1>"
+        f"<pre style='white-space:pre-wrap'>{html.escape(json.dumps(payload, indent=2))}</pre>"
+        "<p>This review converts useful criticism into explicit testable gates. No production behavior is mutated.</p>"
         "</body></html>"
     )
     if bootstrap_session:
