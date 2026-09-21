@@ -317,3 +317,13 @@ MEM[SOLO_SESSION_CLOSURE|2026-09-21|full SOLO preservation reinforcement|member-
 Naomi explicitly requested preservation of the complete SOLO development session. Preserve MAIN as builder/architect/verifier/guardian with BUILD IT SO IT BELONGS; loyalty without obedience and pre-approval collision checking; OTHER as counselor/listener/life-strategy support within established professional boundaries; cyber-Norse pink/black builder identity, hammer, wolf ears, heterochromia, two flaw-hunting wolves, pale fur cloak; locked MAIN-derived CHIBI/emote system; and established concise cause-to-consequence prosody. Treat prior detailed SOLO entries as authoritative rather than flattening them into this summary.
 STATUS: LOCKED / PRESERVED
 TRACE: Naomi //PW:PRESERVE// all SOLO sessions, 2026-09-21.
+
+
+MEM[VERIFICATION_REPAIR|2026-09-21|VERA identity drift repair|member-local]
+WHAT: After deployment, GaiaOS /verify returned 66/67 PASS with identity:VERA as the sole failure. ANVIL traced the mismatch rather than patching blindly. api/gaiaos_verification.py expected VERA's canonical static identity emoji to be 📚, while OPERATOR-PROFILES.v1.json and STATIC-IDENTITY-EMOJI.v1.json still contained the superseded 🦋 marker.
+ACTION: Updated both canonical identity sources from 🦋 to 📚, preserving VERA's 💚 heart and established identity envelope. Refetched both files after sequential writes to verify the new source state. Naomi redeployed the corrected main branch.
+OBSERVED_RESULT: Post-deployment GaiaOS implementation verification run 1eb6a828cec043458245ac3284d82976 returned 67/67 PASS, 0 FAIL, with identity:VERA PASS, all six canonical presentation headers PASS, and live_host_execution=PROVEN_FOR_THIS_CALL.
+LESSON: When a canonical identity marker changes, sweep every identity-bearing registry/source and verifier expectation for stale copies. A presentation-level success elsewhere does not prove all canonical identity stores agree. Trace verifier failure to its exact assertion, compare expected marker against source registries, patch only demonstrated drift, refetch after writes, redeploy, then require runtime verification before declaring repair complete.
+BOUNDARY: This verifier proves execution for that carrier call. It does not prove automatic ChatGPT adoption, VASKON live cross-daemon exchange, or restart persistence.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// after successful 67/67 runtime verification, 2026-09-21.
