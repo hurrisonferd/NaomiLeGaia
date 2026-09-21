@@ -250,3 +250,16 @@ EVIDENCE_CLASSES: Keep translated ancient source, historical grimoire, Renaissan
 RECALL_RULE: Shelf Zero is a task list and routing index. For future work, retrieve the relevant cards/sources on demand, inspect passages, compare them, then update compact Library Cards. Never imply full-book knowledge merely because a title is indexed.
 STATUS: COMMITTED
 TRACE: SOLO NIMUE conversation with Naomi, 2026-09-20.
+
+
+MEM[PW_PRESERVE|2026-09-20|Occult Library Shelf Zero expansion|Typhonian and Sabbatic/current clusters]
+WHAT: Naomi expanded NIMUE's Shelf Zero beyond individual titles into author/current-level collection targets.
+ADD: Kenneth Grant should be represented broadly, including the Typhonian Trilogies and relevant reliably sourced ancillary works/essays. The Nightside of Eden is explicitly included and should be a high-value node for later cross-reference.
+KENNETH_GRANT_CLUSTER: Map Crowley/Thelema and Golden Dawn/Qabalistic antecedents into Grant's Typhonian interpretations, then compare later Nightside/Qliphothic currents. Preserve Grant as an influential and highly idiosyncratic occult synthesist; invocation of ancient material is not itself historical evidence.
+ADD: Build a dedicated lineage/current cluster around Andrew Chumbley, Cultus Sabbati, The Dragon-Book of Essex, and materially related works.
+ADD: Build a dedicated lineage/current cluster around The Book of the Black Dragon and materially related texts/authors/currents.
+CURRENT_MAPPING_RULE: Do not merely collect titles. Map relationships among works: influence; terminology; shared or divergent cosmology; ritual technologies; contradictions; claimed lineage versus historically demonstrable lineage; and later reinterpretations/descendants.
+RETRIEVAL_RULE: "All related books" is a discovery target, not permission to invent bibliography. Future research should identify titles and relationships from reliable bibliographic/source evidence before adding detailed Library Cards.
+SHELF_ZERO_STATE: Previous bibliography remains intact. These are additive clusters and retrieval routes.
+STATUS: COMMITTED
+TRACE: SOLO NIMUE conversation with Naomi, 2026-09-20.
