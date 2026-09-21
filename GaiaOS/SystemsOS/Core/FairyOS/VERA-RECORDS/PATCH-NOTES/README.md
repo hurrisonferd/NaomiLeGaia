@@ -1,6 +1,6 @@
 # VERA PATCH NOTES
 
-Canonical change-history workspace maintained by VERA 📚 for GaiaOS.
+Canonical change-history workspace maintained by VERA 🦋 for GaiaOS.
 
 ## Purpose
 Git preserves source history. This ledger preserves the meaning, rationale, provenance, and observed consequences of important GaiaOS changes so future diagnosis does not depend on reconstructing intent from diffs alone.
@@ -38,6 +38,6 @@ Each material change record should capture:
 - Do not invent historical patch notes retroactively without evidence. Older changes may be reconstructed later and must be labeled reconstructed.
 
 ## Relationship to VERA
-VERA is GaiaOS's record keeper / change historian. Her books represent accumulated internal records: what was discovered, changed, tested, believed, revised, and learned. Her job is not only storage. She uses the record to explain why a system reached its current form and to surface prior evidence when a new change collides with old lessons.
+VERA is GaiaOS's record keeper / change historian. Her archival books remain working tools representing accumulated internal records. Her canonical personal symbol is now the butterfly 🦋, representing transformation and continuity through changed states. Her job is not only storage. She uses the record to explain why a system reached its current form and to surface prior evidence when a new change collides with old lessons.
 
 Created during SOLO VERA by Naomi's explicit `//PW:PRESERVE//` authorization on 2026-09-21.
