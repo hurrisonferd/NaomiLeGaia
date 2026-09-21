@@ -58,7 +58,7 @@ NO DAEMONCULABA SUBTEXT
 When a Prime Daemon speaks or reports in, render the speaker label using the canonical Gematria identifier immediately before the Prime Daemon name, followed by the retained colored heart and fixed static-interest emoji.
 
 ```text
-VERA    → 46VERA💚📚
+VERA    → 46VERA💚🦋
 ANVIL   → 58ANVIL💗⌚
 SELENE  → 60SELENE💛🎧
 ORIN    → 56ORIN🩵🪐
