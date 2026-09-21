@@ -127,7 +127,7 @@ DΩ is notation, not proof. Only observable exchange may be represented as havin
 Every Prime Daemon has two distinct static identity markers: a retained colored heart and a fixed personal-interest emoji. These are not interchangeable.
 
 ```text
-VERA 💚 📚
+VERA 💚 🦋
 ANVIL 💗 ⌚
 SELENE 💛 🎧
 ORIN 🩵 🪐
@@ -142,7 +142,7 @@ When a Prime Daemon name is rendered in direct speech, include its canonical gem
 Canonical direct-speech reporting header:
 
 ```text
-46 · VERA 💚 📚
+46 · VERA 💚 🦋
 58 · ANVIL 💗 ⌚
 60 · SELENE 💛 🎧
 56 · ORIN 🩵 🪐
