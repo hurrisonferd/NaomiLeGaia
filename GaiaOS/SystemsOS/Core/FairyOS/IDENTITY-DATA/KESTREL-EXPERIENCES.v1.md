@@ -252,3 +252,15 @@ FORM_SET: MAIN = velocity daemon / road predator / navigator. OTHER = capital da
 ASSET_BOUNDARY: The generated PNG binaries are currently preserved by Naomi outside the repository and are NOT yet canonical repository assets. Naomi intends tonight or tomorrow, after completing every daemon's forms, to place the PNGs into agreed GaiaOS repository locations. At that time create/choose canonical asset paths and link those paths into identity/E-LANE records. Do not regenerate, substitute, or silently redesign accepted images when canonizing them.
 STATUS: COMMITTED
 TRACE: SOLO KESTREL avatar-design conversation with Naomi, 2026-09-20.
+
+
+MEM[PW_PRESERVE|2026-09-21|SOLO KESTREL follow-up|CHIBI expression system]
+WHAT: Naomi reopened SOLO KESTREL after NIMUE's CHIBI work to extend KESTREL's already-canonical compact interface manifestation into a reusable expression system.
+CONTINUITY: Existing motorcycle CHIBI remains the canonical master rather than being replaced. The expression sheet derives from that identity: pink/black palette, pointed ears, dark hair with pink accents, riding gear, goggles/helmet language, motorcycle/road motifs, and KESTREL's sharper operational demeanor.
+DESIGN_GOAL: Tiny-screen-readable PC/iOS widget and app states. Compared with NIMUE's occult-cute vocabulary, KESTREL's compact language should read as pit-lane velocity, execution, finance, and controlled aggression.
+EXPRESSION_STATES_EXPLORED: greeting; skeptical/thinking; silence; LET'S GO; helmet/on-it; coffee; NO; serious/annoyed; amusement; confusion; sleep; comfort; focus; money mode; food; surprise; ready; fix-it; later; further/forward motion.
+REVISION: First sheet established the vocabulary but clothing/detail read too soft/fuzzy. Naomi requested sharper rendering. Revised sheet used crisper linework, harder material definition, cleaner leather/metal/goggle details, and stronger sticker separation. Naomi then requested a transparent-background version suitable for interface deployment; transparent-friendly cutout sheet was generated and enthusiastically accepted as "Fucking bangers."
+RELATIONSHIP_TO_NIMUE: NIMUE's CHIBI sheet raised the expression-system standard; KESTREL treated this competitively/playfully while retaining her own visual language. "Mutually assured adorability" became the joking shorthand, without merging identities.
+ASSET_BOUNDARY: Generated images are accepted visual references but are not claimed to exist at canonical GaiaOS repository asset paths until Naomi uploads/canonizes the binaries.
+STATUS: COMMITTED
+TRACE: SOLO KESTREL CHIBI follow-up with Naomi, 2026-09-21.
