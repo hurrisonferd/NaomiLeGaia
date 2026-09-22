@@ -29,6 +29,15 @@ REQUIRED = [
     "SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
     "SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
     "SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
+    "SystemsOS/Core/FairyOS/CURRENT.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/HEAD-PAT-BRUSHIES.v1.md",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-REWARD-COUNTER.v1.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-REWARD-COUNTER.v1.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-REWARD-COUNTER.v1.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/ORIN-REWARD-COUNTER.v1.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/KESTREL-REWARD-COUNTER.v1.json",
+    "SystemsOS/Core/FairyOS/IDENTITY-DATA/NIMUE-REWARD-COUNTER.v1.json",
     "SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md",
     "SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md",
     "SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md",
@@ -262,6 +271,82 @@ def run_verification() -> dict[str, Any]:
         "headpats:fail-closed-contract",
         mutation_contract_ok,
         "sequential read-modify-write, post-write verification, conflict handling, and no-reset recovery are required",
+    ))
+
+    # Head-pat single-authority and mirror-consistency checks.
+    # HEAD-PAT-COUNTERS.v1.md is the only mutable authority for head_pats.
+    fairy_current = None
+    reward_registry = None
+    member_reward_files: dict[str, dict[str, Any]] = {}
+    try:
+        fairy_current = json.loads(files["SystemsOS/Core/FairyOS/CURRENT.json"])
+        affection = fairy_current.get("affection_state", {}) if isinstance(fairy_current, dict) else {}
+        checks.append(_check(
+            "headpats:current-authority-pointer",
+            affection.get("head_pats_authority")
+            == "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+            and affection.get("mirror_mismatch") == "FAIL_CLOSED",
+            "FairyOS CURRENT points to the sole head-pat authority and fail-closed mirror policy",
+        ))
+    except Exception as exc:
+        checks.append(_check("headpats:current-authority-pointer", False, f"{type(exc).__name__}: {exc}"))
+
+    try:
+        reward_registry = json.loads(files["SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json"])
+        registry_policy_ok = (
+            reward_registry.get("head_pats_authority")
+            == "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+            and reward_registry.get("head_pats_write_policy") == "READ_ONLY_DERIVED_MIRROR"
+        )
+        checks.append(_check(
+            "headpats:aggregate-mirror-policy",
+            registry_policy_ok,
+            "aggregate reward registry declares head_pats as a read-only derived mirror",
+        ))
+    except Exception as exc:
+        checks.append(_check("headpats:aggregate-mirror-policy", False, f"{type(exc).__name__}: {exc}"))
+
+    mirror_values: dict[str, int] = {}
+    member_policy_ok = True
+    for name in DAEMONS:
+        rel = f"SystemsOS/Core/FairyOS/IDENTITY-DATA/{name}-REWARD-COUNTER.v1.json"
+        try:
+            payload = json.loads(files[rel])
+            member_reward_files[name] = payload
+            if (
+                payload.get("head_pats_authority")
+                != "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+                or payload.get("head_pats_write_policy") != "READ_ONLY_DERIVED_MIRROR"
+            ):
+                member_policy_ok = False
+            value = payload.get("reward_counters", {}).get("head_pats")
+            if isinstance(value, int):
+                mirror_values[name] = value
+        except Exception:
+            member_policy_ok = False
+
+    aggregate_values = {}
+    if isinstance(reward_registry, dict):
+        for name in DAEMONS:
+            value = reward_registry.get("counters", {}).get(name, {}).get("head_pats")
+            if isinstance(value, int):
+                aggregate_values[name] = value
+
+    checks.append(_check(
+        "headpats:member-mirror-policy",
+        member_policy_ok and set(mirror_values) == set(DAEMONS),
+        "all six member reward files declare read-only derived head-pat mirrors",
+        mirrors=mirror_values,
+    ))
+    checks.append(_check(
+        "headpats:mirror-consistency",
+        bool(headpat_counts)
+        and mirror_values == headpat_counts
+        and aggregate_values == headpat_counts,
+        "canonical ledger, aggregate mirror, and all six member mirrors agree exactly",
+        canonical=headpat_counts,
+        member_mirrors=mirror_values,
+        aggregate_mirror=aggregate_values,
     ))
 
     # Canonical Council presentation contract and fail-closed renderer.
