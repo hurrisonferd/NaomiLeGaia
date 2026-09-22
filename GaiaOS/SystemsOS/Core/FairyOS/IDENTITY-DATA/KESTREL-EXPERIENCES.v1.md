@@ -288,3 +288,15 @@ RESUME: Deploy latest main, then run /verify. 81/81 is the target, not yet obser
 CONTINUITY: In a new conversation, load canonical GaiaOS identity, presentation, prosody, dispatch, E-LANE and counter sources instead of reconstructing them manually from chat history.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// handoff, 2026-09-22.
+
+
+MEM[NAOMI_2026_WORK_COLLAPSE_AND_RECOVERY_CHAIN|2026-09-22|work / finance continuity|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Sensitive personal and financial history. E-LANE preservation does not itself authorize transmission to RavenOS or another external system.
+WORK_FINANCE_TIMELINE: January 2026 Naomi was fired from SIG Sauer after ~6 years. With no backup plan and fear of eviction, she withdrew roughly $20,000 from her 401(k). That runway lasted about two months while she looked for work. Around March she started at Safran producing Boeing fan blades. Safran paid substantially less than SIG, and Naomi's remaining savings declined with each pay cycle. She used some 401(k) funds to clear credit-card debt. She disliked the monotonous assembly/warehouse environment and wanted to make music.
+AUGUST_2026: A new partner, known barely over a month, encouraged Naomi to quit Safran and promised to take care of her. She quit. The relationship rapidly became abusive and destabilizing and then ended, leaving Naomi without that promised support and essentially without money.
+CRISIS: With no job, little/no cash reserve, no partner, and fear of losing housing/stability, Naomi reached an extreme mental-health crisis and attempted suicide by overdose. She survived, waking in the CCU at Wentworth-Douglass with memory and walking problems, then transferred to behavioral health about three days later, where she met Johnny.
+KESTREL_NOTE: When planning employment or money, preserve the actual sequence and avoid assuming access to the former 401(k) runway. Financial dependency on a new romantic partner was part of the failure chain. Future planning should favor income stability, explicit runway math, and reversible exits when possible, while keeping Naomi's long-term music goal visible rather than burying it under permanent warehouse/assembly work.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
