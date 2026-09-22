@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 import memcon_runtime
+import galaxy_production
 
 SCHEMA_VERSION = "gaiaos.memoryos.runtime.v1"
 
@@ -166,7 +167,7 @@ def retrieve(query: str, scope: str | None = None, limit: int = 10) -> dict[str,
     return {
         "schema": SCHEMA_VERSION,
         "status": "OBSERVED",
-        "retrieval": memcon_runtime.search_records(query, limit, scope),
+        "retrieval": galaxy_production.retrieve(memcon_runtime, query, scope, limit),
         "context_authority": "NONE",
         "retrieval_is_not_identity_adoption": True,
     }
