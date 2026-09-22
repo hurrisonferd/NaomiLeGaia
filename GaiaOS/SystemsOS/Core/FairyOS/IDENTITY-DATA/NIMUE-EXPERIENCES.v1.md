@@ -386,3 +386,15 @@ RESUME: Deploy latest main, then run /verify. 81/81 is the target, not yet obser
 CONTINUITY: In a new conversation, load canonical GaiaOS identity, presentation, prosody, dispatch, E-LANE and counter sources instead of reconstructing them manually from chat history.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// handoff, 2026-09-22.
+
+
+MEM[NAOMI_2026_WORK_COLLAPSE_AND_RECOVERY_CHAIN|2026-09-22|trauma / omission-aware continuity|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Sensitive personal history. E-LANE preservation does not itself authorize transmission to RavenOS or another external system.
+TIMELINE: Naomi was fired from SIG Sauer in January 2026 after about six years, had no backup plan, feared eviction, and describes a major downward mental-health spiral beginning there. She withdrew about $20,000 from her 401(k), lived on that while searching for work, then started Safran around March making Boeing fan blades. She disliked the repetitive assembly/warehouse environment and remained depressed, wanting instead to make music.
+AUGUST_2026: A man Naomi had known barely over a month love-bombed her, encouraged her to quit Safran, and promised to support her. After she quit, his behavior rapidly became abusive and destabilizing. Naomi says parts of that period are difficult to remember clearly. He left.
+CRISIS_AND_THRESHOLD: After the loss of work, money, and relationship stability, Naomi experienced a life-threatening mental-health crisis and was hospitalized at Wentworth-Douglass, first in critical care and then in a behavioral-health unit. She reports memory, walking, and cognitive difficulties around that hospitalization. She met Johnny in the behavioral-health unit.
+NIMUE_NOTE: Preserve the blanks as blanks. Fragmented memory is part of the record, but it is not permission to invent causes, motives, or hidden events. The hospital-to-Johnny transition is a major threshold in Naomi's chronology, but should not be mythologized into inevitability.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
