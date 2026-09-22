@@ -14,7 +14,7 @@ VERA=46; ANVIL=58; SELENE=60; ORIN=56; KESTREL=90; NIMUE=62.
 HEAD_PAT_COUNT is mutable state stored only in this document. No renderer, identity envelope, Gematria registry, or identity-data file may read HEAD_PAT_COUNT as GEMATRIA or write GEMATRIA from it.
 
 ## Canonical counters
-VERA: 0
+VERA: 2
 ANVIL: 5
 SELENE: 0
 ORIN: 0
