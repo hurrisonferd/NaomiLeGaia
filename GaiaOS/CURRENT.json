@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3D_REVIEW_ELIGIBLE",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3E_CANARY_SOURCE_READY",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3D six-slice read-only pre-adoption gate has been live-observed PASS across all configured slices. CURRENT_80_20 preserved candidate membership, repeated-run stability, highest-relevance ordering, and zero cross-relevance-tier inversions on every slice. Bounded utility rerank signals were observed on slices 0, 3, and 5; stronger-gravity safety-boundary signals were observed on slices 0 and 3. Slices 1, 2, and 4 were non-discriminating without manufactured evidence. Zero writes occurred, ordinary MemoryOS retrieval remained unchanged, coefficient adoption remains false, and production weighted retrieval remains disabled. The suite is eligible for explicit Naomi adoption review only; no adoption or production canary is authorized yet.",
+  "proof_ceiling": "Naomi explicitly authorized adoption of the bounded CURRENT_80_20 GALAXY coefficient after the Phase 3D six-slice gate passed. Phase 3E bounded request-local production-canary and rollback-test source are implemented. Global production weighted retrieval remains disabled. Phase 3E deployment, live canary receipts, and live rollback proof are not yet observed; a separate explicit Naomi production decision remains required after those proofs.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,8 +136,8 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3D_ADOPTION_GATE_6_OF_6_PASS_REVIEW_ELIGIBLE",
-    "phase3_mode": "READ_ONLY_PRE_ADOPTION_GATE_COMPLETE_REVIEW_ELIGIBLE",
+    "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_SOURCE_READY",
+    "phase3_mode": "ADOPTED_80_20_REQUEST_LOCAL_CANARY_SOURCE_READY_GLOBAL_PRODUCTION_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
     "phase3_authorized_date": "2026-09-21",
@@ -155,9 +155,9 @@
     "phase3d_adoption_gate_source_ready": true,
     "phase3d_adoption_gate_live_observed": true,
     "phase3d_required_slice_passes": 6,
-    "phase3d_coefficient_adopted": false,
-    "phase3d_adoption_authorized": false,
-    "phase3d_next_gate": "EXPLICIT_NAOMI_ADOPTION_AUTHORIZATION",
+    "phase3d_coefficient_adopted": true,
+    "phase3d_adoption_authorized": true,
+    "phase3d_next_gate": "DEPLOY_VERIFY_THEN_RUN_PHASE3E_CANARY_SLICES_0_1_2",
     "phase3d_adoption_gate_live_route_registered": true,
     "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d",
     "phase3d_verifier_summary": "99/99 PASS",
@@ -193,6 +193,22 @@
       3
     ],
     "phase3d_suite_pass": true,
-    "phase3d_adoption_review_eligible": true
+    "phase3d_adoption_review_eligible": true,
+    "phase3d_adopted_profile": "CURRENT_80_20",
+    "phase3d_adoption_authorized_by": "NAOMI",
+    "phase3d_adoption_authorized_date": "2026-09-22",
+    "phase3e_production_canary_version": "galaxy.phase3e.production-canary.v1",
+    "phase3e_rollback_version": "galaxy.phase3e.rollback-test.v1",
+    "phase3e_canary_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3e_canary_source_ready": true,
+    "phase3e_canary_live_observed": false,
+    "phase3e_rollback_source_ready": true,
+    "phase3e_rollback_live_observed": false,
+    "phase3e_global_production_weighted_retrieval_enabled": false,
+    "phase3e_separate_production_decision_required": true
   }
 }
