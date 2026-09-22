@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3E_CANARY_SOURCE_READY",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3E_DEPLOYED_ROUTE_VERIFIED",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -81,7 +81,9 @@
     "galaxy_phase3e_canary_source_ready": true,
     "galaxy_phase3e_canary_live_observed": false,
     "galaxy_phase3e_rollback_source_ready": true,
-    "galaxy_phase3e_rollback_live_observed": false
+    "galaxy_phase3e_rollback_live_observed": false,
+    "galaxy_phase3e_canary_route_registered_live": true,
+    "galaxy_phase3e_rollback_route_registered_live": true
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -109,14 +111,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Naomi explicitly authorized CURRENT_80_20 adoption after the Phase 3D six-slice gate passed. Phase 3E bounded request-local production-canary and rollback-test source are ready. Global production weighted retrieval remains disabled pending deployed canary receipts, rollback proof, and a separate explicit production decision.",
+  "claim_ceiling": "Naomi-authorized CURRENT_80_20 adoption for bounded Phase 3E canary use is deployed. Verifier run c095b93b56cc4dc49670abbb2a8bb0a6 observed 103/103 PASS, including live registration of the Phase 3E canary and rollback routes. No Phase 3E canary slice or rollback test has yet been executed. Global production weighted retrieval remains disabled pending those proofs and a separate explicit production decision.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_SOURCE_READY",
+    "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_DEPLOYED_ROUTE_VERIFIED",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -158,6 +160,9 @@
     "phase3e_canary_live_observed": false,
     "phase3e_rollback_source_ready": true,
     "phase3e_rollback_live_observed": false,
-    "phase3e_separate_production_decision_required": true
+    "phase3e_separate_production_decision_required": true,
+    "phase3e_canary_route_registered_live": true,
+    "phase3e_rollback_route_registered_live": true,
+    "phase3e_verifier_run_id": "c095b93b56cc4dc49670abbb2a8bb0a6"
   }
 }
