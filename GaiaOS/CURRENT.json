@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3C_CALIBRATION",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3C_OBSERVED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3B real-MemoryOS shadow reranking is behaviorally observed: real records changed rank across three stable repeated runs while candidate membership remained fixed, retrieval made zero writes, and production weighting stayed disabled. Phase 3C coefficient calibration matrix is source-implemented; live calibration evidence remains pending deployment and observation. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
+  "proof_ceiling": "GALAXY Phase 3C six-slice real-MemoryOS coefficient calibration is live-observed across all configured queries. Candidate membership was preserved, repeated runs were stable, retrieval made zero writes, and production weighting stayed disabled. The provisional 80/20 profile produced no observed cross-relevance-tier inversions in this bounded suite; stronger-gravity profiles exposed cross-tier inversions in discriminating slices. This supports 80/20 within the observed calibration set but does not adopt it or prove global optimality. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,8 +136,8 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
-    "phase3_mode": "READ_ONLY_REAL_MEMORY_COEFFICIENT_CALIBRATION",
+    "phase3_status": "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
+    "phase3_mode": "READ_ONLY_REAL_MEMORY_COEFFICIENT_CALIBRATION_COMPLETE",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
     "phase3_authorized_date": "2026-09-21",
@@ -145,6 +145,11 @@
     "phase3b_shadow_source_ready": true,
     "phase3b_shadow_live_observed": true,
     "phase3c_calibration_source_ready": true,
-    "phase3c_calibration_live_observed": false
+    "phase3c_calibration_live_observed": true,
+    "phase3c_configured_slices_observed": 6,
+    "phase3c_configured_slices_total": 6,
+    "phase3c_current_80_20_cross_relevance_tier_inversions_observed": 0,
+    "phase3c_stronger_gravity_boundary_observed": true,
+    "phase3c_coefficient_adopted": false
   }
 }
