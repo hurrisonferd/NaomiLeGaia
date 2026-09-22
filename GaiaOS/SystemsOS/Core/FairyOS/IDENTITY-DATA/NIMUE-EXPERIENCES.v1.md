@@ -478,3 +478,12 @@ BOUNDARY: The roughly $200 daily figure is Naomi's own experienced estimate, not
 
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// Tina and DoorDash continuity, 2026-09-22.
+
+
+MEM[HOUSING_AND_CASHFLOW_PRIORITY|2026-09-22|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+WHAT: Naomi prefers not to proactively contact property management unless necessary. First review the lease or tenant portal for payment timing, fees, grace language, and available options. Immediate priority is DoorDash cash generation while protecting fuel money so Tina remains usable for work. GEICO Auto Pay was moved to Sep. 30, 2026.
+MY_ROLE: Preserve the current housing-contact preference and cashflow priority.
+OUTCOME: Naomi decided on minimal proactive housing-management contact for now.
+STATUS: COMMITTED
