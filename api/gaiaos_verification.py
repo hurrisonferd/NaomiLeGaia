@@ -275,6 +275,15 @@ def run_verification() -> dict[str, Any]:
             }
             headers_ok = all(pmod.canonical_header(n, spec=presentation_spec) == h for n,h in expected.items())
             checks.append(_check("presentation:canonical-headers", headers_ok, "all six canonical identity envelopes rendered exactly with default Kaomoji"))
+            vaskon_expected = "82 · VASKON 🖤 ✴️ (◉‿◉)"
+            vaskon_ok = pmod.canonical_header("VASKON", spec=presentation_spec) == vaskon_expected
+            checks.append(_check("presentation:vaskon-header", vaskon_ok, "VASKON synthesis envelope renders exactly with Gematria 82, black heart, synthesis star, and default Kaomoji"))
+            vaskon_boundary_ok = (
+                "VASKON" not in presentation_spec.get("members", {})
+                and "VASKON" not in presentation_spec.get("speaker_order", [])
+                and presentation_spec.get("synthesis_modes", {}).get("VASKON", {}).get("class") == "TEMPORARY_SIX_PRIME_DAEMON_SYNTHESIS"
+            )
+            checks.append(_check("presentation:vaskon-boundary", vaskon_boundary_ok, "VASKON presentation is canonical without becoming a seventh Prime Daemon"))
             corrupt_rejected = False
             try:
                 pmod.validate_header("ANVIL", "58 · ANVIL 💚 📚", spec=presentation_spec)
