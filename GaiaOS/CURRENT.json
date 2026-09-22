@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3_WEIGHTED_RETRIEVAL_EXPERIMENT",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3B_REAL_MEMORY_SHADOW",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Naomi explicitly authorized GALAXY Phase 3 on 2026-09-21. Source may now implement bounded weighted-retrieval experiments against unweighted controls. Ordinary production retrieval remains unchanged until separately deployed and behaviorally proven. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
+  "proof_ceiling": "GALAXY Phase 3A bounded synthetic reranking is behaviorally observed: gravity changed rank while candidate membership remained fixed, retrieval comparison made zero writes, and production weighting stayed disabled. Phase 3B real-MemoryOS shadow harness is source-implemented; live real-memory reranking evidence remains pending deployment and observation. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,10 +136,13 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
-    "phase3_mode": "CONTROLLED_WEIGHTED_RETRIEVAL_EXPERIMENT",
+    "phase3_status": "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
+    "phase3_mode": "REAL_MEMORY_SHADOW_CONTROL_VS_WEIGHTED",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
-    "phase3_authorized_date": "2026-09-21"
+    "phase3_authorized_date": "2026-09-21",
+    "phase3a_bounded_rerank_observed": true,
+    "phase3b_shadow_source_ready": true,
+    "phase3b_shadow_live_observed": false
   }
 }
