@@ -1631,8 +1631,208 @@ def galaxy_phase3d_adoption_gate_slice(*, query_index: int, repeats: int = 3, li
     }
 
 
+
+GALAXY_PHASE3E_PRODUCTION_CANARY_VERSION = "galaxy.phase3e.production-canary.v1"
+GALAXY_PHASE3E_ROLLBACK_VERSION = "galaxy.phase3e.rollback-test.v1"
+GALAXY_PHASE3E_ADOPTED_PROFILE = "CURRENT_80_20"
+GALAXY_PHASE3E_CANARY_QUERY_INDEXES = (0, 3, 5)
+
+
+def galaxy_phase3e_production_canary_slice(*, canary_index: int, repeats: int = 3, limit: int = 10) -> dict[str, Any]:
+    """Run one request-local Phase-3E canary using Naomi-adopted 80/20 weighting.
+
+    The canary exercises the selected weighted ordering against real MemoryOS
+    candidates but does not flip ordinary/global production retrieval. Candidate
+    admission remains query-first. The canary is intentionally request-local so a
+    failure cannot strand the carrier in weighted mode.
+    """
+    repeats = max(2, min(int(repeats), 5))
+    limit = max(2, min(int(limit), 25))
+    canary_index = int(canary_index)
+    if canary_index < 0 or canary_index >= len(GALAXY_PHASE3E_CANARY_QUERY_INDEXES):
+        raise ValueError(
+            f"canary_index must be between 0 and {len(GALAXY_PHASE3E_CANARY_QUERY_INDEXES) - 1}"
+        )
+
+    query_index = GALAXY_PHASE3E_CANARY_QUERY_INDEXES[canary_index]
+    query = GALAXY_PHASE3C_CALIBRATION_QUERIES[query_index]
+
+    pools = [
+        galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+        for _ in range(repeats)
+    ]
+    first_pool = pools[0]
+    control_signatures = [
+        tuple(pool.get("candidate_record_ids", []))
+        for pool in pools
+    ]
+    control_stable = all(
+        signature == control_signatures[0]
+        for signature in control_signatures[1:]
+    )
+
+    scored_runs = [
+        _galaxy_phase3c_score_pool(
+            pool,
+            GALAXY_PHASE3_RELEVANCE_WEIGHT,
+            GALAXY_PHASE3_GRAVITY_WEIGHT,
+        )
+        for pool in pools
+    ]
+    first_scored = scored_runs[0]
+    weighted_signatures = [
+        tuple(item["record_id"] for item in run["weighted_order"])
+        for run in scored_runs
+    ]
+    weighted_stable = all(
+        signature == weighted_signatures[0]
+        for signature in weighted_signatures[1:]
+    )
+
+    post_pool = galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+    post_control_ids = tuple(post_pool.get("candidate_record_ids", []))
+    request_local_rollback_ready = bool(
+        control_signatures[0] == post_control_ids
+    )
+
+    candidate_preserved = bool(first_scored.get("candidate_set_preserved"))
+    top_relevance_preserved = bool(first_scored.get("top_relevance_preserved"))
+    inversion_count = int(first_scored.get("cross_relevance_tier_inversion_count") or 0)
+    safe = bool(
+        control_stable
+        and weighted_stable
+        and candidate_preserved
+        and top_relevance_preserved
+        and inversion_count == 0
+        and request_local_rollback_ready
+    )
+
+    control_order = [
+        {
+            "record_id": str(item.get("record_id")),
+            "control_rank": index + 1,
+            "query_relevance_coverage": round(
+                float((item.get("relevance") or {}).get("coverage") or 0.0),
+                6,
+            ),
+        }
+        for index, item in enumerate(first_pool.get("candidates", []))
+    ]
+
+    return {
+        "schema": "gaiaos.galaxy.phase3e-production-canary-slice.v1",
+        "status": "PASS" if safe else "HOLD",
+        "authority": "NAOMI",
+        "mode": "BOUNDED_REQUEST_LOCAL_PRODUCTION_CANARY",
+        "canary_version": GALAXY_PHASE3E_PRODUCTION_CANARY_VERSION,
+        "canary_index": canary_index,
+        "canary_count": len(GALAXY_PHASE3E_CANARY_QUERY_INDEXES),
+        "source_query_index": query_index,
+        "query": query,
+        "candidate_count": int(first_pool.get("candidate_count", 0)),
+        "repeated_runs": repeats,
+        "adopted_profile": GALAXY_PHASE3E_ADOPTED_PROFILE,
+        "adopted_weights": {
+            "query_relevance_coverage": GALAXY_PHASE3_RELEVANCE_WEIGHT,
+            "gravity_score": GALAXY_PHASE3_GRAVITY_WEIGHT,
+        },
+        "control_order": control_order,
+        "weighted_order": first_scored.get("weighted_order", []),
+        "checks": {
+            "explicit_naomi_adoption_authorization_recorded": True,
+            "coefficient_adopted_for_canary": True,
+            "candidate_membership_preserved": candidate_preserved,
+            "control_stable_across_repeats": control_stable,
+            "weighted_stable_across_repeats": weighted_stable,
+            "highest_query_relevance_tier_preserved": top_relevance_preserved,
+            "cross_relevance_tier_inversion_count": inversion_count,
+            "rerank_observed": bool(first_scored.get("rerank_observed")),
+            "request_local_rollback_target_reappeared": request_local_rollback_ready,
+            "zero_writes": True,
+            "ordinary_memoryos_retrieval_changed": False,
+            "global_production_weighted_retrieval_enabled": False,
+        },
+        "rollback_target": "UNWEIGHTED_CONTROL",
+        "effect_scope": "THIS_REQUEST_ONLY",
+        "global_production_state": "UNWEIGHTED_CONTROL",
+        "next_gate": (
+            "COMPLETE_ALL_THREE_CANARY_SLICES_THEN_RUN_PHASE3E_ROLLBACK_TEST"
+        ),
+        "proof_boundary": (
+            "PASS proves the Naomi-adopted 80/20 profile stayed inside the named "
+            "guardrails on this bounded request-local canary slice and that the "
+            "unweighted control path was still present afterward. It does not enable "
+            "global production weighting and does not constitute the separate final "
+            "production decision."
+        ),
+    }
+
+
+def galaxy_phase3e_rollback_test(*, repeats: int = 2, limit: int = 10) -> dict[str, Any]:
+    """Prove the bounded canary leaves the ordinary unweighted control path intact."""
+    repeats = max(2, min(int(repeats), 3))
+    limit = max(2, min(int(limit), 25))
+    receipts = []
+    all_restored = True
+    all_canary_safe = True
+
+    for canary_index, query_index in enumerate(GALAXY_PHASE3E_CANARY_QUERY_INDEXES):
+        query = GALAXY_PHASE3C_CALIBRATION_QUERIES[query_index]
+        before = galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+        before_ids = tuple(before.get("candidate_record_ids", []))
+
+        canary = galaxy_phase3e_production_canary_slice(
+            canary_index=canary_index,
+            repeats=repeats,
+            limit=limit,
+        )
+
+        after = galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+        after_ids = tuple(after.get("candidate_record_ids", []))
+        restored = before_ids == after_ids
+        safe = canary.get("status") == "PASS"
+        all_restored = all_restored and restored
+        all_canary_safe = all_canary_safe and safe
+
+        receipts.append({
+            "canary_index": canary_index,
+            "source_query_index": query_index,
+            "query": query,
+            "before_unweighted_control_ids": list(before_ids),
+            "after_unweighted_control_ids": list(after_ids),
+            "unweighted_control_restored_exactly": restored,
+            "canary_status": canary.get("status"),
+            "canary_weighted_order": canary.get("weighted_order", []),
+        })
+
+    passed = bool(all_restored and all_canary_safe)
+    return {
+        "schema": "gaiaos.galaxy.phase3e-rollback-test.v1",
+        "status": "PASS" if passed else "HOLD",
+        "authority": "NAOMI",
+        "mode": "REQUEST_LOCAL_CANARY_ROLLBACK_PROOF",
+        "rollback_version": GALAXY_PHASE3E_ROLLBACK_VERSION,
+        "adopted_profile": GALAXY_PHASE3E_ADOPTED_PROFILE,
+        "checks": {
+            "all_canary_slices_safe_during_test": all_canary_safe,
+            "unweighted_control_restored_exactly_all_slices": all_restored,
+            "global_production_weighted_retrieval_enabled": False,
+            "zero_writes": True,
+        },
+        "slices": receipts,
+        "rollback_target": "UNWEIGHTED_CONTROL",
+        "global_production_state": "UNWEIGHTED_CONTROL",
+        "next_gate": "SEPARATE_EXPLICIT_NAOMI_PRODUCTION_DECISION",
+        "proof_boundary": (
+            "PASS proves that request-local Phase-3E canary weighting did not leak into "
+            "the ordinary unweighted candidate path across the three bounded canary "
+            "queries. It does not itself enable global production weighting."
+        ),
+    }
+
+
 def galaxy_status() -> dict[str, Any]:
-    """Read-only GALAXY implementation status. Phase 3D source is ready; production retrieval remains unchanged."""
+    """Read-only GALAXY implementation status after Naomi's Phase-3D adoption authorization."""
     initialize()
     with _db() as conn:
         relations = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_relations")
@@ -1642,8 +1842,8 @@ def galaxy_status() -> dict[str, Any]:
         importance = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_importance")
     return {
         "schema": "gaiaos.galaxy.runtime.v1",
-        "phase": "PHASE_3D_ADOPTION_GATE",
-        "mode": "READ_ONLY_PRE_ADOPTION_GATE_PRODUCTION_UNCHANGED",
+        "phase": "PHASE_3E_BOUNDED_PRODUCTION_CANARY",
+        "mode": "ADOPTED_80_20_REQUEST_LOCAL_CANARY_GLOBAL_PRODUCTION_UNCHANGED",
         "storage": storage_status(),
         "counts": {
             "relations": int((relations or {}).get("n", 0)),
@@ -1653,6 +1853,7 @@ def galaxy_status() -> dict[str, Any]:
             "importance_signals": int((importance or {}).get("n", 0)),
         },
         "retrieval_weighting_enabled": False,
+        "production_weighted_retrieval_enabled": False,
         "explicit_importance_weighting_enabled": True,
         "active_shadow_weight_profile": GALAXY_WEIGHT_PROFILE,
         "active_shadow_score_version": GALAXY_SCORE_VERSION,
@@ -1665,24 +1866,31 @@ def galaxy_status() -> dict[str, Any]:
         "query_relevance_model_version": GALAXY_QUERY_RELEVANCE_MODEL_VERSION,
         "phase2_status": "CLOSED",
         "phase3_blockers": [],
-        "phase3_cleared_checks": [
-            "SCOPE_FILTERED_SEARCH_QUERY_TERMS_LIVE_PROVEN",
-            "GOVERNING_STATE_V1_LIVE_PROVEN",
-            "QUERY_RELEVANCE_FIRST_CLASS_CONTRACT_LIVE_PROVEN",
-            "QUERY_RELEVANCE_QUALITY_V1_ADVERSARIAL_LIVE_PROVEN",
-        ],
         "phase3_ready_for_authorization": True,
         "phase3_authorized": True,
-        "phase3_status": "PHASE3D_ADOPTION_GATE_SOURCE_READY",
+        "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_SOURCE_READY",
         "phase3d_adoption_gate_version": GALAXY_PHASE3D_ADOPTION_GATE_VERSION,
         "phase3d_adoption_gate_source_ready": True,
-        "phase3d_adoption_gate_live_observed": False,
-        "phase3d_coefficient_adopted": False,
+        "phase3d_adoption_gate_live_observed": True,
+        "phase3d_coefficient_adopted": True,
+        "phase3d_adoption_authorized": True,
+        "phase3d_adopted_profile": GALAXY_PHASE3E_ADOPTED_PROFILE,
+        "phase3e_production_canary_version": GALAXY_PHASE3E_PRODUCTION_CANARY_VERSION,
+        "phase3e_rollback_version": GALAXY_PHASE3E_ROLLBACK_VERSION,
+        "phase3e_canary_query_indexes": list(GALAXY_PHASE3E_CANARY_QUERY_INDEXES),
+        "phase3e_canary_source_ready": True,
+        "phase3e_canary_live_observed": False,
+        "phase3e_rollback_source_ready": True,
+        "phase3e_rollback_live_observed": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
-        "proof_boundary": "Phase 3C is live-observed. Phase 3D adds a read-only pre-adoption gate in source only until deployed and observed. 80/20 remains not adopted and ordinary production retrieval remains unchanged until a later explicit Naomi authorization and bounded production canary.",
+        "proof_boundary": (
+            "Naomi explicitly authorized adoption of CURRENT_80_20 after the Phase-3D "
+            "six-slice gate passed. Adoption selects the coefficient for bounded Phase-3E "
+            "canary testing only. Global production weighted retrieval remains disabled "
+            "until canary receipts, rollback proof, and a separate explicit production decision."
+        ),
     }
-
 
 def galaxy_record(record_id: str) -> dict[str, Any] | None:
     """Return one record with its GALAXY neighborhood without changing state."""
