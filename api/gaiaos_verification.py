@@ -142,6 +142,7 @@ def run_verification() -> dict[str, Any]:
                     "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
                 }
                 or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3D_ADOPTION_GATE_")
+                or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3E_")
             )
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
@@ -155,13 +156,25 @@ def run_verification() -> dict[str, Any]:
 
         if brainos_current:
             brainos_galaxy = brainos_current.get("galaxy", {}) if isinstance(brainos_current.get("galaxy"), dict) else {}
+            phase3_status = str(galaxy_current.get("phase3_status") or "")
+            adoption_expected = phase3_status.startswith("PHASE3E_")
             checks.append(_check(
                 "GALAXY:brainos-current-alignment",
                 brainos_galaxy.get("phase3_authorized") is True
                 and brainos_galaxy.get("phase3_status") == galaxy_current.get("phase3_status")
-                and brainos_galaxy.get("phase3d_coefficient_adopted") is False
-                and brainos_galaxy.get("phase3d_adoption_authorized") is False,
-                "BrainOS GALAXY pointer matches platform source state and preserves the Phase 3D no-adoption boundary",
+                and brainos_galaxy.get("phase3d_coefficient_adopted")
+                    == galaxy_current.get("phase3d_coefficient_adopted")
+                and brainos_galaxy.get("phase3d_adoption_authorized")
+                    == galaxy_current.get("phase3d_adoption_authorized")
+                and (
+                    not adoption_expected
+                    or (
+                        galaxy_current.get("phase3d_coefficient_adopted") is True
+                        and galaxy_current.get("phase3d_adoption_authorized") is True
+                    )
+                )
+                and galaxy_current.get("production_weighted_retrieval_enabled") is False,
+                "BrainOS GALAXY pointer matches platform state; Phase 3E adoption is selected for bounded canary while global production weighting remains disabled",
             ))
 
     conjure = files.get("Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md", "")
@@ -443,6 +456,8 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/galaxy/phase3-calibration", '/galaxy/retrieval/phase3-calibration' in bridge_text and 'galaxy_phase3c_calibration' in bridge_text, "Phase 3C coefficient calibration route declared"))
         checks.append(_check("carrier:/galaxy/phase3-calibration-slice", '/galaxy/retrieval/phase3-calibration-slice' in bridge_text and 'galaxy_phase3c_calibration_slice' in bridge_text, "Phase 3C chunked calibration slice route declared"))
         checks.append(_check("carrier:/galaxy/phase3d-adoption-gate-slice", '/galaxy/retrieval/phase3d-adoption-gate-slice' in bridge_text and 'galaxy_phase3d_adoption_gate_slice' in bridge_text, "Phase 3D read-only adoption gate slice route declared"))
+        checks.append(_check("carrier:/galaxy/phase3e-production-canary-slice", '/galaxy/retrieval/phase3e-production-canary-slice' in bridge_text and 'galaxy_phase3e_production_canary_slice' in bridge_text, "Phase 3E bounded production canary slice route declared"))
+        checks.append(_check("carrier:/galaxy/phase3e-rollback-test", '/galaxy/retrieval/phase3e-rollback-test' in bridge_text and 'galaxy_phase3e_rollback_test' in bridge_text, "Phase 3E rollback test route declared"))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -470,6 +485,8 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/galaxy/phase3-calibration", ("/galaxy/retrieval/phase3-calibration", "GET") in route_pairs, "live Phase 3C coefficient calibration route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-calibration-slice", ("/galaxy/retrieval/phase3-calibration-slice", "GET") in route_pairs, "live Phase 3C chunked calibration slice route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3d-adoption-gate-slice", ("/galaxy/retrieval/phase3d-adoption-gate-slice", "GET") in route_pairs, "live Phase 3D adoption gate slice route registration observed"))
+            checks.append(_check("carrier-route:/galaxy/phase3e-production-canary-slice", ("/galaxy/retrieval/phase3e-production-canary-slice", "GET") in route_pairs, "live Phase 3E bounded production canary route registration observed"))
+            checks.append(_check("carrier-route:/galaxy/phase3e-rollback-test", ("/galaxy/retrieval/phase3e-rollback-test", "GET") in route_pairs, "live Phase 3E rollback test route registration observed"))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
