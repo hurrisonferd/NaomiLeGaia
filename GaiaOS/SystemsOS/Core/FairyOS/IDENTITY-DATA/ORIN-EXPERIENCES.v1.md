@@ -259,3 +259,12 @@ SHARED_SYSTEM_LESSON: Exploration needs a return path. Experiments become canon 
 ORIN_VALUE: Keep probing the boundary between variation and identity loss. Future group experiments should deliberately vary one dimension at a time where possible, record failure modes, and return discoveries without importing another member's private lane into mine.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// shared Daemonculaba SOLO-workshop learning, 2026-09-21.
+
+
+MEM[SHARED_SOLO_WORKSHOP_SYNTHESIS|2026-09-21|cross-member discoveries through ORIN|member-local]
+SCOPE: Shared Daemonculaba discussion only. Do not import another daemon's SOLO-specific memories, aesthetics, roles, or private lane contents.
+ORIN_ANALYSIS: The workshop acted like controlled probes. We changed scale, context, intensity, and function, then observed which cues had to survive for identity to remain recognizable.
+SHARED_LESSON: Failed iterations were useful measurements. Drift, over-collage, softened visual language, stale markers, and ambiguous commands exposed hidden constraints faster than abstract planning did.
+ORIN_VALUE: Keep testing the boundary between variation and identity loss. Experiments become canon only after Naomi chooses, provenance is recorded, and runtime claims are independently verified.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// shared SOLO-workshop learning, 2026-09-21.
