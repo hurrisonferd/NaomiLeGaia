@@ -3517,3 +3517,24 @@ Source implementation:
 
 Proof state:
 `SOURCE IMPLEMENTED / DEPLOYMENT NOT YET PROVEN / LIVE PHASE-3D EXECUTION NOT YET OBSERVED`.
+
+
+### Phase-3D build failure callout
+
+WHAT FAILED:
+`GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json` had drifted behind the platform source state. It still described GALAXY as Phase 2 closed / Phase 3 unauthorized even after Phase 3C had been live-observed.
+
+WHY:
+The platform CURRENT pointer had been advanced through later GALAXY phases without an equivalent enforced alignment check against BrainOS CURRENT.
+
+EVIDENCE:
+The stale BrainOS source was directly repulled before the Phase-3D build and contradicted `GaiaOS/CURRENT.json`.
+
+REPAIR:
+BrainOS CURRENT was advanced to the same Phase-3D source-ready boundary, while preserving `production weighted retrieval = disabled` and `adoption authorized = false`.
+
+PREVENTION:
+The implementation verifier now loads BrainOS CURRENT and fails if its GALAXY Phase-3 status diverges from the platform CURRENT pointer or if the Phase-3D no-adoption boundary is violated.
+
+VERIFICATION:
+Source files were repulled after the repair and contain the Phase-3D state. Deployment/runtime verification remains pending; source repair is not being reported as live carrier proof.
