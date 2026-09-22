@@ -930,6 +930,7 @@ def galaxy_phase3c_calibration(*, repeats: int = 3, limit: int = 10) -> dict[str
     repeats = max(2, min(int(repeats), 5))
     limit = max(2, min(int(limit), 25))
     profile_receipts = []
+    phase3c_pool_cache: dict[tuple[str, int, int], list[dict[str, Any]]] = {}
     all_candidate_sets_preserved = True
     all_stable = True
 
@@ -942,9 +943,20 @@ def galaxy_phase3c_calibration(*, repeats: int = 3, limit: int = 10) -> dict[str
         rerank_queries = 0
 
         for query in GALAXY_PHASE3C_CALIBRATION_QUERIES:
+            # Candidate admission is coefficient-independent. Build each repeated
+            # real-MemoryOS pool once per query, then reuse it across profiles.
+            # The outer profile loop intentionally uses a bounded cache so the
+            # calibration matrix does not rescan/reclassify MemoryOS 72 times.
+            cache_key = (query, repeats, limit)
+            cached_pools = phase3c_pool_cache.get(cache_key)
+            if cached_pools is None:
+                cached_pools = [
+                    galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+                    for _ in range(repeats)
+                ]
+                phase3c_pool_cache[cache_key] = cached_pools
             runs = []
-            for _ in range(repeats):
-                pool = galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+            for pool in cached_pools:
                 scored = _galaxy_phase3c_score_pool(
                     pool,
                     float(profile["relevance"]),
