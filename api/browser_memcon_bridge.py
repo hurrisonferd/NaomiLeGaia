@@ -2,18 +2,20 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import html
 import json
 import re
 import uuid
 
-from fastapi import Request
+from fastapi import Request, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 
 import gaiaos_app
 import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
+import galaxy_production
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
@@ -638,6 +640,142 @@ def galaxy_phase3e_rollback_test(browser_request: Request, repeats: int = 2, lim
         repeats=repeats,
         limit=limit,
     )
+
+
+
+def _galaxy_production_csrf(browser_request: Request) -> str:
+    """Session-bound CSRF proof. Mutation routes fail closed without server API key."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    if not gaiaos_api.API_KEY:
+        raise HTTPException(status_code=503, detail="GAIAOS_API_KEY required for production controls")
+    token = browser_request.cookies.get(gaiaos_api.SESSION_COOKIE)
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing browser session")
+    return hmac.new(
+        gaiaos_api.API_KEY.encode(),
+        ("GALAXY_PHASE3F_PRODUCTION:" + token).encode(),
+        hashlib.sha256,
+    ).hexdigest()
+
+
+async def _galaxy_production_authorized_body(browser_request: Request, expected_action: str) -> dict:
+    expected_csrf = _galaxy_production_csrf(browser_request)
+    supplied = browser_request.headers.get("x-gaiaos-production-csrf", "")
+    if not hmac.compare_digest(supplied, expected_csrf):
+        raise HTTPException(status_code=403, detail="Production CSRF proof failed")
+    if "application/json" not in browser_request.headers.get("content-type", "").lower():
+        raise HTTPException(status_code=415, detail="Production controls require JSON POST")
+    body = await browser_request.json()
+    if (
+        not isinstance(body, dict)
+        or body.get("authority") != "NAOMI"
+        or body.get("approved") is not True
+        or body.get("action") != expected_action
+    ):
+        raise HTTPException(status_code=403, detail="Explicit Naomi production action required")
+    return body
+
+
+@app.get("/galaxy/production/status", operation_id="galaxyProductionPilotStatus")
+def galaxy_production_pilot_status(browser_request: Request):
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_production.status(memcon_runtime)
+
+
+@app.get("/galaxy/production/review", response_class=HTMLResponse, operation_id="galaxyProductionReview")
+def galaxy_production_review(browser_request: Request):
+    """Explicit human-operated production pilot console. GET itself has zero effects."""
+    csrf = _galaxy_production_csrf(browser_request)
+    state = galaxy_production.status(memcon_runtime)
+    start_json = html.escape(json.dumps(state, ensure_ascii=False, indent=2))
+    # JS literal is JSON encoded; no user input or secrets are interpolated into markup.
+    script = """
+<script>
+const csrf = __CSRF__;
+async function run(action) {
+  const labels = {
+    "RUN_SWITCH_TEST": "RUN integrated ON/OFF switch test?",
+    "ACTIVATE_10_MINUTE_PILOT": "Activate the three-query production pilot for up to 10 minutes?",
+    "RUN_ACTIVE_ROLLBACK_PROOF": "Exercise active pilot and immediately roll back to ordinary retrieval?",
+    "EMERGENCY_ROLLBACK": "Disable pilot weighting immediately?"
+  };
+  if (!window.confirm(labels[action])) return;
+  const paths = {
+    "RUN_SWITCH_TEST": "switch-test",
+    "ACTIVATE_10_MINUTE_PILOT": "activate",
+    "RUN_ACTIVE_ROLLBACK_PROOF": "rollback-proof",
+    "EMERGENCY_ROLLBACK": "rollback"
+  };
+  try {
+    const r = await fetch("/galaxy/production/" + paths[action], {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {"Content-Type": "application/json", "X-GaiaOS-Production-CSRF": csrf},
+      body: JSON.stringify({authority:"NAOMI", approved:true, action:action,
+        confirmation:action==="ACTIVATE_10_MINUTE_PILOT"?"ACTIVATE_80_20_EXACT_QUERY_PILOT":""})
+    });
+    const result = await r.json();
+    document.getElementById("receipt").textContent = JSON.stringify(result,null,2);
+    if (!r.ok) document.getElementById("receipt").textContent = "HTTP " + r.status + "\\n" + JSON.stringify(result,null,2);
+  } catch(e) {
+    document.getElementById("receipt").textContent = String(e);
+  }
+}
+async function refresh() {
+  const r = await fetch("/galaxy/production/status", {credentials:"same-origin"});
+  document.getElementById("receipt").textContent = JSON.stringify(await r.json(),null,2);
+}
+</script>
+""".replace("__CSRF__", json.dumps(csrf))
+    page = (
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>GALAXY Phase 3F: guarded production pilot</h2>"
+        "<p>Naomi-authorized 80/20, one carrier process, three exact MemoryOS queries, "
+        "10-minute maximum. Ordinary retrieval remains the default. No full global rollout.</p>"
+        "<p>Required sequence: switch test, optional short pilot, active rollback proof. "
+        "Every restart fails OFF. Kill switch: GALAXY_PRODUCTION_PILOT_KILL_SWITCH=1.</p>"
+        "<p><button onclick=\"run('RUN_SWITCH_TEST')\">1. Live ON/OFF switch test</button></p>"
+        "<p><button onclick=\"run('ACTIVATE_10_MINUTE_PILOT')\">2. Activate 10-minute pilot</button></p>"
+        "<p><button onclick=\"run('RUN_ACTIVE_ROLLBACK_PROOF')\">3. Prove active rollback</button></p>"
+        "<p><button onclick=\"run('EMERGENCY_ROLLBACK')\">Emergency rollback</button> "
+        "<button onclick=\"refresh()\">Refresh status</button></p>"
+        "<pre id='receipt' style='white-space:pre-wrap;word-break:break-word'>"
+        + start_json + "</pre>" + script + "</body></html>"
+    )
+    return HTMLResponse(page, headers={"Cache-Control": "no-store"})
+
+
+@app.post("/galaxy/production/switch-test", operation_id="galaxyProductionLiveSwitchTest")
+async def galaxy_production_live_switch_test(browser_request: Request):
+    await _galaxy_production_authorized_body(browser_request, "RUN_SWITCH_TEST")
+    return galaxy_production.switch_test(
+        memcon_runtime, memcon_entrypoint._memory_runtime().retrieve
+    )
+
+
+@app.post("/galaxy/production/activate", operation_id="galaxyProductionActivate")
+async def galaxy_production_activate(browser_request: Request):
+    body = await _galaxy_production_authorized_body(browser_request, "ACTIVATE_10_MINUTE_PILOT")
+    if body.get("confirmation") != "ACTIVATE_80_20_EXACT_QUERY_PILOT":
+        raise HTTPException(status_code=403, detail="Exact pilot activation confirmation required")
+    return galaxy_production.activate(
+        memcon_runtime, authority="NAOMI", approved=True, lease_seconds=600
+    )
+
+
+@app.post("/galaxy/production/rollback-proof", operation_id="galaxyProductionActiveRollbackProof")
+async def galaxy_production_active_rollback_proof(browser_request: Request):
+    await _galaxy_production_authorized_body(browser_request, "RUN_ACTIVE_ROLLBACK_PROOF")
+    return galaxy_production.live_rollback_proof(
+        memcon_runtime, memcon_entrypoint._memory_runtime().retrieve
+    )
+
+
+@app.post("/galaxy/production/rollback", operation_id="galaxyProductionEmergencyRollback")
+async def galaxy_production_emergency_rollback(browser_request: Request):
+    await _galaxy_production_authorized_body(browser_request, "EMERGENCY_ROLLBACK")
+    return galaxy_production.rollback(memcon_runtime, reason="EXPLICIT_NAOMI_EMERGENCY_ROLLBACK")
 
 
 @app.get("/galaxy/retrieval/phase3-canary", operation_id="galaxyPhase3MulticandidateCanary")
