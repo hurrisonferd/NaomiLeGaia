@@ -1530,8 +1530,109 @@ def galaxy_set_importance(record_id: str, gate_units: int, *, authority: str, ap
 
 
 
+
+GALAXY_PHASE3D_ADOPTION_GATE_VERSION = "galaxy.phase3d.adoption-gate.v1"
+
+
+def galaxy_phase3d_adoption_gate_slice(*, query_index: int, repeats: int = 3, limit: int = 10) -> dict[str, Any]:
+    """Evaluate one read-only Phase-3D pre-adoption slice.
+
+    Phase 3D does not adopt 80/20 and does not enable production weighting.
+    It turns the Phase-3C calibration evidence into explicit, falsifiable
+    adoption-review criteria while retaining chunked execution to avoid carrier
+    timeout pressure.
+    """
+    receipt = galaxy_phase3c_calibration_slice(
+        query_index=query_index,
+        repeats=repeats,
+        limit=limit,
+    )
+    profiles = {
+        str(item.get("profile")): item
+        for item in receipt.get("profiles", [])
+    }
+    current = profiles.get("CURRENT_80_20") or {}
+    conservative = profiles.get("CONSERVATIVE_90_10") or {}
+    stronger = [
+        profiles.get("EXPANSIVE_70_30") or {},
+        profiles.get("STRESS_50_50") or {},
+    ]
+
+    current_candidate_preserved = bool(current.get("candidate_set_preserved"))
+    current_stable = bool(current.get("stable_across_repeats"))
+    current_top_relevance_preserved = bool(current.get("top_relevance_preserved"))
+    current_inversion_count = int(current.get("cross_relevance_tier_inversion_count") or 0)
+    current_safe = (
+        current_candidate_preserved
+        and current_stable
+        and current_top_relevance_preserved
+        and current_inversion_count == 0
+    )
+    current_utility_signal = bool(current.get("rerank_observed"))
+    stronger_boundary_signal = any(
+        (not bool(item.get("top_relevance_preserved")))
+        or int(item.get("cross_relevance_tier_inversion_count") or 0) > 0
+        for item in stronger
+        if item
+    )
+    slice_pass = bool(receipt.get("status") == "PASS" and current_safe)
+
+    return {
+        "schema": "gaiaos.galaxy.phase3d-adoption-gate-slice.v1",
+        "status": "PASS" if slice_pass else "HOLD",
+        "authority": "NAOMI",
+        "mode": "READ_ONLY_PRE_ADOPTION_GATE_SLICE",
+        "gate_version": GALAXY_PHASE3D_ADOPTION_GATE_VERSION,
+        "query_index": receipt.get("query_index"),
+        "query_count": receipt.get("query_count"),
+        "query": receipt.get("query"),
+        "candidate_count": receipt.get("candidate_count"),
+        "repeated_runs": receipt.get("repeated_runs"),
+        "selected_profile": "CURRENT_80_20",
+        "selected_weights": {
+            "query_relevance_coverage": GALAXY_PHASE3_RELEVANCE_WEIGHT,
+            "gravity_score": GALAXY_PHASE3_GRAVITY_WEIGHT,
+        },
+        "current_profile": current,
+        "conservative_comparator": conservative,
+        "stronger_gravity_comparators": stronger,
+        "checks": {
+            "phase3c_slice_completed": receipt.get("status") == "PASS",
+            "candidate_membership_preserved": current_candidate_preserved,
+            "stable_across_repeats": current_stable,
+            "highest_query_relevance_tier_preserved": current_top_relevance_preserved,
+            "cross_relevance_tier_inversion_count": current_inversion_count,
+            "current_80_20_safe_on_this_slice": current_safe,
+            "current_80_20_rerank_signal_on_this_slice": current_utility_signal,
+            "stronger_gravity_boundary_signal_on_this_slice": stronger_boundary_signal,
+            "zero_writes": True,
+            "ordinary_memoryos_retrieval_changed": False,
+            "production_weighted_retrieval_enabled": False,
+            "coefficient_adopted": False,
+        },
+        "suite_gate": {
+            "required_slice_passes": len(GALAXY_PHASE3C_CALIBRATION_QUERIES),
+            "all_configured_slices_must_pass": True,
+            "at_least_one_current_80_20_rerank_signal_required": True,
+            "at_least_one_stronger_gravity_boundary_signal_required": True,
+            "explicit_naomi_adoption_authorization_required_after_review": True,
+            "bounded_production_canary_required_after_authorization": True,
+            "rollback_target": "UNWEIGHTED_CONTROL",
+        },
+        "adoption_state": "NOT_ADOPTED",
+        "next_authority_gate": "EXPLICIT_NAOMI_ADOPTION_AUTHORIZATION_AFTER_SIX_SLICE_REVIEW",
+        "proof_boundary": (
+            "PASS means only that CURRENT_80_20 satisfied the Phase-3D safety gate on this "
+            "single configured real-MemoryOS slice. Suite-level review requires all six slice "
+            "receipts plus at least one bounded utility signal and one stronger-gravity boundary "
+            "signal. This route performs no writes, does not adopt 80/20, does not enable "
+            "production weighting, and does not itself authorize a production canary."
+        ),
+    }
+
+
 def galaxy_status() -> dict[str, Any]:
-    """Read-only GALAXY implementation status. Phase 3 experiment is authorized; production retrieval remains unchanged."""
+    """Read-only GALAXY implementation status. Phase 3D source is ready; production retrieval remains unchanged."""
     initialize()
     with _db() as conn:
         relations = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_relations")
@@ -1541,8 +1642,8 @@ def galaxy_status() -> dict[str, Any]:
         importance = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_importance")
     return {
         "schema": "gaiaos.galaxy.runtime.v1",
-        "phase": "PHASE_3_WEIGHTED_RETRIEVAL_EXPERIMENT",
-        "mode": "CONTROL_VS_WEIGHTED_EXPERIMENT_PRODUCTION_UNCHANGED",
+        "phase": "PHASE_3D_ADOPTION_GATE",
+        "mode": "READ_ONLY_PRE_ADOPTION_GATE_PRODUCTION_UNCHANGED",
         "storage": storage_status(),
         "counts": {
             "relations": int((relations or {}).get("n", 0)),
@@ -1572,10 +1673,14 @@ def galaxy_status() -> dict[str, Any]:
         ],
         "phase3_ready_for_authorization": True,
         "phase3_authorized": True,
-        "phase3_status": "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
+        "phase3_status": "PHASE3D_ADOPTION_GATE_SOURCE_READY",
+        "phase3d_adoption_gate_version": GALAXY_PHASE3D_ADOPTION_GATE_VERSION,
+        "phase3d_adoption_gate_source_ready": True,
+        "phase3d_adoption_gate_live_observed": False,
+        "phase3d_coefficient_adopted": False,
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
-        "proof_boundary": "Phase 2 is closed and Naomi explicitly authorized Phase 3. Experimental weighted reranking may now be compared against an unweighted control, but ordinary production retrieval remains unchanged until separately deployed and behaviorally proven.",
+        "proof_boundary": "Phase 3C is live-observed. Phase 3D adds a read-only pre-adoption gate in source only until deployed and observed. 80/20 remains not adopted and ordinary production retrieval remains unchanged until a later explicit Naomi authorization and bounded production canary.",
     }
 
 
