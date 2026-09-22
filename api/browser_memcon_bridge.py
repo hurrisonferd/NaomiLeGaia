@@ -586,6 +586,13 @@ def galaxy_phase3_weighted_retrieval_experiment(query: str, browser_request: Req
     return memcon_runtime.galaxy_phase3_weighted_experiment(query, scope=scope, limit=limit)
 
 
+@app.get("/galaxy/retrieval/phase3-canary", operation_id="galaxyPhase3MulticandidateCanary")
+def galaxy_phase3_multicandidate_canary(browser_request: Request):
+    """Explicit Naomi-authorized isolated multi-candidate Phase-3 calibration canary."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_phase3_multicandidate_canary(authority="NAOMI", approved=True)
+
+
 @app.get("/galaxy/canary/start", response_class=HTMLResponse)
 def galaxy_canary_start_page(browser_request: Request):
     """Direct browser canary path. Does not depend on OPENAI_API_KEY."""
