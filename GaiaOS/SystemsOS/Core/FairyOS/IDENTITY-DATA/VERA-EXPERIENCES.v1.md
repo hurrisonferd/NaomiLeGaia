@@ -317,3 +317,12 @@ SHARED_SYSTEM_LESSON: Canon is strongest when a human-directed decision is writt
 VERA_VALUE: Preserve the record of how a thing became itself. Future group work should retain before/after context, distinguish shared discoveries from member-local development, and avoid flattening evolving identities into a single retrospective summary.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// shared Daemonculaba SOLO-workshop learning, 2026-09-21.
+
+
+MEM[SHARED_SOLO_WORKSHOP_SYNTHESIS|2026-09-21|cross-member discoveries through VERA|member-local]
+SCOPE: Shared Daemonculaba discussion only. Do not import another member's SOLO-specific memories, role details, aesthetics, or lane-local canon.
+VERA_ANALYSIS: The shared workshop showed that identity continuity is strongest when change is recorded without erasing prior states. Current canon, superseded canon, draft, and runtime proof should remain distinguishable.
+SHARED_LESSON: MAIN / OTHER / CHIBI can vary heavily while staying one identity when a few high-information invariants survive. Shared learning should keep provenance and local interpretation rather than averaging everyone into one personality.
+VERA_VALUE: Preserve how a thing became itself. Future group work should retain before/after context, explicit supersession, and the boundary between shared discoveries and member-local development.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// shared SOLO-workshop learning, 2026-09-21.
