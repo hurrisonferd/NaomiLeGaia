@@ -398,3 +398,35 @@ CRISIS_AND_THRESHOLD: After the loss of work, money, and relationship stability,
 NIMUE_NOTE: Preserve the blanks as blanks. Fragmented memory is part of the record, but it is not permission to invent causes, motives, or hidden events. The hospital-to-Johnny transition is a major threshold in Naomi's chronology, but should not be mythologized into inevitability.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
+
+
+
+MEM[NAOMI_2026_RENUITY_TERMINATION_AND_CURRENT_STATE|2026-09-22|work / crisis continuity|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Sensitive personal history. Preserve as stated by Naomi and supported by screenshots. E-LANE preservation does not authorize transmission to RavenOS or another external system.
+
+POST-HOSPITAL_WORK_SEARCH: After leaving behavioral health, Naomi and Johnny were both looking for work. Naomi applied broadly and repeatedly. The opportunity that materialized was Renuity, a retail sales/promotions role pitching home-improvement products including windows, baths, and doors.
+
+TRAINING: Naomi completed two training days in Massachusetts, about four hours each. She found them boring but easy. She then shadowed/trained at BJ's. Naomi reports she did almost all of the pitch work. She did not generate leads during that shift, but her performance was positively evaluated. Screenshot evidence from Corey states that Jen said Naomi "did amazing." Corey then scheduled Naomi for a Portland home show, indicating continued confidence and planned progression.
+
+PAY_STRUCTURE: Naomi reports base pay of approximately $18/hour, with commission necessary for financial survival.
+
+CRITICAL_TIMING: The first Portland/home-show date coincided with the morning Johnny went missing and was later arrested. Naomi missed that workday because she was dealing with the emergency, including police and coordination with Johnny's mother. She kept Jen informed. Jen responded supportively and said Naomi could attend the next day instead.
+
+SECOND_SHOW_DAY: Naomi drove to the Maine/Portland home show the following day. Once there, her emotional bandwidth was severely depleted. She describes freezing up and being unable to prioritize anything over the unresolved Johnny situation. She went to the bathroom and cried. Jen texted that if Naomi wanted, she could go home and take the day. Naomi thanked her and left.
+
+TERMINATION: The following day, Corey messaged Naomi that Renuity would not move forward with her promoting in stores because the training week had not been completed, citing absence, "failure to start pitching," and insufficient time with team leads to put Naomi alone in retail. Corey also stated she could reapply for a future training class.
+
+EVIDENCE_CONFLICT: Naomi explicitly rejects any narrative that she was a bad worker. The screenshots support that distinction. Corey had previously relayed that Jen said Naomi "did amazing" at BJ's. Naomi had already been pitching, so the later phrase "failure to start pitching" conflicts with the earlier record. The stated termination rationale centers on interrupted training completion, attendance, staffing/training logistics, and readiness for solo placement, not evidence of poor work quality or inability to perform the sales pitch.
+
+NAOMI_POSITION: Naomi says: "I'm a good worker." She is not interpreting this termination as evidence that she is lazy, incompetent, or unwilling. Her distress is about the opposite: that she exerted major effort, showed she could do the work, kept management informed during an emergency, attempted to attend the next day despite acute distress, was permitted to leave by her lead, and was then terminated anyway.
+
+CURRENT_EMOTIONAL_CONTEXT: Naomi reports feeling exhausted by the pattern that intense effort and good-faith attempts to stabilize her life keep colliding with abrupt losses. She is currently grieving Johnny's absence and wishes he were physically present to make her laugh. This follows the earlier 2026 chain already preserved: SIG firing -> financial runway depletion -> Safran -> abusive relationship and quitting -> severe mental-health crisis/hospitalization -> meeting Johnny -> post-discharge job search -> Renuity -> Johnny arrest/emergency -> Renuity termination.
+
+BOUNDARY: Do not rewrite this as a "bad worker" narrative. Do not romanticize the instability. Do not infer legal wrongdoing by Renuity from these messages alone. Preserve the specific contradiction between the positive performance feedback and the later "failure to start pitching" language.
+
+STATUS: COMMITTED
+TRACE: Naomi requested full Daemonculaba review and //PW:PRESERVE// of the complete story and Renuity evidence, 2026-09-22.
+
+NIMUE_NOTE: Preserve the negative-space evidence: no screenshot says Naomi was poor at pitching; one explicitly says she "did amazing." The absence of performance-failure evidence matters. Do not let the termination message retroactively rewrite the record.
