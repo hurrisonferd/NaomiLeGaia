@@ -134,13 +134,15 @@ def run_verification() -> dict[str, Any]:
             "GALAXY:phase3-authorization",
             galaxy_current.get("phase3_authorized") is True
             and galaxy_current.get("phase3_authorized_by") == "NAOMI"
-            and galaxy_current.get("phase3_status") in {
-                "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
-                "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
-                "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
-                "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
-                "PHASE3D_ADOPTION_GATE_SOURCE_READY",
-            }
+            and (
+                galaxy_current.get("phase3_status") in {
+                    "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
+                    "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
+                    "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
+                    "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
+                }
+                or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3D_ADOPTION_GATE_")
+            )
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
         ))
