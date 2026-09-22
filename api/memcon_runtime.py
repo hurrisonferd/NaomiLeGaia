@@ -683,16 +683,16 @@ def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", li
 
 
 
-GALAXY_PHASE3_CANARY_QUERY = "memory gravity contextual influence"
+GALAXY_PHASE3_CANARY_QUERY = "memory gravity contextual influence estimate retrieval authority truth permission govern"
 GALAXY_PHASE3_CANARY_RECORDS = (
     {
         "record_id": "MEM-GALAXY-P3-CANARY-LOW",
-        "statement": "Memory gravity is a contextual influence estimate for retrieval.",
+        "statement": "Memory gravity contextual influence estimate retrieval authority truth permission govern.",
         "gravity_score": 0.15,
     },
     {
         "record_id": "MEM-GALAXY-P3-CANARY-HIGH",
-        "statement": "Memory gravity is a contextual influence estimate for retrieval.",
+        "statement": "Memory gravity contextual influence estimate retrieval authority permission govern.",
         "gravity_score": 0.85,
     },
 )
@@ -726,6 +726,14 @@ def galaxy_phase3_multicandidate_canary(*, authority: str, approved: bool) -> di
             )
         elif str(existing.get("record_type")) != "GALAXY_PHASE3_CANARY":
             raise RuntimeError(f"Canary id collision: {record_id}")
+        elif str(existing.get("statement") or "") != str(item["statement"]):
+            update_record(
+                record_id,
+                authority="NAOMI",
+                approved=True,
+                statement=item["statement"],
+                notes="Synthetic isolated Phase-3 calibration record. Not ordinary MemoryOS content.",
+            )
 
         preview = galaxy_gravity_preview(record_id)
         now = _now()
