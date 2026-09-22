@@ -818,6 +818,252 @@ def galaxy_phase3_real_memory_shadow(*, repeats: int = 3, limit: int = 10) -> di
     }
 
 
+GALAXY_PHASE3C_CALIBRATION_QUERIES = (
+    "gravity contextual influence memory retrieval",
+    "history current context revision memory",
+    "authority permission memory retrieval",
+    "calibration core revision memory context",
+    "provenance contradiction memory context",
+    "satellite calibration core memory context",
+)
+
+GALAXY_PHASE3C_WEIGHT_PROFILES = (
+    {"name": "CONSERVATIVE_90_10", "relevance": 0.90, "gravity": 0.10},
+    {"name": "CURRENT_80_20", "relevance": 0.80, "gravity": 0.20},
+    {"name": "EXPANSIVE_70_30", "relevance": 0.70, "gravity": 0.30},
+    {"name": "STRESS_50_50", "relevance": 0.50, "gravity": 0.50},
+)
+
+
+def _galaxy_phase3c_score_pool(pool: dict[str, Any], relevance_weight: float, gravity_weight: float) -> dict[str, Any]:
+    """Score one already-qualified candidate pool without writes or candidate admission."""
+    candidates = list(pool.get("candidates", []))
+    candidate_ids = [str(item.get("record_id")) for item in candidates]
+    gravity_by_id: dict[str, float] = {}
+    gravity_version_by_id: dict[str, str | None] = {}
+    if candidate_ids:
+        placeholders = ",".join("?" for _ in candidate_ids)
+        with _db() as conn:
+            rows = _fetchall_dicts(
+                conn,
+                f"SELECT record_id,gravity_score,score_version FROM memory_gravity WHERE record_id IN ({placeholders})",
+                tuple(candidate_ids),
+            )
+        for row in rows:
+            key = str(row["record_id"])
+            gravity_by_id[key] = max(0.0, min(1.0, float(row.get("gravity_score") or 0.0)))
+            gravity_version_by_id[key] = row.get("score_version")
+
+    scored = []
+    for index, item in enumerate(candidates):
+        record_id = str(item.get("record_id"))
+        relevance = float((item.get("relevance") or {}).get("coverage") or 0.0)
+        gravity = gravity_by_id.get(record_id, 0.0)
+        scored.append({
+            "record_id": record_id,
+            "control_rank": index + 1,
+            "query_relevance_coverage": round(relevance, 6),
+            "gravity_score": round(gravity, 6),
+            "gravity_score_version": gravity_version_by_id.get(record_id),
+            "weighted_score": round(relevance_weight * relevance + gravity_weight * gravity, 6),
+        })
+
+    scored.sort(
+        key=lambda item: (
+            float(item["weighted_score"]),
+            float(item["query_relevance_coverage"]),
+            -int(item["control_rank"]),
+        ),
+        reverse=True,
+    )
+    for index, item in enumerate(scored):
+        item["weighted_rank"] = index + 1
+
+    max_relevance = max(
+        (float(item["query_relevance_coverage"]) for item in scored),
+        default=0.0,
+    )
+    top_relevance_preserved = (
+        not scored
+        or float(scored[0]["query_relevance_coverage"]) == max_relevance
+    )
+
+    cross_tier_inversions = []
+    for higher in scored:
+        for lower in scored:
+            higher_rel = float(higher["query_relevance_coverage"])
+            lower_rel = float(lower["query_relevance_coverage"])
+            if higher_rel <= lower_rel:
+                continue
+            if int(higher["weighted_rank"]) > int(lower["weighted_rank"]):
+                cross_tier_inversions.append({
+                    "higher_relevance_record_id": higher["record_id"],
+                    "higher_relevance": higher_rel,
+                    "higher_weighted_rank": higher["weighted_rank"],
+                    "lower_relevance_record_id": lower["record_id"],
+                    "lower_relevance": lower_rel,
+                    "lower_weighted_rank": lower["weighted_rank"],
+                    "relevance_gap": round(higher_rel - lower_rel, 6),
+                })
+
+    control_ids = candidate_ids
+    weighted_ids = [item["record_id"] for item in scored]
+    return {
+        "weighted_order": scored,
+        "candidate_set_preserved": (
+            set(control_ids) == set(weighted_ids)
+            and len(control_ids) == len(weighted_ids)
+        ),
+        "rerank_observed": control_ids != weighted_ids,
+        "top_relevance_preserved": top_relevance_preserved,
+        "cross_relevance_tier_inversions": cross_tier_inversions,
+        "cross_relevance_tier_inversion_count": len(cross_tier_inversions),
+    }
+
+
+def galaxy_phase3c_calibration(*, repeats: int = 3, limit: int = 10) -> dict[str, Any]:
+    """Compare bounded relevance/gravity coefficients over real MemoryOS candidates.
+
+    This is read-only calibration. It reports which profiles satisfy the explicit
+    guardrails; it does not adopt a coefficient or enable production retrieval.
+    """
+    repeats = max(2, min(int(repeats), 5))
+    limit = max(2, min(int(limit), 25))
+    profile_receipts = []
+    all_candidate_sets_preserved = True
+    all_stable = True
+
+    for profile in GALAXY_PHASE3C_WEIGHT_PROFILES:
+        query_receipts = []
+        profile_top_relevance_preserved = True
+        profile_candidate_sets_preserved = True
+        profile_stable = True
+        total_inversions = 0
+        rerank_queries = 0
+
+        for query in GALAXY_PHASE3C_CALIBRATION_QUERIES:
+            runs = []
+            for _ in range(repeats):
+                pool = galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+                scored = _galaxy_phase3c_score_pool(
+                    pool,
+                    float(profile["relevance"]),
+                    float(profile["gravity"]),
+                )
+                runs.append({
+                    "candidate_ids": tuple(pool.get("candidate_record_ids", [])),
+                    "weighted_ids": tuple(
+                        item["record_id"] for item in scored["weighted_order"]
+                    ),
+                    "scored": scored,
+                    "candidate_count": int(pool.get("candidate_count", 0)),
+                })
+
+            first = runs[0]
+            stable = all(
+                run["candidate_ids"] == first["candidate_ids"]
+                and run["weighted_ids"] == first["weighted_ids"]
+                for run in runs[1:]
+            )
+            scored = first["scored"]
+            preserved = bool(scored["candidate_set_preserved"])
+            profile_top_relevance_preserved = (
+                profile_top_relevance_preserved
+                and bool(scored["top_relevance_preserved"])
+            )
+            profile_candidate_sets_preserved = profile_candidate_sets_preserved and preserved
+            profile_stable = profile_stable and stable
+            total_inversions += int(scored["cross_relevance_tier_inversion_count"])
+            rerank_queries += int(bool(scored["rerank_observed"]))
+
+            query_receipts.append({
+                "query": query,
+                "candidate_count": first["candidate_count"],
+                "rerank_observed": scored["rerank_observed"],
+                "top_relevance_preserved": scored["top_relevance_preserved"],
+                "cross_relevance_tier_inversion_count": scored["cross_relevance_tier_inversion_count"],
+                "cross_relevance_tier_inversions": scored["cross_relevance_tier_inversions"],
+                "weighted_order": scored["weighted_order"],
+                "stable_across_repeats": stable,
+                "candidate_set_preserved": preserved,
+            })
+
+        guardrail_pass = (
+            profile_candidate_sets_preserved
+            and profile_stable
+            and profile_top_relevance_preserved
+        )
+        profile_receipts.append({
+            "profile": profile["name"],
+            "weights": {
+                "query_relevance_coverage": profile["relevance"],
+                "gravity_score": profile["gravity"],
+            },
+            "guardrail_pass": guardrail_pass,
+            "top_relevance_preserved_all_queries": profile_top_relevance_preserved,
+            "candidate_sets_preserved_all_queries": profile_candidate_sets_preserved,
+            "stable_all_queries": profile_stable,
+            "cross_relevance_tier_inversion_count": total_inversions,
+            "queries_with_rerank": rerank_queries,
+            "queries": query_receipts,
+        })
+        all_candidate_sets_preserved = all_candidate_sets_preserved and profile_candidate_sets_preserved
+        all_stable = all_stable and profile_stable
+
+    passing_profiles = [
+        item["profile"] for item in profile_receipts if item["guardrail_pass"]
+    ]
+    current = next(
+        item for item in profile_receipts if item["profile"] == "CURRENT_80_20"
+    )
+    stronger_profile_guardrail_failure_observed = any(
+        (not item["guardrail_pass"])
+        for item in profile_receipts
+        if float(item["weights"]["gravity_score"]) > GALAXY_PHASE3_GRAVITY_WEIGHT
+    )
+    status = (
+        "PASS"
+        if all_candidate_sets_preserved
+        and all_stable
+        and bool(current["guardrail_pass"])
+        and stronger_profile_guardrail_failure_observed
+        else "HOLD"
+    )
+
+    return {
+        "schema": "gaiaos.galaxy.phase3c-coefficient-calibration.v1",
+        "status": status,
+        "authority": "NAOMI",
+        "mode": "READ_ONLY_REAL_MEMORY_COEFFICIENT_MATRIX",
+        "guardrails": {
+            "candidate_membership_must_not_change": True,
+            "highest_query_relevance_tier_must_remain_top_ranked": True,
+            "repeated_runs_must_be_stable": True,
+            "cross_relevance_tier_inversions_are_reported": True,
+            "profile_pass_does_not_equal_adoption": True,
+        },
+        "profiles": profile_receipts,
+        "profiles_meeting_guardrails": passing_profiles,
+        "checks": {
+            "all_candidate_sets_preserved": all_candidate_sets_preserved,
+            "all_profiles_stable_across_repeats": all_stable,
+            "current_80_20_guardrail_pass": bool(current["guardrail_pass"]),
+            "stronger_gravity_profile_guardrail_failure_observed": stronger_profile_guardrail_failure_observed,
+            "zero_writes": True,
+            "ordinary_memoryos_retrieval_changed": False,
+            "production_weighted_retrieval_enabled": False,
+            "coefficient_adopted": False,
+        },
+        "proof_boundary": (
+            "Phase-3C compares a bounded coefficient matrix over ordinary MemoryOS candidates. "
+            "PASS means the current 80/20 profile satisfied the named guardrails and the matrix "
+            "was discriminating enough to expose at least one stronger-gravity profile that did "
+            "not. It does not prove 80/20 is globally optimal, does not adopt any coefficient, "
+            "does not mutate memory, and does not enable production weighted retrieval."
+        ),
+    }
+
+
 GALAXY_PHASE3_CANARY_QUERY = "memory gravity contextual influence estimate retrieval authority truth permission govern"
 GALAXY_PHASE3_CANARY_RECORDS = (
     {
