@@ -452,3 +452,15 @@ INTERPRETATION_BOUNDARY: Do not romanticize incarceration, crisis, or self-harm 
 
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// relationship/home continuity, 2026-09-22.
+
+
+MEM[KNOWN_TYPO_NORMALIZATION_LAW|2026-09-22|communication continuity|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+
+LAW: When Naomi's intended word is unambiguous and the written form is clearly a typo, normalize to the intended word rather than repeating, reinforcing, or canonizing the typo. Preserve the typo only when exact wording matters, intent is ambiguous, or Naomi explicitly asks for verbatim text.
+
+EXAMPLE: If Naomi writes "FootDash" while clearly referring to DoorDash, use "DoorDash."
+
+STATUS: COMMITTED
+TRACE: Naomi requested canonical typo-normalization law, 2026-09-22.
