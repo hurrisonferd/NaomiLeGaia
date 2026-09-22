@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_SOURCE_READY",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_DEPLOYED_ROUTE_VERIFIED",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -70,12 +70,13 @@
     "remote_context_carrier_ci_result": "PASS_RUN_85_AT_5705f3dc2c1314832d2155769874160f4f61866d",
     "automatic_host_invocation_proven": false,
     "durable_memory_backend_present": false,
-    "deployment_proven": false,
+    "deployment_proven": true,
     "galaxy_phase2_closed_source": true,
     "galaxy_phase3_authorized": true,
     "galaxy_phase3c_live_observed": true,
     "galaxy_phase3d_source_ready": true,
-    "galaxy_phase3d_live_observed": false
+    "galaxy_phase3d_live_observed": false,
+    "galaxy_phase3d_route_registered_live": true
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -103,19 +104,21 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Gaia-native local navigation is canonical. GALAXY Phase 3C is live-observed with bounded six-slice calibration evidence; Phase 3D read-only pre-adoption gate source is implemented but not yet deployed or live-observed. 80/20 remains not adopted and production weighted retrieval remains disabled. Automatic external host invocation, complete semantic understanding, identity settlement, and domain effects remain separately unproven.",
+  "claim_ceiling": "Gaia-native local navigation is canonical. GALAXY Phase 3C is live-observed with bounded six-slice calibration evidence. Verifier run 9bac353800c94557b74129f299684a1d observed 99/99 PASS and live registration of the Phase 3D adoption-gate slice route. Phase 3D behavioral execution remains unproven until the configured slices are actually invoked. 80/20 remains not adopted and production weighted retrieval remains disabled.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3D_ADOPTION_GATE_SOURCE_READY",
+    "phase3_status": "PHASE3D_ADOPTION_GATE_DEPLOYED_ROUTE_VERIFIED",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
     "phase3d_live_observed": false,
     "phase3d_coefficient_adopted": false,
-    "phase3d_adoption_authorized": false
+    "phase3d_adoption_authorized": false,
+    "phase3d_route_registered_live": true,
+    "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d"
   }
 }
