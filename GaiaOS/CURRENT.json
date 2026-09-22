@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3E_CANARY_3_OF_3_OBSERVED",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3E_CANARY_AND_ROLLBACK_OBSERVED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "All three bounded Phase 3E canary slices (0, 1, 2) have been live-observed PASS under Naomi-adopted CURRENT_80_20. Each showed real reranking while preserving candidate membership, stable control and weighted ordering across three runs, highest query relevance, zero cross-relevance-tier inversions, request-local return to UNWEIGHTED_CONTROL, zero writes, unchanged ordinary MemoryOS retrieval, and global production weighting disabled. Canary suite complete; the separate Phase 3E rollback test remains unobserved. Final production enablement requires rollback proof and a separate explicit Naomi production decision.",
+  "proof_ceiling": "Phase 3E rollback route returned PASS after all three bounded canaries passed. The live user-supplied receipt shows exact before/after UNWEIGHTED_CONTROL candidate ordering for source queries 0, 3, and 5, with all canaries safe during the test, zero writes, and global production weighting disabled. This demonstrates that request-local 80/20 scoring did not leak into ordinary unweighted candidate retrieval on the three tested queries. It is not evidence of recovery from global weighted production mode, which has never been enabled. A separate explicit Naomi production decision, followed by a guarded production implementation and its own rollback verification, remains required.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,8 +136,8 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_3_OF_3_LIVE_OBSERVED_ROLLBACK_PENDING",
-    "phase3_mode": "ADOPTED_80_20_REQUEST_LOCAL_CANARY_COMPLETE_ROLLBACK_PENDING_GLOBAL_PRODUCTION_OFF",
+    "phase3_status": "PHASE3E_CANARY_3_OF_3_PASS_ROLLBACK_PASS_AWAITING_PRODUCTION_DECISION",
+    "phase3_mode": "ADOPTED_80_20_REQUEST_LOCAL_CANARY_COMPLETE_ROLLBACK_OBSERVED_GLOBAL_PRODUCTION_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
     "phase3_authorized_date": "2026-09-21",
@@ -157,7 +157,7 @@
     "phase3d_required_slice_passes": 6,
     "phase3d_coefficient_adopted": true,
     "phase3d_adoption_authorized": true,
-    "phase3d_next_gate": "RUN_PHASE3E_ROLLBACK_TEST",
+    "phase3d_next_gate": "SEPARATE_EXPLICIT_NAOMI_PRODUCTION_DECISION",
     "phase3d_adoption_gate_live_route_registered": true,
     "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d",
     "phase3d_verifier_summary": "99/99 PASS",
@@ -207,7 +207,7 @@
     "phase3e_canary_source_ready": true,
     "phase3e_canary_live_observed": true,
     "phase3e_rollback_source_ready": true,
-    "phase3e_rollback_live_observed": false,
+    "phase3e_rollback_live_observed": true,
     "phase3e_global_production_weighted_retrieval_enabled": false,
     "phase3e_separate_production_decision_required": true,
     "phase3e_canary_route_registered_live": true,
@@ -223,6 +223,14 @@
     "phase3e_observed_canary_total": 3,
     "phase3e_rerank_observed": true,
     "phase3e_request_local_rollback_target_reappeared": true,
-    "phase3e_all_canary_slices_pass": true
+    "phase3e_all_canary_slices_pass": true,
+    "phase3e_rollback_status": "PASS",
+    "phase3e_rollback_tested_canary_indexes": [
+      0,
+      1,
+      2
+    ],
+    "phase3e_rollback_exact_control_preservation_all_tested_queries": true,
+    "phase3e_rollback_proof_scope": "REQUEST_LOCAL_NO_LEAKAGE_NOT_GLOBAL_PRODUCTION_RECOVERY"
   }
 }
