@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3E_CANARY_AND_ROLLBACK_OBSERVED",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3F_GUARDED_PRODUCTION_SOURCE_READY",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -84,7 +84,11 @@
     "galaxy_phase3e_rollback_live_observed": true,
     "galaxy_phase3e_canary_route_registered_live": true,
     "galaxy_phase3e_rollback_route_registered_live": true,
-    "galaxy_phase3e_observed_canary_passes": 3
+    "galaxy_phase3e_observed_canary_passes": 3,
+    "galaxy_phase3f_pilot_source_ready": true,
+    "galaxy_phase3f_pilot_deployed": false,
+    "galaxy_phase3f_integrated_switch_test_live_observed": false,
+    "galaxy_phase3f_active_pilot_rollback_live_observed": false
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -112,14 +116,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Phase 3E rollback route returned PASS after all three bounded canaries passed. The live user-supplied receipt shows exact before/after UNWEIGHTED_CONTROL candidate ordering for source queries 0, 3, and 5, with all canaries safe during the test, zero writes, and global production weighting disabled. This demonstrates that request-local 80/20 scoring did not leak into ordinary unweighted candidate retrieval on the three tested queries. It is not evidence of recovery from global weighted production mode, which has never been enabled. A separate explicit Naomi production decision, followed by a guarded production implementation and its own rollback verification, remains required.",
+  "claim_ceiling": "Naomi's separate production authorization is recorded after Phase3E 3/3 live canaries and request-local rollback PASS. Phase 3F guarded three-query single-process pilot is implemented in the real MemoryOS retrieval adapter, with startup OFF, a ten-minute lease, runtime safety fail-close, kill switch, CSRF-protected manual controls and live ON/OFF and active rollback endpoints. GitHub Actions offline safety/compile checks succeeded. Phase3F deployment, live integrated switch test, and active production pilot rollback are NOT YET PROVEN; unrestricted global weighting remains OFF.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3E_CANARY_3_OF_3_PASS_ROLLBACK_PASS_AWAITING_PRODUCTION_DECISION",
+    "phase3_status": "PHASE3F_GUARDED_PRODUCTION_PILOT_SOURCE_READY",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -182,6 +186,22 @@
     ],
     "phase3e_rollback_exact_control_preservation_all_tested_queries": true,
     "phase3e_rollback_proof_scope": "REQUEST_LOCAL_NO_LEAKAGE_NOT_GLOBAL_PRODUCTION_RECOVERY",
-    "phase3e_global_production_weighted_retrieval_enabled": false
+    "phase3e_global_production_weighted_retrieval_enabled": false,
+    "phase3f_production_authorized": true,
+    "phase3f_production_authorized_by": "NAOMI",
+    "phase3f_version": "galaxy.phase3f.guarded-production-pilot.v1",
+    "phase3f_pilot_source_ready": true,
+    "phase3f_pilot_deployed": false,
+    "phase3f_switch_test_live_observed": false,
+    "phase3f_active_pilot_rollback_live_observed": false,
+    "phase3f_pilot_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3f_pilot_max_lease_seconds": 600,
+    "phase3f_multi_instance_consistency_proven": false,
+    "phase3f_ci_run_id": 35799425139,
+    "phase3f_ci_status": "SUCCESS"
   }
 }
