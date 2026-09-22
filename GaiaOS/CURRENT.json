@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3B_REAL_MEMORY_SHADOW",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3C_CALIBRATION",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3A bounded synthetic reranking is behaviorally observed: gravity changed rank while candidate membership remained fixed, retrieval comparison made zero writes, and production weighting stayed disabled. Phase 3B real-MemoryOS shadow harness is source-implemented; live real-memory reranking evidence remains pending deployment and observation. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
+  "proof_ceiling": "GALAXY Phase 3B real-MemoryOS shadow reranking is behaviorally observed: real records changed rank across three stable repeated runs while candidate membership remained fixed, retrieval made zero writes, and production weighting stayed disabled. Phase 3C coefficient calibration matrix is source-implemented; live calibration evidence remains pending deployment and observation. Automatic ChatGPT adoption and restart persistence remain separately unproven.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,13 +136,15 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
-    "phase3_mode": "REAL_MEMORY_SHADOW_CONTROL_VS_WEIGHTED",
+    "phase3_status": "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
+    "phase3_mode": "READ_ONLY_REAL_MEMORY_COEFFICIENT_CALIBRATION",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
     "phase3_authorized_date": "2026-09-21",
     "phase3a_bounded_rerank_observed": true,
     "phase3b_shadow_source_ready": true,
-    "phase3b_shadow_live_observed": false
+    "phase3b_shadow_live_observed": true,
+    "phase3c_calibration_source_ready": true,
+    "phase3c_calibration_live_observed": false
   }
 }
