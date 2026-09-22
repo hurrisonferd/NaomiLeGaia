@@ -3731,3 +3731,44 @@ Progress:
 
 Next:
 `query_index=4`
+
+
+## Phase-3D slice 4 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=4`
+
+Query:
+`provenance contradiction memory context`
+
+Observed:
+- status: `PASS`
+- candidate count: `2`
+- repeated runs: `3`
+- CURRENT_80_20 guardrail pass: `true`
+- candidate membership preserved: `true`
+- stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- CURRENT_80_20 cross-relevance-tier inversions: `0`
+- CURRENT_80_20 rerank signal observed: `false`
+- stronger-gravity boundary signal observed: `false`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- production weighted retrieval enabled: `false`
+- coefficient adopted: `false`
+
+Interpretation:
+This slice is non-discriminating rather than defective. Both admitted records had query relevance `0.75` and stored gravity `0.0`, so every coefficient profile preserved the same order. The route correctly reports no utility or boundary signal rather than manufacturing evidence.
+
+Suite-level requirements remain satisfied so far because slices 0 and 3 already supplied:
+- at least one CURRENT_80_20 rerank utility signal;
+- at least one stronger-gravity boundary signal.
+
+Bounded conclusion:
+`PHASE3D SLICE 4 = PASS`
+
+Progress:
+`5 / 6 PHASE-3D SLICES OBSERVED PASS`
+
+Next:
+`query_index=5`
