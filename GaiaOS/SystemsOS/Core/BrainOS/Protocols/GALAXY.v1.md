@@ -3412,3 +3412,39 @@ Phase-3C remains read-only:
 
 Evidence ceiling:
 A Phase-3C PASS does not prove `80/20` globally optimal. It establishes only that the current profile survived the bounded named suite while a stronger-gravity comparison exposed a guardrail boundary.
+
+## Phase-3C six-slice coefficient calibration observed 2026-09-22
+
+The chunked live calibration route was executed for all six configured real-MemoryOS queries, three repeated runs per slice.
+
+Observed containment across all six slices:
+- candidate membership preserved;
+- candidate pools stable across repeated runs;
+- weighted ordering stable across repeated runs;
+- zero retrieval writes;
+- ordinary MemoryOS retrieval unchanged;
+- production weighted retrieval disabled;
+- no coefficient automatically adopted.
+
+Observed coefficient behavior:
+- `CONSERVATIVE_90_10`: no observed cross-relevance-tier inversions in the configured suite.
+- `CURRENT_80_20`: no observed cross-relevance-tier inversions in the configured suite.
+- `EXPANSIVE_70_30`: cross-relevance-tier inversions were observed in discriminating slices 0 and 3; slice 0 also lost top-relevance preservation.
+- `STRESS_50_50`: stronger cross-relevance-tier inversion behavior was observed in discriminating slices 0 and 3; slice 0 lost top-relevance preservation.
+- slices 1, 2, and 4 were non-discriminating because their admitted candidates lacked useful gravity/relevance variation;
+- slice 5 demonstrated gravity reranking among equal-relevance candidates while preserving the uniquely highest-relevance candidate.
+
+Interpretation:
+`80/20` survived the bounded configured calibration suite without an observed cross-relevance-tier inversion, while stronger gravity pressure exposed a relevance boundary. This is evidence supporting the provisional `80/20` calibration within this corpus and query suite. It is not proof of global optimality and does not itself authorize or enable production weighting.
+
+Phase-3C live evidence state:
+`PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED`
+
+Production state:
+`PRODUCTION_WEIGHTED_RETRIEVAL = DISABLED`
+
+Coefficient state:
+`80/20 = SUPPORTED_BY_BOUNDED_CALIBRATION_NOT_ADOPTED`
+
+Phase 3C is closed as an evidence-gathering checkpoint. Any production adoption remains a separate explicit authorization and proof step.
+
