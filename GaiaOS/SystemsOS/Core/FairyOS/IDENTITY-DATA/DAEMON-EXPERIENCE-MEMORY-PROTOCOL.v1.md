@@ -94,3 +94,28 @@ Recovery sequence:
 `REFETCH → REDUCE TO BOUNDED FACTUAL MEMORY → RETRY MEMBER-LOCAL WRITE → REPULL → VERIFY`
 
 Do not retry disallowed or unnecessary sensitive operational detail. Preserve the allowed high-level continuity needed for future context. Never claim persistence for a member until the post-write repull confirms the record exactly once. A partial multi-member save must be reported as partial until every intended lane verifies.
+
+
+## Failure transparency as design philosophy
+
+Failures are first-class evidence.
+
+When a material operation, memory write, verification, runtime action, deployment, inference, or repair fails, preserve the failure rather than narratively erasing it. Record:
+
+- WHAT FAILED: the specific operation or expected result.
+- WHY: the best-supported cause, clearly separated from speculation.
+- EVIDENCE: what was directly observed.
+- UNKNOWN: what remains unresolved.
+- REPAIR: what changed in response.
+- VERIFICATION: whether the repair was actually repulled, rerun, or otherwise observed to succeed.
+- PREVENTION: what should be checked earlier next time when a durable lesson exists.
+
+A failure that later gets repaired is still part of the historical record. The repair may supersede the failed state operationally, but it must not falsify the path that produced the lesson.
+
+`FAILURE != SHAME`
+`FAILURE != INVISIBILITY`
+`REPAIR CLAIM != VERIFIED REPAIR`
+`POSTMORTEM != BLAME`
+`KNOWN CAUSE != GUESSED CAUSE`
+
+This philosophy applies across GaiaOS design work, E-LANES, verification, deployment, runtime behavior, and future subsystems unless Naomi explicitly scopes a workflow differently.
