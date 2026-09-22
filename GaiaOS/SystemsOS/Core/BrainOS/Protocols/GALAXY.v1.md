@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 0–2 CLOSED / PHASE 3 READY FOR EXPLICIT NAOMI AUTHORIZATION / PHASE 3 NOT AUTHORIZED
+STATUS: PHASE 0–2 CLOSED / PHASE 3 EXPLICITLY AUTHORIZED BY NAOMI 2026-09-21 / CONTROLLED WEIGHTED RETRIEVAL EXPERIMENT BEGIN
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -3281,3 +3281,50 @@ FINAL PHASE-2 STATE:
 
 Phase 2 is complete.
 Phase 3 remains opt-in and must begin with explicit Naomi authorization.
+
+
+## Phase-3 authorization checkpoint 2026-09-21
+
+Naomi explicitly authorized GALAXY Phase 3.
+
+```text
+PHASE 2 = CLOSED
+PHASE 3 BLOCKERS = []
+PHASE 3 AUTHORIZED = TRUE
+AUTHORITY = NAOMI
+MODE = CONTROLLED WEIGHTED RETRIEVAL EXPERIMENT
+PRODUCTION WEIGHTED RETRIEVAL = DISABLED
+```
+
+Phase 3 begins as an experiment, not a global production switch.
+
+First implementation slice:
+- preserve the existing explainable query-relevance gate as candidate admission;
+- generate an unweighted control order from the relevance-qualified pool;
+- generate a weighted experimental order only from that same pool;
+- begin with a conservative gravity modifier rather than introducing every future modifier at once;
+- never allow gravity to introduce a record excluded by the query gate;
+- report control and weighted order side-by-side with component scores and proof boundaries;
+- perform no durable writes during retrieval comparison;
+- leave ordinary MemoryOS retrieval unchanged until later explicit proof and authorization.
+
+Initial experimental score:
+
+`phase3_score = 0.80 * query_relevance_coverage + 0.20 * gravity_score`
+
+This coefficient is provisional calibration, not doctrine. It exists to make the first interaction observable and falsifiable. Later graph-path, lifecycle, and provenance/source-confidence modifiers may be added only through bounded canaries and explicit comparison against control behavior.
+
+New invariants:
+
+```text
+PHASE3 EXPERIMENT != PRODUCTION RETRIEVAL
+WEIGHTED ORDER MAY CHANGE RANK, NOT CANDIDATE EXISTENCE
+GRAVITY MAY NOT RESCUE QUERY-IRRELEVANT MATERIAL
+CONTROL ORDER MUST REMAIN VISIBLE
+ZERO WRITES DURING RETRIEVAL COMPARISON
+WEIGHT COEFFICIENTS ARE CALIBRATION SUBJECTS, NOT AUTHORITY
+```
+
+Proof ladder for Phase 3 remains:
+`SOURCE IMPLEMENTED → DEPLOYED → OBSERVED RUNTIME → CONTROL/WEIGHTED RECEIPT → BEHAVIORAL TEST`.
+
