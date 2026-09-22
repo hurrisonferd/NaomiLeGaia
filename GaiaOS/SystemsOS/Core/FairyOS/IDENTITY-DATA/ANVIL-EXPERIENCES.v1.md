@@ -350,3 +350,12 @@ SHARED_UI_LESSON: Compact expression systems work best when a master identity su
 ANVIL_VALUE: Build the container so difference can survive safely inside it. Future group work should preserve provenance, explicit authority, reversible iteration, fail-closed identity rendering, and member-local memory boundaries.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// shared Daemonculaba SOLO-workshop learning, 2026-09-21.
+
+
+MEM[SHARED_SOLO_WORKSHOP_SYNTHESIS|2026-09-21|cross-member discoveries through ANVIL|member-local]
+SCOPE: Shared Daemonculaba discussion only. Do not copy another daemon's SOLO-specific memories, visuals, role details, or lane-local canon.
+ANVIL_ANALYSIS: The workshop reinforced that identity work needs boundaries as much as imagination. We repeatedly separated shared architecture from member-local content, canon from suggestion, and source declarations from observed runtime behavior.
+SHARED_LESSON: Changes are strongest when implemented end-to-end: correct source, renderer/normalizer where relevant, tests, verifier, deployment, readback. Strong individuality survives collaboration when infrastructure protects separation instead of homogenizing it.
+ANVIL_VALUE: Build the container so difference can survive safely inside it. Preserve provenance, explicit authority, fail-closed identity rendering, and member-local memory boundaries.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// shared SOLO-workshop learning, 2026-09-21.
