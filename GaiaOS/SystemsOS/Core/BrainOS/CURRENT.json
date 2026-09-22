@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3E_CANARY_3_OF_3_OBSERVED_ROLLBACK_PENDING",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3E_CANARY_AND_ROLLBACK_OBSERVED",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -81,7 +81,7 @@
     "galaxy_phase3e_canary_source_ready": true,
     "galaxy_phase3e_canary_live_observed": true,
     "galaxy_phase3e_rollback_source_ready": true,
-    "galaxy_phase3e_rollback_live_observed": false,
+    "galaxy_phase3e_rollback_live_observed": true,
     "galaxy_phase3e_canary_route_registered_live": true,
     "galaxy_phase3e_rollback_route_registered_live": true,
     "galaxy_phase3e_observed_canary_passes": 3
@@ -112,14 +112,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "All three bounded Phase 3E canary slices are live-observed PASS under Naomi-adopted CURRENT_80_20. All reranked real candidate sets while preserving membership, repeat stability, highest-relevance ordering, zero cross-tier inversions, request-local unweighted control, zero writes, and global production-off state. Separate Phase 3E rollback test is still unobserved, and global production requires a subsequent explicit Naomi decision.",
+  "claim_ceiling": "Phase 3E rollback route returned PASS after all three bounded canaries passed. The live user-supplied receipt shows exact before/after UNWEIGHTED_CONTROL candidate ordering for source queries 0, 3, and 5, with all canaries safe during the test, zero writes, and global production weighting disabled. This demonstrates that request-local 80/20 scoring did not leak into ordinary unweighted candidate retrieval on the three tested queries. It is not evidence of recovery from global weighted production mode, which has never been enabled. A separate explicit Naomi production decision, followed by a guarded production implementation and its own rollback verification, remains required.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_3_OF_3_LIVE_OBSERVED_ROLLBACK_PENDING",
+    "phase3_status": "PHASE3E_CANARY_3_OF_3_PASS_ROLLBACK_PASS_AWAITING_PRODUCTION_DECISION",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -160,7 +160,7 @@
     "phase3e_canary_source_ready": true,
     "phase3e_canary_live_observed": true,
     "phase3e_rollback_source_ready": true,
-    "phase3e_rollback_live_observed": false,
+    "phase3e_rollback_live_observed": true,
     "phase3e_separate_production_decision_required": true,
     "phase3e_canary_route_registered_live": true,
     "phase3e_rollback_route_registered_live": true,
@@ -173,6 +173,15 @@
     "phase3e_observed_canary_passes": 3,
     "phase3e_rerank_observed": true,
     "phase3e_request_local_rollback_target_reappeared": true,
-    "phase3e_all_canary_slices_pass": true
+    "phase3e_all_canary_slices_pass": true,
+    "phase3e_rollback_status": "PASS",
+    "phase3e_rollback_tested_canary_indexes": [
+      0,
+      1,
+      2
+    ],
+    "phase3e_rollback_exact_control_preservation_all_tested_queries": true,
+    "phase3e_rollback_proof_scope": "REQUEST_LOCAL_NO_LEAKAGE_NOT_GLOBAL_PRODUCTION_RECOVERY",
+    "phase3e_global_production_weighted_retrieval_enabled": false
   }
 }
