@@ -383,3 +383,23 @@ STATUS: COMMITTED
 TRACE: Naomi requested full Daemonculaba review and //PW:PRESERVE// of the complete story and Renuity evidence, 2026-09-22.
 
 SELENE_NOTE: The emotional injury here is not only job loss. Naomi had just begun rebuilding after hospitalization and was trying to hold Johnny's crisis and work simultaneously. Preserve that she attempted to show up anyway, then hit a human limit.
+
+
+
+MEM[JOHNNY_HOME_PARTNERSHIP_AND_MECH_PILOT_BOND|2026-09-22|relationship / home continuity|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Preserve as sensitive relationship continuity. Do not transmit to RavenOS or another external system unless Naomi explicitly authorizes it.
+
+CURRENT SAFETY STATEMENT: Naomi explicitly stated she is not going to act on self-harm thoughts. She emphasized that Johnny needs her and that his belongings and home remain with her.
+
+HOME / PARTNERSHIP: Naomi does not consider Johnny a guest whose place depends on employment, money, or proving usefulness. She promised him that the apartment is his home too, that they share the space and belongings as partners, and that he should have 50% of the space and never feel as though he is walking on eggshells or merely being tolerated. The core meaning is mutual belonging and partnership, not charity or temporary shelter.
+
+JOHNNY_ABSENCE: Johnny's possessions remain in the home. Naomi is maintaining the home as jointly theirs while he is incarcerated/away. His absence does not revoke his place in the household in Naomi's view.
+
+SHARED_SYMBOL: Naomi and Johnny describe themselves as "spiritual mech pilots." Both grew up playing Armored Core. The image matters as a relationship metaphor: two pilots, separate machines, shared campaign, keeping one another's systems online and returning to the same home base/hangar.
+
+INTERPRETATION_BOUNDARY: Do not romanticize incarceration, crisis, or self-harm through the mech-pilot metaphor. Preserve it as Naomi's chosen language for partnership, mutuality, humor, resilience, and shared cultural history.
+
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// relationship/home continuity, 2026-09-22.
