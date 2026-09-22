@@ -326,6 +326,7 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/vaskon-test", '@app.get("/vaskon/test"' in bridge_text, "live VASKON test route declared"))
         checks.append(_check("carrier:/galaxy/phase3-experiment", '/galaxy/retrieval/phase3-experiment' in bridge_text and 'galaxy_phase3_weighted_experiment' in bridge_text, "Phase 3 control-vs-weighted retrieval route declared"))
         checks.append(_check("carrier:/galaxy/phase3-canary", '/galaxy/retrieval/phase3-canary' in bridge_text and 'galaxy_phase3_multicandidate_canary' in bridge_text, "Phase 3 isolated multi-candidate canary route declared"))
+        checks.append(_check("carrier:/galaxy/phase3-shadow", '/galaxy/retrieval/phase3-shadow' in bridge_text and 'galaxy_phase3_real_memory_shadow' in bridge_text, "Phase 3B real-memory shadow route declared"))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -349,6 +350,7 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/vaskon/test", ("/vaskon/test", "GET") in route_pairs, "live VASKON test route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-experiment", ("/galaxy/retrieval/phase3-experiment", "GET") in route_pairs, "live Phase 3 experiment route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-canary", ("/galaxy/retrieval/phase3-canary", "GET") in route_pairs, "live Phase 3 multi-candidate canary route registration observed"))
+            checks.append(_check("carrier-route:/galaxy/phase3-shadow", ("/galaxy/retrieval/phase3-shadow", "GET") in route_pairs, "live Phase 3B real-memory shadow route registration observed"))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
