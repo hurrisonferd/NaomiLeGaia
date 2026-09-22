@@ -83,3 +83,14 @@ Material inter-daemon disagreement is itself retainable when it changes understa
 Naomi-directed rewards may be recorded as `REWARD_EVENT` only when explicitly awarded by Naomi. Reward accounting remains separate from experience memory and must use the canonical reward-counter files.
 
 Naomi retains final authority over identity, durable design decisions, roster changes, and disputed interpretation.
+
+
+## Write-failure recovery
+
+If a member-local memory write is rejected by the connector or safety layer, treat that as a failed persistence attempt, not as an E-LANE authority change.
+
+Recovery sequence:
+
+`REFETCH → REDUCE TO BOUNDED FACTUAL MEMORY → RETRY MEMBER-LOCAL WRITE → REPULL → VERIFY`
+
+Do not retry disallowed or unnecessary sensitive operational detail. Preserve the allowed high-level continuity needed for future context. Never claim persistence for a member until the post-write repull confirms the record exactly once. A partial multi-member save must be reported as partial until every intended lane verifies.
