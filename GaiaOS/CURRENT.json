@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3D_SLICE5_OF_6_OBSERVED",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3D_REVIEW_ELIGIBLE",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3D slices 0 through 4 have been live-observed PASS on the deployed carrier. Slices 0 and 3 supplied CURRENT_80_20 rerank utility signals and stronger-gravity safety-boundary signals. Slices 1, 2, and 4 were non-discriminating but remained safely stable. Across all five observed slices, CURRENT_80_20 preserved candidate membership, repeated-run stability, highest-relevance ordering, zero cross-relevance-tier inversions, zero writes, and production weighting disabled. One Phase 3D slice remains before suite-level adoption review eligibility can be assessed.",
+  "proof_ceiling": "GALAXY Phase 3D six-slice read-only pre-adoption gate has been live-observed PASS across all configured slices. CURRENT_80_20 preserved candidate membership, repeated-run stability, highest-relevance ordering, and zero cross-relevance-tier inversions on every slice. Bounded utility rerank signals were observed on slices 0, 3, and 5; stronger-gravity safety-boundary signals were observed on slices 0 and 3. Slices 1, 2, and 4 were non-discriminating without manufactured evidence. Zero writes occurred, ordinary MemoryOS retrieval remained unchanged, coefficient adoption remains false, and production weighted retrieval remains disabled. The suite is eligible for explicit Naomi adoption review only; no adoption or production canary is authorized yet.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,8 +136,8 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3D_ADOPTION_GATE_SLICES_0_1_2_3_4_LIVE_OBSERVED",
-    "phase3_mode": "READ_ONLY_PRE_ADOPTION_GATE_5_OF_6_OBSERVED",
+    "phase3_status": "PHASE3D_ADOPTION_GATE_6_OF_6_PASS_REVIEW_ELIGIBLE",
+    "phase3_mode": "READ_ONLY_PRE_ADOPTION_GATE_COMPLETE_REVIEW_ELIGIBLE",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
     "phase3_authorized_date": "2026-09-21",
@@ -157,7 +157,7 @@
     "phase3d_required_slice_passes": 6,
     "phase3d_coefficient_adopted": false,
     "phase3d_adoption_authorized": false,
-    "phase3d_next_gate": "RUN_ADOPTION_GATE_SLICE_QUERY_INDEX_5",
+    "phase3d_next_gate": "EXPLICIT_NAOMI_ADOPTION_AUTHORIZATION",
     "phase3d_adoption_gate_live_route_registered": true,
     "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d",
     "phase3d_verifier_summary": "99/99 PASS",
@@ -166,9 +166,10 @@
       1,
       2,
       3,
-      4
+      4,
+      5
     ],
-    "phase3d_observed_slice_passes": 5,
+    "phase3d_observed_slice_passes": 6,
     "phase3d_observed_slice_total": 6,
     "phase3d_current_80_20_rerank_signal_observed": true,
     "phase3d_stronger_gravity_boundary_signal_observed": true,
@@ -179,7 +180,19 @@
     ],
     "phase3d_discriminating_slice_indexes": [
       0,
+      3,
+      5
+    ],
+    "phase3d_current_80_20_rerank_signal_slice_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3d_stronger_gravity_boundary_slice_indexes": [
+      0,
       3
-    ]
+    ],
+    "phase3d_suite_pass": true,
+    "phase3d_adoption_review_eligible": true
   }
 }
