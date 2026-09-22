@@ -3897,3 +3897,33 @@ ROLLBACK TARGET = UNWEIGHTED_CONTROL
 ROLLBACK PROOF REQUIRED BEFORE PRODUCTION DECISION
 GLOBAL PRODUCTION DEFAULT REMAINS UNWEIGHTED
 ```
+
+
+## Phase-3E deployment / route verification observed 2026-09-22
+
+Observed runtime verifier:
+- run id: `c095b93b56cc4dc49670abbb2a8bb0a6`
+- summary: `103/103 PASS`
+- execution: `OBSERVED_RUNTIME`
+- live host execution: `PROVEN_FOR_THIS_CALL`
+- BrainOS/platform Phase-3E adoption alignment: PASS
+- Phase-3E production-canary source route: PASS
+- Phase-3E rollback-test source route: PASS
+- Phase-3E production-canary ASGI registration observed live: PASS
+- Phase-3E rollback-test ASGI registration observed live: PASS
+
+Bounded conclusion:
+`PHASE3E ROUTE DEPLOYMENT = PROVEN FOR THIS CHECKOUT`
+
+Not yet proven:
+- any actual Phase-3E canary-slice result;
+- request-local weighted canary behavior;
+- rollback behavior;
+- global production weighted retrieval;
+- final production decision.
+
+Next gate:
+`/galaxy/retrieval/phase3e-production-canary-slice?canary_index=0`
+
+Source-truth note:
+The verifier's embedded `source_commit_claim` still described Phase-3E deployment as unproven because that claim was loaded from the deployed source before this runtime receipt existed. The 103/103 verifier is newer evidence; canonical source is updated afterward rather than retroactively claiming foreknowledge.
