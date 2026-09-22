@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_SLICE1_OF_6_OBSERVED",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_SLICE2_OF_6_OBSERVED",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -77,7 +77,7 @@
     "galaxy_phase3d_source_ready": true,
     "galaxy_phase3d_live_observed": true,
     "galaxy_phase3d_route_registered_live": true,
-    "galaxy_phase3d_observed_slice_passes": 1
+    "galaxy_phase3d_observed_slice_passes": 2
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -105,14 +105,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "GALAXY Phase 3D slice 0 has been live-observed PASS. The 80/20 profile stayed inside the named safety guardrails and produced a rerank signal, while stronger-gravity comparators exposed a relevance-boundary failure. This is one of six required slices only; 80/20 remains not adopted and production weighted retrieval remains disabled.",
+  "claim_ceiling": "GALAXY Phase 3D slices 0 and 1 are live-observed PASS. Slice 0 supplied the required suite-level utility and stronger-gravity boundary signals. Slice 1 was safely non-discriminating because both admitted candidates had equal relevance and zero gravity. Four configured slices remain. 80/20 remains not adopted and production weighted retrieval remains disabled.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3D_ADOPTION_GATE_SLICE_0_LIVE_OBSERVED",
+    "phase3_status": "PHASE3D_ADOPTION_GATE_SLICES_0_1_LIVE_OBSERVED",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -122,8 +122,12 @@
     "phase3d_route_registered_live": true,
     "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d",
     "phase3d_observed_slice_indexes": [
-      0
+      0,
+      1
     ],
-    "phase3d_observed_slice_passes": 1
+    "phase3d_observed_slice_passes": 2,
+    "phase3d_non_discriminating_slice_indexes": [
+      1
+    ]
   }
 }
