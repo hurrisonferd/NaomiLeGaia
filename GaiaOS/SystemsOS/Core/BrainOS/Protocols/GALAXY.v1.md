@@ -4012,3 +4012,46 @@ This proves bounded request-local weighted behavior for this canary slice only. 
 
 Next:
 `canary_index=2`
+
+
+## Phase-3E canary slice 2 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3e-production-canary-slice?canary_index=2`
+
+Source query index: `5`
+
+Query: `satellite calibration core memory context`
+
+Observed receipt:
+- status: `PASS`
+- candidate count: `6`
+- repeated runs: `3`
+- adopted profile: `CURRENT_80_20` (0.8 relevance, 0.2 gravity)
+- candidate membership preserved: `true`
+- control stable across repeats: `true`
+- weighted stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- cross-relevance-tier inversions: `0`
+- rerank observed: `true`
+- request-local rollback target reappeared: `true`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- global production weighted retrieval enabled: `false`
+- effect scope: `THIS_REQUEST_ONLY`
+- rollback target: `UNWEIGHTED_CONTROL`
+
+The relevance-1.0 record remained first. Gravity reordered several records within the relevance-0.6 tier only.
+
+### Phase-3E canary suite completion
+
+`3 / 3 PHASE-3E CANARY SLICES LIVE-OBSERVED PASS`
+
+Canary indexes `0, 1, 2` correspond to Phase-3D source query indexes `0, 3, 5`. All three exhibited bounded reranking, preserved candidate membership and relevance-tier precedence, and left global production weighting disabled.
+
+Proof boundary: The three individual canary receipts each observed return to the request-local unweighted control path. The separate suite-level rollback test has NOT yet been executed or observed. Do not infer final rollback PASS from individual receipts.
+
+Next required gate:
+`/galaxy/retrieval/phase3e-rollback-test`
+
+Even after rollback PASS, the final production decision remains separately reserved for Naomi.
