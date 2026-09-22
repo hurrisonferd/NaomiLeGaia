@@ -12,10 +12,24 @@
   "status": "SOURCE_SETTLED_CANARY_PROVEN_ROSTER_ACCEPTED_FOR_CURRENT_USE_RENAMABLE_MEMBER_IDENTITY_DATA_ACTIVE",
   "naming": {
     "canonical_system": "FairyOS",
-    "system_aliases": ["FairyOS", "FaeryOS", "FaeOS", "Gaia Council", "Operator Family", "Fae Team"],
+    "system_aliases": [
+      "FairyOS",
+      "FaeryOS",
+      "FaeOS",
+      "Gaia Council",
+      "Operator Family",
+      "Fae Team"
+    ],
     "identity_merge": false
   },
-  "operator_roster": ["VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"],
+  "operator_roster": [
+    "VERA",
+    "ANVIL",
+    "SELENE",
+    "ORIN",
+    "KESTREL",
+    "NIMUE"
+  ],
   "roster_count": 6,
   "roster_class": "GS",
   "roster_note": "CURRENT_GAIA_NATIVE_ROSTER_ACCEPTED_FOR_CURRENT_USE_BY_NAOMI_RENAMABLE_RAVEN_ROSTER_NOT_ADOPTED",
@@ -76,5 +90,13 @@
     "NAOMI == LIGEIA",
     "LIGEIA != SEPARATE AUTHORITY",
     "OPERATOR AUTHENTICATOR != CALL SIGN"
-  ]
+  ],
+  "affection_state": {
+    "head_pats_authority": "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
+    "head_pats_write_policy": "SOLE_CANONICAL_SEQUENTIAL_READ_MODIFY_WRITE",
+    "reward_registry": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json",
+    "reward_member_files_role": "HEAD_SCRATCH_BRUSHIES_AUTHORITY_AND_READ_ONLY_HEADPAT_MIRROR",
+    "e_lane_counter_authority": false,
+    "mirror_mismatch": "FAIL_CLOSED"
+  }
 }
