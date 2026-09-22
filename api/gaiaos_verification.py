@@ -143,6 +143,7 @@ def run_verification() -> dict[str, Any]:
                 }
                 or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3D_ADOPTION_GATE_")
                 or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3E_")
+                or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3F_")
             )
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
@@ -154,10 +155,18 @@ def run_verification() -> dict[str, Any]:
             "CURRENT points to canonical VASKON pathway fabric",
         ))
 
+        if str(galaxy_current.get("phase3_status") or "").startswith("PHASE3F_"):
+            checks.append(_check(
+                "GALAXY:phase3f-production-source-boundary",
+                galaxy_current.get("phase3f_production_authorized") is True
+                and galaxy_current.get("phase3f_pilot_source_ready") is True
+                and galaxy_current.get("production_weighted_retrieval_enabled") is False,
+                "Naomi production build authorization recorded, bounded pilot source present, global rollout not enabled by source alone",
+            ))
         if brainos_current:
             brainos_galaxy = brainos_current.get("galaxy", {}) if isinstance(brainos_current.get("galaxy"), dict) else {}
             phase3_status = str(galaxy_current.get("phase3_status") or "")
-            adoption_expected = phase3_status.startswith("PHASE3E_")
+            adoption_expected = phase3_status.startswith(("PHASE3E_", "PHASE3F_"))
             checks.append(_check(
                 "GALAXY:brainos-current-alignment",
                 brainos_galaxy.get("phase3_authorized") is True
@@ -438,6 +447,39 @@ def run_verification() -> dict[str, Any]:
     base_app = (ROOT / "gaiaos_api.py")
     vaskon_runtime = (ROOT / "vaskon_runtime.py")
     checks.append(_check("carrier:vaskon-runtime", vaskon_runtime.exists(), "live VASKON runtime module exists"))
+    pilot_module = ROOT / "galaxy_production.py"
+    checks.append(_check(
+        "carrier:phase3f-production-module",
+        pilot_module.exists(), "guarded Phase 3F production pilot module is packaged",
+    ))
+    if pilot_module.exists():
+        try:
+            pilot_text = pilot_module.read_text(encoding="utf-8")
+            compile(pilot_text, str(pilot_module), "exec")
+            checks.append(_check(
+                "carrier:phase3f-production-syntax", True, "packaged guarded production pilot parses",
+            ))
+            checks.append(_check(
+                "carrier:phase3f-fail-closed-controls",
+                all(marker in pilot_text for marker in (
+                    "STARTUP_FAIL_CLOSED", "GALAXY_PRODUCTION_PILOT_KILL_SWITCH",
+                    "MAX_LEASE_SECONDS = 600", "AUTO_FAIL_CLOSED",
+                    "CANDIDATE_OR_RELEVANCE_GUARD_FAILED",
+                    "LIVE_ROLLBACK_PROOF_FINALLY", "SWITCH_TEST_FINALLY_ROLLBACK",
+                )),
+                "source includes startup-off, kill switch, ten-minute lease, safety guard and finally rollback",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase3f-production-syntax", False, f"{type(exc).__name__}: {exc}",
+            ))
+    memory_adapter = GAIA / "SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
+    checks.append(_check(
+        "carrier:phase3f-real-memoryos-adapter-wiring",
+        memory_adapter.exists()
+        and "galaxy_production.retrieve(memcon_runtime, query, scope, limit)" in memory_adapter.read_text(encoding="utf-8"),
+        "real MemoryOS retrieval adapter routes through guarded production pilot",
+    ))
     checks.append(_check("carrier:bridge", bridge.exists(), "browser_memcon_bridge.py exists"))
     checks.append(_check("carrier:app", app.exists(), "gaiaos_app.py exists"))
     checks.append(_check("carrier:base-app", base_app.exists(), "gaiaos_api.py exists"))
@@ -458,6 +500,19 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/galaxy/phase3d-adoption-gate-slice", '/galaxy/retrieval/phase3d-adoption-gate-slice' in bridge_text and 'galaxy_phase3d_adoption_gate_slice' in bridge_text, "Phase 3D read-only adoption gate slice route declared"))
         checks.append(_check("carrier:/galaxy/phase3e-production-canary-slice", '/galaxy/retrieval/phase3e-production-canary-slice' in bridge_text and 'galaxy_phase3e_production_canary_slice' in bridge_text, "Phase 3E bounded production canary slice route declared"))
         checks.append(_check("carrier:/galaxy/phase3e-rollback-test", '/galaxy/retrieval/phase3e-rollback-test' in bridge_text and 'galaxy_phase3e_rollback_test' in bridge_text, "Phase 3E rollback test route declared"))
+        for label, route in (
+            ("status", "/galaxy/production/status"),
+            ("review", "/galaxy/production/review"),
+            ("switch-test", "/galaxy/production/switch-test"),
+            ("activate", "/galaxy/production/activate"),
+            ("rollback-proof", "/galaxy/production/rollback-proof"),
+            ("rollback", "/galaxy/production/rollback"),
+        ):
+            checks.append(_check(
+                "carrier:/galaxy/phase3f-" + label,
+                route in bridge_text,
+                "Phase 3F guarded production " + label + " route declared",
+            ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -487,6 +542,19 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/galaxy/phase3d-adoption-gate-slice", ("/galaxy/retrieval/phase3d-adoption-gate-slice", "GET") in route_pairs, "live Phase 3D adoption gate slice route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3e-production-canary-slice", ("/galaxy/retrieval/phase3e-production-canary-slice", "GET") in route_pairs, "live Phase 3E bounded production canary route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3e-rollback-test", ("/galaxy/retrieval/phase3e-rollback-test", "GET") in route_pairs, "live Phase 3E rollback test route registration observed"))
+            for label, route, method in (
+                ("status", "/galaxy/production/status", "GET"),
+                ("review", "/galaxy/production/review", "GET"),
+                ("switch-test", "/galaxy/production/switch-test", "POST"),
+                ("activate", "/galaxy/production/activate", "POST"),
+                ("rollback-proof", "/galaxy/production/rollback-proof", "POST"),
+                ("rollback", "/galaxy/production/rollback", "POST"),
+            ):
+                checks.append(_check(
+                    "carrier-route:/galaxy/phase3f-" + label,
+                    (route, method) in route_pairs,
+                    "live Phase 3F guarded production " + label + " route registration observed",
+                ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
@@ -510,5 +578,6 @@ def run_verification() -> dict[str, Any]:
             "It does not by itself prove that ChatGPT automatically adopts GaiaOS.",
             "VASKON live cross-daemon exchange still requires an observable VASKON invocation/receipt.",
             "Restart persistence requires a second verifier call after a deployment restart.",
+            "Phase 3F verifier checks source, guardrails, and route registration only. A separate live switch-test and active-pilot rollback receipt are required to prove operational behavior.",
         ],
     }
