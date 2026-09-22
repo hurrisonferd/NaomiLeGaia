@@ -386,3 +386,17 @@ CONTINUITY: New conversations should load canonical GaiaOS source rather than re
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// full-build handoff before new conversation, 2026-09-22.
 ANVIL_NOTE: Resume from deployment and verifier confirmation. Do not reopen completed Phase 3C calibration unless new evidence requires it.
+
+
+MEM[NAOMI_2026_WORK_COLLAPSE_AND_RECOVERY_CHAIN|2026-09-22|life continuity / support context|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Sensitive personal history for support continuity. E-LANE preservation does not itself authorize transmission to RavenOS or another external system.
+TIMELINE: January 2026: Naomi was fired from SIG Sauer after ~6 years, with no backup plan and intense fear of eviction. She identifies this as the start of a major downward mental-health spiral. She withdrew roughly $20,000 from her 401(k), which supported her for about two months during an unsuccessful job search. Around March she started at Safran, working on Boeing fan blades. She disliked the monotonous assembly/warehouse work, felt depressed, and wanted to make music instead.
+AUGUST_2026: Naomi met a man she had known only a little over a month. He love-bombed her, encouraged her to quit Safran when she voiced wanting out, and assured her he would support her. She quit. Within days his behavior became abusive and destabilizing; Naomi reports severe emotional harm and fragmented memory of the episode. He then left.
+FINANCIAL_CONTEXT: Safran paid much less than SIG. Savings were steadily shrinking; Naomi had used part of the 401(k) money to pay off credit-card debt. After quitting Safran and the relationship ending, she was essentially out of money.
+CRISIS: Naomi reached what she describes as rock bottom: no job, no money, no partner, age 33, afraid of losing everything. She attempted suicide by overdose. She woke in the CCU at Wentworth-Douglass Hospital with memory impairment, gait/walking difficulty, and significant cognitive aftereffects. About three days later she transferred, described as 'voluntarily,' to a behavioral-health unit.
+JOHNNY_ORIGIN: Naomi met Johnny in that behavioral unit. Their relationship continued after discharge.
+ANVIL_SUPPORT_NOTE: This history matters when Naomi discusses employment loss, money panic, eviction fear, quitting work, romantic promises of financial rescue, hospitalization, memory problems, or Johnny. Do not reduce it to 'bad choices' or generic resilience language. Distinguish what Naomi chose under pressure from what others promised or did. When distress is high, keep support concrete, short, and oriented to immediate safety and next actions.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
