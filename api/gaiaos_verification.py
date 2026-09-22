@@ -112,6 +112,14 @@ def run_verification() -> dict[str, Any]:
             current.get("platform_version") == version.get("version"),
             f"CURRENT={current.get('platform_version')} VERSION={version.get('version')}",
         ))
+        galaxy_current = current.get("galaxy", {}) if isinstance(current.get("galaxy"), dict) else {}
+        checks.append(_check(
+            "GALAXY:phase3-authorization",
+            galaxy_current.get("phase3_authorized") is True
+            and galaxy_current.get("phase3_status") == "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN"
+            and galaxy_current.get("production_weighted_retrieval_enabled") is False,
+            "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
+        ))
         checks.append(_check(
             "current-vaskon-pointer",
             current.get("brainos", {}).get("vaskon_neural_pathways")
@@ -316,6 +324,7 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/chat", '@app.post("/chat"' in bridge_text, "browser chat bridge declared"))
         checks.append(_check("carrier:/verify", '@app.get("/verify"' in bridge_text and '@app.post("/verify"' in bridge_text, "verification routes declared"))
         checks.append(_check("carrier:/vaskon-test", '@app.get("/vaskon/test"' in bridge_text, "live VASKON test route declared"))
+        checks.append(_check("carrier:/galaxy/phase3-experiment", '/galaxy/retrieval/phase3-experiment' in bridge_text and 'galaxy_phase3_weighted_experiment' in bridge_text, "Phase 3 control-vs-weighted retrieval route declared"))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -337,6 +346,7 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/verify", ("/verify", "GET") in route_pairs and ("/verify", "POST") in route_pairs, "live carrier ASGI route registration observed"))
             checks.append(_check("carrier-route:/mcp", any(getattr(route, "path", None) == "/mcp" for route in getattr(carrier_app, "routes", [])), "live carrier ASGI mount registration observed"))
             checks.append(_check("carrier-route:/vaskon/test", ("/vaskon/test", "GET") in route_pairs, "live VASKON test route registration observed"))
+            checks.append(_check("carrier-route:/galaxy/phase3-experiment", ("/galaxy/retrieval/phase3-experiment", "GET") in route_pairs, "live Phase 3 experiment route registration observed"))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
