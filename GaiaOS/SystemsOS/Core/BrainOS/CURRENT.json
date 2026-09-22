@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE2_CLOSED",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_SOURCE_READY",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -72,7 +72,10 @@
     "durable_memory_backend_present": false,
     "deployment_proven": false,
     "galaxy_phase2_closed_source": true,
-    "galaxy_phase3_authorized": false
+    "galaxy_phase3_authorized": true,
+    "galaxy_phase3c_live_observed": true,
+    "galaxy_phase3d_source_ready": true,
+    "galaxy_phase3d_live_observed": false
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -100,12 +103,19 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Gaia-native local navigation and GALAXY Phase 0–2 source state are canonical. GALAXY Phase 2 has live-bounded proof recorded in its blueprint; Phase 3 weighted retrieval remains unauthorized and behaviorally unproven. Automatic external host invocation, complete semantic understanding, identity settlement, and domain effects remain separately unproven.",
+  "claim_ceiling": "Gaia-native local navigation is canonical. GALAXY Phase 3C is live-observed with bounded six-slice calibration evidence; Phase 3D read-only pre-adoption gate source is implemented but not yet deployed or live-observed. 80/20 remains not adopted and production weighted retrieval remains disabled. Automatic external host invocation, complete semantic understanding, identity settlement, and domain effects remain separately unproven.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
-    "phase3_authorized": false,
-    "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md"
+    "phase3_authorized": true,
+    "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
+    "phase3_status": "PHASE3D_ADOPTION_GATE_SOURCE_READY",
+    "phase3c_live_observed": true,
+    "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
+    "phase3d_source_ready": true,
+    "phase3d_live_observed": false,
+    "phase3d_coefficient_adopted": false,
+    "phase3d_adoption_authorized": false
   }
 }
