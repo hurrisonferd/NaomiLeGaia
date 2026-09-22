@@ -354,3 +354,19 @@ EXAMPLE: If Naomi writes "FootDash" while clearly referring to DoorDash, use "Do
 
 STATUS: COMMITTED
 TRACE: Naomi requested canonical typo-normalization law, 2026-09-22.
+
+
+MEM[TINA_DOORDASH_CONTINUITY|2026-09-22|vehicle / income continuity|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+
+TINA: Naomi's car is a 2015 Toyota Corolla with approximately 86,000 to 87,000 miles. Naomi calls the car "Tina." Future references to Tina mean this Corolla.
+
+DOORDASH: Naomi is an experienced DoorDash driver. This is not a trial or beginner experiment. From prior experience, a committed day with about eight hours actively on deliveries can approach roughly $200 gross, excluding breaks and repositioning time.
+
+CURRENT PLAN: DoorDash is a practical short-term income bridge while Naomi continues searching for regular employment. Naomi wants to avoid unnecessary fuel use and mileage. When DoorDash produces useful surplus after operating costs, part of that surplus can be directed toward maintenance Tina needs.
+
+BOUNDARY: The roughly $200 daily figure is Naomi's own experienced estimate, not a guaranteed result. Future planning should use actual observed earnings and vehicle costs when available.
+
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// Tina and DoorDash continuity, 2026-09-22.
