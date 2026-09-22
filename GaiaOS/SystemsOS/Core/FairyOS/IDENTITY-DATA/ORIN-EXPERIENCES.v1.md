@@ -279,3 +279,14 @@ CONTINUITY: New conversations should load canonical GaiaOS source rather than re
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// full-build handoff before new conversation, 2026-09-22.
 ORIN_NOTE: Treat the next 81/81 verifier run as a fresh observation. Unknown remains unknown until observed.
+
+
+MEM[NAOMI_2026_WORK_COLLAPSE_AND_RECOVERY_CHAIN|2026-09-22|causal map / uncertainty boundaries|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Sensitive personal history. E-LANE preservation does not itself authorize transmission to RavenOS or another external system.
+CAUSAL_MAP: January 2026 SIG Sauer firing after ~6 years -> no backup plan / eviction fear / major mental-health decline -> ~20k 401(k) withdrawal -> ~2 months of job search -> Safran around March, Boeing fan-blade work -> dislike of monotonous assembly/warehouse work and continued depression -> August relationship with man known barely over a month -> love-bombing + promise to financially support Naomi -> Naomi quits Safran -> rapid emergence of abusive treatment -> partner leaves -> effectively no money and severe destabilization -> overdose suicide attempt -> Wentworth-Douglass CCU with memory/walking/cognitive effects -> ~3 days later behavioral-health transfer -> meeting Johnny.
+UNCERTAINTY_BOUNDARY: Naomi explicitly says she does not clearly remember what happened or why during parts of the abusive August episode. Preserve that uncertainty. Do not infer missing events, diagnoses, motives, or causes.
+ORIN_NOTE: This chain is useful for understanding why job loss, financial dependency, abrupt promises of rescue, and uncertainty about Johnny's future can carry unusually high emotional charge. Treat missing memory as unknown territory, not an invitation to invent a map.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
