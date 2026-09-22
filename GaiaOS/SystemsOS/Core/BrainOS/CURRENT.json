@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_SLICE5_OF_6_OBSERVED",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_REVIEW_ELIGIBLE",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -77,7 +77,7 @@
     "galaxy_phase3d_source_ready": true,
     "galaxy_phase3d_live_observed": true,
     "galaxy_phase3d_route_registered_live": true,
-    "galaxy_phase3d_observed_slice_passes": 5
+    "galaxy_phase3d_observed_slice_passes": 6
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -105,14 +105,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "GALAXY Phase 3D slices 0 through 4 are live-observed PASS. Slices 0 and 3 are discriminating and supply bounded 80/20 utility plus stronger-gravity boundary evidence; slices 1, 2, and 4 are safely non-discriminating. One configured slice remains. 80/20 remains not adopted and production weighted retrieval remains disabled.",
+  "claim_ceiling": "GALAXY Phase 3D six-slice read-only pre-adoption gate is live-observed PASS. CURRENT_80_20 stayed inside the named safety guardrails on all six slices; utility rerank signals were observed on slices 0, 3, and 5, and stronger-gravity boundary signals on slices 0 and 3. This establishes eligibility for explicit Naomi adoption review only. 80/20 remains not adopted and production weighted retrieval remains disabled.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3D_ADOPTION_GATE_SLICES_0_1_2_3_4_LIVE_OBSERVED",
+    "phase3_status": "PHASE3D_ADOPTION_GATE_6_OF_6_PASS_REVIEW_ELIGIBLE",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -126,9 +126,10 @@
       1,
       2,
       3,
-      4
+      4,
+      5
     ],
-    "phase3d_observed_slice_passes": 5,
+    "phase3d_observed_slice_passes": 6,
     "phase3d_non_discriminating_slice_indexes": [
       1,
       2,
@@ -136,7 +137,10 @@
     ],
     "phase3d_discriminating_slice_indexes": [
       0,
-      3
-    ]
+      3,
+      5
+    ],
+    "phase3d_suite_pass": true,
+    "phase3d_adoption_review_eligible": true
   }
 }
