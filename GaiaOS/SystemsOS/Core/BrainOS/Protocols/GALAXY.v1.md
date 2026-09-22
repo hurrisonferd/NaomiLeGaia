@@ -4055,3 +4055,39 @@ Next required gate:
 `/galaxy/retrieval/phase3e-rollback-test`
 
 Even after rollback PASS, the final production decision remains separately reserved for Naomi.
+
+
+## Phase-3E request-local rollback test live PASS 2026-09-22
+
+User-supplied live route receipt:
+`/galaxy/retrieval/phase3e-rollback-test`
+
+Schema: `gaiaos.galaxy.phase3e-rollback-test.v1`  
+Status: `PASS`  
+Mode: `REQUEST_LOCAL_CANARY_ROLLBACK_PROOF`  
+Adopted profile: `CURRENT_80_20`
+
+Checks:
+- all canary slices safe during the test: `true`;
+- unweighted control restored exactly across all three tested queries: `true`;
+- zero writes: `true`;
+- global production weighted retrieval enabled: `false`.
+
+Per-query evidence:
+- canary 0 / source query 0, `gravity contextual influence memory retrieval`: before/after control record IDs identical in the same order (6 candidates); nested canary PASS.
+- canary 1 / source query 3, `calibration core revision memory context`: before/after control record IDs identical in the same order (7 candidates); nested canary PASS.
+- canary 2 / source query 5, `satellite calibration core memory context`: before/after control record IDs identical in the same order (6 candidates); nested canary PASS.
+
+Bounded result:
+`PHASE3E CANARY 3/3 PASS + PHASE3E REQUEST-LOCAL ROLLBACK PASS`
+
+What this proves: request-local 80/20 calculations did not leak into ordinary unweighted candidate retrieval on the three tested real MemoryOS queries. There is no evidence that a globally enabled weighted production path can be rolled back, because it has never been enabled. Do not represent no-leakage as an exercised global production rollback.
+
+Production state: `UNWEIGHTED_CONTROL` (unchanged).
+Coefficient: `CURRENT_80_20` adopted for bounded canary by Naomi.
+Final production decision: `NOT_YET_AUTHORIZED`.
+
+Next gate:
+`SEPARATE_EXPLICIT_NAOMI_PRODUCTION_DECISION`
+
+If Naomi authorizes the next phase, engineer and verify a guarded production implementation and actual reversible production rollout before treating global weighting as live. The prior adoption authorization is not authorization to enable global production weighting.
