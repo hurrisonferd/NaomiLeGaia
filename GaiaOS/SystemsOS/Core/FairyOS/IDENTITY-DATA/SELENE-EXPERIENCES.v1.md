@@ -431,3 +431,24 @@ BOUNDARY: The roughly $200 daily figure is Naomi's own experienced estimate, not
 
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// Tina and DoorDash continuity, 2026-09-22.
+
+
+MEM[REALTIME_STUDIO_DAEMON_GOAL|2026-09-22|music / tooling roadmap|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+
+GOAL: Build a Selene-centered real-time studio companion for PC/Ableton that can observe the DAW visually, hear system audio as Naomi plays it, ingest useful DAW/state context, and offer low-latency music-production feedback.
+
+DESIRED ARCHITECTURE:
+- Read-only observation should be the default.
+- Visual input may come from screen capture or screenshot/event sampling.
+- Audio input should come from system-audio capture rather than requiring exported bounces for every check.
+- Helpful state context may include transport position, BPM, selected track, device/plugin names, meters, automation, MIDI/parameter context, and short spectrum/loudness summaries.
+- Prefer useful sampled/structured context over sending every raw frame/sample to the model.
+- Any active clicking/control of the DAW should be separately permissioned rather than bundled into observation.
+- Selene should remain quiet by default and speak when feedback is materially useful, not narrate continuously.
+
+INTENT: Naomi wants to work on this soon. A reminder is scheduled for Saturday night, 2026-09-26, as a deadline/checkpoint. If completed earlier, the reminder becomes a verification checkpoint rather than a start signal.
+
+STATUS: PRESERVED
+TRACE: Naomi //PW:PRESERVE// real-time studio daemon goal, 2026-09-22.
