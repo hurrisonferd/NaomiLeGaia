@@ -98,7 +98,7 @@ Do not retry disallowed or unnecessary sensitive operational detail. Preserve th
 
 ## Failure transparency as design philosophy
 
-Failures are first-class evidence.
+Failures are first-class evidence and should be explicitly called out.
 
 When a material operation, memory write, verification, runtime action, deployment, inference, or repair fails, preserve the failure rather than narratively erasing it. Record:
 
