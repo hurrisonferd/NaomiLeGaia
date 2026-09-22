@@ -133,6 +133,11 @@ def run_verification() -> dict[str, Any]:
         "CONJURE contract contains neural pathway cycle",
     ))
     checks.append(_check(
+        "VASKON:command-alias",
+        "//C:82//" in conjure and "normalize to `CONJURE:VASKON`" in conjure,
+        "short command //C:82// is canonically bound to CONJURE:VASKON",
+    ))
+    checks.append(_check(
         "VASKON:canary-present",
         "Runtime execution remains UNKNOWN" in canary,
         "source canary preserves runtime proof ceiling",
