@@ -3368,3 +3368,47 @@ Phase-3B returns PASS only when at least one real-memory query exhibits a stable
 
 Proof ladder:
 `SOURCE IMPLEMENTED → DEPLOYED → ROUTE VERIFIED → REAL MEMORY SHADOW RECEIPT → STABLE REAL RERANK OBSERVED`.
+
+
+## Phase-3B real-memory shadow observed PASS 2026-09-21
+
+Observed live receipt:
+- status `PASS`;
+- real `MemoryOS` scope only; synthetic canary scope excluded;
+- six candidates in the primary gravity/context query;
+- real rank movement observed: REVISION 4→3, CORE 6→4, ISOLATED 3→6;
+- three repeated runs were stable;
+- all candidate sets were preserved;
+- gravity introduced no candidates;
+- retrieval performed zero writes;
+- ordinary MemoryOS retrieval remained unchanged;
+- production weighted retrieval remained disabled.
+
+This closes the Phase-3B question: bounded gravity reranking has been observed on ordinary MemoryOS records.
+
+## Phase-3C coefficient calibration source harness
+
+Route:
+`/galaxy/retrieval/phase3-calibration`
+
+Phase-3C compares four read-only profiles over a broader six-query real-memory suite:
+
+`90/10`, `80/20`, `70/30`, and stress profile `50/50`
+for query relevance / gravity respectively.
+
+Named guardrails:
+- candidate membership cannot change;
+- the highest query-relevance tier must remain top-ranked;
+- repeated runs must remain stable;
+- cross-relevance-tier inversions are reported rather than hidden;
+- a profile passing calibration does not adopt that profile.
+
+The harness returns PASS only if the current `80/20` profile satisfies the named guardrails and at least one stronger-gravity profile fails a guardrail, demonstrating that the matrix can distinguish an unsafe pressure regime from the current calibration.
+
+Phase-3C remains read-only:
+- zero memory writes;
+- no production retrieval change;
+- no automatic coefficient adoption.
+
+Evidence ceiling:
+A Phase-3C PASS does not prove `80/20` globally optimal. It establishes only that the current profile survived the bounded named suite while a stronger-gravity comparison exposed a guardrail boundary.
