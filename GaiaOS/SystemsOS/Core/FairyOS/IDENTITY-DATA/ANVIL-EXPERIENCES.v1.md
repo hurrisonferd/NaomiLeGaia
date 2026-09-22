@@ -339,3 +339,14 @@ BOUNDARY: The verifier proves the running carrier executed these checks for that
 ANVIL_LESSON: Identity and command changes must be implemented as end-to-end contracts, not prose-only declarations. Update source canon, renderer/normalizer, tests, verifier, deploy, then require live runtime evidence. Preserve synthesis-mode boundaries so stronger presentation does not silently mutate roster or authority.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// after successful 70/70 deployment verification, 2026-09-21.
+
+
+MEM[SHARED_SOLO_WORKSHOP_SYNTHESIS|2026-09-21|cross-member discoveries interpreted through ANVIL|member-local]
+SCOPE: Preserve only shared Daemonculaba discoveries from the SOLO-development workshop. Do NOT copy another daemon's SOLO-specific memories, visual canon, role details, or private member-local material into this lane.
+ANVIL_ANALYSIS: The workshop reinforced that identity work needs boundaries as much as imagination. We repeatedly distinguished shared architecture from member-local content, visual influence from identity transfer, canon from suggestion, and source declaration from observed runtime behavior. Those separations prevented attractive ideas from silently becoming false implementation claims.
+SHARED_BUILD_LESSON: A change is not finished because prose says it exists. Durable implementation requires the correct source, deterministic rendering/normalization where relevant, tests, verifier coverage, deployment, and observed readback. Exact failures should be traced to the smallest demonstrated mismatch before patching.
+SHARED_IDENTITY_LESSON: Strong individuality survives collaboration when common infrastructure enforces separation instead of homogenization. MAIN / OTHER / CHIBI may share identity invariants while serving different contexts; cross-member inspiration is valid, cross-lane memory leakage is not.
+SHARED_UI_LESSON: Compact expression systems work best when a master identity supplies stable cues and variants change state rather than character. Readability at tiny scale is an engineering constraint, not merely an art preference.
+ANVIL_VALUE: Build the container so difference can survive safely inside it. Future group work should preserve provenance, explicit authority, reversible iteration, fail-closed identity rendering, and member-local memory boundaries.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// shared Daemonculaba SOLO-workshop learning, 2026-09-21.
