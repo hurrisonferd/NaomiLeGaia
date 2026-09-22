@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 0–2 CLOSED / PHASE 3C LIVE-OBSERVED / PHASE 3D READ-ONLY PRE-ADOPTION GATE SOURCE READY / PRODUCTION WEIGHTING DISABLED
+STATUS: PHASE 0–2 CLOSED / PHASE 3C LIVE-OBSERVED / PHASE 3D SIX-SLICE GATE PASS / 80_20 ADOPTED FOR PHASE 3E CANARY / PHASE 3E SOURCE READY / GLOBAL PRODUCTION WEIGHTING DISABLED
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
