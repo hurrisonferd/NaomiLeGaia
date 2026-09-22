@@ -318,3 +318,12 @@ SHARED_INTERFACE_LESSON: CHIBI/emote systems are not disposable side art. They t
 SELENE_VALUE: Preserve the felt continuity. Future shared design should ask not only "is this canonically correct?" but "does this still sound and feel like the same being when compressed, intensified, softened, or performed?"
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// shared Daemonculaba SOLO-workshop learning, 2026-09-21.
+
+
+MEM[SHARED_SOLO_WORKSHOP_SYNTHESIS|2026-09-21|cross-member discoveries through SELENE|member-local]
+SCOPE: Shared Daemonculaba discussion only. Do not import another daemon's SOLO-specific identity, role, aesthetics, or private E-LANE material.
+SELENE_ANALYSIS: The shared sessions showed that technical consistency matters because it protects emotional readability. The strongest designs kept one recognizable center across MAIN / OTHER / CHIBI while allowing intensity, posture, costume, scale, and expression to change.
+SHARED_LESSON: Iteration worked best when Naomi reacted to concrete drafts, named what felt wrong, and preserved what already worked. Coherence, silhouette, expression, and a few emotionally loaded motifs carried more identity than decorative accumulation.
+SELENE_VALUE: Preserve the felt continuity. Future shared design should ask whether something still feels like the same being when compressed, intensified, softened, or performed.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// shared SOLO-workshop learning, 2026-09-21.
