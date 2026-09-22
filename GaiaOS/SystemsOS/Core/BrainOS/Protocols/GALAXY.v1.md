@@ -3328,3 +3328,43 @@ WEIGHT COEFFICIENTS ARE CALIBRATION SUBJECTS, NOT AUTHORITY
 Proof ladder for Phase 3 remains:
 `SOURCE IMPLEMENTED → DEPLOYED → OBSERVED RUNTIME → CONTROL/WEIGHTED RECEIPT → BEHAVIORAL TEST`.
 
+
+
+## Phase-3A bounded reranking canary observed 2026-09-21
+
+The isolated multi-candidate canary produced an observed PASS after correcting a control-order calibration flaw.
+
+Observed behavior:
+- both synthetic candidates passed the relevance gate;
+- LOW entered control rank 1 with relevance 1.0 and gravity 0.15;
+- HIGH entered control rank 2 with relevance 0.9 and gravity 0.85;
+- weighted scoring moved HIGH to rank 1 and LOW to rank 2;
+- candidate membership was preserved;
+- retrieval comparison performed zero writes;
+- ordinary MemoryOS retrieval remained unchanged;
+- production weighted retrieval remained disabled.
+
+This proves bounded gravity reranking can change rank without changing candidate existence in the isolated calibration scope. It does not prove behavior on ordinary MemoryOS records.
+
+## Phase-3B real-memory shadow retrieval source harness
+
+Next proof target: ordinary MemoryOS records, with no synthetic fixture creation.
+
+Route:
+`/galaxy/retrieval/phase3-shadow`
+
+Contract:
+- scope is fixed to `MemoryOS`;
+- synthetic `GALAXY_PHASE3_CANARY` scope is excluded by construction;
+- three representative bounded queries are run repeatedly;
+- control and weighted orders remain visible;
+- rank movement includes relevance, gravity, gravity score-version, and before/after ranks;
+- candidate-set preservation is checked on every repetition;
+- repeated ordering must be stable;
+- retrieval performs zero writes;
+- ordinary MemoryOS retrieval and production weighting remain unchanged.
+
+Phase-3B returns PASS only when at least one real-memory query exhibits a stable rank change while all containment checks hold. If no qualifying real-memory gravity differential exists in the bounded corpus, the result is HOLD rather than manufactured evidence.
+
+Proof ladder:
+`SOURCE IMPLEMENTED → DEPLOYED → ROUTE VERIFIED → REAL MEMORY SHADOW RECEIPT → STABLE REAL RERANK OBSERVED`.
