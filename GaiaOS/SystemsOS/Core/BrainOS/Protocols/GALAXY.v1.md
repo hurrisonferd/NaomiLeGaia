@@ -3927,3 +3927,44 @@ Next gate:
 
 Source-truth note:
 The verifier's embedded `source_commit_claim` still described Phase-3E deployment as unproven because that claim was loaded from the deployed source before this runtime receipt existed. The 103/103 verifier is newer evidence; canonical source is updated afterward rather than retroactively claiming foreknowledge.
+
+
+## Phase-3E canary slice 0 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3e-production-canary-slice?canary_index=0`
+
+Source query index:
+`0`
+
+Query:
+`gravity contextual influence memory retrieval`
+
+Observed:
+- status: `PASS`
+- candidate count: `6`
+- repeated runs: `3`
+- adopted profile: `CURRENT_80_20`
+- candidate membership preserved: `true`
+- control stable across repeats: `true`
+- weighted stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- cross-relevance-tier inversions: `0`
+- rerank observed: `true`
+- request-local rollback target reappeared: `true`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- global production weighted retrieval enabled: `false`
+- effect scope: `THIS_REQUEST_ONLY`
+- rollback target: `UNWEIGHTED_CONTROL`
+
+Bounded conclusion:
+`PHASE3E CANARY SLICE 0 = PASS`
+
+Progress:
+`1 / 3 PHASE-3E CANARY SLICES OBSERVED PASS`
+
+This proves bounded request-local weighted behavior for this canary slice only. It does not enable global production weighting and does not constitute the separate final production decision.
+
+Next:
+`canary_index=1`
