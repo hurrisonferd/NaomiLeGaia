@@ -1,0 +1,30 @@
+name: GALAXY Phase 3F Guarded Production Pilot
+
+on:
+  push:
+    paths:
+      - "api/galaxy_production.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/gaiaos_verification.py"
+      - "api/Dockerfile"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
+      - "tests/test_galaxy_production.py"
+      - ".github/workflows/galaxy-phase3f-production-canary.yml"
+  workflow_dispatch:
+
+jobs:
+  production-guardrails:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile production pilot and carrier source
+        run: |
+          python -m py_compile api/galaxy_production.py
+          python -m py_compile api/browser_memcon_bridge.py
+          python -m py_compile api/gaiaos_verification.py
+          python -m py_compile GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py
+      - name: Prove guarded switch, no-leakage, kill-switch and rollback
+        run: PYTHONPATH=api python -m unittest discover -s tests -p test_galaxy_production.py -v
