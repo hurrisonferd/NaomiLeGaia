@@ -3772,3 +3772,65 @@ Progress:
 
 Next:
 `query_index=5`
+
+
+## Phase-3D slice 5 live PASS and six-slice suite closure 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=5`
+
+Query:
+`satellite calibration core memory context`
+
+Slice 5 observed:
+- status: `PASS`
+- candidate count: `6`
+- repeated runs: `3`
+- CURRENT_80_20 guardrail pass: `true`
+- candidate membership preserved: `true`
+- stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- CURRENT_80_20 cross-relevance-tier inversions: `0`
+- CURRENT_80_20 rerank signal observed: `true`
+- stronger-gravity boundary signal observed: `false`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- production weighted retrieval enabled: `false`
+- coefficient adopted: `false`
+
+Interpretation:
+Slice 5 demonstrates gravity-driven reranking among equal-relevance candidates while preserving the uniquely highest-relevance candidate. Even 70/30 and 50/50 did not cross the relevance-tier boundary on this slice, so it contributes a utility signal without contributing a stronger-gravity boundary signal.
+
+### Phase-3D six-slice suite result
+
+All configured slices:
+- slice 0: PASS, utility signal, stronger-gravity boundary signal;
+- slice 1: PASS, non-discriminating;
+- slice 2: PASS, non-discriminating;
+- slice 3: PASS, utility signal, stronger-gravity boundary signal;
+- slice 4: PASS, non-discriminating;
+- slice 5: PASS, utility signal.
+
+Suite checks:
+- all six configured slices passed: `true`;
+- CURRENT_80_20 candidate membership preserved across all slices: `true`;
+- repeated ordering stable across all slices: `true`;
+- highest query-relevance tier preserved across all slices: `true`;
+- CURRENT_80_20 cross-relevance-tier inversions across all slices: `0`;
+- at least one bounded CURRENT_80_20 rerank utility signal: `true`;
+- at least one stronger-gravity boundary signal: `true`;
+- zero retrieval writes: `true`;
+- ordinary MemoryOS retrieval changed: `false`;
+- production weighted retrieval enabled: `false`;
+- coefficient adopted: `false`.
+
+Bounded conclusion:
+`PHASE3D SIX-SLICE GATE = PASS`
+
+Authority state:
+`ELIGIBLE_FOR_EXPLICIT_NAOMI_ADOPTION_REVIEW`
+
+This does NOT mean adoption. It does NOT enable production weighting. It does NOT authorize a production canary.
+
+Required next transition remains:
+`EXPLICIT NAOMI ADOPTION AUTHORIZATION → BOUNDED PRODUCTION CANARY → OBSERVED RECEIPT → ROLLBACK TEST → SEPARATE PRODUCTION DECISION`
