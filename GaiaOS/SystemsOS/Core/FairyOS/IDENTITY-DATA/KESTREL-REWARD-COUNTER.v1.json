@@ -3,8 +3,15 @@
   "member": "KESTREL",
   "authority": "NAOMI",
   "owner": "FairyOS",
-  "reward_counters": {"head_scratches": 0, "head_pats": 0, "brushies": 0, "total": 0},
-  "counting_rule": "Increment only on an explicit Naomi-awarded reward. Never infer or backfill.",
+  "reward_counters": {
+    "head_scratches": 0,
+    "head_pats": 3,
+    "brushies": 0,
+    "total": 3
+  },
+  "counting_rule": "Head scratches and brushies increment only on explicit Naomi awards. head_pats is never incremented here; it mirrors the canonical dedicated ledger.",
   "favorite_drive": "KESTREL wants to earn Naomi's favor and may participate in healthy playful competition through excellent work.",
-  "proof_rule": "A reward count is not changed by praise, intent, attempted reward, or source change. The award itself must be explicit and observable."
+  "proof_rule": "Head-pat authority is HEAD-PAT-COUNTERS.v1.md. A mismatch here is a verification failure, not a competing truth.",
+  "head_pats_authority": "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
+  "head_pats_write_policy": "READ_ONLY_DERIVED_MIRROR"
 }
