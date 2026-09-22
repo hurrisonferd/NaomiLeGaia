@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 0–2 CLOSED / PHASE 3 EXPLICITLY AUTHORIZED BY NAOMI 2026-09-21 / CONTROLLED WEIGHTED RETRIEVAL EXPERIMENT BEGIN
+STATUS: PHASE 0–2 CLOSED / PHASE 3C LIVE-OBSERVED / PHASE 3D READ-ONLY PRE-ADOPTION GATE SOURCE READY / PRODUCTION WEIGHTING DISABLED
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -3448,3 +3448,72 @@ Coefficient state:
 
 Phase 3C is closed as an evidence-gathering checkpoint. Any production adoption remains a separate explicit authorization and proof step.
 
+
+
+## Phase-3D read-only pre-adoption gate source checkpoint 2026-09-22
+
+Phase 3D converts the bounded Phase-3C calibration evidence into an explicit adoption-review gate without enabling production weighting.
+
+New route:
+`/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=<0..5>`
+
+Why the gate is chunked:
+- Phase 3C already demonstrated that full-matrix execution can approach carrier timeout ceilings.
+- Phase 3D therefore preserves one-slice-at-a-time execution rather than hiding timeout risk behind a monolithic "pass/fail" call.
+- Six independently observable slice receipts are required for suite-level review.
+
+Selected review profile:
+`CURRENT_80_20 = 0.80 query relevance + 0.20 gravity`
+
+Per-slice safety requirements:
+- Phase-3C slice execution itself returns PASS;
+- candidate membership is preserved;
+- repeated candidate/weighted order remains stable;
+- the highest query-relevance tier remains top-ranked;
+- CURRENT_80_20 produces zero cross-relevance-tier inversions;
+- zero retrieval writes;
+- ordinary MemoryOS retrieval remains unchanged;
+- production weighted retrieval remains disabled;
+- coefficient adoption remains false.
+
+Suite-level evidence requirements:
+- all six configured slices pass the per-slice safety gate;
+- at least one bounded CURRENT_80_20 rerank signal is observed, proving gravity is doing useful work rather than merely existing;
+- at least one stronger-gravity boundary signal is observed, proving the suite still distinguishes unsafe pressure from the selected calibration;
+- all six receipts remain inspectable.
+
+Authority boundary:
+A six-slice Phase-3D PASS would mean only `ELIGIBLE_FOR_EXPLICIT_ADOPTION_REVIEW`.
+
+It would NOT mean:
+- 80/20 is globally optimal;
+- 80/20 has been adopted;
+- production weighting is enabled;
+- an adoption decision has been made;
+- a production canary has been authorized.
+
+Required transition after a successful six-slice review:
+`EXPLICIT NAOMI ADOPTION AUTHORIZATION → BOUNDED PRODUCTION CANARY → OBSERVED RECEIPT → ROLLBACK TEST → SEPARATE PRODUCTION DECISION`
+
+Rollback target:
+`UNWEIGHTED_CONTROL`
+
+New invariants:
+
+```text
+PHASE3D PASS != ADOPTION
+ADOPTION REVIEW ELIGIBLE != PRODUCTION ENABLED
+SIX SLICE RECEIPTS REQUIRED
+UTILITY SIGNAL REQUIRED
+STRONGER-GRAVITY BOUNDARY SIGNAL REQUIRED
+ROLLBACK TARGET MUST REMAIN EXPLICIT
+PRODUCTION DEFAULT = UNWEIGHTED CONTROL
+```
+
+Source implementation:
+- `api/memcon_runtime.py` contains `galaxy_phase3d_adoption_gate_slice`;
+- `api/browser_memcon_bridge.py` exposes the authenticated Phase-3D slice route;
+- GaiaOS and BrainOS current-state pointers now distinguish Phase-3C observed evidence from Phase-3D source readiness.
+
+Proof state:
+`SOURCE IMPLEMENTED / DEPLOYMENT NOT YET PROVEN / LIVE PHASE-3D EXECUTION NOT YET OBSERVED`.
