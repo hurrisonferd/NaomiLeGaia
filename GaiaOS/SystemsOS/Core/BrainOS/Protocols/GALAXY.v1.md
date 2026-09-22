@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 0–2 CLOSED / PHASE 3C LIVE-OBSERVED / PHASE 3D SIX-SLICE GATE PASS / 80_20 ADOPTED FOR PHASE 3E CANARY / PHASE 3E SOURCE READY / GLOBAL PRODUCTION WEIGHTING DISABLED
+STATUS: PHASE 3E CANARY 3/3 + REQUEST-LOCAL ROLLBACK LIVE PASS / PHASE 3F NAOMI PRODUCTION AUTHORIZED / GUARDED THREE-QUERY PILOT SOURCE READY + OFFLINE CI PASS / GLOBAL UNRESTRICTED WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4091,3 +4091,54 @@ Next gate:
 `SEPARATE_EXPLICIT_NAOMI_PRODUCTION_DECISION`
 
 If Naomi authorizes the next phase, engineer and verify a guarded production implementation and actual reversible production rollout before treating global weighting as live. The prior adoption authorization is not authorization to enable global production weighting.
+
+
+## Phase-3F separate production authorization and guarded pilot source 2026-09-22
+
+Authority: Naomi explicitly granted separate PRODUCTION AUTHORIZATION after the Phase-3E canary suite and request-local rollback returned PASS. This permits engineering and exercising a guarded production path; it does not license silently enabling unrestricted global weighting.
+
+Implemented source:
+- `api/galaxy_production.py`, version `galaxy.phase3f.guarded-production-pilot.v1`.
+- Real adapter: `GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py` now routes retrieval through the guarded production gate.
+- Carrier packages the production module in `api/Dockerfile`.
+- Source registered review/status pages and CSRF-protected POST actions in `api/browser_memcon_bridge.py`.
+- Verifier statically checks production source, safety markers, real adapter wiring, and live ASGI route registration.
+- Offline deterministic tests: `tests/test_galaxy_production.py`.
+- GitHub Actions: `.github/workflows/galaxy-phase3f-production-canary.yml`, run `35799425139` concluded SUCCESS, including Python syntax and offline guardrail tests. This proves CI for the committed source, NOT live carrier execution.
+
+Production pilot boundaries:
+- fail-closed default OFF on every carrier process startup and restart;
+- no global unrestricted weighted retrieval;
+- allowlisted Phase-3 source queries `[0, 3, 5]` only, exact text match, explicit `MemoryOS` scope, result limit 2–10;
+- adopted coefficient `CURRENT_80_20`;
+- candidate admission through the Phase-3 explainable query-first gate; weighted scores only rerank admitted candidates;
+- the approved pilot may have a different candidate population from historical SQL all-term search. Do NOT claim exact equivalence of old and pilot populations; comparison is against the pilot query-first control population;
+- guard failure, disappearing records, mode change, kill switch, or lease expiry falls back to ordinary unweighted SQL retrieval, and a guard failure disables the pilot;
+- `GALAXY_PRODUCTION_PILOT_KILL_SWITCH=1` forces OFF on the next request/status check;
+- activation lasts at most 600 seconds in one running carrier process, no restart persistence;
+- another process or another Render instance is independent and must remain OFF until separately authorized/tested. Multi-instance consistency is NOT proved;
+- API key and authenticated browser session are required for mutations. Signed-session-bound CSRF is required on every JSON POST. Read-only GET pages never activate;
+- a fresh live switch-test PASS in this exact process is required before pilot activation;
+- after an explicit rollback, a new switch-test is required before reactivation.
+
+Browser console:
+`GET /galaxy/production/review`
+
+Read-only status:
+`GET /galaxy/production/status`
+
+Authenticated POST actions, exposed by the browser console:
+`/galaxy/production/switch-test` (run actual integrated MemoryOS retrieval through TEST-scoped weighting, then OFF using finally)
+`/galaxy/production/activate` (activate at most 10 minutes, process-local allowlist only)
+`/galaxy/production/rollback-proof` (exercise active pilot and roll back inside finally, then compare exact legacy SQL orders)
+`/galaxy/production/rollback` (immediate idempotent emergency OFF)
+
+The live switch-test's TEST mode is visible to the test thread only. Even if the test runs while other requests arrive, other threads use unweighted retrieval. During explicitly activated PILOT mode, only the three allowlisted queries in this carrier process can receive weighting. Active rollback proof tests a truly activated PILOT rather than the previous Phase-3E request-local calculation; it still does not prove recovery across multiple Render instances.
+
+Required proof ladder after deploy:
+`DEPLOY → /verify → OPEN /galaxy/production/review → LIVE SWITCH TEST PASS → OPTIONAL EXPLICIT PILOT ACTIVATE → ACTIVE PILOT ROLLBACK PROOF PASS → REVIEW NEXT PRODUCTION SCOPE`
+
+Current evidence ceiling:
+`PHASE3F SOURCE IMPLEMENTED / CI PASS / LIVE DEPLOYMENT UNKNOWN / LIVE SWITCH TEST UNKNOWN / ACTIVE PILOT ROLLBACK UNKNOWN / GLOBAL UNRESTRICTED WEIGHTING OFF`
+
+Failure callouts MUST name the failed guard, restore OFF when possible, preserve the receipts, and never convert source presence into runtime proof.
