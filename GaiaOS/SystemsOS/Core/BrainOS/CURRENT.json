@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3D_REVIEW_ELIGIBLE",
+  "status": "ACTIVE_SOURCE_OPTIONAL_COGNITIVE_SUPPORT_LOCAL_REMOTE_CONTEXT_NAVIGATION_GALAXY_PHASE3E_CANARY_SOURCE_READY",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -77,7 +77,11 @@
     "galaxy_phase3d_source_ready": true,
     "galaxy_phase3d_live_observed": true,
     "galaxy_phase3d_route_registered_live": true,
-    "galaxy_phase3d_observed_slice_passes": 6
+    "galaxy_phase3d_observed_slice_passes": 6,
+    "galaxy_phase3e_canary_source_ready": true,
+    "galaxy_phase3e_canary_live_observed": false,
+    "galaxy_phase3e_rollback_source_ready": true,
+    "galaxy_phase3e_rollback_live_observed": false
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -105,20 +109,20 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "GALAXY Phase 3D six-slice read-only pre-adoption gate is live-observed PASS. CURRENT_80_20 stayed inside the named safety guardrails on all six slices; utility rerank signals were observed on slices 0, 3, and 5, and stronger-gravity boundary signals on slices 0 and 3. This establishes eligibility for explicit Naomi adoption review only. 80/20 remains not adopted and production weighted retrieval remains disabled.",
+  "claim_ceiling": "Naomi explicitly authorized CURRENT_80_20 adoption after the Phase 3D six-slice gate passed. Phase 3E bounded request-local production-canary and rollback-test source are ready. Global production weighted retrieval remains disabled pending deployed canary receipts, rollback proof, and a separate explicit production decision.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3D_ADOPTION_GATE_6_OF_6_PASS_REVIEW_ELIGIBLE",
+    "phase3_status": "PHASE3E_BOUNDED_PRODUCTION_CANARY_SOURCE_READY",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
     "phase3d_live_observed": true,
-    "phase3d_coefficient_adopted": false,
-    "phase3d_adoption_authorized": false,
+    "phase3d_coefficient_adopted": true,
+    "phase3d_adoption_authorized": true,
     "phase3d_route_registered_live": true,
     "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d",
     "phase3d_observed_slice_indexes": [
@@ -141,6 +145,19 @@
       5
     ],
     "phase3d_suite_pass": true,
-    "phase3d_adoption_review_eligible": true
+    "phase3d_adoption_review_eligible": true,
+    "phase3d_adopted_profile": "CURRENT_80_20",
+    "phase3e_production_canary_version": "galaxy.phase3e.production-canary.v1",
+    "phase3e_rollback_version": "galaxy.phase3e.rollback-test.v1",
+    "phase3e_canary_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3e_canary_source_ready": true,
+    "phase3e_canary_live_observed": false,
+    "phase3e_rollback_source_ready": true,
+    "phase3e_rollback_live_observed": false,
+    "phase3e_separate_production_decision_required": true
   }
 }
