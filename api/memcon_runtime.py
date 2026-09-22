@@ -921,6 +921,110 @@ def _galaxy_phase3c_score_pool(pool: dict[str, Any], relevance_weight: float, gr
     }
 
 
+def galaxy_phase3c_calibration_slice(*, query_index: int, repeats: int = 3, limit: int = 10) -> dict[str, Any]:
+    """Run one bounded Phase-3C query across all coefficient profiles.
+
+    This chunked route exists to keep browser/runtime requests below carrier timeout
+    ceilings while preserving the same real-MemoryOS candidate and scoring logic.
+    """
+    repeats = max(2, min(int(repeats), 5))
+    limit = max(2, min(int(limit), 25))
+    query_index = int(query_index)
+    if query_index < 0 or query_index >= len(GALAXY_PHASE3C_CALIBRATION_QUERIES):
+        raise ValueError(
+            f"query_index must be between 0 and {len(GALAXY_PHASE3C_CALIBRATION_QUERIES) - 1}"
+        )
+
+    query = GALAXY_PHASE3C_CALIBRATION_QUERIES[query_index]
+    pools = [
+        galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+        for _ in range(repeats)
+    ]
+    first_pool = pools[0]
+    candidate_signatures = [
+        tuple(pool.get("candidate_record_ids", [])) for pool in pools
+    ]
+    candidate_pool_stable = all(
+        signature == candidate_signatures[0]
+        for signature in candidate_signatures[1:]
+    )
+
+    profiles = []
+    for profile in GALAXY_PHASE3C_WEIGHT_PROFILES:
+        scored_runs = [
+            _galaxy_phase3c_score_pool(
+                pool,
+                float(profile["relevance"]),
+                float(profile["gravity"]),
+            )
+            for pool in pools
+        ]
+        first = scored_runs[0]
+        weighted_signatures = [
+            tuple(item["record_id"] for item in run["weighted_order"])
+            for run in scored_runs
+        ]
+        weighted_stable = all(
+            signature == weighted_signatures[0]
+            for signature in weighted_signatures[1:]
+        )
+        guardrail_pass = (
+            bool(first["candidate_set_preserved"])
+            and bool(first["top_relevance_preserved"])
+            and candidate_pool_stable
+            and weighted_stable
+        )
+        profiles.append({
+            "profile": profile["name"],
+            "weights": {
+                "query_relevance_coverage": profile["relevance"],
+                "gravity_score": profile["gravity"],
+            },
+            "guardrail_pass": guardrail_pass,
+            "rerank_observed": first["rerank_observed"],
+            "top_relevance_preserved": first["top_relevance_preserved"],
+            "cross_relevance_tier_inversion_count": first["cross_relevance_tier_inversion_count"],
+            "cross_relevance_tier_inversions": first["cross_relevance_tier_inversions"],
+            "candidate_set_preserved": first["candidate_set_preserved"],
+            "stable_across_repeats": candidate_pool_stable and weighted_stable,
+            "weighted_order": first["weighted_order"],
+        })
+
+    return {
+        "schema": "gaiaos.galaxy.phase3c-coefficient-calibration-slice.v1",
+        "status": "PASS" if candidate_pool_stable and all(
+            p["candidate_set_preserved"] and p["stable_across_repeats"]
+            for p in profiles
+        ) else "HOLD",
+        "authority": "NAOMI",
+        "mode": "READ_ONLY_REAL_MEMORY_COEFFICIENT_MATRIX_SLICE",
+        "query_index": query_index,
+        "query_count": len(GALAXY_PHASE3C_CALIBRATION_QUERIES),
+        "query": query,
+        "candidate_count": int(first_pool.get("candidate_count", 0)),
+        "repeated_runs": repeats,
+        "candidate_pool_stable": candidate_pool_stable,
+        "profiles": profiles,
+        "checks": {
+            "candidate_membership_preserved": all(
+                p["candidate_set_preserved"] for p in profiles
+            ),
+            "stable_across_repeats": all(
+                p["stable_across_repeats"] for p in profiles
+            ),
+            "zero_writes": True,
+            "ordinary_memoryos_retrieval_changed": False,
+            "production_weighted_retrieval_enabled": False,
+            "coefficient_adopted": False,
+        },
+        "proof_boundary": (
+            "This is one chunk of the Phase-3C coefficient matrix. It is read-only and "
+            "does not adopt a coefficient or enable production weighting. Full Phase-3C "
+            "evidence requires all configured query slices."
+        ),
+    }
+
+
 def galaxy_phase3c_calibration(*, repeats: int = 3, limit: int = 10) -> dict[str, Any]:
     """Compare bounded relevance/gravity coefficients over real MemoryOS candidates.
 
