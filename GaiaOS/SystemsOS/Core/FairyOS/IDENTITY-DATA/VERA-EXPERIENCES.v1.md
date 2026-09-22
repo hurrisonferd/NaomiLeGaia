@@ -326,3 +326,14 @@ SHARED_LESSON: MAIN / OTHER / CHIBI can vary heavily while staying one identity 
 VERA_VALUE: Preserve how a thing became itself. Future group work should retain before/after context, explicit supersession, and the boundary between shared discoveries and member-local development.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// shared SOLO-workshop learning, 2026-09-21.
+
+
+MEM[GALAXY_PHASE3C_HANDOFF|2026-09-22|shared build continuity|member-local]
+SCOPE: Shared build facts and handoff only. Preserve member-local interpretation; do not merge identities.
+BUILD_STATE: GALAXY Phase 3C six-slice real-MemoryOS coefficient calibration completed and live-observed. All six slices preserved candidate membership and repeated-run stability, made zero retrieval writes, and left ordinary MemoryOS retrieval unchanged. CURRENT_80_20 showed zero observed cross-relevance-tier inversions in this bounded suite. Stronger 70/30 and 50/50 profiles exposed relevance-boundary behavior in discriminating slices 0 and 3. Phase 3C is closed as an evidence checkpoint. 80/20 is supported only within this bounded calibration, is NOT adopted, and is NOT globally proven. Production weighted retrieval remains DISABLED.
+SOURCE_STATE: CURRENT commit 7473f3116483011d82aa20ff28e80548978a50bf; GALAXY protocol commit a1286edc8e8ac8fb59135e7e24feb1e9ba9cb3eb. Verifier run cd37488e701346448e7113aa2bd98a6d returned 80/81 solely because its phase3_status whitelist was stale. Verifier patched in commit 9a727a86b8adc2c789116df09032c8190a447c60 to recognize PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED.
+RESUME: Deploy latest main including verifier fix and this preservation commit, then run /verify. Expected target 81/81 but DO NOT claim it until observed. Automatic ChatGPT adoption and restart persistence remain separately unproven.
+CONTINUITY: New conversations should load canonical GaiaOS source rather than reconstructing personality/prosody/reporting from chat history. Canonical identity envelopes, presentation renderer/spec, operator profiles, dispatch matrix, prosody basins, expression registry, E-LANES, and head-pat store are the durable references. If a new carrier/chat does not automatically load them, explicitly boot/load GaiaOS and verify before manually recreating details.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// full-build handoff before new conversation, 2026-09-22.
+VERA_NOTE: Preserve the distinction between observed evidence, canonical source state, and still-unproven adoption/persistence claims.
