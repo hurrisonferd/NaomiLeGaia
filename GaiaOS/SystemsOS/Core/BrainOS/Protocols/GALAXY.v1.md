@@ -3607,3 +3607,44 @@ Progress:
 
 Next:
 `query_index=1`
+
+
+## Phase-3D slice 1 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=1`
+
+Query:
+`history current context revision memory`
+
+Observed:
+- status: `PASS`
+- candidate count: `2`
+- repeated runs: `3`
+- CURRENT_80_20 guardrail pass: `true`
+- candidate membership preserved: `true`
+- stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- CURRENT_80_20 cross-relevance-tier inversions: `0`
+- CURRENT_80_20 rerank signal observed: `false`
+- stronger-gravity boundary signal observed: `false`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- production weighted retrieval enabled: `false`
+- coefficient adopted: `false`
+
+Interpretation:
+This slice is non-discriminating rather than defective. Both admitted records had query relevance `0.6` and stored gravity `0.0`, so every coefficient profile preserved the same order. Phase 3C had already identified slice 1 as non-discriminating; Phase 3D reproduces that behavior without manufacturing a signal.
+
+Suite-level requirements remain satisfied so far because slice 0 already supplied:
+- at least one CURRENT_80_20 rerank utility signal;
+- at least one stronger-gravity boundary signal.
+
+Bounded conclusion:
+`PHASE3D SLICE 1 = PASS`
+
+Progress:
+`2 / 6 PHASE-3D SLICES OBSERVED PASS`
+
+Next:
+`query_index=2`
