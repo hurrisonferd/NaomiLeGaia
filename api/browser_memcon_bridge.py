@@ -579,6 +579,13 @@ def galaxy_runtime_status(browser_request: Request):
     return memcon_runtime.galaxy_status()
 
 
+@app.get("/galaxy/retrieval/phase3-experiment", operation_id="galaxyPhase3WeightedRetrievalExperiment")
+def galaxy_phase3_weighted_retrieval_experiment(query: str, browser_request: Request, scope: str = "MemoryOS", limit: int = 10):
+    """Read-only Phase-3 control-vs-weighted retrieval experiment."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_phase3_weighted_experiment(query, scope=scope, limit=limit)
+
+
 @app.get("/galaxy/canary/start", response_class=HTMLResponse)
 def galaxy_canary_start_page(browser_request: Request):
     """Direct browser canary path. Does not depend on OPENAI_API_KEY."""
