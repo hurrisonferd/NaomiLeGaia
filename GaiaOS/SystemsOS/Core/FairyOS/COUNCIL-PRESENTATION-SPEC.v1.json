@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.fairyos.presentation-spec.v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "authority": "NAOMI",
   "owner": "FairyOS",
   "renderer_owner": "ChatOS",
@@ -13,29 +13,94 @@
   "kaomoji_variation": "DYNAMIC_FROM_EMOJIOS_ALLOWLIST_WITH_MEMBER_DEFAULT_FALLBACK",
   "generation_boundary": "PRIME_DAEMON_GENERATES_CONTENT_ONLY_RENDERER_CONSTRUCTS_COMPLETE_IDENTITY_ENVELOPE",
   "failure_policy": "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
-  "speaker_order": ["VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"],
+  "speaker_order": [
+    "VERA",
+    "ANVIL",
+    "SELENE",
+    "ORIN",
+    "KESTREL",
+    "NIMUE"
+  ],
   "members": {
-    "VERA":{"gematria":46,"heart":"💚","interest":"📚","accent":"#73ff79","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
-    "ANVIL":{"gematria":58,"heart":"💗","interest":"⌚","accent":"#ff4e9d","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
-    "SELENE":{"gematria":60,"heart":"💛","interest":"🎧","accent":"#ffd56a","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
-    "ORIN":{"gematria":56,"heart":"🩵","interest":"🪐","accent":"#44dcff","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
-    "KESTREL":{"gematria":90,"heart":"💖","interest":"🏍️","accent":"#ff3aa8","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"},
-    "NIMUE":{"gematria":62,"heart":"💙","interest":"🍄","accent":"#8197ff","avatar_ref":"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/","expression_policy":"EmojiOS allowlist only"}
+    "VERA": {
+      "gematria": 46,
+      "heart": "💚",
+      "interest": "📚",
+      "accent": "#73ff79",
+      "avatar_ref": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+      "expression_policy": "EmojiOS allowlist only"
+    },
+    "ANVIL": {
+      "gematria": 58,
+      "heart": "💗",
+      "interest": "⌚",
+      "accent": "#ff4e9d",
+      "avatar_ref": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+      "expression_policy": "EmojiOS allowlist only"
+    },
+    "SELENE": {
+      "gematria": 60,
+      "heart": "💛",
+      "interest": "🎧",
+      "accent": "#ffd56a",
+      "avatar_ref": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+      "expression_policy": "EmojiOS allowlist only"
+    },
+    "ORIN": {
+      "gematria": 56,
+      "heart": "🩵",
+      "interest": "🪐",
+      "accent": "#44dcff",
+      "avatar_ref": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+      "expression_policy": "EmojiOS allowlist only"
+    },
+    "KESTREL": {
+      "gematria": 90,
+      "heart": "💖",
+      "interest": "🏍️",
+      "accent": "#ff3aa8",
+      "avatar_ref": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+      "expression_policy": "EmojiOS allowlist only"
+    },
+    "NIMUE": {
+      "gematria": 62,
+      "heart": "💙",
+      "interest": "🍄",
+      "accent": "#8197ff",
+      "avatar_ref": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/",
+      "expression_policy": "EmojiOS allowlist only"
+    }
   },
   "validation": {
-    "required_member_fields":["gematria","heart","interest","accent","avatar_ref","expression_policy"],
-    "reject_unknown_member":true,
-    "reject_marker_substitution":true,
-    "reject_missing_static_marker":true,
-    "reject_missing_kaomoji":true,
-    "reject_multiple_kaomoji":true,
-    "reject_unregistered_kaomoji":true,
-    "reject_header_mismatch":true,
-    "reject_hand_authored_header":true,
-    "reject_duplicate_gematria":true,
-    "reject_duplicate_identity_tuple":true
+    "required_member_fields": [
+      "gematria",
+      "heart",
+      "interest",
+      "accent",
+      "avatar_ref",
+      "expression_policy"
+    ],
+    "reject_unknown_member": true,
+    "reject_marker_substitution": true,
+    "reject_missing_static_marker": true,
+    "reject_missing_kaomoji": true,
+    "reject_multiple_kaomoji": true,
+    "reject_unregistered_kaomoji": true,
+    "reject_header_mismatch": true,
+    "reject_hand_authored_header": true,
+    "reject_duplicate_gematria": true,
+    "reject_duplicate_identity_tuple": true,
+    "required_synthesis_fields": [
+      "gematria",
+      "heart",
+      "symbol",
+      "accent",
+      "class",
+      "invocation",
+      "expression_policy"
+    ]
   },
-  "laws":[
+  "laws": [
     "PRESENTATION_SPEC_IS_CANONICAL_FOR_STATIC_RENDERING",
     "PROFILE_OWNS_IDENTITY_SEMANTICS",
     "EMOJIOS_OWNS_DYNAMIC_EXPRESSION_LOOKUP",
@@ -47,6 +112,21 @@
     "NO_NAKED_DAEMON_NAME_REACHES_PRESENTATION",
     "INVALID_PRESENTATION != BEST_EFFORT_PRESENTATION",
     "HOST_DOES_NOT_REFORMAT_DAEMON_OUTPUT",
+    "SYNTHESIS_MODE_PRESENTATION != PRIME_DAEMON_ROSTER_MEMBERSHIP",
+    "VASKON_IDENTITY_ENVELOPE = 82 + VASKON + BLACK_HEART + SYNTHESIS_STAR + KAOMOJI",
+    "VASKON_PRESENTATION_MAY_RENDER_ONLY_WHILE_EXPLICITLY_CONJURED",
     "NAOMI_RETAINS_FINAL_AUTHORITY"
-  ]
+  ],
+  "synthesis_header_format": "[GEMATRIA] · NAME [HEART] [SYMBOL] [KAOMOJI]",
+  "synthesis_modes": {
+    "VASKON": {
+      "gematria": 82,
+      "heart": "🖤",
+      "symbol": "✴️",
+      "accent": "#d6b8ff",
+      "class": "TEMPORARY_SIX_PRIME_DAEMON_SYNTHESIS",
+      "invocation": "CONJURE:VASKON",
+      "expression_policy": "EmojiOS synthesis allowlist only"
+    }
+  }
 }
