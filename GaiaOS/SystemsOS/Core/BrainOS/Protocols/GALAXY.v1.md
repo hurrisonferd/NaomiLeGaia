@@ -3968,3 +3968,47 @@ This proves bounded request-local weighted behavior for this canary slice only. 
 
 Next:
 `canary_index=1`
+
+
+## Phase-3E canary slice 1 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3e-production-canary-slice?canary_index=1`
+
+Source query index:
+`3`
+
+Query:
+`calibration core revision memory context`
+
+Observed:
+- status: `PASS`
+- candidate count: `7`
+- repeated runs: `3`
+- adopted profile: `CURRENT_80_20`
+- candidate membership preserved: `true`
+- control stable across repeats: `true`
+- weighted stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- cross-relevance-tier inversions: `0`
+- rerank observed: `true`
+- request-local rollback target reappeared: `true`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- global production weighted retrieval enabled: `false`
+- effect scope: `THIS_REQUEST_ONLY`
+- rollback target: `UNWEIGHTED_CONTROL`
+
+Interpretation:
+This is the previously discriminating query from Phase 3D. Under the adopted 80/20 profile, gravity reordered candidates inside equal-relevance tiers while preserving the relevance boundary: all `0.8` relevance records remained above all `0.6` relevance records, so no cross-tier inversion occurred.
+
+Bounded conclusion:
+`PHASE3E CANARY SLICE 1 = PASS`
+
+Progress:
+`2 / 3 PHASE-3E CANARY SLICES OBSERVED PASS`
+
+This proves bounded request-local weighted behavior for this canary slice only. It does not enable global production weighting and does not constitute the separate final production decision.
+
+Next:
+`canary_index=2`
