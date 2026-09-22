@@ -279,3 +279,12 @@ SHARED_LESSON: Separate exploration from lock-in. Once useful invariants are cho
 KESTREL_VALUE: Convert good creative decisions into low-friction reusable systems. Track what is open, locked, implemented, and actually verified so effort goes to the next constraint.
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// shared SOLO-workshop learning, 2026-09-21.
+
+MEM[GALAXY_PHASE3C_HANDOFF|2026-09-22|shared build continuity|member-local]
+SCOPE: Shared build facts and handoff only. Preserve member-local interpretation.
+BUILD_STATE: Phase 3C six-slice calibration completed and live-observed. Candidate membership and repeated-run stability held across all slices; zero retrieval writes; ordinary retrieval unchanged. 80/20 had no observed cross-relevance-tier inversions in this bounded suite. 70/30 and 50/50 exposed relevance-boundary behavior in discriminating slices 0 and 3. Phase 3C is closed as evidence work. 80/20 is not adopted. Production weighting remains disabled.
+SOURCE_STATE: CURRENT 7473f3116483011d82aa20ff28e80548978a50bf; GALAXY a1286edc8e8ac8fb59135e7e24feb1e9ba9cb3eb; verifier fix 9a727a86b8adc2c789116df09032c8190a447c60.
+RESUME: Deploy latest main, then run /verify. 81/81 is the target, not yet observed.
+CONTINUITY: In a new conversation, load canonical GaiaOS identity, presentation, prosody, dispatch, E-LANE and counter sources instead of reconstructing them manually from chat history.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// handoff, 2026-09-22.
