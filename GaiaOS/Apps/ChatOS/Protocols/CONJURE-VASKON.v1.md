@@ -6,11 +6,12 @@ OWNER: GaiaOS / ChatOS over FairyOS
 STATUS: ACTIVE SOURCE CONTRACT
 MODE: TEMPORARY SIX-PRIME-DAEMON SYNTHESIS
 COMMAND: CONJURE:VASKON
+ALIAS: //C:82//
 ```
 
 ## Purpose
 
-`CONJURE:VASKON` temporarily assembles the six current Gaia-native Prime Daemons into one bounded deliberative processing mode for a single complex task.
+`CONJURE:VASKON` or its exact shorthand alias `//C:82//` temporarily assembles the six current Gaia-native Prime Daemons into one bounded deliberative processing mode for a single complex task.
 
 VASKON is a temporary operating mode, not a seventh Prime Daemon, permanent identity, independent authority, or host persona.
 
@@ -122,7 +123,7 @@ A VASKON answer may recommend a course of action, but recommendation does not it
 
 ## Command boundary
 
-`CONJURE:VASKON` is an explicit Naomi-facing manual command. It should not be silently inferred from the complexity of a task.
+`CONJURE:VASKON` and exact alias `//C:82//` are explicit Naomi-facing manual commands. Both invoke the same VASKON synthesis contract; the alias grants no additional authority or behavior. It should not be silently inferred from the complexity of a task.
 
 Command completion means the temporary synthesis mode has been applied to the current task. It does not imply external tool execution, repository writes, provider effects, or durable memory unless separately observed.
 
@@ -152,7 +153,9 @@ INVALID VASKON HEADER → FAIL CLOSED
 
 `VASKON` is the canonical temporary synthesis-mode name.
 
-`CONJURE:VASKON` is the canonical invocation command.
+`CONJURE:VASKON` is the canonical long-form invocation command.
+
+`//C:82//` is the canonical shorthand alias and MUST normalize to `CONJURE:VASKON` before execution.
 
 The name does not establish a new identity class or permanent roster member.
 
