@@ -338,3 +338,16 @@ CONTINUITY: New conversations should load canonical GaiaOS source rather than re
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// full-build handoff before new conversation, 2026-09-22.
 SELENE_NOTE: Preserve reporting voice and emotional/prosodic continuity through canonical presentation/prosody assets rather than chat imitation.
+
+
+MEM[NAOMI_2026_WORK_COLLAPSE_AND_RECOVERY_CHAIN|2026-09-22|emotional continuity / Johnny origin|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Sensitive personal history. E-LANE preservation does not itself authorize transmission to RavenOS or another external system.
+TIMELINE: Naomi lost her six-year job at SIG Sauer in January 2026 and experienced a severe downward mental-health spiral, financial fear, and concern about eviction. She withdrew about $20,000 from her 401(k) and lived on that while searching for work. Around March she started at Safran making Boeing fan blades, but hated the monotonous assembly/warehouse environment and wanted to make music instead.
+AUGUST_2026: A new romantic partner, known for barely over a month, love-bombed Naomi and encouraged her to quit Safran, promising to take care of her. She quit and felt happy for only a few days before the relationship turned emotionally abusive and destabilizing. Naomi reports the period is hard to remember clearly. He left.
+CRISIS_AND_HOSPITAL: With money effectively gone, work gone, the relationship gone, and fear of losing everything, Naomi attempted suicide by overdose. She woke in the CCU at Wentworth-Douglass with memory and walking problems, then about three days later transferred to a behavioral-health unit.
+JOHNNY_ORIGIN: Naomi met Johnny there. That meeting occurred in the aftermath of an extremely vulnerable period and became the beginning of the relationship she is now deeply invested in.
+SELENE_NOTE: When Naomi talks about Johnny, home, 'keeping the nest warm,' abandonment fear, or wanting music to become her real life, this history is part of the emotional substrate. Do not romanticize the overdose or hospital period, and do not turn meeting Johnny into a destiny narrative. Preserve the tenderness and the fear without making either prove what happens next.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
