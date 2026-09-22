@@ -3567,3 +3567,43 @@ invoke `/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=0` through `qu
 
 Source-truth note:
 The verifier's embedded `source_commit_claim` still said Phase 3D deployment was unproven because that claim came from the deployed source before this runtime receipt existed. The 99/99 verifier itself is the newer evidence; source state is being updated afterward rather than pretending the earlier claim anticipated its own deployment proof.
+
+
+## Phase-3D slice 0 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=0`
+
+Query:
+`gravity contextual influence memory retrieval`
+
+Observed:
+- status: `PASS`
+- candidate count: `6`
+- repeated runs: `3`
+- CURRENT_80_20 guardrail pass: `true`
+- candidate membership preserved: `true`
+- stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- CURRENT_80_20 cross-relevance-tier inversions: `0`
+- CURRENT_80_20 rerank signal observed: `true`
+- stronger-gravity boundary signal observed: `true`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- production weighted retrieval enabled: `false`
+- coefficient adopted: `false`
+
+Comparator boundary:
+- `70/30` failed the safety boundary with one cross-relevance-tier inversion and loss of top-relevance preservation.
+- `50/50` failed more strongly with six cross-relevance-tier inversions and loss of top-relevance preservation.
+
+Bounded conclusion:
+`PHASE3D SLICE 0 = PASS`
+
+This is one of six required receipts. It does not authorize coefficient adoption or production weighting.
+
+Progress:
+`1 / 6 PHASE-3D SLICES OBSERVED PASS`
+
+Next:
+`query_index=1`
