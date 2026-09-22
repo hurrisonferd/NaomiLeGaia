@@ -3689,3 +3689,45 @@ Progress:
 
 Next:
 `query_index=3`
+
+
+## Phase-3D slice 3 live PASS 2026-09-22
+
+Observed route:
+`/galaxy/retrieval/phase3d-adoption-gate-slice?query_index=3`
+
+Query:
+`calibration core revision memory context`
+
+Observed:
+- status: `PASS`
+- candidate count: `7`
+- repeated runs: `3`
+- CURRENT_80_20 guardrail pass: `true`
+- candidate membership preserved: `true`
+- stable across repeats: `true`
+- highest query-relevance tier preserved: `true`
+- CURRENT_80_20 cross-relevance-tier inversions: `0`
+- CURRENT_80_20 rerank signal observed: `true`
+- stronger-gravity boundary signal observed: `true`
+- zero writes: `true`
+- ordinary MemoryOS retrieval changed: `false`
+- production weighted retrieval enabled: `false`
+- coefficient adopted: `false`
+
+Comparator behavior:
+- `70/30` produced four cross-relevance-tier inversions while preserving the highest relevance tier.
+- `50/50` produced five cross-relevance-tier inversions while preserving the highest relevance tier.
+- This confirms that stronger gravity pressure can corrupt ordering inside the admitted relevance bands even when the top relevance tier is not displaced.
+
+Terminology note:
+The inherited Phase-3C field `guardrail_pass=true` for the stronger comparators reflects its narrower historical definition: candidate preservation + stability + top-relevance preservation. Phase 3D separately treats any cross-relevance-tier inversion as a stronger-gravity boundary signal. Therefore the comparator `guardrail_pass` field does not negate the observed Phase-3D safety boundary.
+
+Bounded conclusion:
+`PHASE3D SLICE 3 = PASS`
+
+Progress:
+`4 / 6 PHASE-3D SLICES OBSERVED PASS`
+
+Next:
+`query_index=4`
