@@ -15,6 +15,7 @@ COPY api/gaiaos_api.py ./gaiaos_api.py
 COPY api/gaiaos_context_runtime.py ./gaiaos_context_runtime.py
 COPY api/gaiaos_app.py ./gaiaos_app.py
 COPY api/memcon_runtime.py ./memcon_runtime.py
+COPY api/galaxy_production.py ./galaxy_production.py
 COPY api/memcon_entrypoint.py ./memcon_entrypoint.py
 COPY api/browser_memcon_bridge.py ./browser_memcon_bridge.py
 COPY api/solo_chat_runtime.py ./solo_chat_runtime.py
