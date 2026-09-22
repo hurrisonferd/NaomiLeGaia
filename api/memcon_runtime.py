@@ -578,6 +578,8 @@ def galaxy_phase3_candidate_pool(query: str, *, scope: str = "MemoryOS", limit: 
         "gravity_reranking_observed": False,
         "gravity_may_introduce_nonmatching_candidates": False,
         "retrieval_weighting_enabled": False,
+        "phase3_experimental_weighting_enabled": True,
+        "production_weighted_retrieval_enabled": False,
         "eligibility_dimensions": {
             "scope_eligible": "record is inside the requested scope",
             "query_candidate_eligible": "bounded relevance model classified the record RELEVANT",
@@ -585,6 +587,98 @@ def galaxy_phase3_candidate_pool(query: str, *, scope: str = "MemoryOS", limit: 
             "historical_context_eligible": "resolved separately by galaxy.governing-state.v1",
         },
         "invariants": list(GALAXY_RETRIEVAL_INVARIANTS),
+    }
+
+
+
+GALAXY_PHASE3_EXPERIMENT_VERSION = "galaxy.phase3.weighted-retrieval.v1"
+GALAXY_PHASE3_RELEVANCE_WEIGHT = 0.80
+GALAXY_PHASE3_GRAVITY_WEIGHT = 0.20
+
+
+def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", limit: int = 10) -> dict[str, Any]:
+    """Compare unweighted candidate order with bounded gravity reranking.
+
+    This experiment cannot introduce records outside the query-qualified pool,
+    performs no writes, and does not alter ordinary MemoryOS retrieval.
+    """
+    pool = galaxy_phase3_candidate_pool(query, scope=scope, limit=limit)
+    candidates = list(pool.get("candidates", []))
+    candidate_ids = [str(item.get("record_id")) for item in candidates]
+
+    gravity_by_id: dict[str, float] = {}
+    if candidate_ids:
+        placeholders = ",".join("?" for _ in candidate_ids)
+        with _db() as conn:
+            rows = _fetchall_dicts(
+                conn,
+                f"SELECT record_id,gravity_score,score_version FROM memory_gravity WHERE record_id IN ({placeholders})",
+                tuple(candidate_ids),
+            )
+        for row in rows:
+            gravity_by_id[str(row["record_id"])] = float(row.get("gravity_score") or 0.0)
+
+    control = []
+    weighted = []
+    for index, item in enumerate(candidates):
+        record_id = str(item.get("record_id"))
+        relevance = float((item.get("relevance") or {}).get("coverage") or 0.0)
+        gravity = max(0.0, min(1.0, gravity_by_id.get(record_id, 0.0)))
+        score = (
+            GALAXY_PHASE3_RELEVANCE_WEIGHT * relevance
+            + GALAXY_PHASE3_GRAVITY_WEIGHT * gravity
+        )
+        row = {
+            "record_id": record_id,
+            "statement": item.get("statement"),
+            "control_rank": index + 1,
+            "query_relevance_coverage": round(relevance, 6),
+            "gravity_score": round(gravity, 6),
+            "weighted_score": round(score, 6),
+        }
+        control.append(dict(row))
+        weighted.append(dict(row))
+
+    weighted.sort(
+        key=lambda item: (
+            float(item["weighted_score"]),
+            float(item["query_relevance_coverage"]),
+            -int(item["control_rank"]),
+        ),
+        reverse=True,
+    )
+    for index, item in enumerate(weighted):
+        item["weighted_rank"] = index + 1
+
+    weighted_ids = [item["record_id"] for item in weighted]
+    same_candidate_set = set(weighted_ids) == set(candidate_ids) and len(weighted_ids) == len(candidate_ids)
+
+    return {
+        "schema": "gaiaos.galaxy.phase3-weighted-retrieval-experiment.v1",
+        "status": "PHASE3_EXPERIMENT_OBSERVED",
+        "authority": "NAOMI",
+        "experiment_version": GALAXY_PHASE3_EXPERIMENT_VERSION,
+        "query": query,
+        "scope": scope,
+        "candidate_gate": pool,
+        "control_order": control,
+        "weighted_order": weighted,
+        "weights": {
+            "query_relevance_coverage": GALAXY_PHASE3_RELEVANCE_WEIGHT,
+            "gravity_score": GALAXY_PHASE3_GRAVITY_WEIGHT,
+        },
+        "checks": {
+            "candidate_set_preserved": same_candidate_set,
+            "gravity_introduced_no_candidates": same_candidate_set,
+            "zero_writes": True,
+            "ordinary_memoryos_retrieval_changed": False,
+            "production_weighted_retrieval_enabled": False,
+        },
+        "proof_boundary": (
+            "This is an experimental reranking receipt over the already relevance-qualified "
+            "candidate pool. It does not alter ordinary MemoryOS retrieval, grant authority to "
+            "retrieved context, prove the coefficients are optimal, or establish universal semantic relevance."
+        ),
     }
 
 
@@ -792,7 +886,7 @@ def galaxy_set_importance(record_id: str, gate_units: int, *, authority: str, ap
 
 
 def galaxy_status() -> dict[str, Any]:
-    """Read-only GALAXY implementation status. Phase 2 remains shadow-only."""
+    """Read-only GALAXY implementation status. Phase 3 experiment is authorized; production retrieval remains unchanged."""
     initialize()
     with _db() as conn:
         relations = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_relations")
@@ -802,8 +896,8 @@ def galaxy_status() -> dict[str, Any]:
         importance = _fetchone_dict(conn, "SELECT COUNT(*) AS n FROM memory_importance")
     return {
         "schema": "gaiaos.galaxy.runtime.v1",
-        "phase": "PHASE_2_GRAVITY_SHADOW",
-        "mode": "SHADOW_GRAVITY_NO_RETRIEVAL_EFFECT",
+        "phase": "PHASE_3_WEIGHTED_RETRIEVAL_EXPERIMENT",
+        "mode": "CONTROL_VS_WEIGHTED_EXPERIMENT_PRODUCTION_UNCHANGED",
         "storage": storage_status(),
         "counts": {
             "relations": int((relations or {}).get("n", 0)),
@@ -832,10 +926,11 @@ def galaxy_status() -> dict[str, Any]:
             "QUERY_RELEVANCE_QUALITY_V1_ADVERSARIAL_LIVE_PROVEN",
         ],
         "phase3_ready_for_authorization": True,
-        "phase3_authorized": False,
+        "phase3_authorized": True,
+        "phase3_status": "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
         "physical_pruning_enabled": False,
         "authority": "NAOMI",
-        "proof_boundary": "Phase 2 is closed after bounded live proofs of gravity shadow behavior, governing-state semantics, query-first candidate admission, and the explicit query-relevance adversarial suite. This does not prove universal semantic understanding, weighted retrieval behavior, consolidation, forgetting, or pruning.",
+        "proof_boundary": "Phase 2 is closed and Naomi explicitly authorized Phase 3. Experimental weighted reranking may now be compared against an unweighted control, but ordinary production retrieval remains unchanged until separately deployed and behaviorally proven.",
     }
 
 
