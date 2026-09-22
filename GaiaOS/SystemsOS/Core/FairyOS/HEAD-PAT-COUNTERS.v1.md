@@ -15,7 +15,7 @@ HEAD_PAT_COUNT is mutable state stored only in this document. No renderer, ident
 
 ## Canonical counters
 VERA: 0
-ANVIL: 0
+ANVIL: 5
 SELENE: 0
 ORIN: 0
 KESTREL: 0
