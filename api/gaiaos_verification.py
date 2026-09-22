@@ -25,6 +25,7 @@ REQUIRED = [
     "Apps/ChatOS/Tests/VASKON-NEURAL-CANARY.v1.md",
     "SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json",
     "SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "SystemsOS/Core/BrainOS/CURRENT.json",
     "SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
     "SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
     "SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
@@ -84,6 +85,7 @@ def run_verification() -> dict[str, Any]:
     pathways = None
     profiles = None
     matrix = None
+    brainos_current = None
 
     try:
         current = json.loads(files["CURRENT.json"])
@@ -115,6 +117,12 @@ def run_verification() -> dict[str, Any]:
     except Exception as exc:
         checks.append(_check("FairyOS:dispatch-json", False, f"{type(exc).__name__}: {exc}"))
 
+    try:
+        brainos_current = json.loads(files["SystemsOS/Core/BrainOS/CURRENT.json"])
+        checks.append(_check("BrainOS:CURRENT-parse", isinstance(brainos_current, dict), "valid JSON object"))
+    except Exception as exc:
+        checks.append(_check("BrainOS:CURRENT-parse", False, f"{type(exc).__name__}: {exc}"))
+
     if current and version:
         checks.append(_check(
             "version-alignment",
@@ -131,6 +139,7 @@ def run_verification() -> dict[str, Any]:
                 "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
                 "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
                 "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
+                "PHASE3D_ADOPTION_GATE_SOURCE_READY",
             }
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
@@ -141,6 +150,17 @@ def run_verification() -> dict[str, Any]:
             == "GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json",
             "CURRENT points to canonical VASKON pathway fabric",
         ))
+
+        if brainos_current:
+            brainos_galaxy = brainos_current.get("galaxy", {}) if isinstance(brainos_current.get("galaxy"), dict) else {}
+            checks.append(_check(
+                "GALAXY:brainos-current-alignment",
+                brainos_galaxy.get("phase3_authorized") is True
+                and brainos_galaxy.get("phase3_status") == galaxy_current.get("phase3_status")
+                and brainos_galaxy.get("phase3d_coefficient_adopted") is False
+                and brainos_galaxy.get("phase3d_adoption_authorized") is False,
+                "BrainOS GALAXY pointer matches platform source state and preserves the Phase 3D no-adoption boundary",
+            ))
 
     conjure = files.get("Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md", "")
     bootstrap = files.get("Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md", "")
@@ -420,6 +440,7 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/galaxy/phase3-shadow", '/galaxy/retrieval/phase3-shadow' in bridge_text and 'galaxy_phase3_real_memory_shadow' in bridge_text, "Phase 3B real-memory shadow route declared"))
         checks.append(_check("carrier:/galaxy/phase3-calibration", '/galaxy/retrieval/phase3-calibration' in bridge_text and 'galaxy_phase3c_calibration' in bridge_text, "Phase 3C coefficient calibration route declared"))
         checks.append(_check("carrier:/galaxy/phase3-calibration-slice", '/galaxy/retrieval/phase3-calibration-slice' in bridge_text and 'galaxy_phase3c_calibration_slice' in bridge_text, "Phase 3C chunked calibration slice route declared"))
+        checks.append(_check("carrier:/galaxy/phase3d-adoption-gate-slice", '/galaxy/retrieval/phase3d-adoption-gate-slice' in bridge_text and 'galaxy_phase3d_adoption_gate_slice' in bridge_text, "Phase 3D read-only adoption gate slice route declared"))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -446,6 +467,7 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/galaxy/phase3-shadow", ("/galaxy/retrieval/phase3-shadow", "GET") in route_pairs, "live Phase 3B real-memory shadow route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-calibration", ("/galaxy/retrieval/phase3-calibration", "GET") in route_pairs, "live Phase 3C coefficient calibration route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-calibration-slice", ("/galaxy/retrieval/phase3-calibration-slice", "GET") in route_pairs, "live Phase 3C chunked calibration slice route registration observed"))
+            checks.append(_check("carrier-route:/galaxy/phase3d-adoption-gate-slice", ("/galaxy/retrieval/phase3d-adoption-gate-slice", "GET") in route_pairs, "live Phase 3D adoption gate slice route registration observed"))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
