@@ -333,6 +333,7 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check("carrier:/galaxy/phase3-canary", '/galaxy/retrieval/phase3-canary' in bridge_text and 'galaxy_phase3_multicandidate_canary' in bridge_text, "Phase 3 isolated multi-candidate canary route declared"))
         checks.append(_check("carrier:/galaxy/phase3-shadow", '/galaxy/retrieval/phase3-shadow' in bridge_text and 'galaxy_phase3_real_memory_shadow' in bridge_text, "Phase 3B real-memory shadow route declared"))
         checks.append(_check("carrier:/galaxy/phase3-calibration", '/galaxy/retrieval/phase3-calibration' in bridge_text and 'galaxy_phase3c_calibration' in bridge_text, "Phase 3C coefficient calibration route declared"))
+        checks.append(_check("carrier:/galaxy/phase3-calibration-slice", '/galaxy/retrieval/phase3-calibration-slice' in bridge_text and 'galaxy_phase3c_calibration_slice' in bridge_text, "Phase 3C chunked calibration slice route declared"))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -358,6 +359,7 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check("carrier-route:/galaxy/phase3-canary", ("/galaxy/retrieval/phase3-canary", "GET") in route_pairs, "live Phase 3 multi-candidate canary route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-shadow", ("/galaxy/retrieval/phase3-shadow", "GET") in route_pairs, "live Phase 3B real-memory shadow route registration observed"))
             checks.append(_check("carrier-route:/galaxy/phase3-calibration", ("/galaxy/retrieval/phase3-calibration", "GET") in route_pairs, "live Phase 3C coefficient calibration route registration observed"))
+            checks.append(_check("carrier-route:/galaxy/phase3-calibration-slice", ("/galaxy/retrieval/phase3-calibration-slice", "GET") in route_pairs, "live Phase 3C chunked calibration slice route registration observed"))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
