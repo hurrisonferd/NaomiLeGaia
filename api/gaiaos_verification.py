@@ -116,7 +116,11 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check(
             "GALAXY:phase3-authorization",
             galaxy_current.get("phase3_authorized") is True
-            and galaxy_current.get("phase3_status") == "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN"
+            and galaxy_current.get("phase3_authorized_by") == "NAOMI"
+            and galaxy_current.get("phase3_status") in {
+                "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
+                "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
+            }
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
         ))
