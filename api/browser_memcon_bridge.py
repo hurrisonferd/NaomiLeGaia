@@ -593,6 +593,13 @@ def galaxy_phase3_real_memory_shadow(browser_request: Request, repeats: int = 3,
     return memcon_runtime.galaxy_phase3_real_memory_shadow(repeats=repeats, limit=limit)
 
 
+@app.get("/galaxy/retrieval/phase3-calibration", operation_id="galaxyPhase3CoefficientCalibration")
+def galaxy_phase3_coefficient_calibration(browser_request: Request, repeats: int = 3, limit: int = 10):
+    """Read-only Phase-3C coefficient matrix over real MemoryOS records."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_phase3c_calibration(repeats=repeats, limit=limit)
+
+
 @app.get("/galaxy/retrieval/phase3-canary", operation_id="galaxyPhase3MulticandidateCanary")
 def galaxy_phase3_multicandidate_canary(browser_request: Request):
     """Explicit Naomi-authorized isolated multi-candidate Phase-3 calibration canary."""
