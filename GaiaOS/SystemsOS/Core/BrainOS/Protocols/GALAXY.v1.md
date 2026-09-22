@@ -3834,3 +3834,66 @@ This does NOT mean adoption. It does NOT enable production weighting. It does NO
 
 Required next transition remains:
 `EXPLICIT NAOMI ADOPTION AUTHORIZATION → BOUNDED PRODUCTION CANARY → OBSERVED RECEIPT → ROLLBACK TEST → SEPARATE PRODUCTION DECISION`
+
+
+## Phase-3E adoption authorization and bounded production-canary source 2026-09-22
+
+Naomi explicitly authorized adoption after the Phase-3D six-slice gate closed PASS.
+
+Adopted bounded coefficient:
+`CURRENT_80_20 = 0.80 query relevance + 0.20 gravity`
+
+This adoption means:
+- the coefficient is selected for the next bounded production-canary phase;
+- the Phase-3D pre-adoption gate is closed;
+- the production canary is authorized to execute after deployment.
+
+This adoption does NOT mean:
+- global production weighted retrieval is enabled;
+- the canary has already executed;
+- rollback has been live-proven;
+- a final production decision has been made.
+
+Phase-3E source:
+- runtime version: `galaxy.phase3e.production-canary.v1`;
+- rollback version: `galaxy.phase3e.rollback-test.v1`;
+- canary query indexes: `[0, 3, 5]`, the three Phase-3D slices that demonstrated bounded 80/20 utility;
+- canary execution scope: `THIS_REQUEST_ONLY`;
+- rollback target: `UNWEIGHTED_CONTROL`;
+- global production state during canary: `UNWEIGHTED_CONTROL`.
+
+New routes:
+`/galaxy/retrieval/phase3e-production-canary-slice?canary_index=<0..2>`
+
+`/galaxy/retrieval/phase3e-rollback-test`
+
+The canary route:
+- reuses the real MemoryOS query-first candidate path;
+- applies the adopted 80/20 profile only inside the bounded request;
+- checks candidate-set preservation, repeat stability, top-relevance preservation, and zero cross-relevance-tier inversions;
+- verifies the unweighted control path is still present after the request-local weighted calculation;
+- performs no memory writes;
+- leaves global production weighting disabled.
+
+The rollback route:
+- runs the bounded canary over all three selected discriminating queries;
+- compares unweighted control candidate IDs before and after each canary execution;
+- PASS requires exact restoration/preservation of the unweighted control path on all three;
+- does not itself enable production weighting.
+
+Phase-3E source state:
+`ADOPTION AUTHORIZED / 80_20 ADOPTED FOR CANARY / SOURCE READY / DEPLOYMENT NOT YET PROVEN / LIVE CANARY NOT YET OBSERVED / LIVE ROLLBACK NOT YET OBSERVED / GLOBAL PRODUCTION WEIGHTING DISABLED`
+
+Required proof ladder:
+`DEPLOY → /verify → CANARY SLICE 0 → CANARY SLICE 1 → CANARY SLICE 2 → ROLLBACK TEST → SEPARATE EXPLICIT NAOMI PRODUCTION DECISION`
+
+New invariants:
+
+```text
+COEFFICIENT ADOPTION != GLOBAL PRODUCTION ENABLEMENT
+CANARY AUTHORIZATION != FINAL PRODUCTION DECISION
+REQUEST-LOCAL WEIGHTING MUST NOT LEAK
+ROLLBACK TARGET = UNWEIGHTED_CONTROL
+ROLLBACK PROOF REQUIRED BEFORE PRODUCTION DECISION
+GLOBAL PRODUCTION DEFAULT REMAINS UNWEIGHTED
+```
