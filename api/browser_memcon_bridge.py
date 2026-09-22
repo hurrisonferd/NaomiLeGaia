@@ -607,6 +607,17 @@ def galaxy_phase3_coefficient_calibration_slice(query_index: int, browser_reques
     return memcon_runtime.galaxy_phase3c_calibration_slice(query_index=query_index, repeats=repeats, limit=limit)
 
 
+@app.get("/galaxy/retrieval/phase3d-adoption-gate-slice", operation_id="galaxyPhase3DAdoptionGateSlice")
+def galaxy_phase3d_adoption_gate_slice(query_index: int, browser_request: Request, repeats: int = 3, limit: int = 10):
+    """Chunked read-only Phase-3D pre-adoption gate over one configured query."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_phase3d_adoption_gate_slice(
+        query_index=query_index,
+        repeats=repeats,
+        limit=limit,
+    )
+
+
 @app.get("/galaxy/retrieval/phase3-canary", operation_id="galaxyPhase3MulticandidateCanary")
 def galaxy_phase3_multicandidate_canary(browser_request: Request):
     """Explicit Naomi-authorized isolated multi-candidate Phase-3 calibration canary."""
