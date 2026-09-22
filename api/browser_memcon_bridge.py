@@ -618,6 +618,28 @@ def galaxy_phase3d_adoption_gate_slice(query_index: int, browser_request: Reques
     )
 
 
+
+@app.get("/galaxy/retrieval/phase3e-production-canary-slice", operation_id="galaxyPhase3EProductionCanarySlice")
+def galaxy_phase3e_production_canary_slice(canary_index: int, browser_request: Request, repeats: int = 3, limit: int = 10):
+    """Bounded request-local production canary using Naomi-adopted 80/20 weighting."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_phase3e_production_canary_slice(
+        canary_index=canary_index,
+        repeats=repeats,
+        limit=limit,
+    )
+
+
+@app.get("/galaxy/retrieval/phase3e-rollback-test", operation_id="galaxyPhase3ERollbackTest")
+def galaxy_phase3e_rollback_test(browser_request: Request, repeats: int = 2, limit: int = 10):
+    """Verify request-local canary weighting leaves the unweighted control path intact."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    return memcon_runtime.galaxy_phase3e_rollback_test(
+        repeats=repeats,
+        limit=limit,
+    )
+
+
 @app.get("/galaxy/retrieval/phase3-canary", operation_id="galaxyPhase3MulticandidateCanary")
 def galaxy_phase3_multicandidate_canary(browser_request: Request):
     """Explicit Naomi-authorized isolated multi-candidate Phase-3 calibration canary."""
