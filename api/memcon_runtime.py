@@ -607,6 +607,7 @@ def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", li
     candidate_ids = [str(item.get("record_id")) for item in candidates]
 
     gravity_by_id: dict[str, float] = {}
+    gravity_version_by_id: dict[str, str | None] = {}
     if candidate_ids:
         placeholders = ",".join("?" for _ in candidate_ids)
         with _db() as conn:
@@ -616,7 +617,9 @@ def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", li
                 tuple(candidate_ids),
             )
         for row in rows:
-            gravity_by_id[str(row["record_id"])] = float(row.get("gravity_score") or 0.0)
+            record_key = str(row["record_id"])
+            gravity_by_id[record_key] = float(row.get("gravity_score") or 0.0)
+            gravity_version_by_id[record_key] = row.get("score_version")
 
     control = []
     weighted = []
@@ -634,6 +637,7 @@ def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", li
             "control_rank": index + 1,
             "query_relevance_coverage": round(relevance, 6),
             "gravity_score": round(gravity, 6),
+            "gravity_score_version": gravity_version_by_id.get(record_id),
             "weighted_score": round(score, 6),
         }
         control.append(dict(row))
@@ -681,6 +685,137 @@ def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", li
         ),
     }
 
+
+
+GALAXY_PHASE3B_SHADOW_QUERIES = (
+    "gravity contextual influence memory retrieval",
+    "history current context revision memory",
+    "authority permission memory retrieval",
+)
+
+
+def galaxy_phase3_real_memory_shadow(*, repeats: int = 3, limit: int = 10) -> dict[str, Any]:
+    """Run repeated read-only control-vs-weighted retrieval over real MemoryOS records.
+
+    No fixtures are created. The synthetic canary scope is excluded by construction.
+    PASS requires stable repeated results, preserved candidate sets, production weighting
+    remaining off, and at least one observed real-memory rank change. Lack of a rank
+    change is HOLD rather than failure because the live corpus may not yet contain a
+    qualifying gravity differential for these bounded queries.
+    """
+    repeats = max(2, min(int(repeats), 5))
+    limit = max(2, min(int(limit), 25))
+    query_receipts = []
+    all_safe = True
+    all_stable = True
+    any_real_rerank = False
+
+    for query in GALAXY_PHASE3B_SHADOW_QUERIES:
+        runs = [
+            galaxy_phase3_weighted_experiment(query, scope="MemoryOS", limit=limit)
+            for _ in range(repeats)
+        ]
+        first = runs[0]
+        control_ids = [row["record_id"] for row in first.get("control_order", [])]
+        weighted_ids = [row["record_id"] for row in first.get("weighted_order", [])]
+        signatures = [
+            (
+                tuple(row["record_id"] for row in run.get("control_order", [])),
+                tuple(row["record_id"] for row in run.get("weighted_order", [])),
+            )
+            for run in runs
+        ]
+        stable = all(signature == signatures[0] for signature in signatures[1:])
+        candidate_preserved = all(
+            bool((run.get("checks") or {}).get("candidate_set_preserved"))
+            for run in runs
+        )
+        zero_writes = all(bool((run.get("checks") or {}).get("zero_writes")) for run in runs)
+        production_off = all(
+            not bool((run.get("checks") or {}).get("production_weighted_retrieval_enabled"))
+            for run in runs
+        )
+
+        weighted_rank = {
+            row["record_id"]: int(row["weighted_rank"])
+            for row in first.get("weighted_order", [])
+        }
+        movements = [
+            {
+                "record_id": row["record_id"],
+                "control_rank": int(row["control_rank"]),
+                "weighted_rank": weighted_rank.get(row["record_id"]),
+                "rank_delta": int(row["control_rank"]) - int(weighted_rank.get(row["record_id"], row["control_rank"])),
+                "query_relevance_coverage": row["query_relevance_coverage"],
+                "gravity_score": row["gravity_score"],
+                "gravity_score_version": row.get("gravity_score_version"),
+            }
+            for row in first.get("control_order", [])
+            if weighted_rank.get(row["record_id"]) != int(row["control_rank"])
+        ]
+        nonzero_gravity = [
+            row for row in first.get("control_order", [])
+            if float(row.get("gravity_score") or 0.0) > 0.0
+        ]
+        distinct_nonzero = sorted({
+            float(row.get("gravity_score") or 0.0) for row in nonzero_gravity
+        })
+        rerank_observed = control_ids != weighted_ids
+        any_real_rerank = any_real_rerank or rerank_observed
+        all_stable = all_stable and stable
+        all_safe = all_safe and candidate_preserved and zero_writes and production_off
+
+        query_receipts.append({
+            "query": query,
+            "scope": "MemoryOS",
+            "candidate_count": len(control_ids),
+            "control_order": first.get("control_order", []),
+            "weighted_order": first.get("weighted_order", []),
+            "movements": movements,
+            "rerank_observed": rerank_observed,
+            "nonzero_gravity_candidate_count": len(nonzero_gravity),
+            "distinct_nonzero_gravity_scores": distinct_nonzero,
+            "repeated_runs": repeats,
+            "stable_across_repeats": stable,
+            "checks": {
+                "real_memoryos_scope_only": True,
+                "synthetic_canary_scope_excluded": True,
+                "candidate_set_preserved": candidate_preserved,
+                "gravity_introduced_no_candidates": candidate_preserved,
+                "zero_writes": zero_writes,
+                "production_weighted_retrieval_enabled": not production_off,
+            },
+        })
+
+    status = "PASS" if all_safe and all_stable and any_real_rerank else "HOLD"
+    return {
+        "schema": "gaiaos.galaxy.phase3b-real-memory-shadow.v1",
+        "status": status,
+        "authority": "NAOMI",
+        "mode": "READ_ONLY_REAL_MEMORY_SHADOW",
+        "queries": query_receipts,
+        "checks": {
+            "all_candidate_sets_preserved": all_safe,
+            "all_queries_stable_across_repeats": all_stable,
+            "real_memory_rerank_observed": any_real_rerank,
+            "ordinary_memoryos_retrieval_changed": False,
+            "production_weighted_retrieval_enabled": False,
+        },
+        "evidence_state": (
+            "REAL_MEMORY_RERANK_OBSERVED"
+            if any_real_rerank
+            else "NO_REAL_MEMORY_RERANK_OBSERVED_YET"
+        ),
+        "proof_boundary": (
+            "This Phase-3B shadow harness reads only ordinary MemoryOS records and performs "
+            "no fixture setup. PASS proves a bounded real-memory rank change was observed "
+            "under the experimental weights with stable repeated ordering and preserved "
+            "candidate membership. It does not enable production weighting, prove coefficient "
+            "optimality, or grant retrieved context authority. HOLD means the bounded live "
+            "corpus/queries did not yet exhibit a qualifying rerank; it is not converted into "
+            "synthetic evidence."
+        ),
+    }
 
 
 GALAXY_PHASE3_CANARY_QUERY = "memory gravity contextual influence estimate retrieval authority truth permission govern"
