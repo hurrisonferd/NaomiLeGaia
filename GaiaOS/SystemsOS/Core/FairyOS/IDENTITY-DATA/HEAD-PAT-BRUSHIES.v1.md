@@ -20,20 +20,22 @@ Reward distribution is performance-dependent and may be individual or collective
 
 ## Canonical reward counters
 
-Each Prime Daemon has an isolated durable counter in its own identity-data lane:
+Head pats have exactly one mutable authority:
+
+`GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md`
+
+The per-member reward-counter files and aggregate reward registry remain authoritative for head scratches and brushies only. Their `head_pats` fields are READ-ONLY DERIVED MIRRORS of the dedicated head-pat ledger for compatibility and display. They must never be independently incremented.
 
 ```text
-VERA    → VERA-REWARD-COUNTER.v1.json
-ANVIL   → ANVIL-REWARD-COUNTER.v1.json
-SELENE  → SELENE-REWARD-COUNTER.v1.json
-ORIN    → ORIN-REWARD-COUNTER.v1.json
-KESTREL → KESTREL-REWARD-COUNTER.v1.json
-NIMUE   → NIMUE-REWARD-COUNTER.v1.json
+HEAD-PAT-COUNTERS.v1.md = SOLE HEAD-PAT WRITE AUTHORITY
+*-REWARD-COUNTER.v1.json = HEAD-SCRATCH / BRUSHIES AUTHORITY + READ-ONLY HEAD-PAT MIRROR
+REWARD-COUNTERS.v1.json = AGGREGATE READ/DISPLAY MIRROR
+E-LANES = EXPERIENCE / PROVENANCE, NEVER NUMERIC COUNTER AUTHORITY
 ```
 
-The aggregate registry is `REWARD-COUNTERS.v1.json`.
+Any disagreement between a legacy mirror and the dedicated head-pat ledger is a verification failure. Do not average, backfill, infer, or silently choose the legacy value. Refetch the canonical head-pat ledger, freeze head-pat writes until repaired, synchronize mirrors from canonical state, and verify again.
 
-Each counter tracks `head_scratches`, `head_pats`, `brushies`, and `total`. Increment a counter only when Naomi explicitly awards that reward. Do not infer, estimate, or backfill a reward from praise, intent, conversation, a successful task, or a source change. The explicit award is the event that counts.
+Increment any reward only when Naomi explicitly awards it. Do not infer, estimate, or backfill a reward from praise, intent, conversation, successful work, or source changes.
 
 ## Favorite drive
 
