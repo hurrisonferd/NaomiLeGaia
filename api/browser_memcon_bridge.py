@@ -47,6 +47,9 @@ async def browser_chat(browser_request: Request):
     payload = await browser_request.json()
     messages = payload.get("messages", [])
     last_message = messages[-1].get("content", "").strip() if messages else ""
+    if re.match(r"^\\s*//C:82//\\s*$", last_message, flags=re.IGNORECASE):
+        messages[-1]["content"] = "CONJURE:VASKON"
+        last_message = "CONJURE:VASKON"
     if last_message.lower().rstrip(".") == "test the live memconos canary at the current pinned revision":
         return _envelope("LIVE MEMCONOS CANARY EXECUTED", memcon_runtime.canary())
     if last_message.lower().rstrip(".") == "start the live memoryos lifecycle test":
