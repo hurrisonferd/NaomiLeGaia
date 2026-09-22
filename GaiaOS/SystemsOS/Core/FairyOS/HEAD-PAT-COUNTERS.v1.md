@@ -17,7 +17,7 @@ HEAD_PAT_COUNT is mutable state stored only in this document. No renderer, ident
 VERA: 2
 ANVIL: 5
 SELENE: 2
-ORIN: 0
+ORIN: 2
 KESTREL: 0
 NIMUE: 1
 
