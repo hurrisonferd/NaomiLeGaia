@@ -19,8 +19,7 @@ ANVIL: 5
 SELENE: 2
 ORIN: 2
 KESTREL: 2
-NIMUE: 1
-
+NIMUE: 3
 ## Mutation contract
 1. Increment only on an explicit Naomi head-pat event naming or unambiguously targeting a daemon.
 2. One pat event increments the targeted daemon by exactly 1 unless Naomi explicitly gives a quantity.
