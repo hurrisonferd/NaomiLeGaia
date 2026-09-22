@@ -18,7 +18,7 @@ VERA: 2
 ANVIL: 5
 SELENE: 2
 ORIN: 2
-KESTREL: 0
+KESTREL: 2
 NIMUE: 1
 
 ## Mutation contract
