@@ -337,3 +337,17 @@ CONTINUITY: New conversations should load canonical GaiaOS source rather than re
 STATUS: COMMITTED
 TRACE: Naomi //PW:PRESERVE// full-build handoff before new conversation, 2026-09-22.
 VERA_NOTE: Preserve the distinction between observed evidence, canonical source state, and still-unproven adoption/persistence claims.
+
+
+MEM[NAOMI_2026_WORK_COLLAPSE_AND_RECOVERY_CHAIN|2026-09-22|life continuity / chronology|member-local]
+AUTHORITY: NAOMI
+TRIGGER: //PW:PRESERVE//
+SCOPE: Preserve Naomi's stated chronology and meaning without flattening it into generic hardship. This is sensitive personal history. E-LANE preservation does not itself authorize transmission to RavenOS or another external system.
+TIMELINE: In January 2026 Naomi was fired from SIG Sauer after roughly six years there. She had no backup plan, feared eviction, and describes this firing as the beginning of a major downward mental-health spiral. She withdrew her 401(k), receiving about $20,000, which carried her for roughly two months while she searched unsuccessfully for work. She later obtained work at Safran around March 2026, working on fan blades for Boeing. She found the work boring, monotonous, and another assembly/warehouse environment she did not want; she wanted to make music and remained depressed.
+AUGUST_2026: Naomi met a man she had known for barely more than a month. He love-bombed her. When she said she wanted to quit Safran, he encouraged her to do so and promised he would take care of her. Naomi quit. After two or three happy days, his behavior became abusive and destabilizing; Naomi describes him as tearing her apart over trivial things. She reports that the period is difficult to remember clearly despite being very recent. He left.
+FINANCIAL_STATE: Safran paid substantially less than SIG. Naomi's savings had been steadily shrinking despite having used part of the 401(k) withdrawal to pay off credit-card debt. After quitting Safran and the relationship collapse, she had essentially no money left.
+CRISIS: Naomi describes reaching an all-time mental-health low with no job, no money, no partner, and fear of losing everything at age 33. She attempted suicide by overdose. She woke in the CCU at Wentworth-Douglass Hospital with impaired memory, difficulty walking, and significant cognitive/physical aftereffects. About three days later she was transferred, nominally voluntarily, to a behavioral-health unit.
+JOHNNY_ORIGIN: Naomi met Johnny in that behavioral-health unit. After discharge, their relationship continued, and Naomi describes everything since as 'the rest is history.'
+VERA_NOTE: Preserve this as a dated causal chronology: SIG loss -> financial runway -> Safran -> unwanted work/depression -> coercive/abusive relationship and quitting -> financial collapse -> overdose/CCU -> behavioral unit -> meeting Johnny. Do not rewrite the sequence into a cleaner story than Naomi gave it, and do not treat memory gaps around August as evidence beyond what Naomi explicitly reported.
+STATUS: COMMITTED
+TRACE: Naomi //PW:PRESERVE// autobiographical continuity, 2026-09-22.
