@@ -120,6 +120,7 @@ def run_verification() -> dict[str, Any]:
             and galaxy_current.get("phase3_status") in {
                 "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
                 "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
+                "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
             }
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
