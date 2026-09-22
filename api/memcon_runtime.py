@@ -682,6 +682,146 @@ def galaxy_phase3_weighted_experiment(query: str, *, scope: str = "MemoryOS", li
     }
 
 
+
+GALAXY_PHASE3_CANARY_QUERY = "memory gravity contextual influence"
+GALAXY_PHASE3_CANARY_RECORDS = (
+    {
+        "record_id": "MEM-GALAXY-P3-CANARY-LOW",
+        "statement": "Memory gravity is a contextual influence estimate for retrieval.",
+        "gravity_score": 0.15,
+    },
+    {
+        "record_id": "MEM-GALAXY-P3-CANARY-HIGH",
+        "statement": "Memory gravity is a contextual influence estimate for retrieval.",
+        "gravity_score": 0.85,
+    },
+)
+
+
+def galaxy_phase3_multicandidate_canary(*, authority: str, approved: bool) -> dict[str, Any]:
+    """Provision two isolated calibration records, then prove bounded reranking.
+
+    Setup writes are explicit and separated from the retrieval experiment.
+    The experiment itself remains read-only and ordinary retrieval is unchanged.
+    """
+    if authority != "NAOMI" or not approved:
+        raise PermissionError("GALAXY Phase-3 canary setup requires explicit Naomi approval")
+
+    setup = []
+    for item in GALAXY_PHASE3_CANARY_RECORDS:
+        record_id = item["record_id"]
+        existing = get_record(record_id)
+        if existing is None:
+            write_record(
+                authority="NAOMI",
+                approved=True,
+                record_type="GALAXY_PHASE3_CANARY",
+                scope="GALAXY_PHASE3_CANARY",
+                statement=item["statement"],
+                source="GALAXY_PHASE3_MULTICANDIDATE_CANARY",
+                status="ACTIVE",
+                version="1",
+                notes="Synthetic isolated Phase-3 calibration record. Not ordinary MemoryOS content.",
+                record_id=record_id,
+            )
+        elif str(existing.get("record_type")) != "GALAXY_PHASE3_CANARY":
+            raise RuntimeError(f"Canary id collision: {record_id}")
+
+        preview = galaxy_gravity_preview(record_id)
+        now = _now()
+        components = {
+            "canary_calibration": {
+                "normalized": float(item["gravity_score"]),
+                "weight": 1.0,
+                "contribution": float(item["gravity_score"]),
+            }
+        }
+        reason = {
+            "score_meaning": "Synthetic Phase-3 reranking calibration only.",
+            "synthetic": True,
+            "ordinary_memoryos_content": False,
+            "production_retrieval_effect": "NONE",
+            "natural_preview_score": preview["gravity_score"],
+        }
+        with _db() as conn:
+            previous = _fetchone_dict(conn, "SELECT gravity_score FROM memory_gravity WHERE record_id=?", (record_id,))
+            if previous is None:
+                conn.execute(
+                    """INSERT INTO memory_gravity
+                       (record_id,gravity_score,score_version,components_json,reason_json,calculated_at,previous_score)
+                       VALUES (?,?,?,?,?,?,NULL)""",
+                    (
+                        record_id,
+                        float(item["gravity_score"]),
+                        "galaxy.phase3.canary.synthetic-gravity.v1",
+                        json.dumps(components, sort_keys=True),
+                        json.dumps(reason, sort_keys=True),
+                        now,
+                    ),
+                )
+            else:
+                conn.execute(
+                    """UPDATE memory_gravity
+                       SET gravity_score=?, score_version=?, components_json=?, reason_json=?,
+                           calculated_at=?, previous_score=?
+                       WHERE record_id=?""",
+                    (
+                        float(item["gravity_score"]),
+                        "galaxy.phase3.canary.synthetic-gravity.v1",
+                        json.dumps(components, sort_keys=True),
+                        json.dumps(reason, sort_keys=True),
+                        now,
+                        previous.get("gravity_score"),
+                        record_id,
+                    ),
+                )
+        setup.append({"record_id": record_id, "gravity_score": float(item["gravity_score"])})
+
+    result = galaxy_phase3_weighted_experiment(
+        GALAXY_PHASE3_CANARY_QUERY,
+        scope="GALAXY_PHASE3_CANARY",
+        limit=10,
+    )
+    control_ids = [item["record_id"] for item in result["control_order"]]
+    weighted_ids = [item["record_id"] for item in result["weighted_order"]]
+    gravity_values = [float(item["gravity_score"]) for item in result["weighted_order"]]
+    reranked = (
+        len(control_ids) >= 2
+        and control_ids != weighted_ids
+        and weighted_ids[0] == "MEM-GALAXY-P3-CANARY-HIGH"
+    )
+    distinct_nonzero_gravity = len(set(gravity_values)) >= 2 and all(value > 0.0 for value in gravity_values)
+
+    return {
+        "schema": "gaiaos.galaxy.phase3-multicandidate-canary.v1",
+        "status": "PASS" if (
+            reranked
+            and distinct_nonzero_gravity
+            and result["checks"]["candidate_set_preserved"]
+            and result["checks"]["zero_writes"]
+            and not result["checks"]["production_weighted_retrieval_enabled"]
+        ) else "FAIL",
+        "authority": "NAOMI",
+        "setup_writes": setup,
+        "setup_writes_separate_from_retrieval": True,
+        "experiment": result,
+        "checks": {
+            "multiple_relevant_candidates": len(control_ids) >= 2,
+            "distinct_nonzero_gravity": distinct_nonzero_gravity,
+            "weighted_order_changed": reranked,
+            "candidate_set_preserved": result["checks"]["candidate_set_preserved"],
+            "zero_writes_during_retrieval": result["checks"]["zero_writes"],
+            "ordinary_memoryos_retrieval_changed": result["checks"]["ordinary_memoryos_retrieval_changed"],
+            "production_weighted_retrieval_enabled": result["checks"]["production_weighted_retrieval_enabled"],
+        },
+        "proof_boundary": (
+            "This canary uses two synthetic records in an isolated GALAXY_PHASE3_CANARY scope. "
+            "Its setup deliberately writes calibration fixtures before retrieval. The measured retrieval "
+            "comparison itself performs zero writes and does not alter ordinary MemoryOS retrieval."
+        ),
+    }
+
+
 def update_record(record_id: str, *, authority: str, approved: bool, statement: str | None = None,
                   status: str | None = None, notes: str | None = None,
                   supersedes: str | None = None) -> dict[str, Any]:
