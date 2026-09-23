@@ -67,6 +67,22 @@ def _check(name: str, passed: bool, detail: str, **extra: Any) -> dict[str, Any]
     return {"name": name, "status": "PASS" if passed else "FAIL", "detail": detail, **extra}
 
 
+def _phase3_status_authorized_family(status: Any) -> bool:
+    """Recognize authorized Phase-3 lifecycle states through current read-only phases."""
+    value = str(status or "")
+    return (
+        value in {
+            "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
+            "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
+            "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
+            "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
+        }
+        or value.startswith((
+            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_",
+        ))
+    )
+
+
 def run_verification() -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
     files: dict[str, str] = {}
@@ -134,17 +150,7 @@ def run_verification() -> dict[str, Any]:
             "GALAXY:phase3-authorization",
             galaxy_current.get("phase3_authorized") is True
             and galaxy_current.get("phase3_authorized_by") == "NAOMI"
-            and (
-                galaxy_current.get("phase3_status") in {
-                    "AUTHORIZED_SOURCE_EXPERIMENT_BEGIN",
-                    "PHASE3A_CANARY_OBSERVED_PHASE3B_SOURCE_READY",
-                    "PHASE3B_REAL_MEMORY_RERANK_OBSERVED_PHASE3C_SOURCE_READY",
-                    "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
-                }
-                or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3D_ADOPTION_GATE_")
-                or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3E_")
-                or str(galaxy_current.get("phase3_status") or "").startswith("PHASE3F_")
-            )
+            and _phase3_status_authorized_family(galaxy_current.get("phase3_status"))
             and galaxy_current.get("production_weighted_retrieval_enabled") is False,
             "Naomi authorization recorded; Phase 3 experiment enabled without production weighted retrieval",
         ))
@@ -155,18 +161,20 @@ def run_verification() -> dict[str, Any]:
             "CURRENT points to canonical VASKON pathway fabric",
         ))
 
-        if str(galaxy_current.get("phase3_status") or "").startswith("PHASE3F_"):
+        if galaxy_current.get("phase3f_pilot_source_ready") is True:
             checks.append(_check(
                 "GALAXY:phase3f-production-source-boundary",
                 galaxy_current.get("phase3f_production_authorized") is True
                 and galaxy_current.get("phase3f_pilot_source_ready") is True
                 and galaxy_current.get("production_weighted_retrieval_enabled") is False,
-                "Naomi production build authorization recorded, bounded pilot source present, global rollout not enabled by source alone",
+                "Phase3F bounded production source remains authorized and globally OFF through later Phase3G/H review states",
             ))
         if brainos_current:
             brainos_galaxy = brainos_current.get("galaxy", {}) if isinstance(brainos_current.get("galaxy"), dict) else {}
             phase3_status = str(galaxy_current.get("phase3_status") or "")
-            adoption_expected = phase3_status.startswith(("PHASE3E_", "PHASE3F_"))
+            adoption_expected = phase3_status.startswith((
+                "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_",
+            ))
             checks.append(_check(
                 "GALAXY:brainos-current-alignment",
                 brainos_galaxy.get("phase3_authorized") is True
