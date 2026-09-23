@@ -152,3 +152,16 @@ The console-boot detour is CLOSED. Resume GALAXY at the actual read-only Phase3J
 3. Run the read-only `/galaxy/retrieval/phase3-exit-integration-review` once.
 4. If preflight passes, run a fresh guarded switch test.
 5. Stop and review. Do **not** activate the live pilot until Naomi explicitly authorizes that next step.
+
+
+## 2026-09-23 //PW:PRESERVE// Phase-3 Exit Integration bedtime seal
+
+- Dedicated preserve: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-EXIT-SOURCE-READY-BEDTIME.md`.
+- Phase3J live review passed cleanly and is closed.
+- Phase-3 Exit Integration source is built, default-OFF, fail-closed and CI-green at 37/37.
+- Final CI run: `35838119652` SUCCESS.
+- Canonical state: `PHASE3_EXIT_INTEGRATION_SOURCE_READY_DEPLOY_PENDING`.
+- Latest main head observed at preserve time: `c420a0e67287fc1e8d3fd822f7282ea7896e3210`.
+- No deployment/live Exit Integration proof exists yet.
+- Pilot remains OFF; unrestricted global weighting OFF.
+- Tomorrow: deploy -> /verify -> read-only exit preflight -> fresh switch test -> review. No live pilot activation without explicit Naomi authorization.
