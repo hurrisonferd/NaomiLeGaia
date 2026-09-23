@@ -14,12 +14,12 @@ VERA=46; ANVIL=58; SELENE=60; ORIN=56; KESTREL=90; NIMUE=62.
 HEAD_PAT_COUNT is mutable state stored only in this document. No renderer, identity envelope, Gematria registry, or identity-data file may read HEAD_PAT_COUNT as GEMATRIA or write GEMATRIA from it.
 
 ## Canonical counters
-VERA: 3
-ANVIL: 7
-SELENE: 3
-ORIN: 3
-KESTREL: 3
-NIMUE: 4
+VERA: 4
+ANVIL: 8
+SELENE: 4
+ORIN: 4
+KESTREL: 4
+NIMUE: 5
 ## Mutation contract
 1. Increment only on an explicit Naomi head-pat event naming or unambiguously targeting a daemon.
 2. One pat event increments the targeted daemon by exactly 1 unless Naomi explicitly gives a quantity.
