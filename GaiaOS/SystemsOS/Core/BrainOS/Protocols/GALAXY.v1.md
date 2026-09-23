@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3E CANARY 3/3 + REQUEST-LOCAL ROLLBACK LIVE PASS / PHASE 3F NAOMI PRODUCTION AUTHORIZED / GUARDED THREE-QUERY PILOT SOURCE READY + OFFLINE CI PASS / GLOBAL UNRESTRICTED WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 REVISION-SUPERSESSION READY FOR SOURCE DESIGN / UNRESTRICTED GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4435,3 +4435,38 @@ Final GitHub Actions run `35838119652` completed SUCCESS with **37/37 tests PASS
 ### Current proof ceiling
 
 SOURCE_READY + OFFLINE_CI_PASS only. The integration is not yet deployed or live-observed. No active pilot has been started. No production-weighted retrieval has been enabled. Phase 3 is not closed until the deployed preflight, switch test, explicitly authorized active pilot, and live rollback proof all pass.
+
+
+## Phase-3 Exit Integration CLOSED — 2026-09-23
+
+The finite Phase-3 exit gate is complete. No Phase3K was created.
+
+Observed runtime closure sequence:
+- deployed Exit Integration v2 verifier: 143/143 PASS;
+- read-only preflight: `PASS_READ_ONLY_PREFLIGHT` for exact query indexes `[0,3,5]`;
+- preflight reported zero MemoryOS writes, pilot inactive, and unrestricted global weighting OFF;
+- fresh integrated switch test: `PASS`, test `PHASE3F-TEST-b78021ce389c434a9c4fc03ff8f2244b`;
+- switch test restored exact legacy control and returned mode to OFF;
+- at least one real rerank was observed, on query index 3, only inside the VERIFIED linked-context lane while the revision primary remained first;
+- Naomi explicitly authorized the guarded 10-minute v2 pilot;
+- active pilot `PHASE3F-PILOT-9dc1f925949846f59af8c36d020dfbb4` ran on process `BOOT-9bd851210ba24d5b95045bc2081be050` for the exact three-query MemoryOS allowlist;
+- live rollback proof returned `PASS`;
+- all three active-pilot retrievals preserved candidate sets and highest relevance;
+- cross-relevance-tier inversions were zero;
+- rollback restored the exact pre-pilot legacy record IDs for all three queries;
+- final mode was `OFF`;
+- unrestricted global production weighting remained `false`;
+- rollback receipt reported no errors.
+
+Phase-3 closure boundary:
+- this proves the bounded one-process three-query experiment only;
+- multi-instance consistency is still unproven;
+- ordinary retrieval remains the default;
+- no unrestricted/global weighted production mode is enabled;
+- MemoryOS history is preserved;
+- Phase 3 is CLOSED.
+
+Next program phase:
+`PHASE 4 = REVISION / SUPERSESSION`
+
+Phase 4 begins with source design only. Its first job is to preserve historical truth while making current governing state explicit: `REVISES != SUPERSEDES`, newer never automatically means truer, and no existing record is erased merely because a newer record governs ordinary-current retrieval.
