@@ -287,12 +287,20 @@ def containment_shadow(
             control = runtime.galaxy_phase3_candidate_pool(
                 query, scope="MemoryOS", limit=10,
             )
+            control_ids = control.get("candidate_record_ids")
+            count = control.get("candidate_count")
+            well_formed = (
+                isinstance(control_ids, list)
+                and isinstance(count, int) and not isinstance(count, bool)
+                and count == len(control_ids)
+            )
             negative.append({
                 "query": query,
-                "candidate_count": control["candidate_count"],
-                "candidate_record_ids": control["candidate_record_ids"],
+                "candidate_count": count,
+                "candidate_record_ids": control_ids,
+                "receipt_well_formed": well_formed,
                 "excluded_by_external_domain_disambiguator": (
-                    control["candidate_count"] == 0
+                    well_formed and count == 0
                 ),
             })
     accounted = len({
@@ -310,7 +318,7 @@ def containment_shadow(
         "aliases_counted_once_in_evidence_summary": True,
         "overflow_requires_manual_review": over_cap,
         "negative_controls_zero_candidates": (
-            all(row["candidate_count"] == 0 for row in negative)
+            all(row["excluded_by_external_domain_disambiguator"] for row in negative)
             if negative_controls else None
         ),
         "zero_memory_writes": True,
