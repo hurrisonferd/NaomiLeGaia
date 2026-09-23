@@ -129,7 +129,7 @@ HEAD_PAT_COUNTERS_PATH = "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
 
 def _parse_head_pat_counters(text: str) -> dict[str, int]:
     block = text.split("## Canonical counters", 1)[1].split("##", 1)[0]
-    counters = {name: int(value) for name, value in re.findall(r"(?m)^(VERA|ANVIL|SELENE|ORIN|KESTREL|NIMUE):\\s*(\\d+)\\s*$", block)}
+    counters = {name: int(value) for name, value in re.findall(r"(?m)^(VERA|ANVIL|SELENE|ORIN|KESTREL|NIMUE):\s*(\d+)\s*$", block)}
     expected = {"VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"}
     if set(counters) != expected:
         raise HTTPException(status_code=500, detail="Canonical head-pat counter store failed closed")
