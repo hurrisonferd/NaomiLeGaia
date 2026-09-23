@@ -370,3 +370,246 @@ def containment_shadow(
             "quality review and broader validation remain necessary."
         ),
     }
+
+
+PHASE3I_VERSION = "galaxy.phase3i.generalization-suite.v1"
+
+# Controlled fixture oracle for read-only retrieval evaluation. These expected
+# IDs are test truth for this calibration corpus, not production relevance rules.
+PHASE3I_CASES = (
+    {
+        "case_id": "GRAVITY_PARAPHRASE",
+        "kind": "POSITIVE",
+        "difficulty": "MEDIUM",
+        "query": "contextual influence should affect memory recall",
+        "expected_primary_ids": ("MEM-3883f8127bcd40e28255fdbfa4c98309",),
+        "expected_related_ids": (),
+    },
+    {
+        "case_id": "CORE_CONTENT_PARAPHRASE",
+        "kind": "POSITIVE",
+        "difficulty": "MEDIUM",
+        "query": "violet carrier pulse calibration observation",
+        "expected_primary_ids": ("MEM-00b3fbfd4d73404f97a95c238596ab94",),
+        "expected_related_ids": ("MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",),
+    },
+    {
+        "case_id": "REVISION_HARD_PARAPHRASE",
+        "kind": "POSITIVE",
+        "difficulty": "HARD",
+        "query": "subsequent finding updates the violet calibration result",
+        "expected_primary_ids": ("MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",),
+        "expected_related_ids": ("MEM-00b3fbfd4d73404f97a95c238596ab94",),
+    },
+    {
+        "case_id": "SATELLITE_PARAPHRASE",
+        "kind": "POSITIVE",
+        "difficulty": "MEDIUM",
+        "query": "side note providing context for the calibration core",
+        "expected_primary_ids": ("MEM-1d0092cb66f44996b74604670a853a21",),
+        "expected_related_ids": ("MEM-00b3fbfd4d73404f97a95c238596ab94",),
+    },
+    {
+        "case_id": "PLANETARY_NEGATIVE",
+        "kind": "NEGATIVE",
+        "difficulty": "CONTROL",
+        "query": "planetary gravity trajectories",
+        "expected_primary_ids": (),
+        "expected_related_ids": (),
+    },
+    {
+        "case_id": "ADVERTISING_NEGATIVE",
+        "kind": "NEGATIVE",
+        "difficulty": "CONTROL",
+        "query": "advertising contextual influence",
+        "expected_primary_ids": (),
+        "expected_related_ids": (),
+    },
+)
+
+
+def _phase3i_candidate_evidence(runtime: Any, record_id: str, query: str) -> dict[str, Any]:
+    detail = runtime.galaxy_record(record_id)
+    if not detail or not detail.get("record"):
+        return {"record_id": record_id, "missing": True}
+    record = detail["record"]
+    origins = _match_origin(runtime, record, query)
+    concepts = _unique_query_concepts(origins)
+    statement = sorted({row["concept"] for row in origins if row["statement"]})
+    notes_only = sorted({
+        row["concept"] for row in origins if row["notes"] and not row["statement"]
+    })
+    scope_only = sorted({
+        row["concept"] for row in origins
+        if row["scope_virtual_memory"] and not row["statement"] and not row["notes"]
+    })
+    return {
+        "record_id": record_id,
+        "statement": record.get("statement"),
+        "source": record.get("source"),
+        "statement_backed_concepts": statement,
+        "notes_backed_only_concepts": notes_only,
+        "scope_only_concepts": scope_only,
+        "distinct_query_concept_count": len(concepts),
+        "alias_groups": {
+            concept: tokens for concept, tokens in concepts.items() if len(tokens) > 1
+        },
+        "metadata_or_scope_only": not bool(statement),
+        "missing": False,
+    }
+
+
+def generalization_suite(runtime: Any, *, limit: int = 10) -> dict[str, Any]:
+    """Read-only paraphrase and near-miss evaluation of the existing gate.
+
+    This measures the current candidate gate. It does not add aliases, change
+    admission thresholds, mutate records, or install Phase3H grouping.
+    Expected IDs are a calibration-fixture oracle used only to score these
+    predefined cases.
+    """
+    if not 1 <= int(limit) <= 10:
+        raise ValueError("Generalization suite limit must be between 1 and 10")
+
+    cases = []
+    all_expected_ids = {
+        record_id
+        for case in PHASE3I_CASES
+        for record_id in (
+            tuple(case["expected_primary_ids"]) + tuple(case["expected_related_ids"])
+        )
+    }
+    fixture_missing_ids = sorted(
+        record_id for record_id in all_expected_ids
+        if not runtime.galaxy_record(record_id)
+    )
+
+    for case in PHASE3I_CASES:
+        query = str(case["query"])
+        pool = runtime.galaxy_phase3_candidate_pool(
+            query, scope="MemoryOS", limit=limit,
+        )
+        candidate_ids = list(pool.get("candidate_record_ids") or [])
+        candidate_count = pool.get("candidate_count")
+        receipt_well_formed = (
+            isinstance(candidate_count, int)
+            and not isinstance(candidate_count, bool)
+            and candidate_count == len(candidate_ids)
+            and len(candidate_ids) == len(set(candidate_ids))
+        )
+        evidence = [
+            _phase3i_candidate_evidence(runtime, record_id, query)
+            for record_id in candidate_ids
+        ]
+        missing_candidate_records = [
+            row["record_id"] for row in evidence if row.get("missing")
+        ]
+        expected_primary = list(case["expected_primary_ids"])
+        expected_related = list(case["expected_related_ids"])
+        allowed = set(expected_primary + expected_related)
+        found_primary = [rid for rid in expected_primary if rid in candidate_ids]
+        missing_primary = [rid for rid in expected_primary if rid not in candidate_ids]
+        found_related = [rid for rid in expected_related if rid in candidate_ids]
+        unexpected = [rid for rid in candidate_ids if rid not in allowed]
+        metadata_only = [
+            row["record_id"] for row in evidence
+            if not row.get("missing") and row.get("metadata_or_scope_only")
+        ]
+        kind = str(case["kind"])
+        if kind == "NEGATIVE":
+            case_status = (
+                "NEGATIVE_CONTROL_PASS"
+                if receipt_well_formed and candidate_count == 0
+                else "NEGATIVE_CONTROL_LEAK"
+            )
+        elif missing_primary:
+            case_status = "POSITIVE_PRIMARY_MISS"
+        elif unexpected or metadata_only:
+            case_status = "POSITIVE_PRIMARY_FOUND_WITH_NOISE"
+        else:
+            case_status = "POSITIVE_PRIMARY_FOUND_CLEAN"
+
+        cases.append({
+            "case_id": case["case_id"],
+            "kind": kind,
+            "difficulty": case["difficulty"],
+            "query": query,
+            "scope_eligible_population_count": pool.get("scope_eligible_population_count"),
+            "candidate_count": candidate_count,
+            "candidate_record_ids": candidate_ids,
+            "ambiguous_record_ids": list(pool.get("ambiguous_record_ids") or []),
+            "receipt_well_formed": receipt_well_formed,
+            "expected_primary_ids": expected_primary,
+            "expected_primary_found_ids": found_primary,
+            "expected_primary_missing_ids": missing_primary,
+            "expected_related_ids": expected_related,
+            "expected_related_found_ids": found_related,
+            "unexpected_candidate_ids": unexpected,
+            "metadata_or_scope_only_candidate_ids": metadata_only,
+            "missing_candidate_record_ids": missing_candidate_records,
+            "candidate_evidence": evidence,
+            "case_status": case_status,
+        })
+
+    positives = [case for case in cases if case["kind"] == "POSITIVE"]
+    negatives = [case for case in cases if case["kind"] == "NEGATIVE"]
+    positive_primary_recall_all = all(
+        not case["expected_primary_missing_ids"] for case in positives
+    )
+    negatives_zero = all(
+        case["case_status"] == "NEGATIVE_CONTROL_PASS" for case in negatives
+    )
+    receipts_well_formed = all(case["receipt_well_formed"] for case in cases)
+    no_missing_candidate_records = all(
+        not case["missing_candidate_record_ids"] for case in cases
+    )
+    no_metadata_only_positive_candidates = all(
+        not case["metadata_or_scope_only_candidate_ids"] for case in positives
+    )
+    hard_case = next(
+        case for case in cases if case["case_id"] == "REVISION_HARD_PARAPHRASE"
+    )
+    hard_paraphrase_primary_found = not bool(hard_case["expected_primary_missing_ids"])
+
+    generalization_gate_pass = all((
+        not fixture_missing_ids,
+        positive_primary_recall_all,
+        negatives_zero,
+        receipts_well_formed,
+        no_missing_candidate_records,
+        no_metadata_only_positive_candidates,
+        hard_paraphrase_primary_found,
+    ))
+    return {
+        "schema": "gaiaos.galaxy.phase3i-generalization-suite.v1",
+        "version": PHASE3I_VERSION,
+        "execution": "OBSERVED_RUNTIME",
+        "authority": "NAOMI",
+        "status": (
+            "PASS_READ_ONLY_GENERALIZATION_GATE"
+            if generalization_gate_pass else "OBSERVED_REVIEW_REQUIRED"
+        ),
+        "case_count": len(cases),
+        "cases": cases,
+        "checks": {
+            "fixture_records_present": not fixture_missing_ids,
+            "positive_primary_recall_all": positive_primary_recall_all,
+            "negative_controls_zero_candidates": negatives_zero,
+            "all_receipts_well_formed": receipts_well_formed,
+            "all_candidate_records_inspected": no_missing_candidate_records,
+            "no_metadata_or_scope_only_positive_candidates": no_metadata_only_positive_candidates,
+            "hard_paraphrase_primary_found": hard_paraphrase_primary_found,
+            "zero_memory_writes": True,
+            "production_candidate_admission_modified": False,
+            "actual_80_20_ranking_modified": False,
+            "phase3h_grouping_installed_in_production": False,
+            "unrestricted_global_weighting_enabled": False,
+        },
+        "fixture_missing_ids": fixture_missing_ids,
+        "proof_boundary": (
+            "Read-only evaluation of the EXISTING relevance gate against a small "
+            "controlled paraphrase/near-miss fixture suite. Expected record IDs are "
+            "test oracle labels, not retrieval rules. PASS would not prove universal "
+            "semantic reasoning; REVIEW_REQUIRED identifies concrete generalization "
+            "or precision failures to engineer before any production activation."
+        ),
+    }
