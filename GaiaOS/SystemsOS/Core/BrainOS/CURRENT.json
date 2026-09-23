@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_GALAXY_PHASE4_REVISION_SUPERSESSION_SOURCE_READY_DEPLOY_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE4_DEPLOYED_VERIFIED_FIXTURE_REVIEW_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -654,12 +654,12 @@
     "phase3f_active_pilot_highest_relevance_preserved": true,
     "phase3f_active_pilot_cross_relevance_tier_inversions": 0,
     "phase4_ready": true,
-    "phase4_status": "PHASE4_REVISION_SUPERSESSION_SOURCE_READY_DEPLOY_PENDING",
+    "phase4_status": "PHASE4_DEPLOYED_VERIFIED_FIXTURE_REVIEW_PENDING",
     "phase4_scope": "REVISION_SUPERSESSION",
     "phase4_production_effect_enabled": false,
     "phase4_version": "galaxy.phase4.revision-supersession.v1",
     "phase4_source_ready": true,
-    "phase4_deployed": false,
+    "phase4_deployed": true,
     "phase4_live_observed": false,
     "phase4_mutation_routes_exposed": false,
     "phase4_relation_types": [
@@ -673,6 +673,11 @@
     "phase4_physical_delete": false,
     "phase4_fixture_review_route": "/galaxy/revision/phase4-fixture-review",
     "phase4_pair_review_route": "/galaxy/revision/phase4-pair-review",
-    "phase4_next_gate": "DEPLOY_VERIFY_THEN_RUN_READ_ONLY_PHASE4_FIXTURE_REVIEW"
+    "phase4_next_gate": "RUN_READ_ONLY_PHASE4_FIXTURE_REVIEW",
+    "phase4_verifier_run_id": "60a3f1f32c184015bd3ca062f53fce72",
+    "phase4_verifier_total": 151,
+    "phase4_verifier_passed": 151,
+    "phase4_verifier_failed": 0,
+    "phase4_verifier_live_host_execution": "PROVEN_FOR_THIS_CALL"
   }
 }
