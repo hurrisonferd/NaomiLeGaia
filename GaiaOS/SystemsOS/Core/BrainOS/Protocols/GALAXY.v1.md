@@ -4399,3 +4399,39 @@ Do not create Phase3K merely to continue iteration. Remaining Phase-3 work is ex
 7. Review receipts. If all required checks PASS, mark **PHASE 3 CLOSED** and proceed to Phase 4 Revision/Supersession. If any check fails, HOLD and repair within the named Phase-3 Exit Integration gate rather than proliferating lettered subphases.
 
 Current production boundary remains unchanged until that gate is implemented and explicitly authorized: Phase3F pilot inactive, unrestricted global weighting OFF.
+
+
+## Phase-3 Exit Integration source-ready — 2026-09-23
+
+The finite Phase-3 Exit Integration source is now built. No Phase3K was created.
+
+### Source behavior
+
+- New module: `api/galaxy_phase3_exit.py`
+- Version: `galaxy.phase3-exit-integration.v1`
+- Existing bounded pilot allowlist remains query indexes `[0,3,5]`.
+- Primary admission now reuses the live-validated Phase3J statement-first concept bridge.
+- Primary evidence requires at least 2 distinct statement concepts and >=2/3 query-concept coverage.
+- Notes and virtual scope cannot create primary membership.
+- VERIFIED direct graph neighbors are surfaced in a separately labeled linked-context lane and do **not** enter the weighted record list.
+- Primary cap: 4. Linked-context display cap: 2.
+- Candidate admission is fail-closed. Primary overflow, no primary, external-domain disambiguators, wrong scope, or wrong bounded limit HOLD rather than silently widening retrieval.
+- A singleton primary pool is permitted if all safety guards pass; it is not falsely labeled as a rerank. The three-query switch suite still requires at least one real rerank somewhere in the suite.
+- Pilot remains startup-OFF, leased, exact-query scoped, kill-switch protected and rollback guarded.
+- Unrestricted global weighting remains OFF.
+- No MemoryOS write path was added.
+
+A read-only preflight route was added:
+`GET /galaxy/retrieval/phase3-exit-integration-review`
+
+It evaluates the exact three bounded pools without activating the pilot. Tomorrow's live sequence is: deploy -> `/verify` -> read-only exit preflight -> fresh guarded switch test. Active-pilot activation still requires explicit Naomi authorization after those receipts are reviewed.
+
+### CI evidence
+
+The first expanded run, `35838026305`, failed and exposed two source-test defects: false-valued safety invariants were incorrectly folded through `all(checks.values())`, and the production-test monkeypatch passed the runtime argument into the fake pool builder with the wrong signature. Both failures were source/test harness issues and were fixed rather than ignored.
+
+Final GitHub Actions run `35838119652` completed SUCCESS with **37/37 tests PASS**. Compilation passed for the production pilot, Phase3J quality evaluator, new Phase-3 Exit Integration module, browser bridge, verifier, and MemoryOS adapter.
+
+### Current proof ceiling
+
+SOURCE_READY + OFFLINE_CI_PASS only. The integration is not yet deployed or live-observed. No active pilot has been started. No production-weighted retrieval has been enabled. Phase 3 is not closed until the deployed preflight, switch test, explicitly authorized active pilot, and live rollback proof all pass.
