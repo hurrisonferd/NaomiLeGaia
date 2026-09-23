@@ -4177,3 +4177,8 @@ These populations differ because ordinary `search_records` requires every litera
 **Proof ceiling:** ON/OFF restoration PASS; record-admission equivalence with prior production retrieval is FALSE on all three tested queries. No active pilot has run. Activating the pilot will change which memories surface for these three allowlisted queries, not just their ordering. The additional records were admitted through the declared relevance gate, not through gravity alone, but adoption of that gate for real production requests is a separate material behavior change requiring Naomi's informed review before proceeding. Do not describe this as a pure 80/20 rerank of the existing SQL result.
 
 Pending operator decision: explicitly approve the scope-limited GALAXY candidate-admission migration for the three allowlisted queries, or require a strict legacy-membership implementation and new discriminating production queries. If approval takes longer than the process-local ten-minute switch-test freshness window, rerun the switch-test; restart also resets pilot state. Unrestricted global weighted retrieval remains OFF.
+
+
+## Phase-3F broad retrieval quality review
+
+Pending read-only test: inspect the seven candidates for `calibration core revision memory context` using the existing Phase 3 retrieval experiment route. Compare high relevance (coverage >= 0.8) with broader contextual matches (coverage >= 0.6). Label each real result as direct, useful context, historical-only or noise after reviewing statement, matched concepts and source. Consider a four-record primary cap plus up to two verified contextual satellites, without automatically enabling the pilot. Confirm results with other queries before changing retrieval rules.
