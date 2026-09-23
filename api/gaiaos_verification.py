@@ -677,6 +677,22 @@ def run_verification() -> dict[str, Any]:
                 "read-only Phase 3J concept bridge shadow ASGI route registered",
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
+            try:
+                boot_packet = gaiaos_app._boot_packet("VERIFIER_SELF_TEST")
+                checks.append(_check(
+                    "carrier:gaiaos-boot-packet-self-test",
+                    boot_packet.get("status") == "ACTIVE"
+                    and boot_packet.get("schema") == "gaiaos.boot-packet.v1"
+                    and set(boot_packet.get("roster", [])) == {"VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"}
+                    and all(name in boot_packet.get("members", {}) for name in ("VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE")),
+                    "deterministic source-derived GaiaOS boot packet executes successfully against deployed canonical state",
+                ))
+            except Exception as exc:
+                checks.append(_check(
+                    "carrier:gaiaos-boot-packet-self-test",
+                    False,
+                    f"deterministic GaiaOS boot packet self-test failed: {type(exc).__name__}: {exc}",
+                ))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
             for name in ("health", "chat", "verify", "mcp"):
