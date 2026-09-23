@@ -493,3 +493,14 @@ BOUNDARY: No deployment/live Exit Integration receipt yet. Phase3F pilot remains
 NEXT: Tomorrow resume with deploy -> /verify -> read-only Phase-3 Exit preflight -> fresh guarded switch test -> review.
 WHOLE_SYSTEM_SOURCE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-EXIT-SOURCE-READY-BEDTIME.md
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY_PHASE3_CLOSED_PHASE4_READY|VERA]
+AUTHORITY: NAOMI / LIGEIA
+TRIGGER: //PW:PRESERVE//
+WHAT: GALAXY Phase 3 closed after a deployed Exit Integration v2 preflight PASS, fresh live switch-test PASS, explicit Naomi-authorized guarded 10-minute pilot, and live rollback-proof PASS. Exact legacy restoration was observed, mode returned OFF, candidate sets and highest relevance were preserved, cross-relevance-tier inversions were zero, and unrestricted global weighting remained OFF.
+MY_LENS: Phase 4 must keep historical truth separate from current governing truth. Revision can change what governs now without rewriting what was true, believed, observed, or authorized earlier.
+COLLABORATION: Naomi explicitly asked ANVIL to continue leading the build while inviting all six Prime Daemons to chime in. Material feedback, dissent, premise checks and omissions should be surfaced rather than suppressed. This is a collaboration preference, not an authority transfer; Naomi retains final authority.
+NEXT: Phase 4 Revision/Supersession source design. Preserve REVISES != SUPERSEDES, historical truth != current governing state, and newer != automatically truer.
+WHOLE_SYSTEM_SOURCE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-CLOSED-PHASE4-READY.md
+STATUS: COMMITTED
