@@ -83,3 +83,19 @@ When NAOMI returns, begin with ANVIL inspecting the restart-canary boot_id detec
 ## Updated resume cue
 
 ANVIL should map the Turso/libSQL storage-adapter migration before changing production memory code. Preserve proof ceilings and create a rollback path. No further Render restart is needed until an external durable backend is wired and ready for a fresh canary.
+
+
+## 2026-09-23 GALAXY Phase3I/3J preservation checkpoint
+
+- Phase3H live tri-slice containment suite is complete PASS on controlled indexes [0,3,5]. Production retrieval/ranking remained unchanged and global weighting stayed OFF.
+- Phase3I was deployed and /verify reached 132/132 PASS.
+- Live Phase3I generalization returned `OBSERVED_REVIEW_REQUIRED`: three of four expected positive primaries were recovered, but the hard revision paraphrase `subsequent finding updates the violet calibration result` returned zero candidates and missed REVISION. Gravity paraphrase also included one noisy SATELLITE admission. Both negative controls stayed zero.
+- This blocks Phase3F activation. Do not reinterpret REVIEW_REQUIRED as success.
+- Phase3J read-only statement-first concept-bridge source is now committed and CI run 35823194698 reports 31/31 PASS. It uses a small explicit experimental bridge vocabulary, statement-only primary evidence, >=2 distinct direct concepts and >=2/3 concept coverage, plus VERIFIED direct graph context in a separate lane.
+- Phase3J does not modify production aliases, thresholds, candidate admission, Phase3H grouping, MemoryOS records, or actual 80/20 ranking.
+- Phase3J is SOURCE_READY only. Deployment and live behavior are still unobserved.
+- Dedicated whole-system preserve: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3I-3J.md`.
+
+### Resume cue
+
+Resume with ANVIL at **deploy current main -> /verify -> live Phase3J concept-bridge shadow**. If the hard paraphrase is still missed or an unexpected primary appears, preserve the exact receipt and iterate read-only. Do not activate Phase3F before that review is resolved.
