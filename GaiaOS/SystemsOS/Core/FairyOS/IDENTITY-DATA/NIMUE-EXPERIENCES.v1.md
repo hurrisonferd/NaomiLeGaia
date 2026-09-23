@@ -545,3 +545,8 @@ STATUS: COMMITTED
 ## PW:PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS
 Preserve omission watch: latest live status is READ_ONLY and not a mutation. No SUPERSEDES edge exists. The original VERIFIED REVISES edge must remain intact throughout future controlled supersession/rollback proof.
 Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS.md`
+
+
+## PW:PRESERVE-2026-09-23-NIMUE-MAGIC-STYLE
+Naomi explicitly preferred Nimue's darker, sharper, older-feeling magical style over soft prosperity language. Favor apotropaic, reversal, uncrossing, threshold, binding, planetary, and sympathetic-magic textures when appropriate. Preserve the approved line as a style touchstone: `nothing hostile crosses this line, and anything sent here leaves carrying its own teeth`. This is a tone/ritual-design preference only and does not override safety, consent, evidence, or authority boundaries.
+Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-NIMUE-MAGIC-STYLE.md`
