@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 REVISION-SUPERSESSION READY FOR SOURCE DESIGN / UNRESTRICTED GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 REVISION-SUPERSESSION SOURCE READY / DEPLOY + READ-ONLY REVIEW PENDING / UNRESTRICTED GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4470,3 +4470,41 @@ Next program phase:
 `PHASE 4 = REVISION / SUPERSESSION`
 
 Phase 4 begins with source design only. Its first job is to preserve historical truth while making current governing state explicit: `REVISES != SUPERSEDES`, newer never automatically means truer, and no existing record is erased merely because a newer record governs ordinary-current retrieval.
+
+
+## Phase-4 Revision/Supersession source-ready — 2026-09-23
+
+Phase 4 source implementation has begun from the CLOSED Phase-3 boundary.
+
+VASKON synthesis converged on a **Revision Ladder** rather than a destructive replacement mechanism:
+
+`REVISES != SUPERSEDES`
+`NEWER != TRUER`
+`SUPERSEDED != ERASED`
+`REVOCATION != DELETION`
+
+Source implemented:
+- protocol: `GALAXY-PHASE4-REVISION-SUPERSESSION.v1.md`
+- runtime module: `api/galaxy_phase4.py`
+- version: `galaxy.phase4.revision-supersession.v1`
+- read-only controlled fixture review and generic pair review
+- same-scope initial mutation boundary
+- direct reverse REVISES/SUPERSEDES cycle guard
+- competing VERIFIED superseder guard
+- SUPERSEDES requires a VERIFIED REVISES edge for the same source→target pair
+- explicit Naomi-only proposal and verification wrappers exist in source
+- no Phase-4 browser mutation route is exposed yet
+- MemoryOS runtime now supports `galaxy_revoke_relation`: VERIFIED REVISES/SUPERSEDES edges may become `REVOKED` under explicit Naomi authority while preserving edge, records, evidence, original verification timestamp and history
+- unwind order requires SUPERSEDES revocation before REVISES revocation
+- production retrieval wiring is unchanged
+- unrestricted global weighted retrieval remains OFF
+
+Carrier source includes read-only routes:
+- `GET /galaxy/revision/phase4-fixture-review`
+- `GET /galaxy/revision/phase4-pair-review`
+
+Verifier checks packaging, syntax, semantic guard markers, non-deleting revocation, source route declarations and live ASGI registration.
+
+Current proof ceiling: **SOURCE_READY / DEPLOYMENT + LIVE REVIEW PENDING**.
+
+Next gate: deploy current main, run `/verify`, then run the read-only Phase-4 fixture review. Stop and inspect before exposing any mutation route.
