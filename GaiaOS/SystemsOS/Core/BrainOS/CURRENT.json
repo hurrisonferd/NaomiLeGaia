@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_GALAXY_PHASE5_READ_ONLY_DEPLOYED_VERIFIER_PASS_FIXTURE_REVIEW_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE5_READ_ONLY_LIVE_PASS_MUTATION_DESIGN_AUTH_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -113,7 +113,7 @@
     "galaxy_phase5_synthesis_deployed": true,
     "galaxy_phase5_synthesis_route_registered_live": true,
     "galaxy_phase5_synthesis_read_only_self_test_passed": true,
-    "galaxy_phase5_synthesis_live_fixture_observed": false
+    "galaxy_phase5_synthesis_live_fixture_observed": true
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -141,7 +141,7 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "GALAXY Phase 3 is CLOSED. Phase 4 controlled exact AUGURY/RITUAL supersession completed live with reversible rollback: the target became HISTORICAL_SUPERSEDED on verification and returned to CURRENT_REVISED_CONTEXT after revocation while history remained intact. Phase 5 provenance-backed synthesis review is source-ready, deployed, verifier-clean at 173/173 PASS, and read-only only. Its live external fixture review is still pending; no synthesis mutation route exists.",
+  "claim_ceiling": "GALAXY Phase 5 bounded provenance-backed synthesis review is live-observed PASS on the exact revision/core fixture. Proven in this slice: same-scope two-record cluster, complete provenance, VERIFIED internal REVISES relation visible, revoked SUPERSEDES retained only as historical evidence, no unresolved VERIFIED contradiction, no recursive synthesis, no generated synthesis statement, zero MemoryOS writes, no memory_syntheses row, no DERIVED_FROM edges, no production retrieval change, unrestricted global weighting OFF. No synthesis manifestation is proven or exposed.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
@@ -707,7 +707,7 @@
     "phase4_controlled_supersedes_edge_id": "EDGE-45ba86cf37414c418de4aa0298122c14",
     "phase4_controlled_final_edge_status": "REVOKED",
     "phase4_controlled_final_target_state": "CURRENT_REVISED_CONTEXT",
-    "phase5_status": "DEPLOYED_VERIFIER_PASS_READ_ONLY_FIXTURE_REVIEW_PENDING",
+    "phase5_status": "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
     "phase5_version": "galaxy.phase5.synthesis-consolidation.v1",
     "phase5_protocol": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE5-SYNTHESIS-CONSOLIDATION.v1.md",
     "phase5_source_ready": true,
@@ -716,9 +716,18 @@
     "phase5_route_registered_live": true,
     "phase5_verifier_run_id": "3b414889e8f34b0ca43f176928b9f396",
     "phase5_verifier_summary": "173/173 PASS",
-    "phase5_live_fixture_observed": false,
+    "phase5_live_fixture_observed": true,
     "phase5_mutation_route_exists": false,
-    "phase5_next_gate": "RUN_READ_ONLY_PHASE5_FIXTURE_REVIEW_THEN_STOP"
+    "phase5_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_DESIGN",
+    "phase5_live_fixture_status": "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
+    "phase5_source_provenance_complete": true,
+    "phase5_synthesis_statement_generated": false,
+    "phase5_zero_memory_writes": true,
+    "phase5_memory_syntheses_row_written": false,
+    "phase5_derived_from_edges_written": false,
+    "phase5_production_retrieval_changed": false,
+    "phase5_global_weighting_enabled": false,
+    "phase5_mutation_design_authorization_pending": true
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
