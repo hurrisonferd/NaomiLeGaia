@@ -14,7 +14,7 @@ class FakeMemory:
         "satellite calibration core memory context",
     )
     GALAXY_QUERY_STOPWORDS = set()
-    GALAXY_QUERY_CONCEPT_ALIASES = {"contextual": "context", "memories": "memory"}
+    GALAXY_QUERY_CONCEPT_ALIASES = {"contextual": "context", "memories": "memory", "retrieval": "memory"}
 
     def __init__(self):
         self.writes = 0
@@ -53,6 +53,7 @@ class FakeMemory:
         return {
             "scope_eligible_population_count": len(self.records),
             "candidate_record_ids": [r["record_id"] for r in rows],
+            "candidate_count": len(rows),
             "candidates": [
                 {"record_id": r["record_id"],
                  "relevance": {
@@ -69,6 +70,9 @@ class FakeMemory:
              "weighted_rank": i + 1, "weighted_score": row["relevance"]["coverage"] * 0.8}
             for i, row in enumerate(pool["candidates"])
         ]
+        rows.sort(key=lambda row: (-row["weighted_score"], row["weighted_rank"]))
+        for index, row in enumerate(rows):
+            row["weighted_rank"] = index + 1
         return {"weighted_order": rows, "candidate_set_preserved": True,
                 "top_relevance_preserved": True,
                 "cross_relevance_tier_inversion_count": 0}
