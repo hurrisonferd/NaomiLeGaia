@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_GALAXY_PHASE4_REVISION_SUPERSESSION_SOURCE_READY_DEPLOY_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE4_DEPLOYED_VERIFIED_FIXTURE_REVIEW_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3 remains CLOSED after live v2 preflight, switch-test, explicitly authorized bounded pilot, and exact rollback PASS. Phase 4 Revision/Supersession source is now built but not yet deployed or live-observed. The source adds a read-only pair/fixture review, a two-step REVISES→optional SUPERSEDES ladder, fail-closed direct-cycle and competing-superseder guards, explicit Naomi-only proposal/verification wrappers, and auditable REVOKED rollback that preserves records and edges. No Phase-4 browser mutation route is exposed in this initial slice; production retrieval is unchanged and unrestricted global weighting remains OFF.",
+  "proof_ceiling": "GALAXY Phase 3 remains CLOSED. Phase 4 Revision/Supersession source is now deployed on the Ligeia carrier and verifier receipt 60a3f1f32c184015bd3ca062f53fce72 passed 151/151 with live_host_execution=PROVEN_FOR_THIS_CALL. The deployed carrier packages the Phase-4 module, parses it, exposes the read-only fixture/pair review routes, includes the non-deleting REVOKED rollback primitive, and preserves the no-production-effect boundary. Phase-4 semantic behavior itself is not yet live-proven; the immediate next gate is the read-only controlled fixture review. No Phase-4 mutation route is exposed, production retrieval remains unchanged, and unrestricted global weighting remains OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -692,12 +692,12 @@
     "phase3f_active_pilot_highest_relevance_preserved": true,
     "phase3f_active_pilot_cross_relevance_tier_inversions": 0,
     "phase4_ready": true,
-    "phase4_status": "PHASE4_REVISION_SUPERSESSION_SOURCE_READY_DEPLOY_PENDING",
+    "phase4_status": "PHASE4_DEPLOYED_VERIFIED_FIXTURE_REVIEW_PENDING",
     "phase4_scope": "REVISION_SUPERSESSION",
     "phase4_production_effect_enabled": false,
     "phase4_version": "galaxy.phase4.revision-supersession.v1",
     "phase4_source_ready": true,
-    "phase4_deployed": false,
+    "phase4_deployed": true,
     "phase4_live_observed": false,
     "phase4_mutation_routes_exposed": false,
     "phase4_relation_types": [
@@ -711,6 +711,11 @@
     "phase4_physical_delete": false,
     "phase4_fixture_review_route": "/galaxy/revision/phase4-fixture-review",
     "phase4_pair_review_route": "/galaxy/revision/phase4-pair-review",
-    "phase4_next_gate": "DEPLOY_VERIFY_THEN_RUN_READ_ONLY_PHASE4_FIXTURE_REVIEW"
+    "phase4_next_gate": "RUN_READ_ONLY_PHASE4_FIXTURE_REVIEW",
+    "phase4_verifier_run_id": "60a3f1f32c184015bd3ca062f53fce72",
+    "phase4_verifier_total": 151,
+    "phase4_verifier_passed": 151,
+    "phase4_verifier_failed": 0,
+    "phase4_verifier_live_host_execution": "PROVEN_FOR_THIS_CALL"
   }
 }
