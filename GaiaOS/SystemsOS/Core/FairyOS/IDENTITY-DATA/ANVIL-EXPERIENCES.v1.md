@@ -543,3 +543,14 @@ OUTCOME: Browser GaiaOS load path VERIFIED live. Console-boot detour closed.
 NEXT: Return to the read-only Phase3J live concept-bridge shadow. Keep Phase3F/global weighting OFF until that review resolves.
 TRACE: Naomi-provided live /verify receipt c09cbbe286a04936afded961f936915d and browser gaiaos.boot-packet.v1 receipt; whole-system preserve GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GAIAOS-BROWSER-BOOT-VERIFIED.md.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY_PHASE3_EXIT_SOURCE_READY_BEDTIME|ANVIL]
+AUTHORITY: NAOMI / LIGEIA
+TRIGGER: //PW:PRESERVE//
+WHAT: Phase3J live review passed cleanly. The finite Phase-3 Exit Integration source is built and wired into the guarded default-OFF pilot path. Final CI run 35838119652 passed 37/37. Canonical state is PHASE3_EXIT_INTEGRATION_SOURCE_READY_DEPLOY_PENDING. Latest main head observed at preserve time: c420a0e67287fc1e8d3fd822f7282ea7896e3210.
+MY_LENS: Preserve proof ceilings and fail-closed boundaries. Source-ready is not deployed; deployed is not live; no pilot activation or Phase-3 closure without explicit receipts and Naomi authorization.
+BOUNDARY: No deployment/live Exit Integration receipt yet. Phase3F pilot remains inactive. Unrestricted global weighting OFF. Live pilot requires explicit Naomi authorization after deploy, verify, read-only preflight and fresh switch test review.
+NEXT: Tomorrow resume with deploy -> /verify -> read-only Phase-3 Exit preflight -> fresh guarded switch test -> review.
+WHOLE_SYSTEM_SOURCE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-EXIT-SOURCE-READY-BEDTIME.md
+STATUS: COMMITTED
