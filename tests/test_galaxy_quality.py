@@ -20,6 +20,9 @@ class VerifierPhaseStateTests(unittest.TestCase):
         self.assertTrue(verifier._phase3_status_authorized_family(
             "PHASE3I_GENERALIZATION_SOURCE_READY"
         ))
+        self.assertTrue(verifier._phase3_status_authorized_family(
+            "PHASE3J_CONCEPT_BRIDGE_SOURCE_READY"
+        ))
 
     def test_unknown_future_or_unrelated_status_fails_closed(self):
         self.assertFalse(verifier._phase3_status_authorized_family("PHASE4_UNKNOWN"))
