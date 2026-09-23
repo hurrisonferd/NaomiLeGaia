@@ -473,6 +473,33 @@ def run_verification() -> dict[str, Any]:
             checks.append(_check(
                 "carrier:phase3f-production-syntax", False, f"{type(exc).__name__}: {exc}",
             ))
+    quality_module = ROOT / "galaxy_quality.py"
+    checks.append(_check(
+        "carrier:phase3g-quality-module",
+        quality_module.exists(),
+        "read-only Phase 3G candidate quality audit packaged",
+    ))
+    if quality_module.exists():
+        try:
+            quality_text = quality_module.read_text(encoding="utf-8")
+            compile(quality_text, str(quality_module), "exec")
+            checks.append(_check(
+                "carrier:phase3g-quality-syntax",
+                True, "deployed quality audit parses",
+            ))
+            checks.append(_check(
+                "carrier:phase3g-read-only-boundary",
+                "def review(" in quality_text
+                and "def _match_origin(" in quality_text
+                and "promotion_implemented" in quality_text
+                and "production_retrieval_changed" in quality_text,
+                "audit exposes match origins without production mutations",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase3g-quality-syntax",
+                False, f"{type(exc).__name__}: {exc}",
+            ))
     memory_adapter = GAIA / "SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
     checks.append(_check(
         "carrier:phase3f-real-memoryos-adapter-wiring",
@@ -513,6 +540,12 @@ def run_verification() -> dict[str, Any]:
                 route in bridge_text,
                 "Phase 3F guarded production " + label + " route declared",
             ))
+        checks.append(_check(
+            "carrier:/galaxy/phase3g-quality-review",
+            '/galaxy/retrieval/phase3g-quality-review' in bridge_text
+            and 'galaxy_quality.review' in bridge_text,
+            "read-only Phase 3G quality review route declared",
+        ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -555,6 +588,11 @@ def run_verification() -> dict[str, Any]:
                     (route, method) in route_pairs,
                     "live Phase 3F guarded production " + label + " route registration observed",
                 ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase3g-quality-review",
+                ("/galaxy/retrieval/phase3g-quality-review", "GET") in route_pairs,
+                "read-only Phase 3G quality review ASGI route registered",
+            ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
             detail = f"{type(exc).__name__}: {exc}"
