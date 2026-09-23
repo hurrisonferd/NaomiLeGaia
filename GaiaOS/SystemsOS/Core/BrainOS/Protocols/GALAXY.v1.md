@@ -4284,3 +4284,10 @@ Root cause is verifier bookkeeping, not lost authority and not Phase3H behavior:
 Repair committed in source: explicit authorized lifecycle prefixes now include Phase3D, E, F, G and H while unrelated/future status families still fail closed. Later G/H phases also continue checking the earlier Phase3F production-source boundary when the pilot source remains present, and BrainOS adoption consistency stays required through G/H. Tests added for accepted G/H and rejected unrelated/future states. GitHub Actions run `35809393544` passed **23/23** offline tests after the repair.
 
 Proof boundary: the broken live receipt still proves the old carrier executed and had the Phase3H route registered. It does NOT prove the repaired verifier has been deployed. Next gate is redeploy, rerun `/verify`, require all checks PASS, then execute the read-only Phase3H containment shadow for query index 0 with negative controls. No active production pilot or live active-pilot rollback observed; unrestricted global production weighting remains OFF.
+
+
+## Phase-3H deployed verifier clean: 129/129 PASS
+
+Running-carrier verification receipt `92bce511f0004901a53529ed69d11e3e` returned **129/129 PASS**, zero failures. The repaired Phase3 lifecycle authorization predicate now accepts the current explicit Phase3G/H status while preserving the earlier Phase3F production-source boundary and global-OFF requirement. Phase3H containment source checks, negative-control safeguards, route declaration and live ASGI registration all passed.
+
+Proof ceiling remains narrow: deployment and registration are now live-observed, but the Phase3H containment algorithm itself has not yet produced a running-carrier receipt. No production candidate admission, 80/20 ranking, memory record, relation, governing state or global weighting was changed by verification. The next gate is the live read-only shadow for query index 0 with both negative controls enabled. Only after that receipt should indexes 3 and 5 be repeated under Phase3H. Active Phase3F pilot and active rollback proof remain unobserved; unrestricted global weighting OFF.
