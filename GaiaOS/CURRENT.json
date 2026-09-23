@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_FIRST_LIVE_QUALITY_REVIEW_OBSERVED_CROSS_QUERY_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_TWO_LIVE_QUALITY_SLICES_QUERY_0_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "User-provided Phase3G live read-only quality review on query index 3: 13 MemoryOS records scoped, 7 candidates, 4 concrete calibration-core statements and 3 general GALAXY policy statements, one ambiguous excluded, no missing records, zero writes and production unchanged. Notes and virtual MemoryOS scope inflated policy lexical coverage; CORE coverage .6 was ranked fifth below two generic .8 policy records. Verified topical links: REVISION REVISES CORE, REINFORCER REINFORCES CORE, SATELLITE CONTEXT_FOR CORE; REVISION CONTRADICTS REINFORCER. CORE stays CURRENT_REVISED_CONTEXT and eligible, because REVISES does not supersede. The generic policies link to each other, not CORE. This validates the diagnostic and one controlled calibration example, not universal semantic reasoning or an adopted production containment rule. Next: test source indexes 5 and 0 read-only. Prior Phase3F live switch PASS is process-specific; no active pilot or active rollback observed; unrestricted global weighting OFF.",
+  "proof_ceiling": "Phase3G live read-only query indexes 3 and 5 observed: 13 scoped MemoryOS records; index 3 old SQL 0, GALAXY 7 (4 topic-anchored, 3 generic policy); index 5 old SQL 1, GALAXY 6 (4 topic-anchored, 2 generic policy, 2 ambiguous excluded). In index 5, SATELLITE matched all terms (1.0) and ranked first; the other topic-anchored REVISION, CORE, REINFORCER ranked 2-4 ahead of generic policy records 5-6. Core remained CURRENT_REVISED_CONTEXT and current-default eligible. Verified graph links SATELLITE CONTEXT_FOR CORE, REVISION REVISES CORE, REINFORCER REINFORCES CORE and REVISION CONTRADICTS REINFORCER were observed. Notes and virtual MemoryOS scope explain many generic-policy term matches. This is controlled-calibration evidence for two queries only; the source diagnostic reports zero writes, production unchanged. Query index 0 still pending, topic-anchor containment not implemented, Phase3F active pilot and its active rollback unobserved, global unrestricted weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3G_FIRST_LIVE_QUALITY_REVIEW_OBSERVED_CROSS_QUERY_TEST_PENDING",
+    "phase3_status": "PHASE3G_TWO_LIVE_QUALITY_SLICES_OBSERVED_QUERY_0_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "CONTINUE_READ_ONLY_CROSS_QUERY_QUALITY_VALIDATION_BEFORE_PILOT",
+    "phase3f_next_gate": "COMPLETE_PHASE3G_CROSS_QUERY_REVIEW_BEFORE_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -298,14 +298,15 @@
     "phase3g_ci_run_id": 35802335861,
     "phase3g_ci_summary": "13/13 OFFLINE TESTS PASS",
     "phase3g_production_admission_change_enabled": false,
-    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_5_THEN_0",
+    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_0",
     "phase3g_quality_review_deployed": true,
     "phase3g_quality_review_route_registered_live": true,
     "phase3g_quality_review_verifier_run_id": "b3bba7b2f2d5444b9c3dd179ff72a2b7",
     "phase3g_quality_review_verifier_summary": "125/125 PASS",
     "phase3g_quality_review_status": "OBSERVED_READ_ONLY",
     "phase3g_quality_review_observed_query_indexes": [
-      3
+      3,
+      5
     ],
     "phase3g_quality_review_observed_scope_population": 13,
     "phase3g_quality_review_observed_candidate_count": 7,
@@ -328,6 +329,35 @@
     ],
     "phase3g_quality_review_verified_contradiction_observed": true,
     "phase3g_quality_review_policy_edge_only": "EXTENDS_BETWEEN_POLICY_RECORDS_NOT_CALIBRATION_CORE",
-    "phase3g_quality_review_containment_applied": false
+    "phase3g_quality_review_containment_applied": false,
+    "phase3g_quality_review_index5_status": "OBSERVED_READ_ONLY",
+    "phase3g_quality_review_index5_scope_population": 13,
+    "phase3g_quality_review_index5_legacy_count": 1,
+    "phase3g_quality_review_index5_candidate_count": 6,
+    "phase3g_quality_review_index5_topic_anchored_count": 4,
+    "phase3g_quality_review_index5_indirect_policy_count": 2,
+    "phase3g_quality_review_index5_ambiguous_count": 2,
+    "phase3g_quality_review_index5_missing_count": 0,
+    "phase3g_quality_review_index5_zero_writes": true,
+    "phase3g_quality_review_index5_top_record_role": "SATELLITE",
+    "phase3g_quality_review_index5_top_coverage": 1,
+    "phase3g_quality_review_index5_topic_anchored_weighted_ranks": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "phase3g_quality_review_index5_policy_weighted_ranks": [
+      5,
+      6
+    ],
+    "phase3g_quality_review_index5_verified_graph_edges": [
+      "SATELLITE_CONTEXT_FOR_CORE",
+      "REVISION_REVISES_CORE",
+      "REINFORCER_REINFORCES_CORE",
+      "REVISION_CONTRADICTS_REINFORCER"
+    ],
+    "phase3g_quality_review_index5_core_current_default_eligible": true,
+    "phase3g_quality_review_index5_cross_tier_inversions": 0
   }
 }
