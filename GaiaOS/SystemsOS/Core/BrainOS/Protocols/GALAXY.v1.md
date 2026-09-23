@@ -4142,3 +4142,13 @@ Current evidence ceiling:
 `PHASE3F SOURCE IMPLEMENTED / CI PASS / LIVE DEPLOYMENT UNKNOWN / LIVE SWITCH TEST UNKNOWN / ACTIVE PILOT ROLLBACK UNKNOWN / GLOBAL UNRESTRICTED WEIGHTING OFF`
 
 Failure callouts MUST name the failed guard, restore OFF when possible, preserve the receipts, and never convert source presence into runtime proof.
+
+
+## Phase-3F deployed route verifier PASS 2026-09-22
+
+Running carrier verification ID: `e18b13c0ff434a3ca7d27c08fda41f10`.
+Result: `120/120 PASS`, `OBSERVED_RUNTIME` from `/app`.
+Observed deployed: guarded Phase 3F module and syntax, safety controls, real MemoryOS adapter wiring, authorization and BrainOS alignment, and all six new ASGI control routes.
+Behavioral proof still pending: live integrated ON/OFF switch test, pilot activation and actual active-pilot rollback.
+Global unrestricted weighting remains OFF. Source default OFF does not alone prove the current process state.
+Next gate: `/galaxy/production/review` then button `1. Live ON/OFF switch test`. Capture and review its JSON receipt before activation.
