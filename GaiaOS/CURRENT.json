@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_GALAXY_PHASE3_CLOSED_PHASE4_READY",
+  "status": "ACTIVE_GALAXY_PHASE4_REVISION_SUPERSESSION_SOURCE_READY_DEPLOY_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3 is CLOSED for the bounded weighted-retrieval experiment. Exit Integration v2 passed deployed read-only preflight on exact query indexes 0/3/5, a fresh integrated ON/OFF switch test, explicit Naomi-authorized 10-minute pilot activation, and live active-pilot rollback proof. During the active pilot all three allowlisted queries applied the pilot path, candidate sets were preserved, highest relevance was preserved, cross-relevance-tier inversions were zero, and query index 3 demonstrated a real context-lane rerank. Rollback restored exact legacy control for all three queries, returned mode to OFF, reported zero errors, and unrestricted global production weighting remained OFF. This closes only the tested one-process three-query Phase-3 experiment. Multi-instance rollout is not proven. The next program phase is Phase 4 Revision/Supersession source design.",
+  "proof_ceiling": "GALAXY Phase 3 remains CLOSED after live v2 preflight, switch-test, explicitly authorized bounded pilot, and exact rollback PASS. Phase 4 Revision/Supersession source is now built but not yet deployed or live-observed. The source adds a read-only pair/fixture review, a two-step REVISES→optional SUPERSEDES ladder, fail-closed direct-cycle and competing-superseder guards, explicit Naomi-only proposal/verification wrappers, and auditable REVOKED rollback that preserves records and edges. No Phase-4 browser mutation route is exposed in this initial slice; production retrieval is unchanged and unrestricted global weighting remains OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -692,8 +692,25 @@
     "phase3f_active_pilot_highest_relevance_preserved": true,
     "phase3f_active_pilot_cross_relevance_tier_inversions": 0,
     "phase4_ready": true,
-    "phase4_status": "READY_FOR_SOURCE_DESIGN",
+    "phase4_status": "PHASE4_REVISION_SUPERSESSION_SOURCE_READY_DEPLOY_PENDING",
     "phase4_scope": "REVISION_SUPERSESSION",
-    "phase4_production_effect_enabled": false
+    "phase4_production_effect_enabled": false,
+    "phase4_version": "galaxy.phase4.revision-supersession.v1",
+    "phase4_source_ready": true,
+    "phase4_deployed": false,
+    "phase4_live_observed": false,
+    "phase4_mutation_routes_exposed": false,
+    "phase4_relation_types": [
+      "REVISES",
+      "SUPERSEDES"
+    ],
+    "phase4_supersedes_requires_verified_revises_same_pair": true,
+    "phase4_direct_cycle_guard": true,
+    "phase4_competing_superseder_guard": true,
+    "phase4_reversible_edge_state": "REVOKED",
+    "phase4_physical_delete": false,
+    "phase4_fixture_review_route": "/galaxy/revision/phase4-fixture-review",
+    "phase4_pair_review_route": "/galaxy/revision/phase4-pair-review",
+    "phase4_next_gate": "DEPLOY_VERIFY_THEN_RUN_READ_ONLY_PHASE4_FIXTURE_REVIEW"
   }
 }
