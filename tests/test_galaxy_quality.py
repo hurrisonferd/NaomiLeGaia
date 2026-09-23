@@ -33,6 +33,7 @@ class FakeMemory:
         "satellite calibration core memory context",
     )
     GALAXY_QUERY_STOPWORDS = set()
+    GALAXY_QUERY_EXTERNAL_DOMAIN_TERMS = {"planetary", "trajectory", "trajectories", "advertising"}
     GALAXY_QUERY_CONCEPT_ALIASES = {"contextual": "context", "memories": "memory", "retrieval": "memory"}
 
     def __init__(self):
@@ -394,6 +395,75 @@ class GeneralizationSuiteTests(unittest.TestCase):
             result = quality.generalization_suite(self.runtime)
         self.assertEqual(result["status"], "OBSERVED_REVIEW_REQUIRED")
         self.assertFalse(result["checks"]["all_receipts_well_formed"])
+
+
+class ConceptBridgeShadowTests(unittest.TestCase):
+    def setUp(self):
+        self.runtime = FakeMemory()
+        self.runtime.records[2]["statement"] = (
+            "A later controlled observation revises the calibration core toward ultraviolet."
+        )
+        self.cases = (
+            {
+                "case_id": "REVISION_HARD_PARAPHRASE",
+                "kind": "POSITIVE",
+                "difficulty": "HARD",
+                "query": "subsequent finding updates the violet calibration result",
+                "expected_primary_ids": ("REV",),
+                "expected_related_ids": ("CORE",),
+            },
+            {
+                "case_id": "PLANETARY_NEGATIVE",
+                "kind": "NEGATIVE",
+                "difficulty": "CONTROL",
+                "query": "planetary gravity trajectories",
+                "expected_primary_ids": (),
+                "expected_related_ids": (),
+            },
+        )
+
+    def test_hard_paraphrase_recovered_statement_first(self):
+        with patch.object(quality, "PHASE3I_CASES", self.cases), patch.object(
+            quality, "PHASE3J_FIXTURE_IDS", ("GENERIC", "CORE", "REV")
+        ):
+            result = quality.concept_bridge_shadow(self.runtime)
+        self.assertEqual(result["status"], "PASS_READ_ONLY_CONCEPT_BRIDGE")
+        hard = next(c for c in result["cases"] if c["kind"] == "POSITIVE")
+        self.assertEqual(hard["bridge_primary_ids"], ["REV"])
+        self.assertIn("CORE", hard["verified_linked_context_ids"])
+        self.assertTrue(result["checks"]["notes_or_scope_cannot_create_primary"])
+        self.assertEqual(self.runtime.writes, 0)
+
+    def test_unexpected_bridge_primary_forces_review(self):
+        self.runtime.records[0]["statement"] = (
+            "A later finding updates the violet calibration result."
+        )
+        with patch.object(quality, "PHASE3I_CASES", self.cases), patch.object(
+            quality, "PHASE3J_FIXTURE_IDS", ("GENERIC", "CORE", "REV")
+        ):
+            result = quality.concept_bridge_shadow(self.runtime)
+        self.assertEqual(result["status"], "OBSERVED_REVIEW_REQUIRED")
+        hard = next(c for c in result["cases"] if c["kind"] == "POSITIVE")
+        self.assertIn("GENERIC", hard["unexpected_bridge_primary_ids"])
+        self.assertFalse(result["checks"]["no_unexpected_positive_primary"])
+
+    def test_external_negative_stays_zero(self):
+        with patch.object(quality, "PHASE3I_CASES", self.cases), patch.object(
+            quality, "PHASE3J_FIXTURE_IDS", ("GENERIC", "CORE", "REV")
+        ):
+            result = quality.concept_bridge_shadow(self.runtime)
+        negative = next(c for c in result["cases"] if c["kind"] == "NEGATIVE")
+        self.assertEqual(negative["case_status"], "NEGATIVE_CONTROL_PASS")
+        self.assertEqual(negative["bridge_primary_ids"], [])
+        self.assertEqual(negative["verified_linked_context_ids"], [])
+
+    def test_missing_fixture_fails_closed(self):
+        with patch.object(quality, "PHASE3I_CASES", self.cases), patch.object(
+            quality, "PHASE3J_FIXTURE_IDS", ("GENERIC", "CORE", "REV", "MISSING")
+        ):
+            result = quality.concept_bridge_shadow(self.runtime)
+        self.assertEqual(result["status"], "OBSERVED_REVIEW_REQUIRED")
+        self.assertEqual(result["missing_fixture_ids"], ["MISSING"])
 
 
 if __name__ == "__main__":
