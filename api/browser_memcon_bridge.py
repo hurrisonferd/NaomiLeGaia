@@ -53,6 +53,13 @@ async def browser_chat(browser_request: Request):
     if re.match(r"^\\s*//C:82//\\s*$", last_message, flags=re.IGNORECASE):
         messages[-1]["content"] = "CONJURE:VASKON"
         last_message = "CONJURE:VASKON"
+    if last_message.lower().rstrip(".") == "load gaiaos":
+        # Deterministic browser boot: do not ask the language model to infer loaded state.
+        # Anti-Jim requires a fresh validated source-derived boot packet for this session.
+        return _envelope(
+            "GAIAOS = ACTIVE / VERIFIED",
+            gaiaos_app._boot_packet("BROWSER_CHAT_COMMAND"),
+        )
     if last_message.lower().rstrip(".") == "test the live memconos canary at the current pinned revision":
         return _envelope("LIVE MEMCONOS CANARY EXECUTED", memcon_runtime.canary())
     if last_message.lower().rstrip(".") == "start the live memoryos lifecycle test":
