@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 LIVE READ-ONLY FIXTURE PASS / MUTATION ROUTE AUTHORIZATION PENDING / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 READ-ONLY LIVE PASS / AUGURY-RITUAL PHASE 1 SOURCE + CI READY / RITUAL DEPLOYMENT PENDING / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4563,3 +4563,56 @@ Next gate:
 `EXPLICIT_NAOMI_AUTHORIZATION_TO_EXPOSE_GUARDED_PHASE4_MUTATION_ROUTE`
 
 Only after that authorization should the browser mutation console/route be added. Proposal, verification, supersession, and rollback remain separately gated actions.
+
+
+## AUGURY/RITUAL Phase 1 bound to Phase 4 — 2026-09-23
+
+After Phase 3 closure and the live Phase-4 read-only fixture PASS, Naomi authorized exposure of the guarded Phase-4 mutation route. Naomi then supplied the AUGURY ↔ RITUAL architecture packet and explicitly invoked VASKON to build Phase 1 directly into GaiaOS with Phase 4 as the first guarded Ritual implementation.
+
+Adopted compiler boundary:
+
+`NATURAL LANGUAGE → AUGURY → GAIA SEMANTIC UNIT → RITUAL → AUTHORITY → MANIFESTATION → RECEIPT → VERIFICATION`
+
+Phase-1 canonical sources:
+- `GaiaOS/SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md`
+- `GaiaOS/SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json`
+- `GaiaOS/SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json`
+- `api/augury_ritual.py`
+
+Hard boundary:
+- a general natural-language AUGURY parser is not yet implemented;
+- natural language cannot manifest effects;
+- exact Ritual compilation is read-only;
+- valid Ritual != authority;
+- authority != manifestation;
+- manifestation != verification.
+
+First guarded Ritual family:
+1. `GALAXY.PHASE4.PROPOSE_SUPERSEDES.CONTROLLED_FIXTURE`
+2. `GALAXY.PHASE4.VERIFY_SUPERSEDES.CONTROLLED_FIXTURE`
+3. `GALAXY.PHASE4.REVOKE_SUPERSEDES.CONTROLLED_FIXTURE`
+
+The family is restricted to the previously live-reviewed REVISION → CORE fixture pair. The existing VERIFIED REVISES edge is a prerequisite and is not revoked by this family. The bounded proof target is:
+`CURRENT_REVISED_CONTEXT → HISTORICAL_SUPERSEDED → CURRENT_REVISED_CONTEXT`.
+
+Carrier source now exposes:
+- `GET /ritual/status` read-only;
+- `GET /ritual/phase4/review` exact human-operated Ritual console;
+- `POST /ritual/manifest` exact manifestation endpoint.
+
+The POST requires an authenticated signed browser session, Ritual-specific CSRF, exact Ritual ID, exact typed params, `authority=NAOMI`, `approved=true`, and the ritual-specific confirmation token.
+
+Offline CI:
+- workflow run `35879521711`: SUCCESS;
+- existing GALAXY guardrails: 48/48 PASS;
+- AUGURY/RITUAL Phase-1 tests: 7/7 PASS;
+- combined guarded suite: 55 tests PASS.
+
+Proof ceiling:
+**SOURCE + OFFLINE CI READY ONLY for the new AUGURY/RITUAL integration.**
+No new Ritual route has yet been deployed/live-verified and no Phase-4 mutation has been manifested through it.
+
+Next gate:
+`DEPLOY → /verify → GET /ritual/status → STOP/REVIEW`
+
+Only after those live receipts pass should Naomi use the first effectful Ritual button.
