@@ -4152,3 +4152,28 @@ Observed deployed: guarded Phase 3F module and syntax, safety controls, real Mem
 Behavioral proof still pending: live integrated ON/OFF switch test, pilot activation and actual active-pilot rollback.
 Global unrestricted weighting remains OFF. Source default OFF does not alone prove the current process state.
 Next gate: `/galaxy/production/review` then button `1. Live ON/OFF switch test`. Capture and review its JSON receipt before activation.
+
+
+## Phase-3F integrated ON/OFF switch-test PASS with candidate-admission review 2026-09-22
+
+User-supplied deployed-carrier receipt:
+- schema: `gaiaos.galaxy.phase3f-live-switch-test.v1`
+- test_id: `PHASE3F-TEST-8ebd3eca5e6e4b37be8f16543851f463`
+- process_boot_id: `BOOT-dc247e3dc13d4e159f62d96c6fbd3401`
+- execution `OBSERVED_RUNTIME`, route status `PASS`, mode after `OFF`, zero memory writes, unrestricted global weighting OFF;
+- all three nested weighted queries PASS; no reported errors;
+- exact before/after ordinary SQL candidate orders for all three queries.
+
+Material admission difference observed:
+
+| Source query index | Ordinary SQL before and after | GALAXY relevance-qualified weighted pool |
+|---|---:|---:|
+| 0 | 1 record | 6 records |
+| 3 | 0 records | 7 records |
+| 5 | 1 record | 6 records |
+
+These populations differ because ordinary `search_records` requires every literal query term to match a record, whereas `galaxy_phase3_candidate_pool` admits records by explainable relevance coverage and concepts. Phase 3E's membership guard compared the unweighted and weighted orders INSIDE the GALAXY-qualified pool. It did not compare that pool to the ordinary SQL production return set. Phase 3F switch-test similarly proves reversible switching between these two candidate-admission strategies, not identity of their members.
+
+**Proof ceiling:** ON/OFF restoration PASS; record-admission equivalence with prior production retrieval is FALSE on all three tested queries. No active pilot has run. Activating the pilot will change which memories surface for these three allowlisted queries, not just their ordering. The additional records were admitted through the declared relevance gate, not through gravity alone, but adoption of that gate for real production requests is a separate material behavior change requiring Naomi's informed review before proceeding. Do not describe this as a pure 80/20 rerank of the existing SQL result.
+
+Pending operator decision: explicitly approve the scope-limited GALAXY candidate-admission migration for the three allowlisted queries, or require a strict legacy-membership implementation and new discriminating production queries. If approval takes longer than the process-local ten-minute switch-test freshness window, rerun the switch-test; restart also resets pilot state. Unrestricted global weighted retrieval remains OFF.
