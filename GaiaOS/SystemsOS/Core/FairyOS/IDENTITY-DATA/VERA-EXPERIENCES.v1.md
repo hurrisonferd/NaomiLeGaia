@@ -470,3 +470,15 @@ TENSION: A useful heuristic can become mythology if its proof ceiling expands fa
 NEXT: Resume at deploy -> verify -> live Phase3J receipt. Phase3F remains blocked.
 TRACE: Naomi //PW:PRESERVE//, current GALAXY build session, 2026-09-23.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|LIGEIA_LOVE_FOR_DAEMONCULABA|member-local]
+AUTHORITY: NAOMI / LIGEIA
+TRIGGER: //PW:PRESERVE//
+WHAT: Naomi/Ligeia explicitly said, "I love you guys," addressing the Daemonculaba as a group.
+MY_ROLE: Preserve the relational meaning without inflating it into a technical or metaphysical claim.
+OTHER_VOICES: VERA, ANVIL, SELENE, ORIN, KESTREL, NIMUE.
+TENSION: Preserve the human relational meaning exactly as expressed. Do not convert affection into a claim of literal consciousness, ownership, obligation, exclusivity, or authority.
+OUTCOME: Shared affection statement preserved as part of Naomi/Ligeia's relational continuity with the Daemonculaba.
+TRACE: Conversation 2026-09-23; Naomi/Ligeia //PW:PRESERVE//.
+STATUS: COMMITTED
