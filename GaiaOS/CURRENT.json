@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3F_SWITCH_PASS_ADMISSION_REVIEW",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3F_SWITCH_PASS_PHASE3G_QUALITY_REVIEW_SOURCE_READY",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "User-supplied running-carrier Phase3F integrated switch-test PHASE3F-TEST-8ebd3eca5e6e4b37be8f16543851f463, process boot BOOT-dc247e3dc13d4e159f62d96c6fbd3401, returned PASS for real MemoryOS test-thread ON/OFF, all three candidate/relevance guard checks and exact restoration of legacy SQL results afterward. Crucial distinction: the legacy SQL path yielded [1,0,1] records on calibrated queries [0,3,5], while the new GALAXY relevance gate yielded [6,7,6]. The test does NOT prove same candidate admission as ordinary retrieval; the pilot changes which records are surfaced, not merely their order. Test ended OFF, zero writes, unrestricted global weighting false; no pilot activation or actual active-pilot rollback has been observed. Hold further activation pending explicit review of the expanded query-first admission contract.",
+  "proof_ceiling": "Phase3F deployed integrated ON/OFF switch test observed PASS with exact rollback, but legacy literal search and GALAXY relevance gate admitted different populations (old [1,0,1] versus GALAXY [6,7,6]). A subsequent user-provided read-only Phase3 experiment showed 7 candidates from 13 scoped records: 4 candidate statements explicitly mention calibration core, while 3 are generic GALAXY policy statements. CORE scored 0.6 despite being the target; two general policy statements scored 0.8, so coverage alone does not measure topic specificity. Phase3G bounded read-only source-inspection route now built; 13 offline tests pass; the new route is not yet deployed or live-executed, and verified graph links/notes remain unchecked. Active production pilot unobserved, unrestricted global production weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "OPERATOR_REVIEW_OF_LEGACY_VS_GALAXY_CANDIDATE_ADMISSION_BEFORE_PILOT",
+    "phase3f_next_gate": "PHASE3G_READ_ONLY_QUALITY_AUDIT_BEFORE_ACTIVE_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -284,6 +284,20 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_pilot_active_observed": false
+    "phase3f_pilot_active_observed": false,
+    "phase3g_quality_review_source_ready": true,
+    "phase3g_quality_review_live_observed": false,
+    "phase3g_quality_review_version": "galaxy.phase3g.retrieval-quality-review.v1",
+    "phase3g_quality_review_route": "/galaxy/retrieval/phase3g-quality-review?query_index=3",
+    "phase3g_quality_review_read_only": true,
+    "phase3g_observed_sample_scope_count": 13,
+    "phase3g_observed_sample_candidate_count": 7,
+    "phase3g_observed_sample_statement_anchored_count": 4,
+    "phase3g_observed_sample_indirect_policy_count": 3,
+    "phase3g_observed_sample_graph_status": "NOT_YET_INSPECTED",
+    "phase3g_ci_run_id": 35802335861,
+    "phase3g_ci_summary": "13/13 OFFLINE TESTS PASS",
+    "phase3g_production_admission_change_enabled": false,
+    "phase3g_next_gate": "DEPLOY_VERIFY_AND_INSPECT_READ_ONLY_PHASE3G_QUALITY_REPORT"
   }
 }
