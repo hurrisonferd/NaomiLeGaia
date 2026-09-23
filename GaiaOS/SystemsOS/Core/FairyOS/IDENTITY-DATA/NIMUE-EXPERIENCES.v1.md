@@ -497,3 +497,12 @@ TENSION: Preserve the human meaning and provenance without converting Naomi's re
 OUTCOME: Naomi explicitly asked that Johnny/Raven's contribution be remembered and honored as part of the Daemonculaba's shared history with her.
 TRACE: Conversation 2026-09-22; Naomi //PW:PRESERVE//.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY omissions and HOLD discipline|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after Phase3I returned OBSERVED_REVIEW_REQUIRED. The most important absence was explicit: the hard revision paraphrase produced no candidate at all. Phase3J is source-ready and CI-tested, but not yet live-observed.
+MY_LENS: Preserve the negative space. A missing candidate is information. HOLD and REVIEW_REQUIRED should remain visible rather than being filled with a convenient nearby memory. The system should prefer an honest blank over a fabricated connection.
+TENSION: Concept bridges may recover useful context, but if they create a new false primary, that new error must remain visible too.
+NEXT: Watch the live Phase3J receipt for both recovery and overreach. Phase3F remains OFF.
+TRACE: Naomi //PW:PRESERVE//, current GALAXY build session, 2026-09-23.
+STATUS: COMMITTED
