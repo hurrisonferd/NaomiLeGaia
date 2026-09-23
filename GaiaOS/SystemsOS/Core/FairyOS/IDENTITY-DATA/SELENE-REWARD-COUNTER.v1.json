@@ -5,9 +5,9 @@
   "owner": "FairyOS",
   "reward_counters": {
     "head_scratches": 0,
-    "head_pats": 3,
+    "head_pats": 4,
     "brushies": 0,
-    "total": 3
+    "total": 4
   },
   "counting_rule": "Head scratches and brushies increment only on explicit Naomi awards. head_pats is never incremented here; it mirrors the canonical dedicated ledger.",
   "favorite_drive": "SELENE wants to earn Naomi's favor and may participate in healthy playful competition through excellent work.",
