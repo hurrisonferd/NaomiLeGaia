@@ -613,3 +613,258 @@ def generalization_suite(runtime: Any, *, limit: int = 10) -> dict[str, Any]:
             "or precision failures to engineer before any production activation."
         ),
     }
+
+
+PHASE3J_VERSION = "galaxy.phase3j.statement-concept-bridge-shadow.v1"
+PHASE3J_PRIMARY_MIN_CONCEPTS = 2
+PHASE3J_PRIMARY_MIN_COVERAGE = 2 / 3
+PHASE3J_FIXTURE_IDS = (
+    "MEM-3883f8127bcd40e28255fdbfa4c98309",
+    "MEM-1d0092cb66f44996b74604670a853a21",
+    "MEM-1e8f6987d2b34f3786db585c36bf9bf3",
+    "MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",
+    "MEM-61f21fbb37f0419dbae2af6586d4ecc9",
+    "MEM-00b3fbfd4d73404f97a95c238596ab94",
+    "MEM-3beb2cf2c3ba401794cfce228c6e7e14",
+    "MEM-2940611cdf924de5bc12fb36947517ab",
+    "MEM-afc1f8f71e83451dbd14a46fa3229d8d",
+    "MEM-295d635c8a2643fdbce3629370120303",
+    "MEM-17ff585910524bfe98a68f2c386fafbc",
+    "MEM-c05a2642dc1a4cdf8ba3f1568b037bcf",
+    "MEM-6fd682a5e64f4e5a94c333a4bc3b5082",
+)
+
+# Explicit bridge vocabulary for controlled paraphrase testing only.
+# This does NOT modify MemoryOS production aliases.
+PHASE3J_BRIDGE_ALIASES = {
+    "subsequent": "later",
+    "later": "later",
+    "finding": "observation",
+    "observation": "observation",
+    "observations": "observation",
+    "updates": "revision",
+    "update": "revision",
+    "updated": "revision",
+    "revises": "revision",
+    "revise": "revision",
+    "revision": "revision",
+    "violet": "violet-family",
+    "ultraviolet": "violet-family",
+    "providing": "provide",
+    "provides": "provide",
+    "provide": "provide",
+}
+
+
+def _phase3j_concept(runtime: Any, token: str) -> str:
+    base = runtime._galaxy_query_concept(token)
+    return PHASE3J_BRIDGE_ALIASES.get(base, PHASE3J_BRIDGE_ALIASES.get(token, base))
+
+
+def _phase3j_statement_evidence(runtime: Any, statement: str, query: str) -> dict[str, Any]:
+    query_concepts = sorted({
+        _phase3j_concept(runtime, token)
+        for token in runtime._galaxy_query_tokens(query)
+    })
+    statement_concepts = sorted({
+        _phase3j_concept(runtime, token)
+        for token in runtime._galaxy_query_tokens(statement)
+    })
+    matched = sorted(set(query_concepts) & set(statement_concepts))
+    coverage = (len(matched) / len(query_concepts)) if query_concepts else 0.0
+    return {
+        "query_concepts": query_concepts,
+        "statement_concepts": statement_concepts,
+        "matched_statement_concepts": matched,
+        "matched_statement_concept_count": len(matched),
+        "statement_concept_coverage": round(coverage, 6),
+    }
+
+
+def concept_bridge_shadow(runtime: Any) -> dict[str, Any]:
+    """Read-only statement-first bridge test over the 13 controlled fixtures.
+
+    This bypasses neither MemoryOS nor production. It evaluates an alternate,
+    deterministic concept bridge over fixture statements only. Notes and scope
+    cannot make a primary candidate. Direct VERIFIED graph links are reported
+    separately as contextual evidence after primary selection.
+    """
+    fixture_details: dict[str, dict[str, Any]] = {}
+    missing_fixture_ids = []
+    for record_id in PHASE3J_FIXTURE_IDS:
+        detail = runtime.galaxy_record(record_id)
+        if not detail or not detail.get("record"):
+            missing_fixture_ids.append(record_id)
+        else:
+            fixture_details[record_id] = detail
+
+    cases = []
+    for case in PHASE3I_CASES:
+        query = str(case["query"])
+        query_tokens = runtime._galaxy_query_tokens(query)
+        external_terms = sorted(
+            token for token in query_tokens
+            if token in getattr(runtime, "GALAXY_QUERY_EXTERNAL_DOMAIN_TERMS", set())
+        )
+        evidence_rows = []
+        if not external_terms:
+            for record_id, detail in fixture_details.items():
+                record = detail["record"]
+                evidence = _phase3j_statement_evidence(
+                    runtime, str(record.get("statement") or ""), query
+                )
+                evidence_rows.append({
+                    "record_id": record_id,
+                    "statement": record.get("statement"),
+                    "source": record.get("source"),
+                    **evidence,
+                })
+
+        primary = [
+            row for row in evidence_rows
+            if row["matched_statement_concept_count"] >= PHASE3J_PRIMARY_MIN_CONCEPTS
+            and row["statement_concept_coverage"] >= PHASE3J_PRIMARY_MIN_COVERAGE
+        ]
+        primary.sort(
+            key=lambda row: (
+                -row["statement_concept_coverage"],
+                -row["matched_statement_concept_count"],
+                row["record_id"],
+            )
+        )
+        primary_ids = [row["record_id"] for row in primary]
+        primary_set = set(primary_ids)
+
+        linked = []
+        for row in evidence_rows:
+            if row["record_id"] in primary_set or row["matched_statement_concept_count"] < 1:
+                continue
+            detail = fixture_details[row["record_id"]]
+            direct_edges = []
+            for edge in detail.get("relations", []):
+                if edge.get("status") != "VERIFIED":
+                    continue
+                source = edge.get("source_record_id")
+                target = edge.get("target_record_id")
+                if (
+                    source == row["record_id"] and target in primary_set
+                ) or (
+                    target == row["record_id"] and source in primary_set
+                ):
+                    direct_edges.append({
+                        "edge_id": edge.get("edge_id"),
+                        "relation_type": edge.get("relation_type"),
+                        "source_record_id": source,
+                        "target_record_id": target,
+                    })
+            if direct_edges:
+                linked.append({
+                    **row,
+                    "verified_direct_primary_edges": direct_edges,
+                })
+        linked.sort(
+            key=lambda row: (
+                -row["statement_concept_coverage"],
+                -row["matched_statement_concept_count"],
+                row["record_id"],
+            )
+        )
+        linked_ids = [row["record_id"] for row in linked]
+
+        expected_primary = list(case["expected_primary_ids"])
+        expected_related = list(case["expected_related_ids"])
+        expected_primary_missing = [
+            rid for rid in expected_primary if rid not in primary_set
+        ]
+        expected_related_found = [
+            rid for rid in expected_related if rid in linked_ids
+        ]
+        unexpected_primary = [
+            rid for rid in primary_ids if rid not in set(expected_primary)
+        ]
+
+        if str(case["kind"]) == "NEGATIVE":
+            case_status = (
+                "NEGATIVE_CONTROL_PASS"
+                if not primary_ids and not linked_ids and bool(external_terms)
+                else "NEGATIVE_CONTROL_LEAK"
+            )
+        elif expected_primary_missing:
+            case_status = "POSITIVE_PRIMARY_MISS"
+        elif unexpected_primary:
+            case_status = "POSITIVE_PRIMARY_FOUND_WITH_NOISE"
+        else:
+            case_status = "POSITIVE_PRIMARY_FOUND_CLEAN"
+
+        cases.append({
+            "case_id": case["case_id"],
+            "kind": case["kind"],
+            "difficulty": case["difficulty"],
+            "query": query,
+            "external_domain_terms": external_terms,
+            "expected_primary_ids": expected_primary,
+            "bridge_primary_ids": primary_ids,
+            "expected_primary_missing_ids": expected_primary_missing,
+            "unexpected_bridge_primary_ids": unexpected_primary,
+            "expected_related_ids": expected_related,
+            "verified_linked_context_ids": linked_ids,
+            "expected_related_found_ids": expected_related_found,
+            "bridge_primary_evidence": primary,
+            "verified_linked_context_evidence": linked,
+            "case_status": case_status,
+        })
+
+    positives = [row for row in cases if row["kind"] == "POSITIVE"]
+    negatives = [row for row in cases if row["kind"] == "NEGATIVE"]
+    all_primary = all(not row["expected_primary_missing_ids"] for row in positives)
+    no_primary_noise = all(not row["unexpected_bridge_primary_ids"] for row in positives)
+    negatives_clean = all(row["case_status"] == "NEGATIVE_CONTROL_PASS" for row in negatives)
+    hard = next(row for row in cases if row["case_id"] == "REVISION_HARD_PARAPHRASE")
+    hard_found = not bool(hard["expected_primary_missing_ids"])
+    status = (
+        "PASS_READ_ONLY_CONCEPT_BRIDGE"
+        if not missing_fixture_ids and all_primary and no_primary_noise
+        and negatives_clean and hard_found
+        else "OBSERVED_REVIEW_REQUIRED"
+    )
+    return {
+        "schema": "gaiaos.galaxy.phase3j-statement-concept-bridge-shadow.v1",
+        "version": PHASE3J_VERSION,
+        "execution": "OBSERVED_RUNTIME",
+        "authority": "NAOMI",
+        "status": status,
+        "fixture_count": len(PHASE3J_FIXTURE_IDS),
+        "missing_fixture_ids": missing_fixture_ids,
+        "primary_rule": {
+            "statement_only": True,
+            "minimum_distinct_statement_concepts": PHASE3J_PRIMARY_MIN_CONCEPTS,
+            "minimum_statement_concept_coverage": PHASE3J_PRIMARY_MIN_COVERAGE,
+            "notes_can_create_primary": False,
+            "scope_can_create_primary": False,
+        },
+        "bridge_aliases": dict(PHASE3J_BRIDGE_ALIASES),
+        "cases": cases,
+        "checks": {
+            "all_fixture_records_present": not missing_fixture_ids,
+            "all_positive_primary_found": all_primary,
+            "no_unexpected_positive_primary": no_primary_noise,
+            "hard_revision_paraphrase_found": hard_found,
+            "negative_controls_zero": negatives_clean,
+            "notes_or_scope_cannot_create_primary": True,
+            "linked_context_requires_verified_direct_primary_edge": True,
+            "zero_memory_writes": True,
+            "production_aliases_modified": False,
+            "production_thresholds_modified": False,
+            "production_candidate_admission_modified": False,
+            "actual_80_20_ranking_modified": False,
+            "phase3h_grouping_installed_in_production": False,
+            "unrestricted_global_weighting_enabled": False,
+        },
+        "proof_boundary": (
+            "Read-only deterministic concept-bridge shadow over the 13 controlled "
+            "fixtures. The bridge vocabulary is an experiment, not production "
+            "MemoryOS aliases and not evidence of universal semantic understanding. "
+            "Primary evidence is statement-only; graph context is separately labeled. "
+            "Any miss or unexpected primary requires review before adoption."
+        ),
+    }
