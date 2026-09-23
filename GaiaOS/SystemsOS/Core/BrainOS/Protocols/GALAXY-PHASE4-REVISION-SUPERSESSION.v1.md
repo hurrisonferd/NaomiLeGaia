@@ -107,3 +107,22 @@ After deployment:
 ## Proof boundary
 
 Source design, offline tests, deployment, read-only live review, relation proposal, relation verification, governing-state behavior, rollback/revocation, and production retrieval adoption are separate proof layers. Never collapse them.
+
+
+## AUGURY/RITUAL guarded mutation integration
+
+After the live read-only Phase-4 fixture PASS, Naomi explicitly authorized exposure of the guarded mutation route and then authorized AUGURY/RITUAL Phase 1 with Phase 4 as its first guarded Ritual implementation.
+
+Phase-4 mutation is therefore not exposed as a fuzzy natural-language action. It is bound to the exact Ritual Grimoire family:
+- `GALAXY.PHASE4.PROPOSE_SUPERSEDES.CONTROLLED_FIXTURE`
+- `GALAXY.PHASE4.VERIFY_SUPERSEDES.CONTROLLED_FIXTURE`
+- `GALAXY.PHASE4.REVOKE_SUPERSEDES.CONTROLLED_FIXTURE`
+
+Carrier surfaces:
+- read-only status: `GET /ritual/status`
+- human review console: `GET /ritual/phase4/review`
+- exact manifestation endpoint: `POST /ritual/manifest`
+
+The POST requires signed session, Ritual-specific CSRF, exact Ritual ID, exact typed target/edge, `authority=NAOMI`, `approved=true`, and a ritual-specific confirmation string.
+
+No general natural-language AUGURY manifestation is enabled. No manifestation has been live-observed yet. Deploy and verify before the first controlled proposal.
