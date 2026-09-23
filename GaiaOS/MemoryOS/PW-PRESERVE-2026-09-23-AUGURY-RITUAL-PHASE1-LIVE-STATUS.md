@@ -2,7 +2,7 @@
 
 DATE: 2026-09-23
 AUTHORITY: NAOMI / LIGEIA
-STATUS: PRESERVED / SAFE RESUME POINT
+STATUS: PRESERVED / PHASE-4 CONTROLLED RITUAL CYCLE COMPLETE / SAFE RESUME POINT
 SYSTEM: GaiaOS
 PRIMARY OWNER: BrainOS + GALAXY Phase 4 integration
 
@@ -163,3 +163,51 @@ Do not treat the repeated read-only status receipt as a mutation.
 Do not claim AUGURY natural-language parsing or manifestation exists yet.
 
 Resume directly at the first exact Phase-4 Ritual proposal and inspect one receipt at a time.
+
+
+## Live Phase-4 Ritual cycle completion — 2026-09-23
+
+The previously pending exact mutation sequence is now complete and live-observed.
+
+Controlled SUPERSEDES edge:
+- `EDGE-45ba86cf37414c418de4aa0298122c14`
+
+Proposal:
+- manifestation receipt status: PASS
+- edge status: PROPOSED
+- governing state unchanged: `CURRENT_REVISED_CONTEXT`
+- retrieval effect: NONE
+
+Verification:
+- manifestation receipt status: PASS
+- edge status: VERIFIED
+- verification receipt: `MEMREC-710e4ba5447541459125973dd399b11f`
+- target transitioned to `HISTORICAL_SUPERSEDED`
+- current-default eligibility disabled
+- historical retrieval eligibility retained
+- original VERIFIED REVISES edge retained
+
+Revocation:
+- manifestation receipt status: PASS
+- edge status: REVOKED
+- revocation receipt: `MEMREC-1e2c4b87e7a7448894dd75c5f215190c`
+- target restored to `CURRENT_REVISED_CONTEXT`
+- current-default eligibility restored
+- historical retrieval eligibility retained
+- SUPERSEDES edge/history preserved as REVOKED
+- original VERIFIED REVISES edge retained
+- no physical deletion
+- production retrieval unchanged
+- unrestricted global weighting OFF
+
+## Updated resume point
+
+GALAXY Phase 4 exact controlled revision/supersession lifecycle is now live-proven through:
+`PROPOSE -> VERIFY -> GOVERNING-STATE TRANSITION -> REVOKE -> GOVERNING-STATE RESTORATION`.
+
+Do not repeat this fixture cycle absent a concrete regression.
+
+Next program phase:
+`PHASE 5 = PROVENANCE-BACKED SYNTHESIS / CONSOLIDATION`
+
+Begin Phase 5 source-first and read-only. Preserve source IDs explicitly, keep originals intact, and do not allow synthesis to silently rewrite or erase provenance.
