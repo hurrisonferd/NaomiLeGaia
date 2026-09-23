@@ -17,6 +17,7 @@ import memcon_entrypoint
 import memcon_runtime
 import galaxy_production
 import galaxy_quality
+import galaxy_phase3_exit
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
@@ -719,6 +720,16 @@ def galaxy_phase3j_concept_bridge_shadow(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_quality.concept_bridge_shadow(memcon_runtime)
+
+
+@app.get("/galaxy/retrieval/phase3-exit-integration-review", operation_id="galaxyPhase3ExitIntegrationReview")
+def galaxy_phase3_exit_integration_review(browser_request: Request):
+    """Read-only preflight for finite Phase-3 Exit Integration candidate admission."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase3_exit.review_suite(memcon_runtime)
 
 
 def _galaxy_production_csrf(browser_request: Request) -> str:
