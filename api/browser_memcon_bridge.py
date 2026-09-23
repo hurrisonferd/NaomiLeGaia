@@ -704,6 +704,16 @@ def galaxy_phase3i_generalization_suite(browser_request: Request):
     return galaxy_quality.generalization_suite(memcon_runtime, limit=10)
 
 
+@app.get("/galaxy/retrieval/phase3j-concept-bridge-shadow", operation_id="galaxyPhase3JConceptBridgeShadow")
+def galaxy_phase3j_concept_bridge_shadow(browser_request: Request):
+    """Read-only statement-first concept bridge over the controlled fixture set."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_quality.concept_bridge_shadow(memcon_runtime)
+
+
 def _galaxy_production_csrf(browser_request: Request) -> str:
     """Session-bound CSRF proof. Mutation routes fail closed without server API key."""
     gaiaos_api._authorize_browser_session(browser_request)
