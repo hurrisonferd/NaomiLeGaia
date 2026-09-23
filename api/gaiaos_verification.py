@@ -25,6 +25,9 @@ REQUIRED = [
     "Apps/ChatOS/Tests/VASKON-NEURAL-CANARY.v1.md",
     "SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json",
     "SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
+    "SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md",
+    "SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json",
+    "SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json",
     "SystemsOS/Core/BrainOS/CURRENT.json",
     "SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
     "SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
@@ -140,6 +143,32 @@ def run_verification() -> dict[str, Any]:
     except Exception as exc:
         checks.append(_check("BrainOS:CURRENT-parse", False, f"{type(exc).__name__}: {exc}"))
 
+    try:
+        ritual_grimoire = json.loads(files["SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json"])
+        checks.append(_check(
+            "AUGURY-RITUAL:grimoire-json",
+            ritual_grimoire.get("schema") == "gaiaos.ritual-grimoire.v1"
+            and len(ritual_grimoire.get("rituals", [])) == 3,
+            "Ritual Grimoire parses with exactly the bounded Phase-4 first family",
+        ))
+    except Exception as exc:
+        ritual_grimoire = None
+        checks.append(_check("AUGURY-RITUAL:grimoire-json", False, f"{type(exc).__name__}: {exc}"))
+
+    try:
+        semantic_schema = json.loads(files["SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json"])
+        checks.append(_check(
+            "AUGURY-RITUAL:semantic-unit-schema",
+            semantic_schema.get("properties", {}).get("speech_act", {}).get("enum")
+            == ["MENTION","QUESTION","HYPOTHETICAL","REQUEST","COMMAND","CONFIRMATION","REVISION","REFUSAL","UNKNOWN"]
+            and semantic_schema.get("properties", {}).get("resolution", {}).get("enum")
+            == ["RESOLVED","COLLISION","UNKNOWN"],
+            "semantic unit preserves speech-act and uncertainty distinctions",
+        ))
+    except Exception as exc:
+        semantic_schema = None
+        checks.append(_check("AUGURY-RITUAL:semantic-unit-schema", False, f"{type(exc).__name__}: {exc}"))
+
     if current and version:
         checks.append(_check(
             "version-alignment",
@@ -160,6 +189,16 @@ def run_verification() -> dict[str, Any]:
             current.get("brainos", {}).get("vaskon_neural_pathways")
             == "GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json",
             "CURRENT points to canonical VASKON pathway fabric",
+        ))
+        checks.append(_check(
+            "current-augury-ritual-pointers",
+            current.get("brainos", {}).get("augury_ritual_contract")
+            == "GaiaOS/SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md"
+            and current.get("brainos", {}).get("ritual_grimoire")
+            == "GaiaOS/SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json"
+            and current.get("brainos", {}).get("gaia_semantic_unit")
+            == "GaiaOS/SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json",
+            "CURRENT points to canonical AUGURY/RITUAL Phase-1 sources",
         ))
 
         if galaxy_current.get("phase3f_pilot_source_ready") is True:
@@ -485,6 +524,7 @@ def run_verification() -> dict[str, Any]:
     quality_module = ROOT / "galaxy_quality.py"
     exit_module = ROOT / "galaxy_phase3_exit.py"
     phase4_module = ROOT / "galaxy_phase4.py"
+    augury_ritual_module = ROOT / "augury_ritual.py"
     checks.append(_check(
         "carrier:phase3g-quality-module",
         quality_module.exists(),
@@ -499,6 +539,11 @@ def run_verification() -> dict[str, Any]:
         "carrier:phase4-revision-module",
         phase4_module.exists(),
         "GALAXY Phase-4 revision/supersession module is packaged",
+    ))
+    checks.append(_check(
+        "carrier:augury-ritual-module",
+        augury_ritual_module.exists(),
+        "AUGURY/RITUAL Phase-1 exact ritual runtime is packaged",
     ))
     if exit_module.exists():
         try:
@@ -563,6 +608,36 @@ def run_verification() -> dict[str, Any]:
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase4-revision-syntax",
+                False,
+                f"{type(exc).__name__}: {exc}",
+            ))
+    if augury_ritual_module.exists():
+        try:
+            ritual_text = augury_ritual_module.read_text(encoding="utf-8")
+            compile(ritual_text, str(augury_ritual_module), "exec")
+            checks.append(_check(
+                "carrier:augury-ritual-syntax",
+                True,
+                "AUGURY/RITUAL Phase-1 runtime parses",
+            ))
+            checks.append(_check(
+                "carrier:augury-ritual-boundaries",
+                all(marker in ritual_text for marker in (
+                    "general_natural_language_parser_implemented",
+                    "natural_language_manifestation_allowed",
+                    "compile_exact",
+                    "manifestation_performed",
+                    "MANIFEST_GALAXY_PHASE4_PROPOSE_SUPERSEDES_CONTROLLED_FIXTURE",
+                    "MANIFEST_GALAXY_PHASE4_VERIFY_SUPERSEDES_CONTROLLED_FIXTURE",
+                    "MANIFEST_GALAXY_PHASE4_REVOKE_SUPERSEDES_CONTROLLED_FIXTURE",
+                    "production_retrieval_changed",
+                    "unrestricted_global_weighting_enabled",
+                )),
+                "exact Ritual compiler is separated from general AUGURY and guarded manifestation",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:augury-ritual-syntax",
                 False,
                 f"{type(exc).__name__}: {exc}",
             ))
@@ -705,6 +780,26 @@ def run_verification() -> dict[str, Any]:
             "read-only Phase-4 generic pair review route declared",
         ))
         checks.append(_check(
+            "carrier:/ritual/status",
+            '/ritual/status' in bridge_text
+            and 'augury_ritual.phase1_status' in bridge_text,
+            "read-only AUGURY/RITUAL Phase-1 status route declared",
+        ))
+        checks.append(_check(
+            "carrier:/ritual/phase4/review",
+            '/ritual/phase4/review' in bridge_text
+            and 'X-GaiaOS-Ritual-CSRF' in bridge_text
+            and 'MANIFEST_EXACT_RITUAL' in bridge_text,
+            "guarded exact Phase-4 Ritual console declared",
+        ))
+        checks.append(_check(
+            "carrier:/ritual/manifest",
+            '@app.post("/ritual/manifest"' in bridge_text
+            and 'augury_ritual.manifest' in bridge_text
+            and '_ritual_authorized_body' in bridge_text,
+            "exact Ritual manifestation POST route declared behind authority + CSRF",
+        ))
+        checks.append(_check(
             "carrier:phase3-exit-production-wiring",
             'galaxy_phase3_exit.build_candidate_pool' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8")
             and 'PHASE3_EXIT_LANE_PRESERVING_CONSTELLATION_V2' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8"),
@@ -794,6 +889,38 @@ def run_verification() -> dict[str, Any]:
                 ("/galaxy/revision/phase4-pair-review", "GET") in route_pairs,
                 "read-only Phase-4 pair-review ASGI route registered",
             ))
+            checks.append(_check(
+                "carrier-route:/ritual/status",
+                ("/ritual/status", "GET") in route_pairs,
+                "read-only AUGURY/RITUAL Phase-1 status ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/ritual/phase4/review",
+                ("/ritual/phase4/review", "GET") in route_pairs,
+                "guarded Phase-4 Ritual console ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/ritual/manifest",
+                ("/ritual/manifest", "POST") in route_pairs,
+                "exact Ritual manifestation ASGI route registered",
+            ))
+            try:
+                ritual_state = module.augury_ritual.phase1_status(module.memcon_runtime)
+                checks.append(_check(
+                    "carrier:augury-ritual-read-only-self-test",
+                    ritual_state.get("augury", {}).get("general_natural_language_parser_implemented") is False
+                    and ritual_state.get("ritual", {}).get("exact_compiler_available") is True
+                    and ritual_state.get("ritual", {}).get("natural_language_manifestation_allowed") is False
+                    and ritual_state.get("production_retrieval_changed") is False
+                    and ritual_state.get("unrestricted_global_weighting_enabled") is False,
+                    "deployed Phase-1 status executes read-only with general AUGURY manifestation disabled",
+                ))
+            except Exception as exc:
+                checks.append(_check(
+                    "carrier:augury-ritual-read-only-self-test",
+                    False,
+                    f"{type(exc).__name__}: {exc}",
+                ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
             try:
                 boot_packet = module.gaiaos_app._boot_packet("VERIFIER_SELF_TEST")
