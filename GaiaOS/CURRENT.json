@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_INDEX0_LIVE_SHADOW_PASS_INDEX3_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_INDEX0_3_LIVE_SHADOW_PASS_INDEX5_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase3H running-carrier read-only containment shadow for query index 0 observed PASS_READ_ONLY_SHADOW. From 13 scoped records and 6 original GALAXY relevance-qualified candidates, exactly one direct gravity record entered the focal lane; five off-topic calibration fixtures remained in the audit lane, none entered linked context, no historical lane entries. Duplicate memory/retrieval aliases were collapsed in the evidence report. Both negative controls returned zero well-formed candidates. Checks report all candidates accounted for, notes/scope not sufficient for primary, zero writes, no production retrieval change, no actual 80/20 ranking change and global weighting OFF. This validates Phase3H containment for the controlled gravity query only; indexes 3 and 5 remain to be tested. No Phase3F active pilot or live active-pilot rollback observed.",
+  "proof_ceiling": "Phase3H running-carrier read-only containment shadows now PASS for query indexes 0 and 3. Index 3: from 13 scoped records and 7 original relevance-qualified candidates, four calibration-core statements entered focal (REVISION, SATELLITE, CORE, REINFORCER), while three generic GALAXY policy records stayed audit-only despite two having higher original coverage than CORE. CORE moved into the focal presentation lane from original weighted rank 5 without changing the actual 80/20 rank underneath. Verified contradiction/revision/reinforcement/context edges remain visible inside focal evidence. Both negative controls returned zero candidates. Zero writes, production retrieval unchanged, actual 80/20 ranking unchanged, global weighting OFF. Index 5 remains pending; no Phase3F active pilot or live active-pilot rollback observed.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3H_INDEX0_LIVE_SHADOW_PASS_INDEX3_PENDING",
+    "phase3_status": "PHASE3H_INDEX0_AND_3_LIVE_SHADOW_PASS_INDEX5_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "COMPLETE_PHASE3H_INDEX3_AND_INDEX5_READ_ONLY_VALIDATION_BEFORE_ANY_ACTIVE_PILOT",
+    "phase3f_next_gate": "COMPLETE_PHASE3H_INDEX5_READ_ONLY_VALIDATION_BEFORE_ANY_ACTIVE_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -411,7 +411,7 @@
     ],
     "phase3h_retrieval_change_enabled": false,
     "phase3h_production_grouping_enabled": false,
-    "phase3h_next_gate": "RUN_LIVE_READ_ONLY_QUERY_3_WITH_NEGATIVE_CONTROLS",
+    "phase3h_next_gate": "RUN_LIVE_READ_ONLY_QUERY_5_WITH_NEGATIVE_CONTROLS",
     "phase3h_route_registered_live": true,
     "phase3h_verifier_run_id": "92bce511f0004901a53529ed69d11e3e",
     "phase3h_verifier_summary": "129/129 PASS",
@@ -429,7 +429,8 @@
     "phase3h_mobile_browser_bootstrap_ci_status": "SUCCESS",
     "phase3h_mobile_browser_bootstrap_deployed": false,
     "phase3h_live_observed_query_indexes": [
-      0
+      0,
+      3
     ],
     "phase3h_live_index0_status": "PASS_READ_ONLY_SHADOW",
     "phase3h_live_index0_scope_population": 13,
@@ -456,6 +457,36 @@
     "phase3h_live_index0_zero_writes": true,
     "phase3h_live_index0_production_retrieval_modified": false,
     "phase3h_live_index0_80_20_ranking_modified": false,
-    "phase3h_live_index0_global_weighting_enabled": false
+    "phase3h_live_index0_global_weighting_enabled": false,
+    "phase3h_live_index3_status": "PASS_READ_ONLY_SHADOW",
+    "phase3h_live_index3_scope_population": 13,
+    "phase3h_live_index3_original_pool_count": 7,
+    "phase3h_live_index3_focal_count": 4,
+    "phase3h_live_index3_linked_context_count": 0,
+    "phase3h_live_index3_audit_count": 3,
+    "phase3h_live_index3_historical_count": 0,
+    "phase3h_live_index3_ambiguous_excluded_count": 1,
+    "phase3h_live_index3_negative_controls_pass": true,
+    "phase3h_live_index3_negative_control_counts": [
+      0,
+      0
+    ],
+    "phase3h_live_index3_focal_record_ids": [
+      "MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",
+      "MEM-1d0092cb66f44996b74604670a853a21",
+      "MEM-00b3fbfd4d73404f97a95c238596ab94",
+      "MEM-61f21fbb37f0419dbae2af6586d4ecc9"
+    ],
+    "phase3h_live_index3_audit_record_ids": [
+      "MEM-3883f8127bcd40e28255fdbfa4c98309",
+      "MEM-2940611cdf924de5bc12fb36947517ab",
+      "MEM-3beb2cf2c3ba401794cfce228c6e7e14"
+    ],
+    "phase3h_live_index3_core_promoted_to_focal_despite_original_rank_5": true,
+    "phase3h_live_index3_high_coverage_policy_records_kept_audit_only": true,
+    "phase3h_live_index3_zero_writes": true,
+    "phase3h_live_index3_production_retrieval_modified": false,
+    "phase3h_live_index3_80_20_ranking_modified": false,
+    "phase3h_live_index3_global_weighting_enabled": false
   }
 }
