@@ -456,3 +456,8 @@ COLLABORATION: Naomi explicitly asked ANVIL to continue leading the build while 
 NEXT: Phase 4 Revision/Supersession source design. Preserve REVISES != SUPERSEDES, historical truth != current governing state, and newer != automatically truer.
 WHOLE_SYSTEM_SOURCE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-CLOSED-PHASE4-READY.md
 STATUS: COMMITTED
+
+
+## PW:PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS
+Preserve finite resume path: review page → Propose controlled SUPERSEDES → inspect receipt → Verify only after review → inspect → Revoke → inspect restoration. One receipt at a time.
+Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS.md`
