@@ -78,7 +78,7 @@ def _phase3_status_authorized_family(status: Any) -> bool:
             "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
         }
         or value.startswith((
-            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_",
+            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_", "PHASE3I_", "PHASE3I_",
         ))
     )
 
@@ -520,6 +520,15 @@ def run_verification() -> dict[str, Any]:
                 and "secondary_requires_verified_direct_focal_edge" in quality_text,
                 "negative controls fail closed; duplicate aliases and verified edges inspectable",
             ))
+            checks.append(_check(
+                "carrier:phase3i-generalization-source",
+                "PHASE3I_VERSION" in quality_text
+                and "def generalization_suite(" in quality_text
+                and "expected_primary_ids" in quality_text
+                and "production_candidate_admission_modified" in quality_text
+                and "hard_paraphrase_primary_found" in quality_text,
+                "read-only paraphrase/near-miss suite evaluates existing gate without modifying production",
+            ))
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase3g-quality-syntax",
@@ -577,6 +586,12 @@ def run_verification() -> dict[str, Any]:
             and 'galaxy_quality.containment_shadow' in bridge_text,
             "read-only Phase 3H containment shadow route declared",
         ))
+        checks.append(_check(
+            "carrier:/galaxy/phase3i-generalization-suite",
+            '/galaxy/retrieval/phase3i-generalization-suite' in bridge_text
+            and 'galaxy_quality.generalization_suite' in bridge_text,
+            "read-only Phase 3I generalization suite route declared",
+        ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -628,6 +643,11 @@ def run_verification() -> dict[str, Any]:
                 "carrier-route:/galaxy/phase3h-containment-shadow",
                 ("/galaxy/retrieval/phase3h-containment-shadow", "GET") in route_pairs,
                 "read-only Phase 3H containment shadow ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase3i-generalization-suite",
+                ("/galaxy/retrieval/phase3i-generalization-suite", "GET") in route_pairs,
+                "read-only Phase 3I generalization suite ASGI route registered",
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
