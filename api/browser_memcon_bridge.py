@@ -653,6 +653,20 @@ def galaxy_phase3g_quality_review(browser_request: Request, query_index: int = 3
     return galaxy_quality.review(memcon_runtime, query_index=query_index, limit=10)
 
 
+@app.get("/galaxy/retrieval/phase3h-containment-shadow", operation_id="galaxyPhase3HContainmentShadow")
+def galaxy_phase3h_containment_shadow(
+    browser_request: Request, query_index: int = 0, negative_controls: bool = False,
+):
+    """Read-only evidence-separated shadow; no production retrieval changes."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    if query_index not in galaxy_quality.TEST_QUERIES:
+        raise HTTPException(status_code=422, detail="query_index must be 0, 3 or 5")
+    return galaxy_quality.containment_shadow(
+        memcon_runtime, query_index=query_index, limit=10,
+        negative_controls=negative_controls,
+    )
+
+
 def _galaxy_production_csrf(browser_request: Request) -> str:
     """Session-bound CSRF proof. Mutation routes fail closed without server API key."""
     gaiaos_api._authorize_browser_session(browser_request)
