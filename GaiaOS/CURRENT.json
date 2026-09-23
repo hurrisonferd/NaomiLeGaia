@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_DEPLOYED_ROUTE_VERIFIED_STATUS_CHECK_FIX_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_DEPLOYED_VERIFIER_129_PASS_SHADOW_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "User-provided running-carrier /verify 59dffb7d90ef4240a9337ac4cdd6990b observed 127/128 PASS. Phase3H containment source checks PASS and the /galaxy/retrieval/phase3h-containment-shadow ASGI route is live-registered. The sole FAIL was GALAXY:phase3-authorization, caused by the verifier's legacy status allowlist accepting only through Phase3F while CURRENT is now Phase3G/H; the canonical authorization fields themselves remain phase3_authorized=true, phase3_authorized_by=NAOMI and global production weighting=false. Verifier source has been repaired to recognize explicit Phase3G/H lifecycle states and preserve Phase3F boundary/adoption checks; GitHub CI run 35809393544 passed 23/23 offline tests. That verifier fix is NOT YET deployed, and no live Phase3H containment-shadow receipt exists yet. No production grouping, Phase3F active pilot or live active-pilot rollback observed; unrestricted global production weighting OFF.",
+  "proof_ceiling": "User-provided running-carrier /verify 92bce511f0004901a53529ed69d11e3e observed 129/129 PASS with zero failures. The repaired Phase3 authorization lifecycle check now passes for current Phase3G/H state; Phase3F production-source boundary remains PASS and globally OFF. Phase3H containment source, negative-control safeguards, route declaration, and live ASGI route registration all PASS. This proves deployment and route registration only. No live Phase3H containment-shadow receipt has yet been observed, and no production grouping/ranking/candidate behavior has changed. No Phase3F active pilot or live active-pilot rollback observed; unrestricted global production weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3H_DEPLOYED_ROUTE_VERIFIED_VERIFIER_STATUS_ALLOWLIST_FIX_PENDING_REDEPLOY",
+    "phase3_status": "PHASE3H_DEPLOYED_VERIFIER_129_PASS_LIVE_SHADOW_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "PHASE3H_READ_ONLY_VALIDATION_BEFORE_ACTUAL_PRODUCTION_PILOT",
+    "phase3f_next_gate": "PHASE3H_LIVE_READ_ONLY_CONTAINMENT_VALIDATION_BEFORE_ANY_ACTIVE_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -411,16 +411,17 @@
     ],
     "phase3h_retrieval_change_enabled": false,
     "phase3h_production_grouping_enabled": false,
-    "phase3h_next_gate": "DEPLOY_VERIFIER_STATUS_FIX_AND_RERUN_VERIFY_THEN_LIVE_QUERY_0_NEGATIVE_CONTROLS",
+    "phase3h_next_gate": "RUN_LIVE_READ_ONLY_QUERY_0_WITH_NEGATIVE_CONTROLS",
     "phase3h_route_registered_live": true,
-    "phase3h_verifier_run_id": "59dffb7d90ef4240a9337ac4cdd6990b",
-    "phase3h_verifier_summary": "127/128 PASS; ONLY FAIL=GALAXY:phase3-authorization stale verifier status-family allowlist",
+    "phase3h_verifier_run_id": "92bce511f0004901a53529ed69d11e3e",
+    "phase3h_verifier_summary": "129/129 PASS",
     "phase3h_verifier_bug": "PHASE3G/H_STATUS_NOT_ACCEPTED_BY_LEGACY_PHASE3_AUTHORIZATION_CHECK",
     "phase3h_verifier_fix_source_commit": "7201911341253498ce1be15a11860f9971c89714",
     "phase3h_verifier_fix_test_commit": "62749e8d097b3a609f85ae46288aa25f56704728",
     "phase3h_verifier_fix_ci_run_id": 35809393544,
     "phase3h_verifier_fix_ci_status": "SUCCESS",
     "phase3h_verifier_fix_ci_tests": "23/23 PASS",
-    "phase3h_verifier_fix_deployed": false
+    "phase3h_verifier_fix_deployed": true,
+    "phase3h_verifier_fix_live_observed": true
   }
 }
