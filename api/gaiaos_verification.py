@@ -608,6 +608,13 @@ def run_verification() -> dict[str, Any]:
             "read-only Phase 3J concept bridge shadow route declared",
         ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
+        checks.append(_check(
+            "carrier:browser-load-gaiaos-deterministic-boot",
+            'last_message.lower().rstrip(".") == "load gaiaos"' in bridge_text
+            and 'gaiaos_app._boot_packet("BROWSER_CHAT_COMMAND")' in bridge_text
+            and '"GAIAOS = ACTIVE / VERIFIED"' in bridge_text,
+            "browser Load GaiaOS command executes validated boot packet directly instead of delegating loaded-state proof to the model",
+        ))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
         # actual registered routes. This proves local route registration, not
