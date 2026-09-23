@@ -495,6 +495,23 @@ def run_verification() -> dict[str, Any]:
                 and "production_retrieval_changed" in quality_text,
                 "audit exposes match origins without production mutations",
             ))
+            checks.append(_check(
+                "carrier:phase3h-containment-source",
+                "def containment_shadow(" in quality_text
+                and "PHASE3H_FOCAL_CAP = 4" in quality_text
+                and "PHASE3H_LINKED_CAP = 2" in quality_text
+                and "actual_production_retrieval_modified" in quality_text
+                and "actual_80_20_ranking_modified" in quality_text,
+                "bounded read-only source-first lanes preserve production retrieval and ranking",
+            ))
+            checks.append(_check(
+                "carrier:phase3h-negative-controls",
+                "PHASE3H_NEGATIVE_CONTROLS" in quality_text
+                and "receipt_well_formed" in quality_text
+                and "aliases_counted_once_in_evidence_summary" in quality_text
+                and "secondary_requires_verified_direct_focal_edge" in quality_text,
+                "negative controls fail closed; duplicate aliases and verified edges inspectable",
+            ))
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase3g-quality-syntax",
@@ -546,6 +563,12 @@ def run_verification() -> dict[str, Any]:
             and 'galaxy_quality.review' in bridge_text,
             "read-only Phase 3G quality review route declared",
         ))
+        checks.append(_check(
+            "carrier:/galaxy/phase3h-containment-shadow",
+            '/galaxy/retrieval/phase3h-containment-shadow' in bridge_text
+            and 'galaxy_quality.containment_shadow' in bridge_text,
+            "read-only Phase 3H containment shadow route declared",
+        ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -592,6 +615,11 @@ def run_verification() -> dict[str, Any]:
                 "carrier-route:/galaxy/phase3g-quality-review",
                 ("/galaxy/retrieval/phase3g-quality-review", "GET") in route_pairs,
                 "read-only Phase 3G quality review ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase3h-containment-shadow",
+                ("/galaxy/retrieval/phase3h-containment-shadow", "GET") in route_pairs,
+                "read-only Phase 3H containment shadow ASGI route registered",
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
