@@ -1,0 +1,214 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaiaos://brainos/GAIA-SEMANTIC-UNIT.v1",
+  "title": "GAIA_SEMANTIC_UNIT v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "semantic_id",
+    "resolution",
+    "raw_surface",
+    "provenance",
+    "semantic_class",
+    "speech_act",
+    "ritual_candidates",
+    "ritual_selection_state",
+    "unknowns",
+    "collisions",
+    "loss_report"
+  ],
+  "properties": {
+    "schema": {
+      "const": "gaiaos.semantic-unit.v1"
+    },
+    "semantic_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "resolution": {
+      "enum": [
+        "RESOLVED",
+        "COLLISION",
+        "UNKNOWN"
+      ]
+    },
+    "raw_surface": {
+      "type": "string"
+    },
+    "source_context": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "provenance": {
+      "type": "object"
+    },
+    "semantic_class": {
+      "enum": [
+        "OBSERVATION",
+        "CLAIM",
+        "ACCOUNT",
+        "LORE",
+        "PREFERENCE",
+        "COMMITMENT",
+        "HYPOTHESIS",
+        "INFERENCE",
+        "AUTHORIZATION",
+        "UNKNOWN"
+      ]
+    },
+    "speech_act": {
+      "enum": [
+        "MENTION",
+        "QUESTION",
+        "HYPOTHETICAL",
+        "REQUEST",
+        "COMMAND",
+        "CONFIRMATION",
+        "REVISION",
+        "REFUSAL",
+        "UNKNOWN"
+      ]
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "target_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "identity": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "causality": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "evidence": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "authority_request": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "operation_intent": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "time": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "domain": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "material_qualifiers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "memory_intent": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "commitment_state": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "revision_state": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "importance_intent": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "retrieval_intent": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "influence_intent": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "ritual_candidates": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "selected_ritual": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "ritual_selection_state": {
+      "enum": [
+        "NONE",
+        "CANDIDATE",
+        "SELECTED",
+        "COLLISION",
+        "UNSUPPORTED"
+      ]
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "collisions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "loss_report": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": true
+}
