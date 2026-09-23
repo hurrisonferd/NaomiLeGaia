@@ -16,6 +16,7 @@ import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
 import galaxy_production
+import galaxy_quality
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
@@ -641,6 +642,15 @@ def galaxy_phase3e_rollback_test(browser_request: Request, repeats: int = 2, lim
         limit=limit,
     )
 
+
+
+@app.get("/galaxy/retrieval/phase3g-quality-review", operation_id="galaxyPhase3GQualityReview")
+def galaxy_phase3g_quality_review(browser_request: Request, query_index: int = 3):
+    """Read-only, bounded explanation of broad retrieval and record lineage."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    if query_index not in galaxy_quality.TEST_QUERIES:
+        raise HTTPException(status_code=422, detail="query_index must be 0, 3 or 5")
+    return galaxy_quality.review(memcon_runtime, query_index=query_index, limit=10)
 
 
 def _galaxy_production_csrf(browser_request: Request) -> str:
