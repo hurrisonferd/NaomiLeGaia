@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_GALAXY_PHASE3_EXIT_V2_SWITCH_TEST_LIVE_PASS_PILOT_AUTH_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE3_EXIT_V2_PILOT_LIVE_ROLLBACK_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase-3 Exit Integration v2 is deployed and live-observed. The read-only three-query preflight passed for indexes 0, 3, and 5 with zero MemoryOS writes, pilot OFF, and global weighting OFF. A fresh integrated ON/OFF switch test then passed in runtime: exact legacy retrieval was restored after the test, at least one real context-lane rerank was observed on query index 3, all three receipts passed, zero writes were reported, no global weighted mode was enabled, and mode_after=OFF. The next gate is an explicitly Naomi-authorized guarded 10-minute active pilot followed immediately by live rollback proof. No active pilot has yet been authorized for this v2 receipt sequence.",
+  "proof_ceiling": "Phase-3 Exit Integration v2 passed live read-only preflight and a fresh guarded ON/OFF switch test. Naomi then explicitly authorized the guarded 10-minute v2 pilot. Runtime activation receipt shows PILOT_ACTIVE on process BOOT-9bd851210ba24d5b95045bc2081be050, pilot PHASE3F-PILOT-9dc1f925949846f59af8c36d020dfbb4, exact query indexes 0/3/5, 600-second lease, kill switch inactive, ordinary retrieval default unweighted, restart policy OFF, and unrestricted global weighting OFF. Live active-pilot rollback proof is now the immediate required gate.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3_EXIT_V2_SWITCH_TEST_LIVE_PASS_PILOT_AUTH_PENDING",
+    "phase3_status": "PHASE3_EXIT_V2_PILOT_ACTIVE_ROLLBACK_PROOF_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_FOR_GUARDED_10_MINUTE_V2_PILOT_THEN_LIVE_ROLLBACK_PROOF",
+    "phase3f_next_gate": "RUN_ACTIVE_PILOT_ROLLBACK_PROOF_NOW",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -284,7 +284,7 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_pilot_active_observed": false,
+    "phase3f_pilot_active_observed": true,
     "phase3g_quality_review_source_ready": true,
     "phase3g_quality_review_live_observed": true,
     "phase3g_quality_review_version": "galaxy.phase3g.retrieval-quality-review.v1",
@@ -630,7 +630,7 @@
     "phase3_exit_ci_tests": "37/37 PASS",
     "phase3_exit_intermediate_ci_failure_run_id": 35838026305,
     "phase3_exit_intermediate_ci_failure_resolved": true,
-    "phase3_exit_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_FOR_GUARDED_10_MINUTE_V2_PILOT_THEN_LIVE_ROLLBACK_PROOF",
+    "phase3_exit_next_gate": "RUN_ACTIVE_PILOT_ROLLBACK_PROOF_NOW",
     "phase3_exit_v1_deployed": true,
     "phase3_exit_v1_live_observed": true,
     "phase3_exit_v1_preflight_status": "HOLD",
@@ -670,6 +670,17 @@
     "phase3f_switch_test_rerank_query_indexes": [
       3
     ],
-    "phase3_exit_v2_fresh_pilot_authorization_pending": true
+    "phase3_exit_v2_fresh_pilot_authorization_pending": false,
+    "phase3f_active_pilot_id": "PHASE3F-PILOT-9dc1f925949846f59af8c36d020dfbb4",
+    "phase3f_active_pilot_process_boot_id": "BOOT-9bd851210ba24d5b95045bc2081be050",
+    "phase3f_active_pilot_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3f_active_pilot_lease_seconds": 600,
+    "phase3f_active_pilot_kill_switch": false,
+    "phase3f_active_pilot_global_weighting_enabled": false,
+    "phase3f_active_pilot_restart_policy": "OFF"
   }
 }
