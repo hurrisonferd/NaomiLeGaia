@@ -5,6 +5,21 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "api"))
 import galaxy_quality as quality
+import gaiaos_verification as verifier
+
+
+class VerifierPhaseStateTests(unittest.TestCase):
+    def test_phase3g_and_phase3h_are_authorized_lifecycle_states(self):
+        self.assertTrue(verifier._phase3_status_authorized_family(
+            "PHASE3G_THREE_LIVE_SLICES_COMPLETE_PHASE3H_READ_ONLY_SOURCE_CI_READY_DEPLOY_PENDING"
+        ))
+        self.assertTrue(verifier._phase3_status_authorized_family(
+            "PHASE3H_CONTAINMENT_SHADOW_LIVE_OBSERVED"
+        ))
+
+    def test_unknown_future_or_unrelated_status_fails_closed(self):
+        self.assertFalse(verifier._phase3_status_authorized_family("PHASE4_UNKNOWN"))
+        self.assertFalse(verifier._phase3_status_authorized_family("NOT_A_PHASE_STATE"))
 
 
 class FakeMemory:
