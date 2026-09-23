@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3F_GUARDED_PRODUCTION_SOURCE_READY",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3F_DEPLOYED_ROUTES_VERIFIED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Naomi explicitly granted separate production authorization after Phase 3E completed 3/3 live canaries and a live request-local rollback PASS. Phase 3F guarded production pilot source now routes actual MemoryOS retrieval through a fail-closed 80/20 gate for exactly three calibrated queries in MemoryOS scope, max 10 results, one carrier process, up to ten minutes. Startup OFF, expiry OFF, environment kill switch, safety-guard auto rollback, signed browser-session plus CSRF-protected POST controls, live integrated ON/OFF switch test and actual-active-pilot rollback-proof routes are built. GitHub Actions Phase3F production guardrail CI completed successfully; deployed Phase 3F and its operational receipts remain UNPROVEN. Global unrestricted production weighted retrieval remains OFF and multi-instance coordination remains unproven.",
+  "proof_ceiling": "Phase 3F deployed carrier verification run e18b13c0ff434a3ca7d27c08fda41f10 observed 120/120 PASS in /app, including packaged guarded production module and syntax, fail-closed safety markers, real MemoryOS adapter wiring, Naomi authorization, platform/BrainOS alignment and live registration of all six Phase 3F control routes. This proves deployment and route registration, not executed pilot behavior. The actual integrated ON/OFF switch test, pilot activation, and active-pilot rollback remain unobserved. Source defaults OFF, production scope remains three exact MemoryOS queries in one process, and unrestricted global production weighting is disabled.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,8 +136,8 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3F_GUARDED_PRODUCTION_PILOT_SOURCE_READY",
-    "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_EXACT_QUERY_PILOT_SOURCE_READY_DEFAULT_OFF",
+    "phase3_status": "PHASE3F_GUARDED_PRODUCTION_DEPLOYED_ROUTES_VERIFIED_SWITCH_TEST_PENDING",
+    "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
     "phase3_authorized_date": "2026-09-21",
@@ -157,7 +157,7 @@
     "phase3d_required_slice_passes": 6,
     "phase3d_coefficient_adopted": true,
     "phase3d_adoption_authorized": true,
-    "phase3d_next_gate": "PHASE3F_DEPLOY_VERIFY",
+    "phase3d_next_gate": "RUN_PHASE3F_LIVE_SWITCH_TEST",
     "phase3d_adoption_gate_live_route_registered": true,
     "phase3d_verifier_run_id": "9bac353800c94557b74129f299684a1d",
     "phase3d_verifier_summary": "99/99 PASS",
@@ -237,7 +237,7 @@
     "phase3f_production_authorized_date": "2026-09-22",
     "phase3f_version": "galaxy.phase3f.guarded-production-pilot.v1",
     "phase3f_pilot_source_ready": true,
-    "phase3f_pilot_deployed": false,
+    "phase3f_pilot_deployed": true,
     "phase3f_integrated_retrieval_live_proven": false,
     "phase3f_switch_test_live_observed": false,
     "phase3f_active_pilot_rollback_live_observed": false,
@@ -262,6 +262,9 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "DEPLOY_VERIFY_THEN_RUN_INTEGRATED_LIVE_SWITCH_TEST"
+    "phase3f_next_gate": "RUN_LIVE_INTEGRATED_SWITCH_TEST",
+    "phase3f_deployed_routes_verified": true,
+    "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
+    "phase3f_verifier_summary": "120/120 PASS"
   }
 }
