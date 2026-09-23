@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_THREE_LIVE_SHADOWS_PASS_GENERALIZATION_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3I_GENERALIZATION_SOURCE_READY_DEPLOY_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase3H running-carrier read-only containment shadows now PASS for all three controlled query indexes [0,3,5]. Index0: 1 focal, 5 audit-only. Index3: 4 focal, 3 audit-only, including recovery of CORE from original weighted rank 5 while higher-coverage generic policy stayed audit-only. Index5: 4 focal, 2 audit-only; SATELLITE remains primary and CORE/REVISION/REINFORCER remain focal. Across all three, linked-context and historical lanes were empty, all candidates were accounted for, both negative controls returned zero well-formed candidates, aliases were evidence-separated where applicable, zero writes were reported, actual production retrieval and actual 80/20 ranking were unchanged, and unrestricted global weighting remained OFF. Successful one-tap live receipts also prove the mobile self-bootstrap browser-session fix is deployed. This validates the bounded literal-anchor calibration suite only, not general semantic reasoning or arbitrary paraphrase handling. Next gate is read-only generalization/paraphrase testing; no active Phase3F pilot or live active-pilot rollback observed.",
+  "proof_ceiling": "Phase3H controlled live tri-slice containment suite is complete PASS on indexes [0,3,5], with zero writes and no production/rank changes. Phase3I read-only generalization suite is now source-ready: four positive paraphrase cases plus two external-domain negative controls evaluate the EXISTING relevance gate using fixture oracle IDs only for measurement. It does not add aliases, alter thresholds, change candidate admission, install Phase3H grouping, or enable production weighting. GitHub CI run 35820868534 passed 27/27 offline tests including hard-paraphrase miss, negative-control leak and malformed-receipt fail-closed cases. Phase3I has not yet been deployed or live-observed. No Phase3F active pilot or live active-pilot rollback observed; unrestricted global production weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3H_THREE_LIVE_SHADOWS_PASS_GENERALIZATION_PENDING",
+    "phase3_status": "PHASE3I_GENERALIZATION_SOURCE_READY_DEPLOY_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "DO_NOT_ACTIVATE_PILOT_UNTIL_POST_PHASE3H_GENERALIZATION_REVIEW",
+    "phase3f_next_gate": "DO_NOT_ACTIVATE_PILOT_UNTIL_PHASE3I_LIVE_REVIEW",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -518,6 +518,19 @@
     "phase3h_live_index5_production_retrieval_modified": false,
     "phase3h_live_index5_80_20_ranking_modified": false,
     "phase3h_live_index5_global_weighting_enabled": false,
-    "phase3h_mobile_browser_bootstrap_live_observed": true
+    "phase3h_mobile_browser_bootstrap_live_observed": true,
+    "phase3i_version": "galaxy.phase3i.generalization-suite.v1",
+    "phase3i_source_ready": true,
+    "phase3i_deployed": false,
+    "phase3i_live_observed": false,
+    "phase3i_route": "/galaxy/retrieval/phase3i-generalization-suite",
+    "phase3i_case_count": 6,
+    "phase3i_positive_case_count": 4,
+    "phase3i_negative_case_count": 2,
+    "phase3i_ci_run_id": 35820868534,
+    "phase3i_ci_status": "SUCCESS",
+    "phase3i_ci_tests": "27/27 PASS",
+    "phase3i_production_changes": false,
+    "phase3i_next_gate": "DEPLOY_VERIFY_AND_RUN_LIVE_GENERALIZATION_SUITE"
   }
 }
