@@ -1,6 +1,6 @@
 # GaiaOS Current Session Handoff
 
-Updated: 2026-09-18
+Updated: 2026-09-23
 Operator: NAOMI == LIGEIA
 Repository: hurrisonferd/NaomiLeGaia
 Branch: main
@@ -99,3 +99,18 @@ ANVIL should map the Turso/libSQL storage-adapter migration before changing prod
 ### Resume cue
 
 Resume with ANVIL at **deploy current main -> /verify -> live Phase3J concept-bridge shadow**. If the hard paraphrase is still missed or an unexpected primary appears, preserve the exact receipt and iterate read-only. Do not activate Phase3F before that review is resolved.
+
+
+## 2026-09-23 late-night GALAXY Phase3J routing hold and finite-roadmap handoff
+
+- Naomi reports deploying the current build. Supplied running-carrier /verify receipt `03af10d279d74340bb54e03107334c7b` recorded 133/135 PASS. The two FAIL items were stale VERA 📚 expectations; Phase3J source and live ASGI route registration were PASS.
+- Verifier expectation fix for VERA 🦋 committed as `23e76208abee6e0fee0d0e2db97a86384b45c77a`; GitHub CI succeeded. No post-fix deployed /verify receipt has been supplied.
+- Phase3J public link twice returned `{"detail":"Not Found"}` in the ChatGPT in-app browser. Firefox appeared blank after opening /health, with full path/status not visible. External route reachability and live Phase3J result remain UNKNOWN. Registration PASS alone is not sufficient.
+- Naomi also observed frequent ChatGPT 'Error in message stream' incidents in this period; do not conflate these with carrier issues. She prefers Firefox over Safari.
+- Naomi ended the session after 03:00 local due to fatigue and repeated interface failures. No more testing is requested tonight. Resume with a FINITE phase roadmap and a minimal one-page diagnostic/test approach, not a loop of manual link clicking or further phase-letter proliferation.
+- User's purpose: GALAXY should eventually make meaningful, real-world improvements to context-sensitive memory retrieval and GaiaOS continuity. Honor that goal without claiming controlled test results prove production value.
+- Phase3F stays OFF; global weighting OFF. Dedicated preserve: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3J-ROUTE-AND-ROADMAP-HANDOFF.md`.
+
+### Next-session ANVIL cue
+
+First define finite milestones and success criteria; then check running commit and public-route reachability, repair access if needed, and run actual Phase3J read-only shadow with captured receipts. No production activation without explicit Naomi authorization and a resolved Phase3J live review.
