@@ -4358,3 +4358,44 @@ Phase3J is a **read-only deterministic concept-bridge shadow** built in response
 Primary evidence is statement-only: at least two distinct bridged statement concepts and at least two-thirds of distinct query concepts must match. Notes and virtual MemoryOS scope cannot create a primary. Non-primary records may appear only in a separately labeled linked-context lane when they carry at least one direct statement concept **and** a VERIFIED direct graph edge to a selected primary. External-domain negatives remain fail-closed. Every unexpected bridge-primary forces `OBSERVED_REVIEW_REQUIRED`.
 
 The shadow reuses the six Phase3I cases so we can compare old-gate behavior against the deterministic statement bridge without moving the production goalposts. GitHub Actions run `35823194698` passed **31/31** offline tests, including hard revision-paraphrase recovery, unexpected-primary fail-closed behavior, external negative suppression and missing-fixture review. Source and route are ready; Phase3J is not yet deployed or live-observed. Production aliases, thresholds, candidate admission, actual 80/20 ranking, records, edges and unrestricted global weighting remain unchanged. Next gate: deploy, run `/verify`, then execute `GET /galaxy/retrieval/phase3j-concept-bridge-shadow` in the live carrier.
+
+
+## Phase-3J live concept-bridge PASS — 2026-09-23
+
+Naomi executed the deployed read-only Phase3J route on the Ligeia GaiaOS carrier and supplied the runtime receipt:
+
+- schema: `gaiaos.galaxy.phase3j-statement-concept-bridge-shadow.v1`
+- execution: `OBSERVED_RUNTIME`
+- status: `PASS_READ_ONLY_CONCEPT_BRIDGE`
+- fixture_count: 13
+- missing_fixture_ids: none
+- all expected positive primaries recovered
+- no unexpected positive primaries
+- hard revision paraphrase recovered `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e`
+- gravity paraphrase recovered only the intended gravity primary, without the previous SATELLITE primary noise
+- both external-domain negative controls returned zero
+- notes/scope could not create primary evidence
+- linked context required a VERIFIED direct edge to a selected primary
+- zero MemoryOS writes
+- production aliases unchanged
+- production thresholds unchanged
+- production candidate admission unchanged
+- actual 80/20 ranking unchanged
+- Phase3H grouping not installed in production
+- unrestricted global weighting remained OFF
+
+This closes the Phase3J read-only live-review gate. It demonstrates that the bounded deterministic statement-first concept bridge solved the exact Phase3I hard-paraphrase miss and did not reproduce the observed noisy-primary admission in the controlled fixture suite. It does **not** establish universal semantic understanding and does **not** by itself authorize production adoption.
+
+### Finite Phase-3 exit gate
+
+Do not create Phase3K merely to continue iteration. Remaining Phase-3 work is explicitly named **Phase-3 Exit Integration** and has a finite closure sequence:
+
+1. Define the smallest bounded production adoption of the validated statement-first relevance/bridge behavior and evidence-lane separation. Keep ordinary retrieval as the default and unrestricted global weighting OFF.
+2. Preserve query relevance as the admission gate; gravity may rerank qualified candidates but may not manufacture membership.
+3. Run a fresh guarded switch test in the deployed carrier.
+4. Under explicit Naomi authorization, run the bounded active pilot on the existing exact three-query allowlist.
+5. Observe active-pilot retrieval and execute the live rollback proof.
+6. Require exact restoration to legacy control, zero MemoryOS writes, no cross-relevance-tier inversion, no unexpected candidate admission, and mode OFF afterward.
+7. Review receipts. If all required checks PASS, mark **PHASE 3 CLOSED** and proceed to Phase 4 Revision/Supersession. If any check fails, HOLD and repair within the named Phase-3 Exit Integration gate rather than proliferating lettered subphases.
+
+Current production boundary remains unchanged until that gate is implemented and explicitly authorized: Phase3F pilot inactive, unrestricted global weighting OFF.
