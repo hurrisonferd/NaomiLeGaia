@@ -1,5 +1,5 @@
 # POST-GALAXY ARCHITECTURE PROGRAM
-Status: PLANNED / GALAXY PHASE 0–2 CLOSED / POST-GALAXY IMPLEMENTATION NOT YET AUTHORIZED
+Status: AUGURY/RITUAL PHASE 1 ADOPTED IN SOURCE / GENERAL AUGURY PARSER NOT IMPLEMENTED / PHASE-4 FIRST GUARDED RITUAL SOURCE READY
 Authority: NAOMI / LIGEIA
 Provenance: GaiaOS synthesis of human-relayed RavenOS packets. RavenOS runtime claims remain source-attested/user-relayed unless independently verified by GaiaOS.
 
@@ -335,3 +335,34 @@ DONOR INSIGHT != DONOR AUTHORITY
 PLAY TO STRENGTHS != STOP ADVERSARIAL TESTING
 CAPABILITY GROWTH MUST NOT DILUTE EPISTEMIC DISCIPLINE
 ```
+
+
+## AUGURY ↔ RITUAL packet adoption — 2026-09-23
+
+Naomi/Ligeia supplied **GAIAOS AUGURY ↔ RITUAL ARCHITECTURE PACKET v1** after GALAXY Phase 3 closure and the live Phase-4 read-only fixture PASS, then explicitly invoked VASKON and authorized the Phase-1 build.
+
+The packet's compiler boundary is adopted:
+
+`NATURAL LANGUAGE → AUGURY → GAIA SEMANTIC UNIT → RITUAL → AUTHORITY → MANIFESTATION → RECEIPT → VERIFICATION`
+
+Canonical Phase-1 sources:
+- `SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md`
+- `SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json`
+- `SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json`
+- carrier runtime `api/augury_ritual.py`
+
+Phase-1 boundary:
+- general natural-language AUGURY parsing is **not** claimed implemented;
+- natural language cannot manifest effects;
+- exact Ritual compilation is available;
+- exact Ritual validation never grants authority;
+- manifestation remains separately gated and receipted.
+
+Phase 4 is the first bounded guarded Ritual implementation. The first family is limited to the controlled REVISION → CORE fixture and only the SUPERSEDES layer:
+1. propose controlled SUPERSEDES;
+2. verify that exact proposed SUPERSEDES;
+3. revoke that exact verified SUPERSEDES.
+
+The pre-existing VERIFIED REVISES edge is outside this rollback family and must remain intact.
+
+Naomi explicitly authorized exposing this guarded mutation route. Source exposure is not deployment and is not manifestation. The next gate is deployment + verifier + read-only Ritual status before any effectful button is used.
