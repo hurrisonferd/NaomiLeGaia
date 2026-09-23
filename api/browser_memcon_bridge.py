@@ -19,6 +19,7 @@ import galaxy_production
 import galaxy_quality
 import galaxy_phase3_exit
 import galaxy_phase4
+import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
@@ -763,6 +764,171 @@ def galaxy_phase4_pair_review(
             relation_type,
         )
     except (KeyError, ValueError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+def _ritual_csrf(browser_request: Request) -> str:
+    """Session-bound CSRF proof for exact Ritual manifestation routes."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    if not gaiaos_api.API_KEY:
+        raise HTTPException(status_code=503, detail="GAIAOS_API_KEY required for Ritual controls")
+    token = browser_request.cookies.get(gaiaos_api.SESSION_COOKIE)
+    if not token:
+        raise HTTPException(status_code=401, detail="Missing browser session")
+    return hmac.new(
+        gaiaos_api.API_KEY.encode(),
+        ("GAIAOS_RITUAL_PHASE1:" + token).encode(),
+        hashlib.sha256,
+    ).hexdigest()
+
+
+async def _ritual_authorized_body(browser_request: Request) -> dict:
+    expected_csrf = _ritual_csrf(browser_request)
+    supplied = browser_request.headers.get("x-gaiaos-ritual-csrf", "")
+    if not hmac.compare_digest(supplied, expected_csrf):
+        raise HTTPException(status_code=403, detail="Ritual CSRF proof failed")
+    if "application/json" not in browser_request.headers.get("content-type", "").lower():
+        raise HTTPException(status_code=415, detail="Ritual manifestation requires JSON POST")
+    body = await browser_request.json()
+    if (
+        not isinstance(body, dict)
+        or body.get("authority") != "NAOMI"
+        or body.get("approved") is not True
+        or body.get("action") != "MANIFEST_EXACT_RITUAL"
+        or not isinstance(body.get("ritual_id"), str)
+        or not isinstance(body.get("params"), dict)
+    ):
+        raise HTTPException(status_code=403, detail="Explicit Naomi Ritual action required")
+    return body
+
+
+@app.get("/ritual/status", operation_id="auguryRitualPhase1Status")
+def augury_ritual_phase1_status(browser_request: Request):
+    """Read-only AUGURY/RITUAL Phase-1 status and controlled Phase-4 state."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return augury_ritual.phase1_status(memcon_runtime)
+
+
+@app.get("/ritual/phase4/review", response_class=HTMLResponse, operation_id="auguryRitualPhase4Review")
+def augury_ritual_phase4_review(browser_request: Request):
+    """Human-operated exact Ritual console. GET is strictly read-only."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    csrf = _ritual_csrf(browser_request)
+    state = augury_ritual.phase1_status(memcon_runtime)
+    start_json = html.escape(json.dumps(state, ensure_ascii=False, indent=2))
+    script = """
+<script>
+const csrf = __CSRF__;
+const SOURCE = __SOURCE__;
+const TARGET = __TARGET__;
+const PROPOSE = __PROPOSE__;
+const VERIFY = __VERIFY__;
+const REVOKE = __REVOKE__;
+
+async function getStatus() {
+  const r = await fetch("/ritual/status", {credentials:"same-origin"});
+  return await r.json();
+}
+async function refresh() {
+  const result = await getStatus();
+  document.getElementById("receipt").textContent = JSON.stringify(result,null,2);
+}
+async function manifest(kind) {
+  const state = await getStatus();
+  const fixture = state.phase4_controlled_fixture || {};
+  let ritual_id, params, confirmation, prompt;
+  if (kind === "PROPOSE") {
+    ritual_id = PROPOSE;
+    params = {source_record_id:SOURCE, target_record_id:TARGET};
+    confirmation = "MANIFEST_GALAXY_PHASE4_PROPOSE_SUPERSEDES_CONTROLLED_FIXTURE";
+    prompt = "Propose the exact controlled SUPERSEDES edge? This writes a PROPOSED relation but does not change governing state.";
+  } else if (kind === "VERIFY") {
+    const ids = fixture.proposed_edge_ids || [];
+    if (ids.length !== 1) {
+      document.getElementById("receipt").textContent = "HOLD: expected exactly one PROPOSED controlled SUPERSEDES edge; found " + ids.length;
+      return;
+    }
+    ritual_id = VERIFY;
+    params = {edge_id:ids[0]};
+    confirmation = "MANIFEST_GALAXY_PHASE4_VERIFY_SUPERSEDES_CONTROLLED_FIXTURE";
+    prompt = "VERIFY controlled SUPERSEDES? This changes the target governing state to HISTORICAL_SUPERSEDED while preserving history.";
+  } else if (kind === "REVOKE") {
+    const ids = fixture.verified_edge_ids || [];
+    if (ids.length !== 1) {
+      document.getElementById("receipt").textContent = "HOLD: expected exactly one VERIFIED controlled SUPERSEDES edge; found " + ids.length;
+      return;
+    }
+    ritual_id = REVOKE;
+    params = {edge_id:ids[0], reason:"Controlled Phase-4 Ritual rollback proof"};
+    confirmation = "MANIFEST_GALAXY_PHASE4_REVOKE_SUPERSEDES_CONTROLLED_FIXTURE";
+    prompt = "REVOKE controlled SUPERSEDES and restore CURRENT_REVISED_CONTEXT? Edge/history will be preserved as REVOKED.";
+  } else {
+    return;
+  }
+  if (!window.confirm(prompt)) return;
+  const r = await fetch("/ritual/manifest", {
+    method:"POST",
+    credentials:"same-origin",
+    headers:{"Content-Type":"application/json","X-GaiaOS-Ritual-CSRF":csrf},
+    body:JSON.stringify({
+      authority:"NAOMI",
+      approved:true,
+      action:"MANIFEST_EXACT_RITUAL",
+      ritual_id:ritual_id,
+      params:params,
+      confirmation:confirmation
+    })
+  });
+  const result = await r.json();
+  document.getElementById("receipt").textContent =
+    (r.ok ? "" : "HTTP " + r.status + "\n") + JSON.stringify(result,null,2);
+}
+</script>
+"""
+    script = (
+        script.replace("__CSRF__", json.dumps(csrf))
+        .replace("__SOURCE__", json.dumps(augury_ritual.SOURCE_ID))
+        .replace("__TARGET__", json.dumps(augury_ritual.TARGET_ID))
+        .replace("__PROPOSE__", json.dumps(augury_ritual.PROPOSE_ID))
+        .replace("__VERIFY__", json.dumps(augury_ritual.VERIFY_ID))
+        .replace("__REVOKE__", json.dumps(augury_ritual.REVOKE_ID))
+    )
+    page = (
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>AUGURY ↔ RITUAL Phase 1: GALAXY Phase 4 controlled manifestation</h2>"
+        "<p>AUGURY natural-language manifestation is disabled. These are exact Rituals over one controlled fixture pair.</p>"
+        "<p>Required sequence: propose SUPERSEDES → verify SUPERSEDES → revoke SUPERSEDES. "
+        "Each mutation requires a separate confirmation. The pre-existing REVISES edge is never revoked here.</p>"
+        "<p><button onclick=\"manifest('PROPOSE')\">1. Propose controlled SUPERSEDES</button></p>"
+        "<p><button onclick=\"manifest('VERIFY')\">2. Verify controlled SUPERSEDES</button></p>"
+        "<p><button onclick=\"manifest('REVOKE')\">3. Revoke controlled SUPERSEDES</button></p>"
+        "<p><button onclick=\"refresh()\">Refresh status</button></p>"
+        "<pre id='receipt' style='white-space:pre-wrap;word-break:break-word'>"
+        + start_json + "</pre>" + script + "</body></html>"
+    )
+    return HTMLResponse(page, headers={"Cache-Control": "no-store"})
+
+
+@app.post("/ritual/manifest", operation_id="manifestExactRitual")
+async def manifest_exact_ritual(browser_request: Request):
+    """Manifest only an exact Grimoire-bound Phase-1 Ritual after explicit authority."""
+    body = await _ritual_authorized_body(browser_request)
+    try:
+        return augury_ritual.manifest(
+            memcon_runtime,
+            body["ritual_id"],
+            body["params"],
+            authority="NAOMI",
+            approved=True,
+            confirmation=str(body.get("confirmation") or ""),
+        )
+    except (KeyError, ValueError, PermissionError) as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
