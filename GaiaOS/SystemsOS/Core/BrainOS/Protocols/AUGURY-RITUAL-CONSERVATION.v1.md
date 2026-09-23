@@ -244,3 +244,31 @@ It does not authorize AUGURY to infer effectful commands.
 It does not imply a Manifestation succeeded merely because a Ritual compiled.
 
 Naomi retains final authority.
+
+
+## Deployed Phase-1 verifier PASS — 2026-09-23
+
+Naomi supplied running-carrier verification receipt `227125f423eb4a3ea42cc9c1a0a1ec13`.
+
+Observed runtime:
+- 167 / 167 checks PASS
+- failed = 0
+- `live_host_execution=PROVEN_FOR_THIS_CALL`
+- canonical conservation contract present
+- Ritual Grimoire present and parses with exactly the bounded Phase-4 first family
+- GAIA_SEMANTIC_UNIT schema present with preserved speech-act and uncertainty distinctions
+- AUGURY/RITUAL runtime packaged and syntax-valid
+- exact Ritual compiler remains separated from general AUGURY
+- `GET /ritual/status` live-registered
+- `GET /ritual/phase4/review` live-registered
+- `POST /ritual/manifest` live-registered behind signed session, Ritual CSRF and explicit Naomi authority
+- deployed read-only self-test confirms general natural-language manifestation disabled
+- production retrieval unchanged
+- unrestricted global weighting OFF
+
+This proves deployment, source integrity, route registration and the read-only self-test. It does not prove any effectful Ritual manifestation.
+
+Next gate:
+`GET /ritual/status`
+
+Inspect status before pressing any Phase-4 Ritual mutation control.
