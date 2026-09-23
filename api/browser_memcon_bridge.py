@@ -653,11 +653,38 @@ def galaxy_phase3g_quality_review(browser_request: Request, query_index: int = 3
     return galaxy_quality.review(memcon_runtime, query_index=query_index, limit=10)
 
 
+def _bootstrap_browser_session_redirect(browser_request: Request):
+    """Mint the same signed browser cookie as GaiaOS home, then retry this GET.
+
+    Needed for mobile in-app browsers that open each assistant hyperlink in a
+    fresh isolated webview. This does not bypass carrier authorization; it only
+    performs the already-public browser-session bootstrap in the same request.
+    """
+    if gaiaos_api.API_KEY is None or browser_request.cookies.get(gaiaos_api.SESSION_COOKIE):
+        return None
+    target = browser_request.url.path
+    if browser_request.url.query:
+        target += "?" + browser_request.url.query
+    response = RedirectResponse(url=target, status_code=307)
+    response.set_cookie(
+        gaiaos_api.SESSION_COOKIE,
+        gaiaos_api._session_token(),
+        httponly=True,
+        samesite="lax",
+        secure=True,
+        max_age=86400,
+    )
+    return response
+
+
 @app.get("/galaxy/retrieval/phase3h-containment-shadow", operation_id="galaxyPhase3HContainmentShadow")
 def galaxy_phase3h_containment_shadow(
     browser_request: Request, query_index: int = 0, negative_controls: bool = False,
 ):
     """Read-only evidence-separated shadow; no production retrieval changes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     if query_index not in galaxy_quality.TEST_QUERIES:
         raise HTTPException(status_code=422, detail="query_index must be 0, 3 or 5")
