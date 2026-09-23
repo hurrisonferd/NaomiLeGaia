@@ -272,3 +272,32 @@ Next gate:
 `GET /ritual/status`
 
 Inspect status before pressing any Phase-4 Ritual mutation control.
+
+
+## Live read-only Ritual status PASS — 2026-09-23
+
+Naomi supplied the live `GET /ritual/status` receipt.
+
+Observed state:
+- AUGURY general natural-language parser: not implemented
+- natural-language manifestation: disabled
+- conservation contract source-ready
+- GAIA_SEMANTIC_UNIT schema source-ready
+- Ritual Grimoire source-ready
+- exact compiler available
+- controlled Phase-4 Ritual family loaded
+- prerequisite VERIFIED `REVISES` edge visible
+- no SUPERSEDES edge exists yet
+- no proposed/verified/revoked SUPERSEDES IDs exist
+- target governing state: `CURRENT_REVISED_CONTEXT`
+- no direct cycle
+- no competing superseder
+- production retrieval unchanged
+- unrestricted global weighting OFF
+
+This is the clean pre-manifest baseline.
+
+Next gate:
+`GALAXY.PHASE4.PROPOSE_SUPERSEDES.CONTROLLED_FIXTURE`
+
+After that exact proposal, stop and inspect the receipt before verification.
