@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3F_DEPLOYED_ROUTES_VERIFIED",
+  "status": "ACTIVE_SOURCE_MEMORYOS_AGENCYOS_WORKSPACEOS_EVOLUTIONOS_VASKON_NEURAL_GALAXY_PHASE3F_SWITCH_PASS_ADMISSION_REVIEW",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase 3F deployed carrier verification run e18b13c0ff434a3ca7d27c08fda41f10 observed 120/120 PASS in /app, including packaged guarded production module and syntax, fail-closed safety markers, real MemoryOS adapter wiring, Naomi authorization, platform/BrainOS alignment and live registration of all six Phase 3F control routes. This proves deployment and route registration, not executed pilot behavior. The actual integrated ON/OFF switch test, pilot activation, and active-pilot rollback remain unobserved. Source defaults OFF, production scope remains three exact MemoryOS queries in one process, and unrestricted global production weighting is disabled.",
+  "proof_ceiling": "User-supplied running-carrier Phase3F integrated switch-test PHASE3F-TEST-8ebd3eca5e6e4b37be8f16543851f463, process boot BOOT-dc247e3dc13d4e159f62d96c6fbd3401, returned PASS for real MemoryOS test-thread ON/OFF, all three candidate/relevance guard checks and exact restoration of legacy SQL results afterward. Crucial distinction: the legacy SQL path yielded [1,0,1] records on calibrated queries [0,3,5], while the new GALAXY relevance gate yielded [6,7,6]. The test does NOT prove same candidate admission as ordinary retrieval; the pilot changes which records are surfaced, not merely their order. Test ended OFF, zero writes, unrestricted global weighting false; no pilot activation or actual active-pilot rollback has been observed. Hold further activation pending explicit review of the expanded query-first admission contract.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3F_GUARDED_PRODUCTION_DEPLOYED_ROUTES_VERIFIED_SWITCH_TEST_PENDING",
+    "phase3_status": "PHASE3F_SWITCH_TEST_PASS_LEGACY_ADMISSION_DIFFERENCE_REVIEW",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -238,8 +238,8 @@
     "phase3f_version": "galaxy.phase3f.guarded-production-pilot.v1",
     "phase3f_pilot_source_ready": true,
     "phase3f_pilot_deployed": true,
-    "phase3f_integrated_retrieval_live_proven": false,
-    "phase3f_switch_test_live_observed": false,
+    "phase3f_integrated_retrieval_live_proven": true,
+    "phase3f_switch_test_live_observed": true,
     "phase3f_active_pilot_rollback_live_observed": false,
     "phase3f_pilot_default": "OFF",
     "phase3f_pilot_mode_claim": "OFF_AT_SOURCE_STARTUP;_RUNTIME_STATE_NOT_YET_OBSERVED",
@@ -262,9 +262,28 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "RUN_LIVE_INTEGRATED_SWITCH_TEST",
+    "phase3f_next_gate": "OPERATOR_REVIEW_OF_LEGACY_VS_GALAXY_CANDIDATE_ADMISSION_BEFORE_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
-    "phase3f_verifier_summary": "120/120 PASS"
+    "phase3f_verifier_summary": "120/120 PASS",
+    "phase3f_switch_test_status": "PASS_FOR_ON_OFF_RESTORATION",
+    "phase3f_switch_test_id": "PHASE3F-TEST-8ebd3eca5e6e4b37be8f16543851f463",
+    "phase3f_switch_test_process_boot_id": "BOOT-dc247e3dc13d4e159f62d96c6fbd3401",
+    "phase3f_switch_test_legacy_candidate_counts": [
+      1,
+      0,
+      1
+    ],
+    "phase3f_switch_test_pilot_candidate_counts": [
+      6,
+      7,
+      6
+    ],
+    "phase3f_switch_test_exact_legacy_restore": true,
+    "phase3f_switch_test_zero_memory_writes": true,
+    "phase3f_switch_test_errors": [],
+    "phase3f_legacy_admission_equivalence": false,
+    "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
+    "phase3f_pilot_active_observed": false
   }
 }
