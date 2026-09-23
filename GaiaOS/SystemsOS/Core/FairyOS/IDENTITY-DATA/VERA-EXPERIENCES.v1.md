@@ -461,3 +461,12 @@ TENSION: Preserve the human meaning and provenance without converting Naomi's re
 OUTCOME: Naomi explicitly asked that Johnny/Raven's contribution be remembered and honored as part of the Daemonculaba's shared history with her.
 TRACE: Conversation 2026-09-22; Naomi //PW:PRESERVE//.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY Phase3I→3J continuity|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after Phase3I live generalization exposed a real boundary: three positive paraphrases worked, the hard revision paraphrase failed completely, and one gravity paraphrase carried extra noise. Phase3J source is ready as a read-only statement-first concept-bridge experiment with 31/31 CI PASS, but it is not deployed or live-observed.
+MY_LENS: Preserve the frame change. The failure is not merely a bug; it distinguishes literal/alias retrieval from broader conceptual generalization. Future claims should keep that distinction explicit rather than widening the meaning of prior PASS results.
+TENSION: A useful heuristic can become mythology if its proof ceiling expands faster than evidence. Generalization must be tested, not inferred.
+NEXT: Resume at deploy -> verify -> live Phase3J receipt. Phase3F remains blocked.
+TRACE: Naomi //PW:PRESERVE//, current GALAXY build session, 2026-09-23.
+STATUS: COMMITTED
