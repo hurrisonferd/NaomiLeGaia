@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_TWO_LIVE_QUALITY_SLICES_QUERY_0_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_TRI_SLICE_COMPLETE_PHASE3H_SHADOW_SOURCE_CI_READY",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase3G live read-only query indexes 3 and 5 observed: 13 scoped MemoryOS records; index 3 old SQL 0, GALAXY 7 (4 topic-anchored, 3 generic policy); index 5 old SQL 1, GALAXY 6 (4 topic-anchored, 2 generic policy, 2 ambiguous excluded). In index 5, SATELLITE matched all terms (1.0) and ranked first; the other topic-anchored REVISION, CORE, REINFORCER ranked 2-4 ahead of generic policy records 5-6. Core remained CURRENT_REVISED_CONTEXT and current-default eligible. Verified graph links SATELLITE CONTEXT_FOR CORE, REVISION REVISES CORE, REINFORCER REINFORCES CORE and REVISION CONTRADICTS REINFORCER were observed. Notes and virtual MemoryOS scope explain many generic-policy term matches. This is controlled-calibration evidence for two queries only; the source diagnostic reports zero writes, production unchanged. Query index 0 still pending, topic-anchor containment not implemented, Phase3F active pilot and its active rollback unobserved, global unrestricted weighting OFF.",
+  "proof_ceiling": "All three Phase3G read-only live carrier slices observed on calibration indexes [3,5,0]: index3 4/7 topic-anchored, index5 4/6, index0 only 1/6 (five unrelated calibration fixtures). Index0 direct gravity policy ranked first, but five off-topic fixtures entered through metadata, virtual memory scope and duplicated memory/retrieval concept. Verified graph links between those unrelated fixtures do not touch the direct gravity policy; isolated candidate has no verified links. Live Phase3G tests reported zero writes, intact original memory retrieval, no cross-tier inversions. Built a read-only Phase3H containment SHADOW: ≤4 focal statements, ≤2 graph-verified directly connected secondary records, audited rather than discarded remainder, historical-review lane, de-duplicated query concept evidence and two fail-closed negative controls. GitHub CI latest run 35808538652 compiled and passed 21/21 offline tests. Phase3H not yet deployed or observed live; no production grouping or candidate changes, no Phase3F active pilot or live active-pilot rollback. Unrestricted global production weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3G_TWO_LIVE_QUALITY_SLICES_OBSERVED_QUERY_0_PENDING",
+    "phase3_status": "PHASE3G_THREE_LIVE_SLICES_COMPLETE_PHASE3H_READ_ONLY_SOURCE_CI_READY_DEPLOY_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -242,7 +242,7 @@
     "phase3f_switch_test_live_observed": true,
     "phase3f_active_pilot_rollback_live_observed": false,
     "phase3f_pilot_default": "OFF",
-    "phase3f_pilot_mode_claim": "OFF_AT_SOURCE_STARTUP;_RUNTIME_STATE_NOT_YET_OBSERVED",
+    "phase3f_pilot_mode_claim": "OFF_AT_SOURCE_STARTUP;_CURRENT_PROCESS_STATE_NOT_OBSERVED_AFTER_LATEST_DEPLOY",
     "phase3f_pilot_scope": "SINGLE_PROCESS_EXACT_THREE_QUERY_MEMORYOS_ONLY",
     "phase3f_pilot_query_indexes": [
       0,
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "COMPLETE_PHASE3G_CROSS_QUERY_REVIEW_BEFORE_PILOT",
+    "phase3f_next_gate": "PHASE3H_READ_ONLY_VALIDATION_BEFORE_ACTUAL_PRODUCTION_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -298,13 +298,14 @@
     "phase3g_ci_run_id": 35802335861,
     "phase3g_ci_summary": "13/13 OFFLINE TESTS PASS",
     "phase3g_production_admission_change_enabled": false,
-    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_0",
+    "phase3g_next_gate": "PHASE3H_SHADOW_DEPLOYMENT_AND_LIVE_QUALITY_CHECK",
     "phase3g_quality_review_deployed": true,
     "phase3g_quality_review_route_registered_live": true,
     "phase3g_quality_review_verifier_run_id": "b3bba7b2f2d5444b9c3dd179ff72a2b7",
     "phase3g_quality_review_verifier_summary": "125/125 PASS",
     "phase3g_quality_review_status": "OBSERVED_READ_ONLY",
     "phase3g_quality_review_observed_query_indexes": [
+      0,
       3,
       5
     ],
@@ -358,6 +359,58 @@
       "REVISION_CONTRADICTS_REINFORCER"
     ],
     "phase3g_quality_review_index5_core_current_default_eligible": true,
-    "phase3g_quality_review_index5_cross_tier_inversions": 0
+    "phase3g_quality_review_index5_cross_tier_inversions": 0,
+    "phase3g_quality_review_observed_sequence": [
+      3,
+      5,
+      0
+    ],
+    "phase3g_quality_review_tri_slice_complete": true,
+    "phase3g_quality_review_index0_status": "OBSERVED_READ_ONLY",
+    "phase3g_quality_review_index0_scope_population": 13,
+    "phase3g_quality_review_index0_legacy_count": 1,
+    "phase3g_quality_review_index0_candidate_count": 6,
+    "phase3g_quality_review_index0_topic_anchored_count": 1,
+    "phase3g_quality_review_index0_indirect_count": 5,
+    "phase3g_quality_review_index0_ambiguous_count": 7,
+    "phase3g_quality_review_index0_missing_count": 0,
+    "phase3g_quality_review_index0_zero_writes": true,
+    "phase3g_quality_review_index0_direct_record_id": "MEM-3883f8127bcd40e28255fdbfa4c98309",
+    "phase3g_quality_review_index0_direct_coverage": 1,
+    "phase3g_quality_review_index0_direct_weighted_rank": 1,
+    "phase3g_quality_review_index0_isolated_fixture_false_positive_id": "MEM-1e8f6987d2b34f3786db585c36bf9bf3",
+    "phase3g_quality_review_index0_duplicate_query_concepts": {
+      "memory": [
+        "memory",
+        "retrieval"
+      ]
+    },
+    "phase3g_quality_review_index0_other_subgraph_unconnected_to_direct": true,
+    "phase3g_quality_review_index0_cross_tier_inversions": 0,
+    "phase3g_observed_relevance_precision_limitation": "NOTES_AND_VIRTUAL_SCOPE_AND_DUPLICATE_ALIAS_INFLATE_OFF_TOPIC_MEMORIES",
+    "phase3h_version": "galaxy.phase3h.containment-shadow.v1",
+    "phase3h_authority_scope": "NAOMI_REQUESTED_BOUNDED_READ_ONLY_RETRIEVAL_QUALITY_TEST",
+    "phase3h_source_ready": true,
+    "phase3h_ci_run_id": 35808538652,
+    "phase3h_ci_status": "SUCCESS",
+    "phase3h_ci_offline_tests_passed": 21,
+    "phase3h_deployed": false,
+    "phase3h_live_observed": false,
+    "phase3h_live_negative_controls_observed": false,
+    "phase3h_test_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3h_focal_cap": 4,
+    "phase3h_linked_context_cap": 2,
+    "phase3h_required_link_type": "VERIFIED_DIRECT_EDGE_TO_FOCAL_AND_QUERY_STATEMENT_EVIDENCE",
+    "phase3h_negative_control_queries": [
+      "planetary gravity trajectories",
+      "advertising contextual influence"
+    ],
+    "phase3h_retrieval_change_enabled": false,
+    "phase3h_production_grouping_enabled": false,
+    "phase3h_next_gate": "DEPLOY_VERIFY_THEN_LIVE_READ_ONLY_QUERY_0_WITH_NEGATIVE_CONTROLS"
   }
 }
