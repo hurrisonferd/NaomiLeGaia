@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_BRAINOS_GALAXY_PHASE3H_THREE_LIVE_SHADOWS_PASS_GENERALIZATION_PENDING",
+  "status": "ACTIVE_SOURCE_BRAINOS_GALAXY_PHASE3I_GENERALIZATION_SOURCE_READY_DEPLOY_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -100,7 +100,9 @@
     "galaxy_phase3h_verifier_fix_deployed": true,
     "galaxy_phase3h_negative_controls_live_observed": true,
     "galaxy_phase3h_containment_suite_complete": true,
-    "galaxy_phase3h_mobile_browser_bootstrap_live_observed": true
+    "galaxy_phase3h_mobile_browser_bootstrap_live_observed": true,
+    "galaxy_phase3i_generalization_source_ready": true,
+    "galaxy_phase3i_generalization_live_observed": false
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -128,14 +130,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Phase3H live read-only shadow suite complete PASS on [0,3,5]. Index5 added 4 focal and 2 audit-only records with negative controls zero; all three slices report zero writes and no production/rank changes. Mobile self-bootstrap is live-observed. Evidence remains controlled literal-anchor calibration only; generalization/paraphrase testing pending.",
+  "claim_ceiling": "Phase3H live controlled suite complete PASS. Phase3I read-only paraphrase/generalization evaluator is source-ready with 6 bounded cases and CI 35820868534 27/27 PASS. No retrieval/admission/ranking changes; deployment and live result pending.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3H_THREE_LIVE_SHADOWS_PASS_GENERALIZATION_PENDING",
+    "phase3_status": "PHASE3I_GENERALIZATION_SOURCE_READY_DEPLOY_PENDING",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -237,7 +239,7 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_next_gate": "DO_NOT_ACTIVATE_PILOT_UNTIL_POST_PHASE3H_GENERALIZATION_REVIEW",
+    "phase3f_next_gate": "DO_NOT_ACTIVATE_PILOT_UNTIL_PHASE3I_LIVE_REVIEW",
     "phase3f_pilot_active_observed": false,
     "phase3g_quality_review_source_ready": true,
     "phase3g_quality_review_live_observed": true,
@@ -472,6 +474,19 @@
     "phase3h_live_index5_production_retrieval_modified": false,
     "phase3h_live_index5_80_20_ranking_modified": false,
     "phase3h_live_index5_global_weighting_enabled": false,
-    "phase3h_mobile_browser_bootstrap_live_observed": true
+    "phase3h_mobile_browser_bootstrap_live_observed": true,
+    "phase3i_version": "galaxy.phase3i.generalization-suite.v1",
+    "phase3i_source_ready": true,
+    "phase3i_deployed": false,
+    "phase3i_live_observed": false,
+    "phase3i_route": "/galaxy/retrieval/phase3i-generalization-suite",
+    "phase3i_case_count": 6,
+    "phase3i_positive_case_count": 4,
+    "phase3i_negative_case_count": 2,
+    "phase3i_ci_run_id": 35820868534,
+    "phase3i_ci_status": "SUCCESS",
+    "phase3i_ci_tests": "27/27 PASS",
+    "phase3i_production_changes": false,
+    "phase3i_next_gate": "DEPLOY_VERIFY_AND_RUN_LIVE_GENERALIZATION_SUITE"
   }
 }
