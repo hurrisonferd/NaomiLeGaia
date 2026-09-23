@@ -110,7 +110,9 @@ class Phase3FTests(unittest.TestCase):
         self.exit_pool_patch = patch.object(
             gp.galaxy_phase3_exit,
             "build_candidate_pool",
-            side_effect=self.runtime.phase3_exit_pool,
+            side_effect=lambda runtime, query, **kwargs: self.runtime.phase3_exit_pool(
+                query, **kwargs
+            ),
         )
         self.exit_pool_patch.start()
         with gp._LOCK:
