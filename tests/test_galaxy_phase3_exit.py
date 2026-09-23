@@ -31,44 +31,85 @@ class FakeRuntime:
             {
                 "record_id": "GRAVITY",
                 "scope": "MemoryOS",
-                "statement": "GALAXY gravity remains an estimate of contextual influence.",
+                "statement": (
+                    "GALAXY gravity must remain an estimate of contextual influence, "
+                    "never truth, authority, or permission."
+                ),
                 "notes": "memory retrieval authority",
-                "source": "TEST",
-            },
-            {
-                "record_id": "CORE",
-                "scope": "MemoryOS",
-                "statement": "The calibration core revision memory context is observed.",
-                "notes": "",
                 "source": "TEST",
             },
             {
                 "record_id": "SATELLITE",
                 "scope": "MemoryOS",
-                "statement": "A satellite calibration core memory context note.",
+                "statement": (
+                    "GALAXY-CAL-SATELLITE: A satellite note provides limited "
+                    "context for the calibration core."
+                ),
                 "notes": "",
                 "source": "TEST",
             },
             {
                 "record_id": "REVISION",
                 "scope": "MemoryOS",
-                "statement": "A later controlled observation revises the calibration core toward ultraviolet.",
+                "statement": (
+                    "GALAXY-CAL-REVISION: A later controlled observation revises "
+                    "the calibration core toward ultraviolet."
+                ),
                 "notes": "",
                 "source": "TEST",
             },
             {
-                "record_id": "LINKED",
+                "record_id": "REINFORCER",
                 "scope": "MemoryOS",
-                "statement": "Calibration detail.",
-                "notes": "core revision memory context",
+                "statement": (
+                    "GALAXY-CAL-REINFORCER: An independent observation reinforces "
+                    "the calibration core."
+                ),
+                "notes": "",
+                "source": "TEST",
+            },
+            {
+                "record_id": "CORE",
+                "scope": "MemoryOS",
+                "statement": (
+                    "GALAXY-CAL-CORE: The calibration core reports a violet "
+                    "carrier pulse."
+                ),
+                "notes": "",
                 "source": "TEST",
             },
             {
                 "record_id": "NOTES_ONLY",
                 "scope": "MemoryOS",
                 "statement": "Unrelated procedural record.",
-                "notes": "gravity contextual influence memory retrieval calibration core revision",
+                "notes": (
+                    "gravity contextual influence memory retrieval calibration "
+                    "core revision satellite"
+                ),
                 "source": "TEST",
+            },
+        ]
+        self.edges = [
+            {
+                "edge_id": "EDGE-REV-CORE",
+                "source_record_id": "REVISION",
+                "target_record_id": "CORE",
+                "relation_type": "REVISES",
+                "status": "VERIFIED",
+            },
+            {
+                "edge_id": "EDGE-SAT-CORE",
+                "source_record_id": "SATELLITE",
+                "target_record_id": "CORE",
+                "relation_type": "CONTEXT_FOR",
+                "status": "VERIFIED",
+            },
+            {
+                "edge_id": "EDGE-REV-REINFORCER",
+                "source_record_id": "REVISION",
+                "target_record_id": "REINFORCER",
+                "relation_type": "CONTRADICTS",
+                "status": "VERIFIED",
             },
         ]
 
@@ -98,15 +139,11 @@ class FakeRuntime:
         row = next((r for r in self.records if r["record_id"] == record_id), None)
         if row is None:
             return None
-        relations = []
-        if record_id == "LINKED":
-            relations = [{
-                "edge_id": "EDGE-LINKED",
-                "source_record_id": "LINKED",
-                "target_record_id": "CORE",
-                "relation_type": "CONTEXT_FOR",
-                "status": "VERIFIED",
-            }]
+        relations = [
+            edge for edge in self.edges
+            if edge["source_record_id"] == record_id
+            or edge["target_record_id"] == record_id
+        ]
         return {"record": row, "relations": relations}
 
 
@@ -137,16 +174,50 @@ class Phase3ExitIntegrationTests(unittest.TestCase):
         self.assertTrue(result["checks"]["notes_or_scope_cannot_create_primary"])
         self.assertEqual(self.runtime.writes, 0)
 
-    def test_linked_context_is_separate_and_never_weighted_candidate(self):
+    def test_memory_scope_term_is_not_counted_as_content_evidence(self):
         query = self.runtime.GALAXY_PHASE3C_CALIBRATION_QUERIES[3]
         result = exit_gate.build_candidate_pool(
             self.runtime, query, scope="MemoryOS", limit=10,
         )
         self.assertEqual(result["status"], "PASS", result)
-        self.assertIn("CORE", result["candidate_record_ids"])
-        self.assertIn("LINKED", result["linked_context_record_ids"])
-        self.assertNotIn("LINKED", result["candidate_record_ids"])
-        self.assertFalse(result["checks"]["linked_context_admitted_to_weighted_records"])
+        revision = next(
+            row for row in result["primary_evidence"]
+            if row["record_id"] == "REVISION"
+        )
+        self.assertIn("memory", revision["query_concepts_raw"])
+        self.assertNotIn("memory", revision["query_concepts"])
+        self.assertEqual(
+            revision["scope_domain_query_concepts_excluded"], ["memory"]
+        )
+
+    def test_revision_query_has_anchored_primary_and_separate_context_lane(self):
+        query = self.runtime.GALAXY_PHASE3C_CALIBRATION_QUERIES[3]
+        result = exit_gate.build_candidate_pool(
+            self.runtime, query, scope="MemoryOS", limit=10,
+        )
+        self.assertEqual(result["status"], "PASS", result)
+        self.assertEqual(result["candidate_record_ids"], ["REVISION"])
+        self.assertEqual(result["required_primary_concepts"], ["revision"])
+        self.assertIn("CORE", result["linked_context_record_ids"])
+        self.assertIn("REINFORCER", result["linked_context_record_ids"])
+        self.assertNotIn("CORE", result["candidate_record_ids"])
+        self.assertFalse(result["checks"]["linked_context_admitted_to_primary_lane"])
+        self.assertTrue(
+            result["checks"]["linked_context_ranked_only_within_context_lane"]
+        )
+
+    def test_satellite_query_keeps_core_as_verified_context_not_primary(self):
+        query = self.runtime.GALAXY_PHASE3C_CALIBRATION_QUERIES[5]
+        result = exit_gate.build_candidate_pool(
+            self.runtime, query, scope="MemoryOS", limit=10,
+        )
+        self.assertEqual(result["status"], "PASS", result)
+        self.assertEqual(result["candidate_record_ids"], ["SATELLITE"])
+        self.assertEqual(result["required_primary_concepts"], ["satellite"])
+        self.assertEqual(result["linked_context_record_ids"], ["CORE"])
+        self.assertEqual(
+            result["constellation_record_ids"], ["SATELLITE", "CORE"]
+        )
 
     def test_phase3j_bridge_recovers_hard_revision_paraphrase(self):
         result = exit_gate.build_candidate_pool(
@@ -168,12 +239,12 @@ class Phase3ExitIntegrationTests(unittest.TestCase):
         self.assertEqual(result["candidate_record_ids"], [])
 
     def test_primary_overflow_holds(self):
-        query = "calibration core revision memory context"
+        query = self.runtime.GALAXY_PHASE3C_CALIBRATION_QUERIES[3]
         for index in range(5):
             self.runtime.records.append({
                 "record_id": f"OVERFLOW-{index}",
                 "scope": "MemoryOS",
-                "statement": query,
+                "statement": "calibration core revision context",
                 "notes": "",
                 "source": "TEST",
             })
@@ -183,9 +254,9 @@ class Phase3ExitIntegrationTests(unittest.TestCase):
         self.assertEqual(result["status"], "HOLD")
         self.assertTrue(result["primary_overflow_record_ids"])
 
-    def test_review_suite_is_read_only_and_bounded(self):
+    def test_review_suite_is_read_only_bounded_and_ready(self):
         result = exit_gate.review_suite(self.runtime)
-        self.assertIn(result["status"], ("PASS_READ_ONLY_PREFLIGHT", "HOLD"))
+        self.assertEqual(result["status"], "PASS_READ_ONLY_PREFLIGHT", result)
         self.assertEqual(result["query_indexes"], [0, 3, 5])
         self.assertTrue(result["checks"]["zero_memory_writes"])
         self.assertFalse(result["checks"]["pilot_activated"])
