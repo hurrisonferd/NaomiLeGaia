@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_AUGURY_RITUAL_PHASE1_SOURCE_READY_PHASE4_RITUAL_ROUTE_DEPLOY_PENDING",
+  "status": "ACTIVE_AUGURY_RITUAL_PHASE1_SOURCE_CI_PASS_DEPLOY_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -654,7 +654,7 @@
     "phase3f_active_pilot_highest_relevance_preserved": true,
     "phase3f_active_pilot_cross_relevance_tier_inversions": 0,
     "phase4_ready": true,
-    "phase4_status": "PHASE4_RITUAL_GUARDED_MUTATION_ROUTE_SOURCE_READY_DEPLOY_PENDING",
+    "phase4_status": "PHASE4_RITUAL_GUARDED_MUTATION_ROUTE_SOURCE_CI_PASS_DEPLOY_PENDING",
     "phase4_scope": "REVISION_SUPERSESSION",
     "phase4_production_effect_enabled": false,
     "phase4_version": "galaxy.phase4.revision-supersession.v1",
@@ -701,7 +701,7 @@
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
     "authority": "NAOMI",
-    "phase1_status": "SOURCE_READY_DEPLOY_PENDING",
+    "phase1_status": "SOURCE_READY_CI_PASS_DEPLOY_PENDING",
     "contract": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md",
     "semantic_unit_schema": "GaiaOS/SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json",
     "ritual_grimoire": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json",
@@ -725,6 +725,11 @@
     "deployed": false,
     "live_observed": false,
     "manifestation_observed": false,
-    "next_gate": "DEPLOY_VERIFY_THEN_READ_ONLY_RITUAL_STATUS_BEFORE_ANY_MANIFESTATION"
+    "next_gate": "DEPLOY_VERIFY_THEN_READ_ONLY_RITUAL_STATUS_BEFORE_ANY_MANIFESTATION",
+    "ci_run_id": 35879819185,
+    "ci_status": "SUCCESS",
+    "ci_galaxy_tests_passed": 48,
+    "ci_phase1_tests_passed": 7,
+    "ci_total_guarded_tests_passed": 55
   }
 }
