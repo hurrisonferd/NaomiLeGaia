@@ -746,6 +746,18 @@ def galaxy_phase5_fixture_review(browser_request: Request):
     return galaxy_phase5.fixture_review(memcon_runtime)
 
 
+
+
+@app.get("/galaxy/synthesis/phase5-mutation-design-review", operation_id="galaxyPhase5MutationDesignReview")
+def galaxy_phase5_mutation_design_review(browser_request: Request):
+    """Read-only review of the authorized Phase-5 shadow mutation design. No writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase5.mutation_design_review(memcon_runtime)
+
+
 @app.get("/galaxy/revision/phase4-fixture-review", operation_id="galaxyPhase4FixtureReview")
 def galaxy_phase4_fixture_review(browser_request: Request):
     """Read-only Phase-4 revision/supersession smoke review. No writes."""
