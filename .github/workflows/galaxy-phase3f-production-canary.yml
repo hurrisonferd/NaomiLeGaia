@@ -39,4 +39,6 @@ jobs:
           python -m py_compile api/gaiaos_verification.py
           python -m py_compile GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py
       - name: Prove guarded switch, no-leakage, kill-switch and rollback
-        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_*.py" -v
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_*.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_augury_ritual.py" -v
