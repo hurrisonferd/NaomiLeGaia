@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_GALAXY_PHASE3_EXIT_V2_SWITCH_TEST_LIVE_PASS_PILOT_AUTH_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE3_EXIT_V2_PILOT_LIVE_ROLLBACK_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -142,7 +142,7 @@
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3_EXIT_V2_SWITCH_TEST_LIVE_PASS_PILOT_AUTH_PENDING",
+    "phase3_status": "PHASE3_EXIT_V2_PILOT_ACTIVE_ROLLBACK_PROOF_PENDING",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -244,8 +244,8 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_FOR_GUARDED_10_MINUTE_V2_PILOT_THEN_LIVE_ROLLBACK_PROOF",
-    "phase3f_pilot_active_observed": false,
+    "phase3f_next_gate": "RUN_ACTIVE_PILOT_ROLLBACK_PROOF_NOW",
+    "phase3f_pilot_active_observed": true,
     "phase3g_quality_review_source_ready": true,
     "phase3g_quality_review_live_observed": true,
     "phase3g_quality_review_version": "galaxy.phase3g.retrieval-quality-review.v1",
@@ -591,7 +591,7 @@
     "phase3_exit_ci_tests": "37/37 PASS",
     "phase3_exit_intermediate_ci_failure_run_id": 35838026305,
     "phase3_exit_intermediate_ci_failure_resolved": true,
-    "phase3_exit_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_FOR_GUARDED_10_MINUTE_V2_PILOT_THEN_LIVE_ROLLBACK_PROOF",
+    "phase3_exit_next_gate": "RUN_ACTIVE_PILOT_ROLLBACK_PROOF_NOW",
     "production_weighted_retrieval_enabled": false,
     "phase3_exit_v1_deployed": true,
     "phase3_exit_v1_live_observed": true,
@@ -632,6 +632,17 @@
     "phase3f_switch_test_rerank_query_indexes": [
       3
     ],
-    "phase3_exit_v2_fresh_pilot_authorization_pending": true
+    "phase3_exit_v2_fresh_pilot_authorization_pending": false,
+    "phase3f_active_pilot_id": "PHASE3F-PILOT-9dc1f925949846f59af8c36d020dfbb4",
+    "phase3f_active_pilot_process_boot_id": "BOOT-9bd851210ba24d5b95045bc2081be050",
+    "phase3f_active_pilot_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3f_active_pilot_lease_seconds": 600,
+    "phase3f_active_pilot_kill_switch": false,
+    "phase3f_active_pilot_global_weighting_enabled": false,
+    "phase3f_active_pilot_restart_policy": "OFF"
   }
 }
