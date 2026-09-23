@@ -131,3 +131,24 @@ First define finite milestones and success criteria; then check running commit a
 ### Resume cue
 
 The console-boot detour is CLOSED. Resume GALAXY at the actual read-only Phase3J live concept-bridge shadow. Keep Phase3F and unrestricted global weighting OFF until Phase3J live review resolves.
+
+
+## 2026-09-23 Phase-3 Exit Integration source-ready bedtime handoff
+
+- Phase3J live receipt passed `PASS_READ_ONLY_CONCEPT_BRIDGE`: 13 fixtures present, all four positive primaries recovered, hard REVISION paraphrase recovered, no unexpected positive primaries, both negative controls zero, zero writes, production aliases/thresholds/admission/ranking unchanged.
+- Canonical GALAXY state was updated to close the Phase3J live-review gate and explicitly forbid further letter proliferation. Remaining Phase-3 work is named **Phase-3 Exit Integration**.
+- Built `api/galaxy_phase3_exit.py` and wired the default-OFF guarded pilot to statement-first Phase3J-style primary admission.
+- Notes/scope cannot create primary membership. VERIFIED graph context stays separate and is not ranked as primary. Primary cap 4; linked context cap 2.
+- Added read-only route `/galaxy/retrieval/phase3-exit-integration-review`.
+- Added verifier coverage and offline tests. Initial CI run `35838026305` failed on two implementation/test-harness bugs; both were diagnosed and fixed.
+- Final CI run `35838119652`: **SUCCESS, 37/37 PASS**.
+- Current canonical state: `PHASE3_EXIT_INTEGRATION_SOURCE_READY_DEPLOY_PENDING`.
+- Phase3F pilot remains inactive. Unrestricted global weighting remains OFF. No live test is requested tonight.
+
+### Tomorrow resume cue
+
+1. Deploy current main to the Ligeia API carrier.
+2. Run `/verify` once and require a clean receipt.
+3. Run the read-only `/galaxy/retrieval/phase3-exit-integration-review` once.
+4. If preflight passes, run a fresh guarded switch test.
+5. Stop and review. Do **not** activate the live pilot until Naomi explicitly authorizes that next step.
