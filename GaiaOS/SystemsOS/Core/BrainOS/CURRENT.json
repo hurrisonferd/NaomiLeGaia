@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_BRAINOS_GALAXY_PHASE3H_INDEX0_LIVE_SHADOW_PASS_INDEX3_PENDING",
+  "status": "ACTIVE_SOURCE_BRAINOS_GALAXY_PHASE3H_INDEX0_3_LIVE_SHADOW_PASS_INDEX5_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -126,14 +126,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Phase3H live index0 shadow PASS: 1 focal gravity record, 0 linked context, 5 audit-only records, 7 ambiguous excluded; both negative controls zero; alias collapse observed; zero writes and no production/ranking changes. Controlled-query evidence only, indexes 3 and 5 pending.",
+  "claim_ceiling": "Phase3H live shadows PASS on indexes 0 and 3. Index3 correctly grouped four calibration-core statements as focal and kept three generic policy records audit-only, including higher-coverage noise; actual 80/20 ranking and production retrieval were unchanged. Negative controls zero. Index5 pending.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3H_INDEX0_LIVE_SHADOW_PASS_INDEX3_PENDING",
+    "phase3_status": "PHASE3H_INDEX0_AND_3_LIVE_SHADOW_PASS_INDEX5_PENDING",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -235,7 +235,7 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_next_gate": "COMPLETE_PHASE3H_INDEX3_AND_INDEX5_READ_ONLY_VALIDATION_BEFORE_ANY_ACTIVE_PILOT",
+    "phase3f_next_gate": "COMPLETE_PHASE3H_INDEX5_READ_ONLY_VALIDATION_BEFORE_ANY_ACTIVE_PILOT",
     "phase3f_pilot_active_observed": false,
     "phase3g_quality_review_source_ready": true,
     "phase3g_quality_review_live_observed": true,
@@ -363,7 +363,7 @@
     ],
     "phase3h_retrieval_change_enabled": false,
     "phase3h_production_grouping_enabled": false,
-    "phase3h_next_gate": "RUN_LIVE_READ_ONLY_QUERY_3_WITH_NEGATIVE_CONTROLS",
+    "phase3h_next_gate": "RUN_LIVE_READ_ONLY_QUERY_5_WITH_NEGATIVE_CONTROLS",
     "phase3h_route_registered_live": true,
     "phase3h_verifier_run_id": "92bce511f0004901a53529ed69d11e3e",
     "phase3h_verifier_summary": "129/129 PASS",
@@ -381,7 +381,8 @@
     "phase3h_mobile_browser_bootstrap_ci_status": "SUCCESS",
     "phase3h_mobile_browser_bootstrap_deployed": false,
     "phase3h_live_observed_query_indexes": [
-      0
+      0,
+      3
     ],
     "phase3h_live_index0_status": "PASS_READ_ONLY_SHADOW",
     "phase3h_live_index0_scope_population": 13,
@@ -408,6 +409,36 @@
     "phase3h_live_index0_zero_writes": true,
     "phase3h_live_index0_production_retrieval_modified": false,
     "phase3h_live_index0_80_20_ranking_modified": false,
-    "phase3h_live_index0_global_weighting_enabled": false
+    "phase3h_live_index0_global_weighting_enabled": false,
+    "phase3h_live_index3_status": "PASS_READ_ONLY_SHADOW",
+    "phase3h_live_index3_scope_population": 13,
+    "phase3h_live_index3_original_pool_count": 7,
+    "phase3h_live_index3_focal_count": 4,
+    "phase3h_live_index3_linked_context_count": 0,
+    "phase3h_live_index3_audit_count": 3,
+    "phase3h_live_index3_historical_count": 0,
+    "phase3h_live_index3_ambiguous_excluded_count": 1,
+    "phase3h_live_index3_negative_controls_pass": true,
+    "phase3h_live_index3_negative_control_counts": [
+      0,
+      0
+    ],
+    "phase3h_live_index3_focal_record_ids": [
+      "MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",
+      "MEM-1d0092cb66f44996b74604670a853a21",
+      "MEM-00b3fbfd4d73404f97a95c238596ab94",
+      "MEM-61f21fbb37f0419dbae2af6586d4ecc9"
+    ],
+    "phase3h_live_index3_audit_record_ids": [
+      "MEM-3883f8127bcd40e28255fdbfa4c98309",
+      "MEM-2940611cdf924de5bc12fb36947517ab",
+      "MEM-3beb2cf2c3ba401794cfce228c6e7e14"
+    ],
+    "phase3h_live_index3_core_promoted_to_focal_despite_original_rank_5": true,
+    "phase3h_live_index3_high_coverage_policy_records_kept_audit_only": true,
+    "phase3h_live_index3_zero_writes": true,
+    "phase3h_live_index3_production_retrieval_modified": false,
+    "phase3h_live_index3_80_20_ranking_modified": false,
+    "phase3h_live_index3_global_weighting_enabled": false
   }
 }
