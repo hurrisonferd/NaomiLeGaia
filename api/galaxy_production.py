@@ -12,7 +12,10 @@ import time
 import uuid
 from typing import Any, Callable
 
+import galaxy_phase3_exit
+
 VERSION = "galaxy.phase3f.guarded-production-pilot.v1"
+EXIT_INTEGRATION_VERSION = galaxy_phase3_exit.VERSION
 PROFILE = "CURRENT_80_20"
 QUERY_INDEXES = (0, 3, 5)
 MAX_LEASE_SECONDS = 600
@@ -119,19 +122,26 @@ def retrieve(runtime: Any, query: str, scope: str | None = None, limit: int = 10
         return legacy
 
     try:
-        pool = runtime.galaxy_phase3_candidate_pool(query, scope="MemoryOS", limit=limit)
+        pool = galaxy_phase3_exit.build_candidate_pool(
+            runtime, query, scope="MemoryOS", limit=limit
+        )
+        if pool.get("status") != "PASS":
+            raise RuntimeError("PHASE3_EXIT_ADMISSION_HOLD")
         scored = runtime._galaxy_phase3c_score_pool(pool, 0.8, 0.2)
         control_ids = list(pool.get("candidate_record_ids", []))
         weighted = list(scored.get("weighted_order", []))
         weighted_ids = [row["record_id"] for row in weighted]
+        rerank_observed = bool(scored.get("rerank_observed"))
         safe = (
-            len(control_ids) >= 2
+            len(control_ids) >= 1
             and len(control_ids) == len(set(control_ids))
             and bool(scored.get("candidate_set_preserved"))
             and set(control_ids) == set(weighted_ids)
             and bool(scored.get("top_relevance_preserved"))
             and int(scored.get("cross_relevance_tier_inversion_count") or 0) == 0
-            and bool(scored.get("rerank_observed"))
+            and (len(control_ids) == 1 or rerank_observed)
+            and bool(pool.get("checks", {}).get("all_admitted_candidates_meet_primary_rule"))
+            and pool.get("checks", {}).get("linked_context_admitted_to_weighted_records") is False
         )
         if not safe:
             raise RuntimeError("CANDIDATE_OR_RELEVANCE_GUARD_FAILED")
@@ -163,11 +173,17 @@ def retrieve(runtime: Any, query: str, scope: str | None = None, limit: int = 10
                 "mode": mode,
                 "pilot_id": pilot_id,
                 "coefficient": PROFILE,
-                "candidate_admission": "PHASE3_QUERY_FIRST_EXPLAINABLE_V1",
+                "candidate_admission": "PHASE3_EXIT_STATEMENT_FIRST_V1",
+                "exit_integration_version": EXIT_INTEGRATION_VERSION,
                 "legacy_candidate_set_equivalence_claimed": False,
+                "primary_lane_record_ids": control_ids,
+                "linked_context_record_ids": list(pool.get("linked_context_record_ids", [])),
+                "linked_context_admitted_to_weighted_records": False,
+                "statement_only_primary": True,
+                "notes_or_scope_can_create_primary": False,
                 "control_record_ids": control_ids,
                 "weighted_record_ids": weighted_ids,
-                "rerank_observed": True,
+                "rerank_observed": rerank_observed,
                 "candidate_set_preserved": True,
                 "highest_relevance_preserved": True,
                 "cross_relevance_tier_inversions": 0,
@@ -219,12 +235,18 @@ def switch_test(runtime: Any, retrieval: Callable[[str, str, int], dict[str, Any
                 result = retrieval(q, "MemoryOS", 10)
                 pilot = result["retrieval"].get("galaxy_production") or {}
                 ids = _record_ids(result)
+                rerank_ok = (
+                    pilot.get("rerank_observed") is True
+                    or len(ids) == 1
+                )
                 ok = (
                     pilot.get("weighted_applied") is True
                     and pilot.get("candidate_set_preserved") is True
                     and pilot.get("highest_relevance_preserved") is True
                     and pilot.get("cross_relevance_tier_inversions") == 0
-                    and pilot.get("rerank_observed") is True
+                    and rerank_ok
+                    and pilot.get("candidate_admission") == "PHASE3_EXIT_STATEMENT_FIRST_V1"
+                    and pilot.get("linked_context_admitted_to_weighted_records") is False
                     and ids == pilot.get("weighted_record_ids")
                 )
                 weighted_receipts.append({
@@ -234,6 +256,9 @@ def switch_test(runtime: Any, retrieval: Callable[[str, str, int], dict[str, Any
                     "candidate_count": len(ids),
                     "weighted_record_ids": ids,
                     "control_record_ids": pilot.get("control_record_ids", []),
+                    "rerank_observed": pilot.get("rerank_observed") is True,
+                    "candidate_admission": pilot.get("candidate_admission"),
+                    "linked_context_record_ids": pilot.get("linked_context_record_ids", []),
                 })
                 if not ok:
                     errors.append("INTEGRATED_RETRIEVAL_GUARD_FAILED_FOR_QUERY_" + str(index))
@@ -249,9 +274,12 @@ def switch_test(runtime: Any, retrieval: Callable[[str, str, int], dict[str, Any
             restored = False
             after = []
             errors.append("ROLLBACK_READ_EXCEPTION_" + type(exc).__name__)
+        at_least_one_real_rerank = any(
+            item.get("rerank_observed") is True for item in weighted_receipts
+        )
         passed = restored and len(weighted_receipts) == len(QUERY_INDEXES) and all(
             item["status"] == "PASS" for item in weighted_receipts
-        ) and not errors and _STATE["mode"] == "OFF"
+        ) and at_least_one_real_rerank and not errors and _STATE["mode"] == "OFF"
         receipt = {
             "schema": "gaiaos.galaxy.phase3f-live-switch-test.v1",
             "execution": "OBSERVED_RUNTIME",
@@ -264,6 +292,8 @@ def switch_test(runtime: Any, retrieval: Callable[[str, str, int], dict[str, Any
             "during_weighted": weighted_receipts,
             "after_unweighted_control": after,
             "unweighted_control_restored_exactly": restored,
+            "at_least_one_real_rerank_observed": at_least_one_real_rerank,
+            "exit_integration_version": EXIT_INTEGRATION_VERSION,
             "zero_memory_writes": True,
             "global_production_weighted_retrieval_enabled": False,
             "errors": errors,
