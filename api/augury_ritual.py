@@ -42,7 +42,10 @@ def _root() -> Path:
 
 
 def _source_path(relative: Path) -> Path:
-    return _root() / relative
+    direct = _root() / relative
+    if direct.exists():
+        return direct
+    return _root().parent / relative
 
 
 def load_grimoire() -> dict[str, Any]:
