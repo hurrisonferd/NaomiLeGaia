@@ -484,6 +484,7 @@ def run_verification() -> dict[str, Any]:
             ))
     quality_module = ROOT / "galaxy_quality.py"
     exit_module = ROOT / "galaxy_phase3_exit.py"
+    phase4_module = ROOT / "galaxy_phase4.py"
     checks.append(_check(
         "carrier:phase3g-quality-module",
         quality_module.exists(),
@@ -493,6 +494,11 @@ def run_verification() -> dict[str, Any]:
         "carrier:phase3-exit-integration-module",
         exit_module.exists(),
         "finite Phase-3 Exit Integration candidate-admission module is packaged",
+    ))
+    checks.append(_check(
+        "carrier:phase4-revision-module",
+        phase4_module.exists(),
+        "GALAXY Phase-4 revision/supersession module is packaged",
     ))
     if exit_module.exists():
         try:
@@ -520,6 +526,43 @@ def run_verification() -> dict[str, Any]:
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase3-exit-integration-syntax",
+                False,
+                f"{type(exc).__name__}: {exc}",
+            ))
+    if phase4_module.exists():
+        try:
+            phase4_text = phase4_module.read_text(encoding="utf-8")
+            compile(phase4_text, str(phase4_module), "exec")
+            checks.append(_check(
+                "carrier:phase4-revision-syntax",
+                True,
+                "Phase-4 revision/supersession module parses",
+            ))
+            checks.append(_check(
+                "carrier:phase4-revision-boundaries",
+                all(marker in phase4_text for marker in (
+                    "REVISES != SUPERSEDES",
+                    "SUPERSEDES_REQUIRES_VERIFIED_REVISES_SAME_PAIR",
+                    "DIRECT_REVISION_CYCLE_RISK",
+                    "COMPETING_VERIFIED_SUPERSEDER",
+                    "REVOKE_SUPERSEDES_BEFORE_REVISES",
+                    "zero_memory_writes",
+                    "production_retrieval_changed",
+                    "unrestricted_global_weighting_enabled",
+                )),
+                "Phase-4 source preserves revision/supersession separation, fail-closed graph guards, reversible unwind order, and no-production-effect boundaries",
+            ))
+            runtime_text = (ROOT / "memcon_runtime.py").read_text(encoding="utf-8")
+            checks.append(_check(
+                "carrier:phase4-revocation-primitive",
+                "def galaxy_revoke_relation(" in runtime_text
+                and "status='REVOKED'" in runtime_text
+                and "physical_delete" in runtime_text,
+                "MemoryOS runtime exposes auditable non-deleting REVOKED rollback for verified revision/supersession edges",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase4-revision-syntax",
                 False,
                 f"{type(exc).__name__}: {exc}",
             ))
@@ -650,6 +693,18 @@ def run_verification() -> dict[str, Any]:
             "read-only finite Phase-3 Exit Integration preflight route declared",
         ))
         checks.append(_check(
+            "carrier:/galaxy/phase4-fixture-review",
+            '/galaxy/revision/phase4-fixture-review' in bridge_text
+            and 'galaxy_phase4.fixture_review' in bridge_text,
+            "read-only Phase-4 controlled fixture review route declared",
+        ))
+        checks.append(_check(
+            "carrier:/galaxy/phase4-pair-review",
+            '/galaxy/revision/phase4-pair-review' in bridge_text
+            and 'galaxy_phase4.review_pair' in bridge_text,
+            "read-only Phase-4 generic pair review route declared",
+        ))
+        checks.append(_check(
             "carrier:phase3-exit-production-wiring",
             'galaxy_phase3_exit.build_candidate_pool' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8")
             and 'PHASE3_EXIT_LANE_PRESERVING_CONSTELLATION_V2' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8"),
@@ -728,6 +783,16 @@ def run_verification() -> dict[str, Any]:
                 "carrier-route:/galaxy/phase3-exit-integration-review",
                 ("/galaxy/retrieval/phase3-exit-integration-review", "GET") in route_pairs,
                 "read-only Phase-3 Exit Integration preflight ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase4-fixture-review",
+                ("/galaxy/revision/phase4-fixture-review", "GET") in route_pairs,
+                "read-only Phase-4 fixture-review ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase4-pair-review",
+                ("/galaxy/revision/phase4-pair-review", "GET") in route_pairs,
+                "read-only Phase-4 pair-review ASGI route registered",
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
             try:
