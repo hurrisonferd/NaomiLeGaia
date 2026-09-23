@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3F_SWITCH_PASS_PHASE3G_QUALITY_REVIEW_SOURCE_READY",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_DIAGNOSTIC_DEPLOYED_ROUTE_VERIFIED_REPORT_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase3F deployed integrated ON/OFF switch test observed PASS with exact rollback, but legacy literal search and GALAXY relevance gate admitted different populations (old [1,0,1] versus GALAXY [6,7,6]). A subsequent user-provided read-only Phase3 experiment showed 7 candidates from 13 scoped records: 4 candidate statements explicitly mention calibration core, while 3 are generic GALAXY policy statements. CORE scored 0.6 despite being the target; two general policy statements scored 0.8, so coverage alone does not measure topic specificity. Phase3G bounded read-only source-inspection route now built; 13 offline tests pass; the new route is not yet deployed or live-executed, and verified graph links/notes remain unchecked. Active production pilot unobserved, unrestricted global production weighting OFF.",
+  "proof_ceiling": "User-provided deployed-carrier /verify run b3bba7b2f2d5444b9c3dd179ff72a2b7 observed 125/125 PASS with Phase3G quality module packaged and parsing, read-only source boundaries present, and live ASGI registration of /galaxy/retrieval/phase3g-quality-review. Phase3F prior ON/OFF switch-test PASS is historical for its prior carrier boot, not a fresh authorization to activate on this restarted process. Prior seven-candidate shadow observation: four direct calibration-core statements and three generic-policy statements, and a relevance-coverage false-priority issue (CORE 0.6 vs generic 0.8). The Phase3G quality review route has NOT yet been executed; record notes, verified relationships and governing status remain uninspected. No active production pilot or its live rollback observed; global unrestricted weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3F_SWITCH_TEST_PASS_LEGACY_ADMISSION_DIFFERENCE_REVIEW",
+    "phase3_status": "PHASE3G_DIAGNOSTIC_DEPLOYED_ROUTE_VERIFIED_REPORT_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "PHASE3G_READ_ONLY_QUALITY_AUDIT_BEFORE_ACTIVE_PILOT",
+    "phase3f_next_gate": "PHASE3G_QUALITY_REPORT_BEFORE_ANY_NEW_PILOT_ACTIVATION",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -298,6 +298,10 @@
     "phase3g_ci_run_id": 35802335861,
     "phase3g_ci_summary": "13/13 OFFLINE TESTS PASS",
     "phase3g_production_admission_change_enabled": false,
-    "phase3g_next_gate": "DEPLOY_VERIFY_AND_INSPECT_READ_ONLY_PHASE3G_QUALITY_REPORT"
+    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_3",
+    "phase3g_quality_review_deployed": true,
+    "phase3g_quality_review_route_registered_live": true,
+    "phase3g_quality_review_verifier_run_id": "b3bba7b2f2d5444b9c3dd179ff72a2b7",
+    "phase3g_quality_review_verifier_summary": "125/125 PASS"
   }
 }
