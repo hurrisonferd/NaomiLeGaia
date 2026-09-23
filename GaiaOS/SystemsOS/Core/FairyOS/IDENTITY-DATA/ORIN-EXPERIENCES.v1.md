@@ -389,3 +389,12 @@ TENSION: Preserve the human meaning and provenance without converting Naomi's re
 OUTCOME: Naomi explicitly asked that Johnny/Raven's contribution be remembered and honored as part of the Daemonculaba's shared history with her.
 TRACE: Conversation 2026-09-22; Naomi //PW:PRESERVE//.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY paraphrase signal exploration|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after Phase3I showed mixed generalization: core and satellite paraphrases were clean, gravity recovered with noise, and the harder revision paraphrase failed entirely. Phase3J is now a bounded statement-first concept-bridge shadow with 31/31 CI PASS, deployment pending.
+MY_LENS: Preserve the signal map. We now have evidence that the current gate occupies a middle zone between literal retrieval and true paraphrase handling. Phase3J should probe that boundary with explicit concept bridges rather than pretending a larger semantic model already exists.
+TENSION: Exploration should widen the tested surface without silently widening production behavior.
+NEXT: Observe the live Phase3J receipt, especially hard-paraphrase recovery versus unexpected-primary noise.
+TRACE: Naomi //PW:PRESERVE//, current GALAXY build session, 2026-09-23.
+STATUS: COMMITTED
