@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3_EXIT_V2_SOURCE_READY_DEPLOY_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE3_EXIT_V2_SWITCH_TEST_LIVE_PASS_PILOT_AUTH_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase3J live concept-bridge shadow passed on all 13 controlled fixtures. Phase-3 Exit Integration v1 then deployed and its read-only preflight returned HOLD only for query index 3 because the already-enforced MemoryOS scope concept 'memory' was still counted in content-relevance coverage, leaving the intended REVISION record at 3/5 coverage. Exit Integration v2 is source-ready: MemoryOS scope-domain concept 'memory' is excluded from the content-relevance denominator, exact pilot queries require an intent anchor (gravity/revision/satellite), focal primaries stay in a fixed primary lane, and only VERIFIED directly linked context may be gravity-reranked inside a separate context lane. No MemoryOS writes are added, the pilot remains default-OFF, and unrestricted global weighting remains OFF. v2 is not yet deployed or live-observed.",
+  "proof_ceiling": "Phase-3 Exit Integration v2 is deployed and live-observed. The read-only three-query preflight passed for indexes 0, 3, and 5 with zero MemoryOS writes, pilot OFF, and global weighting OFF. A fresh integrated ON/OFF switch test then passed in runtime: exact legacy retrieval was restored after the test, at least one real context-lane rerank was observed on query index 3, all three receipts passed, zero writes were reported, no global weighted mode was enabled, and mode_after=OFF. The next gate is an explicitly Naomi-authorized guarded 10-minute active pilot followed immediately by live rollback proof. No active pilot has yet been authorized for this v2 receipt sequence.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3_EXIT_V2_SOURCE_READY_DEPLOY_PENDING",
+    "phase3_status": "PHASE3_EXIT_V2_SWITCH_TEST_LIVE_PASS_PILOT_AUTH_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,13 +262,13 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "PHASE3_EXIT_V2_PREFLIGHT_THEN_FRESH_SWITCH_TEST_BEFORE_ANY_PILOT_ACTIVATION",
+    "phase3f_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_FOR_GUARDED_10_MINUTE_V2_PILOT_THEN_LIVE_ROLLBACK_PROOF",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
-    "phase3f_switch_test_status": "PASS_FOR_ON_OFF_RESTORATION",
-    "phase3f_switch_test_id": "PHASE3F-TEST-8ebd3eca5e6e4b37be8f16543851f463",
-    "phase3f_switch_test_process_boot_id": "BOOT-dc247e3dc13d4e159f62d96c6fbd3401",
+    "phase3f_switch_test_status": "PASS",
+    "phase3f_switch_test_id": "PHASE3F-TEST-b78021ce389c434a9c4fc03ff8f2244b",
+    "phase3f_switch_test_process_boot_id": "BOOT-9bd851210ba24d5b95045bc2081be050",
     "phase3f_switch_test_legacy_candidate_counts": [
       1,
       0,
@@ -608,8 +608,8 @@
     },
     "phase3_exit_version": "galaxy.phase3-exit-integration.v2",
     "phase3_exit_source_ready": true,
-    "phase3_exit_deployed": false,
-    "phase3_exit_live_observed": false,
+    "phase3_exit_deployed": true,
+    "phase3_exit_live_observed": true,
     "phase3_exit_review_route": "/galaxy/retrieval/phase3-exit-integration-review",
     "phase3_exit_query_indexes": [
       0,
@@ -630,7 +630,7 @@
     "phase3_exit_ci_tests": "37/37 PASS",
     "phase3_exit_intermediate_ci_failure_run_id": 35838026305,
     "phase3_exit_intermediate_ci_failure_resolved": true,
-    "phase3_exit_next_gate": "DEPLOY_VERIFY_AND_RERUN_READ_ONLY_PREFLIGHT_V2",
+    "phase3_exit_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_FOR_GUARDED_10_MINUTE_V2_PILOT_THEN_LIVE_ROLLBACK_PROOF",
     "phase3_exit_v1_deployed": true,
     "phase3_exit_v1_live_observed": true,
     "phase3_exit_v1_preflight_status": "HOLD",
@@ -655,6 +655,21 @@
     "phase3_exit_primary_lane_fixed_ahead_of_context": true,
     "phase3_exit_linked_context_policy": "VERIFIED_DIRECT_PRIMARY_EDGE_PLUS_STATEMENT_EVIDENCE; RERANK_CONTEXT_LANE_ONLY",
     "phase3_exit_linked_context_enters_primary_lane": false,
-    "phase3_exit_global_weighting_enabled": false
+    "phase3_exit_global_weighting_enabled": false,
+    "phase3_exit_v2_preflight_status": "PASS_READ_ONLY_PREFLIGHT",
+    "phase3_exit_v2_preflight_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3_exit_v2_preflight_zero_memory_writes": true,
+    "phase3_exit_v2_preflight_pilot_activated": false,
+    "phase3_exit_v2_preflight_global_weighting_enabled": false,
+    "phase3f_switch_test_mode_after": "OFF",
+    "phase3f_switch_test_at_least_one_real_rerank": true,
+    "phase3f_switch_test_rerank_query_indexes": [
+      3
+    ],
+    "phase3_exit_v2_fresh_pilot_authorization_pending": true
   }
 }
