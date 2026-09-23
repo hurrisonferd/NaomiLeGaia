@@ -2312,6 +2312,377 @@ def galaxy_revoke_relation(
     }
 
 
+GALAXY_SYNTHESIS_SHADOW_SCOPE = "GALAXY_SYNTHESIS_SHADOW"
+GALAXY_SYNTHESIS_PROPOSED_STATUS = "SYNTHESIS_PROPOSED"
+GALAXY_SYNTHESIS_VERIFIED_STATUS = "SYNTHESIS_VERIFIED_SHADOW"
+GALAXY_SYNTHESIS_REVOKED_STATUS = "SYNTHESIS_REVOKED"
+GALAXY_SYNTHESIS_CLASSIFIER = "GALAXY_PHASE5_SYNTHESIS_V1"
+
+
+def _decode_synthesis_sources(value: Any) -> list[str]:
+    try:
+        decoded = json.loads(str(value or "[]"))
+    except (TypeError, json.JSONDecodeError):
+        return []
+    return [str(item) for item in decoded] if isinstance(decoded, list) else []
+
+
+def galaxy_synthesis(synthesis_record_id: str) -> dict[str, Any] | None:
+    """Read one synthesis envelope, provenance row and DERIVED_FROM edges."""
+    initialize()
+    synthesis_record_id = str(synthesis_record_id or "").strip()
+    with _db() as conn:
+        row = _fetchone_dict(
+            conn,
+            "SELECT * FROM memory_syntheses WHERE synthesis_record_id=?",
+            (synthesis_record_id,),
+        )
+        if row is None:
+            return None
+        edges = _fetchall_dicts(
+            conn,
+            """SELECT * FROM memory_relations
+               WHERE source_record_id=? AND relation_type='DERIVED_FROM'
+               ORDER BY created_at, edge_id""",
+            (synthesis_record_id,),
+        )
+    result = dict(row)
+    result["source_record_ids"] = _decode_synthesis_sources(
+        result.pop("source_record_ids_json", "[]")
+    )
+    for edge in edges:
+        try:
+            edge["evidence"] = json.loads(edge.pop("evidence_json"))
+        except (TypeError, json.JSONDecodeError):
+            edge["evidence"] = {}
+    return {
+        "record": get_record(synthesis_record_id),
+        "synthesis": result,
+        "derived_from_edges": edges,
+        "source_records": [
+            get_record(record_id) for record_id in result["source_record_ids"]
+        ],
+    }
+
+
+def galaxy_find_synthesis(source_record_ids: list[str] | tuple[str, ...]) -> dict[str, Any] | None:
+    """Find the newest non-revoked synthesis with the same source set."""
+    source_ids = [str(item or "").strip() for item in source_record_ids]
+    wanted = sorted(source_ids)
+    initialize()
+    with _db() as conn:
+        rows = _fetchall_dicts(
+            conn,
+            "SELECT * FROM memory_syntheses ORDER BY created_at DESC",
+        )
+    for row in rows:
+        if sorted(_decode_synthesis_sources(row.get("source_record_ids_json"))) != wanted:
+            continue
+        detail = galaxy_synthesis(str(row.get("synthesis_record_id") or ""))
+        record = (detail or {}).get("record") or {}
+        if str(record.get("status") or "") != GALAXY_SYNTHESIS_REVOKED_STATUS:
+            return detail
+    return None
+
+
+def galaxy_propose_synthesis(
+    *,
+    source_record_ids: list[str] | tuple[str, ...],
+    statement: str,
+    method: str,
+    confidence: float,
+    authority: str,
+    approved: bool,
+) -> dict[str, Any]:
+    """Create one shadow synthesis proposal plus PROPOSED DERIVED_FROM edges atomically.
+
+    The new record lives outside MemoryOS scope, so this primitive does not add it
+    to ordinary MemoryOS candidate admission. It does not select a default target.
+    """
+    if authority != "NAOMI" or approved is not True:
+        raise PermissionError("GALAXY synthesis proposal requires explicit Naomi approval")
+    source_ids = [str(item or "").strip() for item in source_record_ids]
+    if len(source_ids) < 2 or len(source_ids) > 6:
+        raise ValueError("GALAXY synthesis proposal requires 2..6 source records")
+    if any(not item for item in source_ids) or len(set(source_ids)) != len(source_ids):
+        raise ValueError("GALAXY synthesis source IDs must be non-empty and distinct")
+    statement = str(statement or "").strip()
+    method = str(method or "").strip()
+    if not statement:
+        raise ValueError("GALAXY synthesis statement must be non-empty")
+    if not method:
+        raise ValueError("GALAXY synthesis method must be non-empty")
+    confidence = float(confidence)
+    if not 0.0 <= confidence <= 1.0:
+        raise ValueError("GALAXY synthesis confidence must be between 0 and 1")
+
+    source_records = [get_record(record_id) for record_id in source_ids]
+    if any(record is None for record in source_records):
+        raise KeyError("All GALAXY synthesis source records must already exist")
+    source_scopes = {str(record.get("scope") or "") for record in source_records if record}
+    if len(source_scopes) != 1:
+        raise ValueError("Initial GALAXY synthesis mutation requires same-scope sources")
+
+    existing = galaxy_find_synthesis(source_ids)
+    if existing is not None:
+        return {
+            "status": "EXISTING",
+            "synthesis": existing,
+            "memoryos_retrieval_changed": False,
+            "production_retrieval_changed": False,
+        }
+
+    synthesis_record_id = "MEM-" + uuid.uuid4().hex
+    created = _now()
+    edge_ids = ["EDGE-" + uuid.uuid4().hex for _ in source_ids]
+    notes = json.dumps(
+        {
+            "galaxy_phase": 5,
+            "method": method,
+            "source_record_ids": source_ids,
+            "shadow_scope": True,
+            "default_retrieval_target_selected": False,
+        },
+        sort_keys=True,
+    )
+    with _db() as conn:
+        conn.execute(
+            """INSERT INTO memory_records
+               (record_id,authority,record_type,scope,statement,source,status,version,
+                created_at,updated_at,supersedes,notes)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (
+                synthesis_record_id,
+                "NAOMI",
+                "SYNTHESIS",
+                GALAXY_SYNTHESIS_SHADOW_SCOPE,
+                statement,
+                "GALAXY_PHASE5_SYNTHESIS",
+                GALAXY_SYNTHESIS_PROPOSED_STATUS,
+                "1",
+                created,
+                created,
+                None,
+                notes,
+            ),
+        )
+        conn.execute(
+            """INSERT INTO memory_syntheses
+               (synthesis_record_id,source_record_ids_json,method,confidence,created_at,authority)
+               VALUES (?,?,?,?,?,?)""",
+            (
+                synthesis_record_id,
+                json.dumps(source_ids),
+                method,
+                confidence,
+                created,
+                "NAOMI",
+            ),
+        )
+        for edge_id, target_id in zip(edge_ids, source_ids):
+            evidence = {
+                "basis": "GALAXY Phase-5 provenance-backed synthesis proposal",
+                "synthesis_record_id": synthesis_record_id,
+                "method": method,
+                "all_source_record_ids": source_ids,
+            }
+            conn.execute(
+                """INSERT INTO memory_relations
+                   (edge_id,source_record_id,target_record_id,relation_type,strength,status,
+                    evidence_json,classifier,authority,created_at,verified_at)
+                   VALUES (?,?,?,?,?,'PROPOSED',?,?,?, ?,NULL)""",
+                (
+                    edge_id,
+                    synthesis_record_id,
+                    target_id,
+                    "DERIVED_FROM",
+                    1.0,
+                    json.dumps(evidence, sort_keys=True),
+                    GALAXY_SYNTHESIS_CLASSIFIER,
+                    "NONE",
+                    created,
+                ),
+            )
+    receipt = _receipt(
+        "GALAXY_PROPOSE_SYNTHESIS",
+        synthesis_record_id,
+        "SUCCESS",
+        "Created shadow synthesis proposal with proposed provenance edges; MemoryOS retrieval unchanged",
+    )
+    return {
+        "status": "PROPOSED",
+        "synthesis_record_id": synthesis_record_id,
+        "synthesis": galaxy_synthesis(synthesis_record_id),
+        "receipt": receipt,
+        "memoryos_retrieval_changed": False,
+        "production_retrieval_changed": False,
+        "default_retrieval_target_selected": False,
+        "physical_delete": False,
+    }
+
+
+def galaxy_verify_synthesis(
+    synthesis_record_id: str,
+    *,
+    authority: str,
+    approved: bool,
+) -> dict[str, Any]:
+    """Verify all exact provenance edges while keeping the synthesis in shadow scope."""
+    if authority != "NAOMI" or approved is not True:
+        raise PermissionError("GALAXY synthesis verification requires explicit Naomi approval")
+    detail = galaxy_synthesis(synthesis_record_id)
+    if detail is None:
+        raise KeyError(synthesis_record_id)
+    record = detail.get("record") or {}
+    if record.get("status") == GALAXY_SYNTHESIS_VERIFIED_STATUS:
+        return {
+            "status": "VERIFIED_SHADOW",
+            "synthesis": detail,
+            "idempotent": True,
+            "memoryos_retrieval_changed": False,
+            "production_retrieval_changed": False,
+        }
+    if record.get("status") != GALAXY_SYNTHESIS_PROPOSED_STATUS:
+        raise ValueError(
+            f"Only proposed syntheses can be verified; current status={record.get('status')}"
+        )
+    source_ids = list((detail.get("synthesis") or {}).get("source_record_ids") or [])
+    edges = list(detail.get("derived_from_edges") or [])
+    if len(edges) != len(source_ids):
+        raise ValueError("Synthesis provenance edge count does not match source count")
+    if any(str(edge.get("status")) != "PROPOSED" for edge in edges):
+        raise ValueError("All synthesis DERIVED_FROM edges must be PROPOSED before verification")
+    if {str(edge.get("target_record_id")) for edge in edges} != set(source_ids):
+        raise ValueError("Synthesis provenance edge targets do not match exact source set")
+
+    verified_at = _now()
+    with _db() as conn:
+        for edge in edges:
+            conn.execute(
+                """UPDATE memory_relations
+                   SET status='VERIFIED', authority='NAOMI', verified_at=?
+                   WHERE edge_id=? AND status='PROPOSED'""",
+                (verified_at, edge["edge_id"]),
+            )
+        conn.execute(
+            """UPDATE memory_records
+               SET status=?, updated_at=?
+               WHERE record_id=?""",
+            (
+                GALAXY_SYNTHESIS_VERIFIED_STATUS,
+                verified_at,
+                synthesis_record_id,
+            ),
+        )
+    receipt = _receipt(
+        "GALAXY_VERIFY_SYNTHESIS",
+        synthesis_record_id,
+        "SUCCESS",
+        "Verified exact DERIVED_FROM provenance while retaining synthesis in shadow scope",
+    )
+    return {
+        "status": "VERIFIED_SHADOW",
+        "synthesis_record_id": synthesis_record_id,
+        "synthesis": galaxy_synthesis(synthesis_record_id),
+        "receipt": receipt,
+        "memoryos_retrieval_changed": False,
+        "production_retrieval_changed": False,
+        "default_retrieval_target_selected": False,
+        "physical_delete": False,
+    }
+
+
+def galaxy_revoke_synthesis(
+    synthesis_record_id: str,
+    *,
+    authority: str,
+    approved: bool,
+    reason: str,
+) -> dict[str, Any]:
+    """Revoke a proposed/verified shadow synthesis without deleting provenance."""
+    if authority != "NAOMI" or approved is not True:
+        raise PermissionError("GALAXY synthesis revocation requires explicit Naomi approval")
+    reason = str(reason or "").strip()
+    if not reason:
+        raise ValueError("GALAXY synthesis revocation requires a non-empty reason")
+    detail = galaxy_synthesis(synthesis_record_id)
+    if detail is None:
+        raise KeyError(synthesis_record_id)
+    record = detail.get("record") or {}
+    if record.get("status") == GALAXY_SYNTHESIS_REVOKED_STATUS:
+        return {
+            "status": "REVOKED",
+            "synthesis": detail,
+            "idempotent": True,
+            "history_preserved": True,
+            "physical_delete": False,
+            "memoryos_retrieval_changed": False,
+            "production_retrieval_changed": False,
+        }
+    if record.get("status") not in {
+        GALAXY_SYNTHESIS_PROPOSED_STATUS,
+        GALAXY_SYNTHESIS_VERIFIED_STATUS,
+    }:
+        raise ValueError(
+            f"Only proposed/verified shadow syntheses can be revoked; current status={record.get('status')}"
+        )
+    revoked_at = _now()
+    edges = list(detail.get("derived_from_edges") or [])
+    with _db() as conn:
+        for edge in edges:
+            evidence = dict(edge.get("evidence") or {})
+            evidence["revocation"] = {
+                "authority": "NAOMI",
+                "reason": reason,
+                "revoked_at": revoked_at,
+            }
+            conn.execute(
+                """UPDATE memory_relations
+                   SET status='REVOKED', authority='NAOMI', evidence_json=?
+                   WHERE edge_id=?""",
+                (json.dumps(evidence, sort_keys=True), edge["edge_id"]),
+            )
+        old_notes = record.get("notes") or ""
+        try:
+            notes_payload = json.loads(old_notes) if old_notes else {}
+        except json.JSONDecodeError:
+            notes_payload = {"prior_notes": old_notes}
+        notes_payload["revocation"] = {
+            "authority": "NAOMI",
+            "reason": reason,
+            "revoked_at": revoked_at,
+        }
+        conn.execute(
+            """UPDATE memory_records
+               SET status=?, notes=?, updated_at=?
+               WHERE record_id=?""",
+            (
+                GALAXY_SYNTHESIS_REVOKED_STATUS,
+                json.dumps(notes_payload, sort_keys=True),
+                revoked_at,
+                synthesis_record_id,
+            ),
+        )
+    receipt = _receipt(
+        "GALAXY_REVOKE_SYNTHESIS",
+        synthesis_record_id,
+        "SUCCESS",
+        "Revoked shadow synthesis without deleting record, provenance row, source records, or edges",
+    )
+    return {
+        "status": "REVOKED",
+        "synthesis_record_id": synthesis_record_id,
+        "synthesis": galaxy_synthesis(synthesis_record_id),
+        "receipt": receipt,
+        "history_preserved": True,
+        "source_records_preserved": True,
+        "physical_delete": False,
+        "memoryos_retrieval_changed": False,
+        "production_retrieval_changed": False,
+        "default_retrieval_target_selected": False,
+    }
+
+
 
 def create_session(session_id: str, source: str, subject: str = "") -> None:
     initialize()
