@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_INDEX0_3_LIVE_SHADOW_PASS_INDEX5_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3H_THREE_LIVE_SHADOWS_PASS_GENERALIZATION_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase3H running-carrier read-only containment shadows now PASS for query indexes 0 and 3. Index 3: from 13 scoped records and 7 original relevance-qualified candidates, four calibration-core statements entered focal (REVISION, SATELLITE, CORE, REINFORCER), while three generic GALAXY policy records stayed audit-only despite two having higher original coverage than CORE. CORE moved into the focal presentation lane from original weighted rank 5 without changing the actual 80/20 rank underneath. Verified contradiction/revision/reinforcement/context edges remain visible inside focal evidence. Both negative controls returned zero candidates. Zero writes, production retrieval unchanged, actual 80/20 ranking unchanged, global weighting OFF. Index 5 remains pending; no Phase3F active pilot or live active-pilot rollback observed.",
+  "proof_ceiling": "Phase3H running-carrier read-only containment shadows now PASS for all three controlled query indexes [0,3,5]. Index0: 1 focal, 5 audit-only. Index3: 4 focal, 3 audit-only, including recovery of CORE from original weighted rank 5 while higher-coverage generic policy stayed audit-only. Index5: 4 focal, 2 audit-only; SATELLITE remains primary and CORE/REVISION/REINFORCER remain focal. Across all three, linked-context and historical lanes were empty, all candidates were accounted for, both negative controls returned zero well-formed candidates, aliases were evidence-separated where applicable, zero writes were reported, actual production retrieval and actual 80/20 ranking were unchanged, and unrestricted global weighting remained OFF. Successful one-tap live receipts also prove the mobile self-bootstrap browser-session fix is deployed. This validates the bounded literal-anchor calibration suite only, not general semantic reasoning or arbitrary paraphrase handling. Next gate is read-only generalization/paraphrase testing; no active Phase3F pilot or live active-pilot rollback observed.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3H_INDEX0_AND_3_LIVE_SHADOW_PASS_INDEX5_PENDING",
+    "phase3_status": "PHASE3H_THREE_LIVE_SHADOWS_PASS_GENERALIZATION_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "COMPLETE_PHASE3H_INDEX5_READ_ONLY_VALIDATION_BEFORE_ANY_ACTIVE_PILOT",
+    "phase3f_next_gate": "DO_NOT_ACTIVATE_PILOT_UNTIL_POST_PHASE3H_GENERALIZATION_REVIEW",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -411,7 +411,7 @@
     ],
     "phase3h_retrieval_change_enabled": false,
     "phase3h_production_grouping_enabled": false,
-    "phase3h_next_gate": "RUN_LIVE_READ_ONLY_QUERY_5_WITH_NEGATIVE_CONTROLS",
+    "phase3h_next_gate": "PHASE3I_READ_ONLY_GENERALIZATION_AND_PARAPHRASE_TEST_DESIGN",
     "phase3h_route_registered_live": true,
     "phase3h_verifier_run_id": "92bce511f0004901a53529ed69d11e3e",
     "phase3h_verifier_summary": "129/129 PASS",
@@ -427,10 +427,11 @@
     "phase3h_mobile_browser_bootstrap_commit": "9f92873d8751f597ca8cd340fb01d9d9d85ffe52",
     "phase3h_mobile_browser_bootstrap_ci_run_id": 35813799254,
     "phase3h_mobile_browser_bootstrap_ci_status": "SUCCESS",
-    "phase3h_mobile_browser_bootstrap_deployed": false,
+    "phase3h_mobile_browser_bootstrap_deployed": true,
     "phase3h_live_observed_query_indexes": [
       0,
-      3
+      3,
+      5
     ],
     "phase3h_live_index0_status": "PASS_READ_ONLY_SHADOW",
     "phase3h_live_index0_scope_population": 13,
@@ -487,6 +488,36 @@
     "phase3h_live_index3_zero_writes": true,
     "phase3h_live_index3_production_retrieval_modified": false,
     "phase3h_live_index3_80_20_ranking_modified": false,
-    "phase3h_live_index3_global_weighting_enabled": false
+    "phase3h_live_index3_global_weighting_enabled": false,
+    "phase3h_live_suite_complete": true,
+    "phase3h_live_suite_pass": true,
+    "phase3h_live_index5_status": "PASS_READ_ONLY_SHADOW",
+    "phase3h_live_index5_scope_population": 13,
+    "phase3h_live_index5_original_pool_count": 6,
+    "phase3h_live_index5_focal_count": 4,
+    "phase3h_live_index5_linked_context_count": 0,
+    "phase3h_live_index5_audit_count": 2,
+    "phase3h_live_index5_historical_count": 0,
+    "phase3h_live_index5_ambiguous_excluded_count": 2,
+    "phase3h_live_index5_negative_controls_pass": true,
+    "phase3h_live_index5_negative_control_counts": [
+      0,
+      0
+    ],
+    "phase3h_live_index5_focal_record_ids": [
+      "MEM-1d0092cb66f44996b74604670a853a21",
+      "MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",
+      "MEM-00b3fbfd4d73404f97a95c238596ab94",
+      "MEM-61f21fbb37f0419dbae2af6586d4ecc9"
+    ],
+    "phase3h_live_index5_audit_record_ids": [
+      "MEM-3883f8127bcd40e28255fdbfa4c98309",
+      "MEM-2940611cdf924de5bc12fb36947517ab"
+    ],
+    "phase3h_live_index5_zero_writes": true,
+    "phase3h_live_index5_production_retrieval_modified": false,
+    "phase3h_live_index5_80_20_ranking_modified": false,
+    "phase3h_live_index5_global_weighting_enabled": false,
+    "phase3h_mobile_browser_bootstrap_live_observed": true
   }
 }
