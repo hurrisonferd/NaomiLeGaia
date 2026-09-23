@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / AUGURY-RITUAL PHASE 1 DEPLOYED + LIVE-PROVEN FOR EXACT CONTROLLED RITUALS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 SYNTHESIS READ-ONLY SOURCE + CI READY / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4688,3 +4688,49 @@ Next GALAXY program gate:
 `PHASE 5 = PROVENANCE-BACKED SYNTHESIS / CONSOLIDATION`
 
 Phase 5 must begin read-only/source-first. A synthesis may become a proposed parent/default retrieval target only with explicit source-record provenance. Originals remain intact provenance satellites. No silent source rewriting and no production retrieval effect until separately authorized and proven.
+
+
+## Phase-5 provenance-backed synthesis source-ready — 2026-09-23
+
+Phase 5 has begun from the completed controlled Phase-4 rollback boundary.
+
+Source added:
+- protocol: `GALAXY-PHASE5-SYNTHESIS-CONSOLIDATION.v1.md`
+- runtime module: `api/galaxy_phase5.py`
+- offline tests: `tests/test_galaxy_phase5.py`
+- read-only carrier route: `GET /galaxy/synthesis/phase5-fixture-review`
+
+Initial laws:
+`SYNTHESIS != SOURCE REWRITE`
+`SYNTHESIS != AUTHORITY`
+`CONSOLIDATION != DELETION`
+`PROVENANCE COMPLETE OR HOLD`
+`CONTRADICTION SURFACED != CONTRADICTION FLATTENED`
+`NEW SYNTHESIS != AUTOMATICALLY TRUER`
+
+The initial source slice:
+- reviews only 2–6 distinct durable records;
+- requires same-scope sources;
+- requires at least one VERIFIED internal relation;
+- HOLDS on unresolved VERIFIED internal CONTRADICTS;
+- excludes recursive synthesis in the initial slice;
+- preserves source statements and governing-state snapshots;
+- does not invent a synthesis statement;
+- writes no MemoryOS record;
+- writes no `memory_syntheses` row;
+- writes no DERIVED_FROM edge;
+- changes no production retrieval behavior;
+- leaves unrestricted global weighting OFF.
+
+The first fixture reuses the live-proven Phase-4 revision/core pair after successful rollback. The VERIFIED REVISES relation is current graph evidence; the revoked SUPERSEDES edge remains historical evidence only.
+
+Offline guarded workflow job `107422290989` completed SUCCESS for commit `5f16d6dfb09da2c0e7cf6d4142dd9e1fc361a6c4`, including Phase-5 compilation and the expanded `test_galaxy_*.py` suite.
+
+Proof ceiling:
+**SOURCE + OFFLINE CI READY.**
+Phase-5 source has not yet been proven deployed on the live carrier, and no synthesis mutation exists.
+
+Next gate:
+`DEPLOY -> /verify -> GET /galaxy/synthesis/phase5-fixture-review -> STOP/REVIEW`
+
+Do not implement a synthesis mutation route until that read-only live receipt is reviewed.
