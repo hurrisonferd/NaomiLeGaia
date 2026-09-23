@@ -7,6 +7,7 @@ on:
       - "api/galaxy_quality.py"
       - "api/galaxy_phase3_exit.py"
       - "api/galaxy_phase4.py"
+      - "api/augury_ritual.py"
       - "api/browser_memcon_bridge.py"
       - "api/gaiaos_verification.py"
       - "api/Dockerfile"
@@ -15,6 +16,7 @@ on:
       - "tests/test_galaxy_quality.py"
       - "tests/test_galaxy_phase3_exit.py"
       - "tests/test_galaxy_phase4.py"
+      - "tests/test_augury_ritual.py"
       - ".github/workflows/galaxy-phase3f-production-canary.yml"
   workflow_dispatch:
 
@@ -32,8 +34,9 @@ jobs:
           python -m py_compile api/galaxy_quality.py
           python -m py_compile api/galaxy_phase3_exit.py
           python -m py_compile api/galaxy_phase4.py
+          python -m py_compile api/augury_ritual.py
           python -m py_compile api/browser_memcon_bridge.py
           python -m py_compile api/gaiaos_verification.py
           python -m py_compile GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py
       - name: Prove guarded switch, no-leakage, kill-switch and rollback
-        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_*.py" -v
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_*.py" -v
