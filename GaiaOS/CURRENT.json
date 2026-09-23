@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_AUGURY_RITUAL_PHASE1_SOURCE_CI_PASS_DEPLOY_PENDING",
+  "status": "ACTIVE_AUGURY_RITUAL_PHASE1_DEPLOYED_VERIFIED_RITUAL_STATUS_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -112,7 +112,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3 remains CLOSED and Phase 4 read-only fixture semantics are live-proven. AUGURY/RITUAL Phase 1 and the exact controlled Phase-4 Ritual family are source-ready with offline CI run 35879819185 SUCCESS: 48 existing GALAXY tests plus 7 AUGURY/RITUAL tests, 55 total guarded tests PASS. General natural-language AUGURY manifestation remains disabled. The guarded Ritual console/manifest endpoint is source-built and Naomi-authorized for exposure, but the new source is not yet deployed/live-verified and no Ritual manifestation has occurred. Next gate: deploy current main, run /verify, then read-only /ritual/status before any effectful Ritual.",
+  "proof_ceiling": "GALAXY Phase 3 remains CLOSED and Phase 4 read-only fixture semantics remain live-proven. AUGURY/RITUAL Phase 1 is now deployed and verifier receipt 227125f423eb4a3ea42cc9c1a0a1ec13 passed 167/167 with live_host_execution=PROVEN_FOR_THIS_CALL. The deployed carrier contains the conservation contract, GAIA_SEMANTIC_UNIT schema, Ritual Grimoire, exact Ritual runtime, read-only Ritual status route, guarded Phase-4 Ritual console, and exact manifestation POST route. The deployed read-only self-test confirms general natural-language AUGURY manifestation is disabled, exact Ritual compilation is available, production retrieval is unchanged, and unrestricted global weighting remains OFF. No Ritual manifestation has yet been observed. The immediate next gate is GET /ritual/status and inspection before any effectful Ritual.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -695,14 +695,14 @@
     "phase3f_active_pilot_highest_relevance_preserved": true,
     "phase3f_active_pilot_cross_relevance_tier_inversions": 0,
     "phase4_ready": true,
-    "phase4_status": "PHASE4_RITUAL_GUARDED_MUTATION_ROUTE_SOURCE_CI_PASS_DEPLOY_PENDING",
+    "phase4_status": "PHASE4_RITUAL_ROUTE_DEPLOYED_VERIFIED_STATUS_REVIEW_PENDING",
     "phase4_scope": "REVISION_SUPERSESSION",
     "phase4_production_effect_enabled": false,
     "phase4_version": "galaxy.phase4.revision-supersession.v1",
     "phase4_source_ready": true,
     "phase4_deployed": true,
     "phase4_live_observed": true,
-    "phase4_mutation_routes_exposed": false,
+    "phase4_mutation_routes_exposed": true,
     "phase4_relation_types": [
       "REVISES",
       "SUPERSEDES"
@@ -714,7 +714,7 @@
     "phase4_physical_delete": false,
     "phase4_fixture_review_route": "/galaxy/revision/phase4-fixture-review",
     "phase4_pair_review_route": "/galaxy/revision/phase4-pair-review",
-    "phase4_next_gate": "DEPLOY_VERIFY_AUGURY_RITUAL_THEN_READ_ONLY_STATUS",
+    "phase4_next_gate": "RUN_READ_ONLY_RITUAL_STATUS_AND_REVIEW",
     "phase4_verifier_run_id": "60a3f1f32c184015bd3ca062f53fce72",
     "phase4_verifier_total": 151,
     "phase4_verifier_passed": 151,
@@ -737,12 +737,13 @@
     "phase4_mutation_route_authorized_date": "2026-09-23",
     "phase4_mutation_route_source_ready": true,
     "phase4_mutation_ritual_boundary": "AUGURY_RITUAL_PHASE1_EXACT_ONLY",
-    "phase4_general_natural_language_mutation_allowed": false
+    "phase4_general_natural_language_mutation_allowed": false,
+    "phase4_mutation_route_live_registered": true
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
     "authority": "NAOMI",
-    "phase1_status": "SOURCE_READY_CI_PASS_DEPLOY_PENDING",
+    "phase1_status": "DEPLOYED_VERIFIED_RITUAL_STATUS_PENDING",
     "contract": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md",
     "semantic_unit_schema": "GaiaOS/SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json",
     "ritual_grimoire": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json",
@@ -763,14 +764,23 @@
     "route_exposure_authorized": true,
     "route_exposure_authorized_by": "NAOMI",
     "route_exposure_authorized_date": "2026-09-23",
-    "deployed": false,
-    "live_observed": false,
+    "deployed": true,
+    "live_observed": true,
     "manifestation_observed": false,
-    "next_gate": "DEPLOY_VERIFY_THEN_READ_ONLY_RITUAL_STATUS_BEFORE_ANY_MANIFESTATION",
+    "next_gate": "RUN_READ_ONLY_RITUAL_STATUS_AND_REVIEW_BEFORE_ANY_MANIFESTATION",
     "ci_run_id": 35879819185,
     "ci_status": "SUCCESS",
     "ci_galaxy_tests_passed": 48,
     "ci_phase1_tests_passed": 7,
-    "ci_total_guarded_tests_passed": 55
+    "ci_total_guarded_tests_passed": 55,
+    "verifier_run_id": "227125f423eb4a3ea42cc9c1a0a1ec13",
+    "verifier_total": 167,
+    "verifier_passed": 167,
+    "verifier_failed": 0,
+    "verifier_live_host_execution": "PROVEN_FOR_THIS_CALL",
+    "live_route_status_registered": true,
+    "live_route_review_registered": true,
+    "live_route_manifest_registered": true,
+    "read_only_self_test_passed": true
   }
 }
