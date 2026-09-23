@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 REVISION-SUPERSESSION SOURCE READY / DEPLOY + READ-ONLY REVIEW PENDING / UNRESTRICTED GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 DEPLOYED + VERIFIED / READ-ONLY FIXTURE REVIEW PENDING / NO MUTATION ROUTE / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4508,3 +4508,29 @@ Verifier checks packaging, syntax, semantic guard markers, non-deleting revocati
 Current proof ceiling: **SOURCE_READY / DEPLOYMENT + LIVE REVIEW PENDING**.
 
 Next gate: deploy current main, run `/verify`, then run the read-only Phase-4 fixture review. Stop and inspect before exposing any mutation route.
+
+
+## Phase-4 deployed verifier PASS — 2026-09-23
+
+Naomi deployed the Phase-4 source to the Ligeia carrier and supplied implementation-verification receipt `60a3f1f32c184015bd3ca062f53fce72`.
+
+Observed runtime result:
+- total checks: 151
+- passed: 151
+- failed: 0
+- `live_host_execution=PROVEN_FOR_THIS_CALL`
+- Phase-4 module packaged and syntax-valid
+- Phase-4 semantic guard markers present
+- non-deleting `REVOKED` rollback primitive present
+- read-only fixture-review route declared and live-registered
+- read-only generic pair-review route declared and live-registered
+- production retrieval unchanged
+- unrestricted global weighting OFF
+- no Phase-4 browser mutation route exposed
+
+This proves deployed source, carrier import/registration, and verifier execution. It does not yet prove the Phase-4 revision/supersession semantics against the live controlled fixture.
+
+Next gate:
+`GET /galaxy/revision/phase4-fixture-review`
+
+Require read-only PASS before exposing any Phase-4 mutation route.
