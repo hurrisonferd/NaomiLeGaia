@@ -78,7 +78,8 @@ def _phase3_status_authorized_family(status: Any) -> bool:
             "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
         }
         or value.startswith((
-            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_", "PHASE3I_", "PHASE3J_", "PHASE3J_", "PHASE3I_",
+            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_",
+            "PHASE3I_", "PHASE3J_", "PHASE3_EXIT_",
         ))
     )
 
