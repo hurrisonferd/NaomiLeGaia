@@ -4182,3 +4182,24 @@ Pending operator decision: explicitly approve the scope-limited GALAXY candidate
 ## Phase-3F broad retrieval quality review
 
 Pending read-only test: inspect the seven candidates for `calibration core revision memory context` using the existing Phase 3 retrieval experiment route. Compare high relevance (coverage >= 0.8) with broader contextual matches (coverage >= 0.6). Label each real result as direct, useful context, historical-only or noise after reviewing statement, matched concepts and source. Consider a four-record primary cap plus up to two verified contextual satellites, without automatically enabling the pilot. Confirm results with other queries before changing retrieval rules.
+
+
+## Phase-3G quality diagnostic source-ready
+
+Naomi supplied a real Phase-3 experiment for `calibration core revision memory context`: scope population 13, candidate gate admitted 7, one ambiguous. The 80/20 weighted order put REVISION first, SATELLITE second, two generic system-policy memories third/fourth, CORE fifth, REINFORCER sixth, and another generic provenance-policy memory seventh.
+
+Statement-level review:
+- Four candidate statements explicitly concern the calibration core: REVISION, SATELLITE, CORE, REINFORCER.
+- Three are general GALAXY policy statements about gravity authority, historical revisability, or provenance/contradiction; they may be useful global rules but are not primary evidence about the concrete calibration core.
+- The actual CORE observation scored only 0.60 lexical/concept coverage while unrelated generic policy records scored 0.80. A naive 0.80 threshold would accidentally discard the subject of the query. Relevance-coverage percentage alone is not semantic specificity.
+- The model matches statement+notes and injects the MemoryOS scope as virtual `memory` evidence. Unseen note text is likely to explain generic records' high coverage but remains unverified until notes are inspected. No graph-edge or supersession claim has yet been confirmed from this user receipt.
+
+A new **read-only** diagnostic was built, without changing production retrieval:
+- Module: `api/galaxy_quality.py`
+- GET route: `/galaxy/retrieval/phase3g-quality-review?query_index=3`
+- Returns each candidate's full statement, bounded notes excerpt, per-query-term match origin (statement / notes / virtual scope), record source/status, governing status, VERIFIED graph links, direct phrase-anchor clue, current weighted rank, and indirect/background grouping.
+- Also supports calibration source query indexes 0 and 5. Limit <= 10, no memory writes, no automated quality judgments, no production promotion.
+- Containment proposal for further evaluation: <=4 focal topic-anchored memories, <=2 verified graph-supported context satellites, relevance tiers remain visible, unknown relation or historical status never silently promoted. These limits are hypotheses, NOT adopted production settings.
+- Workflow `.github/workflows/galaxy-phase3f-production-canary.yml` run `35802335861` passed syntax and 13 offline tests on the source including read-only match provenance and missing-record HOLD checks.
+
+Proof ceiling: source and CI are verified; Phase3G diagnostic runtime is NOT YET deployed/observed. The previous Phase3F ON/OFF switch PASS remains valid on its original running process only, and no active weighted pilot has been observed. Production remains unrestricted-global OFF. Next: deploy the diagnostic, run /verify, inspect the new read-only quality JSON, evaluate exact note and VERIFIED-edge evidence, and only then decide any broader retrieval policy.
