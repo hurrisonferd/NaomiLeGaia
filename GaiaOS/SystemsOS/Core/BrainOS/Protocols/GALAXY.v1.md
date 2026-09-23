@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 SYNTHESIS READ-ONLY SOURCE + CI READY / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 SYNTHESIS READ-ONLY LIVE PASS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4734,3 +4734,43 @@ Next gate:
 `DEPLOY -> /verify -> GET /galaxy/synthesis/phase5-fixture-review -> STOP/REVIEW`
 
 Do not implement a synthesis mutation route until that read-only live receipt is reviewed.
+
+
+## Phase-5 read-only fixture LIVE PASS — 2026-09-23
+
+Naomi executed the deployed Phase-5 fixture review on the running Ligeia carrier.
+
+Observed receipt:
+- schema: `gaiaos.galaxy.phase5-fixture-review.v1`
+- execution: `OBSERVED_RUNTIME`
+- status: `PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW`
+- method: `PROVENANCE_BACKED_CLUSTER_V1`
+
+Exact fixture sources:
+- `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e`
+- `MEM-00b3fbfd4d73404f97a95c238596ab94`
+
+Observed provenance:
+- VERIFIED internal REVISES edge `EDGE-324a405c6e534400a6f594c987e6ab4f`
+- revoked historical SUPERSEDES edge `EDGE-45ba86cf37414c418de4aa0298122c14`
+- no unresolved VERIFIED contradiction
+- both sources remained current-default eligible after the Phase-4 rollback
+- source provenance complete
+- recursive synthesis absent
+
+Observed hard boundaries:
+- synthesis statement generated: false
+- MemoryOS writes: zero
+- `memory_syntheses` row written: false
+- DERIVED_FROM edges written: false
+- default retrieval target selected: false
+- production retrieval changed: false
+- unrestricted global weighting enabled: false
+- source history preserved: true
+
+This closes the Phase-5 read-only eligibility/provenance gate for the exact controlled fixture.
+
+It does not prove synthesis manifestation, provenance-row writes, DERIVED_FROM mutation, default-target selection, recursive synthesis, or production retrieval behavior.
+
+Next gate:
+`EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_DESIGN`
