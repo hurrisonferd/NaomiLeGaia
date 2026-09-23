@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 READ-ONLY LIVE PASS / AUGURY-RITUAL PHASE 1 SOURCE + CI READY / RITUAL DEPLOYMENT PENDING / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / AUGURY-RITUAL PHASE 1 DEPLOYED + LIVE-PROVEN FOR EXACT CONTROLLED RITUALS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4616,3 +4616,75 @@ Next gate:
 `DEPLOY → /verify → GET /ritual/status → STOP/REVIEW`
 
 Only after those live receipts pass should Naomi use the first effectful Ritual button.
+
+
+## Phase-4 controlled Ritual mutation + rollback LIVE PASS — 2026-09-23
+
+Naomi executed the complete guarded AUGURY/RITUAL Phase-1 SUPERSEDES cycle against the live controlled Phase-4 fixture.
+
+Exact controlled pair:
+- source / REVISION: `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e`
+- target / CORE: `MEM-00b3fbfd4d73404f97a95c238596ab94`
+- prerequisite VERIFIED REVISES edge preserved throughout: `EDGE-324a405c6e534400a6f594c987e6ab4f`
+
+Observed exact SUPERSEDES edge:
+- `EDGE-45ba86cf37414c418de4aa0298122c14`
+
+Observed manifestation sequence:
+
+1. PROPOSE exact controlled SUPERSEDES
+   - status: `PROPOSED`
+   - proposal was durable but non-governing
+   - target remained `CURRENT_REVISED_CONTEXT`
+   - retrieval effect: NONE
+   - no physical deletion
+   - production retrieval unchanged
+
+2. VERIFY exact proposed SUPERSEDES
+   - status: `VERIFIED`
+   - receipt: `MEMREC-710e4ba5447541459125973dd399b11f`
+   - target transitioned:
+     `CURRENT_REVISED_CONTEXT -> HISTORICAL_SUPERSEDED`
+   - target `current_default_eligible=false`
+   - target `historical_retrieval_eligible=true`
+   - original VERIFIED REVISES relation remained intact
+   - history preserved
+   - production retrieval unchanged
+   - unrestricted global weighting remained OFF
+
+3. REVOKE exact VERIFIED SUPERSEDES
+   - status: `REVOKED`
+   - receipt: `MEMREC-1e2c4b87e7a7448894dd75c5f215190c`
+   - target transitioned:
+     `HISTORICAL_SUPERSEDED -> CURRENT_REVISED_CONTEXT`
+   - target `current_default_eligible=true`
+   - target `historical_retrieval_eligible=true`
+   - SUPERSEDES edge remained preserved as REVOKED, not deleted
+   - original VERIFIED REVISES relation remained intact
+   - governing state was recomputed from remaining VERIFIED edges
+   - no physical deletion
+   - production retrieval unchanged
+   - unrestricted global weighting remained OFF
+
+Observed law:
+
+`PROPOSAL != GOVERNANCE`
+`REVISES != SUPERSEDES`
+`SUPERSEDED != ERASED`
+`REVOCATION != DELETION`
+
+Phase-4 proof boundary:
+This proves the exact controlled propose -> verify -> revoke path on the live carrier/runtime store through AUGURY/RITUAL Phase 1. It does not prove a general natural-language AUGURY parser, unrestricted Phase-4 mutation over arbitrary records, or unrestricted production retrieval behavior.
+
+Current controlled fixture state after rollback:
+- target: `CURRENT_REVISED_CONTEXT`
+- original REVISES edge: VERIFIED
+- controlled SUPERSEDES edge: REVOKED
+- historical evidence retained
+- production retrieval unchanged
+- global weighting OFF
+
+Next GALAXY program gate:
+`PHASE 5 = PROVENANCE-BACKED SYNTHESIS / CONSOLIDATION`
+
+Phase 5 must begin read-only/source-first. A synthesis may become a proposed parent/default retrieval target only with explicit source-record provenance. Originals remain intact provenance satellites. No silent source rewriting and no production retrieval effect until separately authorized and proven.
