@@ -193,11 +193,20 @@ def build_candidate_pool(
         "production_aliases_modified": False,
         "unrestricted_global_weighting_enabled": False,
     }
-    status = (
-        "PASS"
-        if primary and not overflow and all(checks.values())
-        else "HOLD"
+    safety_ok = bool(
+        primary
+        and not overflow
+        and checks["primary_statement_only"]
+        and checks["notes_or_scope_cannot_create_primary"]
+        and checks["all_admitted_candidates_meet_primary_rule"]
+        and checks["linked_context_requires_verified_direct_primary_edge"]
+        and checks["linked_context_admitted_to_weighted_records"] is False
+        and checks["primary_cap_respected"]
+        and checks["zero_memory_writes"]
+        and checks["production_aliases_modified"] is False
+        and checks["unrestricted_global_weighting_enabled"] is False
     )
+    status = "PASS" if safety_ok else "HOLD"
 
     return {
         "schema": "gaiaos.galaxy.phase3-exit-candidate-pool.v1",
