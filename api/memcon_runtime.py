@@ -2247,6 +2247,71 @@ def galaxy_verify_relation(edge_id: str, *, authority: str, approved: bool) -> d
     return {"status": "VERIFIED", "relation": galaxy_relation(edge_id), "receipt": receipt, "retrieval_effect": "NONE"}
 
 
+def galaxy_revoke_relation(
+    edge_id: str,
+    *,
+    authority: str,
+    approved: bool,
+    reason: str,
+) -> dict[str, Any]:
+    """Revoke a VERIFIED revision/supersession edge without deleting history.
+
+    Phase 4 uses REVOKED as an auditable rollback state. The edge row, evidence,
+    original verification timestamp and both durable records remain intact.
+    Governing state is recomputed from the remaining VERIFIED edges.
+    """
+    if authority != "NAOMI" or not approved:
+        raise PermissionError("GALAXY relation revocation requires explicit Naomi approval")
+    reason = str(reason or "").strip()
+    if not reason:
+        raise ValueError("Relation revocation requires a non-empty reason")
+    edge = galaxy_relation(edge_id)
+    if edge is None:
+        raise KeyError(edge_id)
+    if edge.get("relation_type") not in {"REVISES", "SUPERSEDES"}:
+        raise ValueError("Phase-4 revocation is limited to REVISES/SUPERSEDES edges")
+    if edge.get("status") == "REVOKED":
+        return {
+            "status": "REVOKED",
+            "relation": edge,
+            "idempotent": True,
+            "history_preserved": True,
+            "physical_delete": False,
+        }
+    if edge.get("status") != "VERIFIED":
+        raise ValueError(
+            f"Only VERIFIED relations can be revoked; current status={edge.get('status')}"
+        )
+    revoked_at = _now()
+    evidence = dict(edge.get("evidence") or {})
+    evidence["revocation"] = {
+        "authority": "NAOMI",
+        "reason": reason,
+        "revoked_at": revoked_at,
+    }
+    with _db() as conn:
+        conn.execute(
+            """UPDATE memory_relations
+               SET status='REVOKED', authority='NAOMI', evidence_json=?
+               WHERE edge_id=?""",
+            (json.dumps(evidence, sort_keys=True), edge_id),
+        )
+    receipt = _receipt(
+        "GALAXY_REVOKE_RELATION",
+        edge_id,
+        "SUCCESS",
+        "Revoked verified revision/supersession edge without deleting edge or records",
+    )
+    return {
+        "status": "REVOKED",
+        "relation": galaxy_relation(edge_id),
+        "receipt": receipt,
+        "history_preserved": True,
+        "physical_delete": False,
+        "governing_state_recomputed_from_verified_edges": True,
+    }
+
+
 
 def create_session(session_id: str, source: str, subject: str = "") -> None:
     initialize()
