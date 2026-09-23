@@ -78,7 +78,7 @@ def _phase3_status_authorized_family(status: Any) -> bool:
             "PHASE3C_COEFFICIENT_CALIBRATION_LIVE_OBSERVED",
         }
         or value.startswith((
-            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_", "PHASE3I_", "PHASE3I_",
+            "PHASE3D_", "PHASE3E_", "PHASE3F_", "PHASE3G_", "PHASE3H_", "PHASE3I_", "PHASE3J_", "PHASE3J_", "PHASE3I_",
         ))
     )
 
@@ -529,6 +529,15 @@ def run_verification() -> dict[str, Any]:
                 and "hard_paraphrase_primary_found" in quality_text,
                 "read-only paraphrase/near-miss suite evaluates existing gate without modifying production",
             ))
+            checks.append(_check(
+                "carrier:phase3j-concept-bridge-source",
+                "PHASE3J_VERSION" in quality_text
+                and "def concept_bridge_shadow(" in quality_text
+                and "PHASE3J_BRIDGE_ALIASES" in quality_text
+                and "notes_or_scope_cannot_create_primary" in quality_text
+                and "production_aliases_modified" in quality_text,
+                "read-only statement-first concept bridge is isolated from production aliases and admission",
+            ))
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase3g-quality-syntax",
@@ -592,6 +601,12 @@ def run_verification() -> dict[str, Any]:
             and 'galaxy_quality.generalization_suite' in bridge_text,
             "read-only Phase 3I generalization suite route declared",
         ))
+        checks.append(_check(
+            "carrier:/galaxy/phase3j-concept-bridge-shadow",
+            '/galaxy/retrieval/phase3j-concept-bridge-shadow' in bridge_text
+            and 'galaxy_quality.concept_bridge_shadow' in bridge_text,
+            "read-only Phase 3J concept bridge shadow route declared",
+        ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
 
         # Source-backed route self-test: instantiate the ASGI app and inspect its
@@ -648,6 +663,11 @@ def run_verification() -> dict[str, Any]:
                 "carrier-route:/galaxy/phase3i-generalization-suite",
                 ("/galaxy/retrieval/phase3i-generalization-suite", "GET") in route_pairs,
                 "read-only Phase 3I generalization suite ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase3j-concept-bridge-shadow",
+                ("/galaxy/retrieval/phase3j-concept-bridge-shadow", "GET") in route_pairs,
+                "read-only Phase 3J concept bridge shadow ASGI route registered",
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
         except Exception as exc:
