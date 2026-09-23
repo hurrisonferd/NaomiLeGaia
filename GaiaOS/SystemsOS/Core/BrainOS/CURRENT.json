@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3J_LIVE_PASS_PHASE3_EXIT_INTEGRATION_READY",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3_EXIT_INTEGRATION_SOURCE_READY_DEPLOY_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -142,7 +142,7 @@
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3J_LIVE_PASS_PHASE3_EXIT_INTEGRATION_READY",
+    "phase3_status": "PHASE3_EXIT_INTEGRATION_SOURCE_READY_DEPLOY_PENDING",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -244,7 +244,7 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_next_gate": "PHASE3_EXIT_INTEGRATION_REVIEW_BEFORE_ANY_PILOT_ACTIVATION",
+    "phase3f_next_gate": "PHASE3_EXIT_PREFLIGHT_AND_FRESH_SWITCH_TEST_BEFORE_ANY_PILOT_ACTIVATION",
     "phase3f_pilot_active_observed": false,
     "phase3g_quality_review_source_ready": true,
     "phase3g_quality_review_live_observed": true,
@@ -553,16 +553,45 @@
     "phase3j_live_phase3h_grouping_installed_in_production": false,
     "phase3j_live_unrestricted_global_weighting_enabled": false,
     "phase3_exit_gate": {
-      "status": "READY_FOR_INTEGRATION_DESIGN",
+      "status": "SOURCE_READY_DEPLOY_PENDING",
       "no_more_lettered_subphases": true,
+      "source_ci": "37/37 PASS",
       "required_before_phase3_close": [
-        "DEFINE_BOUNDED_PRODUCTION_ADOPTION_OF_VALIDATED_STATEMENT_FIRST_RELEVANCE_AND_CONTEXT_SEPARATION",
-        "KEEP_GLOBAL_WEIGHTING_OFF",
+        "DEPLOY_AND_VERIFY_EXIT_INTEGRATION_SOURCE",
+        "RUN_READ_ONLY_EXIT_PREFLIGHT_FOR_QUERY_INDEXES_0_3_5",
         "RUN_FRESH_GUARDED_SWITCH_TEST",
+        "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_ACTIVE_PILOT",
         "OBSERVE_ACTIVE_PILOT_RETRIEVAL",
         "PROVE_EXACT_ROLLBACK_TO_LEGACY_CONTROL",
+        "VERIFY_ZERO_WRITES_NO_CROSS_TIER_INVERSION_MODE_OFF",
         "REVIEW_RECEIPTS_AND_CLOSE_PHASE3_ONLY_IF_ALL_PASS"
       ]
-    }
+    },
+    "phase3_exit_version": "galaxy.phase3-exit-integration.v1",
+    "phase3_exit_source_ready": true,
+    "phase3_exit_deployed": false,
+    "phase3_exit_live_observed": false,
+    "phase3_exit_review_route": "/galaxy/retrieval/phase3-exit-integration-review",
+    "phase3_exit_query_indexes": [
+      0,
+      3,
+      5
+    ],
+    "phase3_exit_candidate_admission": "STATEMENT_FIRST_PHASE3J_BRIDGE_PRIMARY_ONLY",
+    "phase3_exit_primary_min_concepts": 2,
+    "phase3_exit_primary_min_coverage": 0.6666666666666666,
+    "phase3_exit_primary_cap": 4,
+    "phase3_exit_linked_context_cap": 2,
+    "phase3_exit_notes_or_scope_can_create_primary": false,
+    "phase3_exit_linked_context_enters_weighted_records": false,
+    "phase3_exit_singleton_pool_policy": "SAFE_IF_ALL_GUARDS_PASS; NO_RERANK_REQUIRED_FOR_SINGLETON",
+    "phase3_exit_switch_test_requires_at_least_one_real_rerank_across_suite": true,
+    "phase3_exit_ci_run_id": 35838119652,
+    "phase3_exit_ci_status": "SUCCESS",
+    "phase3_exit_ci_tests": "37/37 PASS",
+    "phase3_exit_intermediate_ci_failure_run_id": 35838026305,
+    "phase3_exit_intermediate_ci_failure_resolved": true,
+    "phase3_exit_next_gate": "DEPLOY_VERIFY_RUN_READ_ONLY_PREFLIGHT_THEN_FRESH_GUARDED_SWITCH_TEST",
+    "production_weighted_retrieval_enabled": false
   }
 }
