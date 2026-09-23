@@ -507,13 +507,15 @@ def run_verification() -> dict[str, Any]:
                 "carrier:phase3-exit-integration-boundaries",
                 all(marker in exit_text for marker in (
                     "PRIMARY_STATEMENT",
+                    "scope_domain_query_concepts_excluded",
                     "notes_or_scope_cannot_create_primary",
-                    "linked_context_admitted_to_weighted_records",
+                    "linked_context_admitted_to_primary_lane",
+                    "linked_context_ranked_only_within_context_lane",
                     "zero_memory_writes",
                     "unrestricted_global_weighting_enabled",
                     "PILOT_QUERY_INDEXES = (0, 3, 5)",
                 )),
-                "statement-first primary evidence, separate linked context, zero-write and global-OFF boundaries are present",
+                "scope-aware statement-first primary evidence, lane-preserved verified context, zero-write and global-OFF boundaries are present",
             ))
         except Exception as exc:
             checks.append(_check(
@@ -650,8 +652,8 @@ def run_verification() -> dict[str, Any]:
         checks.append(_check(
             "carrier:phase3-exit-production-wiring",
             'galaxy_phase3_exit.build_candidate_pool' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8")
-            and 'PHASE3_EXIT_STATEMENT_FIRST_V1' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8"),
-            "guarded production pilot is wired to Phase-3 Exit statement-first admission while remaining default-OFF",
+            and 'PHASE3_EXIT_LANE_PRESERVING_CONSTELLATION_V2' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8"),
+            "guarded production pilot is wired to Phase-3 Exit lane-preserving constellation admission while remaining default-OFF",
         ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
         checks.append(_check(
