@@ -4291,3 +4291,14 @@ Proof boundary: the broken live receipt still proves the old carrier executed an
 Running-carrier verification receipt `92bce511f0004901a53529ed69d11e3e` returned **129/129 PASS**, zero failures. The repaired Phase3 lifecycle authorization predicate now accepts the current explicit Phase3G/H status while preserving the earlier Phase3F production-source boundary and global-OFF requirement. Phase3H containment source checks, negative-control safeguards, route declaration and live ASGI registration all passed.
 
 Proof ceiling remains narrow: deployment and registration are now live-observed, but the Phase3H containment algorithm itself has not yet produced a running-carrier receipt. No production candidate admission, 80/20 ranking, memory record, relation, governing state or global weighting was changed by verification. The next gate is the live read-only shadow for query index 0 with both negative controls enabled. Only after that receipt should indexes 3 and 5 be repeated under Phase3H. Active Phase3F pilot and active rollback proof remain unobserved; unrestricted global weighting OFF.
+
+
+## Phase-3H live containment shadow index 0 PASS
+
+Naomi supplied a running-carrier Phase3H receipt for query index 0, `gravity contextual influence memory retrieval`, with `status=PASS_READ_ONLY_SHADOW`. The original GALAXY pool remained six records from 13 MemoryOS-scoped records. Phase3H placed exactly one record into the focal lane: `MEM-3883f8127bcd40e28255fdbfa4c98309`, the gravity/contextual-influence policy statement. Its evidence report collapsed `memory` and `retrieval` into a single concept, showed statement-backed `gravity/context/influence`, and identified `memory` as notes/scope support rather than direct statement evidence.
+
+All five calibration fixtures remained in `other_candidate_audit_lane`; none entered linked context despite VERIFIED edges among themselves because they had no VERIFIED direct relationship to the gravity focal record. The isolated fixture also remained audit-only. No historical records appeared. Seven ambiguous records remained unadmitted.
+
+Both negative controls passed fail-closed: `planetary gravity trajectories` -> 0 candidates and `advertising contextual influence` -> 0 candidates, with well-formed receipts. All accounting and provenance checks passed. Receipt states zero writes, no change to actual production retrieval, no modification to actual 80/20 ranking, and unrestricted global weighting false.
+
+Interpretation: on this controlled gravity case, evidence-lane containment successfully prevents metadata/scope-inflated off-topic memories from masquerading as primary context without deleting or rewriting the original candidate set. This remains a literal-anchor calibration result, not general semantic reasoning or a production retrieval policy. Next live read-only gates: query index 3, then 5, with negative controls enabled. Phase3F active pilot and active rollback proof remain unobserved.
