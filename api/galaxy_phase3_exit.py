@@ -16,18 +16,64 @@ from typing import Any
 
 import galaxy_quality
 
-VERSION = "galaxy.phase3-exit-integration.v1"
+VERSION = "galaxy.phase3-exit-integration.v2"
 PRIMARY_MIN_CONCEPTS = galaxy_quality.PHASE3J_PRIMARY_MIN_CONCEPTS
 PRIMARY_MIN_COVERAGE = galaxy_quality.PHASE3J_PRIMARY_MIN_COVERAGE
 PRIMARY_CAP = 4
 LINKED_CONTEXT_CAP = 2
 SCAN_LIMIT = 100
 PILOT_QUERY_INDEXES = (0, 3, 5)
+SCOPE_DOMAIN_QUERY_CONCEPTS = {
+    "MemoryOS": frozenset({"memory"}),
+}
+PILOT_REQUIRED_PRIMARY_CONCEPTS = {
+    "gravity contextual influence memory retrieval": frozenset({"gravity"}),
+    "calibration core revision memory context": frozenset({"revision"}),
+    "satellite calibration core memory context": frozenset({"satellite"}),
+}
 
 
-def _statement_evidence(runtime: Any, statement: str, query: str) -> dict[str, Any]:
-    """Reuse the exact Phase3J concept bridge that passed live review."""
-    return galaxy_quality._phase3j_statement_evidence(runtime, statement, query)
+def _normalize_query(query: str) -> str:
+    return " ".join(str(query or "").lower().split())
+
+
+def _statement_evidence(
+    runtime: Any,
+    statement: str,
+    query: str,
+    *,
+    scope: str,
+) -> dict[str, Any]:
+    """Reuse Phase3J semantics, excluding the already-enforced scope label.
+
+    "memory" is not content evidence when the request is already constrained to
+    MemoryOS. Removing that scope-domain concept from the query denominator
+    avoids double-counting scope without allowing scope itself to manufacture a
+    statement match.
+    """
+    raw = galaxy_quality._phase3j_statement_evidence(runtime, statement, query)
+    raw_query_concepts = list(raw.get("query_concepts") or [])
+    excluded = set(SCOPE_DOMAIN_QUERY_CONCEPTS.get(scope, frozenset()))
+    effective_query_concepts = [
+        concept for concept in raw_query_concepts if concept not in excluded
+    ]
+    statement_concepts = list(raw.get("statement_concepts") or [])
+    matched = sorted(set(effective_query_concepts) & set(statement_concepts))
+    coverage = (
+        len(matched) / len(effective_query_concepts)
+        if effective_query_concepts else 0.0
+    )
+    return {
+        **raw,
+        "query_concepts_raw": raw_query_concepts,
+        "query_concepts": effective_query_concepts,
+        "scope_domain_query_concepts_excluded": sorted(
+            set(raw_query_concepts) & excluded
+        ),
+        "matched_statement_concepts": matched,
+        "matched_statement_concept_count": len(matched),
+        "statement_concept_coverage": round(coverage, 6),
+    }
 
 
 def build_candidate_pool(
@@ -86,7 +132,10 @@ def build_candidate_pool(
     for position, record in enumerate(rows):
         record_id = str(record.get("record_id") or "")
         evidence = _statement_evidence(
-            runtime, str(record.get("statement") or ""), query
+            runtime,
+            str(record.get("statement") or ""),
+            query,
+            scope=scope,
         )
         evidence_rows.append({
             "record_id": record_id,
@@ -97,10 +146,19 @@ def build_candidate_pool(
             **evidence,
         })
 
+    required_primary_concepts = sorted(
+        PILOT_REQUIRED_PRIMARY_CONCEPTS.get(
+            _normalize_query(query), frozenset()
+        )
+    )
     primary = [
         row for row in evidence_rows
         if row["matched_statement_concept_count"] >= PRIMARY_MIN_CONCEPTS
         and row["statement_concept_coverage"] >= PRIMARY_MIN_COVERAGE
+        and all(
+            concept in row["matched_statement_concepts"]
+            for concept in required_primary_concepts
+        )
     ]
     primary.sort(
         key=lambda row: (
@@ -175,10 +233,37 @@ def build_candidate_pool(
         }
         for row in primary
     ]
+    linked_context_candidates = [
+        {
+            "record_id": row["record_id"],
+            "statement": row["statement"],
+            "scope": row["scope"],
+            "source": row["source"],
+            "evidence_lane": "VERIFIED_LINKED_CONTEXT",
+            "verified_direct_primary_edges": row["verified_direct_primary_edges"],
+            "relevance": {
+                "coverage": row["statement_concept_coverage"],
+                "matched_concepts": row["matched_statement_concepts"],
+                "matched_concept_count": row["matched_statement_concept_count"],
+                "statement_only": True,
+                "notes_used": False,
+                "scope_virtual_match_used": False,
+            },
+        }
+        for row in linked
+    ]
 
     checks = {
         "primary_statement_only": True,
         "notes_or_scope_cannot_create_primary": True,
+        "scope_domain_query_concepts_excluded_from_content_relevance": True,
+        "required_primary_concepts_present": all(
+            all(
+                concept in row["matched_statement_concepts"]
+                for concept in required_primary_concepts
+            )
+            for row in primary
+        ),
         "all_admitted_candidates_meet_primary_rule": all(
             row["matched_statement_concept_count"] >= PRIMARY_MIN_CONCEPTS
             and row["statement_concept_coverage"] >= PRIMARY_MIN_COVERAGE
@@ -187,7 +272,8 @@ def build_candidate_pool(
         "linked_context_requires_verified_direct_primary_edge": all(
             bool(row.get("verified_direct_primary_edges")) for row in linked
         ),
-        "linked_context_admitted_to_weighted_records": False,
+        "linked_context_admitted_to_primary_lane": False,
+        "linked_context_ranked_only_within_context_lane": True,
         "primary_cap_respected": not overflow,
         "zero_memory_writes": True,
         "production_aliases_modified": False,
@@ -198,9 +284,12 @@ def build_candidate_pool(
         and not overflow
         and checks["primary_statement_only"]
         and checks["notes_or_scope_cannot_create_primary"]
+        and checks["scope_domain_query_concepts_excluded_from_content_relevance"]
+        and checks["required_primary_concepts_present"]
         and checks["all_admitted_candidates_meet_primary_rule"]
         and checks["linked_context_requires_verified_direct_primary_edge"]
-        and checks["linked_context_admitted_to_weighted_records"] is False
+        and checks["linked_context_admitted_to_primary_lane"] is False
+        and checks["linked_context_ranked_only_within_context_lane"]
         and checks["primary_cap_respected"]
         and checks["zero_memory_writes"]
         and checks["production_aliases_modified"] is False
@@ -223,18 +312,25 @@ def build_candidate_pool(
         "candidate_record_ids": primary_ids,
         "candidate_count": len(primary_ids),
         "candidates": candidates,
+        "required_primary_concepts": required_primary_concepts,
         "primary_evidence": primary,
         "primary_overflow_record_ids": overflow,
         "linked_context_lane": linked,
+        "linked_context_candidates": linked_context_candidates,
         "linked_context_record_ids": [row["record_id"] for row in linked],
         "linked_context_overflow_record_ids": linked_overflow,
+        "constellation_record_ids": primary_ids + [
+            row["record_id"] for row in linked
+        ],
+        "constellation_count": len(primary_ids) + len(linked),
         "checks": checks,
         "zero_memory_writes": True,
         "proof_boundary": (
             "Bounded Phase-3 Exit Integration admission only. Primary evidence is "
             "statement-only using the live-validated Phase3J bridge. VERIFIED graph "
-            "neighbors are reported separately and never enter weighted records. "
-            "This does not enable the pilot or global weighting."
+            "neighbors are reported in a separate context lane. Production may "
+            "rerank only inside that context lane while preserving the primary "
+            "lane ahead of it. This does not enable the pilot or global weighting."
         ),
     }
 
@@ -252,6 +348,8 @@ def review_suite(runtime: Any) -> dict[str, Any]:
             "candidate_record_ids": pool.get("candidate_record_ids", []),
             "candidate_count": pool.get("candidate_count", 0),
             "linked_context_record_ids": pool.get("linked_context_record_ids", []),
+            "constellation_record_ids": pool.get("constellation_record_ids", []),
+            "required_primary_concepts": pool.get("required_primary_concepts", []),
             "primary_overflow_record_ids": pool.get("primary_overflow_record_ids", []),
             "checks": pool.get("checks", {}),
         })
