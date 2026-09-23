@@ -7,6 +7,7 @@ import html
 import json
 import re
 import uuid
+from urllib.parse import parse_qs
 
 from fastapi import Request, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
@@ -905,14 +906,167 @@ async function manifest(kind) {
         "<p>AUGURY natural-language manifestation is disabled. These are exact Rituals over one controlled fixture pair.</p>"
         "<p>Required sequence: propose SUPERSEDES → verify SUPERSEDES → revoke SUPERSEDES. "
         "Each mutation requires a separate confirmation. The pre-existing REVISES edge is never revoked here.</p>"
-        "<p><button onclick=\"manifest('PROPOSE')\">1. Propose controlled SUPERSEDES</button></p>"
-        "<p><button onclick=\"manifest('VERIFY')\">2. Verify controlled SUPERSEDES</button></p>"
-        "<p><button onclick=\"manifest('REVOKE')\">3. Revoke controlled SUPERSEDES</button></p>"
+        "<p><a style='display:inline-block;padding:12px 16px;background:#eee;color:#111;text-decoration:none;border-radius:10px' href='/ritual/phase4/confirm/PROPOSE'>1. Propose controlled SUPERSEDES</a></p>"
+        "<p><a style='display:inline-block;padding:12px 16px;background:#eee;color:#111;text-decoration:none;border-radius:10px' href='/ritual/phase4/confirm/VERIFY'>2. Verify controlled SUPERSEDES</a></p>"
+        "<p><a style='display:inline-block;padding:12px 16px;background:#eee;color:#111;text-decoration:none;border-radius:10px' href='/ritual/phase4/confirm/REVOKE'>3. Revoke controlled SUPERSEDES</a></p>"
         "<p><button onclick=\"refresh()\">Refresh status</button></p>"
         "<pre id='receipt' style='white-space:pre-wrap;word-break:break-word'>"
         + start_json + "</pre>" + script + "</body></html>"
     )
     return HTMLResponse(page, headers={"Cache-Control": "no-store"})
+
+
+
+def _ritual_form_value(fields: dict[str, list[str]], key: str) -> str:
+    values = fields.get(key) or []
+    return str(values[0]) if values else ""
+
+
+@app.get("/ritual/phase4/confirm/{kind}", response_class=HTMLResponse, operation_id="auguryRitualPhase4Confirm")
+def augury_ritual_phase4_confirm(kind: str, browser_request: Request):
+    """No-JavaScript confirmation surface for iOS/in-app browsers."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    csrf = _ritual_csrf(browser_request)
+    kind = str(kind or "").upper()
+    state = augury_ritual.phase1_status(memcon_runtime)
+    fixture = state.get("phase4_controlled_fixture") or {}
+
+    if kind == "PROPOSE":
+        ritual_id = augury_ritual.PROPOSE_ID
+        confirmation = "MANIFEST_GALAXY_PHASE4_PROPOSE_SUPERSEDES_CONTROLLED_FIXTURE"
+        summary = (
+            "Propose the exact controlled SUPERSEDES edge. "
+            "This writes one PROPOSED relation and does not change governing state."
+        )
+        params = {
+            "source_record_id": augury_ritual.SOURCE_ID,
+            "target_record_id": augury_ritual.TARGET_ID,
+        }
+    elif kind == "VERIFY":
+        ids = list(fixture.get("proposed_edge_ids") or [])
+        if len(ids) != 1:
+            return HTMLResponse(
+                "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+                "<h2>Ritual HOLD</h2><p>Expected exactly one PROPOSED controlled SUPERSEDES edge; found "
+                + html.escape(str(len(ids))) +
+                ".</p><p><a style='color:#9ee7ff' href='/ritual/phase4/review'>Back to review</a></p>"
+                "</body></html>",
+                status_code=409,
+                headers={"Cache-Control": "no-store"},
+            )
+        ritual_id = augury_ritual.VERIFY_ID
+        confirmation = "MANIFEST_GALAXY_PHASE4_VERIFY_SUPERSEDES_CONTROLLED_FIXTURE"
+        summary = (
+            "Verify the exact proposed SUPERSEDES edge. "
+            "This changes the target governing state to HISTORICAL_SUPERSEDED while preserving history."
+        )
+        params = {"edge_id": ids[0]}
+    elif kind == "REVOKE":
+        ids = list(fixture.get("verified_edge_ids") or [])
+        if len(ids) != 1:
+            return HTMLResponse(
+                "<html><body style='font-family:-apple-system;padding:20px;background:#111;color:#eee'>"
+                "<h2>Ritual HOLD</h2><p>Expected exactly one VERIFIED controlled SUPERSEDES edge; found "
+                + html.escape(str(len(ids))) +
+                ".</p><p><a style='color:#9ee7ff' href='/ritual/phase4/review'>Back to review</a></p>"
+                "</body></html>",
+                status_code=409,
+                headers={"Cache-Control": "no-store"},
+            )
+        ritual_id = augury_ritual.REVOKE_ID
+        confirmation = "MANIFEST_GALAXY_PHASE4_REVOKE_SUPERSEDES_CONTROLLED_FIXTURE"
+        summary = (
+            "Revoke the exact verified SUPERSEDES edge. "
+            "The edge/history remains preserved as REVOKED and governing state returns to CURRENT_REVISED_CONTEXT."
+        )
+        params = {
+            "edge_id": ids[0],
+            "reason": "Controlled Phase-4 Ritual rollback proof",
+        }
+    else:
+        raise HTTPException(status_code=404, detail="Unknown controlled Ritual step")
+
+    hidden = [
+        ("csrf", csrf),
+        ("authority", "NAOMI"),
+        ("approved", "true"),
+        ("action", "MANIFEST_EXACT_RITUAL"),
+        ("ritual_id", ritual_id),
+        ("confirmation", confirmation),
+    ]
+    for key, value in params.items():
+        hidden.append((f"param_{key}", str(value)))
+    fields = "".join(
+        "<input type='hidden' name='" + html.escape(key, quote=True) +
+        "' value='" + html.escape(value, quote=True) + "'>"
+        for key, value in hidden
+    )
+    details = html.escape(json.dumps({
+        "ritual_id": ritual_id,
+        "params": params,
+        "current_target_governing_state": fixture.get("target_governing_state"),
+    }, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Confirm exact Ritual</h2><p>" + html.escape(summary) + "</p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + details + "</pre>"
+        "<form method='post' action='/ritual/manifest-form'>" + fields +
+        "<button type='submit' style='font-size:18px;padding:12px 16px'>Confirm this exact Ritual</button>"
+        "</form><p><a style='color:#9ee7ff' href='/ritual/phase4/review'>Cancel / back to review</a></p>"
+        "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.post("/ritual/manifest-form", response_class=HTMLResponse, operation_id="manifestExactRitualForm")
+async def manifest_exact_ritual_form(browser_request: Request):
+    """No-JavaScript exact manifestation path with the same session/CSRF/authority gates."""
+    expected_csrf = _ritual_csrf(browser_request)
+    if "application/x-www-form-urlencoded" not in browser_request.headers.get("content-type", "").lower():
+        raise HTTPException(status_code=415, detail="Ritual form requires URL-encoded POST")
+    raw = (await browser_request.body()).decode("utf-8")
+    fields = parse_qs(raw, keep_blank_values=True)
+    supplied_csrf = _ritual_form_value(fields, "csrf")
+    if not hmac.compare_digest(supplied_csrf, expected_csrf):
+        raise HTTPException(status_code=403, detail="Ritual CSRF proof failed")
+    if (
+        _ritual_form_value(fields, "authority") != "NAOMI"
+        or _ritual_form_value(fields, "approved") != "true"
+        or _ritual_form_value(fields, "action") != "MANIFEST_EXACT_RITUAL"
+    ):
+        raise HTTPException(status_code=403, detail="Explicit Naomi Ritual action required")
+
+    ritual_id = _ritual_form_value(fields, "ritual_id")
+    params = {
+        key[len("param_"):]: values[0]
+        for key, values in fields.items()
+        if key.startswith("param_") and values
+    }
+    try:
+        result = augury_ritual.manifest(
+            memcon_runtime,
+            ritual_id,
+            params,
+            authority="NAOMI",
+            approved=True,
+            confirmation=_ritual_form_value(fields, "confirmation"),
+        )
+    except (KeyError, ValueError, PermissionError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    output = html.escape(json.dumps(result, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Ritual manifestation receipt</h2>"
+        "<p><a style='color:#9ee7ff' href='/ritual/phase4/review'>Back to review</a></p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + output + "</pre>"
+        "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @app.post("/ritual/manifest", operation_id="manifestExactRitual")
