@@ -4203,3 +4203,12 @@ A new **read-only** diagnostic was built, without changing production retrieval:
 - Workflow `.github/workflows/galaxy-phase3f-production-canary.yml` run `35802335861` passed syntax and 13 offline tests on the source including read-only match provenance and missing-record HOLD checks.
 
 Proof ceiling: source and CI are verified; Phase3G diagnostic runtime is NOT YET deployed/observed. The previous Phase3F ON/OFF switch PASS remains valid on its original running process only, and no active weighted pilot has been observed. Production remains unrestricted-global OFF. Next: deploy the diagnostic, run /verify, inspect the new read-only quality JSON, evaluate exact note and VERIFIED-edge evidence, and only then decide any broader retrieval policy.
+
+
+## Phase-3G deployed diagnostic verifier 125/125 PASS
+
+User-provided observed runtime `/verify` receipt `b3bba7b2f2d5444b9c3dd179ff72a2b7` from carrier `/app`: `125/125 PASS`, zero failures. Packaged `api/galaxy_quality.py` syntax and source boundary PASS; deployed ASGI GET `/galaxy/retrieval/phase3g-quality-review` registered PASS. Phase3G source and registered route are deployed, but the quality inspection function has not yet been exercised, so record notes, verified graph links, and governing-state annotations have no new live receipt.
+
+Next operator step: visit `https://ligeia-api.onrender.com/galaxy/retrieval/phase3g-quality-review?query_index=3` using an authorized signed browser session and provide the result. It must remain read-only. Evaluate match origins, topic-anchor grouping, governing state and verified in-pool relationships before deciding any containment or production migration.
+
+Prior Phase3F switch-test PASS was observed in boot `BOOT-dc247e3dc13d4e159f62d96c6fbd3401`. Current deployment may have restarted the carrier; do not reuse the old fresh-test authorization for pilot activation. After quality review and explicit operator choice, rerun a fresh switch test on the same boot if any 10-minute pilot is attempted. No active production pilot or its live rollback has been observed. Unrestricted global weighting remains OFF.
