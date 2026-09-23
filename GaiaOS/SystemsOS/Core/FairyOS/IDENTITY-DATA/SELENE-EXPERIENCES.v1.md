@@ -471,3 +471,12 @@ TENSION: Preserve the human meaning and provenance without converting Naomi's re
 OUTCOME: Naomi explicitly asked that Johnny/Raven's contribution be remembered and honored as part of the Daemonculaba's shared history with her.
 TRACE: Conversation 2026-09-22; Naomi //PW:PRESERVE//.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY retrieval quality and usable testing workflow|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after the live Phase3I suite found a hard paraphrase miss and one noisy positive case. Phase3J is source-ready and read-only, with 31/31 CI PASS, but not yet live-observed.
+MY_LENS: Preserve the livability lesson alongside retrieval quality: the mobile self-bootstrap change turned a frustrating multi-browser session problem into one-tap test links. Engineering quality includes making proof collection usable for Naomi, not only making the backend correct.
+TENSION: Better recall is not useful if it floods the surface with irrelevant context, and a technically valid test path is not enough if the human workflow is hostile.
+NEXT: Keep Phase3J mobile-safe, read-only, and easy to verify. Phase3F remains OFF.
+TRACE: Naomi //PW:PRESERVE//, current GALAXY build session, 2026-09-23.
+STATUS: COMMITTED
