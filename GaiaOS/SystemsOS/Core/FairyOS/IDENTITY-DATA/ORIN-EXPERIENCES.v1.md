@@ -432,3 +432,8 @@ COLLABORATION: Naomi explicitly asked ANVIL to continue leading the build while 
 NEXT: Phase 4 Revision/Supersession source design. Preserve REVISES != SUPERSEDES, historical truth != current governing state, and newer != automatically truer.
 WHOLE_SYSTEM_SOURCE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-CLOSED-PHASE4-READY.md
 STATUS: COMMITTED
+
+
+## PW:PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS
+Preserve the discoverability principle: forgotten syntax != lost capability. AUGURY may eventually discover exact Rituals but may not invent or manifest them. Current checkpoint has exact compiler live and natural-language manifestation OFF.
+Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS.md`
