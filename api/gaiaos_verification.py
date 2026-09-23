@@ -482,11 +482,44 @@ def run_verification() -> dict[str, Any]:
                 "carrier:phase3f-production-syntax", False, f"{type(exc).__name__}: {exc}",
             ))
     quality_module = ROOT / "galaxy_quality.py"
+    exit_module = ROOT / "galaxy_phase3_exit.py"
     checks.append(_check(
         "carrier:phase3g-quality-module",
         quality_module.exists(),
         "read-only Phase 3G candidate quality audit packaged",
     ))
+    checks.append(_check(
+        "carrier:phase3-exit-integration-module",
+        exit_module.exists(),
+        "finite Phase-3 Exit Integration candidate-admission module is packaged",
+    ))
+    if exit_module.exists():
+        try:
+            exit_text = exit_module.read_text(encoding="utf-8")
+            compile(exit_text, str(exit_module), "exec")
+            checks.append(_check(
+                "carrier:phase3-exit-integration-syntax",
+                True,
+                "Phase-3 Exit Integration module parses",
+            ))
+            checks.append(_check(
+                "carrier:phase3-exit-integration-boundaries",
+                all(marker in exit_text for marker in (
+                    "PRIMARY_STATEMENT",
+                    "notes_or_scope_cannot_create_primary",
+                    "linked_context_admitted_to_weighted_records",
+                    "zero_memory_writes",
+                    "unrestricted_global_weighting_enabled",
+                    "PILOT_QUERY_INDEXES = (0, 3, 5)",
+                )),
+                "statement-first primary evidence, separate linked context, zero-write and global-OFF boundaries are present",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase3-exit-integration-syntax",
+                False,
+                f"{type(exc).__name__}: {exc}",
+            ))
     if quality_module.exists():
         try:
             quality_text = quality_module.read_text(encoding="utf-8")
@@ -607,6 +640,18 @@ def run_verification() -> dict[str, Any]:
             and 'galaxy_quality.concept_bridge_shadow' in bridge_text,
             "read-only Phase 3J concept bridge shadow route declared",
         ))
+        checks.append(_check(
+            "carrier:/galaxy/phase3-exit-integration-review",
+            '/galaxy/retrieval/phase3-exit-integration-review' in bridge_text
+            and 'galaxy_phase3_exit.review_suite' in bridge_text,
+            "read-only finite Phase-3 Exit Integration preflight route declared",
+        ))
+        checks.append(_check(
+            "carrier:phase3-exit-production-wiring",
+            'galaxy_phase3_exit.build_candidate_pool' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8")
+            and 'PHASE3_EXIT_STATEMENT_FIRST_V1' in (ROOT / "galaxy_production.py").read_text(encoding="utf-8"),
+            "guarded production pilot is wired to Phase-3 Exit statement-first admission while remaining default-OFF",
+        ))
         checks.append(_check("carrier:/gaiaos/boot", "/gaiaos/boot" in app_text and "def _boot_packet" in app_text, "deterministic boot packet endpoint declared"))
         checks.append(_check(
             "carrier:browser-load-gaiaos-deterministic-boot",
@@ -675,6 +720,11 @@ def run_verification() -> dict[str, Any]:
                 "carrier-route:/galaxy/phase3j-concept-bridge-shadow",
                 ("/galaxy/retrieval/phase3j-concept-bridge-shadow", "GET") in route_pairs,
                 "read-only Phase 3J concept bridge shadow ASGI route registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase3-exit-integration-review",
+                ("/galaxy/retrieval/phase3-exit-integration-review", "GET") in route_pairs,
+                "read-only Phase-3 Exit Integration preflight ASGI route registered",
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
             try:
