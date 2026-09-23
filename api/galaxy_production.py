@@ -127,21 +127,52 @@ def retrieve(runtime: Any, query: str, scope: str | None = None, limit: int = 10
         )
         if pool.get("status") != "PASS":
             raise RuntimeError("PHASE3_EXIT_ADMISSION_HOLD")
-        scored = runtime._galaxy_phase3c_score_pool(pool, 0.8, 0.2)
-        control_ids = list(pool.get("candidate_record_ids", []))
-        weighted = list(scored.get("weighted_order", []))
-        weighted_ids = [row["record_id"] for row in weighted]
-        rerank_observed = bool(scored.get("rerank_observed"))
+        primary_ids = list(pool.get("candidate_record_ids", []))
+        context_candidates = list(pool.get("linked_context_candidates", []))
+        context_control_ids = [
+            str(item.get("record_id")) for item in context_candidates
+        ]
+        context_score_pool = {
+            "candidate_record_ids": context_control_ids,
+            "candidates": context_candidates,
+        }
+        context_scored = runtime._galaxy_phase3c_score_pool(
+            context_score_pool, 0.8, 0.2
+        )
+        context_weighted = list(context_scored.get("weighted_order", []))
+        context_weighted_ids = [
+            row["record_id"] for row in context_weighted
+        ]
+        control_ids = primary_ids + context_control_ids
+        weighted_ids = primary_ids + context_weighted_ids
+        rerank_observed = context_control_ids != context_weighted_ids
         safe = (
-            len(control_ids) >= 1
+            len(primary_ids) >= 1
             and len(control_ids) == len(set(control_ids))
-            and bool(scored.get("candidate_set_preserved"))
-            and set(control_ids) == set(weighted_ids)
-            and bool(scored.get("top_relevance_preserved"))
-            and int(scored.get("cross_relevance_tier_inversion_count") or 0) == 0
-            and (len(control_ids) == 1 or rerank_observed)
-            and bool(pool.get("checks", {}).get("all_admitted_candidates_meet_primary_rule"))
-            and pool.get("checks", {}).get("linked_context_admitted_to_weighted_records") is False
+            and bool(context_scored.get("candidate_set_preserved"))
+            and set(context_control_ids) == set(context_weighted_ids)
+            and bool(context_scored.get("top_relevance_preserved"))
+            and int(
+                context_scored.get("cross_relevance_tier_inversion_count") or 0
+            ) == 0
+            and bool(
+                pool.get("checks", {}).get(
+                    "all_admitted_candidates_meet_primary_rule"
+                )
+            )
+            and bool(
+                pool.get("checks", {}).get(
+                    "linked_context_requires_verified_direct_primary_edge"
+                )
+            )
+            and pool.get("checks", {}).get(
+                "linked_context_admitted_to_primary_lane"
+            ) is False
+            and bool(
+                pool.get("checks", {}).get(
+                    "linked_context_ranked_only_within_context_lane"
+                )
+            )
         )
         if not safe:
             raise RuntimeError("CANDIDATE_OR_RELEVANCE_GUARD_FAILED")
@@ -173,20 +204,26 @@ def retrieve(runtime: Any, query: str, scope: str | None = None, limit: int = 10
                 "mode": mode,
                 "pilot_id": pilot_id,
                 "coefficient": PROFILE,
-                "candidate_admission": "PHASE3_EXIT_STATEMENT_FIRST_V1",
+                "candidate_admission": "PHASE3_EXIT_LANE_PRESERVING_CONSTELLATION_V2",
                 "exit_integration_version": EXIT_INTEGRATION_VERSION,
                 "legacy_candidate_set_equivalence_claimed": False,
-                "primary_lane_record_ids": control_ids,
-                "linked_context_record_ids": list(pool.get("linked_context_record_ids", [])),
-                "linked_context_admitted_to_weighted_records": False,
+                "primary_lane_record_ids": primary_ids,
+                "linked_context_control_record_ids": context_control_ids,
+                "linked_context_weighted_record_ids": context_weighted_ids,
+                "linked_context_ranked_only_within_context_lane": True,
+                "gravity_effect_lane": "VERIFIED_LINKED_CONTEXT_ONLY",
                 "statement_only_primary": True,
                 "notes_or_scope_can_create_primary": False,
                 "control_record_ids": control_ids,
                 "weighted_record_ids": weighted_ids,
                 "rerank_observed": rerank_observed,
                 "candidate_set_preserved": True,
-                "highest_relevance_preserved": True,
-                "cross_relevance_tier_inversions": 0,
+                "highest_relevance_preserved": bool(
+                    context_scored.get("top_relevance_preserved")
+                ),
+                "cross_relevance_tier_inversions": int(
+                    context_scored.get("cross_relevance_tier_inversion_count") or 0
+                ),
                 "zero_memory_writes": True,
                 "global_production_weighted_retrieval_enabled": False,
             },
@@ -235,18 +272,15 @@ def switch_test(runtime: Any, retrieval: Callable[[str, str, int], dict[str, Any
                 result = retrieval(q, "MemoryOS", 10)
                 pilot = result["retrieval"].get("galaxy_production") or {}
                 ids = _record_ids(result)
-                rerank_ok = (
-                    pilot.get("rerank_observed") is True
-                    or len(ids) == 1
-                )
                 ok = (
                     pilot.get("weighted_applied") is True
                     and pilot.get("candidate_set_preserved") is True
                     and pilot.get("highest_relevance_preserved") is True
                     and pilot.get("cross_relevance_tier_inversions") == 0
-                    and rerank_ok
-                    and pilot.get("candidate_admission") == "PHASE3_EXIT_STATEMENT_FIRST_V1"
-                    and pilot.get("linked_context_admitted_to_weighted_records") is False
+                    and pilot.get("candidate_admission")
+                    == "PHASE3_EXIT_LANE_PRESERVING_CONSTELLATION_V2"
+                    and pilot.get("linked_context_ranked_only_within_context_lane")
+                    is True
                     and ids == pilot.get("weighted_record_ids")
                 )
                 weighted_receipts.append({
@@ -258,7 +292,13 @@ def switch_test(runtime: Any, retrieval: Callable[[str, str, int], dict[str, Any
                     "control_record_ids": pilot.get("control_record_ids", []),
                     "rerank_observed": pilot.get("rerank_observed") is True,
                     "candidate_admission": pilot.get("candidate_admission"),
-                    "linked_context_record_ids": pilot.get("linked_context_record_ids", []),
+                    "primary_lane_record_ids": pilot.get("primary_lane_record_ids", []),
+                    "linked_context_control_record_ids": pilot.get(
+                        "linked_context_control_record_ids", []
+                    ),
+                    "linked_context_weighted_record_ids": pilot.get(
+                        "linked_context_weighted_record_ids", []
+                    ),
                 })
                 if not ok:
                     errors.append("INTEGRATED_RETRIEVAL_GUARD_FAILED_FOR_QUERY_" + str(index))
