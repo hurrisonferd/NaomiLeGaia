@@ -524,6 +524,7 @@ def run_verification() -> dict[str, Any]:
     quality_module = ROOT / "galaxy_quality.py"
     exit_module = ROOT / "galaxy_phase3_exit.py"
     phase4_module = ROOT / "galaxy_phase4.py"
+    phase5_module = ROOT / "galaxy_phase5.py"
     augury_ritual_module = ROOT / "augury_ritual.py"
     checks.append(_check(
         "carrier:phase3g-quality-module",
@@ -539,6 +540,11 @@ def run_verification() -> dict[str, Any]:
         "carrier:phase4-revision-module",
         phase4_module.exists(),
         "GALAXY Phase-4 revision/supersession module is packaged",
+    ))
+    checks.append(_check(
+        "carrier:phase5-synthesis-module",
+        phase5_module.exists(),
+        "GALAXY Phase-5 provenance-backed synthesis review module is packaged",
     ))
     checks.append(_check(
         "carrier:augury-ritual-module",
@@ -608,6 +614,36 @@ def run_verification() -> dict[str, Any]:
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase4-revision-syntax",
+                False,
+                f"{type(exc).__name__}: {exc}",
+            ))
+    if phase5_module.exists():
+        try:
+            phase5_text = phase5_module.read_text(encoding="utf-8")
+            compile(phase5_text, str(phase5_module), "exec")
+            checks.append(_check(
+                "carrier:phase5-synthesis-syntax",
+                True,
+                "Phase-5 provenance-backed synthesis review module parses",
+            ))
+            checks.append(_check(
+                "carrier:phase5-synthesis-boundaries",
+                all(marker in phase5_text for marker in (
+                    "SYNTHESIS != SOURCE REWRITE",
+                    "UNRESOLVED_VERIFIED_CONTRADICTION_IN_CLUSTER",
+                    "RECURSIVE_SYNTHESIS_NOT_ALLOWED_IN_INITIAL_PHASE5_SLICE",
+                    "synthesis_statement_generated",
+                    "zero_memory_writes",
+                    "memory_syntheses_row_written",
+                    "derived_from_edges_written",
+                    "production_retrieval_changed",
+                    "unrestricted_global_weighting_enabled",
+                )),
+                "Phase-5 source preserves provenance, contradiction, non-recursion, no-fabricated-statement, zero-write and production-OFF boundaries",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase5-synthesis-syntax",
                 False,
                 f"{type(exc).__name__}: {exc}",
             ))
@@ -774,6 +810,12 @@ def run_verification() -> dict[str, Any]:
             "read-only Phase-4 controlled fixture review route declared",
         ))
         checks.append(_check(
+            "carrier:/galaxy/phase5-fixture-review",
+            '/galaxy/synthesis/phase5-fixture-review' in bridge_text
+            and 'galaxy_phase5.fixture_review' in bridge_text,
+            "read-only Phase-5 synthesis fixture review route declared",
+        ))
+        checks.append(_check(
             "carrier:/galaxy/phase4-pair-review",
             '/galaxy/revision/phase4-pair-review' in bridge_text
             and 'galaxy_phase4.review_pair' in bridge_text,
@@ -885,10 +927,31 @@ def run_verification() -> dict[str, Any]:
                 "read-only Phase-4 fixture-review ASGI route registered",
             ))
             checks.append(_check(
+                "carrier-route:/galaxy/phase5-fixture-review",
+                ("/galaxy/synthesis/phase5-fixture-review", "GET") in route_pairs,
+                "read-only Phase-5 synthesis fixture-review ASGI route registered",
+            ))
+            checks.append(_check(
                 "carrier-route:/galaxy/phase4-pair-review",
                 ("/galaxy/revision/phase4-pair-review", "GET") in route_pairs,
                 "read-only Phase-4 pair-review ASGI route registered",
             ))
+            try:
+                phase5_state = module.galaxy_phase5.fixture_review(module.memcon_runtime)
+                checks.append(_check(
+                    "carrier:phase5-read-only-self-test",
+                    phase5_state.get("status") in {"PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW", "HOLD"}
+                    and phase5_state.get("checks", {}).get("zero_memory_writes") is True
+                    and phase5_state.get("checks", {}).get("production_retrieval_changed") is False
+                    and phase5_state.get("checks", {}).get("unrestricted_global_weighting_enabled") is False,
+                    "Phase-5 fixture review executes read-only without production retrieval effects",
+                ))
+            except Exception as exc:
+                checks.append(_check(
+                    "carrier:phase5-read-only-self-test",
+                    False,
+                    f"{type(exc).__name__}: {exc}",
+                ))
             checks.append(_check(
                 "carrier-route:/ritual/status",
                 ("/ritual/status", "GET") in route_pairs,
