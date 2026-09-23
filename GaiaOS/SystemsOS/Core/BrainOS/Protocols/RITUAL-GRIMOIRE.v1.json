@@ -1,0 +1,124 @@
+{
+  "schema": "gaiaos.ritual-grimoire.v1",
+  "version": "ritual-grimoire.v1",
+  "authority": "NAOMI",
+  "owner": "BrainOS",
+  "status": "ACTIVE_SOURCE_REGISTRY_PHASE1",
+  "laws": [
+    "ONE_RITUAL_ID_ONE_CURRENT_OWNER_ONE_VERSIONED_CONTRACT",
+    "AUGURY_MAY_PROPOSE_RITUAL_NEVER_MANIFEST",
+    "RITUAL_VALIDITY_NEVER_IMPLIES_AUTHORITY",
+    "EXACT_COMMAND_FAST_PATH_MAY_NOT_BE_REWRITTEN",
+    "TARGET_SCOPE_MODE_ORDER_VERSION_ARE_SEMANTIC",
+    "NO_WILDCARD_TARGET_WITHOUT_EXPLICIT_RITUAL_CONTRACT"
+  ],
+  "reference_existing_commands": [
+    {
+      "ritual_id": "MEMSAV",
+      "owner_pointer": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+      "import_state": "REFERENCE_ONLY"
+    },
+    {
+      "ritual_id": "CANDIPULL",
+      "owner_pointer": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+      "import_state": "REFERENCE_ONLY"
+    },
+    {
+      "ritual_id": "CONJURE:VASKON",
+      "owner_pointer": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
+      "import_state": "REFERENCE_ONLY"
+    }
+  ],
+  "rituals": [
+    {
+      "ritual_id": "GALAXY.PHASE4.PROPOSE_SUPERSEDES.CONTROLLED_FIXTURE",
+      "ritual_version": "1",
+      "owner": "GALAXY_PHASE4",
+      "canonical_invocation": "RITUAL GALAXY.PHASE4.PROPOSE_SUPERSEDES.CONTROLLED_FIXTURE source=MEM-ffc0c2af5cfa48d7aee7332a290a3d0e target=MEM-00b3fbfd4d73404f97a95c238596ab94",
+      "effect_class": "DURABLE_RELATION_PROPOSAL",
+      "authority_requirement": "NAOMI_EXPLICIT",
+      "reversibility_class": "PROPOSAL_NON_GOVERNING",
+      "target_schema": {
+        "source_record_id": {
+          "const": "MEM-ffc0c2af5cfa48d7aee7332a290a3d0e"
+        },
+        "target_record_id": {
+          "const": "MEM-00b3fbfd4d73404f97a95c238596ab94"
+        },
+        "relation_type": {
+          "const": "SUPERSEDES"
+        }
+      },
+      "preconditions": [
+        "VERIFIED_REVISES_SAME_PAIR",
+        "NO_DIRECT_CYCLE",
+        "NO_COMPETING_VERIFIED_SUPERSEDER",
+        "SAME_SCOPE"
+      ],
+      "ordered_steps": [
+        "REVIEW_PAIR",
+        "COMPILE_EXACT",
+        "AUTHORITY_CHECK",
+        "PROPOSE_SUPERSEDES",
+        "RETURN_RECEIPT"
+      ],
+      "confirmation": "MANIFEST_GALAXY_PHASE4_PROPOSE_SUPERSEDES_CONTROLLED_FIXTURE",
+      "receipt_schema": "gaiaos.ritual.manifestation-receipt.v1"
+    },
+    {
+      "ritual_id": "GALAXY.PHASE4.VERIFY_SUPERSEDES.CONTROLLED_FIXTURE",
+      "ritual_version": "1",
+      "owner": "GALAXY_PHASE4",
+      "canonical_invocation": "RITUAL GALAXY.PHASE4.VERIFY_SUPERSEDES.CONTROLLED_FIXTURE edge=<EXACT_PROPOSED_EDGE_ID>",
+      "effect_class": "DURABLE_GOVERNING_RELATION_VERIFICATION",
+      "authority_requirement": "NAOMI_EXPLICIT",
+      "reversibility_class": "REVOKABLE_EDGE",
+      "target_schema": {
+        "edge_id": "EXACT_PHASE4_PROPOSED_SUPERSEDES_EDGE_FOR_CONTROLLED_PAIR"
+      },
+      "preconditions": [
+        "PROPOSED_SUPERSEDES_EDGE_EXISTS",
+        "PAIR_GUARDS_PASS"
+      ],
+      "ordered_steps": [
+        "RESOLVE_EXACT_EDGE",
+        "REVIEW_PAIR",
+        "COMPILE_EXACT",
+        "AUTHORITY_CHECK",
+        "VERIFY_SUPERSEDES",
+        "READBACK_GOVERNING_STATE",
+        "RETURN_RECEIPT"
+      ],
+      "confirmation": "MANIFEST_GALAXY_PHASE4_VERIFY_SUPERSEDES_CONTROLLED_FIXTURE",
+      "receipt_schema": "gaiaos.ritual.manifestation-receipt.v1"
+    },
+    {
+      "ritual_id": "GALAXY.PHASE4.REVOKE_SUPERSEDES.CONTROLLED_FIXTURE",
+      "ritual_version": "1",
+      "owner": "GALAXY_PHASE4",
+      "canonical_invocation": "RITUAL GALAXY.PHASE4.REVOKE_SUPERSEDES.CONTROLLED_FIXTURE edge=<EXACT_VERIFIED_EDGE_ID> reason=<NONEMPTY>",
+      "effect_class": "DURABLE_RELATION_REVOCATION",
+      "authority_requirement": "NAOMI_EXPLICIT",
+      "reversibility_class": "AUDITABLE_NON_DELETING_ROLLBACK",
+      "target_schema": {
+        "edge_id": "EXACT_PHASE4_VERIFIED_SUPERSEDES_EDGE_FOR_CONTROLLED_PAIR",
+        "reason": "NONEMPTY_STRING"
+      },
+      "preconditions": [
+        "VERIFIED_SUPERSEDES_EDGE_EXISTS",
+        "CONTROLLED_PAIR_MATCHES"
+      ],
+      "ordered_steps": [
+        "RESOLVE_EXACT_EDGE",
+        "COMPILE_EXACT",
+        "AUTHORITY_CHECK",
+        "REVOKE_SUPERSEDES",
+        "READBACK_GOVERNING_STATE",
+        "RETURN_RECEIPT"
+      ],
+      "confirmation": "MANIFEST_GALAXY_PHASE4_REVOKE_SUPERSEDES_CONTROLLED_FIXTURE",
+      "receipt_schema": "gaiaos.ritual.manifestation-receipt.v1"
+    }
+  ],
+  "proof_boundary": "Registry defines exact Ritual contracts. It is not manifestation evidence."
+}
