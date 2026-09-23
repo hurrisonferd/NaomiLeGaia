@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_DIAGNOSTIC_DEPLOYED_ROUTE_VERIFIED_REPORT_PENDING",
+  "status": "ACTIVE_SOURCE_GALAXY_PHASE3G_FIRST_LIVE_QUALITY_REVIEW_OBSERVED_CROSS_QUERY_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -109,7 +109,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "User-provided deployed-carrier /verify run b3bba7b2f2d5444b9c3dd179ff72a2b7 observed 125/125 PASS with Phase3G quality module packaged and parsing, read-only source boundaries present, and live ASGI registration of /galaxy/retrieval/phase3g-quality-review. Phase3F prior ON/OFF switch-test PASS is historical for its prior carrier boot, not a fresh authorization to activate on this restarted process. Prior seven-candidate shadow observation: four direct calibration-core statements and three generic-policy statements, and a relevance-coverage false-priority issue (CORE 0.6 vs generic 0.8). The Phase3G quality review route has NOT yet been executed; record notes, verified relationships and governing status remain uninspected. No active production pilot or its live rollback observed; global unrestricted weighting OFF.",
+  "proof_ceiling": "User-provided Phase3G live read-only quality review on query index 3: 13 MemoryOS records scoped, 7 candidates, 4 concrete calibration-core statements and 3 general GALAXY policy statements, one ambiguous excluded, no missing records, zero writes and production unchanged. Notes and virtual MemoryOS scope inflated policy lexical coverage; CORE coverage .6 was ranked fifth below two generic .8 policy records. Verified topical links: REVISION REVISES CORE, REINFORCER REINFORCES CORE, SATELLITE CONTEXT_FOR CORE; REVISION CONTRADICTS REINFORCER. CORE stays CURRENT_REVISED_CONTEXT and eligible, because REVISES does not supersede. The generic policies link to each other, not CORE. This validates the diagnostic and one controlled calibration example, not universal semantic reasoning or an adopted production containment rule. Next: test source indexes 5 and 0 read-only. Prior Phase3F live switch PASS is process-specific; no active pilot or active rollback observed; unrestricted global weighting OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -136,7 +136,7 @@
     "governing_model": "galaxy.governing-state.v1",
     "query_relevance_model": "galaxy.query-relevance.explainable.v1",
     "score_version": "galaxy.gravity.shadow.v4.governing-aware",
-    "phase3_status": "PHASE3G_DIAGNOSTIC_DEPLOYED_ROUTE_VERIFIED_REPORT_PENDING",
+    "phase3_status": "PHASE3G_FIRST_LIVE_QUALITY_REVIEW_OBSERVED_CROSS_QUERY_TEST_PENDING",
     "phase3_mode": "NAOMI_PRODUCTION_AUTHORIZED_BOUNDED_PILOT_DEPLOYED_SWITCH_TEST_PENDING_DEFAULT_OFF",
     "production_weighted_retrieval_enabled": false,
     "phase3_authorized_by": "NAOMI",
@@ -262,7 +262,7 @@
     "phase3f_ci_run_id": 35799425139,
     "phase3f_ci_status": "SUCCESS",
     "phase3f_multi_instance_consistency_proven": false,
-    "phase3f_next_gate": "PHASE3G_QUALITY_REPORT_BEFORE_ANY_NEW_PILOT_ACTIVATION",
+    "phase3f_next_gate": "CONTINUE_READ_ONLY_CROSS_QUERY_QUALITY_VALIDATION_BEFORE_PILOT",
     "phase3f_deployed_routes_verified": true,
     "phase3f_verifier_run_id": "e18b13c0ff434a3ca7d27c08fda41f10",
     "phase3f_verifier_summary": "120/120 PASS",
@@ -286,7 +286,7 @@
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
     "phase3f_pilot_active_observed": false,
     "phase3g_quality_review_source_ready": true,
-    "phase3g_quality_review_live_observed": false,
+    "phase3g_quality_review_live_observed": true,
     "phase3g_quality_review_version": "galaxy.phase3g.retrieval-quality-review.v1",
     "phase3g_quality_review_route": "/galaxy/retrieval/phase3g-quality-review?query_index=3",
     "phase3g_quality_review_read_only": true,
@@ -298,10 +298,36 @@
     "phase3g_ci_run_id": 35802335861,
     "phase3g_ci_summary": "13/13 OFFLINE TESTS PASS",
     "phase3g_production_admission_change_enabled": false,
-    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_3",
+    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_5_THEN_0",
     "phase3g_quality_review_deployed": true,
     "phase3g_quality_review_route_registered_live": true,
     "phase3g_quality_review_verifier_run_id": "b3bba7b2f2d5444b9c3dd179ff72a2b7",
-    "phase3g_quality_review_verifier_summary": "125/125 PASS"
+    "phase3g_quality_review_verifier_summary": "125/125 PASS",
+    "phase3g_quality_review_status": "OBSERVED_READ_ONLY",
+    "phase3g_quality_review_observed_query_indexes": [
+      3
+    ],
+    "phase3g_quality_review_observed_scope_population": 13,
+    "phase3g_quality_review_observed_candidate_count": 7,
+    "phase3g_quality_review_observed_direct_topic_count": 4,
+    "phase3g_quality_review_observed_indirect_policy_count": 3,
+    "phase3g_quality_review_observed_ambiguous_count": 1,
+    "phase3g_quality_review_observed_missing_count": 0,
+    "phase3g_quality_review_zero_writes": true,
+    "phase3g_quality_review_cross_tier_inversions": 0,
+    "phase3g_quality_review_notes_source_matches_observed": true,
+    "phase3g_quality_review_scope_virtual_memory_match_observed": true,
+    "phase3g_quality_review_core_coverage": 0.6,
+    "phase3g_quality_review_core_weighted_rank": 5,
+    "phase3g_quality_review_core_state": "CURRENT_REVISED_CONTEXT",
+    "phase3g_quality_review_core_current_default_eligible": true,
+    "phase3g_quality_review_core_verified_edges": [
+      "REVISES",
+      "REINFORCES",
+      "CONTEXT_FOR"
+    ],
+    "phase3g_quality_review_verified_contradiction_observed": true,
+    "phase3g_quality_review_policy_edge_only": "EXTENDS_BETWEEN_POLICY_RECORDS_NOT_CALIBRATION_CORE",
+    "phase3g_quality_review_containment_applied": false
   }
 }
