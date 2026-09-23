@@ -18,6 +18,7 @@ import memcon_runtime
 import galaxy_production
 import galaxy_quality
 import galaxy_phase3_exit
+import galaxy_phase4
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
@@ -730,6 +731,39 @@ def galaxy_phase3_exit_integration_review(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase3_exit.review_suite(memcon_runtime)
+
+
+@app.get("/galaxy/revision/phase4-fixture-review", operation_id="galaxyPhase4FixtureReview")
+def galaxy_phase4_fixture_review(browser_request: Request):
+    """Read-only Phase-4 revision/supersession smoke review. No writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase4.fixture_review(memcon_runtime)
+
+
+@app.get("/galaxy/revision/phase4-pair-review", operation_id="galaxyPhase4PairReview")
+def galaxy_phase4_pair_review(
+    browser_request: Request,
+    source_record_id: str,
+    target_record_id: str,
+    relation_type: str = "REVISES",
+):
+    """Read-only Phase-4 pair review. No proposal or verification occurs."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        return galaxy_phase4.review_pair(
+            memcon_runtime,
+            source_record_id,
+            target_record_id,
+            relation_type,
+        )
+    except (KeyError, ValueError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 def _galaxy_production_csrf(browser_request: Request) -> str:
