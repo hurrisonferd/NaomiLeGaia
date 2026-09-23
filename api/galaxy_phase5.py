@@ -24,6 +24,17 @@ FIXTURE_SOURCE_IDS = (
     galaxy_phase4.FIXTURE_CORE_ID,
 )
 
+CONTROLLED_SYNTHESIS_STATEMENT = (
+    "GALAXY-CAL-SYNTHESIS [1d79c239f31f]: The calibration core reported a violet "
+    "carrier pulse; a later controlled observation revises that calibration toward ultraviolet."
+)
+CONTROLLED_SYNTHESIS_CONFIDENCE = 1.0
+SHADOW_SCOPE = "GALAXY_SYNTHESIS_SHADOW"
+
+PROPOSE_CONFIRMATION = "PROPOSE_GALAXY_PHASE5_CONTROLLED_SYNTHESIS"
+VERIFY_CONFIRMATION = "VERIFY_GALAXY_PHASE5_CONTROLLED_SYNTHESIS"
+REVOKE_CONFIRMATION = "REVOKE_GALAXY_PHASE5_CONTROLLED_SYNTHESIS"
+
 
 def _normalize_ids(source_record_ids: list[str] | tuple[str, ...]) -> list[str]:
     return [str(value or "").strip() for value in source_record_ids]
@@ -238,4 +249,217 @@ def fixture_review(runtime: Any) -> dict[str, Any]:
             "Fixture review is read-only. It proves no synthesis manifestation, "
             "default retrieval selection, source rewriting, deletion, or production retrieval change."
         ),
+    }
+
+
+
+def mutation_design_review(runtime: Any) -> dict[str, Any]:
+    """Read-only review of the exact controlled Phase-5 mutation design.
+
+    The design is intentionally a shadow lifecycle:
+    PROPOSED synthesis -> VERIFIED_SHADOW -> REVOKED.
+    No step promotes the synthesis into MemoryOS scope or selects it as a default
+    retrieval target.
+    """
+    fixture = fixture_review(runtime)
+    existing = None
+    finder = getattr(runtime, "galaxy_find_synthesis", None)
+    if callable(finder):
+        existing = finder(list(FIXTURE_SOURCE_IDS))
+
+    hold_reasons: list[str] = []
+    if fixture.get("status") != "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW":
+        hold_reasons.append("PHASE5_FIXTURE_REVIEW_NOT_PASS")
+    if existing is not None:
+        record = (existing or {}).get("record") or {}
+        if str(record.get("status") or "") != "SYNTHESIS_REVOKED":
+            hold_reasons.append("ACTIVE_CONTROLLED_SYNTHESIS_ALREADY_EXISTS")
+
+    return {
+        "schema": "gaiaos.galaxy.phase5-mutation-design-review.v1",
+        "version": VERSION,
+        "execution": "READ_ONLY",
+        "authority": "NAOMI",
+        "status": "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN" if not hold_reasons else "HOLD",
+        "controlled_source_record_ids": list(FIXTURE_SOURCE_IDS),
+        "exact_synthesis_statement": CONTROLLED_SYNTHESIS_STATEMENT,
+        "statement_origin": "DETERMINISTIC_SUMMARY_OF_CONTROLLED_FIXTURE_ONLY",
+        "method": METHOD,
+        "confidence": CONTROLLED_SYNTHESIS_CONFIDENCE,
+        "shadow_scope": SHADOW_SCOPE,
+        "lifecycle": [
+            "SYNTHESIS_PROPOSED",
+            "SYNTHESIS_VERIFIED_SHADOW",
+            "SYNTHESIS_REVOKED",
+        ],
+        "provenance_relation_type": "DERIVED_FROM",
+        "existing_nonrevoked_synthesis": existing,
+        "hold_reasons": hold_reasons,
+        "checks": {
+            "fixture_read_only_pass": fixture.get("status") == "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
+            "exact_source_set_fixed": True,
+            "exact_statement_fixed": True,
+            "statement_not_generated_at_manifestation_time": True,
+            "proposal_scope_is_not_memoryos": SHADOW_SCOPE != "MemoryOS",
+            "proposal_cannot_become_default_retrieval_target": True,
+            "verification_keeps_shadow_scope": True,
+            "revocation_is_non_deleting": True,
+            "source_records_preserved": True,
+            "provenance_row_preserved": True,
+            "derived_from_edges_preserved": True,
+            "memoryos_retrieval_changed": False,
+            "production_retrieval_changed": False,
+            "unrestricted_global_weighting_enabled": False,
+            "mutation_route_exposed": False,
+        },
+        "next_gate": (
+            "DEPLOY_AND_VERIFY_PHASE5_MUTATION_DESIGN_SOURCE"
+            if not hold_reasons
+            else "REPAIR_OR_RESOLVE_HOLD"
+        ),
+        "proof_boundary": (
+            "This is source-level/read-only mutation design review. It performs no synthesis "
+            "mutation and exposes no mutation route."
+        ),
+    }
+
+
+def propose_controlled_synthesis(
+    runtime: Any,
+    *,
+    authority: str,
+    approved: bool,
+    confirmation: str,
+) -> dict[str, Any]:
+    """Create one exact shadow synthesis proposal after explicit Naomi action."""
+    if authority != "NAOMI" or approved is not True:
+        raise PermissionError("Phase-5 synthesis proposal requires explicit Naomi approval")
+    if confirmation != PROPOSE_CONFIRMATION:
+        raise PermissionError("Exact Phase-5 synthesis proposal confirmation required")
+
+    review = mutation_design_review(runtime)
+    if review.get("status") != "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN":
+        return {
+            "schema": "gaiaos.galaxy.phase5-synthesis-proposal.v1",
+            "version": VERSION,
+            "status": "HOLD",
+            "review": review,
+            "mutation_performed": False,
+        }
+
+    result = runtime.galaxy_propose_synthesis(
+        source_record_ids=list(FIXTURE_SOURCE_IDS),
+        statement=CONTROLLED_SYNTHESIS_STATEMENT,
+        method=METHOD,
+        confidence=CONTROLLED_SYNTHESIS_CONFIDENCE,
+        authority=authority,
+        approved=approved,
+    )
+    return {
+        "schema": "gaiaos.galaxy.phase5-synthesis-proposal.v1",
+        "version": VERSION,
+        "status": result.get("status"),
+        "effect": result,
+        "source_history_preserved": True,
+        "physical_delete": False,
+        "memoryos_retrieval_changed": False,
+        "production_retrieval_changed": False,
+        "unrestricted_global_weighting_enabled": False,
+        "default_retrieval_target_selected": False,
+    }
+
+
+def verify_controlled_synthesis(
+    runtime: Any,
+    synthesis_record_id: str,
+    *,
+    authority: str,
+    approved: bool,
+    confirmation: str,
+) -> dict[str, Any]:
+    """Verify exact DERIVED_FROM provenance without promoting into MemoryOS."""
+    if authority != "NAOMI" or approved is not True:
+        raise PermissionError("Phase-5 synthesis verification requires explicit Naomi approval")
+    if confirmation != VERIFY_CONFIRMATION:
+        raise PermissionError("Exact Phase-5 synthesis verification confirmation required")
+
+    detail = runtime.galaxy_synthesis(str(synthesis_record_id or "").strip())
+    if detail is None:
+        raise KeyError(synthesis_record_id)
+    synthesis = detail.get("synthesis") or {}
+    if synthesis.get("source_record_ids") != list(FIXTURE_SOURCE_IDS):
+        raise ValueError("Controlled Phase-5 synthesis source set mismatch")
+    record = detail.get("record") or {}
+    if record.get("statement") != CONTROLLED_SYNTHESIS_STATEMENT:
+        raise ValueError("Controlled Phase-5 synthesis statement mismatch")
+    if record.get("scope") != SHADOW_SCOPE:
+        raise ValueError("Controlled Phase-5 synthesis escaped shadow scope")
+
+    result = runtime.galaxy_verify_synthesis(
+        synthesis_record_id,
+        authority=authority,
+        approved=approved,
+    )
+    return {
+        "schema": "gaiaos.galaxy.phase5-synthesis-verification.v1",
+        "version": VERSION,
+        "status": result.get("status"),
+        "effect": result,
+        "source_history_preserved": True,
+        "physical_delete": False,
+        "memoryos_retrieval_changed": False,
+        "production_retrieval_changed": False,
+        "unrestricted_global_weighting_enabled": False,
+        "default_retrieval_target_selected": False,
+    }
+
+
+def revoke_controlled_synthesis(
+    runtime: Any,
+    synthesis_record_id: str,
+    *,
+    authority: str,
+    approved: bool,
+    reason: str,
+    confirmation: str,
+) -> dict[str, Any]:
+    """Revoke the exact shadow synthesis while preserving all evidence."""
+    if authority != "NAOMI" or approved is not True:
+        raise PermissionError("Phase-5 synthesis revocation requires explicit Naomi approval")
+    if confirmation != REVOKE_CONFIRMATION:
+        raise PermissionError("Exact Phase-5 synthesis revocation confirmation required")
+    reason = str(reason or "").strip()
+    if not reason:
+        raise ValueError("Phase-5 synthesis revocation reason required")
+
+    detail = runtime.galaxy_synthesis(str(synthesis_record_id or "").strip())
+    if detail is None:
+        raise KeyError(synthesis_record_id)
+    synthesis = detail.get("synthesis") or {}
+    if synthesis.get("source_record_ids") != list(FIXTURE_SOURCE_IDS):
+        raise ValueError("Controlled Phase-5 synthesis source set mismatch")
+    record = detail.get("record") or {}
+    if record.get("statement") != CONTROLLED_SYNTHESIS_STATEMENT:
+        raise ValueError("Controlled Phase-5 synthesis statement mismatch")
+    if record.get("scope") != SHADOW_SCOPE:
+        raise ValueError("Controlled Phase-5 synthesis escaped shadow scope")
+
+    result = runtime.galaxy_revoke_synthesis(
+        synthesis_record_id,
+        authority=authority,
+        approved=approved,
+        reason=reason,
+    )
+    return {
+        "schema": "gaiaos.galaxy.phase5-synthesis-revocation.v1",
+        "version": VERSION,
+        "status": result.get("status"),
+        "effect": result,
+        "source_history_preserved": True,
+        "provenance_preserved": True,
+        "physical_delete": False,
+        "memoryos_retrieval_changed": False,
+        "production_retrieval_changed": False,
+        "unrestricted_global_weighting_enabled": False,
+        "default_retrieval_target_selected": False,
     }
