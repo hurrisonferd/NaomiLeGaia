@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_SOURCE_BRAINOS_GALAXY_PHASE3G_DIAGNOSTIC_DEPLOYED_ROUTE_VERIFIED_REPORT_PENDING",
+  "status": "ACTIVE_SOURCE_BRAINOS_GALAXY_PHASE3G_FIRST_LIVE_QUALITY_REVIEW_OBSERVED",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -91,7 +91,7 @@
     "galaxy_phase3f_active_pilot_rollback_live_observed": false,
     "galaxy_phase3f_routes_registered_live": true,
     "galaxy_phase3g_quality_review_source_ready": true,
-    "galaxy_phase3g_quality_review_live_observed": false,
+    "galaxy_phase3g_quality_review_live_observed": true,
     "galaxy_phase3g_quality_review_deployed": true
   },
   "laws": [
@@ -120,14 +120,14 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Deployed carrier /verify b3bba7b2f2d5444b9c3dd179ff72a2b7 observed 125/125 PASS, including Phase3G source, syntax and registered read-only review GET route. No Phase3G review execution receipt yet. Phase3F prior integrated switch PASS is process-specific and needs a fresh run after restart for any optional pilot; active pilot and active rollback not observed. Global unrestricted weighting OFF.",
+  "claim_ceiling": "Phase3G real carrier read-only review query index 3 observed 7 candidates of 13 scoped: 4 core-anchored and 3 generic policy; policy matches often come from notes or scope. CORE .6 rank 5 despite topical centrality. Verified REVISES, REINFORCES, CONTEXT_FOR edges point to CORE; contradiction between REVISION and REINFORCER preserved; CORE remains current but revised. Diagnostic had 0 writes and did not change production. Cross-query 5 and 0 checks are pending; no active Phase3F pilot or live active rollback observed, global unrestricted weighting OFF.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
     "phase3_ready_for_authorization": true,
     "phase3_authorized": true,
     "strengths_championing": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
-    "phase3_status": "PHASE3G_DIAGNOSTIC_DEPLOYED_ROUTE_VERIFIED_REPORT_PENDING",
+    "phase3_status": "PHASE3G_FIRST_LIVE_QUALITY_REVIEW_OBSERVED_CROSS_QUERY_TEST_PENDING",
     "phase3c_live_observed": true,
     "phase3d_adoption_gate_version": "galaxy.phase3d.adoption-gate.v1",
     "phase3d_source_ready": true,
@@ -229,10 +229,10 @@
     "phase3f_switch_test_errors": [],
     "phase3f_legacy_admission_equivalence": false,
     "phase3f_activation_review_required": "EXPLICITLY_ACKNOWLEDGE_PILOT_CHANGES_CANDIDATE_ADMISSION_VS_OLD_SQL",
-    "phase3f_next_gate": "PHASE3G_QUALITY_REPORT_BEFORE_ANY_NEW_PILOT_ACTIVATION",
+    "phase3f_next_gate": "CONTINUE_READ_ONLY_CROSS_QUERY_QUALITY_VALIDATION_BEFORE_PILOT",
     "phase3f_pilot_active_observed": false,
     "phase3g_quality_review_source_ready": true,
-    "phase3g_quality_review_live_observed": false,
+    "phase3g_quality_review_live_observed": true,
     "phase3g_quality_review_version": "galaxy.phase3g.retrieval-quality-review.v1",
     "phase3g_quality_review_route": "/galaxy/retrieval/phase3g-quality-review?query_index=3",
     "phase3g_quality_review_read_only": true,
@@ -244,10 +244,36 @@
     "phase3g_ci_run_id": 35802335861,
     "phase3g_ci_summary": "13/13 OFFLINE TESTS PASS",
     "phase3g_production_admission_change_enabled": false,
-    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_3",
+    "phase3g_next_gate": "RUN_READ_ONLY_QUALITY_REVIEW_QUERY_INDEX_5_THEN_0",
     "phase3g_quality_review_deployed": true,
     "phase3g_quality_review_route_registered_live": true,
     "phase3g_quality_review_verifier_run_id": "b3bba7b2f2d5444b9c3dd179ff72a2b7",
-    "phase3g_quality_review_verifier_summary": "125/125 PASS"
+    "phase3g_quality_review_verifier_summary": "125/125 PASS",
+    "phase3g_quality_review_status": "OBSERVED_READ_ONLY",
+    "phase3g_quality_review_observed_query_indexes": [
+      3
+    ],
+    "phase3g_quality_review_observed_scope_population": 13,
+    "phase3g_quality_review_observed_candidate_count": 7,
+    "phase3g_quality_review_observed_direct_topic_count": 4,
+    "phase3g_quality_review_observed_indirect_policy_count": 3,
+    "phase3g_quality_review_observed_ambiguous_count": 1,
+    "phase3g_quality_review_observed_missing_count": 0,
+    "phase3g_quality_review_zero_writes": true,
+    "phase3g_quality_review_cross_tier_inversions": 0,
+    "phase3g_quality_review_notes_source_matches_observed": true,
+    "phase3g_quality_review_scope_virtual_memory_match_observed": true,
+    "phase3g_quality_review_core_coverage": 0.6,
+    "phase3g_quality_review_core_weighted_rank": 5,
+    "phase3g_quality_review_core_state": "CURRENT_REVISED_CONTEXT",
+    "phase3g_quality_review_core_current_default_eligible": true,
+    "phase3g_quality_review_core_verified_edges": [
+      "REVISES",
+      "REINFORCES",
+      "CONTEXT_FOR"
+    ],
+    "phase3g_quality_review_verified_contradiction_observed": true,
+    "phase3g_quality_review_policy_edge_only": "EXTENDS_BETWEEN_POLICY_RECORDS_NOT_CALIBRATION_CORE",
+    "phase3g_quality_review_containment_applied": false
   }
 }
