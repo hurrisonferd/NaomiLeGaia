@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 DEPLOYED + VERIFIED / READ-ONLY FIXTURE REVIEW PENDING / NO MUTATION ROUTE / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 LIVE READ-ONLY FIXTURE PASS / MUTATION ROUTE AUTHORIZATION PENDING / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4534,3 +4534,32 @@ Next gate:
 `GET /galaxy/revision/phase4-fixture-review`
 
 Require read-only PASS before exposing any Phase-4 mutation route.
+
+
+## Phase-4 live read-only fixture review PASS — 2026-09-23
+
+Naomi supplied a running-carrier receipt for `GET /galaxy/revision/phase4-fixture-review`.
+
+Observed result:
+- schema: `gaiaos.galaxy.phase4-fixture-review.v1`
+- version: `galaxy.phase4.revision-supersession.v1`
+- status: `PASS_READ_ONLY_PHASE4_FIXTURE_REVIEW`
+- existing VERIFIED `REVISION REVISES CORE` edge visible
+- source and target remain same-scope MemoryOS records
+- no reverse VERIFIED revision/supersession edge
+- no competing VERIFIED superseder
+- REVISES keeps the target in `CURRENT_REVISED_CONTEXT` and current-default eligible
+- projected SUPERSEDES moves the target to `HISTORICAL_SUPERSEDED`
+- historical retrieval eligibility remains true
+- the SUPERSEDES prerequisite is satisfied by the existing VERIFIED REVISES edge
+- zero MemoryOS writes
+- no production retrieval change
+- no physical deletion
+- unrestricted global weighting OFF
+
+This proves the read-only Phase-4 semantics against the controlled live fixture. It does not authorize or prove relation mutation.
+
+Next gate:
+`EXPLICIT_NAOMI_AUTHORIZATION_TO_EXPOSE_GUARDED_PHASE4_MUTATION_ROUTE`
+
+Only after that authorization should the browser mutation console/route be added. Proposal, verification, supersession, and rollback remain separately gated actions.
