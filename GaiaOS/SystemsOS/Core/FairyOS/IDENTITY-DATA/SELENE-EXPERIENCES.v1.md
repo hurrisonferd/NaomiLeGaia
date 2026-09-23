@@ -514,3 +514,8 @@ COLLABORATION: Naomi explicitly asked ANVIL to continue leading the build while 
 NEXT: Phase 4 Revision/Supersession source design. Preserve REVISES != SUPERSEDES, historical truth != current governing state, and newer != automatically truer.
 WHOLE_SYSTEM_SOURCE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GALAXY-PHASE3-CLOSED-PHASE4-READY.md
 STATUS: COMMITTED
+
+
+## PW:PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS
+Preserve the operator-burden lesson: Gaia should absorb translation work while exact Ritual semantics remain deterministic. Current checkpoint is safe to leave idle; no mutation has occurred.
+Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS.md`
