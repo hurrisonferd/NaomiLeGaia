@@ -64,20 +64,29 @@ class FakeRuntime:
 
     def phase3_exit_pool(self, query, *, scope="MemoryOS", limit=10):
         pool = self.galaxy_phase3_candidate_pool(query, scope=scope, limit=limit)
-        pool.update({
+        primary = list(pool["candidates"][:1])
+        linked = list(pool["candidates"][1:])
+        return {
             "status": "PASS",
-            "linked_context_record_ids": [],
+            "candidate_record_ids": [primary[0]["record_id"]],
+            "candidate_count": 1,
+            "candidates": primary,
+            "linked_context_record_ids": [
+                item["record_id"] for item in linked
+            ],
+            "linked_context_candidates": linked,
             "checks": {
                 "all_admitted_candidates_meet_primary_rule": True,
-                "linked_context_admitted_to_weighted_records": False,
+                "linked_context_requires_verified_direct_primary_edge": True,
+                "linked_context_admitted_to_primary_lane": False,
+                "linked_context_ranked_only_within_context_lane": True,
             },
-        })
-        return pool
+        }
 
     def _galaxy_phase3c_score_pool(self, pool, relevance_weight, gravity_weight):
         rows = []
         for index, item in enumerate(pool["candidates"]):
-            gravity = (0.0, 0.0, 1.0)[index]
+            gravity = 1.0 if item["record_id"].endswith("-C") else 0.0
             relevance = item["relevance"]["coverage"]
             rows.append({
                 "record_id": item["record_id"],
@@ -94,7 +103,8 @@ class FakeRuntime:
             "candidate_set_preserved": True,
             "top_relevance_preserved": True,
             "cross_relevance_tier_inversion_count": int(self.break_guard),
-            "rerank_observed": [r["record_id"] for r in rows] != pool["candidate_record_ids"],
+            "rerank_observed": [r["record_id"] for r in rows]
+            != pool.get("candidate_record_ids", []),
         }
 
     def get_record(self, record_id):
