@@ -20,6 +20,7 @@ import galaxy_production
 import galaxy_quality
 import galaxy_phase3_exit
 import galaxy_phase4
+import galaxy_phase5
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -733,6 +734,16 @@ def galaxy_phase3_exit_integration_review(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase3_exit.review_suite(memcon_runtime)
+
+
+@app.get("/galaxy/synthesis/phase5-fixture-review", operation_id="galaxyPhase5FixtureReview")
+def galaxy_phase5_fixture_review(browser_request: Request):
+    """Read-only Phase-5 synthesis/consolidation fixture review. No writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase5.fixture_review(memcon_runtime)
 
 
 @app.get("/galaxy/revision/phase4-fixture-review", operation_id="galaxyPhase4FixtureReview")
