@@ -1,6 +1,7 @@
 """Phase 3G read-only audit tests. Fake storage prevents writes and external calls."""
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "api"))
@@ -296,6 +297,100 @@ class ContainmentShadowTests(unittest.TestCase):
         self.assertFalse(result["checks"]["negative_controls_zero_candidates"])
 
 
+
+
+class GeneralizationSuiteTests(unittest.TestCase):
+    def setUp(self):
+        self.runtime = FakeMemory()
+        self.cases = (
+            {
+                "case_id": "CORE_PARAPHRASE",
+                "kind": "POSITIVE",
+                "difficulty": "MEDIUM",
+                "query": "violet carrier pulse",
+                "expected_primary_ids": ("CORE",),
+                "expected_related_ids": (),
+            },
+            {
+                "case_id": "REVISION_HARD_PARAPHRASE",
+                "kind": "POSITIVE",
+                "difficulty": "HARD",
+                "query": "observation revises calibration",
+                "expected_primary_ids": ("REV",),
+                "expected_related_ids": ("CORE",),
+            },
+            {
+                "case_id": "PLANETARY_NEGATIVE",
+                "kind": "NEGATIVE",
+                "difficulty": "CONTROL",
+                "query": "planetary gravity trajectories",
+                "expected_primary_ids": (),
+                "expected_related_ids": (),
+            },
+        )
+
+    def _install_gate(self, hard_found=True, negative_leak=False):
+        def gate(query, *, scope="MemoryOS", limit=10):
+            if query == "violet carrier pulse":
+                ids = ["CORE"]
+            elif query == "observation revises calibration":
+                ids = ["REV", "CORE"] if hard_found else ["CORE"]
+            elif query == "planetary gravity trajectories":
+                ids = ["GENERIC"] if negative_leak else []
+            else:
+                ids = []
+            return {
+                "scope_eligible_population_count": len(self.runtime.records),
+                "candidate_record_ids": ids,
+                "candidate_count": len(ids),
+                "candidates": [],
+                "ambiguous_record_ids": [],
+            }
+        self.runtime.galaxy_phase3_candidate_pool = gate
+
+    def test_clean_generalization_suite_passes_read_only(self):
+        self._install_gate(hard_found=True, negative_leak=False)
+        with patch.object(quality, "PHASE3I_CASES", self.cases):
+            result = quality.generalization_suite(self.runtime)
+        self.assertEqual(result["status"], "PASS_READ_ONLY_GENERALIZATION_GATE")
+        self.assertTrue(result["checks"]["positive_primary_recall_all"])
+        self.assertTrue(result["checks"]["hard_paraphrase_primary_found"])
+        self.assertTrue(result["checks"]["negative_controls_zero_candidates"])
+        self.assertEqual(self.runtime.writes, 0)
+
+    def test_hard_paraphrase_miss_requires_review(self):
+        self._install_gate(hard_found=False, negative_leak=False)
+        with patch.object(quality, "PHASE3I_CASES", self.cases):
+            result = quality.generalization_suite(self.runtime)
+        self.assertEqual(result["status"], "OBSERVED_REVIEW_REQUIRED")
+        self.assertFalse(result["checks"]["positive_primary_recall_all"])
+        self.assertFalse(result["checks"]["hard_paraphrase_primary_found"])
+        hard = next(c for c in result["cases"] if c["case_id"] == "REVISION_HARD_PARAPHRASE")
+        self.assertEqual(hard["case_status"], "POSITIVE_PRIMARY_MISS")
+        self.assertEqual(self.runtime.writes, 0)
+
+    def test_negative_control_leak_requires_review(self):
+        self._install_gate(hard_found=True, negative_leak=True)
+        with patch.object(quality, "PHASE3I_CASES", self.cases):
+            result = quality.generalization_suite(self.runtime)
+        self.assertEqual(result["status"], "OBSERVED_REVIEW_REQUIRED")
+        self.assertFalse(result["checks"]["negative_controls_zero_candidates"])
+        negative = next(c for c in result["cases"] if c["kind"] == "NEGATIVE")
+        self.assertEqual(negative["case_status"], "NEGATIVE_CONTROL_LEAK")
+
+    def test_malformed_candidate_receipt_fails_gate(self):
+        def malformed(query, *, scope="MemoryOS", limit=10):
+            return {
+                "scope_eligible_population_count": 3,
+                "candidate_record_ids": ["CORE"],
+                "candidate_count": 2,
+                "ambiguous_record_ids": [],
+            }
+        self.runtime.galaxy_phase3_candidate_pool = malformed
+        with patch.object(quality, "PHASE3I_CASES", self.cases):
+            result = quality.generalization_suite(self.runtime)
+        self.assertEqual(result["status"], "OBSERVED_REVIEW_REQUIRED")
+        self.assertFalse(result["checks"]["all_receipts_well_formed"])
 
 
 if __name__ == "__main__":
