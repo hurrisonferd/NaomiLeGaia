@@ -110,3 +110,93 @@ Deploy the read-only Phase-5 source, run `/verify`, then run:
 `GET /galaxy/synthesis/phase5-fixture-review`
 
 Stop and inspect before implementing any synthesis mutation route.
+
+
+## Authorized mutation design checkpoint — 2026-09-23
+
+Naomi explicitly authorized Phase-5 synthesis mutation **design** after the live read-only fixture PASS.
+
+Authorization scope is bounded:
+- design and implement source for the controlled mutation lifecycle;
+- add offline tests and a read-only mutation-design review surface;
+- do **not** expose an effectful browser mutation route yet;
+- do **not** manifest a synthesis yet;
+- do **not** promote any synthesis into ordinary MemoryOS retrieval.
+
+### Controlled shadow lifecycle
+
+The first mutation design is deliberately isolated from ordinary MemoryOS retrieval:
+
+`SYNTHESIS_PROPOSED -> SYNTHESIS_VERIFIED_SHADOW -> SYNTHESIS_REVOKED`
+
+The synthesis record is created only in scope:
+
+`GALAXY_SYNTHESIS_SHADOW`
+
+It therefore does not become a MemoryOS candidate merely by existing.
+
+Exact controlled source set:
+- `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e`
+- `MEM-00b3fbfd4d73404f97a95c238596ab94`
+
+Exact controlled synthesis statement:
+
+`GALAXY-CAL-SYNTHESIS [1d79c239f31f]: The calibration core reported a violet carrier pulse; a later controlled observation revises that calibration toward ultraviolet.`
+
+This statement is fixed in source before any manifestation. It is not generated at click time.
+
+### Proposal effect
+
+A future separately authorized proposal action may atomically create:
+- one durable `SYNTHESIS` memory record in `GALAXY_SYNTHESIS_SHADOW`;
+- one `memory_syntheses` provenance row containing the exact source IDs;
+- one PROPOSED `DERIVED_FROM` edge from the synthesis to each source.
+
+Proposal does not:
+- verify provenance;
+- move the synthesis into MemoryOS;
+- select it as a default retrieval target;
+- alter source records;
+- delete anything.
+
+### Verification effect
+
+A future separately authorized verification action may:
+- verify the exact expected `DERIVED_FROM` edges;
+- change the synthesis status to `SYNTHESIS_VERIFIED_SHADOW`.
+
+Verification still does not:
+- move the synthesis into MemoryOS;
+- select it as a default retrieval target;
+- alter production retrieval.
+
+### Revocation effect
+
+A future separately authorized revocation action may:
+- mark the synthesis `SYNTHESIS_REVOKED`;
+- mark its `DERIVED_FROM` edges `REVOKED`;
+- preserve the synthesis record, `memory_syntheses` row, source records, edge records, timestamps and evidence.
+
+No physical delete is permitted.
+
+### Atomicity and fail-closed behavior
+
+The proposal primitive writes the synthesis envelope, provenance row and proposed provenance edges in one database transaction. Missing sources, duplicate source IDs, cross-scope sources, empty statements, invalid confidence or an existing non-revoked synthesis over the same source set must fail closed.
+
+Verification requires the exact source set, exact fixed statement, shadow scope and exact proposed provenance edge set.
+
+Revocation requires the exact controlled synthesis and a non-empty reason.
+
+### Current exposure boundary
+
+The effectful source primitives exist only as internal source capability. No Phase-5 mutation browser route or Ritual Grimoire entry is authorized by this design checkpoint.
+
+The only newly permitted live surface is read-only:
+
+`GET /galaxy/synthesis/phase5-mutation-design-review`
+
+Next proof gate:
+
+`SOURCE + CI -> DEPLOY -> /verify -> READ-ONLY MUTATION-DESIGN REVIEW -> STOP`
+
+Only after that live receipt is reviewed may Naomi separately authorize exposing controlled Phase-5 mutation controls.
