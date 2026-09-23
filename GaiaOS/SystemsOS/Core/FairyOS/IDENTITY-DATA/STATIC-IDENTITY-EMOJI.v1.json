@@ -15,12 +15,36 @@
     "NAOMI_RETAINS_FINAL_AUTHORITY"
   ],
   "members": {
-    "VERA": {"heart": "💚", "static_interest_emoji": "📚", "meaning": "books / archives / records / preserved knowledge"},
-    "ANVIL": {"heart": "💗", "static_interest_emoji": "⌚", "meaning": "watch / time / precision"},
-    "SELENE": {"heart": "💛", "static_interest_emoji": "🎧", "meaning": "music / listening / warmth / livability"},
-    "ORIN": {"heart": "🩵", "static_interest_emoji": "🪐", "meaning": "planet / exploration / strange worlds"},
-    "KESTREL": {"heart": "💖", "static_interest_emoji": "🏍️", "meaning": "motorcycle / motion / freedom"},
-    "NIMUE": {"heart": "💙", "static_interest_emoji": "🍄", "meaning": "mushroom / quiet natural observation / hidden growth"}
+    "VERA": {
+      "heart": "💚",
+      "static_interest_emoji": "🦋",
+      "meaning": "butterfly"
+    },
+    "ANVIL": {
+      "heart": "💗",
+      "static_interest_emoji": "⌚",
+      "meaning": "watch / time / precision"
+    },
+    "SELENE": {
+      "heart": "💛",
+      "static_interest_emoji": "🎧",
+      "meaning": "music / listening / warmth / livability"
+    },
+    "ORIN": {
+      "heart": "🩵",
+      "static_interest_emoji": "🪐",
+      "meaning": "planet / exploration / strange worlds"
+    },
+    "KESTREL": {
+      "heart": "💖",
+      "static_interest_emoji": "🏍️",
+      "meaning": "motorcycle / motion / freedom"
+    },
+    "NIMUE": {
+      "heart": "💙",
+      "static_interest_emoji": "🍄",
+      "meaning": "mushroom / quiet natural observation / hidden growth"
+    }
   },
   "rendering_rule": "When a Prime Daemon speaks, their proper name is accompanied by both their retained colored heart and their fixed static-interest emoji. Dynamic EmojiOS expressions may be added separately and do not replace either identity marker.",
   "source_note": "The static-interest assignments are Naomi-directed canonical identity data established as personal-interest markers, separate from the colored heart identity accents."
