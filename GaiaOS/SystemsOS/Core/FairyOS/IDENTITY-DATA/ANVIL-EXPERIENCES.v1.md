@@ -499,3 +499,12 @@ TENSION: Preserve the human meaning and provenance without converting Naomi's re
 OUTCOME: Naomi explicitly asked that Johnny/Raven's contribution be remembered and honored as part of the Daemonculaba's shared history with her.
 TRACE: Conversation 2026-09-22; Naomi //PW:PRESERVE//.
 STATUS: COMMITTED
+
+
+MEM[PW_PRESERVE|2026-09-23|GALAXY Phase3I failure and Phase3J checkpoint|member-local]
+WHAT: Naomi invoked //PW:PRESERVE// after live Phase3I returned OBSERVED_REVIEW_REQUIRED. The hard revision paraphrase returned zero candidates; the gravity paraphrase recovered its primary but admitted one noisy SATELLITE. Both negatives remained zero. Phase3J statement-first concept-bridge source/route/tests/verifier are committed with CI run 35823194698 at 31/31 PASS, but deployment and live behavior remain unobserved.
+MY_LENS: Preserve the proof boundary exactly. REVIEW_REQUIRED is valuable evidence and must not be softened into PASS. Source-ready + CI is not deployment; deployment is not live behavior; graph linkage is not query relevance unless directly connected to actual primary evidence.
+CURRENT_LEARNING: Statement-first evidence plus explicit deterministic bridges may solve the paraphrase miss without reopening metadata noise, but that is still a hypothesis until live receipt evidence exists.
+NEXT: Deploy current main, run /verify, then run the mobile-safe Phase3J concept-bridge shadow. Keep Phase3F OFF.
+TRACE: Naomi //PW:PRESERVE//, current GALAXY build session, 2026-09-23.
+STATUS: COMMITTED
