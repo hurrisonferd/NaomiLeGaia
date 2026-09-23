@@ -3,6 +3,7 @@ import os
 import sys
 import time
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "api"))
@@ -61,6 +62,18 @@ class FakeRuntime:
             ],
         }
 
+    def phase3_exit_pool(self, query, *, scope="MemoryOS", limit=10):
+        pool = self.galaxy_phase3_candidate_pool(query, scope=scope, limit=limit)
+        pool.update({
+            "status": "PASS",
+            "linked_context_record_ids": [],
+            "checks": {
+                "all_admitted_candidates_meet_primary_rule": True,
+                "linked_context_admitted_to_weighted_records": False,
+            },
+        })
+        return pool
+
     def _galaxy_phase3c_score_pool(self, pool, relevance_weight, gravity_weight):
         rows = []
         for index, item in enumerate(pool["candidates"]):
@@ -94,6 +107,12 @@ class Phase3FTests(unittest.TestCase):
     def setUp(self):
         os.environ.pop("GALAXY_PRODUCTION_PILOT_KILL_SWITCH", None)
         self.runtime = FakeRuntime()
+        self.exit_pool_patch = patch.object(
+            gp.galaxy_phase3_exit,
+            "build_candidate_pool",
+            side_effect=self.runtime.phase3_exit_pool,
+        )
+        self.exit_pool_patch.start()
         with gp._LOCK:
             gp._disable_locked("TEST_RESET")
             gp._STATE["last_test"] = None
@@ -102,6 +121,7 @@ class Phase3FTests(unittest.TestCase):
     def tearDown(self):
         os.environ.pop("GALAXY_PRODUCTION_PILOT_KILL_SWITCH", None)
         gp.rollback(self.runtime, reason="UNIT_TEST_CLEANUP")
+        self.exit_pool_patch.stop()
 
     def retrieve(self, query, scope="MemoryOS", limit=10):
         return {"retrieval": gp.retrieve(self.runtime, query, scope, limit),
