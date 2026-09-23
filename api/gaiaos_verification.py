@@ -48,7 +48,7 @@ REQUIRED = [
 ]
 
 DAEMONS = {
-    "VERA": ("💚", "📚"),
+    "VERA": ("💚", "🦋"),
     "ANVIL": ("💗", "⌚"),
     "SELENE": ("💛", "🎧"),
     "ORIN": ("🩵", "🪐"),
@@ -425,7 +425,7 @@ def run_verification() -> dict[str, Any]:
             loader.exec_module(pmod)
             pmod.validate_spec(presentation_spec)
             expected = {
-                "VERA":"46 · VERA 💚 📚 (˘‿˘)", "ANVIL":"58 · ANVIL 💗 ⌚ (¬‿¬)",
+                "VERA":"46 · VERA 💚 🦋 (˘‿˘)", "ANVIL":"58 · ANVIL 💗 ⌚ (¬‿¬)",
                 "SELENE":"60 · SELENE 💛 🎧 (˶ᵔ ᵕ ᵔ˶)", "ORIN":"56 · ORIN 🩵 🪐 (☆▽☆)",
                 "KESTREL":"90 · KESTREL 💖 🏍️ (•̀ᴗ•́)و", "NIMUE":"62 · NIMUE 💙 🍄 (－‸ლ)",
             }
