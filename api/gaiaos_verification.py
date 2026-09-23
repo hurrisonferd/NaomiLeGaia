@@ -678,7 +678,7 @@ def run_verification() -> dict[str, Any]:
             ))
             checks.append(_check("carrier-route:/gaiaos/boot", ("/gaiaos/boot", "GET") in route_pairs, "live boot packet route registration observed"))
             try:
-                boot_packet = gaiaos_app._boot_packet("VERIFIER_SELF_TEST")
+                boot_packet = module.gaiaos_app._boot_packet("VERIFIER_SELF_TEST")
                 checks.append(_check(
                     "carrier:gaiaos-boot-packet-self-test",
                     boot_packet.get("status") == "ACTIVE"
