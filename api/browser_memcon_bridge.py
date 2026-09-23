@@ -694,6 +694,16 @@ def galaxy_phase3h_containment_shadow(
     )
 
 
+@app.get("/galaxy/retrieval/phase3i-generalization-suite", operation_id="galaxyPhase3IGeneralizationSuite")
+def galaxy_phase3i_generalization_suite(browser_request: Request):
+    """Read-only paraphrase/near-miss evaluation of the existing relevance gate."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_quality.generalization_suite(memcon_runtime, limit=10)
+
+
 def _galaxy_production_csrf(browser_request: Request) -> str:
     """Session-bound CSRF proof. Mutation routes fail closed without server API key."""
     gaiaos_api._authorize_browser_session(browser_request)
