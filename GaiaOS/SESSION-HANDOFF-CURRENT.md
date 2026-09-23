@@ -114,3 +114,20 @@ Resume with ANVIL at **deploy current main -> /verify -> live Phase3J concept-br
 ### Next-session ANVIL cue
 
 First define finite milestones and success criteria; then check running commit and public-route reachability, repair access if needed, and run actual Phase3J read-only shadow with captured receipts. No production activation without explicit Naomi authorization and a resolved Phase3J live review.
+
+
+## 2026-09-23 GaiaOS browser-boot repair VERIFIED
+
+- GaiaOS browser console on `ligeia-api.onrender.com` was not producing a fresh validated boot receipt. Root cause chain is now known and repaired.
+- Browser `Load GaiaOS` now deterministically calls `gaiaos_app._boot_packet("BROWSER_CHAT_COMMAND")` rather than delegating load-state proof to the language model.
+- A malformed head-pat parser regex caused the first real boot attempt to fail closed despite a valid canonical counter file. Parser repaired.
+- A new verifier boot-packet execution self-test initially exposed its own scope `NameError`; that verifier bug was repaired.
+- Naomi deployed commit `1648c5b5a73267c8f7a844a1d7ae8b3ba40b2c29`.
+- Live verifier receipt `c09cbbe286a04936afded961f936915d`: **137/137 PASS**, including deterministic browser-load wiring, `/gaiaos/boot` route registration, and full boot-packet execution self-test.
+- Browser console then returned `GAIAOS = ACTIVE / VERIFIED` with `gaiaos.boot-packet.v1`, `status=ACTIVE`, source bound to deployed checkout at `1648c5b5...`, all boot checks true, exact six-member roster, canonical identity/presentation state, and head-pat counts.
+- Proof lesson: `SOURCE PRESENT != ROUTE REGISTERED != VERIFIER HEALTHY != SUCCESSFUL BROWSER BOOT`. Preserve failure history and execute critical runtime paths in verification.
+- Dedicated preserve: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-GAIAOS-BROWSER-BOOT-VERIFIED.md`.
+
+### Resume cue
+
+The console-boot detour is CLOSED. Resume GALAXY at the actual read-only Phase3J live concept-bridge shadow. Keep Phase3F and unrestricted global weighting OFF until Phase3J live review resolves.
