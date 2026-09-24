@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C SYNTHETIC POSITIVE CANARY SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE BUILD / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4956,3 +4956,15 @@ Phase 7C source gate corrected head: 16c898271cb2f2b53c31652e9cc8e207fd2b21ea.
 PR source gate run 36027103243: SUCCESS.
 Phase-6 regression run 36027103074: SUCCESS.
 An earlier Phase-7C run correctly failed on an accidental recursive helper refactor; the helper was repaired to the intended explicit lock evaluation and the corrected head passed. The failed run is retained as evidence, not relabeled.
+
+
+## Phase 7C live closure / Phase 7D checkpoint 2026-09-24
+
+The deployed synthetic positive canary returned PASS_SYNTHETIC_POSITIVE_CANARY with research_candidate=true, PRUNABLE_RESEARCH_ONLY, zero holds, no production database access, and all destructive gates false.
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7C-LIVE-POSITIVE-CANARY-PROVEN.md
+
+Source inspection immediately afterward found a proof-language defect: the real review and canary used equivalent rule sets, but the real review still contained duplicated eligibility logic rather than invoking the shared helper. Phase 7D preparation repairs this and adds a direct test proving the real review calls the shared evaluator.
+
+Phase 7D begins synthetic tombstone/restore contract research. It may prove manifest completeness, integrity detection, exact in-memory reconstruction, and fail-closed corruption handling. It may not create a durable tombstone, delete records, alter production retrieval, or set any destructive gate true.
