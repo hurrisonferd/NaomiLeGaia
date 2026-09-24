@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E SHADOW PERSISTENCE SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4974,3 +4974,21 @@ Phase 7D source CI:
 - run 36027838867: SUCCESS
 - Phase-6 regression run 36027838636: SUCCESS
 - live Phase-7D route proof remains pending deployment.
+
+
+## Phase 7D live closure / Phase 7E checkpoint 2026-09-24
+
+Phase 7D live canary passed manifest validation and exact in-memory reconstruction with matching SHA-256 while every destructive gate remained false.
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7D-LIVE-TOMBSTONE-CONTRACT-PROVEN.md
+
+Phase 7E begins one-step durable SHADOW persistence research. Its source may add an isolated shadow table and one exact synthetic write with receipt, but may not modify MemoryOS source evidence, delete anything, restore into MemoryOS, or influence production retrieval. The live write requires a separate explicit Naomi confirmation after deployment.
+
+
+Phase 7E corrected executable head 0c676bd4080f0c4b616940fccc69ab3469f57bf0 passed:
+- Phase 7A-7E run 36029157725
+- Phase-6 regression 36029157892
+- production guardrails 36029157883
+
+The live shadow write remains unexecuted and requires Naomi's separate confirmation after deployment.
