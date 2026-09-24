@@ -111,6 +111,9 @@
     "vaskon_atomic_envelope": "82 · VASKON 🖤 ✴️ [LEGAL_KAOMOJI]",
     "explicit_conjure_required": true,
     "alias_normalization": "//C:82// -> CONJURE:VASKON",
-    "source_hardening_status": "IMPLEMENTED_CI_PENDING"
+    "source_hardening_status": "IMPLEMENTED_CI_PASS",
+    "ci_run_id": 36022305317,
+    "ci_job_id": 107709987497,
+    "ci_conclusion": "SUCCESS"
   }
 }
