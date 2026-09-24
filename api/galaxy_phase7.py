@@ -65,6 +65,37 @@ def _synthesis_dependencies(runtime: Any, record_id: str) -> dict[str, Any]:
     }
 
 
+
+def _research_hold_reasons(
+    *,
+    record: dict[str, Any],
+    lifecycle: dict[str, Any] | None,
+    governing: dict[str, Any],
+    outgoing_governing: list[dict[str, Any]],
+    incoming_derived_from: list[dict[str, Any]],
+    synthesis: dict[str, Any],
+) -> list[str]:
+    """Apply the shared Phase-7 research eligibility locks to supplied evidence."""
+    holds: list[str] = []
+    if str(record.get("scope") or "") != "MemoryOS":
+        holds.append("NOT_MEMORYOS_SCOPE")
+    if str(record.get("status") or "") != "ACTIVE":
+        holds.append("MEMORYOS_RECORD_NOT_ACTIVE")
+    if not lifecycle or str(lifecycle.get("state") or "") != REQUIRED_LIFECYCLE_STATE:
+        holds.append("LIFECYCLE_NOT_COMPRESSED")
+    if bool(governing.get("current_default_eligible")):
+        holds.append("CURRENT_DEFAULT_ELIGIBLE")
+    if outgoing_governing:
+        holds.append("GOVERNS_OTHER_RECORDS")
+    if incoming_derived_from or synthesis["source_for_synthesis_record_ids"]:
+        holds.append("SYNTHESIS_PROVENANCE_DEPENDENCY")
+    if synthesis["is_synthesis_record"]:
+        holds.append("SYNTHESIS_RECORD_REQUIRES_SEPARATE_POLICY")
+    if synthesis["malformed_synthesis_rows"]:
+        holds.append("MALFORMED_SYNTHESIS_PROVENANCE")
+    return holds
+
+
 def review(runtime: Any, record_id: str) -> dict[str, Any]:
     """Return a zero-write Phase-7 pruning research review for one record."""
     record_id = str(record_id or "").strip()
@@ -266,5 +297,94 @@ def review_with_readback(
             "This readback compares the monitored database view immediately before and after "
             "the Phase-7 review call. It proves zero observed writes for this request when all "
             "checks pass; it does not authorize PRUNABLE, deletion, or production attenuation."
+        ),
+    }
+
+
+def positive_path_canary() -> dict[str, Any]:
+    """Exercise the positive research-candidate branch with synthetic evidence only.
+
+    This canary deliberately does not accept a runtime object and performs no
+    production database access. It shares the same hold-evaluation function used
+    by the real-record review path.
+    """
+    record = {
+        "record_id": "SYNTHETIC-P7C-HISTORICAL",
+        "authority": "NAOMI",
+        "record_type": "SYNTHETIC_CANARY",
+        "scope": "MemoryOS",
+        "status": "ACTIVE",
+    }
+    lifecycle = {"state": "COMPRESSED"}
+    governing = {
+        "state": "HISTORICAL_SUPERSEDED",
+        "current_default_eligible": False,
+        "historical_retrieval_eligible": True,
+    }
+    incoming_supersedes = [{
+        "edge_id": "SYNTHETIC-EDGE-P7C",
+        "source_record_id": "SYNTHETIC-P7C-CURRENT",
+        "target_record_id": record["record_id"],
+        "relation_type": "SUPERSEDES",
+        "strength": 1.0,
+        "status": "VERIFIED",
+        "authority": "NAOMI",
+    }]
+    outgoing_governing: list[dict[str, Any]] = []
+    incoming_derived_from: list[dict[str, Any]] = []
+    synthesis = {
+        "source_for_synthesis_record_ids": [],
+        "is_synthesis_record": False,
+        "malformed_synthesis_rows": [],
+    }
+
+    holds = _research_hold_reasons(
+        record=record,
+        lifecycle=lifecycle,
+        governing=governing,
+        outgoing_governing=outgoing_governing,
+        incoming_derived_from=incoming_derived_from,
+        synthesis=synthesis,
+    )
+    research_candidate = not holds
+    checks = {
+        "synthetic_only": True,
+        "memoryos_shape": record["scope"] == "MemoryOS" and record["status"] == "ACTIVE",
+        "compressed": lifecycle["state"] == REQUIRED_LIFECYCLE_STATE,
+        "not_current_default": governing["current_default_eligible"] is False,
+        "supersession_context_present": bool(incoming_supersedes),
+        "no_outgoing_governing_dependency": not outgoing_governing,
+        "no_synthesis_dependency": not synthesis["source_for_synthesis_record_ids"],
+        "shared_hold_evaluator_passed": research_candidate,
+        "destructive_eligibility_false": True,
+        "physical_delete_false": True,
+        "production_attenuation_false": True,
+    }
+    passed = all(checks.values()) and research_candidate
+
+    return {
+        "schema": "gaiaos.galaxy.phase7-positive-canary.v1",
+        "version": VERSION,
+        "execution": "SYNTHETIC_READ_ONLY",
+        "status": "PASS_SYNTHETIC_POSITIVE_CANARY" if passed else "HOLD",
+        "synthetic_only": True,
+        "production_database_access": False,
+        "record": record,
+        "lifecycle": lifecycle,
+        "governing_state": governing,
+        "incoming_verified_supersedes": incoming_supersedes,
+        "research_candidate": research_candidate,
+        "proposed_research_label": RESEARCH_LABEL if research_candidate else None,
+        "research_hold_reasons": holds,
+        "checks": checks,
+        "destructive_eligibility": False,
+        "destructive_gates": dict(DESTRUCTIVE_GATES),
+        "writes_performed": [],
+        "physical_delete": False,
+        "production_retrieval_changed": False,
+        "authority_boundary": (
+            "Synthetic positive classification proves only the candidate branch. "
+            "It creates no durable memory, grants no PRUNABLE lifecycle state, "
+            "and authorizes no deletion or production attenuation."
         ),
     }

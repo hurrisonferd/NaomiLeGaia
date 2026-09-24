@@ -201,6 +201,36 @@ class Phase7PruningResearchTests(unittest.TestCase):
         self.assertNotIn("galaxy_phase7.delete", bridge)
         self.assertIn("COPY api/galaxy_phase7.py ./galaxy_phase7.py", docker)
 
+    def test_positive_path_canary_uses_shared_locks_without_database_access(self):
+        before = self._counts()
+        result = p7.positive_path_canary()
+        self.assertEqual(result["status"], "PASS_SYNTHETIC_POSITIVE_CANARY", result)
+        self.assertTrue(result["synthetic_only"])
+        self.assertFalse(result["production_database_access"])
+        self.assertTrue(result["research_candidate"])
+        self.assertEqual(result["proposed_research_label"], "PRUNABLE_RESEARCH_ONLY")
+        self.assertEqual(result["research_hold_reasons"], [])
+        self.assertTrue(all(result["checks"].values()))
+        self.assertFalse(result["destructive_eligibility"])
+        self.assertTrue(all(value is False for value in result["destructive_gates"].values()))
+        self.assertEqual(result["writes_performed"], [])
+        self.assertEqual(self._counts(), before)
+
+    def test_carrier_exposes_authenticated_get_only_positive_canary(self):
+        bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
+        self.assertIn(
+            '@app.get("/galaxy/pruning/phase7-positive-canary"',
+            bridge,
+        )
+        segment = bridge.split(
+            '@app.get("/galaxy/pruning/phase7-positive-canary"', 1
+        )[1].split(
+            '@app.get("/galaxy/lifecycle/phase6-fixture-review"', 1
+        )[0]
+        self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
+        self.assertIn("galaxy_phase7.positive_path_canary()", segment)
+        self.assertNotIn("@app.post(", segment)
+
     def test_phase7_module_contains_no_destructive_sql_or_mutation_entrypoint(self):
         source = (ROOT / "api" / "galaxy_phase7.py").read_text(encoding="utf-8")
         for forbidden in ("DELETE FROM", "UPDATE memory_", "INSERT INTO memory_"):

@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 7A MERGED / PHASE 7B LIVE READ-ONLY SURFACE SOURCE BUILD
+STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C SYNTHETIC POSITIVE CANARY SOURCE BUILD
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -93,3 +93,39 @@ No generic record mutation route, PRUNABLE transition, physical delete, producti
 SOURCE -> CI -> DEPLOY MAIN -> AUTHENTICATED GET -> ZERO-WRITE READBACK -> PRESERVE RECEIPT.
 
 A successful source gate does not prove deployment. A successful live GET does not prove destructive pruning safety.
+
+
+## Phase 7B live proof observed 2026-09-24
+
+Naomi supplied the authenticated live route response after redeploying main.
+
+Observed:
+- status HOLD
+- hold reasons: LIFECYCLE_NOT_COMPRESSED, CURRENT_DEFAULT_ELIGIBLE, SYNTHESIS_PROVENANCE_DEPENDENCY
+- readback_status PASS_ZERO_WRITE_READBACK
+- zero_write_readback true
+- every readback check true
+- writes_performed []
+- physical_delete false
+- production_retrieval_changed false
+- destructive_eligibility false
+- monitored database counts exactly unchanged before/after
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7B-LIVE-ZERO-WRITE-PROVEN.md
+
+This closes Phase 7B for the bounded exact-fixture read-only proof surface.
+
+## Phase 7C — synthetic positive research-candidate canary
+
+Purpose: prove that the positive PRUNABLE_RESEARCH_ONLY classification branch executes on the deployed carrier without creating a disposable production memory.
+
+Design:
+- extract the Phase-7 candidate locks into one shared evaluator used by real-record review;
+- feed that evaluator a deterministic synthetic historical evidence packet;
+- synthetic evidence models an ACTIVE MemoryOS-shaped record with lifecycle COMPRESSED, historical superseded governance, no outgoing governing dependency and no synthesis provenance dependency;
+- expose authenticated GET /galaxy/pruning/phase7-positive-canary;
+- the canary accepts no runtime object and performs no production database access;
+- PASS requires research_candidate=true and proposed_research_label=PRUNABLE_RESEARCH_ONLY while all destructive gates remain false.
+
+This proves the positive classifier branch only. It does not prove a live durable record should be pruned and grants no destructive authority.

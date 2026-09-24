@@ -775,6 +775,16 @@ def galaxy_phase7_fixture_review(browser_request: Request):
     )
 
 
+@app.get("/galaxy/pruning/phase7-positive-canary", operation_id="galaxyPhase7PositiveCanary")
+def galaxy_phase7_positive_canary(browser_request: Request):
+    """Authenticated synthetic positive-path canary; no production database access."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase7.positive_path_canary()
+
+
 @app.get("/galaxy/lifecycle/phase6-fixture-review", operation_id="galaxyPhase6FixtureReview")
 def galaxy_phase6_fixture_review(browser_request: Request):
     """Read-only exact-fixture lifecycle review; no Phase-6 mutation route."""
