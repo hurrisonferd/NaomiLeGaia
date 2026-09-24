@@ -340,7 +340,7 @@ def _frontdoor_packet(
         # Preserve existing E-LANE, approval, source and history boundaries.
         import memcon_runtime
         lookup = memory_query if memory_query is not None else request
-        if memory_mode == "legacy":
+        if memory_mode == "legacy" or os.getenv("GALAXY_FRONTDOOR_KILL_SWITCH", "").strip() == "1":
             memory_context = galaxy_frontdoor_context.preview(
                 memcon_runtime, lookup,
                 min(context_limit, galaxy_frontdoor_context.MAX_RECORDS),
