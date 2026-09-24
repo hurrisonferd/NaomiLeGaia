@@ -1,0 +1,53 @@
+name: GaiaOS HEATDEATH Independent Recovery Image Gate
+
+on:
+  push:
+    paths:
+      - "api/gaiaos_legacy_recovery_app.py"
+      - "api/requirements.legacy-recovery.txt"
+      - "api/Dockerfile.legacy-recovery"
+      - "tests/test_heatdeath_legacy_recovery_stage4.py"
+      - "GaiaOS/Plans/HEATDEATH-STAGE4-INDEPENDENT-RECOVERY.v1.md"
+      - ".github/workflows/gaiaos-heatdeath-independent-recovery.yml"
+  pull_request:
+    paths:
+      - "api/gaiaos_legacy_recovery_app.py"
+      - "api/requirements.legacy-recovery.txt"
+      - "api/Dockerfile.legacy-recovery"
+      - "tests/test_heatdeath_legacy_recovery_stage4.py"
+      - "GaiaOS/Plans/HEATDEATH-STAGE4-INDEPENDENT-RECOVERY.v1.md"
+      - ".github/workflows/gaiaos-heatdeath-independent-recovery.yml"
+  workflow_dispatch:
+
+jobs:
+  independent-recovery-source-and-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install isolated test dependencies
+        run: python -m pip install -r api/requirements.legacy-recovery.txt "httpx>=0.27,<1.0"
+      - name: Compile legacy-only recovery imports
+        run: |
+          python -m py_compile api/gaiaos_legacy_recovery_app.py tests/test_heatdeath_legacy_recovery_stage4.py
+          python -m py_compile api/legacy_memory_reader.py api/gaiaos_memory_mode.py api/memcon_runtime.py
+      - name: Test isolated app startup, auth, record/history retrieval and zero DDL
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_legacy_recovery_stage4.py" -v
+      - name: Reprove HEATDEATH-first stage-3 memory gateway
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
+      - name: Reprove stage-2 durable emergency control
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_mode_stage2.py" -v
+      - name: Reprove stage-1 independent legacy baseline
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+      - name: Build the separate Docker recovery image
+        run: |
+          docker build --file api/Dockerfile.legacy-recovery --build-arg RECOVERY_SOURCE_COMMIT="$GITHUB_SHA" --tag gaiaos-heatdeath-recovery:ci .
+      - name: Verify clean import from inside the standalone image
+        run: |
+          docker run --rm --entrypoint python gaiaos-heatdeath-recovery:ci -c "import sys, gaiaos_legacy_recovery_app as app; assert app.SERVICE == 'gaiaos-legacy-recovery'; assert not any(x.startswith('galaxy_') for x in sys.modules); print('INDEPENDENT_RECOVERY_IMAGE_IMPORT_PASS')"
+      - name: Check source whitespace
+        run: git diff --check HEAD^1 HEAD

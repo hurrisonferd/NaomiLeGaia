@@ -1,0 +1,32 @@
+# Independent HEATDEATH recovery image. No main carrier or GALAXY modules.
+# Build this image from an explicitly reviewed commit; pin and retain the image
+# digest as the independent rollback artifact before BIGBANG deployment.
+FROM python:3.12-slim
+
+ARG RECOVERY_SOURCE_COMMIT=UNATTESTED
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PORT=10000 \
+    GAIAOS_RECOVERY_SOURCE_COMMIT=${RECOVERY_SOURCE_COMMIT} \
+    MEMCONOS_DB_PATH=/data/memconos.db
+
+LABEL org.opencontainers.image.title="GaiaOS HEATDEATH Legacy Recovery" \
+      org.opencontainers.image.revision="${RECOVERY_SOURCE_COMMIT}"
+
+WORKDIR /app
+
+COPY api/requirements.legacy-recovery.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Only the verified pre-GALAXY read contracts and independent control are copied.
+# Do not copy full api/, GaiaOS/ or the default carrier's startup modules.
+COPY api/memcon_runtime.py ./memcon_runtime.py
+COPY api/legacy_memory_reader.py ./legacy_memory_reader.py
+COPY api/gaiaos_memory_mode.py ./gaiaos_memory_mode.py
+COPY api/gaiaos_legacy_recovery_app.py ./gaiaos_legacy_recovery_app.py
+
+# Deterministic build-time import isolation check.
+RUN python -c "import sys, gaiaos_legacy_recovery_app; assert not any(n.startswith('galaxy_') for n in sys.modules); print('HEATDEATH recovery import isolated')"
+
+EXPOSE 10000
+CMD ["sh", "-c", "uvicorn gaiaos_legacy_recovery_app:app --host 0.0.0.0 --port ${PORT:-10000} --no-access-log"]
