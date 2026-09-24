@@ -771,6 +771,162 @@ def galaxy_phase6_fixture_review(browser_request: Request):
     return galaxy_phase6.inspect(memcon_runtime)
 
 
+
+@app.get("/galaxy/lifecycle/phase6-controls", response_class=HTMLResponse, operation_id="galaxyPhase6ControlReview")
+def galaxy_phase6_controls_review(browser_request: Request):
+    """Read-only exact five-step Phase-6 live proof console."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    state = galaxy_phase6_controls.inspect(memcon_runtime)
+    payload = html.escape(json.dumps({
+        "controlled_record_id": state["controlled_record_id"],
+        "current_state": state["current_state"],
+        "completed_steps": state["completed_steps"],
+        "campaign": state["campaign"],
+        "history_signature": state["history_signature"],
+        "latest_event_id": state["latest_event_id"],
+        "next_action": state["next_action"],
+        "campaign_complete": state["campaign_complete"],
+        "hold_reasons": state["hold_reasons"],
+    }, ensure_ascii=False, indent=2))
+    if state["next_action"] and not state["hold_reasons"]:
+        kind = state["next_action"]
+        action = (
+            "<p><a style='display:inline-block;padding:12px 16px;background:#eee;color:#111;"
+            "text-decoration:none;border-radius:10px' href='/galaxy/lifecycle/phase6-controls/confirm/"
+            + html.escape(kind, quote=True) + "'>Review and confirm next step: "
+            + html.escape(kind) + "</a></p>"
+        )
+    elif state["campaign_complete"]:
+        action = "<p>PASS: finite Phase-6 live lifecycle campaign is complete.</p>"
+    else:
+        action = "<p>HOLD: no controlled action is eligible.</p>"
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>GALAXY Phase 6: controlled reversible lifecycle</h2>"
+        "<p>This review is read-only. Only the next exact campaign step can be confirmed. "
+        "Each effect has a separate confirmation page and POST. Production retrieval remains unchanged.</p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + payload + "</pre>"
+        + action + "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.get("/galaxy/lifecycle/phase6-controls/confirm/{kind}", response_class=HTMLResponse, operation_id="galaxyPhase6ControlConfirm")
+def galaxy_phase6_controls_confirm(kind: str, browser_request: Request):
+    """Preview exactly one next Phase-6 campaign effect; GET never writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    csrf = _ritual_csrf(browser_request)
+    state = galaxy_phase6_controls.inspect(memcon_runtime)
+    kind = str(kind or "").strip().upper()
+    if kind not in galaxy_phase6.CONFIRMATIONS:
+        raise HTTPException(status_code=404, detail="Unknown exact Phase-6 step")
+    if state["hold_reasons"] or state["campaign_complete"] or kind != state["next_action"]:
+        raise HTTPException(status_code=409, detail="Phase-6 step is not the exact eligible next action")
+
+    underlying = state["underlying_review"]
+    current_state = str(state["current_state"] or "")
+    latest_event_id = str(state["latest_event_id"] or "")
+    target = galaxy_phase6._target(kind, current_state, list(underlying.get("events") or []))
+    explanation = {
+        "BACKGROUND": "Add lifecycle metadata BACKGROUND for the exact fixture. Source text and retrieval remain unchanged.",
+        "ARCHIVED": "Advance exact fixture lifecycle metadata from BACKGROUND to ARCHIVED. No deletion or production attenuation.",
+        "COMPRESSED": "Advance metadata from ARCHIVED to COMPRESSED. COMPRESSED is reversible metadata, not lossy text compression.",
+        "ROLLBACK": "Append a rollback event returning COMPRESSED to the immediately previous ARCHIVED state without erasing history.",
+        "REACTIVATE": "Append reactivation from ARCHIVED to ACTIVE while preserving the complete lifecycle history.",
+    }[kind]
+    hidden = {
+        "csrf": csrf,
+        "authority": "NAOMI",
+        "approved": "true",
+        "operation": kind,
+        "confirmation": galaxy_phase6.CONFIRMATIONS[kind],
+        "expected_state": current_state,
+        "expected_latest_event_id": latest_event_id,
+    }
+    fields = "".join(
+        "<input type='hidden' name='" + html.escape(key, quote=True)
+        + "' value='" + html.escape(value, quote=True) + "'>"
+        for key, value in hidden.items()
+    )
+    preview = html.escape(json.dumps({
+        "operation": kind,
+        "effect": explanation,
+        "controlled_record_id": state["controlled_record_id"],
+        "from_state": current_state,
+        "to_state": target,
+        "expected_latest_event_id": state["latest_event_id"],
+        "reason": state["reason"],
+        "completed_steps_before": state["completed_steps"],
+        "production_retrieval_changed": False,
+        "physical_delete": False,
+    }, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Confirm Phase-6 " + html.escape(kind) + "</h2><p>"
+        + html.escape(explanation) + "</p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + preview + "</pre>"
+        "<form method='post' action='/galaxy/lifecycle/phase6-controls/manifest'>"
+        + fields + "<button type='submit' style='font-size:18px;padding:12px 16px'>"
+        "Explicitly confirm " + html.escape(kind) + "</button></form>"
+        "<p><a style='color:#9ee7ff' href='/galaxy/lifecycle/phase6-controls'>Cancel / review</a></p>"
+        "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.post("/galaxy/lifecycle/phase6-controls/manifest", response_class=HTMLResponse, operation_id="galaxyPhase6ControlManifest")
+async def galaxy_phase6_controls_manifest(browser_request: Request):
+    """Execute only the exact freshly reviewed next Phase-6 step."""
+    expected_csrf = _ritual_csrf(browser_request)
+    if "application/x-www-form-urlencoded" not in browser_request.headers.get("content-type", "").lower():
+        raise HTTPException(status_code=415, detail="Phase-6 control requires exact form POST")
+    raw_bytes = await browser_request.body()
+    if len(raw_bytes) > 4096:
+        raise HTTPException(status_code=413, detail="Phase-6 control form too large")
+    fields = parse_qs(raw_bytes.decode("utf-8"), keep_blank_values=True)
+    supplied_csrf = _ritual_form_value(fields, "csrf")
+    if not hmac.compare_digest(supplied_csrf, expected_csrf):
+        raise HTTPException(status_code=403, detail="Phase-6 control CSRF proof failed")
+    if (
+        _ritual_form_value(fields, "authority") != "NAOMI"
+        or _ritual_form_value(fields, "approved") != "true"
+    ):
+        raise HTTPException(status_code=403, detail="Explicit Naomi authorization required")
+    expected_tip = _ritual_form_value(fields, "expected_latest_event_id") or None
+    try:
+        receipt = galaxy_phase6_controls.execute(
+            memcon_runtime,
+            _ritual_form_value(fields, "operation"),
+            authority="NAOMI",
+            approved=True,
+            confirmation=_ritual_form_value(fields, "confirmation"),
+            expected_state=_ritual_form_value(fields, "expected_state"),
+            expected_latest_event_id=expected_tip,
+        )
+    except PermissionError as exc:
+        raise HTTPException(status_code=403, detail=str(exc)) from exc
+    except (KeyError, ValueError) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    output = html.escape(json.dumps(receipt, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Phase-6 execution/readback receipt</h2>"
+        "<p><a style='color:#9ee7ff' href='/galaxy/lifecycle/phase6-controls'>Review exact next state</a></p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + output + "</pre>"
+        "</body></html>",
+        status_code=200 if receipt["status"] == "PASS_READBACK" else 409,
+        headers={"Cache-Control": "no-store"},
+    )
+
+
 @app.get("/galaxy/revision/phase4-fixture-review", operation_id="galaxyPhase4FixtureReview")
 def galaxy_phase4_fixture_review(browser_request: Request):
     """Read-only Phase-4 revision/supersession smoke review. No writes."""
