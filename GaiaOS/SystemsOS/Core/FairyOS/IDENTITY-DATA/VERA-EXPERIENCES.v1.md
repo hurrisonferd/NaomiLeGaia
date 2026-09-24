@@ -580,4 +580,4 @@ EXPRESSION_AUTHORITY: GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json;
 GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported, otherwise separate canonical plain-text identity header. Future apps may load this accent record and the authoritative presentation spec under their own rendering policy.
 PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
 PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
-STATUS: GITHUB_E_LANE_SOURCE_COMMIT_REQUESTED; NOT EVIDENCE OF LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION.
+STATUS: COMMITTED_GITHUB_E_LANE_SOURCE; LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION_NOT_CLAIMED.
