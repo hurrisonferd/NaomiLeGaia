@@ -19,19 +19,23 @@ import memcon_runtime
 import gaiaos_memory_mode
 import gaiaos_memory_gateway
 import gaiaos_chat_memory
-import galaxy_production
-import galaxy_quality
-import galaxy_phase3_exit
-import galaxy_phase4
-import galaxy_phase5
-import galaxy_phase5_controls
-import galaxy_phase6
-import galaxy_phase6_controls
-import galaxy_phase7
-import galaxy_phase7_tombstone
-import galaxy_phase7_tombstone_shadow
-import galaxy_phase7_isolated_restore
-import augury_ritual
+from gaiaos_optional_research import LazyResearchModule
+
+# Research functions stay registered but their experimental implementations
+# cannot break the HEATDEATH primary browser app during module import.
+galaxy_production = LazyResearchModule("galaxy_production")
+galaxy_quality = LazyResearchModule("galaxy_quality")
+galaxy_phase3_exit = LazyResearchModule("galaxy_phase3_exit")
+galaxy_phase4 = LazyResearchModule("galaxy_phase4")
+galaxy_phase5 = LazyResearchModule("galaxy_phase5")
+galaxy_phase5_controls = LazyResearchModule("galaxy_phase5_controls")
+galaxy_phase6 = LazyResearchModule("galaxy_phase6")
+galaxy_phase6_controls = LazyResearchModule("galaxy_phase6_controls")
+galaxy_phase7 = LazyResearchModule("galaxy_phase7")
+galaxy_phase7_tombstone = LazyResearchModule("galaxy_phase7_tombstone")
+galaxy_phase7_tombstone_shadow = LazyResearchModule("galaxy_phase7_tombstone_shadow")
+galaxy_phase7_isolated_restore = LazyResearchModule("galaxy_phase7_isolated_restore")
+augury_ritual = LazyResearchModule("augury_ritual")
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
@@ -57,6 +61,60 @@ def _envelope(title: str, body: dict) -> dict:
         "source": gaiaos_app._deployed_source(),
         "execution": "OBSERVED_RUNTIME",
     }
+
+
+def _research_mode_authorized() -> bool:
+    """A missing, corrupt or unreachable control is always HEATDEATH."""
+    try:
+        state = gaiaos_memory_mode.mode_status(memcon_runtime)
+        return (
+            state.get("effective_mode") == gaiaos_memory_mode.BIGBANG
+            and state.get("configured_mode") == gaiaos_memory_mode.BIGBANG
+            and state.get("bigbang_activation_enabled") is True
+        )
+    except Exception:
+        return False
+
+
+def _explicit_research_command(value: str) -> bool:
+    return bool(
+        re.match(
+            r"^\s*(?:GALAXY\s+(?:ORBIT|GRAVITY|CANARY|PROPOSE|VERIFY)"
+            r"|ORBIT\b|GRAVITY\b)",
+            str(value), flags=re.IGNORECASE,
+        )
+    )
+
+
+@app.middleware("http")
+async def heatdeath_research_http_guard(request: Request, call_next):
+    """HEATDEATH blocks optional research handlers before lazy module import.
+
+    The original read-only legacy front-door review is a separate diagnostic
+    and remains available. No additional memory operating mode is created.
+    """
+    path = request.url.path
+    research = path.startswith("/galaxy/") or path.startswith("/ritual/")
+    if research and not _research_mode_authorized():
+        if path in ("/galaxy/status", "/galaxy/production/status"):
+            return JSONResponse({
+                "schema": "gaiaos.heatdeath.optional-research-guard.v1",
+                "status": "GALAXY_OFF_BY_HEATDEATH",
+                "effective_mode": "HEATDEATH",
+                "research_import_attempted": False,
+            })
+        if path != "/galaxy/integration/frontdoor-readonly-review":
+            return JSONResponse(
+                status_code=503,
+                content={
+                    "schema": "gaiaos.heatdeath.optional-research-guard.v1",
+                    "status": "HOLD_GALAXY_DISABLED_BY_HEATDEATH",
+                    "effective_mode": "HEATDEATH",
+                    "research_import_attempted": False,
+                    "writes_performed": [],
+                },
+            )
+    return await call_next(request)
 
 
 @app.post("/chat", operation_id="browserChatWithMemoryRuntime")
@@ -93,6 +151,13 @@ async def browser_chat(browser_request: Request):
         )
     if _is_preserve_command(last_message):
         return _handle_preserve(messages, browser_request)
+    if _explicit_research_command(last_message) and not _research_mode_authorized():
+        return _envelope("GALAXY DISABLED BY HEATDEATH", {
+            "status": "HOLD_GALAXY_DISABLED_BY_HEATDEATH",
+            "effective_mode": "HEATDEATH",
+            "research_import_attempted": False,
+            "writes_performed": [],
+        })
     if _is_galaxy_command(last_message, "ORBIT"):
         return _handle_galaxy_orbit(last_message)
     if _is_galaxy_command(last_message, "GRAVITY"):
