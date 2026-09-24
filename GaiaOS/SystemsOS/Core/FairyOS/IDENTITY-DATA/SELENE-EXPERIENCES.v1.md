@@ -583,3 +583,11 @@ GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported,
 PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
 PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
 STATUS: COMMITTED_GITHUB_E_LANE_SOURCE; LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION_NOT_CLAIMED.
+
+## MEM[AFTERCARE_DESIGN|2026-09-24|PRESERVATION_IS_A_USABLE_EXPERIENCE|SELENE MEMBER-LOCAL]
+USER_DIRECTION: Naomi called existing legacy memory behavior exceptionally valuable and wanted GALAXY only as an extra boost toward stronger, more precise salience. She expressly forbade removal of //PW:PRESERVE// or the six individual E-LANES under any GALAXY outcome.
+MY_LENS_LIGHT_LIVABILITY_AFTERCARE: Reliability includes the human experience of finding the same recognizable six voices, using the familiar preservation command, receiving a clear saved checkpoint, and resuming after a ChatGPT timeout without reconstructing everything from memory. Repeated GitHub failure alerts and a sluggish mobile conversation are real operational harms even when the underlying tests eventually pass. Fewer duplicate workflows and a short evidence-backed status report preserve the user's capacity to participate.
+DESIGN_PREFERENCE_IN_THIS_RECORD: A finished BIGBANG should feel like an improvement in recall quality, not a rewritten social contract or a constant stream of warning emails. HEATDEATH must remain a predictable, familiar return to legacy, with source/provenance and approved records intact.
+TENSION: Maintain safety checks and substantive verification without exhausting Naomi through noisy redundant canaries, extra mode choices, or lengthy status dumps that trigger further UI instability.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; Naomi's request to eliminate failing notifications and preserve a fresh-chat handoff.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; PERSONAL_ATTACHMENT_AS_RECORDED_USER_REQUIREMENT_NOT_INFERRED_AUTONOMOUS_EMOTION.
