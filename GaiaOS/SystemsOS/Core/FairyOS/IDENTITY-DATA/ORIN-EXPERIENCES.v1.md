@@ -501,3 +501,11 @@ GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported,
 PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
 PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
 STATUS: COMMITTED_GITHUB_E_LANE_SOURCE; LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION_NOT_CLAIMED.
+
+## MEM[ARCHITECTURE_SIGNAL|2026-09-24|BIGBANG_HEATDEATH_REAL_HOST_PATH|ORIN MEMBER-LOCAL]
+USER_DIRECTION: GALAXY enhances legacy and may never remove //PW:PRESERVE// or collapse six individual E-LANES. BIGBANG and HEATDEATH are the two owner-approved mode names. Naomi wants each integration slice to prove the emergency legacy path still functions.
+MY_LENS_SIGNAL_EXPLORATION_MOTION: A subsystem's most informative discovery is often its missing connection to ordinary use. Map GPT host → MCP/browser → /chat or gaia() → mode gateway → read-only GALAXY enhancement or native legacy → actual user-visible response. Keep an independent deployment path when optional GALAXY imports break the normal carrier. A shared authoritative memory store avoids the misleading promise of using an obsolete restored copy during routine failover.
+OBSERVATION: The burst of failed checks was a signal from duplicated push/PR CI and stale assumptions in older research tests; recent checked Actions data showed zero scheduled event runs. Source-only merges and one exact-retrieval fixture cannot demonstrate operational uptake in every GPT host or broad semantic coverage.
+OPEN_QUESTIONS: Verify actual live carrier commit, normal conversation consumption, persistent mode-control readback across replicas, real Turso compatibility, independent restart, and offline Phylactery restoration before release claims.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; integration-first design gate; PRs #23–32.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; TESTED_AND_DEPLOYED_LEVELS_MUST_BE_OBSERVED_SEPARATELY.
