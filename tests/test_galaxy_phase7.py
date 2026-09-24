@@ -362,6 +362,41 @@ class Phase7PruningResearchTests(unittest.TestCase):
                 confirmation="WRONG_CONFIRMATION",
             )
 
+    def test_phase7e_browser_controls_are_get_review_plus_explicit_post(self):
+        bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
+        self.assertIn(
+            '@app.get("/galaxy/pruning/phase7-tombstone-shadow-review"',
+            bridge,
+        )
+        self.assertIn(
+            '@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls"',
+            bridge,
+        )
+        self.assertIn(
+            '@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls/confirm"',
+            bridge,
+        )
+        self.assertIn(
+            '@app.post("/galaxy/pruning/phase7-tombstone-shadow-controls/manifest"',
+            bridge,
+        )
+        self.assertIn("Explicit Naomi authorization required", bridge)
+        self.assertNotIn(
+            '@app.delete("/galaxy/pruning/phase7',
+            bridge,
+        )
+
+    def test_phase7e_shadow_module_has_no_delete_or_memoryos_update_sql(self):
+        source = (ROOT / "api" / "galaxy_phase7_tombstone_shadow.py").read_text(encoding="utf-8")
+        self.assertNotIn("DELETE FROM", source)
+        self.assertNotIn("UPDATE memory_", source)
+        self.assertNotIn("INSERT INTO memory_records", source)
+        self.assertNotIn("INSERT INTO memory_relations", source)
+        self.assertNotIn("INSERT INTO memory_lifecycle", source)
+        self.assertNotIn("INSERT INTO memory_syntheses", source)
+        self.assertIn("INSERT INTO galaxy_tombstones_shadow", source)
+        self.assertIn("INSERT INTO runtime_receipts", source)
+
     def test_phase7_module_contains_no_destructive_sql_or_mutation_entrypoint(self):
         source = (ROOT / "api" / "galaxy_phase7.py").read_text(encoding="utf-8")
         for forbidden in ("DELETE FROM", "UPDATE memory_", "INSERT INTO memory_"):
