@@ -74,6 +74,10 @@ def galaxy_pass(query, limit, *, bad_provenance=False, dirty=False):
     }
     return {
         "schema": gateway.GALAXY_SCHEMA,
+        "scope": "MemoryOS",
+        "execution": "READ_ONLY",
+        "candidate_set_preserved": True,
+        "provenance_preserved": True,
         "status": "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
         "ranking": gateway.GALAXY_RANKING,
         "galaxy_weighting_applied": True,
@@ -212,10 +216,40 @@ class GatewayTests(unittest.TestCase):
             self.assertEqual(out["galaxy_error_type"], "ValueError")
             self.assertEqual(out["writes_performed"], [])
 
+    def test_galaxy_invalid_history_and_linked_context_fall_back(self):
+        wrong_history = galaxy_pass("gravity", 4)
+        wrong_history["historical_context"] = [{
+            "record": {"record_id": "HIST", "scope": "VERA_E_LANE", "source": "s"},
+            "source_provenance": "s",
+            "governing_state": {"record_id": "HIST", "current_default_eligible": False},
+        }]
+        bad_link = galaxy_pass("gravity", 4)
+        bad_link["verified_linked_context"] = [{
+            "record": {"record_id": "LINK", "scope": "MemoryOS", "source": "s"},
+            "source_provenance": "s", "context_only": True,
+            "governing_state": {"record_id": "LINK"},
+            "verified_direct_primary_edges": [{
+                "edge_id": "UNRELATED", "source_record_id": "LINK",
+                "target_record_id": "NON_PRIMARY",
+            }],
+        }]
+        for malformed in (wrong_history, bad_link):
+            with self.subTest(case=malformed), patch.object(
+                gateway.mode, "mode_status", return_value=bigbang_control()
+            ), patch.object(gateway.importlib, "import_module",
+                            return_value=types.SimpleNamespace(
+                                operational=lambda *_: malformed)):
+                out = gateway.read(self.rt, "gravity", "MemoryOS", 4)
+            self.assertEqual(out["status"], "PASS_HEATDEATH_FALLBACK")
+            self.assertFalse(out["galaxy_applied"])
+
     def test_galaxy_no_match_is_explicit_hold_not_fabricated(self):
         def no_match(*_):
             return {
                 "schema": gateway.GALAXY_SCHEMA,
+                "scope": "MemoryOS",
+                "execution": "READ_ONLY",
+                "memory_context_authority": "NONE",
                 "status": "HOLD_NO_CONFIDENT_GALAXY_MATCH",
                 "records": [],
                 "writes_performed": [],
