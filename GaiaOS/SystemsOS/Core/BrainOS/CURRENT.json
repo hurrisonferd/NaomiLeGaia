@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_GALAXY_PHASE5_MUTATION_DESIGN_SOURCE_CI_READY_DEPLOY_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE5_MUTATION_DESIGN_LIVE_PASS_CONTROL_EXPOSURE_AUTH_PENDING",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -115,8 +115,8 @@
     "galaxy_phase5_synthesis_read_only_self_test_passed": true,
     "galaxy_phase5_synthesis_live_fixture_observed": true,
     "galaxy_phase5_mutation_design_source_ready": true,
-    "galaxy_phase5_mutation_design_deployed": false,
-    "galaxy_phase5_mutation_design_live_observed": false
+    "galaxy_phase5_mutation_design_deployed": true,
+    "galaxy_phase5_mutation_design_live_observed": true
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -144,7 +144,7 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Phase 5 read-only synthesis provenance is live-proven. Naomi explicitly authorized mutation design. Source now contains a reversible shadow synthesis lifecycle with exact source set and fixed statement, but no effectful browser mutation route. The synthesis remains outside MemoryOS scope through proposal and verification, and revocation is non-deleting. Guarded CI run 35936319728 succeeded. Deployment and live read-only mutation-design review are pending.",
+  "claim_ceiling": "Phase 5 mutation design is live-observed PASS through the read-only deployed review. The exact synthesis statement and two-source provenance set are fixed, proposal remains outside MemoryOS in GALAXY_SYNTHESIS_SHADOW, verification remains shadow-scoped, revocation is non-deleting, sources/provenance are preserved, no existing non-revoked synthesis was found, and no retrieval/global-weighting behavior changes. No effectful Phase-5 mutation route is exposed. Separate Naomi authorization is required before control exposure.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
@@ -710,7 +710,7 @@
     "phase4_controlled_supersedes_edge_id": "EDGE-45ba86cf37414c418de4aa0298122c14",
     "phase4_controlled_final_edge_status": "REVOKED",
     "phase4_controlled_final_target_state": "CURRENT_REVISED_CONTEXT",
-    "phase5_status": "MUTATION_DESIGN_SOURCE_CI_READY_DEPLOY_PENDING",
+    "phase5_status": "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN",
     "phase5_version": "galaxy.phase5.synthesis-consolidation.v1",
     "phase5_protocol": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE5-SYNTHESIS-CONSOLIDATION.v1.md",
     "phase5_source_ready": true,
@@ -721,7 +721,7 @@
     "phase5_verifier_summary": "173/173 PASS",
     "phase5_live_fixture_observed": true,
     "phase5_mutation_route_exists": false,
-    "phase5_next_gate": "DEPLOY_VERIFY_THEN_RUN_READ_ONLY_MUTATION_DESIGN_REVIEW",
+    "phase5_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE",
     "phase5_live_fixture_status": "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
     "phase5_source_provenance_complete": true,
     "phase5_synthesis_statement_generated": false,
@@ -737,7 +737,10 @@
     "phase5_mutation_design_ci_run_id": 35936319728,
     "phase5_mutation_design_ci_status": "SUCCESS",
     "phase5_mutation_design_route": "/galaxy/synthesis/phase5-mutation-design-review",
-    "phase5_shadow_scope": "GALAXY_SYNTHESIS_SHADOW"
+    "phase5_shadow_scope": "GALAXY_SYNTHESIS_SHADOW",
+    "phase5_mutation_design_live_observed": true,
+    "phase5_existing_nonrevoked_synthesis": null,
+    "phase5_mutation_control_exposure_authorization_pending": true
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
