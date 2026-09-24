@@ -159,6 +159,48 @@ class Phase7PruningResearchTests(unittest.TestCase):
         self.assertIn("SYNTHESIS_PROVENANCE_DEPENDENCY", result["research_hold_reasons"])
         self.assertFalse(result["research_candidate"])
 
+    def test_zero_write_readback_wrapper_proves_candidate_path_unchanged(self):
+        self._verify_supersedes("MEM-P7-NEW", "MEM-P7-OLD")
+        self._set_lifecycle("MEM-P7-OLD", "COMPRESSED")
+        before = self._counts()
+        result = p7.review_with_readback(runtime, "MEM-P7-OLD")
+        self.assertEqual(result["status"], "PASS_READ_ONLY_RESEARCH_CANDIDATE", result)
+        self.assertEqual(result["readback_status"], "PASS_ZERO_WRITE_READBACK", result)
+        self.assertTrue(result["zero_write_readback"])
+        self.assertTrue(all(result["readback_checks"].values()))
+        self.assertEqual(result["database_counts_before"], result["database_counts_after"])
+        self.assertEqual(self._counts(), before)
+
+    def test_zero_write_readback_wrapper_proves_hold_path_unchanged(self):
+        self._set_lifecycle("MEM-P7-CURRENT", "COMPRESSED")
+        before = self._counts()
+        result = p7.review_with_readback(runtime, "MEM-P7-CURRENT")
+        self.assertEqual(result["status"], "HOLD")
+        self.assertEqual(result["readback_status"], "PASS_ZERO_WRITE_READBACK", result)
+        self.assertTrue(result["zero_write_readback"])
+        self.assertEqual(self._counts(), before)
+
+    def test_carrier_exposes_only_authenticated_get_fixture_surface(self):
+        bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
+        docker = (ROOT / "api" / "Dockerfile").read_text(encoding="utf-8")
+        self.assertIn("import galaxy_phase7", bridge)
+        self.assertIn(
+            '@app.get("/galaxy/pruning/phase7-fixture-review"',
+            bridge,
+        )
+        segment = bridge.split(
+            '@app.get("/galaxy/pruning/phase7-fixture-review"', 1
+        )[1].split(
+            '@app.get("/galaxy/lifecycle/phase6-fixture-review"', 1
+        )[0]
+        self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
+        self.assertIn("galaxy_phase7.review_with_readback(", segment)
+        self.assertNotIn("@app.post(", segment)
+        self.assertNotIn("galaxy_phase7.execute", bridge)
+        self.assertNotIn("galaxy_phase7.prune", bridge)
+        self.assertNotIn("galaxy_phase7.delete", bridge)
+        self.assertIn("COPY api/galaxy_phase7.py ./galaxy_phase7.py", docker)
+
     def test_phase7_module_contains_no_destructive_sql_or_mutation_entrypoint(self):
         source = (ROOT / "api" / "galaxy_phase7.py").read_text(encoding="utf-8")
         for forbidden in ("DELETE FROM", "UPDATE memory_", "INSERT INTO memory_"):

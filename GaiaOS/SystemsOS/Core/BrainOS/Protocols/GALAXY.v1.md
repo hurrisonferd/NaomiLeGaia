@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 6 CLOSED LIVE + RESTART-PERSISTENCE PROVEN / PHASE 7A READ-ONLY PRUNING RESEARCH SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 6 CLOSED LIVE + RESTART-PERSISTENCE PROVEN / PHASE 7B READ-ONLY LIVE REVIEW SURFACE SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4919,3 +4919,24 @@ Phase 7A can classify only PRUNABLE_RESEARCH_ONLY candidates. It cannot set life
 PHYSICAL_PRUNING_ENABLED: false
 PRODUCTION_ATTENUATION_ENABLED: false
 PHASE7A_LIVE_DEPLOYMENT_PROVEN: false
+
+
+## Phase 7B source checkpoint 2026-09-24
+
+The first bounded live review surface is source/CI proven:
+
+- GET /galaxy/pruning/phase7-fixture-review
+- authenticated browser session required
+- exact controlled Phase-6 fixture only
+- before/after monitored database readback
+- no POST pair
+- no PRUNABLE transition
+- no physical deletion
+- no production attenuation
+
+Source gate:
+- workflow run 36025950714
+- job 107722396258
+- conclusion SUCCESS
+
+Live deployment and live zero-write readback are not yet claimed. Next gate is deploy current main, authenticate, call the exact GET surface, and preserve the returned readback evidence.

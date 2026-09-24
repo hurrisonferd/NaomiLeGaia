@@ -15,6 +15,12 @@ PHYSICAL_PRUNING_ENABLED = False
 PRODUCTION_ATTENUATION_ENABLED = False
 RESEARCH_LABEL = "PRUNABLE_RESEARCH_ONLY"
 REQUIRED_LIFECYCLE_STATE = "COMPRESSED"
+FIXTURE_RECORD_ID = "MEM-00b3fbfd4d73404f97a95c238596ab94"
+MONITORED_TABLES = (
+    "memory_records", "memory_relations", "memory_gravity", "memory_importance",
+    "memory_lifecycle", "memory_lifecycle_events", "memory_syntheses",
+    "runtime_receipts",
+)
 
 DESTRUCTIVE_GATES = {
     "tombstone_protocol_implemented": False,
@@ -166,5 +172,99 @@ def review(runtime: Any, record_id: str) -> dict[str, Any]:
             "Phase 7A may identify a research candidate only. "
             "It cannot set PRUNABLE, delete evidence, attenuate production retrieval, "
             "or infer destructive authority."
+        ),
+    }
+
+
+def _readback_snapshot(runtime: Any, record_id: str) -> dict[str, Any]:
+    """Read a deterministic evidence snapshot around one record without writing."""
+    runtime.initialize()
+    with runtime._db() as conn:
+        counts = {
+            table: runtime._fetchone_dict(
+                conn, f"SELECT COUNT(*) AS n FROM {table}"
+            )["n"]
+            for table in MONITORED_TABLES
+        }
+        record = runtime._fetchone_dict(
+            conn, "SELECT * FROM memory_records WHERE record_id=?", (record_id,)
+        )
+        lifecycle = runtime._fetchone_dict(
+            conn, "SELECT * FROM memory_lifecycle WHERE record_id=?", (record_id,)
+        )
+        events = runtime._fetchall_dicts(
+            conn,
+            """SELECT * FROM memory_lifecycle_events
+               WHERE record_id=? ORDER BY rowid ASC""",
+            (record_id,),
+        )
+        relations = runtime._fetchall_dicts(
+            conn,
+            """SELECT * FROM memory_relations
+               WHERE source_record_id=? OR target_record_id=?
+               ORDER BY edge_id ASC""",
+            (record_id, record_id),
+        )
+        syntheses = runtime._fetchall_dicts(
+            conn,
+            """SELECT * FROM memory_syntheses
+               WHERE synthesis_record_id=? OR source_record_ids_json LIKE ?
+               ORDER BY synthesis_record_id ASC""",
+            (record_id, f"%{record_id}%"),
+        )
+        receipts = runtime._fetchall_dicts(
+            conn,
+            """SELECT * FROM runtime_receipts
+               WHERE record_id=? ORDER BY receipt_id ASC""",
+            (record_id,),
+        )
+    return {
+        "counts": counts,
+        "record": record,
+        "lifecycle": lifecycle,
+        "lifecycle_events": events,
+        "relations": relations,
+        "syntheses": syntheses,
+        "receipts_for_record": receipts,
+    }
+
+
+def review_with_readback(
+    runtime: Any,
+    record_id: str = FIXTURE_RECORD_ID,
+) -> dict[str, Any]:
+    """Run the read-only reviewer and prove the observed database view did not change."""
+    record_id = str(record_id or "").strip()
+    before = _readback_snapshot(runtime, record_id)
+    result = review(runtime, record_id)
+    after = _readback_snapshot(runtime, record_id)
+
+    checks = {
+        "monitored_table_counts_unchanged": before["counts"] == after["counts"],
+        "record_unchanged": before["record"] == after["record"],
+        "lifecycle_unchanged": before["lifecycle"] == after["lifecycle"],
+        "lifecycle_history_unchanged": before["lifecycle_events"] == after["lifecycle_events"],
+        "relations_unchanged": before["relations"] == after["relations"],
+        "synthesis_rows_unchanged": before["syntheses"] == after["syntheses"],
+        "record_receipts_unchanged": before["receipts_for_record"] == after["receipts_for_record"],
+        "declared_no_writes": result.get("writes_performed") == [],
+        "physical_delete_false": result.get("physical_delete") is False,
+        "production_retrieval_changed_false": result.get("production_retrieval_changed") is False,
+        "destructive_eligibility_false": result.get("destructive_eligibility") is False,
+    }
+    zero_write = all(checks.values())
+
+    return {
+        **result,
+        "live_surface": "PHASE7B_BOUNDED_READ_ONLY_REVIEW",
+        "readback_status": "PASS_ZERO_WRITE_READBACK" if zero_write else "HOLD_READBACK",
+        "zero_write_readback": zero_write,
+        "readback_checks": checks,
+        "database_counts_before": before["counts"],
+        "database_counts_after": after["counts"],
+        "proof_boundary": (
+            "This readback compares the monitored database view immediately before and after "
+            "the Phase-7 review call. It proves zero observed writes for this request when all "
+            "checks pass; it does not authorize PRUNABLE, deletion, or production attenuation."
         ),
     }

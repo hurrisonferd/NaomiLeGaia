@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: SOURCE BUILD STARTED / NONDESTRUCTIVE RESEARCH ONLY
+STATUS: PHASE 7A MERGED / PHASE 7B LIVE READ-ONLY SURFACE SOURCE BUILD
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -67,3 +67,29 @@ Source and offline tests can prove that this implementation performs read-only c
 ## Next gate
 
 After source CI passes, Phase 7B may add a bounded live read-only review endpoint or controlled fixture review. It must still perform zero destructive effects. Tombstones, actual PRUNABLE transitions, physical deletion, and production attenuation remain separately gated.
+
+
+## Phase 7B — bounded live read-only surface
+
+Phase 7B exposes exactly one initial carrier surface:
+
+`GET /galaxy/pruning/phase7-fixture-review`
+
+Properties:
+- browser-session authentication is required;
+- the route accepts no mutation body and exposes no POST pair;
+- it reviews only the exact controlled Phase-6 fixture ID at this stage;
+- it executes the Phase-7 reviewer between deterministic before/after evidence snapshots;
+- it compares monitored table counts plus the controlled record, lifecycle row, lifecycle history, related edges, synthesis rows and record receipts;
+- it returns `PASS_ZERO_WRITE_READBACK` only if every observed before/after check is unchanged;
+- classification may still be HOLD. Zero-write proof and pruning eligibility are deliberately independent.
+
+The Phase-6 fixture currently ended its proven campaign ACTIVE. Therefore a live Phase-7B fixture review is expected to HOLD pruning eligibility unless its state has separately changed, while still proving zero observed writes if the surface is behaving correctly.
+
+No generic record mutation route, PRUNABLE transition, physical delete, production attenuation or destructive authorization is added by Phase 7B.
+
+### Phase 7B proof ladder
+
+SOURCE -> CI -> DEPLOY MAIN -> AUTHENTICATED GET -> ZERO-WRITE READBACK -> PRESERVE RECEIPT.
+
+A successful source gate does not prove deployment. A successful live GET does not prove destructive pruning safety.
