@@ -20,6 +20,7 @@ COPY api/galaxy_quality.py ./galaxy_quality.py
 COPY api/galaxy_phase3_exit.py ./galaxy_phase3_exit.py
 COPY api/galaxy_phase4.py ./galaxy_phase4.py
 COPY api/galaxy_phase5.py ./galaxy_phase5.py
+COPY api/galaxy_phase5_controls.py ./galaxy_phase5_controls.py
 COPY api/augury_ritual.py ./augury_ritual.py
 COPY api/memcon_entrypoint.py ./memcon_entrypoint.py
 COPY api/browser_memcon_bridge.py ./browser_memcon_bridge.py
