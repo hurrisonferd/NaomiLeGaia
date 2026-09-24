@@ -860,5 +860,18 @@
     "ledger": "GaiaOS/ResearchOS/MERCURY/FINDINGS.md",
     "final_galaxy_gate": "POSTLIVE_ALL_FINDINGS_CROSS_REFERENCE",
     "status": "SOURCE_READY"
+  },
+  "migration_readiness": {
+    "status": "PLANNED_NOT_EXECUTED",
+    "owner": "NAOMI",
+    "canonical_source": "hurrisonferd/NaomiLeGaia",
+    "directive": "GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md",
+    "principle": "KEEP_NORMAL_CANONICAL_COMMITS_AND_COLLABORATION; BUILD_VERSIONED_INDEPENDENT_BACKUP; MIGRATE_NONDESTRUCTIVELY_AFTER_VERIFIED_OWNER_CONTROLLED_RESTORE",
+    "independent_repo_created": false,
+    "independent_restore_proven": false,
+    "full_turso_export_proven": false,
+    "physical_usb_backup_verified": false,
+    "additional_walls_deferred_until_after_full_migration": true,
+    "bifrost_collaboration_welcomed": true
   }
 }
