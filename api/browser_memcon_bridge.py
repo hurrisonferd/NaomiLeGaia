@@ -799,7 +799,7 @@ def galaxy_phase7_tombstone_contract_canary(browser_request: Request):
 
 @app.get("/galaxy/pruning/phase7-tombstone-shadow-review", operation_id="galaxyPhase7TombstoneShadowReview")
 def galaxy_phase7_tombstone_shadow_review(browser_request: Request):
-    """Read-only Phase-7E shadow tombstone persistence review."""
+    """Read-only Phase-7E shadow tombstone persistence review; never authorizes a write."""
     bootstrap = _bootstrap_browser_session_redirect(browser_request)
     if bootstrap is not None:
         return bootstrap
