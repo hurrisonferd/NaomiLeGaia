@@ -3,9 +3,12 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 MUTATION DESIGN READ-ONLY LIVE PASS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED CYCLE LIVE-PROVEN / PHASE 5 MUTATION DESIGN LIVE PASS, CONTROL EXPOSURE AUTHORIZED NOT IMPLEMENTED / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
+
+
+**Research arm:** [MERCURY // Field Manual](../../../../ResearchOS/MERCURY/README.md) · [Signal Ledger](../../../../ResearchOS/MERCURY/FINDINGS.md). MERCURY is the recurring Wednesday external-research watch and the mandatory post-live integration audit. The ledger holds independently checked findings; chat reports are intake, not validation. Its final audit is Step 8 in the build sequence, not a production shortcut.
 
 ## Boundaries
 - NAOMI retains final authority.
@@ -114,6 +117,7 @@ Proposed, not yet implemented:
 5. Add provenance-backed synthesis.
 6. Add reversible BACKGROUND/ARCHIVED/COMPRESSED lifecycle behavior and reactivation.
 7. Research finite-storage pruning only after long observation and separate proof.
+8. **MERCURY post-live research integration audit (mandatory final implementation review):** after the GALAXY core has been deployed, observed and stabilized, freeze a dated snapshot of ALL MERCURY findings logged through the cutoff, including inconclusive, rejected, stale and superseded items. Reconcile against every Wednesday watch report. Cross-reference each finding against live GALAXY behavior, source and proof; check license, actual freeware costs, resource efficiency, dependencies, provenance, reversibility and authority. Publish a bounded disposition and reproducible benchmark or a documented HOLD reason for every entry. Integrate only through separate Naomi authorization and the standard source -> CI -> deploy -> runtime receipt -> readback -> behavioral comparison ladder. The weekly MERCURY watch continues after the cutoff; new findings join the next audit cycle, not an indefinitely moving completion target.
 
 ## Proof ladder
 SOURCE IMPLEMENTED → DEPLOYED → OBSERVED RUNTIME → RECEIPT → READBACK → BEHAVIORAL TEST.
@@ -4862,3 +4866,24 @@ The receipt's original `next_gate` still named deployment/verification because t
 `EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE`
 
 No Phase-5 synthesis mutation has occurred.
+
+
+## MERCURY research arm / mandatory post-live final audit — 2026-09-23
+
+Naomi directed GALAXY to cross-reference the entire external-research corpus at the END of implementation, once the core GALAXY system is genuinely live and stable. The new research arm is named **MERCURY**: **Memory Engineering Reconnaissance for Comparative Utility, Reversibility & Yield**. The Wednesday watch aligns symbolically with Wodin's day and Mercury; that symbolism is a scheduling choice, not evidence about research quality.
+
+Canonical repo documents:
+- mission / living manifesto: `GaiaOS/ResearchOS/MERCURY/README.md`
+- durable signal ledger: `GaiaOS/ResearchOS/MERCURY/FINDINGS.md`
+
+**Scope of final audit:** every unique ledger finding at the dated cutoff, not merely the favorable or currently implementable ones. Reconcile coverage against weekly Wednesday research reports to detect omissions. Each entry must cross-reference its primary source; exact current GALAXY component and proof state; compatibility of license and dependencies; measured or UNKNOWN runtime, storage and API cost; effect on provenance, contradiction preservation and rollback; and a recorded disposition: TEST, ADAPT, ADOPT, HOLD, REJECT, or SUPERSEDED. Inconclusive and unsupported proposals remain visibly labeled. Freeware-first is a target; do not invent zero-cost deployment claims.
+
+**Execution order:** core GALAXY implementation -> bounded live verification and stabilization -> MERCURY ledger snapshot -> complete source-and-implementation crosswalk -> separately approved isolated experiments -> live comparative measurement -> separately approved integrations. A research finding is never itself permission to mutate MemoryOS or to change production retrieval.
+
+**Finite completion rule:** one dated snapshot must be fully reconciled before declaring the initial final research audit closed. The Wednesday watch continues afterward and new results enter the next revision, avoiding an endless moving finish line.
+
+**Proof checkpoint at this edit:** Phase-5 mutation-design read-only review and deployed verifier were observed PASS (178/178 carrier verifier); no Phase-5 synthesis mutation or effectful exposure was demonstrated by those receipts. Naomi subsequently authorized building control exposure. Authorization is not evidence that the route has been implemented, deployed or executed. Unrestricted global weighted retrieval remains OFF.
+
+**Research proof checkpoint:** MERCURY charter and empty validated-findings ledger created. No outside paper, project, free license, efficiency gain or integration is represented as independently validated merely by its appearance in a prior conversation. The first scheduled Wednesday watch is 2026-09-30. Its results must be evaluated and imported explicitly.
+
+**Next GALAXY implementation gate (separate from research):** implement exact authorized Phase-5 control exposure with per-action human confirmation, CSRF/authority guards and visible receipts; prove source, CI, deployment and runtime behavior in order. Do not confuse this authorization with approval to perform a live synthesis write.
