@@ -2270,11 +2270,12 @@ def galaxy_frontdoor_readonly_review(browser_request: Request):
             "context_limit": 3,
             "context_depth": 0,
         }
-        control = gaiaos_app._frontdoor_packet(**args)
+        control = gaiaos_app._frontdoor_packet(**args, include_memory=False)
         opted_in = gaiaos_app._frontdoor_packet(
             **args,
             include_memory=True,
             memory_query="GALAXY-CAL-CORE",
+            memory_mode="legacy",
         )
         after = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
         memory = opted_in.get("memory_context") or {}
@@ -2334,6 +2335,100 @@ def galaxy_frontdoor_readonly_review(browser_request: Request):
             "physical_delete": False,
             "production_retrieval_changed": False,
             "proof_boundary": "Read-only review failed; do not infer deployment or source continuity.",
+        }
+
+
+@app.get("/galaxy/integration/operational-review", operation_id="galaxyOperationalReview")
+def galaxy_operational_review(browser_request: Request):
+    """One authenticated read-only live gate for default-on GALAXY and rollback."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        before = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
+        query = "calibration core revision memory context"
+        args = {
+            "request": query,
+            "requested_members": ["ANVIL"],
+            "max_members": 1,
+            "include_context": False,
+            "context_limit": 4,
+            "context_depth": 0,
+        }
+        normal = gaiaos_app._frontdoor_packet(**args)
+        disabled = gaiaos_app._frontdoor_packet(**args, include_memory=False)
+        negative = gaiaos_app._frontdoor_packet(
+            **{**args, "request": "zzyxq completelyunmatched 984f2a"},
+        )
+        after = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
+        memory = normal.get("memory_context") or {}
+        negative_memory = negative.get("memory_context") or {}
+        records = memory.get("records") or []
+        checks = {
+            "default_on": "memory_context" in normal,
+            "operational_ranker_engaged": (
+                memory.get("status") == "PASS_GALAXY_OPERATIONAL_RETRIEVAL"
+                and memory.get("ranking") == "GALAXY_STATEMENT_FIRST_80_20_RELEVANCE_TIER_GUARDED"
+                and memory.get("galaxy_weighting_applied") is True
+            ),
+            "evidence_retrieved": bool(records),
+            "memoryos_scope_only": bool(records) and all(
+                (item.get("record") or {}).get("scope") == "MemoryOS"
+                for item in records
+            ),
+            "provenance_present": bool(records) and all(
+                item.get("source_provenance")
+                and item.get("source_provenance") == (item.get("record") or {}).get("source")
+                for item in records
+            ),
+            "governing_and_lifecycle_present": bool(records) and all(
+                (item.get("governing_state") or {}).get("state")
+                and "lifecycle" in item for item in records
+            ),
+            "identity_dispatch_unchanged": normal.get("operators") == disabled.get("operators"),
+            "explicit_off_works": "memory_context" not in disabled,
+            "negative_control_no_fabrication": (
+                negative_memory.get("status", "").startswith("HOLD")
+                and not negative_memory.get("records")
+            ),
+            "e_lanes_not_modified": memory.get("e_lanes_modified") is False,
+            "approval_safeguards_remain": (
+                memory.get("automatic_capture") is False
+                and memory.get("automatic_promotion") is False
+                and memory.get("physical_delete") is False
+            ),
+            "counts_unchanged_no_writes": before == after and memory.get("writes_performed") == [],
+        }
+        return {
+            "schema": "gaiaos.galaxy.operational-integration-review.v1",
+            "execution": "OBSERVED_RUNTIME_FOR_THIS_CALL",
+            "status": "PASS_GALAXY_DEFAULT_ON" if all(checks.values()) else "HOLD",
+            "carrier_source": gaiaos_app._deployed_source(),
+            "carrier_boot_id": memcon_runtime.BOOT_ID,
+            "kill_switch_enabled": gaiaos_app.os.getenv("GALAXY_FRONTDOOR_KILL_SWITCH", "").strip() == "1",
+            "normal": normal,
+            "explicit_off": disabled,
+            "negative_control": negative,
+            "checks": checks,
+            "runtime_counts_before": before,
+            "runtime_counts_after": after,
+            "writes_performed": [],
+            "physical_delete": False,
+            "proof_boundary": (
+                "Default-on read-only retrieval is proven for one controlled query and one "
+                "negative control, with legacy off switch and stable protected tables. "
+                "This does not prove universal natural-language correctness, automatic E-LANE "
+                "writes, arbitrary record synthesis, destructive recovery or SovereignOS cutover."
+            ),
+        }
+    except Exception as exc:
+        return {
+            "schema": "gaiaos.galaxy.operational-integration-review.v1",
+            "status": "HOLD",
+            "error_type": type(exc).__name__,
+            "writes_performed": [],
+            "physical_delete": False,
         }
 
 
