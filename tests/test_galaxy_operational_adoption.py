@@ -151,9 +151,9 @@ class GALAXYOperationalTests(unittest.TestCase):
         self.assertIn("include_memory: bool = True", app.split("def gaia(", 1)[1])
         self.assertIn("def _host_memsav(", host)
         self.assertIn("approved", host)
-        brain = (ROOT / "GaiaOS" / "SystemsOS" / "Core" / "BrainOS" / "CURRENT.json").read_text(encoding="utf-8")
+        profiles = (ROOT / "GaiaOS" / "SystemsOS" / "Core" / "FairyOS" / "OPERATOR-PROFILES.v1.json").read_text(encoding="utf-8")
         for member in ("VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"):
-            self.assertIn(member, brain)
+            self.assertIn(member, profiles)
 
     def test_live_review_is_browser_authenticated_and_read_only(self):
         source = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
