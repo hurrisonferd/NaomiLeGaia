@@ -209,8 +209,7 @@ def initialize() -> None:
                 reason TEXT NOT NULL,
                 authority TEXT NOT NULL,
                 receipt_id TEXT NOT NULL UNIQUE,
-                FOREIGN KEY(record_id) REFERENCES memory_records(record_id),
-                FOREIGN KEY(receipt_id) REFERENCES runtime_receipts(receipt_id)
+                FOREIGN KEY(record_id) REFERENCES memory_records(record_id)
             );
             CREATE INDEX IF NOT EXISTS idx_lifecycle_events_record
                 ON memory_lifecycle_events(record_id, changed_at);
