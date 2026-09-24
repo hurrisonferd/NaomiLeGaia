@@ -5,6 +5,8 @@ on:
     paths:
       - "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
       - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
+      - "GaiaOS/LOAD.v1.md"
       - "GaiaOS/CURRENT.json"
       - "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json"
       - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md"
