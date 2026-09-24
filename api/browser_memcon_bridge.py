@@ -19,19 +19,23 @@ import memcon_runtime
 import gaiaos_memory_mode
 import gaiaos_memory_gateway
 import gaiaos_chat_memory
-import galaxy_production
-import galaxy_quality
-import galaxy_phase3_exit
-import galaxy_phase4
-import galaxy_phase5
-import galaxy_phase5_controls
-import galaxy_phase6
-import galaxy_phase6_controls
-import galaxy_phase7
-import galaxy_phase7_tombstone
-import galaxy_phase7_tombstone_shadow
-import galaxy_phase7_isolated_restore
-import augury_ritual
+from gaiaos_optional_research import LazyResearchModule
+
+# Research functions stay registered but their experimental implementations
+# cannot break the HEATDEATH primary browser app during module import.
+galaxy_production = LazyResearchModule("galaxy_production")
+galaxy_quality = LazyResearchModule("galaxy_quality")
+galaxy_phase3_exit = LazyResearchModule("galaxy_phase3_exit")
+galaxy_phase4 = LazyResearchModule("galaxy_phase4")
+galaxy_phase5 = LazyResearchModule("galaxy_phase5")
+galaxy_phase5_controls = LazyResearchModule("galaxy_phase5_controls")
+galaxy_phase6 = LazyResearchModule("galaxy_phase6")
+galaxy_phase6_controls = LazyResearchModule("galaxy_phase6_controls")
+galaxy_phase7 = LazyResearchModule("galaxy_phase7")
+galaxy_phase7_tombstone = LazyResearchModule("galaxy_phase7_tombstone")
+galaxy_phase7_tombstone_shadow = LazyResearchModule("galaxy_phase7_tombstone_shadow")
+galaxy_phase7_isolated_restore = LazyResearchModule("galaxy_phase7_isolated_restore")
+augury_ritual = LazyResearchModule("augury_ritual")
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
