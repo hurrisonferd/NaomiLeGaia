@@ -313,7 +313,7 @@ def mutation_design_review(runtime: Any) -> dict[str, Any]:
             "mutation_route_exposed": False,
         },
         "next_gate": (
-            "DEPLOY_AND_VERIFY_PHASE5_MUTATION_DESIGN_SOURCE"
+            "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE"
             if not hold_reasons
             else "REPAIR_OR_RESOLVE_HOLD"
         ),
