@@ -2251,6 +2251,92 @@ def live_vaskon_test(browser_request: Request):
     except Exception as exc:
         return _error_page("Live VASKON test failed", exc)
 
+@app.get("/galaxy/integration/frontdoor-readonly-review", operation_id="galaxyFrontdoorReadonlyReview")
+def galaxy_frontdoor_readonly_review(browser_request: Request):
+    """Authenticated one-tap proof for default-off versus opt-in MemoryOS context."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    try:
+        # This fixture was independently observed in the prior live lifecycle test.
+        fixture_id = "MEM-00b3fbfd4d73404f97a95c238596ab94"
+        before = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
+        args = {
+            "request": "Inspect GALAXY calibration source evidence",
+            "requested_members": ["ANVIL"],
+            "max_members": 1,
+            "include_context": False,
+            "context_limit": 3,
+            "context_depth": 0,
+        }
+        control = gaiaos_app._frontdoor_packet(**args)
+        opted_in = gaiaos_app._frontdoor_packet(
+            **args,
+            include_memory=True,
+            memory_query="GALAXY-CAL-CORE",
+        )
+        after = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
+        memory = opted_in.get("memory_context") or {}
+        found = next(
+            (
+                item for item in memory.get("records", [])
+                if (item.get("record") or {}).get("record_id") == fixture_id
+            ),
+            None,
+        )
+        checks = {
+            "default_frontdoor_memory_absent": "memory_context" not in control,
+            "optin_legacy_read_pass": memory.get("status") == "PASS_SHADOW_LEGACY_READ",
+            "known_fixture_retrieved": bool(found),
+            "record_source_provenance_preserved": bool(found and
+                (found.get("record") or {}).get("source") and
+                found.get("source_provenance") == (found.get("record") or {}).get("source")),
+            "governing_state_present": bool(found and
+                (found.get("governing_state") or {}).get("state")),
+            "council_dispatch_unchanged": control.get("operators") == opted_in.get("operators"),
+            "dictionary_context_unchanged": control.get("context") == opted_in.get("context"),
+            "legacy_ranking_only": memory.get("ranking") == "LEGACY_UNWEIGHTED_CONTROL"
+                and memory.get("galaxy_weighting_applied") is False,
+            "no_production_retrieval_change": memory.get("production_retrieval_changed") is False,
+            "no_production_writes": memory.get("writes_performed") == []
+                and before == after,
+        }
+        return {
+            "schema": "gaiaos.galaxy.frontdoor-readonly-review.v1",
+            "execution": "OBSERVED_RUNTIME_FOR_THIS_CALL",
+            "status": "PASS_READ_ONLY_INTEGRATION" if all(checks.values()) else "HOLD",
+            "carrier_source": gaiaos_app._deployed_source(),
+            "carrier_boot_id": memcon_runtime.BOOT_ID,
+            "fixture_record_id": fixture_id,
+            "control": control,
+            "opted_in": opted_in,
+            "checks": checks,
+            "runtime_counts_before": before,
+            "runtime_counts_after": after,
+            "writes_performed": [],
+            "production_retrieval_changed": False,
+            "physical_delete": False,
+            "proof_boundary": (
+                "This tests one exact known MemoryOS fixture through the normal "
+                "gaia() front-door packet with opt-in legacy retrieval and an OFF "
+                "control. It does not prove general natural-language retrieval "
+                "quality, default production weighting, or Council adoption."
+            ),
+        }
+    except Exception as exc:
+        return {
+            "schema": "gaiaos.galaxy.frontdoor-readonly-review.v1",
+            "execution": "OBSERVED_RUNTIME_FOR_THIS_CALL",
+            "status": "HOLD",
+            "error_type": type(exc).__name__,
+            "writes_performed": [],
+            "physical_delete": False,
+            "production_retrieval_changed": False,
+            "proof_boundary": "Read-only review failed; do not infer deployment or source continuity.",
+        }
+
+
 @app.post("/verify", operation_id="verificationRun")
 async def verification_run(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)

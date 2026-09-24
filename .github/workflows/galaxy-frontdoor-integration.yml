@@ -5,6 +5,7 @@ on:
     paths:
       - "api/galaxy_frontdoor_context.py"
       - "api/gaiaos_app.py"
+      - "api/browser_memcon_bridge.py"
       - "api/Dockerfile"
       - "tests/test_galaxy_frontdoor_integration.py"
       - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
@@ -13,6 +14,7 @@ on:
     paths:
       - "api/galaxy_frontdoor_context.py"
       - "api/gaiaos_app.py"
+      - "api/browser_memcon_bridge.py"
       - "api/Dockerfile"
       - "tests/test_galaxy_frontdoor_integration.py"
       - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
@@ -33,6 +35,7 @@ jobs:
         run: |
           python -m py_compile api/galaxy_frontdoor_context.py
           python -m py_compile api/gaiaos_app.py
+          python -m py_compile api/browser_memcon_bridge.py
           python -m py_compile api/galaxy_production.py
           python -m py_compile tests/test_galaxy_frontdoor_integration.py
       - name: Prove bounded MemoryOS retrieval and fail-closed guards

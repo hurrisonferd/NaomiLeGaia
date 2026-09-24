@@ -26,6 +26,8 @@ Default remains OFF and ordinary gaia() output remains the established compact f
 
 Source gate: offline tests for default-off parity, opt-in exact bounded retrieval, record provenance, scope, missing/corrupt result HOLDs, zero mutation, refusal to rewrite provenance, and exposed HTTP/MCP opt-in argument. CI pass is SOURCE proof, not deployed behavior.
 
+One-tap iOS-friendly, authenticated read-only review: GET `/galaxy/integration/frontdoor-readonly-review`. It compares the existing default-OFF gaia() packet against an explicit opt-in legacy MemoryOS query for the known GALAXY calibration fixture, rechecks the original source and governing state, and compares all nine monitored persistent table counts before/after. It cannot enable the pilot, promote a memory, or perform a write.
+
 Live gate after normal reviewed merge and Naomi's manual Render deployment: one authenticated opt-in `gaia(request, include_memory=true)` test and a paired default-off control on the same deployed carrier. Confirm exact known controlled record ID and source, no MemoryOS write, no implicit ranking adoption, unchanged protected table counts, and no changes in Council identity/dispatch.
 
 ## After the first slice: finite GALAXY completion ladder

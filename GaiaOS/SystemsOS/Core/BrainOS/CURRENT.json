@@ -274,7 +274,10 @@
     "galaxy_frontdoor_integration_status": "SOURCE_UNDER_REVIEW_LIVE_NOT_PROVEN",
     "galaxy_frontdoor_memory_default_enabled": false,
     "galaxy_frontdoor_memory_writes_allowed": false,
-    "galaxy_completion_roadmap": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
+    "galaxy_completion_roadmap": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md",
+    "galaxy_frontdoor_one_tap_readonly_route": "/galaxy/integration/frontdoor-readonly-review",
+    "galaxy_frontdoor_one_tap_live_proven": false,
+    "galaxy_frontdoor_one_tap_source_review": "PR_PENDING"
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
