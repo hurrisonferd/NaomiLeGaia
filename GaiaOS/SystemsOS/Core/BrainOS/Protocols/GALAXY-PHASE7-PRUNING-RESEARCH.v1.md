@@ -359,3 +359,12 @@ Non-authority:
 **Proof boundary:** even live PASS establishes only that this single synthetic research bundle can be read from the persisted shadow row and reconstructed in isolated ephemeral RAM. It does not prove restoration to operational MemoryOS, deletability of any real record, full disaster recovery, or a general production protocol.
 
 Source/CI is separately gated. Live deployment and authenticated GET readback must be observed before Phase-7F is closed.
+
+
+### Phase 7F source and regression gates
+
+On PR #17 head f234ccea807ea69b48a2f1f6b0a3c2628b0b2f9d, GitHub Actions observed:
+- GALAXY Phase 7A-7F source gate run 36037574012: SUCCESS; compile, isolated-restore test suite and formatting guard passed.
+- GALAXY Phase 6 regression run 36037574299: SUCCESS; compile, reversible lifecycle tests and formatting guard passed.
+
+The source gate proves test behavior only. Live Phase 7F remains pending Render redeployment and a fresh authenticated read-only GET /galaxy/pruning/phase7-isolated-restore-review. Do not mark it live from CI.
