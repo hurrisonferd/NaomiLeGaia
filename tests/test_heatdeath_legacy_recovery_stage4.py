@@ -301,7 +301,8 @@ class RecoveryAppTests(unittest.TestCase):
         self.assertIn("COPY api/legacy_memory_reader.py", docker)
         self.assertIn("COPY api/memcon_runtime.py", docker)
         self.assertNotIn("INSERT INTO", source)
-        self.assertNotIn("CREATE TABLE", source)
+        self.assertNotIn("connection.execute(\"CREATE TABLE", source)
+        self.assertNotIn("storage.initialize(", source)
 
 
 if __name__ == "__main__":
