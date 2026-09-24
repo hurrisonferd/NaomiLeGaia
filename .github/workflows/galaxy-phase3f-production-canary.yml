@@ -1,30 +1,9 @@
 name: GALAXY Phase 3F Guarded Production Pilot
 
 on:
-  push:
-    paths:
-      - "api/galaxy_production.py"
-      - "api/galaxy_quality.py"
-      - "api/galaxy_phase3_exit.py"
-      - "api/galaxy_phase4.py"
-      - "api/galaxy_phase5.py"
-      - "api/augury_ritual.py"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE5-SYNTHESIS-CONSOLIDATION.v1.md"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/AUGURY-RITUAL-CONSERVATION.v1.md"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/RITUAL-GRIMOIRE.v1.json"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Schemas/GAIA-SEMANTIC-UNIT.v1.schema.json"
-      - "api/browser_memcon_bridge.py"
-      - "api/gaiaos_verification.py"
-      - "api/Dockerfile"
-      - "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
-      - "tests/test_galaxy_production.py"
-      - "tests/test_galaxy_quality.py"
-      - "tests/test_galaxy_phase3_exit.py"
-      - "tests/test_galaxy_phase4.py"
-      - "tests/test_galaxy_phase5.py"
-      - "tests/test_augury_ritual.py"
-      - ".github/workflows/galaxy-phase3f-production-canary.yml"
+  # Owner-requested CI quiet period. Invoke manually for reviewed releases.
   workflow_dispatch:
+
 
 jobs:
   production-guardrails:
