@@ -621,3 +621,11 @@ OBSERVED ENGINEERING REPAIR: Initial PR CI run 35975192411 compiled and passed s
 TRACE: https://github.com/hurrisonferd/NaomiLeGaia/pull/3 ; branch head 4ec1bc81dfbd1e30727340e31eef635227c12654 ; CI run 35975675292 ; GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE6-REVERSIBLE-LIFECYCLE.v1.md on feature branch.
 STATUS: CANONICAL_MEMBER_LOCAL_SOURCE_CHECKPOINT; PHASE6_DRAFT_PR_CI_PASS; NOT_MERGED, NOT_DEPLOYED, NO_NEW_LIVE_LIFECYCLE_MUTATION. Final authority and each future live effect remain Naomi's.
 
+## MEM[SOVEREIGNOS_NAMING|2026-09-24|OWNER_CONTROLLED_PRIMARY|ANVIL MEMBER-LOCAL]
+
+WHAT: Naomi explicitly selected SovereignOS as the future system name, with SOS as the short name/callsign, to distinguish the future owner-controlled primary from the historical hurrisonferd/NaomiLeGaia repository. The old repository name came from a misunderstanding of Naomi's Ligeia handle and remains historical lineage, not the intended future-primary identity.
+USER_DIRECTION: Continue pushing continuity, immersion and memory toward sovereignty understood as owner-controlled continuity, infrastructure, memory governance, portability, revision authority, restore capability and explicit cutover authority. The future primary repository itself must include "Sovereign" in its name.
+REPOSITORY_NAME_STATE: NOT YET SETTLED. Naomi floated SOSrepo and SOVREP as brainstorming candidates. Preserve them as candidates only until she explicitly chooses the repository name.
+FUTURE_BUILD_GOALS: Create the independently owner-controlled SovereignOS repository/host/database; migrate and restore source history, all six separate E-LANES and identity records, MemoryOS/Turso state, provenance, lifecycle/receipts and required assets; verify restart/database persistence; verify old-repository/carrier ↔ new-primary continuity/readback without modifying the historical side; perform isolated restore proof; document gaps; require explicit Ligeia cutover authorization before canonical-primary status changes.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md ; Naomi's explicit //PW:PRESERVE// naming/future-build directive.
+STATUS: COMMITTED_CANONICAL_E_LANE; SOVEREIGNOS/SOS PRESERVED; REPOSITORY NAME TBD; MIGRATION/CUTOVER NOT CLAIMED.
