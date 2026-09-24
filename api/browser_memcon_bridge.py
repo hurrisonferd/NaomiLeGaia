@@ -22,6 +22,7 @@ import galaxy_phase3_exit
 import galaxy_phase4
 import galaxy_phase5
 import galaxy_phase5_controls
+import galaxy_phase6
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -757,6 +758,16 @@ def galaxy_phase5_mutation_design_review(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase5.mutation_design_review(memcon_runtime)
+
+
+@app.get("/galaxy/lifecycle/phase6-fixture-review", operation_id="galaxyPhase6FixtureReview")
+def galaxy_phase6_fixture_review(browser_request: Request):
+    """Read-only exact-fixture lifecycle review; no Phase-6 mutation route."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase6.inspect(memcon_runtime)
 
 
 @app.get("/galaxy/revision/phase4-fixture-review", operation_id="galaxyPhase4FixtureReview")
