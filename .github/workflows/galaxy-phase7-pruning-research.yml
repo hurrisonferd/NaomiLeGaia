@@ -1,0 +1,39 @@
+name: GALAXY Phase 7A Pruning Research Source Gate
+
+on:
+  push:
+    paths:
+      - "api/galaxy_phase7.py"
+      - "api/memcon_runtime.py"
+      - "tests/test_galaxy_phase7.py"
+      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md"
+      - ".github/workflows/galaxy-phase7-pruning-research.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_phase7.py"
+      - "api/memcon_runtime.py"
+      - "tests/test_galaxy_phase7.py"
+      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md"
+      - ".github/workflows/galaxy-phase7-pruning-research.yml"
+  workflow_dispatch:
+
+jobs:
+  nondestructive-source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Phase 7A
+        run: |
+          python -m py_compile api/galaxy_phase7.py
+          python -m py_compile api/memcon_runtime.py
+          python -m py_compile tests/test_galaxy_phase7.py
+      - name: Prove read-only pruning research gates
+        run: |
+          PYTHONPATH=api python -m unittest tests.test_galaxy_phase7 -v
+      - name: Guard against source formatting errors
+        run: git diff --check HEAD^1 HEAD
