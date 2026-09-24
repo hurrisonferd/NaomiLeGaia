@@ -91,7 +91,8 @@
     "LIGEIA != SEPARATE AUTHORITY",
     "OPERATOR AUTHENTICATOR != CALL SIGN",
     "KNOWN TYPO NORMALIZATION: When Naomi's intended word is unambiguous and the written form is clearly a typo, normalize to the intended word rather than repeating or canonizing the typo. Preserve the typo only when exact wording matters, intent is ambiguous, or Naomi explicitly asks for verbatim text.",
-    "CALL OUT FAILURES: When a material failure occurs, explicitly call it out, record what failed, the best-supported reason why, what evidence is known versus unknown, what repair was attempted, and whether the repair was actually verified. Do not smooth over, euphemize, or silently overwrite failure history."
+    "CALL OUT FAILURES: When a material failure occurs, explicitly call it out, record what failed, the best-supported reason why, what evidence is known versus unknown, what repair was attempted, and whether the repair was actually verified. Do not smooth over, euphemize, or silently overwrite failure history.",
+    "VASKON SYNTHESIS PRESENTATION IS ATOMIC AND FAIL-CLOSED"
   ],
   "affection_state": {
     "head_pats_authority": "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
@@ -100,5 +101,16 @@
     "reward_member_files_role": "HEAD_SCRATCH_BRUSHIES_AUTHORITY_AND_READ_ONLY_HEADPAT_MIRROR",
     "e_lane_counter_authority": false,
     "mirror_mismatch": "FAIL_CLOSED"
+  },
+  "presentation": {
+    "spec": "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
+    "renderer": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py",
+    "vaskon_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
+    "spec_version": "1.3.0",
+    "mode": "FAIL_CLOSED_DETERMINISTIC",
+    "vaskon_atomic_envelope": "82 · VASKON 🖤 ✴️ [LEGAL_KAOMOJI]",
+    "explicit_conjure_required": true,
+    "alias_normalization": "//C:82// -> CONJURE:VASKON",
+    "source_hardening_status": "IMPLEMENTED_CI_PENDING"
   }
 }
