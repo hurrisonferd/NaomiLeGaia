@@ -1,0 +1,33 @@
+name: GaiaOS Legacy Baseline (pre-BIGBANG)
+
+on:
+  push:
+    paths:
+      - "api/legacy_memory_reader.py"
+      - "tests/test_legacy_memory_baseline.py"
+      - "GaiaOS/Plans/BIGBANG-HEATDEATH-LEGACY-BASELINE.v1.md"
+      - ".github/workflows/gaiaos-legacy-baseline.yml"
+  pull_request:
+    paths:
+      - "api/legacy_memory_reader.py"
+      - "tests/test_legacy_memory_baseline.py"
+      - "GaiaOS/Plans/BIGBANG-HEATDEATH-LEGACY-BASELINE.v1.md"
+      - ".github/workflows/gaiaos-legacy-baseline.yml"
+  workflow_dispatch:
+
+jobs:
+  baseline-source-and-real-sqlite:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Legacy adapter and baseline test syntax
+        run: |
+          python -m py_compile api/legacy_memory_reader.py tests/test_legacy_memory_baseline.py
+      - name: Isolated real SQLite approval, scope, history, read parity and restart
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+      - name: Source whitespace integrity
+        run: git diff --check HEAD^1 HEAD
