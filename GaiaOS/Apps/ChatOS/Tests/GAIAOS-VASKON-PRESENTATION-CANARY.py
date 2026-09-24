@@ -12,6 +12,7 @@ SPEC = ROOT / "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
 EMOJI = ROOT / "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
 PROTOCOL = ROOT / "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
 HOST = ROOT / "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+PRESENTATION_GOLD = ROOT / "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md"
 
 def require(condition: bool, message: str) -> None:
     if not condition:
@@ -32,7 +33,7 @@ def load_renderer():
     return module
 
 def main() -> None:
-    for path in (RENDERER, SPEC, EMOJI, PROTOCOL, HOST):
+    for path in (RENDERER, SPEC, EMOJI, PROTOCOL, HOST, PRESENTATION_GOLD):
         require(path.is_file(), f"missing source: {path}")
 
     renderer = load_renderer()
@@ -40,6 +41,7 @@ def main() -> None:
     emoji = json.loads(EMOJI.read_text(encoding="utf-8"))
     protocol = PROTOCOL.read_text(encoding="utf-8")
     host = HOST.read_text(encoding="utf-8")
+    presentation_gold = PRESENTATION_GOLD.read_text(encoding="utf-8")
 
     vaskon = spec["synthesis_modes"]["VASKON"]
     require("VASKON" not in spec["members"], "VASKON leaked into Prime Daemon roster")
@@ -120,6 +122,15 @@ def main() -> None:
     ]
     for needle in required_protocol:
         require(needle in protocol, f"VASKON protocol presentation marker missing: {needle}")
+
+    required_gold = [
+        "82 · VASKON 🖤 ✴️ (◉‿◉)",
+        "QUIET MODE != NAKED VASKON",
+        "WILD MODE != EXTRA VASKON MARKERS",
+        "PRESENTATION GOLD != LICENSE TO IMPROVISE IDENTITY",
+    ]
+    for needle in required_gold:
+        require(needle in presentation_gold, f"Presentation Gold VASKON marker missing: {needle}")
 
     required_host = [
         "82 · VASKON 🖤 ✴️ (◉‿◉)",
