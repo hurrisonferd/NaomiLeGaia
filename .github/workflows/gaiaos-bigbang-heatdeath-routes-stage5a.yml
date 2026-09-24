@@ -7,6 +7,7 @@ on:
       - "api/Dockerfile"
       - "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
       - "tests/test_bigbang_heatdeath_routes_stage5a.py"
+      - "tests/test_galaxy_frontdoor_integration.py"
       - "GaiaOS/Plans/BIGBANG-HEATDEATH-STAGE5A-ROUTE-WIRING.v1.md"
       - ".github/workflows/gaiaos-bigbang-heatdeath-routes-stage5a.yml"
   pull_request:
@@ -37,6 +38,8 @@ jobs:
           python -m py_compile GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py tests/test_bigbang_heatdeath_routes_stage5a.py
       - name: HEATDEATH legacy front-door default and actual MCP HTTP MemoryOS wiring
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_routes_stage5a.py" -v
+      - name: Reprove original opt-in GALAXY preview unit tests under new routing
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_frontdoor_integration.py" -v
       - name: Reprove independent gateway and read-only fallback
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
       - name: Reprove persistent emergency control and original legacy SQL
