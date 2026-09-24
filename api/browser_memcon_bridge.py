@@ -19,19 +19,23 @@ import memcon_runtime
 import gaiaos_memory_mode
 import gaiaos_memory_gateway
 import gaiaos_chat_memory
-import galaxy_production
-import galaxy_quality
-import galaxy_phase3_exit
-import galaxy_phase4
-import galaxy_phase5
-import galaxy_phase5_controls
-import galaxy_phase6
-import galaxy_phase6_controls
-import galaxy_phase7
-import galaxy_phase7_tombstone
-import galaxy_phase7_tombstone_shadow
-import galaxy_phase7_isolated_restore
-import augury_ritual
+from gaiaos_lazy_diagnostics import deferred
+
+# Explicit research/diagnostic routes resolve their own optional modules only
+# on invocation. Ordinary chat and owner preservation never import GALAXY.
+galaxy_production = deferred("galaxy_production")
+galaxy_quality = deferred("galaxy_quality")
+galaxy_phase3_exit = deferred("galaxy_phase3_exit")
+galaxy_phase4 = deferred("galaxy_phase4")
+galaxy_phase5 = deferred("galaxy_phase5")
+galaxy_phase5_controls = deferred("galaxy_phase5_controls")
+galaxy_phase6 = deferred("galaxy_phase6")
+galaxy_phase6_controls = deferred("galaxy_phase6_controls")
+galaxy_phase7 = deferred("galaxy_phase7")
+galaxy_phase7_tombstone = deferred("galaxy_phase7_tombstone")
+galaxy_phase7_tombstone_shadow = deferred("galaxy_phase7_tombstone_shadow")
+galaxy_phase7_isolated_restore = deferred("galaxy_phase7_isolated_restore")
+augury_ritual = deferred("augury_ritual")
 import solo_chat_runtime
 import host_memory_gateway
 import gaiaos_verification
