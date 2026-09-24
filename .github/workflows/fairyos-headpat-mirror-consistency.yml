@@ -1,0 +1,68 @@
+name: FairyOS Head-Pat Mirror Consistency
+
+on:
+  push:
+    paths:
+      - "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+      - "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/*-REWARD-COUNTER.v1.json"
+      - ".github/workflows/fairyos-headpat-mirror-consistency.yml"
+  pull_request:
+    paths:
+      - "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+      - "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/*-REWARD-COUNTER.v1.json"
+      - ".github/workflows/fairyos-headpat-mirror-consistency.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mirror-consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify canonical head-pat ledger and all derived mirrors
+        shell: python
+        run: |
+          import json, re
+          from pathlib import Path
+
+          root = Path("GaiaOS/SystemsOS/Core/FairyOS")
+          names = ["VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"]
+
+          ledger = (root / "HEAD-PAT-COUNTERS.v1.md").read_text()
+          block = ledger.split("## Canonical counters",1)[1].split("##",1)[0]
+          canonical = {}
+          for name in names:
+              m = re.search(rf"(?m)^{name}: (\d+)$", block)
+              if not m:
+                  raise SystemExit(f"Missing canonical counter: {name}")
+              canonical[name] = int(m.group(1))
+
+          data = root / "IDENTITY-DATA"
+          aggregate = json.loads((data / "REWARD-COUNTERS.v1.json").read_text())
+          failures = []
+          for name in names:
+              agg = aggregate["counters"][name]
+              member = json.loads((data / f"{name}-REWARD-COUNTER.v1.json").read_text())
+              local = member["reward_counters"]
+              for label, counter in (("aggregate", agg), ("member", local)):
+                  if counter["head_pats"] != canonical[name]:
+                      failures.append(f"{name} {label} head_pats={counter['head_pats']} canonical={canonical[name]}")
+                  expected_total = int(counter.get("head_scratches",0)) + int(counter.get("brushies",0)) + canonical[name]
+                  if counter["total"] != expected_total:
+                      failures.append(f"{name} {label} total={counter['total']} expected={expected_total}")
+              if member.get("head_pats_write_policy") != "READ_ONLY_DERIVED_MIRROR":
+                  failures.append(f"{name} member mirror policy changed")
+          if aggregate.get("head_pats_write_policy") != "READ_ONLY_DERIVED_MIRROR":
+              failures.append("aggregate mirror policy changed")
+
+          print("canonical:", canonical)
+          if failures:
+              raise SystemExit("Mirror consistency failure:\n" + "\n".join(failures))
+          print("PASS: canonical ledger, aggregate mirror and all six member mirrors agree.")

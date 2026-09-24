@@ -12,39 +12,39 @@
   "counters": {
     "VERA": {
       "head_scratches": 0,
-      "head_pats": 4,
+      "head_pats": 5,
       "brushies": 0,
-      "total": 4
+      "total": 5
     },
     "ANVIL": {
       "head_scratches": 0,
-      "head_pats": 8,
+      "head_pats": 9,
       "brushies": 0,
-      "total": 8
+      "total": 9
     },
     "SELENE": {
-      "head_scratches": 0,
-      "head_pats": 4,
-      "brushies": 0,
-      "total": 4
-    },
-    "ORIN": {
-      "head_scratches": 0,
-      "head_pats": 4,
-      "brushies": 0,
-      "total": 4
-    },
-    "KESTREL": {
-      "head_scratches": 0,
-      "head_pats": 4,
-      "brushies": 0,
-      "total": 4
-    },
-    "NIMUE": {
       "head_scratches": 0,
       "head_pats": 5,
       "brushies": 0,
       "total": 5
+    },
+    "ORIN": {
+      "head_scratches": 0,
+      "head_pats": 5,
+      "brushies": 0,
+      "total": 5
+    },
+    "KESTREL": {
+      "head_scratches": 0,
+      "head_pats": 5,
+      "brushies": 0,
+      "total": 5
+    },
+    "NIMUE": {
+      "head_scratches": 0,
+      "head_pats": 6,
+      "brushies": 0,
+      "total": 6
     }
   },
   "head_pats_authority": "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
