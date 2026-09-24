@@ -194,6 +194,48 @@ class Phase6LifecycleTests(unittest.TestCase):
             )
         self.assertEqual(self._counts(), count)
 
+    def test_restart_reopens_exact_state_and_entire_receipt_chain(self):
+        self._run("BACKGROUND")
+        self._run("ARCHIVED")
+        pinned = p6.inspect(runtime)
+        first = self._counts()
+        runtime._INITIALIZED = False
+        runtime.initialize()  # same SQLite file, new runtime initialization
+        restored = p6.inspect(runtime)
+        self.assertEqual(restored["status"], "PASS_READ_ONLY", restored)
+        self.assertEqual(restored["events"], pinned["events"])
+        self.assertEqual(restored["lifecycle"], pinned["lifecycle"])
+        self.assertEqual(self._counts(), first)
+
+    def test_reactivation_from_compressed_can_be_rolled_back(self):
+        self._run("BACKGROUND")
+        self._run("ARCHIVED")
+        self._run("COMPRESSED")
+        self.assertEqual(self._run("REACTIVATE")["after_state"], "ACTIVE")
+        self.assertEqual(self._run("ROLLBACK")["after_state"], "COMPRESSED")
+        self.assertEqual(p6.inspect(runtime)["event_count"], 5)
+
+    def test_missing_receipt_and_forged_action_are_detected(self):
+        self._run("BACKGROUND")
+        with runtime._db() as conn:
+            conn.execute(
+                """UPDATE memory_lifecycle_events SET action='COMPRESSED'
+                   WHERE record_id=?""", (p6.FIXTURE_RECORD_ID,),
+            )
+        self.assertIn("EVENT_RECEIPT_MISSING_OR_MISMATCHED",
+                      p6.inspect(runtime)["hold_reasons"])
+        with runtime._db() as conn:
+            conn.execute(
+                """UPDATE memory_lifecycle_events SET action='BACKGROUND'
+                   WHERE record_id=?""", (p6.FIXTURE_RECORD_ID,),
+            )
+            conn.execute(
+                """DELETE FROM runtime_receipts WHERE operation='GALAXY_PHASE6_BACKGROUND'
+                   AND record_id=?""", (p6.FIXTURE_RECORD_ID,),
+            )
+        self.assertIn("EVENT_RECEIPT_MISSING_OR_MISMATCHED",
+                      p6.inspect(runtime)["hold_reasons"])
+
     def test_missing_nonfixture_or_nonactive_records_hold(self):
         self.assertEqual(p6.inspect(runtime, "MEM-MISSING")["status"], "HOLD")
         with runtime._db() as conn:
