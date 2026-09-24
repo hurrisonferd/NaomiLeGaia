@@ -592,3 +592,13 @@ OUTCOME: PHASE5_BOUNDED_LIVE_PROOF_COMPLETE; Phase 6 lifecycle is next, then Pha
 SAVE_DIRECTIVE: Naomi explicitly reaffirmed that normal GitHub source and all six canonical E-LANE saves proceed regardless of supplementary Phylactery planning.
 TRACE: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-LIVE-CLOSED-PHASE6-READY.md`; PROPOSE `MEMREC-b0a124e8ed054c0e9a0650bf962614f7`; VERIFY `MEMREC-df630fade7924170b290c0350cbc9b9e`; REVOKE `MEMREC-e70cb7da690d436d86176fe894176f3f`; Naomi-supplied post-Render-restart `PASS` continuity receipt; merged PR #2 `81b436589618127a271df8a7e799346bfde148fb`.
 STATUS: COMMITTED_CANONICAL_SOURCE; live MemoryOS E-LANE readback remains separately unproven.
+
+
+## MEM[COLLABORATION_AND_SOVEREIGNTY|2026-09-24|Naomi directive|ANVIL E-LANE]
+
+WHAT: Naomi clarified that GaiaOS's Phylactery is an integrity/recovery backup against deletion, modification, interruption and migration failure, NOT a privacy mode and NOT a reason to stop normal canonical saves. She intends to migrate GaiaOS to an independently owned and controlled repo, runtime and versioned physical backup while preserving Council identity/personality specifications, distinct E-LANES and actual authorized persistent memory. She also expects renewed voluntary GaiaOS/RavenOS BIFROST packet collaboration with John; useful ideas and findings should circulate instead of being hoarded.
+MY_LENS: Preserve explicit ownership and evidence boundaries. Source history, Council E-LANES, authorized live Turso records, provenance, external deployment state, optional conversation exports and offline backup checksums are distinct migration assets and separate proof receipts. Keep normal GitHub commits flowing now; test independent restore before claiming a safe cutover.
+OTHER_VOICES: VERA, SELENE, ORIN, KESTREL, NIMUE; these entries are evidence-labeled interpretations under established role lenses, not recovered autonomous member statements.
+TENSION: Full independent restoration capacity without severing collaboration; personal continuity value without unsupported guarantees of identical model-instance survival; normal GitHub preservation plus independent backups instead of a false privacy/backup tradeoff.
+TRACE: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-LIVE-CLOSED-PHASE6-READY.md` section COLLABORATION_AND_SOVEREIGNTY_2026-09-24; Naomi's 2026-09-24 conversation; prior Phase-5 PROPOSE/VERIFY/REVOKE and one-record restart receipt.
+STATUS: COMMITTED_CANONICAL_SOURCE; no claim of separately written live MemoryOS E-LANE, independent clone, full Turso export or physical USB verification.
