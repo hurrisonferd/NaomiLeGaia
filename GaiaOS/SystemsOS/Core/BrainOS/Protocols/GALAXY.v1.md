@@ -5057,3 +5057,14 @@ general disaster recovery. All physical pruning, production attenuation
 and destructive authority gates remain false. Phase-7A through 7F bounded
 research evidence is ready for the separate MERCURY final cross-reference
 audit; no destructive protocol is automatically authorized.
+
+
+## Superseding roadmap clarification: GALAXY finish and separate MERCURY PROTOCOL (2026-09-24)
+
+Naomi directed that **MERCURY PROTOCOL is a separate, ongoing research mission**, not Phase 8 of GALAXY, not a final design phase, and not a prerequisite to GALAXY operational acceptance. Earlier references to a mandatory Phase-8/MERCURY final audit remain as historical notes, superseded by this section and the v0.3 MERCURY PROTOCOL charter. The first post-live research baseline is an independent MERCURY PROTOCOL activity.
+
+GALAXY's finite remaining work begins with opt-in evidence-backed MemoryOS context on GaiaOS's normal gaia() front door, followed by independently gated general production retrieval, governed graph/synthesis behavior, lifecycle policy, rollback/operational tests, and eventual separate owner-controlled SovereignOS restoration and Naomi-approved cutover. Full destructive pruning is **not** an initial GALAXY release prerequisite and stays disabled absent a separately approved protocol and live proof.
+
+Current finite release gate contract: `GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md`.
+
+This initial source slice exposes only an explicit default-OFF, read-only unweighted MemoryOS evidence lane. Source and CI success do not mean the new front-door path is deployed or adopted, and live opt-in readback does not authorize automatic memory capture, production ranking, or destruction.
