@@ -27,6 +27,7 @@ import galaxy_phase6_controls
 import galaxy_phase7
 import galaxy_phase7_tombstone
 import galaxy_phase7_tombstone_shadow
+import galaxy_phase7_isolated_restore
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -795,6 +796,19 @@ def galaxy_phase7_tombstone_contract_canary(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase7_tombstone.synthetic_tombstone_contract_canary()
+
+
+@app.get("/galaxy/pruning/phase7f-isolated-restore-review", operation_id="galaxyPhase7FIsolatedRestoreReview")
+def galaxy_phase7f_isolated_restore_review(browser_request: Request):
+    """Authenticated Phase-7F restore into disposable RAM; production remains read only."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return JSONResponse(
+        galaxy_phase7_isolated_restore.review(memcon_runtime),
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @app.get("/galaxy/pruning/phase7-tombstone-shadow-review", operation_id="galaxyPhase7TombstoneShadowReview")
