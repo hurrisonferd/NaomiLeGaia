@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 OWNER: MemoryOS + BrainOS / GALAXY
-STATUS: READ-ONLY LIVE PROVEN / EXACT FIVE-STEP CONTROL EXPOSURE SOURCE UNDER REVIEW
+STATUS: CLOSED / EXACT FIVE-STEP LIVE REVERSIBILITY + RESTART PERSISTENCE PROVEN
 VERSION: galaxy.phase6.reversible-lifecycle.v1
 
 ## Purpose and bounded fixture
@@ -76,3 +76,24 @@ Each successful POST must return PASS_READBACK only when the underlying lifecycl
 After all five live steps pass, the campaign must stop with campaign_complete=true, next_action=null, state ACTIVE, and all five events still inspectable. Then pin the exact lifecycle row, five-event chain and receipts, restart the real Render carrier, and prove full exact history/state readback from Turso before closing Phase 6.
 
 No Phase-7 PRUNABLE transition, destructive pruning, production attenuation or generic lifecycle console is authorized by this checkpoint.
+
+## Live closure — 2026-09-24
+
+The exact guarded campaign was executed on the live Ligeia carrier and completed 5/5 with PASS_READBACK at every step:
+
+- ACTIVE -> BACKGROUND: LIFE-39d6922cca684861b56acbcc5e6f281c / MEMREC-a3d9439e02a44106b96163e478a17239
+- BACKGROUND -> ARCHIVED: LIFE-e259f588cdab49139ae4765ca90bcbb4 / MEMREC-2598b57ee627444095b1607755d1f77c
+- ARCHIVED -> COMPRESSED: LIFE-c82800edc9c94a42afe4170c152e19fa / MEMREC-ae95eeb0c0ea4c9ab23196777f4444c1
+- COMPRESSED -> ARCHIVED via append-only ROLLBACK: LIFE-2204bf94189a446e8ac2b731d884bc60 / MEMREC-a366ad8e19ef4e96b9c5285b7f75168f
+- ARCHIVED -> ACTIVE via REACTIVATE: LIFE-c7793ae706f2404c81828606b8470895 / MEMREC-b60d42b065124a1cb5ae0d6891a343b2
+
+The finished campaign reported ACTIVE, event_count=5, campaign_complete=true, next_action=null and no holds. The rollback preserved the COMPRESSED event and appended a new history event rather than erasing prior state.
+
+Naomi then manually restarted the existing Render service without redeploying source. A fresh independent read-only probe after that restart observed deployed source e5504bd8e14373e4ace959786e839dcfd23b5913, the same exact five-event chain and receipt IDs, intact previous_event_id linkage, final ACTIVE state, campaign_complete=true and carrier verifier 196/196 PASS. GitHub Actions workflow run 36018475610, attempt 2, job 107698372793 completed SUCCESS.
+
+Closure scope is bounded to this exact fixture and observed restart. No physical pruning, production retrieval attenuation, unrestricted global weighting, full-database disaster recovery or independent migration proof is implied.
+
+Canonical closure receipt:
+`GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE6-LIVE-CLOSED-PHASE7-READY.md`
+
+**Phase 6 is closed. Phase 7 is ready for nondestructive pruning/attenuation research only.**
