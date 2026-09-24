@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E SHADOW PERSISTENCE SOURCE BUILD
+STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E SHADOW PERSISTENCE SOURCE+CI PROVEN / NOT DEPLOYED
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -262,3 +262,20 @@ Even if immediate live readback passes:
 - destructive_restore_proven remains false;
 - physical_pruning_enabled remains false;
 - production_attenuation_enabled remains false.
+
+
+### Phase 7E source gate
+
+Corrected executable head: 0c676bd4080f0c4b616940fccc69ab3469f57bf0
+
+Observed:
+- Phase 7A-7E source gate run 36029157725: SUCCESS
+- Phase-6 regression run 36029157892: SUCCESS
+- production guardrails run 36029157883: SUCCESS
+
+An earlier Phase-7E run failed because two legacy route tests used over-wide source slices and a new test incorrectly required runtime_receipts to remain unchanged despite the explicit one-receipt contract. Tests were repaired to the intended boundary:
+- old GET-only routes are checked only within their own route blocks;
+- protected MemoryOS tables must remain unchanged;
+- exactly one Phase-7E runtime receipt is expected for the explicit shadow write.
+
+No live Phase-7E shadow write is claimed yet.
