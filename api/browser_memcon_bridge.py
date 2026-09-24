@@ -2320,13 +2320,24 @@ def live_vaskon_test(browser_request: Request):
 
 @app.get("/galaxy/integration/frontdoor-readonly-review", operation_id="galaxyFrontdoorReadonlyReview")
 def galaxy_frontdoor_readonly_review(browser_request: Request):
-    """Authenticated one-tap proof for default-off versus opt-in MemoryOS context."""
+    """Historical URL, updated to verify the new HEATDEATH gateway contract.
+
+    This exact-fixture review does not activate BIGBANG or deploy the carrier.
+    """
     bootstrap = _bootstrap_browser_session_redirect(browser_request)
     if bootstrap is not None:
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     try:
-        # This fixture was independently observed in the prior live lifecycle test.
+        active = gaiaos_memory_mode.mode_status(memcon_runtime)
+        if active.get("effective_mode") != gaiaos_memory_mode.HEATDEATH:
+            return {
+                "schema": "gaiaos.heatdeath.frontdoor-readonly-review.v2",
+                "status": "HOLD_REQUIRES_HEATDEATH",
+                "effective_mode": active.get("effective_mode"),
+                "writes_performed": [],
+                "proof_boundary": "Read-only legacy comparison never changes the configured mode.",
+            }
         fixture_id = "MEM-00b3fbfd4d73404f97a95c238596ab94"
         before = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
         args = {
@@ -2339,40 +2350,42 @@ def galaxy_frontdoor_readonly_review(browser_request: Request):
         }
         control = gaiaos_app._frontdoor_packet(**args)
         opted_in = gaiaos_app._frontdoor_packet(
-            **args,
-            include_memory=True,
-            memory_query="GALAXY-CAL-CORE",
+            **args, include_memory=True, memory_query="GALAXY-CAL-CORE"
         )
         after = galaxy_phase7_isolated_restore._snapshot(memcon_runtime)
         memory = opted_in.get("memory_context") or {}
+        native = memory.get("retrieval") or {}
         found = next(
-            (
-                item for item in memory.get("records", [])
-                if (item.get("record") or {}).get("record_id") == fixture_id
-            ),
+            (record for record in native.get("records", [])
+             if record.get("record_id") == fixture_id),
             None,
         )
         checks = {
             "default_frontdoor_memory_absent": "memory_context" not in control,
-            "optin_legacy_read_pass": memory.get("status") == "PASS_SHADOW_LEGACY_READ",
+            "optin_legacy_read_pass": memory.get("status") == "PASS_HEATDEATH",
             "known_fixture_retrieved": bool(found),
-            "record_source_provenance_preserved": bool(found and
-                (found.get("record") or {}).get("source") and
-                found.get("source_provenance") == (found.get("record") or {}).get("source")),
-            "governing_state_present": bool(found and
-                (found.get("governing_state") or {}).get("state")),
+            "record_source_provenance_preserved": bool(
+                found and found.get("source") and native.get("scope_applied") == "MemoryOS"
+            ),
+            "record_status_preserved": bool(found and found.get("status")),
             "council_dispatch_unchanged": control.get("operators") == opted_in.get("operators"),
             "dictionary_context_unchanged": control.get("context") == opted_in.get("context"),
-            "legacy_ranking_only": memory.get("ranking") == "LEGACY_UNWEIGHTED_CONTROL"
-                and memory.get("galaxy_weighting_applied") is False,
-            "no_production_retrieval_change": memory.get("production_retrieval_changed") is False,
-            "no_production_writes": memory.get("writes_performed") == []
-                and before == after,
+            "legacy_ranking_only": (
+                memory.get("effective_mode") == "HEATDEATH"
+                and memory.get("galaxy_context") is None
+                and memory.get("galaxy_applied") is False
+            ),
+            "no_production_retrieval_change": memory.get("fallback_occurred") is False,
+            "no_production_writes": (
+                memory.get("writes_performed") == []
+                and memory.get("e_lanes_modified") is False
+                and before == after
+            ),
         }
         return {
-            "schema": "gaiaos.galaxy.frontdoor-readonly-review.v1",
+            "schema": "gaiaos.heatdeath.frontdoor-readonly-review.v2",
             "execution": "OBSERVED_RUNTIME_FOR_THIS_CALL",
-            "status": "PASS_READ_ONLY_INTEGRATION" if all(checks.values()) else "HOLD",
+            "status": "PASS_HEATDEATH_FRONTDOOR_READ" if all(checks.values()) else "HOLD",
             "carrier_source": gaiaos_app._deployed_source(),
             "carrier_boot_id": memcon_runtime.BOOT_ID,
             "fixture_record_id": fixture_id,
@@ -2385,22 +2398,21 @@ def galaxy_frontdoor_readonly_review(browser_request: Request):
             "production_retrieval_changed": False,
             "physical_delete": False,
             "proof_boundary": (
-                "This tests one exact known MemoryOS fixture through the normal "
-                "gaia() front-door packet with opt-in legacy retrieval and an OFF "
-                "control. It does not prove general natural-language retrieval "
-                "quality, default production weighting, or Council adoption."
+                "This tests one known legacy record via opt-in GaiaOS memory routing. "
+                "It does not prove BIGBANG normal-chat adoption, unbounded retrieval, "
+                "full legacy startup recovery or any permitted mutation."
             ),
         }
     except Exception as exc:
         return {
-            "schema": "gaiaos.galaxy.frontdoor-readonly-review.v1",
+            "schema": "gaiaos.heatdeath.frontdoor-readonly-review.v2",
             "execution": "OBSERVED_RUNTIME_FOR_THIS_CALL",
             "status": "HOLD",
             "error_type": type(exc).__name__,
             "writes_performed": [],
             "physical_delete": False,
             "production_retrieval_changed": False,
-            "proof_boundary": "Read-only review failed; do not infer deployment or source continuity.",
+            "proof_boundary": "Read-only review failed; do not claim live rollout.",
         }
 
 
