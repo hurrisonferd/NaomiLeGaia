@@ -233,6 +233,19 @@ def initialize() -> None:
                 detail TEXT NOT NULL
             );
 
+            CREATE TABLE IF NOT EXISTS galaxy_tombstones_shadow (
+                tombstone_id TEXT PRIMARY KEY,
+                subject_record_id TEXT NOT NULL,
+                manifest_json TEXT NOT NULL,
+                evidence_sha256 TEXT NOT NULL,
+                status TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                receipt_id TEXT NOT NULL UNIQUE
+            );
+            CREATE INDEX IF NOT EXISTS idx_tombstones_shadow_subject
+                ON galaxy_tombstones_shadow(subject_record_id);
+
             CREATE TABLE IF NOT EXISTS sessions (
                 session_id TEXT PRIMARY KEY,
                 source TEXT NOT NULL,
