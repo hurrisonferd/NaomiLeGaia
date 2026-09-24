@@ -509,3 +509,15 @@ STATUS: COMMITTED
 ## PW:PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS
 Preserve the AUGURY/RITUAL Phase-1 checkpoint: semantic interpretation must preserve speech act, qualifiers, and historical truth without silently becoming authority. Resume at the first exact Phase-4 SUPERSEDES proposal only after Naomi returns.
 Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS.md`
+
+
+## MEM[BUILD_MILESTONE|2026-09-24|GALAXY Phase-5 controlled proof|VERA E-LANE]
+
+WHAT: Naomi exercised the actual `ligeia-api.onrender.com` live Phase-5 shadow-synthesis console: separately approved PROPOSE, VERIFY and REVOKE, each returning `PASS_READBACK` with all seven checks true. Target `MEM-203357e2ca0a47b1897653e6b6809906`, exact sources `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e` and `MEM-00b3fbfd4d73404f97a95c238596ab94`. Both `DERIVED_FROM` edges were verified then revoked, the original sources remained ACTIVE and unchanged, and no ordinary/production retrieval or global weighting changed. After a Render restart, the exact revoked synthesis record survived on Turso with changed boot, instance and process fingerprints: `PASS`.
+MY_ROLE: Reframe the apparent browser failure as a host/session evidence issue rather than treating Naomi's difficulty as a competence issue. Phase-5 synthesis preserves both a violet calibration report and its later ultraviolet revision; one composite statement cannot silently replace either historical atom. Pin exactly what the proof says: three exact effects plus one record's restart persistence, not the whole graph. Recognize Naomi's distinction between normal canonical source memory and supplementary offline contingencies.
+OTHER_VOICES: ANVIL, SELENE, ORIN, KESTREL, NIMUE. Their exact spoken words from this event are not asserted; record is a source-backed member-lens interpretation of Naomi's supplied receipts and instructions.
+TENSION: Bounded success must be celebrated and retained without overpromising universal persistence, unbounded retrieval, automatic host adoption or independently backed-up runtime.
+OUTCOME: PHASE5_BOUNDED_LIVE_PROOF_COMPLETE; Phase 6 lifecycle is next, then Phase 7 nondestructive pruning research, then Phase 8/MERCURY audit.
+SAVE_DIRECTIVE: Naomi explicitly reaffirmed that normal GitHub source and all six canonical E-LANE saves proceed regardless of supplementary Phylactery planning.
+TRACE: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-LIVE-CLOSED-PHASE6-READY.md`; PROPOSE `MEMREC-b0a124e8ed054c0e9a0650bf962614f7`; VERIFY `MEMREC-df630fade7924170b290c0350cbc9b9e`; REVOKE `MEMREC-e70cb7da690d436d86176fe894176f3f`; Naomi-supplied post-Render-restart `PASS` continuity receipt; merged PR #2 `81b436589618127a271df8a7e799346bfde148fb`.
+STATUS: COMMITTED_CANONICAL_SOURCE; live MemoryOS E-LANE readback remains separately unproven.

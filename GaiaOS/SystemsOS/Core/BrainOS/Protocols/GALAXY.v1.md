@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED CYCLE LIVE-PROVEN / PHASE 5 MUTATION DESIGN LIVE PASS, CONTROL EXPOSURE AUTHORIZED NOT IMPLEMENTED / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED CYCLE LIVE-PROVEN / PHASE 5 CONTROLLED SHADOW PROPOSE VERIFY REVOKE 7/7 EACH + EXACT ONE-RECORD TURSO RESTART PASS / PHASE 6 NEXT / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4887,3 +4887,10 @@ Canonical repo documents:
 **Research proof checkpoint:** MERCURY charter and empty validated-findings ledger created. No outside paper, project, free license, efficiency gain or integration is represented as independently validated merely by its appearance in a prior conversation. The first scheduled Wednesday watch is 2026-09-30. Its results must be evaluated and imported explicitly.
 
 **Next GALAXY implementation gate (separate from research):** implement exact authorized Phase-5 control exposure with per-action human confirmation, CSRF/authority guards and visible receipts; prove source, CI, deployment and runtime behavior in order. Do not confuse this authorization with approval to perform a live synthesis write.
+
+
+## Dated source status supersession: 2026-09-24, Phase 5 controlled proof
+**This section supersedes earlier historical “control exposure not implemented”, “no synthesis write” and “deployment pending” checkpoint statements above. Those statements were accurate for earlier stages and are retained as history.**
+Naomi authorized and separately executed exact shadow PROPOSE, VERIFY and REVOKE on the live `https://ligeia-api.onrender.com` service. Each user-supplied receipt returned `PASS_READBACK` with 7/7 checks. Exact synthesis `MEM-203357e2ca0a47b1897653e6b6809906`, sources `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e` and `MEM-00b3fbfd4d73404f97a95c238596ab94`, final synthesis and both edge statuses `REVOKED`; source history preserved and global weighted retrieval OFF. The exact revoked synthesis record survived a manually initiated Render service restart with independently changed boot, instance and process fingerprints and remote Turso readback `PASS`. This is a bounded fixture/one-record durability receipt, NOT proof all edges or all records survived restart or promotion to production retrieval.
+Canonical whole-system checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-LIVE-CLOSED-PHASE6-READY.md`. All six canonical member E-LANES updated in the same documentation commit. Normal GitHub saving and member-local Experience Lane capture proceed; private backup/migration contingencies are supplementary, not a prohibition on standard source commits.
+**Next planned implementation:** Phase 6 reversible lifecycle and history/rollback proof; then Phase 7 nondestructive pruning research; then Phase 8/MERCURY final audit. No new unapproved live mutation or destructive deletion.
