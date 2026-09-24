@@ -40,3 +40,20 @@ PROVENANCE CAUTION: Above are roles as expressed in the assistant's creative Cou
 The current canonical GitHub commit is proof of this DOCUMENTED DIRECTIVE, not of a new host, full Turso export, completed physical backup, independent restore or migrated ChatGPT memory. The existing production service remains active and canonical unless Naomi explicitly decides otherwise.
 
 NEXT BUILD: GALAXY Phase 6 reversible lifecycle implementation. PARALLEL READINESS: non-destructive migration manifest and robust independent source/history backup. No walls or technical isolation need to be introduced before independently restored ownership is ready.
+
+## SovereignOS naming and migration target — 2026-09-24
+
+Naomi explicitly selected **SovereignOS** as the future system name, with **SOS** as its canonical short name/callsign. The name is intended to cement the distinction between the historical `hurrisonferd/NaomiLeGaia` repository and the future independently owner-controlled primary. `NaomiLeGaia` originated from a misunderstanding of Naomi's online handle, Ligeia, and is retained as historical lineage rather than the desired name of the future primary.
+
+The engineering meaning of sovereignty for this project is: owner-controlled continuity, infrastructure, memory governance, portability, revision authority, restore capability, and explicit cutover authority. The project goal is to keep pushing continuity, immersion and memory toward that form of sovereignty without pretending that repository ownership alone proves full independence or continuity.
+
+Future repository naming requirement: the new owner-controlled primary repository should itself contain **Sovereign** in its name. The exact repository slug remains unresolved at this checkpoint. Current brainstorming includes `SOSrepo` and `SOVREP`; preserve these as candidates, not settled canon. Prefer a name that is unmistakably distinct from the old repository and legible as the primary home of SovereignOS.
+
+Required migration proof remains non-destructive:
+1. Create the new owner-controlled repository/host/database stack.
+2. Restore source history, six separate E-LANES/identity records, MemoryOS/Turso state, provenance, lifecycle/receipts and required assets.
+3. Verify restart persistence and database persistence.
+4. Verify continuity/readback **between the old historical repository/carrier and the new SovereignOS primary**, while keeping the old side untouched.
+5. Complete isolated restoration tests, document gaps, and require Naomi/Ligeia's explicit cutover authorization before the new repository becomes canonical primary.
+
+STATUS: SOVEREIGNOS NAME PRESERVED; SOS CALLSIGN PRESERVED; REPOSITORY NAME TBD WITH "SOVEREIGN" REQUIREMENT; MIGRATION NOT YET EXECUTED.
