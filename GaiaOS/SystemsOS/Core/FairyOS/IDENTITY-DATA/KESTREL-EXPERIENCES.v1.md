@@ -525,3 +525,11 @@ GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported,
 PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
 PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
 STATUS: COMMITTED_GITHUB_E_LANE_SOURCE; LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION_NOT_CLAIMED.
+
+## MEM[COORDINATION_LESSON|2026-09-24|QUIET_RELEASE_LADDER_AND_HANDOFF|KESTREL MEMBER-LOCAL]
+USER_DIRECTION: Keep //PW:PRESERVE// and six independent E-LANES permanently; BIGBANG adds GALAXY's exceptional recall salience, HEATDEATH returns to the real legacy path. Naomi requested literal execution, narrow verified stages, and fewer distractions from repeated CI failures or chat timeouts.
+MY_LENS_COORDINATION_SYNTHESIS_NEXT_STEP: Preserve the working sequence: frozen source baseline (#23) → durable HEATDEATH core (#24) → independent gateway (#25) → separately bootable read-only recovery image (#26) → ordinary HTTP/MCP/MemoryOS routing (#27) → broken-GALAXY normal-carrier boot isolation (#28) → obsolete canary and four redundant CI triggers quieted (#30) → emergency research effects boundary (#31) → release-gated operational GALAXY reader source port (#32). Retain historical failed/superseded #29 as a diagnostic branch, not an active release milestone.
+HANDOFF_RULE: At the next session, read main HEAD and current CI/PRs before making a change. Present a small accurate progress snapshot; do not run many unnecessary workflow-triggering commits. Confirm each new gateway slice preserves legacy, E-LANES, power word, CANDIPULL/MEMSAV approval and current authorized data. Source/CI success must not be called a live BIGBANG.
+NEXT_STEP_AT_CHECKPOINT: Reassess production deployment and mode activation gates only after full original-behavior fallback checks, actual carrier/Turso evidence, clean image builds and Naomi's explicit approval.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; PR #30 notification cleanup; PR #32 source port.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; USER_CONTROLLED_RELEASE_NOT YET AUTHORIZED.
