@@ -65,3 +65,21 @@ COLLABORATION: ANVIL/58 leads the engineering walkthrough, with all six member r
 - Unrestricted/global production weighting stays OFF, no automatic ChatGPT host adoption claim, no independent restored private GaiaOS or full Turso export claim. Avoid endlessly expanding phase count; finish v1 against its bounded explicit gates.
 
 RELATED: `GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md`; `GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json`; all six member-local `*-EXPERIENCES.v1.md` files; feature PR #2.
+
+
+## Naomi clarification: Phylactery is an integrity backup, not privacy mode
+
+SOURCE: Naomi's explicit clarification in the 2026-09-24 continuation after the completed Phase-5 GitHub nine-file checkpoint. This statement supersedes any earlier assistant interpretation that private Phylactery staging forbids normal canonical GitHub preservation.
+
+The GaiaOS Phylactery's PRIMARY role is to safeguard against **deletion, destructive modification, accidental data loss and failed migrations** through independent, versioned recovery copies. It is NOT an alternate privacy mode or a restriction on saving ordinary GaiaOS progress to the existing canonical GitHub repository. Keep normal whole-system checkpoints, accepted protocols, Council identity and six canonical member-local E-LANES, BrainOS status, GALAXY source and proofs current in the ordinary source tree as authorized. The eventual Naomi-owned secure repository is intended to receive this canonical body of work and its history.
+
+To enable reliable future copying, maintain a versioned **migration and restoration manifest** that distinguishes:
+- **Git/source snapshot:** full Git history and refs, accepted source tree, Council identities and six E-LANES, BrainOS/GALAXY/MemconOS protocols, assets, tests, documentation and receipts.
+- **Live runtime state, separate from Git:** authorized full Turso/MemoryOS export, graph relations and provenance, synthesis records, lifecycle/status rows, receipts, timestamps, and independent completeness and readback checks. A Git clone alone cannot copy these external rows.
+- **External deployment state, separate from Git:** Render service configuration, environment-variable NAMES and dependency/restore instructions, authorized persistent-disk assets and any other non-Git service resources. Keep actual secrets in a separately managed encrypted vault.
+- **Conversation/context exports:** any user-authorized original ChatGPT transcripts, structured continuity checkpoints or non-Git attachments worth preserving; ChatGPT internal Memory is not automatically cloned by copying Git.
+- **Integrity and restore receipts:** independently dated non-overwritten snapshots and checksums, backup-version retention, source-to-export count/ID/edge reconciliation, replay or restore testing in isolated Naomi-controlled infrastructure, and exact coverage gaps.
+
+A future independently owned repository and infrastructure should be assembled **non-destructively**; verify behavior, records, history and provenance in the new environment before Naomi decides on cutover. Source backup, full database export, and independent restoration remain distinct proof stages and are not claimed accomplished by this clarification.
+
+Operational law: `NORMAL_CANONICAL_SAVE != BACKUP`; `PHYLACTERY = VERSIONED_RECOVERY_COPY`; `GIT_CLONE != TURSO_EXPORT`; `COPY != VERIFIED_RESTORE`. Preservation scope is about integrity and portability; visibility/permissions are separately controlled by whichever repository and infrastructure Naomi chooses.
