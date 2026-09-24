@@ -1,0 +1,35 @@
+name: GaiaOS HEATDEATH Persistent Control Gate
+
+on:
+  push:
+    paths:
+      - "api/gaiaos_memory_mode.py"
+      - "tests/test_gaiaos_memory_mode_stage2.py"
+      - ".github/workflows/gaiaos-heatdeath-control.yml"
+  pull_request:
+    paths:
+      - "api/gaiaos_memory_mode.py"
+      - "tests/test_gaiaos_memory_mode_stage2.py"
+      - ".github/workflows/gaiaos-heatdeath-control.yml"
+  workflow_dispatch:
+
+jobs:
+  mode-source-and-persistence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile independent mode service
+        run: python -m py_compile api/gaiaos_memory_mode.py tests/test_gaiaos_memory_mode_stage2.py
+      - name: Test real persisted HEATDEATH control and precedence
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_mode_stage2.py" -v
+      - name: Repeat frozen legacy baseline regression
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+      - name: Source whitespace integrity
+        run: git diff --check HEAD^1 HEAD
