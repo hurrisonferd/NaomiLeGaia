@@ -1,0 +1,63 @@
+name: GaiaOS HEATDEATH Stage 5C Normal Boot Isolation
+
+on:
+  push:
+    paths:
+      - "api/gaiaos_lazy_diagnostics.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/Dockerfile"
+      - "tests/test_heatdeath_stage5c_normal_boot.py"
+      - "GaiaOS/Plans/HEATDEATH-STAGE5C-NORMAL-BOOT.v1.md"
+      - ".github/workflows/gaiaos-heatdeath-stage5c-normal-boot.yml"
+  pull_request:
+    paths:
+      - "api/gaiaos_lazy_diagnostics.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/Dockerfile"
+      - "tests/test_heatdeath_stage5c_normal_boot.py"
+      - "GaiaOS/Plans/HEATDEATH-STAGE5C-NORMAL-BOOT.v1.md"
+      - ".github/workflows/gaiaos-heatdeath-stage5c-normal-boot.yml"
+  workflow_dispatch:
+
+jobs:
+  normal-carrier-broken-galaxy-boot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install carrier test dependencies
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+      - name: Compile isolation and existing normal carrier
+        run: |
+          python -m py_compile api/gaiaos_lazy_diagnostics.py api/browser_memcon_bridge.py
+          python -m py_compile tests/test_heatdeath_stage5c_normal_boot.py
+      - name: Fresh normal-carrier boot while every GALAXY import is broken
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_stage5c_normal_boot.py" -v
+      - name: Reprove ordinary browser conversation and source validation
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_browser_stage5b.py" -v
+      - name: Reprove front door MCP HTTP MemoryOS and independent legacy reader
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_routes_stage5a.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_mode_stage2.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_legacy_recovery_stage4.py" -v
+      - name: Build normal GaiaOS carrier with isolated diagnostic imports
+        run: docker build -f api/Dockerfile --tag gaiaos-normal:boot-ci .
+      - name: Test broken optional modules inside actual normal image
+        run: |
+          docker run --rm --entrypoint python \
+            -e MEMCONOS_DB_PATH=/tmp/gaiaos-boot-ci.sqlite \
+            -e GAIAOS_FORCE_HEATDEATH=1 gaiaos-normal:boot-ci -c \
+            "import builtins,sys;real=builtins.__import__;bad=lambda n,*a,**k: (_ for _ in ()).throw(ImportError('blocked GALAXY')) if n.startswith('galaxy_') or n=='augury_ritual' else real(n,*a,**k);builtins.__import__=bad;import browser_memcon_bridge as b;assert b.app is not None;assert not any(n.startswith('galaxy_') for n in sys.modules);print('NORMAL_CARRIER_BROKEN_GALAXY_BOOT_PASS')"
+      - name: Rebuild independent emergency image
+        run: docker build -f api/Dockerfile.legacy-recovery --build-arg RECOVERY_SOURCE_COMMIT="$GITHUB_SHA" --tag gaiaos-heatdeath-recovery:boot-ci .
+      - name: Verify emergency image still has no GALAXY dependency
+        run: |
+          docker run --rm --entrypoint python gaiaos-heatdeath-recovery:boot-ci -c "import sys,gaiaos_legacy_recovery_app as app;assert app.SERVICE=='gaiaos-legacy-recovery';assert not any(n.startswith('galaxy_') for n in sys.modules);print('ISOLATED_RECOVERY_BOOT_PASS')"
+      - name: Diff whitespace integrity
+        run: git diff --check HEAD^1 HEAD
