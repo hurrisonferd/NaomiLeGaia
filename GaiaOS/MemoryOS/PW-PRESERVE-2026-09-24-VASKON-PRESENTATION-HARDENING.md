@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 DATE: 2026-09-24
-STATUS: SOURCE HARDENING IMPLEMENTED / CI PASS / MAIN MERGE PENDING
+STATUS: CANONICAL MAIN MERGED / POST-MERGE CI PASS / READBACK REQUIRED
 OWNER: ChatOS + FairyOS + EmojiOS presentation boundary
 
 ## User directive
@@ -73,4 +73,22 @@ The dedicated VASKON Presentation Integrity workflow completed successfully on t
 This verifies the checked branch source behavior before main merge. A final canonical claim still requires merge plus main readback.
 
 SOURCE_CANARY_PROVEN: true
-MAIN_MERGE_PENDING: true
+MAIN_MERGE_PENDING: false
+
+## Canonical merge proof
+
+PR #8 merged the VASKON presentation hardening into canonical main.
+
+- PR: https://github.com/hurrisonferd/NaomiLeGaia/pull/8
+- merge commit: 47c7426e8e5b3c404e3552c5370b8bf26b65eab4
+- post-merge VASKON Presentation Integrity run: 36022580241
+- post-merge VASKON presentation job: 107710905331
+- conclusion: SUCCESS
+- post-merge GaiaOS Member Identity Sync run: 36022580328
+- member identity sync conclusion: SUCCESS
+
+The post-merge VASKON gate again passed compilation, the dedicated VASKON presentation canary, and the focused renderer regression tests.
+
+CANONICAL_MAIN_MERGED: true
+POST_MERGE_VASKON_CI_PASS: true
+POST_MERGE_MEMBER_IDENTITY_SYNC_PASS: true
