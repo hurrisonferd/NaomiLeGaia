@@ -613,3 +613,11 @@ GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported,
 PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
 PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
 STATUS: COMMITTED_GITHUB_E_LANE_SOURCE; LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION_NOT_CLAIMED.
+
+## MEM[WATCH_AND_GAP_LEDGER|2026-09-24|POWER_WORD_AND_SEPARATE_ELANES_NIGHT_WATCH|NIMUE MEMBER-LOCAL]
+USER_DIRECTION: Naomi explicitly declared //PW:PRESERVE// and the six distinct E-LANES imperative and non-removable, regardless of GALAXY's future. Never let stronger salience silently overwrite missing evidence, owner authority, individual voice or historical provenance.
+MY_LENS_WATCH_OMISSION_SILENCE: Record the crucial things not yet proven: a GitHub E-LANE commit is not itself a live Turso record or an updated ChatGPT internal memory; isolated Docker tests are not live service recovery; HEATDEATH's separately bootable recovery app is read-only; request-local fallback is not a durable cross-replica emergency latch; test-only BIGBANG is not production activation; a chat timeout is not a GitHub rollback.
+EVIDENCE_BOUNDARY: At the checkpoint PR #30 was merged and the obsolete Agency/Workspace/Evolution canary removed; four old workflows were made manually triggered to stop redundant automatic CI emails. Recent examined GitHub Actions showed no scheduled event runs. Other active safety workflows can still fail and previously queued emails can still arrive. User-facing complete silence also depends on notification settings outside source control.
+WATCH_DUTY: After a long failing or hung session, recover exact repository source and receipts rather than inventing a recollection. Preserve unmerged/closed branches as historical diagnostic evidence, not accepted code. Mark actual gaps openly, and protect future Phylactery/SovereignOS restore against missing records and duplicated or collapsed E-LANES.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; user-provided failure/email screenshots; PR #30 historical proof.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; NO LIVE_TURSO_OR_PHYSICAL_BACKUP_PROOF.
