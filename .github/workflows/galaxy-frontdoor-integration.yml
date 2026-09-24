@@ -8,6 +8,8 @@ on:
       - "api/browser_memcon_bridge.py"
       - "api/Dockerfile"
       - "tests/test_galaxy_frontdoor_integration.py"
+      - "tests/test_galaxy_operational_adoption.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
       - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
       - ".github/workflows/galaxy-frontdoor-integration.yml"
   pull_request:
@@ -17,6 +19,8 @@ on:
       - "api/browser_memcon_bridge.py"
       - "api/Dockerfile"
       - "tests/test_galaxy_frontdoor_integration.py"
+      - "tests/test_galaxy_operational_adoption.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
       - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
       - ".github/workflows/galaxy-frontdoor-integration.yml"
   workflow_dispatch:
@@ -38,8 +42,11 @@ jobs:
           python -m py_compile api/browser_memcon_bridge.py
           python -m py_compile api/galaxy_production.py
           python -m py_compile tests/test_galaxy_frontdoor_integration.py
+          python -m py_compile tests/test_galaxy_operational_adoption.py
+          python -m py_compile GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py
       - name: Prove bounded MemoryOS retrieval and fail-closed guards
         run: |
           PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_frontdoor_integration.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_operational_adoption.py" -v
       - name: Guard source formatting
         run: git diff --check HEAD^1 HEAD
