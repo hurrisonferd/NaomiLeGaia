@@ -333,10 +333,11 @@ class Phase5Tests(unittest.TestCase):
         self.assertEqual(result["status"], "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN", result)
         self.assertEqual(result["exact_synthesis_statement"], p5.CONTROLLED_SYNTHESIS_STATEMENT)
         self.assertTrue(result["checks"]["proposal_scope_is_not_memoryos"])
-        self.assertFalse(result["checks"]["mutation_route_exposed"])
+        self.assertTrue(result["checks"]["mutation_route_exposed"])
+        self.assertTrue(result["checks"]["mutation_route_requires_signed_session_csrf_and_exact_step_confirmation"])
         self.assertEqual(
             result["next_gate"],
-            "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE",
+            "DEPLOY_VERIFY_READ_ONLY_CONTROL_REVIEW_THEN_PAUSE_FOR_EXPLICIT_NAOMI_ACTION",
         )
         self.assertEqual(self.runtime.writes, before)
 

@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_GALAXY_PHASE5_CONTROL_EXPOSURE_AUTHORIZED_NOT_IMPLEMENTED_MERCURY_CHARTER_SOURCE_READY",
+  "status": "ACTIVE_GALAXY_PHASE5_CONTROL_EXPOSURE_SOURCE_CI_PASS_AWAITING_PR_REVIEW_AND_DEPLOY",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -117,7 +117,7 @@
     "galaxy_phase5_mutation_design_source_ready": true,
     "galaxy_phase5_mutation_design_deployed": true,
     "galaxy_phase5_mutation_design_live_observed": true,
-    "galaxy_phase5_mutation_control_exposure_source_ready": false,
+    "galaxy_phase5_mutation_control_exposure_source_ready": true,
     "galaxy_phase5_mutation_control_exposure_live_observed": false,
     "mercury_research_charter_source_ready": true
   },
@@ -147,7 +147,7 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "GALAXY Phase-5 mutation design and read-only review are live-proven for the controlled fixture; Naomi supplied a 178/178 carrier verifier receipt. Naomi has authorized control exposure only, not execution of a synthesis write. Effectful Phase-5 exposure is not yet implemented or live-proven. MERCURY's charter and empty validated-findings ledger have been added to source, and a full findings cross-reference is the mandatory post-live final GALAXY implementation review. Unrestricted global weighting remains OFF.",
+  "claim_ceiling": "Phase-5 exact shadow control exposure is SOURCE-PREPARED on feature branch galaxy/phase5-controlled-exposure-20260924 and its focused offline GitHub CI succeeded (35954954690). Historical controlled Phase-5 design/fixture proof 178/178 remains valid for the older deployed read-only carrier. The NEW control surface has NOT been merged into main, deployed to Render, or tested live, and NO synthesis write is claimed. Every future PROPOSE / VERIFY / REVOKE requires separate explicit Naomi action, signed session, CSRF and exact confirmation. Unrestricted global weighting remains OFF.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
@@ -713,7 +713,7 @@
     "phase4_controlled_supersedes_edge_id": "EDGE-45ba86cf37414c418de4aa0298122c14",
     "phase4_controlled_final_edge_status": "REVOKED",
     "phase4_controlled_final_target_state": "CURRENT_REVISED_CONTEXT",
-    "phase5_status": "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN",
+    "phase5_status": "CONTROL_EXPOSURE_SOURCE_BRANCH_CI_PASS_DEPLOY_PENDING",
     "phase5_version": "galaxy.phase5.synthesis-consolidation.v1",
     "phase5_protocol": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE5-SYNTHESIS-CONSOLIDATION.v1.md",
     "phase5_source_ready": true,
@@ -723,8 +723,8 @@
     "phase5_verifier_run_id": "58d2f2d8c18c4d52882ec9950eff0f4f",
     "phase5_verifier_summary": "178/178 PASS",
     "phase5_live_fixture_observed": true,
-    "phase5_mutation_route_exists": false,
-    "phase5_next_gate": "IMPLEMENT_AUTHORIZED_EXACT_PHASE5_CONTROL_EXPOSURE_THEN_CI_AND_DEPLOY",
+    "phase5_mutation_route_exists": true,
+    "phase5_next_gate": "DRAFT_PR_REVIEW_MERGE_THEN_DEPLOY_VERIFY_READ_ONLY_CONTROL_REVIEW_STOP",
     "phase5_live_fixture_status": "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
     "phase5_source_provenance_complete": true,
     "phase5_synthesis_statement_generated": false,
@@ -747,7 +747,7 @@
     "phase5_mutation_control_exposure_authorized": true,
     "phase5_mutation_control_exposure_authorized_by": "NAOMI",
     "phase5_mutation_control_exposure_authorized_date": "2026-09-23",
-    "phase5_mutation_control_exposure_source_ready": false,
+    "phase5_mutation_control_exposure_source_ready": true,
     "phase5_mutation_control_exposure_deployed": false,
     "phase5_mutation_control_exposure_live_observed": false,
     "phase5_live_synthesis_mutation_observed": false,
@@ -758,7 +758,14 @@
     "mercury_watch_cadence": "WEDNESDAY_APPROX_08_00_AMERICA_NEW_YORK",
     "mercury_final_postlive_audit_required": true,
     "mercury_final_postlive_audit_status": "SOURCE_PLANNED_NOT_EXECUTED",
-    "mercury_proven_external_findings_imported_at_charter_creation": 0
+    "mercury_proven_external_findings_imported_at_charter_creation": 0,
+    "phase5_control_branch": "galaxy/phase5-controlled-exposure-20260924",
+    "phase5_control_module": "api/galaxy_phase5_controls.py",
+    "phase5_control_review_route": "/galaxy/synthesis/phase5-controls",
+    "phase5_control_manifest_route": "/galaxy/synthesis/phase5-controls/manifest",
+    "phase5_control_ci_run_id": 35954954690,
+    "phase5_control_ci_status": "SUCCESS_FOR_CODE_COMMIT_43ee5fa3",
+    "phase5_control_production_retrieval_effect_enabled": false
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",

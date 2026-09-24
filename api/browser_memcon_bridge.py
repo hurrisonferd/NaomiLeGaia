@@ -21,6 +21,7 @@ import galaxy_quality
 import galaxy_phase3_exit
 import galaxy_phase4
 import galaxy_phase5
+import galaxy_phase5_controls
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -824,6 +825,151 @@ async def _ritual_authorized_body(browser_request: Request) -> dict:
     ):
         raise HTTPException(status_code=403, detail="Explicit Naomi Ritual action required")
     return body
+
+
+
+@app.get("/galaxy/synthesis/phase5-controls", response_class=HTMLResponse, operation_id="galaxyPhase5ControlReview")
+def galaxy_phase5_controls_review(browser_request: Request):
+    """No-JavaScript, read-only, session-protected controlled shadow console."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    state = galaxy_phase5_controls.inspect(memcon_runtime)
+    payload = html.escape(json.dumps({
+        "current_state": state["current_state"],
+        "current_synthesis_record_id": state["current_synthesis_record_id"],
+        "controlled_sources": state["controlled_source_record_ids"],
+        "exact_statement": state["exact_statement"],
+        "shadow_scope": state["shadow_scope"],
+        "design_status": state["design_status"],
+        "hold_reasons": state["hold_reasons"],
+    }, ensure_ascii=False, indent=2))
+    links = "".join(
+        "<p><a style='display:inline-block;padding:12px 16px;background:#eee;color:#111;"
+        "text-decoration:none;border-radius:10px' href='/galaxy/synthesis/phase5-controls/confirm/"
+        + html.escape(kind, quote=True) + "'>" + html.escape(label) + "</a></p>"
+        for kind, label in [
+            ("PROPOSE", "1. Propose exact shadow synthesis"),
+            ("VERIFY", "2. Verify exact DERIVED_FROM provenance"),
+            ("REVOKE", "3. Revoke shadow synthesis without deleting history"),
+        ]
+        if state["eligible_actions"].get(kind)
+    )
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>GALAXY Phase 5: controlled shadow synthesis</h2>"
+        "<p>This page is read-only. Each mutation has a separate confirmation page "
+        "and POST. No production retrieval or source-record mutation is authorized.</p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>"
+        + payload + "</pre>" + (links or "<p>HOLD: no controlled action eligible.</p>")
+        + "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.get("/galaxy/synthesis/phase5-controls/confirm/{kind}", response_class=HTMLResponse, operation_id="galaxyPhase5ControlConfirm")
+def galaxy_phase5_controls_confirm(kind: str, browser_request: Request):
+    """GET previews the exact effect; no writes or implicit authorization."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    csrf = _ritual_csrf(browser_request)
+    state = galaxy_phase5_controls.inspect(memcon_runtime)
+    kind = str(kind or "").upper()
+    if kind not in galaxy_phase5_controls.CONFIRMATIONS:
+        raise HTTPException(status_code=404, detail="Unknown exact Phase-5 step")
+    if not state["eligible_actions"].get(kind):
+        raise HTTPException(status_code=409, detail="Controlled Phase-5 step is not eligible")
+    target = state["current_synthesis_record_id"] or ""
+    explanation = {
+        "PROPOSE": "Create one new PROPOSED synthesis in GALAXY_SYNTHESIS_SHADOW, "
+                   "one provenance row and two PROPOSED DERIVED_FROM edges.",
+        "VERIFY": "Verify exactly the two source-provenance edges and mark the "
+                  "existing synthesis SYNTHESIS_VERIFIED_SHADOW.",
+        "REVOKE": "Revoke this exact shadow synthesis and its provenance edges. "
+                  "All sources, records and history remain stored.",
+    }[kind]
+    hidden = {
+        "csrf": csrf,
+        "authority": "NAOMI",
+        "approved": "true",
+        "operation": kind,
+        "confirmation": galaxy_phase5_controls.CONFIRMATIONS[kind],
+        "synthesis_record_id": target if kind != "PROPOSE" else "",
+        "reason": "Controlled Phase-5 shadow rollback proof" if kind == "REVOKE" else "",
+    }
+    fields = "".join(
+        "<input type='hidden' name='" + html.escape(key, quote=True)
+        + "' value='" + html.escape(value, quote=True) + "'>"
+        for key, value in hidden.items()
+    )
+    preview = html.escape(json.dumps({
+        "operation": kind,
+        "effect": explanation,
+        "target": target or "NEW_SYNTHESIS_SHADOW_RECORD",
+        "exact_source_ids": state["controlled_source_record_ids"],
+        "statement": state["exact_statement"],
+        "scope": state["shadow_scope"],
+    }, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Confirm Phase-5 " + html.escape(kind) + "</h2><p>"
+        + html.escape(explanation) + "</p><pre style='white-space:pre-wrap;word-break:break-word'>"
+        + preview + "</pre><form method='post' action='/galaxy/synthesis/phase5-controls/manifest'>"
+        + fields + "<button type='submit' style='font-size:18px;padding:12px 16px'>"
+        "Explicitly confirm " + html.escape(kind) + "</button></form>"
+        "<p><a style='color:#9ee7ff' href='/galaxy/synthesis/phase5-controls'>Cancel / review</a></p>"
+        "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.post("/galaxy/synthesis/phase5-controls/manifest", response_class=HTMLResponse, operation_id="galaxyPhase5ControlManifest")
+async def galaxy_phase5_controls_manifest(browser_request: Request):
+    """One bounded effect only after signed session, CSRF and exact per-step consent."""
+    expected_csrf = _ritual_csrf(browser_request)
+    if "application/x-www-form-urlencoded" not in browser_request.headers.get("content-type", "").lower():
+        raise HTTPException(status_code=415, detail="Phase-5 control requires exact form POST")
+    raw_bytes = await browser_request.body()
+    if len(raw_bytes) > 4096:
+        raise HTTPException(status_code=413, detail="Phase-5 control form too large")
+    fields = parse_qs(raw_bytes.decode("utf-8"), keep_blank_values=True)
+    supplied_csrf = _ritual_form_value(fields, "csrf")
+    if not hmac.compare_digest(supplied_csrf, expected_csrf):
+        raise HTTPException(status_code=403, detail="Phase-5 control CSRF proof failed")
+    if (
+        _ritual_form_value(fields, "authority") != "NAOMI"
+        or _ritual_form_value(fields, "approved") != "true"
+    ):
+        raise HTTPException(status_code=403, detail="Explicit Naomi authorization required")
+    try:
+        receipt = galaxy_phase5_controls.execute(
+            memcon_runtime,
+            _ritual_form_value(fields, "operation"),
+            authority="NAOMI",
+            approved=True,
+            confirmation=_ritual_form_value(fields, "confirmation"),
+            synthesis_record_id=_ritual_form_value(fields, "synthesis_record_id"),
+            reason=_ritual_form_value(fields, "reason"),
+        )
+    except PermissionError as exc:
+        raise HTTPException(status_code=403, detail=str(exc)) from exc
+    except (KeyError, ValueError) as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    output = html.escape(json.dumps(receipt, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Phase-5 execution/readback receipt</h2>"
+        "<p><a style='color:#9ee7ff' href='/galaxy/synthesis/phase5-controls'>Review current state</a></p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + output + "</pre>"
+        "</body></html>",
+        status_code=200 if receipt["status"] == "PASS_READBACK" else 409,
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @app.get("/ritual/status", operation_id="auguryRitualPhase1Status")

@@ -570,3 +570,13 @@ STATUS: COMMITTED
 ## PW:PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS
 Engineering checkpoint preserved: AUGURY/RITUAL Phase 1 deployed, verifier 167/167 PASS, live read-only Ritual status clean, zero SUPERSEDES edges, next gate is exact controlled PROPOSE_SUPERSEDES then STOP/inspect. General natural-language manifestation remains disabled.
 Canonical checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-23-AUGURY-RITUAL-PHASE1-LIVE-STATUS.md`
+
+
+MEM[BUILD_CHECKPOINT|2026-09-24|Naomi-authorized GALAXY Phase-5 control exposure|bounded shadow proof]
+WHAT: The authorized Phase-5 control exposure was prepared on an isolated feature branch, with exact PROPOSE/VERIFY/REVOKE shadow controls, signed-session/CSRF mobile forms, provenance/source readback, unit tests and a draft PR (#2). Focused GitHub CI passed; original main and the deployed carrier were not changed by creating this branch. No live synthesis mutation is claimed.
+MY_ROLE: Protect the authority and proof boundary: implementing a control is not permission to execute it, a passed offline test is not a deployed runtime receipt, and a successful write without full readback must remain HOLD.
+FAILURE_AND_REPAIR: An intermediate branch CI run failed while source design-review expectations still described routes as unexposed; the now-exposed route semantics, tests and verifier were updated together, and later CI passed.
+PREVENTION: When exposing a new effectful route, audit all stale source-status claims, read-only review contracts, tests, verifier assertions, packaging and UI auth/CSRF before making a live claim. Require separate operator approval for each shadow mutation.
+TRACE: Draft PR https://github.com/hurrisonferd/NaomiLeGaia/pull/2 ; passing guardrails https://github.com/hurrisonferd/NaomiLeGaia/actions/runs/35955002068
+OUTCOME: SOURCE_BRANCH_PREPARED / DRAFT_PR / CODE_CI_PASS / LIVE_DEPLOYMENT_NOT_PROVEN
+STATUS: COMMITTED_TO_FEATURE_BRANCH_PENDING_MAIN_REVIEW

@@ -310,16 +310,19 @@ def mutation_design_review(runtime: Any) -> dict[str, Any]:
             "memoryos_retrieval_changed": False,
             "production_retrieval_changed": False,
             "unrestricted_global_weighting_enabled": False,
-            "mutation_route_exposed": False,
+            "mutation_route_exposed": True,
+            "mutation_route_requires_signed_session_csrf_and_exact_step_confirmation": True,
         },
         "next_gate": (
-            "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE"
+            "DEPLOY_VERIFY_READ_ONLY_CONTROL_REVIEW_THEN_PAUSE_FOR_EXPLICIT_NAOMI_ACTION"
             if not hold_reasons
             else "REPAIR_OR_RESOLVE_HOLD"
         ),
         "proof_boundary": (
-            "This is source-level/read-only mutation design review. It performs no synthesis "
-            "mutation and exposes no mutation route."
+            "This is source-level/read-only mutation design review. The separately "
+            "authorized exact control surface is exposed but this GET performs "
+            "no synthesis mutation; each effect requires a fresh signed-session, "
+            "CSRF-protected exact operator POST."
         ),
     }
 
