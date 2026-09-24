@@ -3,7 +3,7 @@
   "system": "BrainOS",
   "authority": "NAOMI",
   "owner": "BrainOS",
-  "status": "ACTIVE_GALAXY_PHASE5_MUTATION_DESIGN_LIVE_PASS_CONTROL_EXPOSURE_AUTH_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE5_CONTROL_EXPOSURE_AUTHORIZED_NOT_IMPLEMENTED_MERCURY_CHARTER_SOURCE_READY",
   "class": "INTERNAL_COGNITIVE_META_LOOP_AND_SUPPORT_SELECTION_CONTRACT",
   "composition": [
     "SELF",
@@ -116,7 +116,10 @@
     "galaxy_phase5_synthesis_live_fixture_observed": true,
     "galaxy_phase5_mutation_design_source_ready": true,
     "galaxy_phase5_mutation_design_deployed": true,
-    "galaxy_phase5_mutation_design_live_observed": true
+    "galaxy_phase5_mutation_design_live_observed": true,
+    "galaxy_phase5_mutation_control_exposure_source_ready": false,
+    "galaxy_phase5_mutation_control_exposure_live_observed": false,
+    "mercury_research_charter_source_ready": true
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -144,7 +147,7 @@
     "RELEVANCE != AGREEMENT",
     "HISTORY PRESERVED != HISTORY GOVERNS PRESENT"
   ],
-  "claim_ceiling": "Phase 5 mutation design is live-observed PASS through the read-only deployed review. The exact synthesis statement and two-source provenance set are fixed, proposal remains outside MemoryOS in GALAXY_SYNTHESIS_SHADOW, verification remains shadow-scoped, revocation is non-deleting, sources/provenance are preserved, no existing non-revoked synthesis was found, and no retrieval/global-weighting behavior changes. No effectful Phase-5 mutation route is exposed. Separate Naomi authorization is required before control exposure.",
+  "claim_ceiling": "GALAXY Phase-5 mutation design and read-only review are live-proven for the controlled fixture; Naomi supplied a 178/178 carrier verifier receipt. Naomi has authorized control exposure only, not execution of a synthesis write. Effectful Phase-5 exposure is not yet implemented or live-proven. MERCURY's charter and empty validated-findings ledger have been added to source, and a full findings cross-reference is the mandatory post-live final GALAXY implementation review. Unrestricted global weighting remains OFF.",
   "galaxy": {
     "blueprint": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY.v1.md",
     "phase2_status": "CLOSED",
@@ -717,11 +720,11 @@
     "phase5_deployed": true,
     "phase5_route": "/galaxy/synthesis/phase5-fixture-review",
     "phase5_route_registered_live": true,
-    "phase5_verifier_run_id": "3b414889e8f34b0ca43f176928b9f396",
-    "phase5_verifier_summary": "173/173 PASS",
+    "phase5_verifier_run_id": "58d2f2d8c18c4d52882ec9950eff0f4f",
+    "phase5_verifier_summary": "178/178 PASS",
     "phase5_live_fixture_observed": true,
     "phase5_mutation_route_exists": false,
-    "phase5_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE",
+    "phase5_next_gate": "IMPLEMENT_AUTHORIZED_EXACT_PHASE5_CONTROL_EXPOSURE_THEN_CI_AND_DEPLOY",
     "phase5_live_fixture_status": "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
     "phase5_source_provenance_complete": true,
     "phase5_synthesis_statement_generated": false,
@@ -730,7 +733,7 @@
     "phase5_derived_from_edges_written": false,
     "phase5_production_retrieval_changed": false,
     "phase5_global_weighting_enabled": false,
-    "phase5_mutation_design_authorization_pending": true,
+    "phase5_mutation_design_authorization_pending": false,
     "phase5_mutation_design_authorized": true,
     "phase5_mutation_design_authorized_by": "NAOMI",
     "phase5_mutation_design_source_ready": true,
@@ -740,7 +743,22 @@
     "phase5_shadow_scope": "GALAXY_SYNTHESIS_SHADOW",
     "phase5_mutation_design_live_observed": true,
     "phase5_existing_nonrevoked_synthesis": null,
-    "phase5_mutation_control_exposure_authorization_pending": true
+    "phase5_mutation_control_exposure_authorization_pending": false,
+    "phase5_mutation_control_exposure_authorized": true,
+    "phase5_mutation_control_exposure_authorized_by": "NAOMI",
+    "phase5_mutation_control_exposure_authorized_date": "2026-09-23",
+    "phase5_mutation_control_exposure_source_ready": false,
+    "phase5_mutation_control_exposure_deployed": false,
+    "phase5_mutation_control_exposure_live_observed": false,
+    "phase5_live_synthesis_mutation_observed": false,
+    "mercury_research_project": "MERCURY",
+    "mercury_research_acronym": "Memory Engineering Reconnaissance for Comparative Utility, Reversibility & Yield",
+    "mercury_charter": "GaiaOS/ResearchOS/MERCURY/README.md",
+    "mercury_findings_ledger": "GaiaOS/ResearchOS/MERCURY/FINDINGS.md",
+    "mercury_watch_cadence": "WEDNESDAY_APPROX_08_00_AMERICA_NEW_YORK",
+    "mercury_final_postlive_audit_required": true,
+    "mercury_final_postlive_audit_status": "SOURCE_PLANNED_NOT_EXECUTED",
+    "mercury_proven_external_findings_imported_at_charter_creation": 0
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
@@ -807,5 +825,12 @@
     "live_status_competing_superseder_absent": true,
     "live_status_production_retrieval_changed": false,
     "live_status_global_weighting_enabled": false
+  },
+  "researchos": {
+    "project": "MERCURY",
+    "mission": "GaiaOS/ResearchOS/MERCURY/README.md",
+    "ledger": "GaiaOS/ResearchOS/MERCURY/FINDINGS.md",
+    "final_galaxy_gate": "POSTLIVE_ALL_FINDINGS_CROSS_REFERENCE",
+    "status": "SOURCE_READY"
   }
 }
