@@ -1,7 +1,8 @@
 name: GALAXY Phase 3F Guarded Production Pilot
 
 on:
-  # Owner-requested CI quiet period. Invoke manually for reviewed releases.
+  # Intentionally manual: legacy research checks remain available to invoke
+  # during a reviewed GALAXY release. Modern HEATDEATH release CI is separate.
   workflow_dispatch:
 
 
