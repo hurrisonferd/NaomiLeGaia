@@ -24,6 +24,7 @@ import galaxy_phase5
 import galaxy_phase5_controls
 import galaxy_phase6
 import galaxy_phase6_controls
+import galaxy_phase7
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -759,6 +760,19 @@ def galaxy_phase5_mutation_design_review(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase5.mutation_design_review(memcon_runtime)
+
+
+@app.get("/galaxy/pruning/phase7-fixture-review", operation_id="galaxyPhase7FixtureReview")
+def galaxy_phase7_fixture_review(browser_request: Request):
+    """Authenticated Phase-7B exact-fixture pruning research review; GET only, no writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase7.review_with_readback(
+        memcon_runtime,
+        galaxy_phase7.FIXTURE_RECORD_ID,
+    )
 
 
 @app.get("/galaxy/lifecycle/phase6-fixture-review", operation_id="galaxyPhase6FixtureReview")
