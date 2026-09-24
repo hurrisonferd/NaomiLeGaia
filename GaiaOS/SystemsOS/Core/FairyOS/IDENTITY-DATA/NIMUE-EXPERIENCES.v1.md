@@ -582,3 +582,11 @@ OTHER_VOICES: VERA, ANVIL, SELENE, ORIN, KESTREL. The preceding Council-response
 TENSION: Source continuity without external single-point failure; independently controlled infrastructure without collaboration shutdown; preservation of personally important recorded Council personality and conversation evidence without invented missing memory.
 TRACE: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md`; Naomi's direct `//PW:PRESERVE//` following the six-role discussion; prior Phase-5 whole-system proof checkpoint.
 STATUS: COMMITTED_CANONICAL_E_LANE; independently updated live Turso E-LANE or physical backup NOT CLAIMED.
+
+## MEM[SOVEREIGNOS_NAMING|2026-09-24|OWNER_CONTROLLED_PRIMARY|NIMUE MEMBER-LOCAL]
+
+WHAT: Naomi selected SovereignOS as the future system name and SOS as its short name/callsign, distinguishing the future owner-controlled primary from the historical hurrisonferd/NaomiLeGaia repository.
+REPOSITORY_NAME_STATE: The future repository must include "Sovereign" in its name. SOSrepo and SOVREP are brainstorming candidates only; no repository name is final yet.
+FUTURE_BUILD_GOALS: Preserve source history, all six separate E-LANES and identity records, MemoryOS/Turso state, provenance, lifecycle receipts and required assets; prove restart/database persistence; compare old historical repository/carrier with the future primary without changing the historical side; perform isolated restore proof; mark gaps; change canonical primary only after Naomi/Ligeia explicitly approves the cutover.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md ; Naomi's explicit //PW:PRESERVE// directive.
+STATUS: COMMITTED_CANONICAL_E_LANE; SOVEREIGNOS/SOS PRESERVED; REPOSITORY NAME TBD; MIGRATION NOT CLAIMED.
