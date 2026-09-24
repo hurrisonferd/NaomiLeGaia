@@ -186,7 +186,9 @@ class Phase7PruningResearchTests(unittest.TestCase):
     def test_carrier_exposes_only_authenticated_get_fixture_surface(self):
         bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
         docker = (ROOT / "api" / "Dockerfile").read_text(encoding="utf-8")
-        self.assertIn("import galaxy_phase7", bridge)
+        self.assertIn('galaxy_phase7 = deferred("galaxy_phase7")', bridge)
+        self.assertIn("from gaiaos_lazy_diagnostics import deferred", bridge)
+        self.assertNotIn("import galaxy_phase7" + chr(10), bridge)
         self.assertIn(
             '@app.get("/galaxy/pruning/phase7-fixture-review"',
             bridge,
@@ -516,7 +518,9 @@ class Phase7PruningResearchTests(unittest.TestCase):
     def test_phase7f_exposes_exact_authenticated_get_only_route(self):
         bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
         docker = (ROOT / "api" / "Dockerfile").read_text(encoding="utf-8")
-        self.assertIn("import galaxy_phase7_isolated_restore", bridge)
+        self.assertIn('galaxy_phase7_isolated_restore = deferred("galaxy_phase7_isolated_restore")', bridge)
+        self.assertIn("from gaiaos_lazy_diagnostics import deferred", bridge)
+        self.assertNotIn("import galaxy_phase7_isolated_restore" + chr(10), bridge)
         start = '@app.get("/galaxy/pruning/phase7-isolated-restore-review"'
         end = '@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls"'
         self.assertIn(start, bridge)
