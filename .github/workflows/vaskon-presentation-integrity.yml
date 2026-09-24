@@ -1,0 +1,57 @@
+name: VASKON Presentation Integrity
+
+on:
+  push:
+    paths:
+      - "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
+      - "GaiaOS/LOAD.v1.md"
+      - "GaiaOS/CURRENT.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md"
+      - "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py"
+      - "GaiaOS/Apps/ChatOS/CURRENT.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py"
+      - "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+      - "GaiaOS/Tests/test_presentation_renderer.py"
+      - ".github/workflows/vaskon-presentation-integrity.yml"
+  pull_request:
+    paths:
+      - "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      - "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py"
+      - "GaiaOS/Apps/ChatOS/CURRENT.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
+      - "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py"
+      - "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+      - "GaiaOS/Tests/test_presentation_renderer.py"
+      - ".github/workflows/vaskon-presentation-integrity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vaskon-presentation-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile presentation surfaces
+        run: |
+          python -m py_compile             GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py             GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py
+
+      - name: Run dedicated VASKON presentation canary
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py
+
+      - name: Install focused test dependency
+        run: python -m pip install --disable-pip-version-check -q pytest
+
+      - name: Run presentation renderer regression tests
+        run: python -m pytest -q GaiaOS/Tests/test_presentation_renderer.py

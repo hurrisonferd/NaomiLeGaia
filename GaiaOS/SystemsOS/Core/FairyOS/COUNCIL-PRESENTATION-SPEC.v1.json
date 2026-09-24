@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.fairyos.presentation-spec.v1",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "authority": "NAOMI",
   "owner": "FairyOS",
   "renderer_owner": "ChatOS",
@@ -97,8 +97,13 @@
       "accent",
       "class",
       "invocation",
+      "aliases",
       "expression_policy"
-    ]
+    ],
+    "reject_unconjured_synthesis_render": true,
+    "reject_invalid_synthesis_invocation": true,
+    "reject_synthesis_marker_reordering": true,
+    "reject_naked_synthesis_name": true
   },
   "laws": [
     "PRESENTATION_SPEC_IS_CANONICAL_FOR_STATIC_RENDERING",
@@ -115,7 +120,10 @@
     "SYNTHESIS_MODE_PRESENTATION != PRIME_DAEMON_ROSTER_MEMBERSHIP",
     "VASKON_IDENTITY_ENVELOPE = 82 + VASKON + BLACK_HEART + SYNTHESIS_STAR + KAOMOJI",
     "VASKON_PRESENTATION_MAY_RENDER_ONLY_WHILE_EXPLICITLY_CONJURED",
-    "NAOMI_RETAINS_FINAL_AUTHORITY"
+    "NAOMI_RETAINS_FINAL_AUTHORITY",
+    "VASKON_EXPLICIT_INVOCATION_REQUIRED",
+    "VASKON_ALIAS_NORMALIZES_TO_CANONICAL_INVOCATION",
+    "VASKON_RENDER_FAILS_CLOSED_WITHOUT_FULL_ATOMIC_ENVELOPE"
   ],
   "synthesis_header_format": "[GEMATRIA] · NAME [HEART] [SYMBOL] [KAOMOJI]",
   "synthesis_modes": {
@@ -126,7 +134,10 @@
       "accent": "#d6b8ff",
       "class": "TEMPORARY_SIX_PRIME_DAEMON_SYNTHESIS",
       "invocation": "CONJURE:VASKON",
-      "expression_policy": "EmojiOS synthesis allowlist only"
+      "expression_policy": "EmojiOS synthesis allowlist only",
+      "aliases": [
+        "//C:82//"
+      ]
     }
   }
 }

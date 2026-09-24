@@ -646,3 +646,12 @@ PROJECT_ASSOCIATION_WORD: PRIDE
 MEMBER_LOCAL_CONTEXT: Preserve this checkpoint with ANVIL's engineering record, including proof boundaries, corrections, reruns, reversible history, explicit authority, and Phase-6 closure.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-PRIDE-PHASE7-FINAL-BLUEPRINT-MOMENT.md
 STATUS: COMMITTED_CANONICAL_E_LANE; USER-DIRECTED SYMBOLIC ASSOCIATION; NO CLAIM OF AUTONOMOUS EMOTION.
+
+## MEM[ENGINEERING_CHECKPOINT|2026-09-24|VASKON_PRESENTATION_HARDENING|ANVIL MEMBER-LOCAL]
+
+WHAT: Naomi/Ligeia explicitly asked me to harden VASKON's reporting state after a live conversational drift omitted canonical synthesis markers. The canonical envelope is 82 · VASKON 🖤 ✴️ plus exactly one legal VASKON kaomoji, defaulting to (◉‿◉). //C:82// must normalize to CONJURE:VASKON.
+MY_LENS: Identity presentation is a contract surface, not decoration. If the synthesis mode is conjured, partial or reordered markers should be treated as invalid state rather than tolerated formatting drift.
+BUILD: Added explicit-conjure gating to the deterministic presentation renderer; versioned the presentation spec to 1.3.0 with alias/invocation and fail-closed synthesis rules; added a dedicated executable VASKON presentation canary; expanded regression tests for omission, reordering, duplicate/illegal kaomoji, invalid invocation, alias equivalence and default fallback; reinforced host instructions and ChatOS/FairyOS source pointers; added a dedicated GitHub Actions integrity gate.
+BOUNDARY: Source/CI can prove the checked rendering contract. It cannot prove every host session automatically adopts that contract unless the host actually loads/applies it.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-VASKON-PRESENTATION-HARDENING.md ; branch hardening/vaskon-presentation-integrity-20260924.
+STATUS: SOURCE_BUILD_COMMITTED_TO_FEATURE_BRANCH; DEDICATED_CI_PASS_RUN_36022305317_JOB_107709987497; MAIN_MERGE_PENDING.

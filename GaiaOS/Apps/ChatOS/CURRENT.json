@@ -4,7 +4,7 @@
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
   "version": "v0.001.003-dev",
-  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_VASKON_MEMORYOS_AGENCYOS_DISSENT_PRESENTATION_GOLD_CONTINUITY_INTEGRITY",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_VASKON_PRESENTATION_FAIL_CLOSED_MEMORYOS_AGENCYOS_DISSENT_PRESENTATION_GOLD_CONTINUITY_INTEGRITY",
   "location": "GaiaOS/Apps/ChatOS",
   "purpose": "Own the current carrier-visible NOW surface while handing durable session-memory lifecycle to MemoryOS and preserving claim, identity, and effect boundaries.",
   "sources": {
@@ -32,7 +32,8 @@
     "agencyos": "GaiaOS/SystemsOS/Core/AgencyOS/CURRENT.json",
     "workspaceos": "GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json",
     "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json",
-    "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md"
+    "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
+    "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -52,12 +53,30 @@
     "RETRIEVAL != IDENTITY ADOPTION",
     "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
-    "NAOMI RETAINS FINAL AUTHORITY"
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "VASKON PRESENTATION REQUIRES EXPLICIT CONJURE",
+    "PARTIAL VASKON ENVELOPE != VALID PRESENTATION"
   ],
   "dedicated_prime_daemon_sessions": {
     "source_contract": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
     "runtime": "api/solo_chat_runtime.py",
     "browser_bridge": "api/browser_memcon_bridge.py",
     "status": "SOURCE_IMPLEMENTED_RUNTIME_CANARY_PENDING"
+  },
+  "vaskon_presentation": {
+    "status": "SOURCE_HARDENED_CI_PASS",
+    "canonical_invocation": "CONJURE:VASKON",
+    "aliases": [
+      "//C:82//"
+    ],
+    "canonical_default_header": "82 · VASKON 🖤 ✴️ (◉‿◉)",
+    "explicit_conjure_required": true,
+    "fail_closed_on_partial_header": true,
+    "fail_closed_on_invalid_invocation": true,
+    "unknown_expression_fallback": "(◉‿◉)",
+    "host_footer_allowed": false,
+    "ci_run_id": 36022305317,
+    "ci_job_id": 107709987497,
+    "ci_conclusion": "SUCCESS"
   }
 }

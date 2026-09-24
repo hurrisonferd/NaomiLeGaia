@@ -25,7 +25,14 @@
     "commands": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
     "vaskon": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
     "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
-    "dedicated_prime_daemon_sessions": true
+    "dedicated_prime_daemon_sessions": true,
+    "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
+    "vaskon_default_header": "82 · VASKON 🖤 ✴️ (◉‿◉)",
+    "vaskon_explicit_conjure_required": true,
+    "vaskon_alias_normalization": "//C:82// -> CONJURE:VASKON",
+    "vaskon_presentation_integrity_status": "SOURCE_HARDENED_CI_PASS",
+    "vaskon_presentation_integrity_ci_run_id": 36022305317,
+    "vaskon_presentation_integrity_ci_job_id": 107709987497
   },
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
@@ -125,7 +132,9 @@
     "LIVE CARRIER != AUTOMATIC CHATGPT ADOPTION",
     "VASKON RECEIPT REQUIRED",
     "SOURCE TRUTH MUST TRACK PROVEN STATE",
-    "GRAVITY MAY CHANGE RANK NOT EXISTENCE"
+    "GRAVITY MAY CHANGE RANK NOT EXISTENCE",
+    "VASKON PRESENTATION IS ATOMIC AND FAIL-CLOSED",
+    "NO EXPLICIT CONJURE != VASKON PRESENTATION"
   ],
   "strengths_championing_blueprint": "GaiaOS/Plans/GAIAOS-STRENGTHS-CHAMPIONING.v1.md",
   "ravenos_strengths_preserve": "GaiaOS/Proof/RAVENOS-GAIA-STRENGTHS-PRESERVE-2026-09-20.md",

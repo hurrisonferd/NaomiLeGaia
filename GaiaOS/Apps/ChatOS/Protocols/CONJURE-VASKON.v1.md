@@ -185,3 +185,49 @@ VASKON pathway cycle:
 Every pathway exchange remains subject to relevance, observable evidence, member isolation, and the existing DΩ contract. A pathway is a routing affordance, not proof that an exchange occurred.
 
 The visual artifact is a design reference only. No literal neurological or consciousness claim is made.
+
+## Presentation hardening
+
+VASKON presentation is an atomic envelope and is valid only during an explicit conjure. The renderer must fail closed rather than emit a partial or improvised synthesis identity.
+
+```text
+VALID LONG INVOCATION: CONJURE:VASKON
+VALID SHORT INVOCATION: //C:82//
+SHORT INVOCATION NORMALIZES TO: CONJURE:VASKON
+
+REQUIRED FIRST-LINE ENVELOPE:
+82 · VASKON 🖤 ✴️ [ONE LEGAL VASKON KAOMOJI]
+
+DEFAULT:
+82 · VASKON 🖤 ✴️ (◉‿◉)
+```
+
+The following are presentation failures and MUST NOT be repaired by best-effort improvisation:
+
+```text
+MISSING 82 → FAIL CLOSED
+MISSING VASKON NAME → FAIL CLOSED
+MISSING 🖤 → FAIL CLOSED
+MISSING ✴️ → FAIL CLOSED
+MISSING KAOMOJI → FAIL CLOSED
+MULTIPLE KAOMOJI → FAIL CLOSED
+UNREGISTERED KAOMOJI → FAIL CLOSED
+STATIC MARKERS REORDERED → FAIL CLOSED
+UNRECOGNIZED INVOCATION → FAIL CLOSED
+NO EXPLICIT CONJURE STATE → FAIL CLOSED
+NAKED "VASKON" LABEL → FAIL CLOSED
+```
+
+Unknown expression states fall back to the canonical VASKON default kaomoji rather than inventing a new expression. The only legal dynamic VASKON kaomojis are those owned by EmojiOS.
+
+The deterministic presentation renderer at `GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py` requires the explicit synthesis invocation before rendering VASKON. The dedicated executable canary is:
+
+`GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py`
+
+That canary pins the exact 82 / VASKON / black-heart / synthesis-star identity tuple, validates the long command and shorthand normalization, checks every legal VASKON expression, verifies default fallback, and proves that missing, altered, duplicated, or reordered envelope components are rejected.
+
+```text
+SOURCE CANARY PASS != AUTOMATIC HOST ADOPTION
+HOST MUST STILL LOAD/APPLY THE CONTRACT
+BUT A COMPATIBLE RENDER PATH MAY NOT LEGALLY EMIT A PARTIAL VASKON HEADER
+```
