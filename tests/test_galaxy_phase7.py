@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "api"))
 import memcon_runtime as runtime
 import galaxy_phase7 as p7
 import galaxy_phase7_tombstone as p7d
+import galaxy_phase7_tombstone_shadow as p7e
 
 
 class Phase7PruningResearchTests(unittest.TestCase):
@@ -282,6 +283,84 @@ class Phase7PruningResearchTests(unittest.TestCase):
         self.assertFalse(p7d.DESTRUCTIVE_RESTORE_PROVEN)
         self.assertFalse(p7d.PHYSICAL_PRUNING_ENABLED)
         self.assertFalse(p7d.PRODUCTION_ATTENUATION_ENABLED)
+
+    def test_phase7e_shadow_write_preserves_all_protected_tables(self):
+        before = self._counts()
+        ready = p7e.inspect(runtime)
+        self.assertEqual(ready["status"], "PASS_READY_FOR_EXPLICIT_SHADOW_WRITE", ready)
+        result = p7e.execute(
+            runtime,
+            authority="NAOMI",
+            approved=True,
+            confirmation=p7e.CONFIRMATION,
+        )
+        self.assertEqual(result["status"], "PASS_READBACK", result)
+        self.assertTrue(all(result["checks"].values()))
+        self.assertEqual(result["protected_counts_before"], result["protected_counts_after"])
+        self.assertEqual(self._counts(), before)
+        self.assertFalse(result["memoryos_mutation"])
+        self.assertFalse(result["physical_delete"])
+        self.assertFalse(result["production_retrieval_changed"])
+        self.assertFalse(result["destructive_eligibility"])
+        with runtime._db() as conn:
+            shadow_count = runtime._fetchone_dict(
+                conn, "SELECT COUNT(*) AS n FROM galaxy_tombstones_shadow"
+            )["n"]
+            receipt_count = runtime._fetchone_dict(
+                conn,
+                """SELECT COUNT(*) AS n FROM runtime_receipts
+                   WHERE operation='GALAXY_PHASE7E_SHADOW_TOMBSTONE_WRITE'"""
+            )["n"]
+        self.assertEqual(shadow_count, 1)
+        self.assertEqual(receipt_count, 1)
+
+    def test_phase7e_duplicate_write_fails_closed(self):
+        p7e.execute(
+            runtime,
+            authority="NAOMI",
+            approved=True,
+            confirmation=p7e.CONFIRMATION,
+        )
+        with self.assertRaises(ValueError):
+            p7e.execute(
+                runtime,
+                authority="NAOMI",
+                approved=True,
+                confirmation=p7e.CONFIRMATION,
+            )
+
+    def test_phase7e_corrupted_shadow_manifest_holds_readback(self):
+        p7e.execute(
+            runtime,
+            authority="NAOMI",
+            approved=True,
+            confirmation=p7e.CONFIRMATION,
+        )
+        with runtime._db() as conn:
+            conn.execute(
+                """UPDATE galaxy_tombstones_shadow
+                   SET manifest_json=? WHERE tombstone_id=?""",
+                ('{"corrupt":true}', p7e.TOMBSTONE_ID),
+            )
+        result = p7e.inspect(runtime)
+        self.assertEqual(result["status"], "HOLD_SHADOW_READBACK")
+        self.assertFalse(result["checks"]["manifest_valid"])
+
+    def test_phase7e_requires_explicit_naomi_confirmation(self):
+        with self.assertRaises(PermissionError):
+            p7e.execute(
+                runtime,
+                authority="NAOMI",
+                approved=False,
+                confirmation=p7e.CONFIRMATION,
+            )
+        with self.assertRaises(PermissionError):
+            p7e.execute(
+                runtime,
+                authority="NAOMI",
+                approved=True,
+                confirmation="WRONG_CONFIRMATION",
+            )
 
     def test_phase7_module_contains_no_destructive_sql_or_mutation_entrypoint(self):
         source = (ROOT / "api" / "galaxy_phase7.py").read_text(encoding="utf-8")
