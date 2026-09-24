@@ -16,6 +16,9 @@ import gaiaos_app
 import gaiaos_api
 import memcon_entrypoint
 import memcon_runtime
+import gaiaos_memory_mode
+import gaiaos_memory_gateway
+import gaiaos_chat_memory
 import galaxy_production
 import galaxy_quality
 import galaxy_phase3_exit
@@ -106,7 +109,71 @@ async def browser_chat(browser_request: Request):
         return _handle_candipull(messages, browser_request)
     if _is_command(last_message, "MEMSAV"):
         return _handle_memsav(last_message)
-    return _original_chat(gaiaos_api.ChatRequest.model_validate(payload), browser_request)
+    return _ordinary_chat(payload, browser_request, last_message)
+
+
+def _ordinary_chat(payload: dict, browser_request: Request, query: str) -> dict:
+    """Use the unified gateway in future BIGBANG; HEATDEATH is original chat.
+
+    Only this ordinary-text path receives automatic recall; deterministic
+    owner commands, SOLO and preservation handlers above remain unchanged.
+    Stage-2 release gating still prevents actual BIGBANG activation.
+    """
+    validated = gaiaos_api.ChatRequest.model_validate(payload)
+    # No retrieval or altered model prompt for the original legacy mode.
+    if not validated.messages or validated.messages[-1].role != "user":
+        return _original_chat(validated, browser_request)
+    try:
+        current = gaiaos_memory_mode.mode_status(memcon_runtime)
+    except Exception:
+        return _original_chat(validated, browser_request)
+    if not (
+        current.get("effective_mode") == gaiaos_memory_mode.BIGBANG
+        and current.get("configured_mode") == gaiaos_memory_mode.BIGBANG
+        and current.get("bigbang_activation_enabled") is True
+    ):
+        return _original_chat(validated, browser_request)
+
+    try:
+        packet = gaiaos_memory_gateway.read(
+            memcon_runtime, query, "MemoryOS", 4
+        )
+    except Exception as exc:
+        answer = _original_chat(validated, browser_request)
+        return {
+            **answer,
+            "memory_gateway_receipt": {
+                "status": "HOLD_MEMORY_GATEWAY_UNAVAILABLE",
+                "error_type": type(exc).__name__,
+                "enhanced_context_used": False,
+                "shared_emergency_latch_written": False,
+            },
+        }
+
+    evidence = gaiaos_chat_memory.prepare(packet)
+    if evidence is not None:
+        answer = _original_chat(
+            validated, browser_request, memory_context=evidence
+        )
+    else:
+        answer = _original_chat(validated, browser_request)
+    receipt = {
+        "schema": "gaiaos.chat.memory-gateway-receipt.v1",
+        "gateway_status": packet.get("status"),
+        "effective_mode": packet.get("effective_mode"),
+        "fallback_occurred": packet.get("fallback_occurred", False),
+        "enhanced_context_used": bool(
+            isinstance(answer, dict)
+            and (answer.get("memory_context") or {}).get("status")
+            == "BIGBANG_VERIFIED_CONTEXT_USED"
+        ),
+        "shared_emergency_latch_written": False,
+        "proof_boundary": (
+            "Request-local retrieval only. This response does not commit a "
+            "persistent fallback, prove full corpus recall or authorize writes."
+        ),
+    }
+    return {**answer, "memory_gateway_receipt": receipt}
 
 
 def _handle_solo(command: str, request: Request) -> dict:
