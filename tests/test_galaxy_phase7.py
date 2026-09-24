@@ -193,7 +193,7 @@ class Phase7PruningResearchTests(unittest.TestCase):
         segment = bridge.split(
             '@app.get("/galaxy/pruning/phase7-fixture-review"', 1
         )[1].split(
-            '@app.get("/galaxy/lifecycle/phase6-fixture-review"', 1
+            '@app.get("/galaxy/pruning/phase7-positive-canary"', 1
         )[0]
         self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
         self.assertIn("galaxy_phase7.review_with_readback(", segment)
@@ -227,7 +227,7 @@ class Phase7PruningResearchTests(unittest.TestCase):
         segment = bridge.split(
             '@app.get("/galaxy/pruning/phase7-positive-canary"', 1
         )[1].split(
-            '@app.get("/galaxy/lifecycle/phase6-fixture-review"', 1
+            '@app.get("/galaxy/pruning/phase7-tombstone-contract-canary"', 1
         )[0]
         self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
         self.assertIn("galaxy_phase7.positive_path_canary()", segment)
@@ -297,7 +297,14 @@ class Phase7PruningResearchTests(unittest.TestCase):
         self.assertEqual(result["status"], "PASS_READBACK", result)
         self.assertTrue(all(result["checks"].values()))
         self.assertEqual(result["protected_counts_before"], result["protected_counts_after"])
-        self.assertEqual(self._counts(), before)
+        after = self._counts()
+        for table in (
+            "memory_records", "memory_relations", "memory_gravity",
+            "memory_importance", "memory_lifecycle", "memory_lifecycle_events",
+            "memory_syntheses",
+        ):
+            self.assertEqual(after[table], before[table], table)
+        self.assertEqual(after["runtime_receipts"], before["runtime_receipts"] + 1)
         self.assertFalse(result["memoryos_mutation"])
         self.assertFalse(result["physical_delete"])
         self.assertFalse(result["production_retrieval_changed"])
