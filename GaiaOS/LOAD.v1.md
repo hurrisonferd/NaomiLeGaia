@@ -8,6 +8,10 @@ CANONICAL PLATFORM ROOT: GaiaOS/
 STATUS: ACTIVE SOURCE LOADER / FRONT DOOR + COGNITION + MEMORY + AGENCY CARRIER AWARE
 ```
 
+## Mandatory engineering planning check
+
+Before designing, building, merging or declaring a NEW GaiaOS subsystem integrated, consult `GaiaOS/Plans/GAIAOS-INTEGRATION-FIRST-DESIGN-GATE.v1.md`. Plan and test the real everyday front-door/host/deployment connections from the FIRST design phase; distinguish standalone source proof from merged, deployed and live normal-path adoption. Preserve all existing authority, memory, E-LANE and rollback safeguards. This is a planning/readiness checkpoint, not a dependency that blocks ordinary GaiaOS conversation boot or authorizes any production mutation.
+
 ## Connected-carrier fast path
 
 When the live GaiaOS MCP carrier is connected, fresh-session boot begins with `gaia_boot()`. After successful boot, ordinary use begins with `gaia(request)`:
