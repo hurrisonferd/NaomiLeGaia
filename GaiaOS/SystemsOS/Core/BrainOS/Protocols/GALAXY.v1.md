@@ -5013,3 +5013,12 @@ Canonical receipt:
 GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-SHADOW-WRITE-READBACK-PROVEN.md
 
 Restart persistence remains unproven. The next evidence gate is a manual carrier restart followed by read-only retrieval of this exact tombstone and receipt. No destructive capability is enabled by this proof.
+
+
+## Phase 7E restart-persistence closure — 2026-09-24
+
+Naomi's pinned continuity receipt showed the carrier boot, Render instance and process fingerprint changed after her manual Render restart. The following read-only Phase-7E shadow review returned PASS_DURABLE_SHADOW_READBACK with the same synthetic tombstone ID, evidence digest, exact manifest and original runtime receipt as before restart. All ten review checks were true. The one exact synthetic shadow row and its receipt therefore survived one observed carrier restart; no production MemoryOS restore, record deletion or production attenuation was performed.
+
+Canonical receipt: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-RESTART-PERSISTENCE-PROVEN.md
+
+NEXT: Phase-7F bounded nondestructive restore research or Phase-8 MERCURY audit. Destructive gates remain false and require separate explicit Naomi authorization for any future change.
