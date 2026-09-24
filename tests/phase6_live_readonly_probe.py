@@ -83,32 +83,50 @@ control_match = re.search(r"<pre[^>]*>(.*?)</pre>", control_html, flags=re.S)
 if code != 200 or not control_match:
     raise SystemExit("HOLD: Phase6 control review HTML unavailable")
 control = json.loads(html.unescape(control_match.group(1)))
-expected_event = "LIFE-39d6922cca684861b56acbcc5e6f281c"
-expected_receipt = "MEMREC-a3d9439e02a44106b96163e478a17239"
+expected_chain = [
+    ("BACKGROUND", "ACTIVE", "BACKGROUND",
+     "LIFE-39d6922cca684861b56acbcc5e6f281c",
+     "MEMREC-a3d9439e02a44106b96163e478a17239"),
+    ("ARCHIVED", "BACKGROUND", "ARCHIVED",
+     "LIFE-e259f588cdab49139ae4765ca90bcbb4",
+     "MEMREC-2598b57ee627444095b1607755d1f77c"),
+    ("COMPRESSED", "ARCHIVED", "COMPRESSED",
+     "LIFE-c82800edc9c94a42afe4170c152e19fa",
+     "MEMREC-ae95eeb0c0ea4c9ab23196777f4444c1"),
+    ("ROLLBACK", "COMPRESSED", "ARCHIVED",
+     "LIFE-2204bf94189a446e8ac2b731d884bc60",
+     "MEMREC-a366ad8e19ef4e96b9c5285b7f75168f"),
+    ("REACTIVATE", "ARCHIVED", "ACTIVE",
+     "LIFE-c7793ae706f2404c81828606b8470895",
+     "MEMREC-b60d42b065124a1cb5ae0d6891a343b2"),
+]
 if (control.get("controlled_record_id") != EXPECTED_RECORD
-        or control.get("current_state") != "BACKGROUND"
-        or control.get("completed_steps") != 1
-        or control.get("next_action") != "ARCHIVED"
-        or control.get("campaign_complete") is not False
+        or control.get("current_state") != "ACTIVE"
+        or control.get("completed_steps") != 5
+        or control.get("next_action") is not None
+        or control.get("campaign_complete") is not True
         or control.get("hold_reasons") != []):
-    raise SystemExit("HOLD: Phase6 exact control review not at persisted BACKGROUND step: " + str(control))
+    raise SystemExit("HOLD: Phase6 exact campaign is not complete and clean: " + str(control))
 events = review.get("events") or []
-if (review.get("latest_event_id") != expected_event
-        or review.get("event_count") != 1
-        or len(events) != 1
-        or events[0].get("event_id") != expected_event
-        or events[0].get("receipt_id") != expected_receipt
-        or events[0].get("from_state") != "ACTIVE"
-        or events[0].get("to_state") != "BACKGROUND"):
-    print("PERSISTENCE DETAIL:", json.dumps({
-        "latest_event_id": review.get("latest_event_id"),
-        "event_count": review.get("event_count"),
-        "events": events,
-    }, sort_keys=True))
-    raise SystemExit("HOLD: Phase6 exact BACKGROUND event/receipt did not survive carrier restart/readback")
+if review.get("event_count") != 5 or len(events) != 5:
+    raise SystemExit("HOLD: Phase6 campaign does not have exactly five persisted events")
+for idx, (action, from_state, to_state, event_id, receipt_id) in enumerate(expected_chain):
+    e = events[idx]
+    if (e.get("action") != action or e.get("from_state") != from_state
+            or e.get("to_state") != to_state or e.get("event_id") != event_id
+            or e.get("receipt_id") != receipt_id):
+        print("CHAIN DETAIL:", json.dumps(events, sort_keys=True))
+        raise SystemExit("HOLD: Phase6 exact five-event chain mismatch at index " + str(idx))
+    if idx == 0:
+        if e.get("previous_event_id") is not None:
+            raise SystemExit("HOLD: first Phase6 event unexpectedly has a predecessor")
+    elif e.get("previous_event_id") != expected_chain[idx - 1][3]:
+        raise SystemExit("HOLD: Phase6 previous_event_id chain broken at index " + str(idx))
+if review.get("latest_event_id") != expected_chain[-1][3]:
+    raise SystemExit("HOLD: Phase6 latest event is not the exact REACTIVATE event")
 print("PHASE6 CONTROL REVIEW PASS: state:", control.get("current_state"),
-      "steps:", control.get("completed_steps"), "next:", control.get("next_action"),
-      "event:", expected_event, "receipt:", expected_receipt)
+      "steps:", control.get("completed_steps"), "campaign_complete:",
+      control.get("campaign_complete"), "latest_event:", review.get("latest_event_id"))
 
 code, verified_html = get("/verify", timeout=65)
 match = re.search(r"<pre[^>]*>(.*?)</pre>", verified_html, flags=re.S)
@@ -148,4 +166,4 @@ if verifier.get("summary", {}).get("failed") != 0:
 if review.get("status") != "PASS_READ_ONLY":
     raise SystemExit("HOLD: Phase6 source deployed, but fixture read-only review held: " +
                      str(review.get("hold_reasons")))
-print("PASS: source deployed; exact Phase6 BACKGROUND state, event and receipt persisted across carrier redeploy/restart. NO NEW MUTATIONS.")
+print("PASS: source deployed; exact complete five-step Phase6 campaign chain read back live. NO NEW MUTATIONS.")
