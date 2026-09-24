@@ -20,6 +20,7 @@ from starlette.routing import Mount
 
 import gaiaos_api as base
 from gaiaos_context_runtime import build_context_packet
+import galaxy_frontdoor_context
 
 EXTENSION_VERSION = "1.6.0"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
@@ -317,6 +318,8 @@ def _frontdoor_packet(
     include_context: bool = True,
     context_limit: int = 6,
     context_depth: int = 1,
+    include_memory: bool = False,
+    memory_query: str | None = None,
 ) -> dict[str, Any]:
     request = str(request).strip()
     if not request:
@@ -331,6 +334,16 @@ def _frontdoor_packet(
     dispatch = base._dispatch_packet(commit, signals, requested, max_members)
     selected = _compact_selected(dispatch)
     context = _context_packet(request, context_limit, context_depth) if include_context else None
+    memory_context = None
+    if include_memory:
+        # The runtime must already be initialized by the carrier.
+        # No implicit schema creation or write is authorized here.
+        import memcon_runtime
+        memory_context = galaxy_frontdoor_context.preview(
+            memcon_runtime,
+            memory_query if memory_query is not None else request,
+            min(context_limit, galaxy_frontdoor_context.MAX_RECORDS),
+        )
     return {
         "schema": "gaiaos.frontdoor.packet.v1",
         "authority": "NAOMI",
@@ -350,6 +363,7 @@ def _frontdoor_packet(
         },
         "operators": selected,
         "context": context,
+        **({"memory_context": memory_context} if include_memory else {}),
         "host_guidance": [
             "Treat this as a compact support packet for Naomi's actual request, not as a replacement for her request.",
             "Use selected operators only when their contribution is materially useful; FAMILY PRESENT != ALL MEMBERS MUST SPEAK.",
@@ -421,6 +435,8 @@ class GaiaAssistRequest(BaseModel):
     include_context: bool = True
     context_limit: int = Field(default=6, ge=1, le=10)
     context_depth: int = Field(default=1, ge=0, le=2)
+    include_memory: bool = False
+    memory_query: str | None = Field(default=None, max_length=20000)
 
 
 @mcp.tool()
@@ -433,7 +449,10 @@ def gaia(
     context_depth: int = 1,
 ) -> dict[str, Any]:
     """PRIMARY GAIAOS FRONT DOOR. Pass Naomi's natural-language request here first."""
-    return _frontdoor_packet(request, requested_members, max_members, include_context, context_limit, context_depth)
+    return _frontdoor_packet(
+        request, requested_members, max_members, include_context,
+        context_limit, context_depth, include_memory, memory_query,
+    )
 
 
 @mcp.tool()
@@ -451,7 +470,11 @@ def gaia_context(subject: str, limit: int = 10, depth: int = 1) -> dict[str, Any
 @app.post("/gaiaos/assist", operation_id="assistGaiaOS")
 def gaia_assist_http(payload: GaiaAssistRequest, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     base._authorize(authorization)
-    return _frontdoor_packet(payload.request, payload.requested_members, payload.max_members, payload.include_context, payload.context_limit, payload.context_depth)
+    return _frontdoor_packet(
+        payload.request, payload.requested_members, payload.max_members,
+        payload.include_context, payload.context_limit, payload.context_depth,
+        payload.include_memory, payload.memory_query,
+    )
 
 
 @app.get("/gaiaos/selftest", operation_id="selfTestGaiaOS")

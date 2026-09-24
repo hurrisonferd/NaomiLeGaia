@@ -1,17 +1,17 @@
-# MERCURY // FIELD MANUAL
+# MERCURY PROTOCOL // FIELD MANUAL
 **Memory Engineering Reconnaissance for Comparative Utility, Reversibility & Yield**
 
 > OPEN CHANNEL. KEEP THE SIGNAL. PRESERVE THE RECEIPTS.
 
-**Parent project:** GALAXY, GaiaOS  
+**Mission:** Independent, continuing GaiaOS research and improvement protocol; GALAXY is the first major beneficiary
 **Authority:** Naomi / Ligeia  
 **Cadence:** Wednesday research watch, chosen for Wodin's day and Mercury as project symbolism  
-**Document:** Living mission charter, v0.2  
+**Document:** Living mission charter, v0.3
 **Status:** First manual pilot completed 2026-09-23 Eastern: eight primary-source-checked findings entered; no independent reproduction, integration or measured performance claim.
 
 ## 01 // THE MISSION
 
-MERCURY is GALAXY's external research and engineering reconnaissance project. It watches public work on agent memory, temporal graphs, revision and supersession, contradictions, provenance-backed synthesis, consolidation, reversible state, human-approved execution, and auditable workflows.
+MERCURY PROTOCOL is a separate ongoing GaiaOS research and engineering reconnaissance mission, not a GALAXY implementation phase or prerequisite to releasing GALAXY. It may begin collecting leads immediately; integration experiments only follow the applicable source, runtime and Naomi authority gates. It watches public work on agent memory, temporal graphs, revision and supersession, contradictions, provenance-backed synthesis, consolidation, reversible state, human-approved execution, and auditable workflows.
 
 We are not collecting fashionable architecture diagrams. We are looking for **verifiable techniques that can make GALAXY more useful, more efficient, cheaper to run, and easier to audit**.
 
@@ -69,13 +69,13 @@ Prefer standard-library or existing-stack changes when practical. Add a dependen
 
 Update this section only from a new source, deploy or runtime receipt, identifying which level of proof it provides.
 
-## 06 // THE POST-LIVE MERCURY AUDIT
+## 06 // INDEPENDENT POST-LIVE BASELINE REVIEW
 
-**This is a mandatory final GALAXY implementation review, not permission to merge experiments.**
+**This is MERCURY PROTOCOL's first dated baseline after GALAXY becomes operational, not Phase 8, a final GALAXY design phase, or a GALAXY release gate.**
 
-After the core GALAXY implementation is live and stable, capture a dated snapshot of **every MERCURY finding recorded up to that cutoff**, including HOLD and REJECT entries. Map each to the live architecture. Recheck source freshness, licensing, operating cost, correctness and reversibility. Propose bounded freeware-first benchmarks for the viable candidates and publish a disposition for every item. Record measured wins and losses, not imagined speedups.
+After the core GALAXY implementation is live and stable, independently capture a dated snapshot of **every MERCURY PROTOCOL finding recorded up to that cutoff**, including HOLD and REJECT entries. Map each to the live architecture. Recheck source freshness, licensing, operating cost, correctness and reversibility. Propose bounded freeware-first benchmarks for the viable candidates and publish a disposition for every item. Record measured wins and losses, not imagined speedups.
 
-The review closes only when every in-scope finding has an auditable disposition or an explicit **UNKNOWN / awaiting evidence** reason. The research watch continues after the cutoff; future findings enter the next audit rather than delaying the first snapshot indefinitely.
+This standalone baseline review closes only when every in-scope finding has an auditable disposition or an explicit **UNKNOWN / awaiting evidence** reason. The research watch continues after the cutoff; future findings enter the next audit rather than delaying the first snapshot indefinitely. GALAXY acceptance is judged using its own integration, production-retrieval and recovery receipts, not this research ledger.
 
 Any code change, synthesis mutation, retention policy, or retrieval promotion gets its own authorization and proof ladder:
 
@@ -92,5 +92,6 @@ The initial manual Wednesday pilot was performed on **2026-09-23 Eastern**, ahea
 This README is a mission outline, not a scientific result or a claim of autonomous operation. Amend it when goals, constraints or actual proof change. Every substantive edit should cite its supporting artifact or runtime receipt, note what changed, and retain decisions that future maintainers need to understand.
 
 **Change log**
+- **2026-09-24, v0.3:** Naomi renamed the mission MERCURY PROTOCOL and separated it from GALAXY's finite implementation phases. The first post-live audit is a standalone research baseline and never blocks GALAXY acceptance. The bounded GALAXY integration roadmap is `GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md`.
 - **2026-09-23, v0.2:** Completed first manual Wednesday pilot; primary-source-checked eight leads (not independently reproduced), saved a dated report and populated the canonical ledger. First scheduled automated watch remains 2026-09-30.
 - **2026-09-23, v0.1:** Founded MERCURY; defined Wednesday watch, evidence ledger, freeware-first filter and mandatory post-live GALAXY audit. No external findings imported as validated evidence.

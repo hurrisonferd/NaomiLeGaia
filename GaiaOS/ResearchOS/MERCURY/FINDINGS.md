@@ -1,10 +1,10 @@
-# MERCURY // SIGNAL LEDGER
+# MERCURY PROTOCOL // SIGNAL LEDGER
 
 **Parent:** [Mission / README](README.md)  
 **Maintainer / final authority:** Naomi / Ligeia  
 **Status:** Eight primary-source-checked findings entered from first manual pilot; no independent reproductions and no code integrations.
 
-This is the durable index for the Wednesday MERCURY research watch. Weekly chat reports are leads and working notes; this file is the reviewable cross-reference for GALAXY's eventual post-live audit. **Do not imply that an empty ledger means no research exists.**
+This is the durable index for the Wednesday MERCURY PROTOCOL research watch. This is a separate ongoing mission and not a GALAXY release gate. Weekly chat reports are leads and working notes; this file is the reviewable cross-reference for MERCURY PROTOCOL's standalone first post-live baseline review. **Do not imply that an empty ledger means no research exists.**
 
 ## Intake and evidence standard
 

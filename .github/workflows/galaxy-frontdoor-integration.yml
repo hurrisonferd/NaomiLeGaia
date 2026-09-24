@@ -1,0 +1,42 @@
+name: GALAXY GaiaOS Front Door Integration Source Gate
+
+on:
+  push:
+    paths:
+      - "api/galaxy_frontdoor_context.py"
+      - "api/gaiaos_app.py"
+      - "api/Dockerfile"
+      - "tests/test_galaxy_frontdoor_integration.py"
+      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
+      - ".github/workflows/galaxy-frontdoor-integration.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_frontdoor_context.py"
+      - "api/gaiaos_app.py"
+      - "api/Dockerfile"
+      - "tests/test_galaxy_frontdoor_integration.py"
+      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
+      - ".github/workflows/galaxy-frontdoor-integration.yml"
+  workflow_dispatch:
+
+jobs:
+  nondestructive-source-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile GALAXY front-door and existing carrier
+        run: |
+          python -m py_compile api/galaxy_frontdoor_context.py
+          python -m py_compile api/gaiaos_app.py
+          python -m py_compile api/galaxy_production.py
+          python -m py_compile tests/test_galaxy_frontdoor_integration.py
+      - name: Prove bounded MemoryOS retrieval and fail-closed guards
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_frontdoor_integration.py" -v
+      - name: Guard source formatting
+        run: git diff --check HEAD^1 HEAD
