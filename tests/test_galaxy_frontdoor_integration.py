@@ -120,7 +120,7 @@ class GalaxyFrontdoorReadTests(unittest.TestCase):
         self.assertEqual(result["records"], [])
         self.assertEqual(result["error_type"], "RuntimeError")
 
-    def test_frontdoor_source_is_heatedeath_default_with_one_gateway(self):
+    def test_frontdoor_source_is_heatdeath_default_with_one_gateway(self):
         source = (ROOT / "api" / "gaiaos_app.py").read_text(encoding="utf-8")
         snippet = source.split("def _frontdoor_packet(", 1)[1].split("def _selftest_packet(", 1)[0]
         self.assertIn("include_memory: bool | None = None", snippet)
