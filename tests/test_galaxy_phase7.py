@@ -10,6 +10,7 @@ sys.path.insert(0, str(ROOT / "api"))
 
 import memcon_runtime as runtime
 import galaxy_phase7 as p7
+import galaxy_phase7_tombstone as p7d
 
 
 class Phase7PruningResearchTests(unittest.TestCase):
@@ -230,6 +231,57 @@ class Phase7PruningResearchTests(unittest.TestCase):
         self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
         self.assertIn("galaxy_phase7.positive_path_canary()", segment)
         self.assertNotIn("@app.post(", segment)
+
+    def test_real_review_uses_shared_research_hold_evaluator(self):
+        self._set_lifecycle("MEM-P7-CURRENT", "COMPRESSED")
+        original = p7._research_hold_reasons
+        calls = []
+        def sentinel(**kwargs):
+            calls.append(kwargs)
+            return ["SHARED_LOCK_SENTINEL"]
+        p7._research_hold_reasons = sentinel
+        try:
+            result = p7.review(runtime, "MEM-P7-CURRENT")
+        finally:
+            p7._research_hold_reasons = original
+        self.assertEqual(result["research_hold_reasons"], ["SHARED_LOCK_SENTINEL"])
+        self.assertEqual(result["status"], "HOLD")
+        self.assertEqual(len(calls), 1)
+
+    def test_phase7d_tombstone_contract_round_trip_is_exact_and_nondestructive(self):
+        before = self._counts()
+        result = p7d.synthetic_tombstone_contract_canary()
+        self.assertEqual(result["status"], "PASS_SYNTHETIC_TOMBSTONE_CONTRACT_CANARY", result)
+        self.assertTrue(all(result["checks"].values()))
+        self.assertEqual(result["writes_performed"], [])
+        self.assertFalse(result["physical_delete"])
+        self.assertFalse(result["production_retrieval_changed"])
+        self.assertFalse(result["destructive_eligibility"])
+        self.assertFalse(result["destructive_gates"]["tombstone_protocol_implemented"])
+        self.assertFalse(result["destructive_gates"]["destructive_restore_proven"])
+        self.assertEqual(self._counts(), before)
+
+    def test_phase7d_corrupted_manifest_fails_closed(self):
+        result = p7d.synthetic_tombstone_contract_canary()
+        manifest = result["manifest"]
+        manifest["evidence_bundle"]["record"]["statement"] = "CORRUPTED"
+        restoration = p7d.restore_in_memory(manifest)
+        self.assertEqual(restoration["status"], "HOLD_RESTORE_REFUSED")
+        self.assertFalse(restoration["restored"])
+        self.assertFalse(restoration["validation"]["checks"]["evidence_hash_matches"])
+        self.assertIsNone(restoration["restored_bundle"])
+
+    def test_phase7d_module_has_no_database_or_destructive_surface(self):
+        source = (ROOT / "api" / "galaxy_phase7_tombstone.py").read_text(encoding="utf-8")
+        for forbidden in (
+            "memcon_runtime", "sqlite3", "DELETE FROM", "UPDATE memory_",
+            "INSERT INTO memory_", "def delete", "def prune", "def execute",
+        ):
+            self.assertNotIn(forbidden, source)
+        self.assertFalse(p7d.TOMBSTONE_PROTOCOL_IMPLEMENTED)
+        self.assertFalse(p7d.DESTRUCTIVE_RESTORE_PROVEN)
+        self.assertFalse(p7d.PHYSICAL_PRUNING_ENABLED)
+        self.assertFalse(p7d.PRODUCTION_ATTENUATION_ENABLED)
 
     def test_phase7_module_contains_no_destructive_sql_or_mutation_entrypoint(self):
         source = (ROOT / "api" / "galaxy_phase7.py").read_text(encoding="utf-8")

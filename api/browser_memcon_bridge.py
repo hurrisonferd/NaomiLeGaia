@@ -25,6 +25,7 @@ import galaxy_phase5_controls
 import galaxy_phase6
 import galaxy_phase6_controls
 import galaxy_phase7
+import galaxy_phase7_tombstone
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -783,6 +784,16 @@ def galaxy_phase7_positive_canary(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase7.positive_path_canary()
+
+
+@app.get("/galaxy/pruning/phase7-tombstone-contract-canary", operation_id="galaxyPhase7TombstoneContractCanary")
+def galaxy_phase7_tombstone_contract_canary(browser_request: Request):
+    """Authenticated synthetic tombstone/restore contract canary; no database access."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase7_tombstone.synthetic_tombstone_contract_canary()
 
 
 @app.get("/galaxy/lifecycle/phase6-fixture-review", operation_id="galaxyPhase6FixtureReview")
