@@ -200,3 +200,19 @@ Next proof gate:
 `SOURCE + CI -> DEPLOY -> /verify -> READ-ONLY MUTATION-DESIGN REVIEW -> STOP`
 
 Only after that live receipt is reviewed may Naomi separately authorize exposing controlled Phase-5 mutation controls.
+
+
+## Exact controlled exposure implementation checkpoint — 2026-09-24
+
+At Naomi's previously recorded 2026-09-23 authorization, the **control surface source** was prepared in the isolated feature branch \`galaxy/phase5-controlled-exposure-20260924\`. This does **not** authorize the assistant to execute a synthesis operation; each operation still requires Naomi's own separate signed, CSRF-protected confirmation.
+
+Source:
+- \`api/galaxy_phase5_controls.py\`: exact read-only inspection, PROPOSE / VERIFY / REVOKE dispatch, fixed fixture IDs and statement, source-unchanged and provenance readback.
+- \`GET /galaxy/synthesis/phase5-controls\`: read-only, signed-session, no-JavaScript mobile review page.
+- \`GET /galaxy/synthesis/phase5-controls/confirm/{kind}\`: read-only per-step effect preview, no write.
+- \`POST /galaxy/synthesis/phase5-controls/manifest\`: signed session, CSRF, exact confirmation, explicit Naomi approval and stage/target checks. No GET operation can mutate.
+- All effects stay in \`GALAXY_SYNTHESIS_SHADOW\`. A control reply can say PASS_READBACK only when its exact state, statement, scope, source set, provenance edge set and untouched sources have been read back. A returned HOLD may still follow a partially executed effect, so inspect the actual store before retrying.
+
+**Proof and authority ceiling:** GitHub branch preparation and offline CI do not mean Render deployed the code. No live mutation was executed as part of this source checkpoint. Production retrieval, unrestricted weighting, general AUGURY interpretation, physical pruning and migration remain outside this authorization.
+
+**Finite next gate:** review the draft change; merge/deploy only when authorized; run deployed \`/verify\` and the read-only control page; stop and inspect. Only Naomi may subsequently choose each of PROPOSE, VERIFY and REVOKE as separate explicit actions, inspecting receipts between them. Do not infer permission to press the next button from a prior button.
