@@ -9,6 +9,8 @@ from typing import Any
 
 import memcon_runtime
 import galaxy_production
+import galaxy_frontdoor_context
+import os
 
 SCHEMA_VERSION = "gaiaos.memoryos.runtime.v1"
 
@@ -164,10 +166,30 @@ def promote_candidate(candidate_id: str, approved: bool, authority: str = "NAOMI
 
 
 def retrieve(query: str, scope: str | None = None, limit: int = 10) -> dict[str, Any]:
+    """Keep the existing retrieval contract and add default-on GALAXY evidence.
+
+    The MemoryOS result stays backward-compatible. Only the MemoryOS scope
+    participates in GALAXY ranking. Explicit E-LANE source/approval flows
+    and every write path are untouched.
+    """
+    legacy = galaxy_production.retrieve(memcon_runtime, query, scope, limit)
+    galaxy_context = None
+    if isinstance(query, str) and query.strip() and scope in (None, "MemoryOS"):
+        reader = (
+            galaxy_frontdoor_context.preview
+            if os.getenv("GALAXY_FRONTDOOR_KILL_SWITCH", "").strip() == "1"
+            else galaxy_frontdoor_context.operational
+        )
+        galaxy_context = reader(
+            memcon_runtime, query, max(1, min(int(limit), galaxy_frontdoor_context.MAX_RECORDS)),
+        )
     return {
         "schema": SCHEMA_VERSION,
         "status": "OBSERVED",
-        "retrieval": galaxy_production.retrieve(memcon_runtime, query, scope, limit),
+        "retrieval": legacy,
+        "galaxy_context": galaxy_context,
+        "galaxy_operational_default": galaxy_context is not None
+            and os.getenv("GALAXY_FRONTDOOR_KILL_SWITCH", "").strip() != "1",
         "context_authority": "NONE",
         "retrieval_is_not_identity_adoption": True,
     }
