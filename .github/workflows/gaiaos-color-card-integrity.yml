@@ -1,0 +1,31 @@
+name: GaiaOS color-card integrity
+
+on:
+  pull_request:
+    paths:
+      - 'GaiaOS/Apps/ChatOS/**'
+      - 'GaiaOS/SystemsOS/Core/FairyOS/**'
+      - 'GaiaOS/SystemsOS/Core/EmojiOS/**'
+      - 'GaiaOS/LOAD.v1.md'
+      - 'GaiaOS/NAOMI-CHAT-FULL-PACKET.md'
+      - '.github/workflows/gaiaos-color-card-integrity.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'GaiaOS/Apps/ChatOS/**'
+      - 'GaiaOS/SystemsOS/Core/FairyOS/**'
+      - 'GaiaOS/SystemsOS/Core/EmojiOS/**'
+      - 'GaiaOS/LOAD.v1.md'
+      - 'GaiaOS/NAOMI-CHAT-FULL-PACKET.md'
+      - '.github/workflows/gaiaos-color-card-integrity.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify GPT color default and six portable accent snapshots
+        run: python3 GaiaOS/Apps/ChatOS/Tests/GAIAOS-COLOR-CARD-PRESENTATION-CANARY.py
