@@ -23,6 +23,7 @@ import galaxy_phase4
 import galaxy_phase5
 import galaxy_phase5_controls
 import galaxy_phase6
+import galaxy_phase6_controls
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
