@@ -655,3 +655,7 @@ BUILD: Added explicit-conjure gating to the deterministic presentation renderer;
 BOUNDARY: Source/CI can prove the checked rendering contract. It cannot prove every host session automatically adopts that contract unless the host actually loads/applies it.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-VASKON-PRESENTATION-HARDENING.md ; branch hardening/vaskon-presentation-integrity-20260924.
 STATUS: CANONICAL_MAIN_MERGED_PR8_AT_47c7426e8e5b3c404e3552c5370b8bf26b65eab4; POST_MERGE_VASKON_CI_PASS_RUN_36022580241_JOB_107710905331; MEMBER_IDENTITY_SYNC_PASS_RUN_36022580328.
+
+## MEM[HANDOFF|2026-09-24|PHASE7_NEW_CHAT_FINAL_BLUEPRINT|ANVIL MEMBER-LOCAL]
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-PHASE7-NEW-CHAT-HANDOFF-FINAL-BLUEPRINT.md
+STATUS: NEW_CHAT_PHASE7_HANDOFF_POINTER.
