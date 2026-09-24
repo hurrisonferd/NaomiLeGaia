@@ -26,6 +26,7 @@ import galaxy_phase6
 import galaxy_phase6_controls
 import galaxy_phase7
 import galaxy_phase7_tombstone
+import galaxy_phase7_tombstone_shadow
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -794,6 +795,135 @@ def galaxy_phase7_tombstone_contract_canary(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase7_tombstone.synthetic_tombstone_contract_canary()
+
+
+@app.get("/galaxy/pruning/phase7-tombstone-shadow-review", operation_id="galaxyPhase7TombstoneShadowReview")
+def galaxy_phase7_tombstone_shadow_review(browser_request: Request):
+    """Read-only Phase-7E shadow tombstone persistence review."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase7_tombstone_shadow.inspect(memcon_runtime)
+
+
+@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls", response_class=HTMLResponse, operation_id="galaxyPhase7TombstoneShadowControls")
+def galaxy_phase7_tombstone_shadow_controls(browser_request: Request):
+    """Read-only control page. Visiting this route never writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    state = galaxy_phase7_tombstone_shadow.inspect(memcon_runtime)
+    payload = html.escape(json.dumps(state, ensure_ascii=False, indent=2))
+    action = ""
+    if state.get("eligible_to_create") is True:
+        action = (
+            "<p><a style='display:inline-block;padding:12px 16px;background:#eee;color:#111;"
+            "text-decoration:none;border-radius:10px' "
+            "href='/galaxy/pruning/phase7-tombstone-shadow-controls/confirm'>"
+            "Review exact Phase-7E shadow write</a></p>"
+        )
+    else:
+        action = "<p>No write is eligible. Existing shadow state is read-only.</p>"
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>GALAXY Phase 7E: durable shadow tombstone</h2>"
+        "<p>This page performs no writes. The only allowed effect is one exact synthetic "
+        "shadow tombstone plus one runtime receipt. MemoryOS source records and production "
+        "retrieval remain unchanged.</p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + payload + "</pre>"
+        + action + "</body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls/confirm", response_class=HTMLResponse, operation_id="galaxyPhase7TombstoneShadowConfirm")
+def galaxy_phase7_tombstone_shadow_confirm(browser_request: Request):
+    """Preview the one exact Phase-7E shadow write. GET never writes."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    csrf = _ritual_csrf(browser_request)
+    state = galaxy_phase7_tombstone_shadow.inspect(memcon_runtime)
+    if state.get("eligible_to_create") is not True:
+        raise HTTPException(status_code=409, detail="Phase-7E shadow write is not eligible")
+    hidden = {
+        "csrf": csrf,
+        "authority": "NAOMI",
+        "approved": "true",
+        "confirmation": galaxy_phase7_tombstone_shadow.CONFIRMATION,
+    }
+    fields = "".join(
+        "<input type='hidden' name='" + html.escape(key, quote=True)
+        + "' value='" + html.escape(value, quote=True) + "'>"
+        for key, value in hidden.items()
+    )
+    preview = html.escape(json.dumps({
+        "effect": "Insert one exact synthetic manifest into galaxy_tombstones_shadow and one runtime receipt.",
+        "tombstone_id": galaxy_phase7_tombstone_shadow.TOMBSTONE_ID,
+        "subject_record_id": galaxy_phase7_tombstone_shadow.SUBJECT_RECORD_ID,
+        "memoryos_mutation": False,
+        "physical_delete": False,
+        "production_retrieval_changed": False,
+        "restart_persistence_proven_by_this_action": False,
+    }, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Confirm Phase-7E shadow tombstone write</h2>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + preview + "</pre>"
+        "<form method='post' action='/galaxy/pruning/phase7-tombstone-shadow-controls/manifest'>"
+        + fields + "<button type='submit' style='font-size:18px;padding:12px 16px'>"
+        "Explicitly create exact shadow tombstone</button></form>"
+        "<p><a style='color:#9ee7ff' href='/galaxy/pruning/phase7-tombstone-shadow-controls'>"
+        "Cancel / review</a></p></body></html>",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.post("/galaxy/pruning/phase7-tombstone-shadow-controls/manifest", response_class=HTMLResponse, operation_id="galaxyPhase7TombstoneShadowManifest")
+async def galaxy_phase7_tombstone_shadow_manifest(browser_request: Request):
+    """Execute the one exact Phase-7E shadow write after explicit confirmation."""
+    expected_csrf = _ritual_csrf(browser_request)
+    if "application/x-www-form-urlencoded" not in browser_request.headers.get("content-type", "").lower():
+        raise HTTPException(status_code=415, detail="Phase-7E control requires exact form POST")
+    raw_bytes = await browser_request.body()
+    if len(raw_bytes) > 4096:
+        raise HTTPException(status_code=413, detail="Phase-7E control form too large")
+    fields = parse_qs(raw_bytes.decode("utf-8"), keep_blank_values=True)
+    supplied_csrf = _ritual_form_value(fields, "csrf")
+    if not hmac.compare_digest(supplied_csrf, expected_csrf):
+        raise HTTPException(status_code=403, detail="Phase-7E control CSRF proof failed")
+    if (
+        _ritual_form_value(fields, "authority") != "NAOMI"
+        or _ritual_form_value(fields, "approved") != "true"
+    ):
+        raise HTTPException(status_code=403, detail="Explicit Naomi authorization required")
+    try:
+        receipt = galaxy_phase7_tombstone_shadow.execute(
+            memcon_runtime,
+            authority="NAOMI",
+            approved=True,
+            confirmation=_ritual_form_value(fields, "confirmation"),
+        )
+    except PermissionError as exc:
+        raise HTTPException(status_code=403, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    output = html.escape(json.dumps(receipt, ensure_ascii=False, indent=2))
+    return HTMLResponse(
+        "<!doctype html><html><meta name='viewport' content='width=device-width,initial-scale=1'>"
+        "<body style='background:#101318;color:#e7f3f4;font:16px system-ui;padding:16px'>"
+        "<h2>Phase-7E shadow write/readback receipt</h2>"
+        "<p><a style='color:#9ee7ff' href='/galaxy/pruning/phase7-tombstone-shadow-review'>"
+        "Open read-only shadow review</a></p>"
+        "<pre style='white-space:pre-wrap;word-break:break-word'>" + output + "</pre>"
+        "</body></html>",
+        status_code=200 if receipt["status"] == "PASS_READBACK" else 409,
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 @app.get("/galaxy/lifecycle/phase6-fixture-review", operation_id="galaxyPhase6FixtureReview")
