@@ -78,6 +78,21 @@ print("PHASE6 ROUTE PASS:", review.get("status"),
       "state:", review.get("current_state"), "events:", review.get("event_count"),
       "holds:", review.get("hold_reasons"))
 
+code, control_html = get("/galaxy/lifecycle/phase6-controls")
+control_match = re.search(r"<pre[^>]*>(.*?)</pre>", control_html, flags=re.S)
+if code != 200 or not control_match:
+    raise SystemExit("HOLD: Phase6 control review HTML unavailable")
+control = json.loads(html.unescape(control_match.group(1)))
+if (control.get("controlled_record_id") != EXPECTED_RECORD
+        or control.get("current_state") != "ACTIVE"
+        or control.get("completed_steps") != 0
+        or control.get("next_action") != "BACKGROUND"
+        or control.get("campaign_complete") is not False
+        or control.get("hold_reasons") != []):
+    raise SystemExit("HOLD: Phase6 exact control review not at clean campaign start: " + str(control))
+print("PHASE6 CONTROL REVIEW PASS: state:", control.get("current_state"),
+      "steps:", control.get("completed_steps"), "next:", control.get("next_action"))
+
 code, verified_html = get("/verify", timeout=65)
 match = re.search(r"<pre[^>]*>(.*?)</pre>", verified_html, flags=re.S)
 if code != 200 or not match:
@@ -86,8 +101,15 @@ verifier = json.loads(html.unescape(match.group(1)))
 names = {
     "carrier:phase6-lifecycle-module",
     "carrier:phase6-lifecycle-boundaries",
+    "carrier:phase6-control-module",
+    "carrier:phase6-control-boundaries",
     "carrier:/galaxy/phase6-fixture-review",
+    "carrier:/galaxy/phase6-control-review",
+    "carrier:/galaxy/phase6-control-manifest",
     "carrier-route:/galaxy/phase6-fixture-review",
+    "carrier-route:/galaxy/phase6-control-review",
+    "carrier-route:/galaxy/phase6-control-manifest",
+    "carrier:phase6-control-read-only-self-test",
 }
 observed = {c.get("name"): c for c in verifier.get("checks", [])}
 missing = names - observed.keys()
