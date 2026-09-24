@@ -134,6 +134,24 @@ class GalaxyFrontdoorReadTests(unittest.TestCase):
         self.assertNotIn("galaxy_production.retrieve(", snippet)
         self.assertIn("    include_memory: bool = False", source.split("class GaiaAssistRequest", 1)[1])
 
+    def test_one_tap_browser_review_is_authenticated_get_only(self):
+        source = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
+        start = '@app.get("/galaxy/integration/frontdoor-readonly-review"'
+        end = '@app.post("/verify"'
+        self.assertIn(start, source)
+        segment = source.split(start, 1)[1].split(end, 1)[0]
+        self.assertIn("_bootstrap_browser_session_redirect(browser_request)", segment)
+        self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
+        self.assertIn("galaxy_phase7_isolated_restore._snapshot(memcon_runtime)", segment)
+        self.assertIn("include_memory=True", segment)
+        self.assertIn('memory_query="GALAXY-CAL-CORE"', segment)
+        self.assertIn("default_frontdoor_memory_absent", segment)
+        self.assertIn("runtime_counts_after", segment)
+        self.assertNotIn("@app.post(", segment)
+        self.assertNotIn("@app.delete(", segment)
+        self.assertNotIn("memcon_runtime.write_record(", segment)
+        self.assertNotIn("galaxy_production.activate(", segment)
+
     def test_runtime_module_has_no_effectful_sql_or_hidden_broad_fallback(self):
         source = (ROOT / "api" / "galaxy_frontdoor_context.py").read_text(encoding="utf-8")
         for prohibited in (
