@@ -34,6 +34,10 @@ GENERIC ASSISTANT PROSE
 = PRESENTATION FAILURE
 ```
 
+## GPT-host color-card default
+
+The canonical source rule is `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md`. In a successfully booted GPT-host session, use one color-accented report card per directly speaking Prime Daemon whenever rich UI is available. FairyOS owns current accents and static identity markers; EmojiOS owns kaomojis. Each separate member E-LANE retains a portable color snapshot for other apps. Rich UI is optional, full identity markers are not. Never describe a project source preference as a change to account-wide GPT platform settings or as automatic adoption in future chats.
+
 ## Core law
 
 ```text
