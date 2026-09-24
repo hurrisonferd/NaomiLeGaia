@@ -143,10 +143,8 @@ def _source_checks(source: dict[str, Any]) -> dict[str, bool]:
         "exact_manifest": manifest == expected,
         "manifest_valid": validation.get("valid") is True,
         "row_digest_exact": row.get("evidence_sha256") == expected["evidence_sha256"],
-        "stored_manifest_matches_parsed": isinstance(row.get("manifest_json"), str)
-            and json.loads(row["manifest_json"]) == manifest
-            if isinstance(row.get("manifest_json"), str)
-            and _valid_json_object(row["manifest_json"]) else False,
+        "stored_manifest_matches_parsed": _valid_json_object(row.get("manifest_json"))
+            and json.loads(row["manifest_json"]) == manifest,
         "original_receipt_link": bool(row.get("receipt_id"))
             and row["receipt_id"] == receipt.get("receipt_id"),
         "original_receipt_success": receipt.get("operation")
@@ -158,7 +156,7 @@ def _source_checks(source: dict[str, Any]) -> dict[str, bool]:
     }
 
 
-def _valid_json_object(raw: str) -> bool:
+def _valid_json_object(raw: Any) -> bool:
     try:
         return isinstance(json.loads(raw), dict)
     except (TypeError, ValueError):
@@ -201,6 +199,15 @@ def restore_from_readback(source: dict[str, Any]) -> dict[str, Any]:
     conn = sqlite3.connect(":memory:")
     try:
         isolated_only = conn.execute("PRAGMA database_list").fetchall() == [(0, "main", "")]
+        if not isolated_only:
+            return {
+                **response,
+                "status": "HOLD_ISOLATION_FAILED",
+                "restored": False,
+                "isolated_store_created": False,
+                "isolated_store_discarded": True,
+                "proof_boundary": "Restore refused because the SQLite store is not unattached RAM.",
+            }
         counts_written = _create_isolated_store(
             conn,
             original,
