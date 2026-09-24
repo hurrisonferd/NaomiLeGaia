@@ -54,6 +54,13 @@ def inspect(runtime: Any, record_id: str = FIXTURE_RECORD_ID) -> dict[str, Any]:
         lifecycle = runtime._fetchone_dict(
             conn, "SELECT * FROM memory_lifecycle WHERE record_id=?", (record_id,)
         )
+        receipts = runtime._fetchall_dicts(
+            conn,
+            """SELECT receipt_id,operation,record_id,result FROM runtime_receipts
+               WHERE record_id=? AND operation LIKE 'GALAXY_PHASE6_%'""",
+            (record_id,),
+        )
+    receipt_index = {receipt["receipt_id"]: receipt for receipt in receipts}
     events = _events(runtime, record_id)
     current = str((lifecycle or {}).get("state") or "ACTIVE")
     holds: list[str] = []
@@ -69,6 +76,8 @@ def inspect(runtime: Any, record_id: str = FIXTURE_RECORD_ID) -> dict[str, Any]:
         holds.append("EXISTING_LIFECYCLE_ROW_WITHOUT_EVENT_HISTORY")
     if events and not lifecycle:
         holds.append("EVENT_HISTORY_WITHOUT_LIFECYCLE_ROW")
+    if len(events) > 64:
+        holds.append("HISTORY_REVIEW_BOUND_EXCEEDED")
 
     previous = None
     expected_from = "ACTIVE"
@@ -82,6 +91,22 @@ def inspect(runtime: Any, record_id: str = FIXTURE_RECORD_ID) -> dict[str, Any]:
                 or event.get("authority") != "NAOMI"
                 or not event.get("receipt_id")):
             holds.append("BROKEN_EVENT_HISTORY_CHAIN")
+            break
+        receipt = receipt_index.get(event["receipt_id"])
+        if (not receipt
+                or receipt.get("operation") != "GALAXY_PHASE6_" + str(event.get("action"))
+                or receipt.get("result") != "SUCCESS"):
+            holds.append("EVENT_RECEIPT_MISSING_OR_MISMATCHED")
+            break
+        try:
+            legally_replayed = _target(
+                str(event.get("action") or ""), expected_from, events[:len(seen)]
+            )
+        except ValueError:
+            holds.append("ILLEGAL_RECORDED_TRANSITION")
+            break
+        if legally_replayed != event["to_state"]:
+            holds.append("ILLEGAL_RECORDED_TRANSITION")
             break
         seen.add(event_id)
         previous = event_id
