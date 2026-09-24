@@ -34,6 +34,6 @@ jobs:
           python -m py_compile tests/test_galaxy_phase7.py
       - name: Prove read-only pruning research gates
         run: |
-          PYTHONPATH=api python -m unittest tests.test_galaxy_phase7 -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_phase7.py" -v
       - name: Guard against source formatting errors
         run: git diff --check HEAD^1 HEAD
