@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 SYNTHESIS READ-ONLY LIVE PASS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 READ-ONLY LIVE PASS + MUTATION DESIGN SOURCE/CI READY / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4774,3 +4774,49 @@ It does not prove synthesis manifestation, provenance-row writes, DERIVED_FROM m
 
 Next gate:
 `EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_DESIGN`
+
+
+## Phase-5 mutation design authorized + source/CI ready — 2026-09-23
+
+Naomi explicitly authorized Phase-5 mutation design after the live read-only fixture PASS.
+
+Implemented source:
+- reversible shadow synthesis primitives in `api/memcon_runtime.py`;
+- exact controlled lifecycle in `api/galaxy_phase5.py`;
+- read-only mutation-design route:
+  `GET /galaxy/synthesis/phase5-mutation-design-review`;
+- expanded Phase-5 offline safety tests;
+- verifier checks for shadow scope, provenance persistence, route non-exposure and read-only review.
+
+Controlled lifecycle:
+`SYNTHESIS_PROPOSED -> SYNTHESIS_VERIFIED_SHADOW -> SYNTHESIS_REVOKED`
+
+The proposal scope is `GALAXY_SYNTHESIS_SHADOW`, never `MemoryOS`.
+
+The exact controlled synthesis statement is frozen in source before manifestation:
+`GALAXY-CAL-SYNTHESIS [1d79c239f31f]: The calibration core reported a violet carrier pulse; a later controlled observation revises that calibration toward ultraviolet.`
+
+Future proposal semantics:
+- create one shadow SYNTHESIS record;
+- create one `memory_syntheses` provenance row;
+- create PROPOSED DERIVED_FROM edges to both exact source records;
+- do not select a default retrieval target.
+
+Future verification semantics:
+- verify the exact DERIVED_FROM edges;
+- remain in shadow scope;
+- do not alter MemoryOS retrieval.
+
+Future revocation semantics:
+- mark synthesis and provenance edges REVOKED;
+- preserve synthesis record, provenance row, source records, edge records and evidence;
+- perform no physical deletion.
+
+Guarded GitHub Actions run `35936319728` completed SUCCESS.
+
+Current proof ceiling:
+**SOURCE + OFFLINE CI READY.**
+The mutation design has not yet been deployed or live-observed. No Phase-5 effectful browser mutation route or Ritual Grimoire family is exposed.
+
+Next gate:
+`DEPLOY -> /verify -> GET /galaxy/synthesis/phase5-mutation-design-review -> STOP/REVIEW`
