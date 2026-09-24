@@ -16,6 +16,7 @@ COPY api/gaiaos_context_runtime.py ./gaiaos_context_runtime.py
 COPY api/legacy_memory_reader.py ./legacy_memory_reader.py
 COPY api/gaiaos_memory_mode.py ./gaiaos_memory_mode.py
 COPY api/gaiaos_memory_gateway.py ./gaiaos_memory_gateway.py
+COPY api/gaiaos_chat_memory.py ./gaiaos_chat_memory.py
 COPY api/galaxy_frontdoor_context.py ./galaxy_frontdoor_context.py
 COPY api/gaiaos_app.py ./gaiaos_app.py
 COPY api/memcon_runtime.py ./memcon_runtime.py
