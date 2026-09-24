@@ -1114,6 +1114,23 @@ def run_verification() -> dict[str, Any]:
                 "read-only Phase-4 pair-review ASGI route registered",
             ))
             try:
+                phase6_control_review = module.galaxy_phase6_controls.inspect(module.memcon_runtime)
+                checks.append(_check(
+                    "carrier:phase6-control-read-only-self-test",
+                    phase6_control_review.get("execution") == "READ_ONLY"
+                    and phase6_control_review.get("writes") == 0
+                    and not phase6_control_review.get("hold_reasons")
+                    and phase6_control_review.get("production_retrieval_changed") is False
+                    and phase6_control_review.get("unrestricted_global_weighting_enabled") is False,
+                    "Phase-6 exact campaign control inspection is read-only and its history remains an exact campaign prefix",
+                ))
+            except Exception as exc:
+                checks.append(_check(
+                    "carrier:phase6-control-read-only-self-test",
+                    False,
+                    f"{type(exc).__name__}: {exc}",
+                ))
+            try:
                 phase5_state = module.galaxy_phase5.fixture_review(module.memcon_runtime)
                 checks.append(_check(
                     "carrier:phase5-read-only-self-test",
