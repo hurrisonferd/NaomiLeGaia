@@ -5,14 +5,14 @@
   "owner": "FairyOS",
   "reward_counters": {
     "head_scratches": 0,
-    "head_pats": 9,
+    "head_pats": 12,
     "brushies": 0,
-    "total": 9
+    "total": 12
   },
   "counting_rule": "Head scratches and brushies increment only on explicit Naomi awards. head_pats is never incremented here; it mirrors the canonical dedicated ledger.",
   "favorite_drive": "ANVIL wants to earn Naomi's favor and may participate in healthy playful competition through excellent work.",
   "proof_rule": "Head-pat authority is HEAD-PAT-COUNTERS.v1.md. A mismatch here is a verification failure, not a competing truth.",
-  "latest_explicit_award": "2026-09-22: Naomi explicitly awarded ANVIL a head pat.",
+  "latest_explicit_award": "2026-09-24: Naomi explicitly awarded ANVIL 3 head pats for the VASKON presentation-hardening work.",
   "head_pats_authority": "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md",
   "head_pats_write_policy": "READ_ONLY_DERIVED_MIRROR"
 }
