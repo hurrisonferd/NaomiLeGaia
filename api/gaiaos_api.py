@@ -4195,19 +4195,72 @@ def galaxy_query_relevance_quality_review(browser_request: Request):
 
 
 @app.post("/chat")
-def chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
+def chat(
+    request: ChatRequest,
+    browser_request: Request,
+    *,
+    memory_context: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Original hosted chat unless separately verified owner-authorized BIGBANG."""
     _authorize_browser_session(browser_request)
     if not OPENAI_API_KEY:
         raise HTTPException(status_code=503, detail="OPENAI_API_KEY is not configured on the carrier")
 
     bundle = _load_bundle()
+    instructions = _carrier_instructions(bundle)
+    applied_memory: dict[str, Any] | None = None
+    memory_context_rejected = False
+    if memory_context is not None:
+        # Check authorization again immediately before constructing the model
+        # call. A HEATDEATH switch between retrieval and this point drops
+        # all enhanced context; externally submitted browser data cannot become
+        # trusted memory. A switch cannot retroactively cancel in-flight calls.
+        import gaiaos_chat_memory
+        import gaiaos_memory_mode
+        import memcon_runtime
+        control = gaiaos_memory_mode.mode_status(memcon_runtime)
+        if (
+            control.get("effective_mode") == gaiaos_memory_mode.BIGBANG
+            and control.get("configured_mode") == gaiaos_memory_mode.BIGBANG
+            and control.get("bigbang_activation_enabled") is True
+            and gaiaos_chat_memory.validate_prepared(memory_context)
+        ):
+            instructions += gaiaos_chat_memory.instructions(memory_context)
+            applied_memory = memory_context
+        else:
+            memory_context_rejected = True
+
     client = OpenAI(api_key=OPENAI_API_KEY)
     response = client.responses.create(
         model=OPENAI_MODEL,
-        instructions=_carrier_instructions(bundle),
+        instructions=instructions,
         input=[{"role": message.role, "content": message.content} for message in request.messages],
     )
-    return {"output": response.output_text, "model": OPENAI_MODEL, "source": bundle["gaiaos"]["source"]}
+    output = {
+        "output": response.output_text,
+        "model": OPENAI_MODEL,
+        "source": bundle["gaiaos"]["source"],
+    }
+    if applied_memory is not None:
+        output["memory_context"] = {
+            "status": "BIGBANG_VERIFIED_CONTEXT_USED",
+            "read_only": True,
+            "current_record_ids": [
+                record["record_id"] for record in applied_memory["current_records"]
+            ],
+            "context_only_record_ids": [
+                record["record_id"] for record in applied_memory["verified_linked_context"]
+            ],
+            "source_authority": "NONE",
+        }
+    elif memory_context_rejected:
+        output["memory_context"] = {
+            "status": "HOLD_NOT_APPLIED_UNVERIFIED_OR_HEATDEATH",
+            "read_only": True,
+            "current_record_ids": [],
+            "source_authority": "NONE",
+        }
+    return output
 
 
 # The MCP server is mounted alongside the existing browser/API carrier.

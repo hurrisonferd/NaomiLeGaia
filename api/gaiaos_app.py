@@ -20,7 +20,8 @@ from starlette.routing import Mount
 
 import gaiaos_api as base
 from gaiaos_context_runtime import build_context_packet
-import galaxy_frontdoor_context
+import gaiaos_memory_gateway
+import gaiaos_memory_mode
 
 EXTENSION_VERSION = "1.6.0"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
@@ -318,7 +319,7 @@ def _frontdoor_packet(
     include_context: bool = True,
     context_limit: int = 6,
     context_depth: int = 1,
-    include_memory: bool = False,
+    include_memory: bool | None = None,
     memory_query: str | None = None,
 ) -> dict[str, Any]:
     request = str(request).strip()
@@ -334,15 +335,25 @@ def _frontdoor_packet(
     dispatch = base._dispatch_packet(commit, signals, requested, max_members)
     selected = _compact_selected(dispatch)
     context = _context_packet(request, context_limit, context_depth) if include_context else None
-    memory_context = None
-    if include_memory:
-        # The runtime must already be initialized by the carrier.
-        # No implicit schema creation or write is authorized here.
+    # HEATDEATH restores the original front-door default: no implicit memory
+    # retrieval. A future owner-authorized BIGBANG becomes default-on without
+    # inventing a third mode. Explicit false always opts out in either mode.
+    should_read_memory = include_memory
+    if should_read_memory is None:
         import memcon_runtime
-        memory_context = galaxy_frontdoor_context.preview(
+        control = gaiaos_memory_mode.mode_status(memcon_runtime)
+        should_read_memory = (
+            control.get("effective_mode") == gaiaos_memory_mode.BIGBANG
+            and control.get("bigbang_activation_enabled") is True
+        )
+    memory_context = None
+    if should_read_memory:
+        import memcon_runtime
+        memory_context = gaiaos_memory_gateway.read(
             memcon_runtime,
             memory_query if memory_query is not None else request,
-            min(context_limit, galaxy_frontdoor_context.MAX_RECORDS),
+            "MemoryOS",
+            min(context_limit, 6),
         )
     return {
         "schema": "gaiaos.frontdoor.packet.v1",
@@ -363,7 +374,7 @@ def _frontdoor_packet(
         },
         "operators": selected,
         "context": context,
-        **({"memory_context": memory_context} if include_memory else {}),
+        **({"memory_context": memory_context} if should_read_memory else {}),
         "host_guidance": [
             "Treat this as a compact support packet for Naomi's actual request, not as a replacement for her request.",
             "Use selected operators only when their contribution is materially useful; FAMILY PRESENT != ALL MEMBERS MUST SPEAK.",
@@ -435,7 +446,7 @@ class GaiaAssistRequest(BaseModel):
     include_context: bool = True
     context_limit: int = Field(default=6, ge=1, le=10)
     context_depth: int = Field(default=1, ge=0, le=2)
-    include_memory: bool = False
+    include_memory: bool | None = None
     memory_query: str | None = Field(default=None, max_length=20000)
 
 
@@ -447,8 +458,10 @@ def gaia(
     include_context: bool = True,
     context_limit: int = 6,
     context_depth: int = 1,
+    include_memory: bool | None = None,
+    memory_query: str | None = None,
 ) -> dict[str, Any]:
-    """PRIMARY GAIAOS FRONT DOOR. Pass Naomi's natural-language request here first."""
+    """PRIMARY GAIAOS FRONT DOOR. HEATDEATH preserves legacy defaults."""
     return _frontdoor_packet(
         request, requested_members, max_members, include_context,
         context_limit, context_depth, include_memory, memory_query,

@@ -120,19 +120,20 @@ class GalaxyFrontdoorReadTests(unittest.TestCase):
         self.assertEqual(result["records"], [])
         self.assertEqual(result["error_type"], "RuntimeError")
 
-    def test_frontdoor_source_exposes_only_explicit_opt_in(self):
+    def test_frontdoor_source_is_heatdeath_default_with_one_gateway(self):
         source = (ROOT / "api" / "gaiaos_app.py").read_text(encoding="utf-8")
         snippet = source.split("def _frontdoor_packet(", 1)[1].split("def _selftest_packet(", 1)[0]
-        self.assertIn("include_memory: bool = False", snippet)
+        self.assertIn("include_memory: bool | None = None", snippet)
         self.assertIn("memory_query: str | None = None", snippet)
-        self.assertIn("if include_memory:", snippet)
-        self.assertIn("galaxy_frontdoor_context.preview(", snippet)
-        self.assertIn('**({"memory_context": memory_context} if include_memory else {})', snippet)
+        self.assertIn("gaiaos_memory_mode.mode_status(", snippet)
+        self.assertIn("gaiaos_memory_gateway.read(", snippet)
+        self.assertIn('**({"memory_context": memory_context} if should_read_memory else {})', snippet)
+        self.assertNotIn("galaxy_frontdoor_context.preview(", snippet)
         self.assertNotIn("write_record(", snippet)
         self.assertNotIn("activate(", snippet)
         self.assertNotIn("delete(", snippet)
         self.assertNotIn("galaxy_production.retrieve(", snippet)
-        self.assertIn("    include_memory: bool = False", source.split("class GaiaAssistRequest", 1)[1])
+        self.assertIn("    include_memory: bool | None = None", source.split("class GaiaAssistRequest", 1)[1])
 
     def test_one_tap_browser_review_is_authenticated_get_only(self):
         source = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")

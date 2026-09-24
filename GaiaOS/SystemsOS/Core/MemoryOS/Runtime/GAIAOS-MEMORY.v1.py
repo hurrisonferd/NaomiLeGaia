@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from typing import Any
 
 import memcon_runtime
-import galaxy_production
+import gaiaos_memory_gateway
 
 SCHEMA_VERSION = "gaiaos.memoryos.runtime.v1"
 
@@ -164,10 +164,22 @@ def promote_candidate(candidate_id: str, approved: bool, authority: str = "NAOMI
 
 
 def retrieve(query: str, scope: str | None = None, limit: int = 10) -> dict[str, Any]:
+    """Preserve the legacy retrieval envelope while exposing gated GALAXY evidence.
+
+    No implicit GALAXY import or write path: the independent gateway owns
+    read-mode selection and any request-local fallback. CANDIPULL/MEMSAV,
+    six member E-LANES, receipts and mutation permissions are untouched.
+    """
+    packet = gaiaos_memory_gateway.read(memcon_runtime, query, scope, limit)
     return {
         "schema": SCHEMA_VERSION,
-        "status": "OBSERVED",
-        "retrieval": galaxy_production.retrieve(memcon_runtime, query, scope, limit),
+        "status": ("OBSERVED" if packet.get("retrieval") is not None else "HOLD"),
+        "retrieval": packet.get("retrieval"),
+        "galaxy_context": packet.get("galaxy_context"),
+        "memory_gateway": {
+            key: value for key, value in packet.items()
+            if key not in ("retrieval", "galaxy_context")
+        },
         "context_authority": "NONE",
         "retrieval_is_not_identity_adoption": True,
     }
