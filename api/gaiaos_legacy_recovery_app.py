@@ -73,7 +73,10 @@ def _existing_storage() -> str:
     its existing search_records/get_record read functions skip their automatic
     CREATE TABLE IF NOT EXISTS initialization path.
     """
-    local_test = os.getenv("GAIAOS_RECOVERY_ALLOW_LOCAL_TEST", "").strip() == "1"
+    local_test = (
+        os.getenv("GAIAOS_RECOVERY_ALLOW_LOCAL_TEST", "").strip() == "1"
+        and os.getenv("GAIAOS_RECOVERY_TEST_ENVIRONMENT", "") == "ISOLATED_CI"
+    )
     if not local_test and (
         storage.STORAGE_BACKEND != "turso_libsql"
         or not storage.TURSO_DATABASE_URL or not storage.TURSO_AUTH_TOKEN
