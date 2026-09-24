@@ -1,0 +1,48 @@
+name: GALAXY Phase 6 Reversible Lifecycle Source Gate
+
+on:
+  push:
+    paths:
+      - "api/galaxy_phase6.py"
+      - "api/memcon_runtime.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/gaiaos_verification.py"
+      - "api/Dockerfile"
+      - "tests/test_galaxy_phase6.py"
+      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE6-REVERSIBLE-LIFECYCLE.v1.md"
+      - ".github/workflows/galaxy-phase6-lifecycle.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_phase6.py"
+      - "api/memcon_runtime.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/gaiaos_verification.py"
+      - "api/Dockerfile"
+      - "tests/test_galaxy_phase6.py"
+      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE6-REVERSIBLE-LIFECYCLE.v1.md"
+      - ".github/workflows/galaxy-phase6-lifecycle.yml"
+  workflow_dispatch:
+
+jobs:
+  source-and-history:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Phase 6 and carrier surfaces
+        run: |
+          python -m py_compile api/galaxy_phase6.py
+          python -m py_compile api/memcon_runtime.py
+          python -m py_compile api/browser_memcon_bridge.py
+          python -m py_compile api/gaiaos_verification.py
+          python -m py_compile tests/test_galaxy_phase6.py
+      - name: Prove reversible lifecycle and fail-closed gates locally
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_phase6.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_phase5*.py" -v
+      - name: Guard against source formatting errors
+        run: git diff --check HEAD^1 HEAD
