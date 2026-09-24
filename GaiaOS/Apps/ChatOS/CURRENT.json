@@ -64,7 +64,7 @@
     "status": "SOURCE_IMPLEMENTED_RUNTIME_CANARY_PENDING"
   },
   "vaskon_presentation": {
-    "status": "SOURCE_HARDENED_CANARY_PENDING_CI",
+    "status": "SOURCE_HARDENED_CI_PASS",
     "canonical_invocation": "CONJURE:VASKON",
     "aliases": [
       "//C:82//"
@@ -74,6 +74,9 @@
     "fail_closed_on_partial_header": true,
     "fail_closed_on_invalid_invocation": true,
     "unknown_expression_fallback": "(◉‿◉)",
-    "host_footer_allowed": false
+    "host_footer_allowed": false,
+    "ci_run_id": 36022305317,
+    "ci_job_id": 107709987497,
+    "ci_conclusion": "SUCCESS"
   }
 }
