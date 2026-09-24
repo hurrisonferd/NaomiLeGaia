@@ -76,14 +76,23 @@ def _research_hold_reasons(
     synthesis: dict[str, Any],
 ) -> list[str]:
     """Apply the shared Phase-7 research eligibility locks to supplied evidence."""
-    holds = _research_hold_reasons(
-        record=record,
-        lifecycle=lifecycle,
-        governing=governing,
-        outgoing_governing=outgoing_governing,
-        incoming_derived_from=incoming_derived_from,
-        synthesis=synthesis,
-    )
+    holds: list[str] = []
+    if str(record.get("scope") or "") != "MemoryOS":
+        holds.append("NOT_MEMORYOS_SCOPE")
+    if str(record.get("status") or "") != "ACTIVE":
+        holds.append("MEMORYOS_RECORD_NOT_ACTIVE")
+    if not lifecycle or str(lifecycle.get("state") or "") != REQUIRED_LIFECYCLE_STATE:
+        holds.append("LIFECYCLE_NOT_COMPRESSED")
+    if bool(governing.get("current_default_eligible")):
+        holds.append("CURRENT_DEFAULT_ELIGIBLE")
+    if outgoing_governing:
+        holds.append("GOVERNS_OTHER_RECORDS")
+    if incoming_derived_from or synthesis["source_for_synthesis_record_ids"]:
+        holds.append("SYNTHESIS_PROVENANCE_DEPENDENCY")
+    if synthesis["is_synthesis_record"]:
+        holds.append("SYNTHESIS_RECORD_REQUIRES_SEPARATE_POLICY")
+    if synthesis["malformed_synthesis_rows"]:
+        holds.append("MALFORMED_SYNTHESIS_PROVENANCE")
     return holds
 
 
