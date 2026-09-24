@@ -6,8 +6,8 @@
 **Parent project:** GALAXY, GaiaOS  
 **Authority:** Naomi / Ligeia  
 **Cadence:** Wednesday research watch, chosen for Wodin's day and Mercury as project symbolism  
-**Document:** Living mission charter, v0.1  
-**Status:** Research charter created. No external finding is validated merely because it appears here.
+**Document:** Living mission charter, v0.2  
+**Status:** First manual pilot completed 2026-09-23 Eastern: eight primary-source-checked findings entered; no independent reproduction, integration or measured performance claim.
 
 ## 01 // THE MISSION
 
@@ -81,9 +81,16 @@ Any code change, synthesis mutation, retention policy, or retrieval promotion ge
 
 `PROPOSAL -> APPROVAL -> SOURCE -> CI -> DEPLOY -> LIVE RECEIPT -> READBACK -> COMPARATIVE TEST`
 
+## 06A // FIRST SIGNAL CAPTURE
+
+The initial manual Wednesday pilot was performed on **2026-09-23 Eastern**, ahead of the first scheduled automated watch on **2026-09-30**. It inspected accessible primary paper metadata/abstract, maintainer repositories, official docs and source LICENSE files for eight targeted leads, then entered eight distinct records in the [Signal Ledger](FINDINGS.md).
+
+**[Read the first field report](REPORT-2026-09-23.md).** It records source-backed claims and their limits, individual license/cost cautions, cross-references to live-proven GALAXY components, and bounded experiments to consider after separate authority gates. None of the eight has been independently reproduced. No automatic GitHub writes are enabled by the research watch; subsequent weekly findings need an explicit review/import step.
+
 ## 07 // REVISION DISCIPLINE
 
 This README is a mission outline, not a scientific result or a claim of autonomous operation. Amend it when goals, constraints or actual proof change. Every substantive edit should cite its supporting artifact or runtime receipt, note what changed, and retain decisions that future maintainers need to understand.
 
 **Change log**
+- **2026-09-23, v0.2:** Completed first manual Wednesday pilot; primary-source-checked eight leads (not independently reproduced), saved a dated report and populated the canonical ledger. First scheduled automated watch remains 2026-09-30.
 - **2026-09-23, v0.1:** Founded MERCURY; defined Wednesday watch, evidence ledger, freeware-first filter and mandatory post-live GALAXY audit. No external findings imported as validated evidence.
