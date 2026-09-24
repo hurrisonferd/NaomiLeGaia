@@ -66,6 +66,7 @@ class RecoveryAppTests(unittest.TestCase):
         self.patch_env = patch.dict(os.environ, {
             "GAIAOS_RECOVERY_API_KEY": KEY,
             "GAIAOS_RECOVERY_ALLOW_LOCAL_TEST": "1",
+            "GAIAOS_RECOVERY_TEST_ENVIRONMENT": "ISOLATED_CI",
             "GAIAOS_RECOVERY_SOURCE_COMMIT": "ci-test-only",
         })
         self.patch_env.start()
