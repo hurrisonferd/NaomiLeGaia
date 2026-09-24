@@ -12,6 +12,7 @@ import memcon_runtime as runtime
 import galaxy_phase7 as p7
 import galaxy_phase7_tombstone as p7d
 import galaxy_phase7_tombstone_shadow as p7e
+import galaxy_phase7_isolated_restore as p7f
 
 
 class Phase7PruningResearchTests(unittest.TestCase):
@@ -403,6 +404,145 @@ class Phase7PruningResearchTests(unittest.TestCase):
         self.assertNotIn("INSERT INTO memory_syntheses", source)
         self.assertIn("INSERT INTO galaxy_tombstones_shadow", source)
         self.assertIn("INSERT INTO runtime_receipts", source)
+
+    def test_phase7f_requires_existing_valid_shadow_before_isolated_restore(self):
+        before = p7f._snapshot(runtime)
+        result = p7f.review(runtime)
+        self.assertEqual(result["status"], "HOLD_SHADOW_SOURCE_INVALID", result)
+        self.assertFalse(result["restored"])
+        self.assertFalse(result["isolated_store_created"])
+        self.assertEqual(result["production_writes_performed"], [])
+        self.assertTrue(result["runtime_counts_unchanged"])
+        self.assertEqual(p7f._snapshot(runtime), before)
+
+    def test_phase7f_reconstructs_exact_synthetic_bundle_in_unattached_ram(self):
+        p7e.execute(
+            runtime, authority="NAOMI", approved=True, confirmation=p7e.CONFIRMATION,
+        )
+        before = p7f._snapshot(runtime)
+        result = p7f.review(runtime)
+        self.assertEqual(result["status"], "PASS_ISOLATED_RESTORE", result)
+        self.assertTrue(result["restored"])
+        self.assertTrue(result["isolated_store_created"])
+        self.assertTrue(result["isolated_store_discarded"])
+        self.assertEqual(result["isolated_manifest_count"], 1)
+        self.assertEqual(
+            result["restored_evidence_bundle"],
+            p7d.synthetic_tombstone_contract_canary()["manifest"]["evidence_bundle"],
+        )
+        self.assertEqual(result["restored_evidence_sha256"], p7e._expected_manifest()["evidence_sha256"])
+        self.assertEqual(result["source_receipt_id"], p7e.inspect(runtime)["receipt"]["receipt_id"])
+        self.assertTrue(all(result["source_checks"].values()))
+        self.assertTrue(all(result["restore_checks"].values()))
+        self.assertTrue(result["runtime_counts_unchanged"])
+        self.assertTrue(result["same_shadow_source_after"])
+        self.assertEqual(result["production_writes_performed"], [])
+        self.assertFalse(result["production_memoryos_restore"])
+        self.assertFalse(result["memoryos_mutation"])
+        self.assertFalse(result["physical_delete"])
+        self.assertFalse(result["production_retrieval_changed"])
+        self.assertFalse(result["destructive_eligibility"])
+        self.assertFalse(result["destructive_restore_proven"])
+        self.assertEqual(p7f._snapshot(runtime), before)
+
+    def test_phase7f_refuses_corrupted_shadow_without_isolated_restore(self):
+        p7e.execute(
+            runtime, authority="NAOMI", approved=True, confirmation=p7e.CONFIRMATION,
+        )
+        with runtime._db() as conn:
+            conn.execute(
+                "UPDATE galaxy_tombstones_shadow SET manifest_json=? WHERE tombstone_id=?",
+                ('{"tampered":true}', p7e.TOMBSTONE_ID),
+            )
+        before = p7f._snapshot(runtime)
+        result = p7f.review(runtime)
+        self.assertEqual(result["status"], "HOLD_SHADOW_SOURCE_INVALID", result)
+        self.assertFalse(result["restored"])
+        self.assertFalse(result["isolated_store_created"])
+        self.assertFalse(result["source_checks"]["manifest_valid"])
+        self.assertEqual(p7f._snapshot(runtime), before)
+
+    def test_phase7f_refuses_failed_receipt_without_production_write(self):
+        receipt = p7e.execute(
+            runtime, authority="NAOMI", approved=True, confirmation=p7e.CONFIRMATION,
+        )["receipt"]["receipt_id"]
+        with runtime._db() as conn:
+            conn.execute(
+                "UPDATE runtime_receipts SET result='FAILED' WHERE receipt_id=?",
+                (receipt,),
+            )
+        before = p7f._snapshot(runtime)
+        result = p7f.review(runtime)
+        self.assertEqual(result["status"], "HOLD_SHADOW_SOURCE_INVALID", result)
+        self.assertFalse(result["restored"])
+        self.assertFalse(result["isolated_store_created"])
+        self.assertFalse(result["source_checks"]["original_receipt_success"])
+        self.assertEqual(p7f._snapshot(runtime), before)
+
+    def test_phase7f_refuses_manifest_digest_mismatch(self):
+        p7e.execute(
+            runtime, authority="NAOMI", approved=True, confirmation=p7e.CONFIRMATION,
+        )
+        source = p7e.inspect(runtime)
+        source["row"]["evidence_sha256"] = "BAD-DIGEST"
+        result = p7f.restore_from_readback(source)
+        self.assertEqual(result["status"], "HOLD_SHADOW_SOURCE_INVALID")
+        self.assertFalse(result["source_checks"]["row_digest_exact"])
+        self.assertFalse(result["isolated_store_created"])
+
+    def test_phase7f_refuses_changed_source_between_readbacks(self):
+        p7e.execute(
+            runtime, authority="NAOMI", approved=True, confirmation=p7e.CONFIRMATION,
+        )
+        original = p7f.shadow.inspect
+        calls = []
+        def changed_second_inspection(config):
+            result = original(config)
+            calls.append(True)
+            if len(calls) == 2:
+                result["row"]["receipt_id"] = "CHANGED-RECEIPT"
+            return result
+        p7f.shadow.inspect = changed_second_inspection
+        try:
+            result = p7f.review(runtime)
+        finally:
+            p7f.shadow.inspect = original
+        self.assertEqual(result["status"], "HOLD_RUNTIME_READBACK", result)
+        self.assertFalse(result["restored"])
+        self.assertTrue(result["runtime_counts_unchanged"])
+        self.assertFalse(result["same_shadow_source_after"])
+        self.assertEqual(len(calls), 2)
+
+    def test_phase7f_exposes_exact_authenticated_get_only_route(self):
+        bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text(encoding="utf-8")
+        docker = (ROOT / "api" / "Dockerfile").read_text(encoding="utf-8")
+        self.assertIn("import galaxy_phase7_isolated_restore", bridge)
+        start = '@app.get("/galaxy/pruning/phase7-isolated-restore-review"'
+        end = '@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls"'
+        self.assertIn(start, bridge)
+        segment = bridge.split(start, 1)[1].split(end, 1)[0]
+        self.assertIn("gaiaos_api._authorize_browser_session(browser_request)", segment)
+        self.assertIn("galaxy_phase7_isolated_restore.review(memcon_runtime)", segment)
+        self.assertNotIn("@app.post(", segment)
+        self.assertNotIn("@app.delete(", segment)
+        self.assertIn(
+            "COPY api/galaxy_phase7_isolated_restore.py ./galaxy_phase7_isolated_restore.py",
+            docker,
+        )
+
+    def test_phase7f_source_has_no_production_mutation_sql_or_delete_route(self):
+        source = (ROOT / "api" / "galaxy_phase7_isolated_restore.py").read_text(encoding="utf-8")
+        for forbidden in (
+            "DELETE FROM", "UPDATE memory_", "INSERT INTO memory_",
+            "INSERT INTO galaxy_tombstones_shadow", "INSERT INTO runtime_receipts",
+            "def delete", "def prune", "def execute",
+        ):
+            self.assertNotIn(forbidden, source)
+        self.assertIn('sqlite3.connect(":memory:")', source)
+        self.assertIn('conn.execute("PRAGMA database_list")', source)
+        self.assertFalse(hasattr(p7f, "delete"))
+        self.assertFalse(hasattr(p7f, "prune"))
+        self.assertFalse(hasattr(p7f, "execute"))
 
     def test_phase7_module_contains_no_destructive_sql_or_mutation_entrypoint(self):
         source = (ROOT / "api" / "galaxy_phase7.py").read_text(encoding="utf-8")
