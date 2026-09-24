@@ -5068,3 +5068,12 @@ GALAXY's finite remaining work begins with opt-in evidence-backed MemoryOS conte
 Current finite release gate contract: `GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md`.
 
 This initial source slice exposes only an explicit default-OFF, read-only unweighted MemoryOS evidence lane. Source and CI success do not mean the new front-door path is deployed or adopted, and live opt-in readback does not authorize automatic memory capture, production ranking, or destruction.
+
+
+## GALAXY front-door first live integration — 2026-09-24
+
+Naomi's live `/galaxy/integration/frontdoor-readonly-review` receipt on deployed `c5c36e90f7e7cfb0e2d9b11538a5d9b8cfdfecbe` returned `PASS_READ_ONLY_INTEGRATION` with 10/10 checks: the default GaiaOS front door was unchanged, the explicit opt-in `memory_context` lane retrieved one exact durable calibration record including provenance, governing state, `ACTIVE` lifecycle and VERIFIED/REVOKED relation history, ANVIL dispatch was preserved, and all nine monitored table counts remained unchanged. This closes only the first bounded source-to-front-door read-only milestone. Legacy unweighted retrieval remains the default; no global ranking activation, production attenuation, MemoryOS mutation, destructive pruning, or automatic memory adoption was enabled.
+
+Full checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-FRONTDOOR-READONLY-LIVE-PASS.md`.
+
+The next GALAXY build gate is a read-only general-retrieval comparative suite, independently proving relevance, negative controls and provenance before any separate Naomi-approved production adoption. MERCURY PROTOCOL remains a separate ongoing research mission.
