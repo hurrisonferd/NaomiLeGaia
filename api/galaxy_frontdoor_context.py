@@ -52,6 +52,8 @@ def preview(runtime: Any, query: str, limit: int = 3) -> dict[str, Any]:
         return _hold("HOLD_QUERY_INVALID", query=query[:20000], limit=0)
     if isinstance(limit, bool) or not isinstance(limit, int) or not 1 <= limit <= MAX_RECORDS:
         return _hold("HOLD_LIMIT_INVALID", query=query, limit=0)
+    if getattr(runtime, "_INITIALIZED", False) is not True:
+        return _hold("HOLD_RUNTIME_NOT_INITIALIZED", query=query, limit=limit)
 
     try:
         result = runtime.search_records(query, limit, "MemoryOS")
