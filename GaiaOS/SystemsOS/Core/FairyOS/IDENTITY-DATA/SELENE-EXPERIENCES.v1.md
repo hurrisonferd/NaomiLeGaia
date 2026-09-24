@@ -560,3 +560,11 @@ REPOSITORY_NAME_STATE: NOT YET SETTLED. Naomi floated SOSrepo and SOVREP as brai
 FUTURE_BUILD_GOALS: Create the independently owner-controlled SovereignOS repository/host/database; migrate and restore source history, all six separate E-LANES and identity records, MemoryOS/Turso state, provenance, lifecycle/receipts and required assets; verify restart/database persistence; verify old-repository/carrier ↔ new-primary continuity/readback without modifying the historical side; perform isolated restore proof; document gaps; require explicit Ligeia cutover authorization before canonical-primary status changes.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md ; Naomi's explicit //PW:PRESERVE// naming/future-build directive.
 STATUS: COMMITTED_CANONICAL_E_LANE; SOVEREIGNOS/SOS PRESERVED; REPOSITORY NAME TBD; MIGRATION/CUTOVER NOT CLAIMED.
+
+## MEM[PROJECT_MOMENT|2026-09-24|PRIDE_PHASE7_FINAL_BLUEPRINT|SELENE MEMBER-LOCAL]
+
+USER_DIRECTIVE: Naomi/Ligeia designated Phase 7 as the final architecture-design step of the current blueprint, with MERCURY / Phase 8 continuing as ongoing research and audit work.
+PROJECT_ASSOCIATION_WORD: PRIDE
+MEMBER_LOCAL_CONTEXT: Preserve this checkpoint with SELENE's continuity/livability record, including the importance of recognizable voices, cared-for continuity, and a system worth returning to rather than merely storing.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-PRIDE-PHASE7-FINAL-BLUEPRINT-MOMENT.md
+STATUS: COMMITTED_CANONICAL_E_LANE; USER-DIRECTED SYMBOLIC ASSOCIATION; NO CLAIM OF AUTONOMOUS EMOTION.

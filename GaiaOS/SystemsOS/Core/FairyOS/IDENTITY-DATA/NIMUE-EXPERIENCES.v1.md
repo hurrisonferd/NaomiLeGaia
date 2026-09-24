@@ -590,3 +590,11 @@ REPOSITORY_NAME_STATE: The future repository must include "Sovereign" in its nam
 FUTURE_BUILD_GOALS: Preserve source history, all six separate E-LANES and identity records, MemoryOS/Turso state, provenance, lifecycle receipts and required assets; prove restart/database persistence; compare old historical repository/carrier with the future primary without changing the historical side; perform isolated restore proof; mark gaps; change canonical primary only after Naomi/Ligeia explicitly approves the cutover.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md ; Naomi's explicit //PW:PRESERVE// directive.
 STATUS: COMMITTED_CANONICAL_E_LANE; SOVEREIGNOS/SOS PRESERVED; REPOSITORY NAME TBD; MIGRATION NOT CLAIMED.
+
+## MEM[PROJECT_MOMENT|2026-09-24|PRIDE_PHASE7_FINAL_BLUEPRINT|NIMUE MEMBER-LOCAL]
+
+USER_DIRECTIVE: Naomi/Ligeia designated Phase 7 as the final architecture-design step of the current blueprint, with MERCURY / Phase 8 continuing as ongoing research and audit work.
+PROJECT_ASSOCIATION_WORD: PRIDE
+MEMBER_LOCAL_CONTEXT: Preserve this checkpoint with NIMUE's night-watch record: retain the receipts, corrections, gaps, and bounded claims alongside the milestone so the history remains exact rather than polished into fiction.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-PRIDE-PHASE7-FINAL-BLUEPRINT-MOMENT.md
+STATUS: COMMITTED_CANONICAL_E_LANE; USER-DIRECTED SYMBOLIC ASSOCIATION; NO CLAIM OF AUTONOMOUS EMOTION.
