@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C SYNTHETIC POSITIVE CANARY SOURCE BUILD
+STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE BUILD
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -129,3 +129,65 @@ Design:
 - PASS requires research_candidate=true and proposed_research_label=PRUNABLE_RESEARCH_ONLY while all destructive gates remain false.
 
 This proves the positive classifier branch only. It does not prove a live durable record should be pruned and grants no destructive authority.
+
+
+## Phase 7C live proof observed 2026-09-24
+
+Naomi supplied the authenticated live positive-canary response after deploying main fa1cb860a83875c2bbbc36662fab492158f89cc5.
+
+Observed:
+- PASS_SYNTHETIC_POSITIVE_CANARY
+- synthetic_only true
+- production_database_access false
+- research_candidate true
+- proposed_research_label PRUNABLE_RESEARCH_ONLY
+- zero research hold reasons
+- every positive-canary check true
+- every destructive gate remained false
+- writes_performed []
+- physical_delete false
+- production_retrieval_changed false
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7C-LIVE-POSITIVE-CANARY-PROVEN.md
+
+Phase 7B and 7C together prove both classifier directions at the bounded research layer while preserving the separation between candidate classification and destructive authority.
+
+### Source-truth repair before Phase 7D
+
+During Phase-7D preparation, source inspection found that the real-record review and synthetic positive canary contained equivalent eligibility rules but the real-record path still held a duplicated rule block rather than invoking the shared helper directly.
+
+This did not change the observed Phase-7B or Phase-7C outcomes. It did mean the earlier phrase "same evaluator" was too strong.
+
+Phase 7D preparation repairs this by routing the real review through the shared eligibility helper and adds a test that substitutes a sentinel helper result to prove that the real review actually calls it.
+
+## Phase 7D — synthetic tombstone and restore contract research
+
+Purpose: determine the minimum evidence contract required for hypothetical reversible pruning without deleting or attenuating any production data.
+
+Implementation:
+- module: api/galaxy_phase7_tombstone.py
+- authenticated GET: /galaxy/pruning/phase7-tombstone-contract-canary
+- synthetic evidence only
+- no runtime database object
+- no database import
+- no durable tombstone write
+- no physical deletion
+- no production attenuation
+
+The canary:
+1. constructs a synthetic evidence bundle containing record, lifecycle, governing state, relations, synthesis dependencies, lifecycle history and receipt evidence;
+2. builds a manifest containing the exact bundle and canonical SHA-256 integrity digest;
+3. validates schema, field completeness, record identity and digest integrity;
+4. reconstructs the bundle entirely in memory;
+5. requires exact structural and hash round-trip equality;
+6. deliberately corrupts a manifest in tests and requires restore refusal.
+
+Even on PASS:
+- tombstone_protocol_implemented remains false;
+- destructive_restore_proven remains false;
+- physical_pruning_enabled remains false;
+- production_attenuation_enabled remains false;
+- destructive_eligibility remains false.
+
+A synthetic exact round trip is evidence for contract adequacy research only. It is not evidence that a durable tombstone survives restart, that a production record can be deleted safely, or that Naomi has authorized destructive pruning.
