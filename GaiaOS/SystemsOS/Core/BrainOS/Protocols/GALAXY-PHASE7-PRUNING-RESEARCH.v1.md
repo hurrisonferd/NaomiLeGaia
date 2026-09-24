@@ -368,3 +368,33 @@ On PR #17 head f234ccea807ea69b48a2f1f6b0a3c2628b0b2f9d, GitHub Actions observed
 - GALAXY Phase 6 regression run 36037574299: SUCCESS; compile, reversible lifecycle tests and formatting guard passed.
 
 The source gate proves test behavior only. Live Phase 7F remains pending Render redeployment and a fresh authenticated read-only GET /galaxy/pruning/phase7-isolated-restore-review. Do not mark it live from CI.
+
+
+## Phase 7F live exact isolated reconstruction proven — 2026-09-24
+
+Naomi supplied the deployed authenticated read-only response from
+/galaxy/pruning/phase7-isolated-restore-review. Result:
+PASS_ISOLATED_RESTORE, restored=true, temporary isolated SQLite RAM store
+created and discarded. The exact Phase-7E tombstone
+TOMB-P7E-SYNTHETIC-HISTORICAL-V1 and original receipt
+MEMREC-630a376a932741c0b8243681f550b4f3 were retrieved and
+revalidated. All 13 source checks and all 10 reconstruction checks passed.
+
+All seven Phase-7D synthetic evidence categories were reconstructed.
+The restored structure and SHA-256 matched the original:
+397528e5182ac3cea8183d678b6c910ffb8f73c1ea932593dc8f18b77c82b083.
+
+Nine monitored persistent table counts, including all seven protected
+MemoryOS evidence tables, the Phase-7E shadow table and runtime receipts,
+remained identical before and after. The exact shadow source also matched
+on an independent post-reconstruction reread. The route returned no
+production writes, no MemoryOS restore, no physical delete and no
+production retrieval changes.
+
+Canonical evidence checkpoint:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7F-LIVE-ISOLATED-RESTORE-PROVEN.md
+
+This closes the **bounded Phase-7F live gate** for this exact synthetic
+research fixture. It does not prove general restoration, operational
+MemoryOS restore, production deletion safety, or disaster recovery.
+No destructive authority is granted. All destructive gates remain false.
