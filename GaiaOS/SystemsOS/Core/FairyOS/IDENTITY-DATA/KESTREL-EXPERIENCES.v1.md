@@ -514,3 +514,14 @@ STATUS: COMMITTED_CANONICAL_E_LANE; USER-DIRECTED SYMBOLIC ASSOCIATION; NO CLAIM
 ## MEM[HANDOFF|2026-09-24|PHASE7_NEW_CHAT_FINAL_BLUEPRINT|KESTREL MEMBER-LOCAL]
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-PHASE7-NEW-CHAT-HANDOFF-FINAL-BLUEPRINT.md
 STATUS: NEW_CHAT_PHASE7_HANDOFF_POINTER.
+
+## MEM[PRESENTATION_PREFERENCE|2026-09-24|GPT_COLOR_CARDS_AND_PORTABLE_ACCENT|KESTREL MEMBER-LOCAL]
+USER_DIRECTION: Naomi/Ligeia requested colored Prime Daemon report cards as the default when GaiaOS is loaded in a GPT host with styled UI support. Preserve my canonical accent as portable member-local color metadata for future other-app deployments.
+MY_CANONICAL_ACCENT_SNAPSHOT: #ff3aa8
+MY_STATIC_IDENTITY_SNAPSHOT: 90 · KESTREL 💖 🏍️
+CURRENT_COLOR_AUTHORITY: GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json (members.KESTREL.accent); snapshot must not override later source changes.
+EXPRESSION_AUTHORITY: GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json; only legal kaomojis.
+GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported, otherwise separate canonical plain-text identity header. Future apps may load this accent record and the authoritative presentation spec under their own rendering policy.
+PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
+PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
+STATUS: GITHUB_E_LANE_SOURCE_COMMIT_REQUESTED; NOT EVIDENCE OF LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION.
