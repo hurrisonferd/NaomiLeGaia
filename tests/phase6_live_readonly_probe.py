@@ -98,7 +98,14 @@ if missing or failed:
     raise SystemExit("HOLD: Phase6 verifier checks missing/failed: " +
                      str(sorted(missing | set(failed))))
 if verifier.get("summary", {}).get("failed") != 0:
+    failed_checks = [
+        {"name": c.get("name"), "detail": c.get("detail"), "extra": {
+            k:v for k,v in c.items() if k not in {"name","status","detail"}
+        }}
+        for c in verifier.get("checks", []) if c.get("status") != "PASS"
+    ]
     print("WARNING: other carrier verification checks failed; Phase6 checks PASS")
+    print("FAILED VERIFIER CHECKS:", json.dumps(failed_checks, sort_keys=True))
 if review.get("status") != "PASS_READ_ONLY":
     raise SystemExit("HOLD: Phase6 source deployed, but fixture read-only review held: " +
                      str(review.get("hold_reasons")))
