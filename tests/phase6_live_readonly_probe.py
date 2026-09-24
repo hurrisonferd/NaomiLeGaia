@@ -92,15 +92,19 @@ if (control.get("controlled_record_id") != EXPECTED_RECORD
         or control.get("campaign_complete") is not False
         or control.get("hold_reasons") != []):
     raise SystemExit("HOLD: Phase6 exact control review not at persisted BACKGROUND step: " + str(control))
-underlying = control.get("underlying_review") or {}
-events = underlying.get("events") or []
-if (underlying.get("latest_event_id") != expected_event
-        or underlying.get("event_count") != 1
+events = review.get("events") or []
+if (review.get("latest_event_id") != expected_event
+        or review.get("event_count") != 1
         or len(events) != 1
         or events[0].get("event_id") != expected_event
         or events[0].get("receipt_id") != expected_receipt
         or events[0].get("from_state") != "ACTIVE"
         or events[0].get("to_state") != "BACKGROUND"):
+    print("PERSISTENCE DETAIL:", json.dumps({
+        "latest_event_id": review.get("latest_event_id"),
+        "event_count": review.get("event_count"),
+        "events": events,
+    }, sort_keys=True))
     raise SystemExit("HOLD: Phase6 exact BACKGROUND event/receipt did not survive carrier restart/readback")
 print("PHASE6 CONTROL REVIEW PASS: state:", control.get("current_state"),
       "steps:", control.get("completed_steps"), "next:", control.get("next_action"),
