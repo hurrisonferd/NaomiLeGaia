@@ -47,13 +47,12 @@ class Phase5ControlTests(unittest.TestCase):
             confirmation=ctrl.CONFIRMATIONS["PROPOSE"],
         )
         self.assertEqual(proposed["status"], "PASS_READBACK", proposed)
-        record_id = proposed["synthesis_record_id"]
+        synth_id = proposed["synthesis_record_id"]
         self.assertTrue(all(proposed["checks"].values()))
         self.assertEqual(self.runtime.writes, 1)
         self.assertFalse(proposed["production_retrieval_changed"])
         self.assertEqual(proposed["readback"]["record"]["scope"], p5.SHADOW_SCOPE)
-        self.assertEqual(self.runtime.records[record_id] if record_id in self.runtime.records
-                         else "SHADOW_ONLY", "SHADOW_ONLY")
+        self.assertNotIn(synth_id, self.runtime.records)
 
         after_proposal = ctrl.inspect(self.runtime)
         self.assertFalse(after_proposal["eligible_actions"]["PROPOSE"])
@@ -67,7 +66,7 @@ class Phase5ControlTests(unittest.TestCase):
         verified = ctrl.execute(
             self.runtime, "VERIFY", authority="NAOMI", approved=True,
             confirmation=ctrl.CONFIRMATIONS["VERIFY"],
-            synthesis_record_id=record_id,
+            synthesis_record_id=synth_id,
         )
         self.assertEqual(verified["status"], "PASS_READBACK", verified)
         self.assertTrue(verified["checks"]["exact_provenance_edges_readback"])
@@ -77,7 +76,7 @@ class Phase5ControlTests(unittest.TestCase):
         revoked = ctrl.execute(
             self.runtime, "REVOKE", authority="NAOMI", approved=True,
             confirmation=ctrl.CONFIRMATIONS["REVOKE"],
-            synthesis_record_id=record_id,
+            synthesis_record_id=synth_id,
             reason="Controlled revocation receipt",
         )
         self.assertEqual(revoked["status"], "PASS_READBACK", revoked)
@@ -86,10 +85,7 @@ class Phase5ControlTests(unittest.TestCase):
         self.assertEqual(self.runtime.writes, 3)
         for record_id, before in source_snapshot.items():
             self.assertEqual(self.runtime.records[record_id], before)
-        self.assertEqual(
-            self.runtime.syntheses[record_id]["record"]["status"] if record_id in self.runtime.syntheses
-            else "NOT_LAST_SOURCE_ID", "NOT_LAST_SOURCE_ID"
-        )
+        self.assertEqual(self.runtime.syntheses[synth_id]["record"]["status"], "SYNTHESIS_REVOKED")
 
     def test_cannot_skip_proposal_or_revoke_without_verification(self):
         with self.assertRaises(ValueError):
