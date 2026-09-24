@@ -46,6 +46,15 @@ class BootSafeLegacyCarrier(unittest.TestCase):
                     return original(name, *args, **kwargs)
                 builtins.__import__ = blocked
                 import gaiaos_optional_research
+                # importlib.import_module bypasses a patched builtins.__import__
+                # in modern Python; sabotage BOTH paths, including the path
+                # actually used by LazyResearchModule.
+                original_lazy_import = gaiaos_optional_research.import_module
+                def blocked_lazy_import(name, *args, **kwargs):
+                    if name.startswith("galaxy") or name == "augury_ritual":
+                        raise ImportError("simulated broken optional module")
+                    return original_lazy_import(name, *args, **kwargs)
+                gaiaos_optional_research.import_module = blocked_lazy_import
                 holder = gaiaos_optional_research.LazyResearchModule("galaxy_phase4")
                 assert "galaxy_phase4" not in sys.modules
                 failed = False
