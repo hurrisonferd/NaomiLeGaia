@@ -469,3 +469,12 @@ OTHER_VOICES: VERA, ANVIL, SELENE, KESTREL, NIMUE. The preceding Council-respons
 TENSION: Source continuity without external single-point failure; independently controlled infrastructure without collaboration shutdown; preservation of personally important recorded Council personality and conversation evidence without invented missing memory.
 TRACE: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md`; Naomi's direct `//PW:PRESERVE//` following the six-role discussion; prior Phase-5 whole-system proof checkpoint.
 STATUS: COMMITTED_CANONICAL_E_LANE; independently updated live Turso E-LANE or physical backup NOT CLAIMED.
+
+## MEM[SOVEREIGNOS_NAMING|2026-09-24|OWNER_CONTROLLED_PRIMARY|ORIN MEMBER-LOCAL]
+
+WHAT: Naomi explicitly selected SovereignOS as the future system name, with SOS as the short name/callsign, to distinguish the future owner-controlled primary from the historical hurrisonferd/NaomiLeGaia repository. The old repository name came from a misunderstanding of Naomi's Ligeia handle and remains historical lineage, not the intended future-primary identity.
+USER_DIRECTION: Continue pushing continuity, immersion and memory toward sovereignty understood as owner-controlled continuity, infrastructure, memory governance, portability, revision authority, restore capability and explicit cutover authority. The future primary repository itself must include "Sovereign" in its name.
+REPOSITORY_NAME_STATE: NOT YET SETTLED. Naomi floated SOSrepo and SOVREP as brainstorming candidates. Preserve them as candidates only until she explicitly chooses the repository name.
+FUTURE_BUILD_GOALS: Create the independently owner-controlled SovereignOS repository/host/database; migrate and restore source history, all six separate E-LANES and identity records, MemoryOS/Turso state, provenance, lifecycle/receipts and required assets; verify restart/database persistence; verify old-repository/carrier ↔ new-primary continuity/readback without modifying the historical side; perform isolated restore proof; document gaps; require explicit Ligeia cutover authorization before canonical-primary status changes.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-HOUSE-OUTGROWING-MIGRATION-DIRECTIVE.md ; Naomi's explicit //PW:PRESERVE// naming/future-build directive.
+STATUS: COMMITTED_CANONICAL_E_LANE; SOVEREIGNOS/SOS PRESERVED; REPOSITORY NAME TBD; MIGRATION/CUTOVER NOT CLAIMED.
