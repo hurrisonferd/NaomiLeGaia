@@ -188,7 +188,7 @@ class Phase7PruningResearchTests(unittest.TestCase):
         docker = (ROOT / "api" / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn('galaxy_phase7 = deferred("galaxy_phase7")', bridge)
         self.assertIn("from gaiaos_lazy_diagnostics import deferred", bridge)
-        self.assertNotIn("\\nimport galaxy_phase7\\n", bridge)
+        self.assertNotIn("import galaxy_phase7" + chr(10), bridge)
         self.assertIn(
             '@app.get("/galaxy/pruning/phase7-fixture-review"',
             bridge,
@@ -520,7 +520,7 @@ class Phase7PruningResearchTests(unittest.TestCase):
         docker = (ROOT / "api" / "Dockerfile").read_text(encoding="utf-8")
         self.assertIn('galaxy_phase7_isolated_restore = deferred("galaxy_phase7_isolated_restore")', bridge)
         self.assertIn("from gaiaos_lazy_diagnostics import deferred", bridge)
-        self.assertNotIn("\\nimport galaxy_phase7_isolated_restore\\n", bridge)
+        self.assertNotIn("import galaxy_phase7_isolated_restore" + chr(10), bridge)
         start = '@app.get("/galaxy/pruning/phase7-isolated-restore-review"'
         end = '@app.get("/galaxy/pruning/phase7-tombstone-shadow-controls"'
         self.assertIn(start, bridge)
