@@ -198,6 +198,23 @@ def initialize() -> None:
                 FOREIGN KEY(record_id) REFERENCES memory_records(record_id)
             );
 
+            CREATE TABLE IF NOT EXISTS memory_lifecycle_events (
+                event_id TEXT PRIMARY KEY,
+                record_id TEXT NOT NULL,
+                previous_event_id TEXT,
+                from_state TEXT NOT NULL,
+                to_state TEXT NOT NULL,
+                action TEXT NOT NULL,
+                changed_at TEXT NOT NULL,
+                reason TEXT NOT NULL,
+                authority TEXT NOT NULL,
+                receipt_id TEXT NOT NULL UNIQUE,
+                FOREIGN KEY(record_id) REFERENCES memory_records(record_id),
+                FOREIGN KEY(receipt_id) REFERENCES runtime_receipts(receipt_id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_lifecycle_events_record
+                ON memory_lifecycle_events(record_id, changed_at);
+
             CREATE TABLE IF NOT EXISTS memory_syntheses (
                 synthesis_record_id TEXT PRIMARY KEY,
                 source_record_ids_json TEXT NOT NULL,
