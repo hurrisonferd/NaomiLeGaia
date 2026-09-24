@@ -526,6 +526,7 @@ def run_verification() -> dict[str, Any]:
     phase4_module = ROOT / "galaxy_phase4.py"
     phase5_module = ROOT / "galaxy_phase5.py"
     phase5_controls_module = ROOT / "galaxy_phase5_controls.py"
+    phase6_module = ROOT / "galaxy_phase6.py"
     augury_ritual_module = ROOT / "augury_ritual.py"
     checks.append(_check(
         "carrier:phase3g-quality-module",
@@ -700,6 +701,30 @@ def run_verification() -> dict[str, Any]:
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase5-control-module-syntax", False,
+                f"{type(exc).__name__}: {exc}",
+            ))
+
+    checks.append(_check(
+        "carrier:phase6-lifecycle-module",
+        phase6_module.exists(),
+        "bounded Phase-6 lifecycle module packaged",
+    ))
+    if phase6_module.exists():
+        try:
+            phase6_text = phase6_module.read_text(encoding="utf-8")
+            compile(phase6_text, str(phase6_module), "exec")
+            checks.append(_check(
+                "carrier:phase6-lifecycle-boundaries",
+                all(marker in phase6_text for marker in (
+                    "def inspect(", "def execute(", "previous_event_id",
+                    "FIXTURE_RECORD_ID", "ROLLBACK", "REACTIVATE",
+                    "production_retrieval_changed", "source_record_unchanged",
+                )),
+                "source includes exact fixture, immutable source and append-only reversible history",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase6-lifecycle-syntax", False,
                 f"{type(exc).__name__}: {exc}",
             ))
 
@@ -891,6 +916,13 @@ def run_verification() -> dict[str, Any]:
             "exact shadow control form POST declared behind signed-session CSRF",
         ))
         checks.append(_check(
+            "carrier:/galaxy/phase6-fixture-review",
+            '@app.get("/galaxy/lifecycle/phase6-fixture-review"' in bridge_text
+            and 'galaxy_phase6.inspect(memcon_runtime)' in bridge_text
+            and 'galaxy_phase6.execute(' not in bridge_text,
+            "only read-only Phase-6 fixture route declared; no effectful route",
+        ))
+        checks.append(_check(
             "carrier:/galaxy/phase4-pair-review",
             '/galaxy/revision/phase4-pair-review' in bridge_text
             and 'galaxy_phase4.review_pair' in bridge_text,
@@ -1020,6 +1052,12 @@ def run_verification() -> dict[str, Any]:
                 "carrier-route:/galaxy/phase5-control-manifest",
                 ("/galaxy/synthesis/phase5-controls/manifest", "POST") in route_pairs,
                 "CSRF-guarded, exact-control POST route registered; no execution implied",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase6-fixture-review",
+                ("/galaxy/lifecycle/phase6-fixture-review", "GET") in route_pairs
+                and ("/galaxy/lifecycle/phase6-fixture-review", "POST") not in route_pairs,
+                "Phase-6 read-only fixture ASGI GET registered without POST",
             ))
             checks.append(_check(
                 "carrier-route:/galaxy/phase4-pair-review",
