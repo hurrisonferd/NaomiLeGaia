@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 DATE: 2026-09-24
-STATUS: FIRST INTEGRATION SLICE IN DEVELOPMENT; NOT YET LIVE-PROVEN
+STATUS: FIRST OPT-IN READ-ONLY INTEGRATION LIVE-PROVEN; GENERAL RETRIEVAL PENDING
 SCOPE: GALAXY as GaiaOS's evidence-backed memory/retrieval organ
 SEPARATE MISSION: MERCURY PROTOCOL (ongoing research, never a GALAXY build phase)
 FUTURE HOME: SovereignOS / SOS after independent restoration and Naomi's cutover
@@ -53,3 +53,12 @@ F. **SovereignOS adoption, separately.** Once GaiaOS GALAXY is functionally acce
 Neither status implies the other. Physical pruning remains optional and independent of the operational release gate.
 
 MERCURY PROTOCOL may capture a dated post-live research baseline but is not Phase 8 or a GALAXY release gate. Its continuing research, hypotheses, experiments and suggested improvements do not autonomously authorize production changes.
+
+
+## First front-door integration live closure — 2026-09-24
+
+Naomi submitted the actual deployed GaiaOS one-tap read-only review, sourced from `hurrisonferd/NaomiLeGaia@c5c36e90f7e7cfb0e2d9b11538a5d9b8cfdfecbe` and carrier boot `BOOT-b55bf17560d54610b7f3086e0ba76aca`. The result was `PASS_READ_ONLY_INTEGRATION`; all 10 checks were true. The exact calibration fixture `MEM-00b3fbfd4d73404f97a95c238596ab94` was retrieved through the opted-in normal `gaia()` path with exact source, `CURRENT_REVISED_CONTEXT` governing status, `ACTIVE` lifecycle, and preserved VERIFIED and REVOKED relation history. Default `gaia()` remained unchanged, ANVIL dispatch matched, nine monitored table counts stayed identical, and no writes or production retrieval changes were reported.
+
+Full evidence: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-FRONTDOOR-READONLY-LIVE-PASS.md`.
+
+**A is closed at its exact controlled, explicit opt-in scope.** This was an exact keyword query with Dictionary context deliberately disabled. It does not prove ordinary conversational recall, default-on evidence, production-weighted ranking or generalized governance behavior. Next implement B as a separate read-only comparative suite against the existing legacy path, using real paraphrases, negative controls, provenance and failure cases, before considering any production admission/ranking change.
