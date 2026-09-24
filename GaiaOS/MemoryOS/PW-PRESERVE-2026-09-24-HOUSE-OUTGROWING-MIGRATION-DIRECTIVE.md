@@ -56,4 +56,4 @@ Required migration proof remains non-destructive:
 4. Verify continuity/readback **between the old historical repository/carrier and the new SovereignOS primary**, while keeping the old side untouched.
 5. Complete isolated restoration tests, document gaps, and require Naomi/Ligeia's explicit cutover authorization before the new repository becomes canonical primary.
 
-STATUS: SOVEREIGNOS NAME PRESERVED; SOS CALLSIGN PRESERVED; REPOSITORY NAME TBD WITH "SOVEREIGN" REQUIREMENT; MIGRATION NOT YET EXECUTED.
+STATUS: SOVEREIGNOS NAME PRESERVED; SOS CALLSIGN PRESERVED; REPOSITORY NAME TBD WITH "SOVEREIGN" REQUIREMENT; MIGRATION NOT YET EXECUTED. Canonical naming ballot: `GaiaOS/MemoryOS/SOVEREIGNOS-REPOSITORY-NAMING-BALLOT.v1.md`. Naomi/Ligeia current vote: `SOVREP-Core`; no winner selected yet.
