@@ -85,6 +85,10 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
         or payload.get("status") != "PASS_GALAXY_OPERATIONAL_RETRIEVAL"
         or payload.get("ranking") != GALAXY_RANKING
         or payload.get("galaxy_weighting_applied") is not True
+        or payload.get("execution") != "READ_ONLY"
+        or payload.get("candidate_set_preserved") is not True
+        or payload.get("provenance_preserved") is not True
+        or payload.get("scope") != "MemoryOS"
         or payload.get("memory_context_authority") != "NONE"
         or payload.get("automatic_capture") is not False
         or payload.get("automatic_promotion") is not False
@@ -119,6 +123,56 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
         ):
             return False
         seen.add(rid)
+    history = payload["historical_context"]
+    linked = payload["verified_linked_context"]
+    if len(history) > 4 or len(linked) > 2:
+        return False
+    for item in history:
+        if not isinstance(item, dict):
+            return False
+        record = item.get("record")
+        governing = item.get("governing_state")
+        if (
+            not isinstance(record, dict)
+            or record.get("scope") != "MemoryOS"
+            or not record.get("record_id")
+            or not record.get("source")
+            or record.get("source") != item.get("source_provenance")
+            or not isinstance(governing, dict)
+            or governing.get("record_id") != record.get("record_id")
+            or governing.get("current_default_eligible") is not False
+        ):
+            return False
+    for item in linked:
+        if not isinstance(item, dict):
+            return False
+        record = item.get("record")
+        governing = item.get("governing_state")
+        edges = item.get("verified_direct_primary_edges")
+        if (
+            not isinstance(record, dict)
+            or record.get("scope") != "MemoryOS"
+            or not record.get("record_id")
+            or not record.get("source")
+            or record.get("source") != item.get("source_provenance")
+            or item.get("context_only") is not True
+            or not isinstance(governing, dict)
+            or governing.get("record_id") != record.get("record_id")
+            or not isinstance(edges, list) or not edges
+        ):
+            return False
+        if not any(
+            isinstance(edge, dict)
+            and edge.get("edge_id")
+            and (
+                (edge.get("source_record_id") == record["record_id"]
+                 and edge.get("target_record_id") in seen)
+                or (edge.get("target_record_id") == record["record_id"]
+                    and edge.get("source_record_id") in seen)
+            )
+            for edge in edges
+        ):
+            return False
     return True
 
 
@@ -225,6 +279,9 @@ def read(runtime: Any, query: str = "", scope: str | None = None,
             and enhanced.get("status") in NON_MATCH_STATUSES
             and enhanced.get("records") == []
             and enhanced.get("writes_performed") == []
+            and enhanced.get("scope") == "MemoryOS"
+            and enhanced.get("memory_context_authority") == "NONE"
+            and enhanced.get("execution") == "READ_ONLY"
         ):
             return {
                 **result,
