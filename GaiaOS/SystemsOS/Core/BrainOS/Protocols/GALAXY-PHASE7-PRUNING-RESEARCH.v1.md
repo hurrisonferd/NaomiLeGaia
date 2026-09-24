@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E SHADOW PERSISTENCE SOURCE+CI PROVEN / NOT DEPLOYED
+STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E LIVE SHADOW WRITE+READBACK PROVEN / RESTART PERSISTENCE PENDING
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -279,3 +279,38 @@ An earlier Phase-7E run failed because two legacy route tests used over-wide sou
 - exactly one Phase-7E runtime receipt is expected for the explicit shadow write.
 
 No live Phase-7E shadow write is claimed yet.
+
+
+## Phase 7E live immediate write/readback observed 2026-09-24
+
+Naomi explicitly confirmed the exact Phase-7E shadow write on deployed main e57264d86a0a99e82de29868046b1b997b31d4c0.
+
+Observed:
+- PASS_READBACK
+- tombstone TOMB-P7E-SYNTHETIC-HISTORICAL-V1
+- subject SYNTHETIC-P7D-HISTORICAL
+- receipt MEMREC-630a376a932741c0b8243681f550b4f3
+- evidence SHA-256 397528e5182ac3cea8183d678b6c910ffb8f73c1ea932593dc8f18b77c82b083
+- immediate readback PASS_DURABLE_SHADOW_READBACK
+- exact manifest validation PASS
+- exact manifest equality PASS
+- receipt readback PASS
+- protected MemoryOS counts identical before and after
+- memoryos_mutation false
+- physical_delete false
+- production_retrieval_changed false
+- destructive_eligibility false
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-SHADOW-WRITE-READBACK-PROVEN.md
+
+This proves one exact shadow write and immediate durable readback only.
+
+Next gate: manually restart the currently deployed carrier, then call the read-only /galaxy/pruning/phase7-tombstone-shadow-review route. Restart PASS requires the same tombstone ID, subject ID, digest, receipt ID, exact manifest and PASS_DURABLE_SHADOW_READBACK.
+
+Until that post-restart observation:
+- phase7e_restart_persistence_proven remains false;
+- tombstone_protocol_implemented remains false;
+- destructive_restore_proven remains false;
+- physical pruning remains disabled;
+- production attenuation remains disabled.

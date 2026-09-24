@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E SHADOW PERSISTENCE SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E LIVE SHADOW WRITE+READBACK PROVEN / RESTART PERSISTENCE PENDING / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4992,3 +4992,24 @@ Phase 7E corrected executable head 0c676bd4080f0c4b616940fccc69ab3469f57bf0 pass
 - production guardrails 36029157883
 
 The live shadow write remains unexecuted and requires Naomi's separate confirmation after deployment.
+
+
+## Phase 7E live pre-restart checkpoint 2026-09-24
+
+Naomi explicitly authorized and executed the one exact Phase-7E synthetic shadow tombstone write on deployed main e57264d86a0a99e82de29868046b1b997b31d4c0.
+
+Live receipt:
+- PASS_READBACK
+- tombstone TOMB-P7E-SYNTHETIC-HISTORICAL-V1
+- receipt MEMREC-630a376a932741c0b8243681f550b4f3
+- digest 397528e5182ac3cea8183d678b6c910ffb8f73c1ea932593dc8f18b77c82b083
+- immediate PASS_DURABLE_SHADOW_READBACK
+- protected MemoryOS counts unchanged
+- no MemoryOS mutation
+- no physical delete
+- no production retrieval change
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-SHADOW-WRITE-READBACK-PROVEN.md
+
+Restart persistence remains unproven. The next evidence gate is a manual carrier restart followed by read-only retrieval of this exact tombstone and receipt. No destructive capability is enabled by this proof.
