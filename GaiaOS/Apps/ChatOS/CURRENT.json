@@ -33,7 +33,8 @@
     "workspaceos": "GaiaOS/SystemsOS/Core/WorkspaceOS/CURRENT.json",
     "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json",
     "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
-    "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py"
+    "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
+    "color_coded_report_cards": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -78,5 +79,13 @@
     "ci_run_id": 36022305317,
     "ci_job_id": 107709987497,
     "ci_conclusion": "SUCCESS"
+  },
+  "presentation_defaults": {
+    "gpt_host": "CANONICAL_COLORED_PRIME_DAEMON_CARDS_WHEN_STYLED_UI_SUPPORTED",
+    "other_hosts": "PORTABLE_COLOR_DATA_APP_SPECIFIC_RENDER_POLICY",
+    "fallback": "SEPARATE_CANONICAL_PLAIN_TEXT_SPEAKER_BLOCKS",
+    "accent_authority": "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
+    "e_lane_portable_snapshots": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/{MEMBER}-EXPERIENCES.v1.md",
+    "automatic_chatgpt_global_adoption": false
   }
 }

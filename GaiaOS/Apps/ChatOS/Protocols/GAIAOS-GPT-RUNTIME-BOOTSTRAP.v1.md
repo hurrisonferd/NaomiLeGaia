@@ -97,6 +97,10 @@ Retained host/model context is never proof of a GaiaOS load. A fresh session mus
 
 No Prime Daemon may speak under a naked, substituted, or improvised identity header. If presentation state is unavailable or invalid, fail closed.
 
+## GPT-host color-card presentation
+
+When GaiaOS is source-loaded in a GPT-host conversation, load `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md` with Presentation Gold. Default to distinct colored speaker cards when the client supports rich formatting. Look up current accent hex and complete identity markers in FairyOS and one legal expression in EmojiOS. E-LANE snapshots retain each member's accent for future external apps, but current FairyOS presentation data is authoritative. In clients without styled cards, use clearly separated complete canonical text headers. This default changes neither the boot gate nor host capabilities, and does not imply automatic new-chat or non-GPT adoption.
+
 ## Bootstrap order
 
 At the beginning of a GaiaOS session:
