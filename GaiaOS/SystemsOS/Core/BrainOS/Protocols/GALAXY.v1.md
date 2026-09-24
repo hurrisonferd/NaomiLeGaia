@@ -5033,3 +5033,27 @@ GET: /galaxy/pruning/phase7-isolated-restore-review
 Protocol: GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md
 
 Phase-7F executable source, CI and live runtime each retain separate proof gates. No new tombstone, actual MemoryOS restoration, physical pruning or production attenuation is authorized.
+
+
+## Phase 7F bounded live closure — 2026-09-24
+
+After Phase 7E established the exact synthetic shadow tombstone persisted
+across an observed Render restart, the deployed Phase-7F read-only route
+reconstructed its complete seven-category evidence bundle inside an
+unattached temporary SQLite RAM database and then discarded it.
+
+Naomi's live receipt returned PASS_ISOLATED_RESTORE with all 13 source
+integrity checks and all 10 isolated restoration checks true, exact original
+SHA-256 and original Phase-7E write-receipt identity, unchanged counts in
+all nine monitored persistent tables, no production writes and unchanged
+shadow source after reconstruction.
+
+Canonical proof:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7F-LIVE-ISOLATED-RESTORE-PROVEN.md
+
+This proves exact recovery of the single synthetic research evidence bundle
+inside isolated temporary RAM, NOT operational MemoryOS restoration or
+general disaster recovery. All physical pruning, production attenuation
+and destructive authority gates remain false. Phase-7A through 7F bounded
+research evidence is ready for the separate MERCURY final cross-reference
+audit; no destructive protocol is automatically authorized.
