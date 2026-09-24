@@ -16,11 +16,13 @@ on:
   pull_request:
     paths:
       - "api/galaxy_phase6.py"
+      - "api/galaxy_phase6_controls.py"
       - "api/memcon_runtime.py"
       - "api/browser_memcon_bridge.py"
       - "api/gaiaos_verification.py"
       - "api/Dockerfile"
       - "tests/test_galaxy_phase6.py"
+      - "tests/test_galaxy_phase6_controls.py"
       - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE6-REVERSIBLE-LIFECYCLE.v1.md"
       - ".github/workflows/galaxy-phase6-lifecycle.yml"
   workflow_dispatch:
