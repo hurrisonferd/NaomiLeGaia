@@ -641,6 +641,37 @@ def run_verification() -> dict[str, Any]:
                 )),
                 "Phase-5 source preserves provenance, contradiction, non-recursion, no-fabricated-statement, zero-write and production-OFF boundaries",
             ))
+            checks.append(_check(
+                "carrier:phase5-mutation-design-boundaries",
+                all(marker in phase5_text for marker in (
+                    "CONTROLLED_SYNTHESIS_STATEMENT",
+                    "GALAXY_SYNTHESIS_SHADOW",
+                    "def mutation_design_review(",
+                    "def propose_controlled_synthesis(",
+                    "def verify_controlled_synthesis(",
+                    "def revoke_controlled_synthesis(",
+                    "mutation_route_exposed",
+                    "default_retrieval_target_selected",
+                    "memoryos_retrieval_changed",
+                )),
+                "Phase-5 mutation design is exact, reversible, shadow-scoped, non-default and route-unexposed",
+            ))
+            runtime_text = (ROOT / "memcon_runtime.py").read_text(encoding="utf-8")
+            checks.append(_check(
+                "carrier:phase5-shadow-runtime-primitives",
+                all(marker in runtime_text for marker in (
+                    "def galaxy_propose_synthesis(",
+                    "def galaxy_verify_synthesis(",
+                    "def galaxy_revoke_synthesis(",
+                    "GALAXY_SYNTHESIS_SHADOW_SCOPE",
+                    "SYNTHESIS_PROPOSED",
+                    "SYNTHESIS_VERIFIED_SHADOW",
+                    "SYNTHESIS_REVOKED",
+                    "DERIVED_FROM",
+                    "memory_syntheses",
+                )),
+                "MemoryOS runtime packages reversible shadow synthesis primitives and provenance storage",
+            ))
         except Exception as exc:
             checks.append(_check(
                 "carrier:phase5-synthesis-syntax",
@@ -816,6 +847,12 @@ def run_verification() -> dict[str, Any]:
             "read-only Phase-5 synthesis fixture review route declared",
         ))
         checks.append(_check(
+            "carrier:/galaxy/phase5-mutation-design-review",
+            '/galaxy/synthesis/phase5-mutation-design-review' in bridge_text
+            and 'galaxy_phase5.mutation_design_review' in bridge_text,
+            "read-only Phase-5 mutation design review route declared",
+        ))
+        checks.append(_check(
             "carrier:/galaxy/phase4-pair-review",
             '/galaxy/revision/phase4-pair-review' in bridge_text
             and 'galaxy_phase4.review_pair' in bridge_text,
@@ -932,6 +969,11 @@ def run_verification() -> dict[str, Any]:
                 "read-only Phase-5 synthesis fixture-review ASGI route registered",
             ))
             checks.append(_check(
+                "carrier-route:/galaxy/phase5-mutation-design-review",
+                ("/galaxy/synthesis/phase5-mutation-design-review", "GET") in route_pairs,
+                "read-only Phase-5 mutation-design ASGI route registered",
+            ))
+            checks.append(_check(
                 "carrier-route:/galaxy/phase4-pair-review",
                 ("/galaxy/revision/phase4-pair-review", "GET") in route_pairs,
                 "read-only Phase-4 pair-review ASGI route registered",
@@ -946,9 +988,25 @@ def run_verification() -> dict[str, Any]:
                     and phase5_state.get("checks", {}).get("unrestricted_global_weighting_enabled") is False,
                     "Phase-5 fixture review executes read-only without production retrieval effects",
                 ))
+                phase5_design = module.galaxy_phase5.mutation_design_review(module.memcon_runtime)
+                checks.append(_check(
+                    "carrier:phase5-mutation-design-self-test",
+                    phase5_design.get("status") in {"PASS_READ_ONLY_PHASE5_MUTATION_DESIGN", "HOLD"}
+                    and phase5_design.get("checks", {}).get("mutation_route_exposed") is False
+                    and phase5_design.get("checks", {}).get("proposal_scope_is_not_memoryos") is True
+                    and phase5_design.get("checks", {}).get("memoryos_retrieval_changed") is False
+                    and phase5_design.get("checks", {}).get("production_retrieval_changed") is False
+                    and phase5_design.get("checks", {}).get("unrestricted_global_weighting_enabled") is False,
+                    "Phase-5 mutation design review executes read-only with effectful routes still unexposed",
+                ))
             except Exception as exc:
                 checks.append(_check(
                     "carrier:phase5-read-only-self-test",
+                    False,
+                    f"{type(exc).__name__}: {exc}",
+                ))
+                checks.append(_check(
+                    "carrier:phase5-mutation-design-self-test",
                     False,
                     f"{type(exc).__name__}: {exc}",
                 ))
