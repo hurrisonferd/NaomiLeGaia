@@ -780,11 +780,33 @@
         "GaiaOS/CURRENT.json"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "47c7426e8e5b3c404e3552c5370b8bf26b65eab4",
+      "timestamp_utc": "2026-09-24T15:46:08.864948+00:00",
+      "changed_paths": [
+        ".github/workflows/vaskon-presentation-integrity.yml",
+        "GaiaOS/Apps/ChatOS/CURRENT.json",
+        "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md",
+        "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
+        "GaiaOS/CURRENT.json",
+        "GaiaOS/LOAD.v1.md",
+        "GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-VASKON-PRESENTATION-HARDENING.md",
+        "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
+        "GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json",
+        "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-PRESENTATION-RENDERER.v1.py",
+        "GaiaOS/Tests/test_presentation_renderer.py"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-24T00:10:52.002376+00:00",
+  "last_verified": "2026-09-24T15:46:08.864948+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
