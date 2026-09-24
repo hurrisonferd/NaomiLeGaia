@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE+CI PROVEN / NOT DEPLOYED
+STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D LIVE TOMBSTONE CONTRACT PROVEN / PHASE 7E SHADOW PERSISTENCE SOURCE BUILD
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -205,3 +205,60 @@ Observed on PR #13 head:
 Source proof includes the shared-evaluator repair test and the corrupted-manifest fail-closed test.
 
 Live carrier deployment of the Phase-7D canary is not yet claimed.
+
+
+## Phase 7D live proof observed 2026-09-24
+
+Naomi supplied the deployed Phase-7D canary response from main c882a2af599abe207db6952b3bb82132da2ed4ae.
+
+Observed:
+- PASS_SYNTHETIC_TOMBSTONE_CONTRACT_CANARY
+- PASS_MANIFEST_VALID
+- PASS_IN_MEMORY_RESTORE
+- restored true
+- expected SHA-256 == actual SHA-256:
+  397528e5182ac3cea8183d678b6c910ffb8f73c1ea932593dc8f18b77c82b083
+- round_trip_exact true
+- round_trip_hash_exact true
+- writes_performed []
+- physical_delete false
+- production_retrieval_changed false
+- destructive_eligibility false
+- all destructive gates remained false
+
+Canonical receipt:
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7D-LIVE-TOMBSTONE-CONTRACT-PROVEN.md
+
+This closes Phase 7D for the synthetic in-memory contract.
+
+## Phase 7E — durable shadow tombstone persistence
+
+Purpose: prove that one exact synthetic tombstone manifest can be durably stored and read back from the configured runtime store without mutating MemoryOS evidence.
+
+Source design:
+- dedicated table: galaxy_tombstones_shadow
+- exact tombstone: TOMB-P7E-SYNTHETIC-HISTORICAL-V1
+- exact subject identity: SYNTHETIC-P7D-HISTORICAL
+- no foreign key to memory_records
+- one shadow manifest row plus one runtime receipt only
+- readback validates the exact Phase-7D manifest and evidence digest
+- protected MemoryOS table counts must be identical before and after the shadow write
+- duplicate write fails closed
+- corrupted manifest readback HOLDs
+- no delete route
+- no MemoryOS restore route
+- no production attenuation
+
+Browser control:
+- GET /galaxy/pruning/phase7-tombstone-shadow-review is read-only
+- GET /galaxy/pruning/phase7-tombstone-shadow-controls is read-only
+- GET /galaxy/pruning/phase7-tombstone-shadow-controls/confirm previews the one effect
+- POST /galaxy/pruning/phase7-tombstone-shadow-controls/manifest requires signed session, CSRF, authority=NAOMI, approved=true and exact confirmation
+
+Exposure does not itself authorize the shadow write. The live write remains a separate explicit Naomi action.
+
+Even if immediate live readback passes:
+- tombstone_protocol_implemented remains false until restart persistence is separately proven;
+- destructive_restore_proven remains false;
+- physical_pruning_enabled remains false;
+- production_attenuation_enabled remains false.
