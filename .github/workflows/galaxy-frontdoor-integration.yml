@@ -1,25 +1,9 @@
 name: GALAXY GaiaOS Front Door Integration Source Gate
 
 on:
-  push:
-    paths:
-      - "api/galaxy_frontdoor_context.py"
-      - "api/gaiaos_app.py"
-      - "api/browser_memcon_bridge.py"
-      - "api/Dockerfile"
-      - "tests/test_galaxy_frontdoor_integration.py"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
-      - ".github/workflows/galaxy-frontdoor-integration.yml"
-  pull_request:
-    paths:
-      - "api/galaxy_frontdoor_context.py"
-      - "api/gaiaos_app.py"
-      - "api/browser_memcon_bridge.py"
-      - "api/Dockerfile"
-      - "tests/test_galaxy_frontdoor_integration.py"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
-      - ".github/workflows/galaxy-frontdoor-integration.yml"
+  # Owner-requested CI quiet period. Invoke manually for reviewed releases.
   workflow_dispatch:
+
 
 jobs:
   nondestructive-source-gate:
