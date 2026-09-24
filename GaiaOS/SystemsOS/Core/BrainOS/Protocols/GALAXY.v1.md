@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 READ-ONLY LIVE PASS + MUTATION DESIGN SOURCE/CI READY / GLOBAL WEIGHTING OFF
+STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED REVISION-SUPERSESSION CYCLE LIVE-PROVEN / PHASE 5 MUTATION DESIGN READ-ONLY LIVE PASS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4820,3 +4820,45 @@ The mutation design has not yet been deployed or live-observed. No Phase-5 effec
 
 Next gate:
 `DEPLOY -> /verify -> GET /galaxy/synthesis/phase5-mutation-design-review -> STOP/REVIEW`
+
+
+## Phase-5 mutation-design review LIVE PASS — 2026-09-23
+
+Naomi executed the deployed read-only mutation-design review.
+
+Observed receipt:
+- schema: `gaiaos.galaxy.phase5-mutation-design-review.v1`
+- execution: `READ_ONLY`
+- status: `PASS_READ_ONLY_PHASE5_MUTATION_DESIGN`
+- authority: `NAOMI`
+- hold reasons: none
+- existing non-revoked synthesis: none
+
+Exact controlled source set:
+- `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e`
+- `MEM-00b3fbfd4d73404f97a95c238596ab94`
+
+Exact frozen synthesis statement:
+`GALAXY-CAL-SYNTHESIS [1d79c239f31f]: The calibration core reported a violet carrier pulse; a later controlled observation revises that calibration toward ultraviolet.`
+
+Observed design checks PASS:
+- exact source set fixed;
+- exact statement fixed;
+- statement not generated at manifestation time;
+- proposal scope is not MemoryOS;
+- proposal cannot become default retrieval target;
+- verification remains shadow-scoped;
+- revocation is non-deleting;
+- source records preserved;
+- provenance row preserved;
+- DERIVED_FROM edges preserved;
+- MemoryOS retrieval unchanged;
+- production retrieval unchanged;
+- unrestricted global weighting OFF;
+- mutation route remains unexposed.
+
+The receipt's original `next_gate` still named deployment/verification because that string was frozen before the live review. Source has now been corrected so the next gate is:
+
+`EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE`
+
+No Phase-5 synthesis mutation has occurred.
