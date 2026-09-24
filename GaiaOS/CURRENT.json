@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_GALAXY_PHASE5_MUTATION_DESIGN_SOURCE_CI_READY_DEPLOY_PENDING",
+  "status": "ACTIVE_GALAXY_PHASE5_MUTATION_DESIGN_LIVE_PASS_CONTROL_EXPOSURE_AUTH_PENDING",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -112,7 +112,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "GALAXY Phase 3 is CLOSED. Phase 4 controlled AUGURY/RITUAL revision-supersession is live-proven and rolled back with history preserved. Phase 5 read-only synthesis eligibility/provenance is live-proven on the controlled fixture. Naomi has explicitly authorized Phase-5 mutation design. Source now implements a reversible shadow-only controlled synthesis lifecycle with exact fixed statement and source set: SYNTHESIS_PROPOSED -> SYNTHESIS_VERIFIED_SHADOW -> SYNTHESIS_REVOKED. Proposal stores the synthesis only in GALAXY_SYNTHESIS_SHADOW with a memory_syntheses provenance row and PROPOSED DERIVED_FROM edges; verification keeps it shadow-scoped; revocation preserves record, provenance row, source records and edges. No effectful Phase-5 browser mutation route is exposed. Guarded CI run 35936319728 succeeded. Deployment and live mutation-design review remain pending.",
+  "proof_ceiling": "GALAXY Phase 3 is CLOSED. Phase 4 controlled AUGURY/RITUAL revision-supersession is live-proven and rolled back with history preserved. Phase 5 read-only synthesis eligibility/provenance is live-proven. Naomi authorized mutation design, and the deployed read-only mutation-design review has now returned PASS for the exact fixed source set, exact frozen synthesis statement, GALAXY_SYNTHESIS_SHADOW scope, reversible proposal/verify/revoke lifecycle, explicit DERIVED_FROM provenance, non-deleting revocation, source preservation, zero MemoryOS retrieval effect, zero production retrieval effect, and global weighting OFF. existing_nonrevoked_synthesis was null. No effectful Phase-5 browser mutation route is exposed. Next gate is separate explicit Naomi authorization before mutation-control exposure.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -749,7 +749,7 @@
     "phase4_controlled_final_target_state": "CURRENT_REVISED_CONTEXT",
     "phase4_history_preserved": true,
     "phase4_original_verified_revises_preserved": true,
-    "phase5_status": "MUTATION_DESIGN_SOURCE_CI_READY_DEPLOY_PENDING",
+    "phase5_status": "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN",
     "phase5_version": "galaxy.phase5.synthesis-consolidation.v1",
     "phase5_protocol": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE5-SYNTHESIS-CONSOLIDATION.v1.md",
     "phase5_source_ready": true,
@@ -761,7 +761,7 @@
     "phase5_read_only_self_test_passed": true,
     "phase5_live_fixture_observed": true,
     "phase5_mutation_route_exists": false,
-    "phase5_next_gate": "DEPLOY_VERIFY_THEN_RUN_READ_ONLY_MUTATION_DESIGN_REVIEW",
+    "phase5_next_gate": "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE",
     "phase5_live_fixture_status": "PASS_READ_ONLY_PHASE5_FIXTURE_REVIEW",
     "phase5_fixture_source_record_ids": [
       "MEM-ffc0c2af5cfa48d7aee7332a290a3d0e",
@@ -796,7 +796,12 @@
       "SYNTHESIS_VERIFIED_SHADOW",
       "SYNTHESIS_REVOKED"
     ],
-    "phase5_controlled_synthesis_statement": "GALAXY-CAL-SYNTHESIS [1d79c239f31f]: The calibration core reported a violet carrier pulse; a later controlled observation revises that calibration toward ultraviolet."
+    "phase5_controlled_synthesis_statement": "GALAXY-CAL-SYNTHESIS [1d79c239f31f]: The calibration core reported a violet carrier pulse; a later controlled observation revises that calibration toward ultraviolet.",
+    "phase5_mutation_design_deployed": true,
+    "phase5_mutation_design_live_observed": true,
+    "phase5_mutation_design_live_status": "PASS_READ_ONLY_PHASE5_MUTATION_DESIGN",
+    "phase5_existing_nonrevoked_synthesis": null,
+    "phase5_mutation_control_exposure_authorization_pending": true
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
