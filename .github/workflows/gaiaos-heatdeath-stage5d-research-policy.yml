@@ -1,0 +1,57 @@
+name: GaiaOS HEATDEATH Stage 5D Research Policy
+
+on:
+  push:
+    paths:
+      - "api/browser_memcon_bridge.py"
+      - "tests/test_heatdeath_stage5d_research_policy.py"
+      - "GaiaOS/Plans/HEATDEATH-STAGE5D-RESEARCH-POLICY.v1.md"
+      - ".github/workflows/gaiaos-heatdeath-stage5d-research-policy.yml"
+  pull_request:
+    paths:
+      - "api/browser_memcon_bridge.py"
+      - "tests/test_heatdeath_stage5d_research_policy.py"
+      - "GaiaOS/Plans/HEATDEATH-STAGE5D-RESEARCH-POLICY.v1.md"
+      - ".github/workflows/gaiaos-heatdeath-stage5d-research-policy.yml"
+  workflow_dispatch:
+
+jobs:
+  authenticated-research-policy-and-dual-boot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install carrier dependencies
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+      - name: Compile source and policy tests
+        run: |
+          python -m py_compile api/browser_memcon_bridge.py api/gaiaos_memory_mode.py
+          python -m py_compile api/gaiaos_memory_gateway.py tests/test_heatdeath_stage5d_research_policy.py
+      - name: Block all optional GALAXY and AUGURY effects during HEATDEATH
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_stage5d_research_policy.py" -v
+      - name: Reprove full normal-carrier GALAXY-broken legacy boot
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_stage5c_normal_boot.py" -v
+      - name: Reprove actual ordinary browser and model-input evidence boundaries
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_browser_stage5b.py" -v
+      - name: Reprove Stage 5A HTTP/MCP/MemoryOS routing
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_routes_stage5a.py" -v
+      - name: Reprove independent read-only recovery and Stages 1-3
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_legacy_recovery_stage4.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_mode_stage2.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+      - name: Build both normal and independent HEATDEATH images
+        run: |
+          docker build --file api/Dockerfile --tag gaiaos-normal:ci .
+          docker build --file api/Dockerfile.legacy-recovery --build-arg RECOVERY_SOURCE_COMMIT="$GITHUB_SHA" --tag gaiaos-heatdeath-recovery:ci .
+      - name: Verify normal carrier and research-independent backup image boot
+        run: |
+          docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/heatdeath-stage5d-ci.sqlite gaiaos-normal:ci -c "import browser_memcon_bridge as b; import gaiaos_memory_mode as m; assert b.app is not None and m.HEATDEATH == 'HEATDEATH'; print('NORMAL_CARRIER_POLICY_IMPORT_PASS')"
+          docker run --rm --entrypoint python gaiaos-heatdeath-recovery:ci -c "import sys, gaiaos_legacy_recovery_app as a; assert a.SERVICE == 'gaiaos-legacy-recovery'; assert not any(n.startswith('galaxy_') for n in sys.modules); print('INDEPENDENT_RECOVERY_IMPORT_PASS')"
+      - name: Check source whitespace
+        run: git diff --check HEAD^1 HEAD
