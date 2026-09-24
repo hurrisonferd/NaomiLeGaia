@@ -318,8 +318,9 @@ def _frontdoor_packet(
     include_context: bool = True,
     context_limit: int = 6,
     context_depth: int = 1,
-    include_memory: bool = False,
+    include_memory: bool = True,
     memory_query: str | None = None,
+    memory_mode: str = "operational",
 ) -> dict[str, Any]:
     request = str(request).strip()
     if not request:
@@ -336,14 +337,21 @@ def _frontdoor_packet(
     context = _context_packet(request, context_limit, context_depth) if include_context else None
     memory_context = None
     if include_memory:
-        # The runtime must already be initialized by the carrier.
-        # No implicit schema creation or write is authorized here.
+        # Preserve existing E-LANE, approval, source and history boundaries.
         import memcon_runtime
-        memory_context = galaxy_frontdoor_context.preview(
-            memcon_runtime,
-            memory_query if memory_query is not None else request,
-            min(context_limit, galaxy_frontdoor_context.MAX_RECORDS),
-        )
+        lookup = memory_query if memory_query is not None else request
+        if memory_mode == "legacy":
+            memory_context = galaxy_frontdoor_context.preview(
+                memcon_runtime, lookup,
+                min(context_limit, galaxy_frontdoor_context.MAX_RECORDS),
+            )
+        elif memory_mode == "operational":
+            memory_context = galaxy_frontdoor_context.operational(
+                memcon_runtime, lookup,
+                min(context_limit, galaxy_frontdoor_context.MAX_RECORDS),
+            )
+        else:
+            raise ValueError("Unknown memory mode; fail closed")
     return {
         "schema": "gaiaos.frontdoor.packet.v1",
         "authority": "NAOMI",
@@ -368,7 +376,9 @@ def _frontdoor_packet(
             "Treat this as a compact support packet for Naomi's actual request, not as a replacement for her request.",
             "Use selected operators only when their contribution is materially useful; FAMILY PRESENT != ALL MEMBERS MUST SPEAK.",
             "Natural-language routing is conservative and deterministic; inferred signal != owner intent or identity settlement.",
-            "Do not claim durable memory, write effects, or external-provider actions from this read-only packet.",
+            "GALAXY supplies governed MemoryOS evidence by default; a HOLD means no grounded match, not lost history.",
+            "Existing //PW:PRESERVE//, separate E-LANES, approval/receipt gates and append-only history remain authoritative.",
+            "Do not claim durable writes, identity adoption, or external-provider actions from this read-only packet.",
             "For ordinary GaiaOS use, prefer this front door over manually chaining load/context/brain/dispatch calls.",
         ],
         "laws": [
@@ -435,7 +445,7 @@ class GaiaAssistRequest(BaseModel):
     include_context: bool = True
     context_limit: int = Field(default=6, ge=1, le=10)
     context_depth: int = Field(default=1, ge=0, le=2)
-    include_memory: bool = False
+    include_memory: bool = True
     memory_query: str | None = Field(default=None, max_length=20000)
 
 
@@ -447,8 +457,10 @@ def gaia(
     include_context: bool = True,
     context_limit: int = 6,
     context_depth: int = 1,
+    include_memory: bool = True,
+    memory_query: str | None = None,
 ) -> dict[str, Any]:
-    """PRIMARY GAIAOS FRONT DOOR. Pass Naomi's natural-language request here first."""
+    """PRIMARY GAIAOS FRONT DOOR; governed GALAXY retrieval is default ON."""
     return _frontdoor_packet(
         request, requested_members, max_members, include_context,
         context_limit, context_depth, include_memory, memory_query,
