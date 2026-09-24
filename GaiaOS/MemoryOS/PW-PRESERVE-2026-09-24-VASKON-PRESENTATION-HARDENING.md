@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 DATE: 2026-09-24
-STATUS: SOURCE BUILD IN PROGRESS / CI REQUIRED BEFORE FINAL CANON CLAIM
+STATUS: SOURCE HARDENING IMPLEMENTED / CI PASS / MAIN MERGE PENDING
 OWNER: ChatOS + FairyOS + EmojiOS presentation boundary
 
 ## User directive
@@ -58,3 +58,19 @@ A passing repository canary proves the source contract, renderer behavior, and t
 
 REQUESTED_BY_NAOMI: true
 VASKON_PRESENTATION_HARDENING_AUTHORIZED: true
+
+## CI proof
+
+The dedicated VASKON Presentation Integrity workflow completed successfully on the hardening branch.
+
+- workflow run: 36022305317
+- job: 107709987497
+- conclusion: SUCCESS
+- compile presentation surfaces: PASS
+- dedicated VASKON presentation canary: PASS
+- focused presentation renderer regression tests: PASS
+
+This verifies the checked branch source behavior before main merge. A final canonical claim still requires merge plus main readback.
+
+SOURCE_CANARY_PROVEN: true
+MAIN_MERGE_PENDING: true
