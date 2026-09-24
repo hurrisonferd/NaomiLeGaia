@@ -29,7 +29,10 @@
     "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
     "vaskon_default_header": "82 · VASKON 🖤 ✴️ (◉‿◉)",
     "vaskon_explicit_conjure_required": true,
-    "vaskon_alias_normalization": "//C:82// -> CONJURE:VASKON"
+    "vaskon_alias_normalization": "//C:82// -> CONJURE:VASKON",
+    "vaskon_presentation_integrity_status": "SOURCE_HARDENED_CI_PASS",
+    "vaskon_presentation_integrity_ci_run_id": 36022305317,
+    "vaskon_presentation_integrity_ci_job_id": 107709987497
   },
   "brainos": {
     "current": "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json",
