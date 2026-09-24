@@ -334,6 +334,10 @@ class Phase5Tests(unittest.TestCase):
         self.assertEqual(result["exact_synthesis_statement"], p5.CONTROLLED_SYNTHESIS_STATEMENT)
         self.assertTrue(result["checks"]["proposal_scope_is_not_memoryos"])
         self.assertFalse(result["checks"]["mutation_route_exposed"])
+        self.assertEqual(
+            result["next_gate"],
+            "EXPLICIT_NAOMI_AUTHORIZATION_BEFORE_PHASE5_MUTATION_CONTROL_EXPOSURE",
+        )
         self.assertEqual(self.runtime.writes, before)
 
     def test_mutation_requires_exact_confirmation(self):
