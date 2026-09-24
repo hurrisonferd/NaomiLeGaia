@@ -3,10 +3,10 @@
 
 > OPEN CHANNEL. KEEP THE SIGNAL. PRESERVE THE RECEIPTS.
 
-**Mission:** Independent, continuing GaiaOS research and improvement protocol; GALAXY is the first major beneficiary  
+**Mission:** Independent, continuing GaiaOS research and improvement protocol; GALAXY is the first major beneficiary
 **Authority:** Naomi / Ligeia  
 **Cadence:** Wednesday research watch, chosen for Wodin's day and Mercury as project symbolism  
-**Document:** Living mission charter, v0.3  
+**Document:** Living mission charter, v0.3
 **Status:** First manual pilot completed 2026-09-23 Eastern: eight primary-source-checked findings entered; no independent reproduction, integration or measured performance claim.
 
 ## 01 // THE MISSION
