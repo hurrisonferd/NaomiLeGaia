@@ -1,31 +1,10 @@
 name: GALAXY Phase 7A-7F Pruning Research Source Gate
 
 on:
-  push:
-    paths:
-      - "api/galaxy_phase7.py"
-      - "api/galaxy_phase7_tombstone.py"
-      - "api/galaxy_phase7_tombstone_shadow.py"
-      - "api/galaxy_phase7_isolated_restore.py"
-      - "api/memcon_runtime.py"
-      - "api/browser_memcon_bridge.py"
-      - "api/Dockerfile"
-      - "tests/test_galaxy_phase7.py"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md"
-      - ".github/workflows/galaxy-phase7-pruning-research.yml"
-  pull_request:
-    paths:
-      - "api/galaxy_phase7.py"
-      - "api/galaxy_phase7_tombstone.py"
-      - "api/galaxy_phase7_tombstone_shadow.py"
-      - "api/galaxy_phase7_isolated_restore.py"
-      - "api/memcon_runtime.py"
-      - "api/browser_memcon_bridge.py"
-      - "api/Dockerfile"
-      - "tests/test_galaxy_phase7.py"
-      - "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md"
-      - ".github/workflows/galaxy-phase7-pruning-research.yml"
+  # Intentionally manual: legacy research checks remain available to invoke
+  # during a reviewed GALAXY release. Modern HEATDEATH release CI is separate.
   workflow_dispatch:
+
 
 jobs:
   nondestructive-source-gate:
