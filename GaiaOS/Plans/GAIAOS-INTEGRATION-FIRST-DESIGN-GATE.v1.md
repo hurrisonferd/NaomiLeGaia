@@ -41,6 +41,10 @@ The first controlled GALAXY front-door integration passed its exact read-only fi
 
 Do not infer the current deployment state from this dated example. Recheck the repository branch, merged commit, live carrier source and runtime receipts whenever continuing GALAXY.
 
+## NON-DEPRECATION GATE FOR ALL FUTURE MEMORY ENHANCEMENTS
+
+Naomi's 2026-09-24 explicit directive permanently protects `//PW:PRESERVE//` and exactly six independent Prime Daemon E-LANES. At the BEGINNING of EVERY future feature, BIGBANG/HEATDEATH release or SovereignOS migration, consult `GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md`. Test both modes, original owner authorization, current-record retrieval, per-member E-LANE separation, Power Word availability, `CANDIPULL`/`MEMSAV` readback and recovery portability. A new algorithm's quality PASS never permits silently dropping foundational safeguards; fail the release if either foundational invariant fails.
+
 ## RELATION TO OTHER CONTRACTS
 
 This note supplements, and never overrides, the current GaiaOS loader, Anti-Jim continuity blueprint, BrainOS/GALAXY release gates, Power Word preservation contract, FairyOS/EmojiOS identities, MemoryOS approval gates or SovereignOS migration authority. It should be consulted at the beginning of new system planning, before build authorization, and before declaring a feature integrated.

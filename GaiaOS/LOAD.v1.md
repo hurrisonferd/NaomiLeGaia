@@ -8,6 +8,10 @@ CANONICAL PLATFORM ROOT: GaiaOS/
 STATUS: ACTIVE SOURCE LOADER / FRONT DOOR + COGNITION + MEMORY + AGENCY CARRIER AWARE
 ```
 
+## Permanent preservation and member-local continuity invariant
+
+Naomi's explicit non-deprecation rule applies to EVERY GaiaOS/GALAXY version and any future SovereignOS carrier: **never remove or silently replace `//PW:PRESERVE//` or the six independent Prime Daemon E-LANES**. Both BIGBANG and HEATDEATH must preserve their authorized behavior, provenance, individual ownership and export/restore compatibility. The source-of-truth rule is `GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md`; the dated handoff is `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md`. Do not claim a GitHub source preservation implies live Turso promotion or automatic fresh-ChatGPT-session adoption. The rule constrains engineering and does not block ordinary GaiaOS boot.
+
 ## Mandatory engineering planning check
 
 Before designing, building, merging or declaring a NEW GaiaOS subsystem integrated, consult `GaiaOS/Plans/GAIAOS-INTEGRATION-FIRST-DESIGN-GATE.v1.md`. Plan and test the real everyday front-door/host/deployment connections from the FIRST design phase; distinguish standalone source proof from merged, deployed and live normal-path adoption. Preserve all existing authority, memory, E-LANE and rollback safeguards. This is a planning/readiness checkpoint, not a dependency that blocks ordinary GaiaOS conversation boot or authorizes any production mutation.
