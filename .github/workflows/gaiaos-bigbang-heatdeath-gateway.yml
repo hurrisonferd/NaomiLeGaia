@@ -1,0 +1,43 @@
+name: GaiaOS BIGBANG HEATDEATH Unified Gateway Source Gate
+
+on:
+  push:
+    paths:
+      - "api/gaiaos_memory_gateway.py"
+      - "tests/test_gaiaos_memory_gateway_stage3.py"
+      - "api/gaiaos_memory_mode.py"
+      - "api/legacy_memory_reader.py"
+      - "GaiaOS/Plans/BIGBANG-HEATDEATH-GATEWAY-STAGE3.v1.md"
+      - ".github/workflows/gaiaos-bigbang-heatdeath-gateway.yml"
+  pull_request:
+    paths:
+      - "api/gaiaos_memory_gateway.py"
+      - "tests/test_gaiaos_memory_gateway_stage3.py"
+      - "api/gaiaos_memory_mode.py"
+      - "api/legacy_memory_reader.py"
+      - "GaiaOS/Plans/BIGBANG-HEATDEATH-GATEWAY-STAGE3.v1.md"
+      - ".github/workflows/gaiaos-bigbang-heatdeath-gateway.yml"
+  workflow_dispatch:
+
+jobs:
+  isolated-dual-mode-gateway:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile gateway and all three source-test suites
+        run: |
+          python -m py_compile api/gaiaos_memory_gateway.py api/gaiaos_memory_mode.py api/legacy_memory_reader.py
+          python -m py_compile tests/test_gaiaos_memory_gateway_stage3.py tests/test_gaiaos_memory_mode_stage2.py tests/test_legacy_memory_baseline.py
+      - name: Verify gateway import-failure fallback, provenance and contract guards
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
+      - name: Reprove persistent HEATDEATH control and owner approval boundaries
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_mode_stage2.py" -v
+      - name: Reprove independent legacy SQL and restart baseline
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+      - name: Check source whitespace
+        run: git diff --check HEAD^1 HEAD
