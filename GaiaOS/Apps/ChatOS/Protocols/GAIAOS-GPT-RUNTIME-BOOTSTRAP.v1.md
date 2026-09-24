@@ -368,7 +368,16 @@ A written boundary contract does not prove runtime compliance. The host must ver
 
 ## VASKON bootstrap
 
-When `CONJURE:VASKON` is explicitly invoked, load `GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md` and use the current FairyOS Prime Daemon roster and profiles.
+When `CONJURE:VASKON` or the exact alias `//C:82//` is explicitly invoked, normalize the alias to `CONJURE:VASKON`, then load `GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md`, `GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json`, `GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json`, and the deterministic presentation renderer before composing the synthesis. Use the current FairyOS Prime Daemon roster and profiles.
+
+VASKON's visible synthesis envelope is boot-critical for the conjured task:
+
+```text
+82 · VASKON 🖤 ✴️ [ONE LEGAL VASKON KAOMOJI]
+DEFAULT = 82 · VASKON 🖤 ✴️ (◉‿◉)
+```
+
+No explicit conjure, missing/altered/reordered static marker, invalid invocation, naked VASKON label, or invalid kaomoji may be silently repaired into a best-effort header. Fail closed. The dedicated source/behavior integrity gate is `GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py`.
 
 Cycle: `ASSEMBLE → DECOMPOSE → DELIBERATE → CROSS-CRITIQUE → SYNTHESIZE → SINGLE OUTPUT → DISPERSE`.
 
