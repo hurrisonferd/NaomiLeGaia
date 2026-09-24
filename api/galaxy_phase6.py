@@ -1,7 +1,8 @@
 """GALAXY Phase 6: exact-fixture reversible lifecycle with append-only history.
 
-Source-only until separately deployed and explicitly authorized. No mutation route
-is exposed here. Lifecycle metadata never rewrites source records or retrieval.
+Deployed after separate authorization. This primitive is not routed directly;
+only the separately guarded finite Phase-6 control adapter may invoke it for the
+exact fixture. Lifecycle metadata never rewrites source records or retrieval.
 """
 from __future__ import annotations
 
@@ -139,7 +140,9 @@ def inspect(runtime: Any, record_id: str = FIXTURE_RECORD_ID) -> dict[str, Any]:
         "proof_boundary": (
             "Read-only review only; lifecycle effects and attenuation are not "
             "connected to production retrieval. PRUNABLE is reserved for Phase 7. "
-            "No generic record mutation or live browser mutation route is exposed."
+            "No generic record mutation or generic lifecycle console is exposed; "
+            "the separately authorized exact five-step browser control adapter may "
+            "invoke this primitive only for the controlled fixture."
         ),
     }
 
@@ -168,7 +171,7 @@ def execute(
     reason: str,
     record_id: str = FIXTURE_RECORD_ID,
 ) -> dict[str, Any]:
-    """Internal, exact-fixture, one-step mutation; NOT wired to a live route."""
+    """Internal exact-fixture one-step mutation, reachable only through the guarded finite control adapter."""
     operation = str(operation or "").strip().upper()
     if authority != "NAOMI" or approved is not True:
         raise PermissionError("Each lifecycle step requires separate Naomi approval")
@@ -285,7 +288,8 @@ def execute(
         "unrestricted_global_weighting_enabled": False,
         "proof_boundary": (
             "Only the exact fixture and one current transaction were checked. "
-            "No live mutation route is registered and no restart-persistence "
-            "or production attenuation behavior is established by this receipt."
+            "The primitive is exposed only through the separately guarded finite "
+            "Phase-6 control adapter; no generic lifecycle mutation route is registered. "
+            "Restart persistence and production attenuation are not established by this receipt."
         ),
     }

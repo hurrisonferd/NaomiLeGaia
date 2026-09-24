@@ -256,6 +256,11 @@ class Phase6LifecycleTests(unittest.TestCase):
         self.assertIn('@app.get("/galaxy/lifecycle/phase6-controls/confirm/{kind}"', bridge)
         self.assertIn('@app.post("/galaxy/lifecycle/phase6-controls/manifest"', bridge)
         self.assertIn("galaxy_phase6_controls.execute(", bridge)
+        phase6_source = (ROOT / "api" / "galaxy_phase6.py").read_text()
+        self.assertNotIn("No live mutation route is registered", phase6_source)
+        self.assertNotIn("No generic record mutation or live browser mutation route is exposed", phase6_source)
+        self.assertIn("no generic lifecycle mutation route is registered", phase6_source)
+        self.assertIn("exact five-step browser control adapter", phase6_source)
 
 
 if __name__ == "__main__":
