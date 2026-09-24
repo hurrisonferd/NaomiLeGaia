@@ -28,6 +28,7 @@ import galaxy_phase7
 import galaxy_phase7_tombstone
 import galaxy_phase7_tombstone_shadow
 import galaxy_phase7_isolated_restore
+import galaxy_phase7_isolated_restore
 import augury_ritual
 import solo_chat_runtime
 import host_memory_gateway
@@ -819,6 +820,16 @@ def galaxy_phase7_tombstone_shadow_review(browser_request: Request):
         return bootstrap
     gaiaos_api._authorize_browser_session(browser_request)
     return galaxy_phase7_tombstone_shadow.inspect(memcon_runtime)
+
+
+@app.get("/galaxy/pruning/phase7-isolated-restore-review", operation_id="galaxyPhase7IsolatedRestoreReview")
+def galaxy_phase7_isolated_restore_review(browser_request: Request):
+    """Phase-7F GET-only: reconstruct exact shadow evidence in disposable RAM."""
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    return galaxy_phase7_isolated_restore.review(memcon_runtime)
 
 
 @app.get("/galaxy/pruning/phase7-tombstone-shadow-controls", response_class=HTMLResponse, operation_id="galaxyPhase7TombstoneShadowControls")
