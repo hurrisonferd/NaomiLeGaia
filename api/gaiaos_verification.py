@@ -527,6 +527,7 @@ def run_verification() -> dict[str, Any]:
     phase5_module = ROOT / "galaxy_phase5.py"
     phase5_controls_module = ROOT / "galaxy_phase5_controls.py"
     phase6_module = ROOT / "galaxy_phase6.py"
+    phase6_controls_module = ROOT / "galaxy_phase6_controls.py"
     augury_ritual_module = ROOT / "augury_ritual.py"
     checks.append(_check(
         "carrier:phase3g-quality-module",
@@ -728,6 +729,31 @@ def run_verification() -> dict[str, Any]:
                 f"{type(exc).__name__}: {exc}",
             ))
 
+    checks.append(_check(
+        "carrier:phase6-control-module",
+        phase6_controls_module.exists(),
+        "finite Phase-6 exact lifecycle control adapter packaged",
+    ))
+    if phase6_controls_module.exists():
+        try:
+            phase6_control_text = phase6_controls_module.read_text(encoding="utf-8")
+            compile(phase6_control_text, str(phase6_controls_module), "exec")
+            checks.append(_check(
+                "carrier:phase6-control-boundaries",
+                all(marker in phase6_control_text for marker in (
+                    "CAMPAIGN", "BACKGROUND", "ARCHIVED", "COMPRESSED",
+                    "ROLLBACK", "REACTIVATE", "def inspect(", "def execute(",
+                    "Only the exact next Phase-6 campaign action is permitted",
+                    "production_retrieval_changed",
+                )),
+                "control adapter is finite, exact-next-step, reversible and readback-bound",
+            ))
+        except Exception as exc:
+            checks.append(_check(
+                "carrier:phase6-control-syntax", False,
+                f"{type(exc).__name__}: {exc}",
+            ))
+
     if augury_ritual_module.exists():
         try:
             ritual_text = augury_ritual_module.read_text(encoding="utf-8")
@@ -920,7 +946,20 @@ def run_verification() -> dict[str, Any]:
             '@app.get("/galaxy/lifecycle/phase6-fixture-review"' in bridge_text
             and 'galaxy_phase6.inspect(memcon_runtime)' in bridge_text
             and 'galaxy_phase6.execute(' not in bridge_text,
-            "only read-only Phase-6 fixture route declared; no effectful route",
+            "read-only Phase-6 fixture route declared; primitive is not directly routed",
+        ))
+        checks.append(_check(
+            "carrier:/galaxy/phase6-control-review",
+            '@app.get("/galaxy/lifecycle/phase6-controls"' in bridge_text
+            and 'galaxy_phase6_controls.inspect' in bridge_text,
+            "read-only signed-session Phase-6 exact campaign control page declared",
+        ))
+        checks.append(_check(
+            "carrier:/galaxy/phase6-control-manifest",
+            '@app.post("/galaxy/lifecycle/phase6-controls/manifest"' in bridge_text
+            and 'galaxy_phase6_controls.execute' in bridge_text
+            and '_ritual_csrf(browser_request)' in bridge_text,
+            "exact next-step Phase-6 POST declared behind signed-session CSRF",
         ))
         checks.append(_check(
             "carrier:/galaxy/phase4-pair-review",
@@ -1060,10 +1099,37 @@ def run_verification() -> dict[str, Any]:
                 "Phase-6 read-only fixture ASGI GET registered without POST",
             ))
             checks.append(_check(
+                "carrier-route:/galaxy/phase6-control-review",
+                ("/galaxy/lifecycle/phase6-controls", "GET") in route_pairs,
+                "Phase-6 exact campaign review ASGI GET registered",
+            ))
+            checks.append(_check(
+                "carrier-route:/galaxy/phase6-control-manifest",
+                ("/galaxy/lifecycle/phase6-controls/manifest", "POST") in route_pairs,
+                "Phase-6 exact campaign CSRF POST registered; no execution implied",
+            ))
+            checks.append(_check(
                 "carrier-route:/galaxy/phase4-pair-review",
                 ("/galaxy/revision/phase4-pair-review", "GET") in route_pairs,
                 "read-only Phase-4 pair-review ASGI route registered",
             ))
+            try:
+                phase6_control_review = module.galaxy_phase6_controls.inspect(module.memcon_runtime)
+                checks.append(_check(
+                    "carrier:phase6-control-read-only-self-test",
+                    phase6_control_review.get("execution") == "READ_ONLY"
+                    and phase6_control_review.get("writes") == 0
+                    and not phase6_control_review.get("hold_reasons")
+                    and phase6_control_review.get("production_retrieval_changed") is False
+                    and phase6_control_review.get("unrestricted_global_weighting_enabled") is False,
+                    "Phase-6 exact campaign control inspection is read-only and its history remains an exact campaign prefix",
+                ))
+            except Exception as exc:
+                checks.append(_check(
+                    "carrier:phase6-control-read-only-self-test",
+                    False,
+                    f"{type(exc).__name__}: {exc}",
+                ))
             try:
                 phase5_state = module.galaxy_phase5.fixture_review(module.memcon_runtime)
                 checks.append(_check(

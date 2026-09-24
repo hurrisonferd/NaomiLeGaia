@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 OWNER: MemoryOS + BrainOS / GALAXY
-STATUS: FEATURE-BRANCH SOURCE ONLY; CI, MERGE, DEPLOYMENT AND LIVE PROOF SEPARATE
+STATUS: READ-ONLY LIVE PROVEN / EXACT FIVE-STEP CONTROL EXPOSURE SOURCE UNDER REVIEW
 VERSION: galaxy.phase6.reversible-lifecycle.v1
 
 ## Purpose and bounded fixture
@@ -43,6 +43,36 @@ A mutation requires, separately **for each action**: authority NAOMI, explicit a
 5. Live bounded BACKGROUND → ARCHIVED → COMPRESSED → ROLLBACK → REACTIVATE with independent per-step PASS_READBACK. Check original record, relation history, Phase-5 provenance, receipts and no production retrieval change.
 6. Pin pre-restart record plus lifecycle chain and receipts; restart actual Render process and prove exact post-restart state and full history readback. A single fixture cannot prove all database rows or global recovery.
 
-Next Phase-6 gate at this source checkpoint: **CI PASS → PR REVIEW → EXPLICIT MERGE/DEPLOY AUTHORIZATION → /verify → READ-ONLY LIVE REVIEW → HOLD**.
+The read-only deployment gate subsequently passed on the Ligeia carrier at source c2184ebc9381247f6cd72756eada7f2e16a76dfe: the Phase-6 fixture review reported PASS_READ_ONLY, state ACTIVE, zero lifecycle events and no holds; the complete carrier verifier reported 189/189 PASS after an unrelated FairyOS mirror repair.
+
+Next Phase-6 gate is the separately guarded exact live-control campaign described below.
 
 No new live mutation, production attenuation, physical deletion, full database export or independent exodus is claimed here. Continue normal canonical E-LANE and GitHub preservation; the Phylactery remains an additive backup.
+
+## Exact live-control exposure checkpoint — 2026-09-24
+
+After the read-only live gate passed, Naomi explicitly authorized ANVIL to proceed with the next guarded Phase-6 build. This authorization covers source implementation, tests, CI, review, merge/deploy preparation and exposure of the bounded confirmation console. It does not pre-authorize any lifecycle mutation: each live effect remains a separate explicit browser confirmation.
+
+The control campaign is finite and exact:
+
+1. ACTIVE -> BACKGROUND
+2. BACKGROUND -> ARCHIVED
+3. ARCHIVED -> COMPRESSED
+4. COMPRESSED -> ARCHIVED by append-only ROLLBACK
+5. ARCHIVED -> ACTIVE by REACTIVATE
+
+api/galaxy_phase6_controls.py accepts only this exact history prefix and exactly one next action. Unexpected valid lifecycle history, stale state, stale event tip, wrong authority, wrong confirmation, campaign overflow or any underlying lifecycle HOLD all fail closed.
+
+Browser exposure is deliberately no-JavaScript and session-bound:
+
+- GET /galaxy/lifecycle/phase6-controls is read-only campaign review.
+- GET /galaxy/lifecycle/phase6-controls/confirm/{kind} is read-only exact effect preview.
+- POST /galaxy/lifecycle/phase6-controls/manifest is the only effectful route.
+- The POST requires the existing signed browser session, _ritual_csrf, exact authority/approval fields, exact per-step confirmation, expected current state and expected latest event ID.
+- The internal galaxy_phase6.execute() primitive is never routed directly.
+
+Each successful POST must return PASS_READBACK only when the underlying lifecycle effect passes plus the control adapter confirms exactly one campaign step advanced, the exact expected state and history prefix read back, the source record stayed unchanged, prior history stayed unchanged, the receipt was committed, production retrieval stayed unchanged and physical deletion remained false.
+
+After all five live steps pass, the campaign must stop with campaign_complete=true, next_action=null, state ACTIVE, and all five events still inspectable. Then pin the exact lifecycle row, five-event chain and receipts, restart the real Render carrier, and prove full exact history/state readback from Turso before closing Phase 6.
+
+No Phase-7 PRUNABLE transition, destructive pruning, production attenuation or generic lifecycle console is authorized by this checkpoint.

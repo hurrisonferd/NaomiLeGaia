@@ -244,14 +244,18 @@ class Phase6LifecycleTests(unittest.TestCase):
         self.assertIn("RECORD_NOT_ACTIVE_MEMORYOS",
                       p6.inspect(runtime)["hold_reasons"])
 
-    def test_no_phase6_mutation_route_or_unsafe_docker_omission(self):
+    def test_phase6_only_exposes_exact_guarded_control_adapter(self):
         bridge = (ROOT / "api" / "browser_memcon_bridge.py").read_text()
         docker = (ROOT / "api" / "Dockerfile").read_text()
         self.assertIn("COPY api/galaxy_phase6.py ./galaxy_phase6.py", docker)
+        self.assertIn("COPY api/galaxy_phase6_controls.py ./galaxy_phase6_controls.py", docker)
         self.assertIn('@app.get("/galaxy/lifecycle/phase6-fixture-review"', bridge)
         self.assertIn("galaxy_phase6.inspect(memcon_runtime)", bridge)
         self.assertNotIn("galaxy_phase6.execute(", bridge)
-        self.assertNotIn('@app.post("/galaxy/lifecycle/phase6-', bridge)
+        self.assertIn('@app.get("/galaxy/lifecycle/phase6-controls"', bridge)
+        self.assertIn('@app.get("/galaxy/lifecycle/phase6-controls/confirm/{kind}"', bridge)
+        self.assertIn('@app.post("/galaxy/lifecycle/phase6-controls/manifest"', bridge)
+        self.assertIn("galaxy_phase6_controls.execute(", bridge)
 
 
 if __name__ == "__main__":
