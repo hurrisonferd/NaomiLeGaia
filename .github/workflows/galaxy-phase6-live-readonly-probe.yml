@@ -1,0 +1,23 @@
+name: GALAXY Phase 6 Live Read-Only Probe
+
+on:
+  push:
+    paths:
+      - "tests/phase6_live_readonly_probe.py"
+      - ".github/workflows/galaxy-phase6-live-readonly-probe.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-readonly:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe the deployed Ligeia carrier without writes
+        run: python tests/phase6_live_readonly_probe.py
