@@ -83,15 +83,28 @@ control_match = re.search(r"<pre[^>]*>(.*?)</pre>", control_html, flags=re.S)
 if code != 200 or not control_match:
     raise SystemExit("HOLD: Phase6 control review HTML unavailable")
 control = json.loads(html.unescape(control_match.group(1)))
+expected_event = "LIFE-39d6922cca684861b56acbcc5e6f281c"
+expected_receipt = "MEMREC-a3d9439e02a44106b96163e478a17239"
 if (control.get("controlled_record_id") != EXPECTED_RECORD
-        or control.get("current_state") != "ACTIVE"
-        or control.get("completed_steps") != 0
-        or control.get("next_action") != "BACKGROUND"
+        or control.get("current_state") != "BACKGROUND"
+        or control.get("completed_steps") != 1
+        or control.get("next_action") != "ARCHIVED"
         or control.get("campaign_complete") is not False
         or control.get("hold_reasons") != []):
-    raise SystemExit("HOLD: Phase6 exact control review not at clean campaign start: " + str(control))
+    raise SystemExit("HOLD: Phase6 exact control review not at persisted BACKGROUND step: " + str(control))
+underlying = control.get("underlying_review") or {}
+events = underlying.get("events") or []
+if (underlying.get("latest_event_id") != expected_event
+        or underlying.get("event_count") != 1
+        or len(events) != 1
+        or events[0].get("event_id") != expected_event
+        or events[0].get("receipt_id") != expected_receipt
+        or events[0].get("from_state") != "ACTIVE"
+        or events[0].get("to_state") != "BACKGROUND"):
+    raise SystemExit("HOLD: Phase6 exact BACKGROUND event/receipt did not survive carrier restart/readback")
 print("PHASE6 CONTROL REVIEW PASS: state:", control.get("current_state"),
-      "steps:", control.get("completed_steps"), "next:", control.get("next_action"))
+      "steps:", control.get("completed_steps"), "next:", control.get("next_action"),
+      "event:", expected_event, "receipt:", expected_receipt)
 
 code, verified_html = get("/verify", timeout=65)
 match = re.search(r"<pre[^>]*>(.*?)</pre>", verified_html, flags=re.S)
@@ -131,4 +144,4 @@ if verifier.get("summary", {}).get("failed") != 0:
 if review.get("status") != "PASS_READ_ONLY":
     raise SystemExit("HOLD: Phase6 source deployed, but fixture read-only review held: " +
                      str(review.get("hold_reasons")))
-print("PASS: source deployed and exact Phase6 read-only live review completed. NO MUTATIONS.")
+print("PASS: source deployed; exact Phase6 BACKGROUND state, event and receipt persisted across carrier redeploy/restart. NO NEW MUTATIONS.")
