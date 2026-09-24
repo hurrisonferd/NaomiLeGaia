@@ -1,4 +1,4 @@
-name: GaiaOS BIGBANG HEATDEATH Stage 5B Normal Chat
+name: GaiaOS BIGBANG HEATDEATH Stage 5B-C Normal Chat and Boot Isolation
 
 on:
   push:
@@ -6,10 +6,13 @@ on:
       - "api/gaiaos_api.py"
       - "api/browser_memcon_bridge.py"
       - "api/gaiaos_chat_memory.py"
+      - "api/gaiaos_optional_research.py"
       - "api/gaiaos_app.py"
       - "api/Dockerfile"
       - "tests/test_bigbang_heatdeath_browser_stage5b.py"
+      - "tests/test_bigbang_heatdeath_boot_stage5c.py"
       - "GaiaOS/Plans/BIGBANG-HEATDEATH-STAGE5B-NORMAL-CHAT.v1.md"
+      - "GaiaOS/Plans/BIGBANG-HEATDEATH-STAGE5C-BOOT-ISOLATION.v1.md"
       - ".github/workflows/gaiaos-bigbang-heatdeath-browser-stage5b.yml"
   pull_request:
     paths:
@@ -40,6 +43,8 @@ jobs:
           python -m py_compile api/gaiaos_api.py api/browser_memcon_bridge.py api/gaiaos_chat_memory.py
           python -m py_compile api/gaiaos_app.py api/gaiaos_memory_gateway.py api/gaiaos_legacy_recovery_app.py
           python -m py_compile tests/test_bigbang_heatdeath_browser_stage5b.py
+      - name: Simulate total GALAXY failure in the full normal browser, MCP and MemoryOS carrier
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_boot_stage5c.py" -v
       - name: Actual browser ordinary-chat and hosted-model double-check regression
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_browser_stage5b.py" -v
       - name: Stage 5A MCP and HTTP normal routes
@@ -57,6 +62,23 @@ jobs:
       - name: Prove actual normal image imports gateway and chat wiring
         run: |
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-normal-ci.sqlite gaiaos-normal:ci -c "import browser_memcon_bridge as b; import gaiaos_memory_gateway as g; import gaiaos_chat_memory as m; assert b.app is not None and g.SCHEMA == 'gaiaos.memory-gateway.v1' and m.SCHEMA == 'gaiaos.chat-memory-evidence.v1'; print('NORMAL_CARRIER_GATEWAY_BOOT_PASS')"
+      - name: Prove full normal Docker carrier boots even when all GALAXY imports are corrupted
+        run: |
+          docker run --rm -i --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-boot-ci.sqlite -e GAIAOS_FORCE_HEATDEATH=1 gaiaos-normal:ci - <<'PY'
+          import builtins, sys
+          old = builtins.__import__
+          def blocked(name, *args, **kwargs):
+              if name.startswith("galaxy") or name == "augury_ritual":
+                  raise ImportError("intentionally broken GALAXY during boot")
+              return old(name, *args, **kwargs)
+          builtins.__import__ = blocked
+          import browser_memcon_bridge as bridge
+          import gaiaos_app as carrier
+          import memcon_entrypoint as memory
+          assert bridge.app is carrier.app is memory.app
+          assert not any(n.startswith("galaxy") or n == "augury_ritual" for n in sys.modules)
+          print("NORMAL_HEATDEATH_FULL_CARRIER_BROKEN_GALAXY_BOOT_PASS")
+          PY
       - name: Rebuild separately isolated HEATDEATH recovery image
         run: |
           docker build --file api/Dockerfile.legacy-recovery --build-arg RECOVERY_SOURCE_COMMIT="$GITHUB_SHA" --tag gaiaos-heatdeath-recovery:ci .
