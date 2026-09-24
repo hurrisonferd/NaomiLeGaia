@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE BUILD / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
+STATUS: PHASE 6 CLOSED / PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4968,3 +4968,9 @@ GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7C-LIVE-POSITIVE-CANARY-PROVE
 Source inspection immediately afterward found a proof-language defect: the real review and canary used equivalent rule sets, but the real review still contained duplicated eligibility logic rather than invoking the shared helper. Phase 7D preparation repairs this and adds a direct test proving the real review calls the shared evaluator.
 
 Phase 7D begins synthetic tombstone/restore contract research. It may prove manifest completeness, integrity detection, exact in-memory reconstruction, and fail-closed corruption handling. It may not create a durable tombstone, delete records, alter production retrieval, or set any destructive gate true.
+
+
+Phase 7D source CI:
+- run 36027838867: SUCCESS
+- Phase-6 regression run 36027838636: SUCCESS
+- live Phase-7D route proof remains pending deployment.
