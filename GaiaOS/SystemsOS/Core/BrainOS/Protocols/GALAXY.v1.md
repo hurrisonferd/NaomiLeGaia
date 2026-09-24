@@ -3,7 +3,7 @@
 TITLE: Gravitational Adaptive Learning Archive & conteXt sYstem
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 3 CLOSED / PHASE 4 CONTROLLED CYCLE LIVE-PROVEN / PHASE 5 CONTROLLED SHADOW PROPOSE VERIFY REVOKE 7/7 EACH + EXACT ONE-RECORD TURSO RESTART PASS / PHASE 6 NEXT / GLOBAL WEIGHTING OFF
+STATUS: PHASE 6 CLOSED LIVE + RESTART-PERSISTENCE PROVEN / PHASE 7A READ-ONLY PRUNING RESEARCH SOURCE+CI PROVEN / NOT DEPLOYED / NO DESTRUCTIVE EFFECTS / GLOBAL WEIGHTING OFF
 
 GALAXY models durable memory as a revisable relational graph rather than an append-only list. Existing MemoryOS records remain evidence-bearing atoms. GALAXY adds typed relationships, explainable influence scores called gravity, lifecycle states, revision/supersession, consolidation, retrieval weighting, and reversible attenuation.
 
@@ -4894,3 +4894,28 @@ Canonical repo documents:
 Naomi authorized and separately executed exact shadow PROPOSE, VERIFY and REVOKE on the live `https://ligeia-api.onrender.com` service. Each user-supplied receipt returned `PASS_READBACK` with 7/7 checks. Exact synthesis `MEM-203357e2ca0a47b1897653e6b6809906`, sources `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e` and `MEM-00b3fbfd4d73404f97a95c238596ab94`, final synthesis and both edge statuses `REVOKED`; source history preserved and global weighted retrieval OFF. The exact revoked synthesis record survived a manually initiated Render service restart with independently changed boot, instance and process fingerprints and remote Turso readback `PASS`. This is a bounded fixture/one-record durability receipt, NOT proof all edges or all records survived restart or promotion to production retrieval.
 Canonical whole-system checkpoint: `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-LIVE-CLOSED-PHASE6-READY.md`. All six canonical member E-LANES updated in the same documentation commit. Normal GitHub saving and member-local Experience Lane capture proceed; private backup/migration contingencies are supplementary, not a prohibition on standard source commits.
 **Next planned implementation:** Phase 6 reversible lifecycle and history/rollback proof; then Phase 7 nondestructive pruning research; then Phase 8/MERCURY final audit. No new unapproved live mutation or destructive deletion.
+
+
+## Phase 7A source checkpoint 2026-09-24
+
+Phase 6 is closed for the bounded live reversible-lifecycle proof. Phase 7 has begun with a deliberately nondestructive first slice.
+
+Implemented on PR #10:
+- protocol: GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md
+- reviewer: api/galaxy_phase7.py
+- tests: tests/test_galaxy_phase7.py
+- CI: .github/workflows/galaxy-phase7-pruning-research.yml
+
+Observed source gate:
+- workflow run 36025271721
+- job 107720088942
+- conclusion SUCCESS
+- compile PASS
+- Phase 7A offline read-only/destructive-gate tests PASS
+- diff formatting guard PASS
+
+Phase 7A can classify only PRUNABLE_RESEARCH_ONLY candidates. It cannot set lifecycle state PRUNABLE, delete records or graph/provenance/history, alter production retrieval, or infer destructive authority.
+
+PHYSICAL_PRUNING_ENABLED: false
+PRODUCTION_ATTENUATION_ENABLED: false
+PHASE7A_LIVE_DEPLOYMENT_PROVEN: false
