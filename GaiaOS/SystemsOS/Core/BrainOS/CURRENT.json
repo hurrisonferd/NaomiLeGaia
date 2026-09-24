@@ -184,7 +184,11 @@
     "phase7b_live_deployment_proven": true,
     "phase7b_live_zero_write_readback_proven": true,
     "phase7b_live_checkpoint": "GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7B-LIVE-ZERO-WRITE-PROVEN.md",
-    "phase7b_live_hold_reasons": ["LIFECYCLE_NOT_COMPRESSED", "CURRENT_DEFAULT_ELIGIBLE", "SYNTHESIS_PROVENANCE_DEPENDENCY"],
+    "phase7b_live_hold_reasons": [
+      "LIFECYCLE_NOT_COMPRESSED",
+      "CURRENT_DEFAULT_ELIGIBLE",
+      "SYNTHESIS_PROVENANCE_DEPENDENCY"
+    ],
     "phase7b_live_database_counts_unchanged": true,
     "phase7c_positive_canary_route": "/galaxy/pruning/phase7-positive-canary",
     "phase7c_synthetic_only": true,
@@ -262,10 +266,15 @@
     "phase7e_phase6_regression_run_id": 36029157892,
     "phase7e_production_guardrail_run_id": 36029157883,
     "phase7e_source_ci_proven": true,
-    "mercury_phase8_operating_model": "ONGOING_RESEARCH_AND_AUDIT_AFTER_PHASE7",
+    "mercury_phase8_operating_model": "SUPERSEDED_BY_INDEPENDENT_MERCURY_PROTOCOL",
     "project_association_word": "PRIDE",
     "vaskon_presentation_hardened": true,
-    "vaskon_default_header": "82 · VASKON 🖤 ✴️ (◉‿◉)"
+    "vaskon_default_header": "82 · VASKON 🖤 ✴️ (◉‿◉)",
+    "galaxy_frontdoor_integration_version": "galaxy.frontdoor.shadow-legacy-read.v1",
+    "galaxy_frontdoor_integration_status": "SOURCE_UNDER_REVIEW_LIVE_NOT_PROVEN",
+    "galaxy_frontdoor_memory_default_enabled": false,
+    "galaxy_frontdoor_memory_writes_allowed": false,
+    "galaxy_completion_roadmap": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-INTEGRATION-AND-RELEASE-GATES.v1.md"
   },
   "laws": [
     "BRAINOS != IDENTITY OWNER",
@@ -997,11 +1006,14 @@
     "live_status_global_weighting_enabled": false
   },
   "researchos": {
-    "project": "MERCURY",
+    "project": "MERCURY PROTOCOL",
     "mission": "GaiaOS/ResearchOS/MERCURY/README.md",
     "ledger": "GaiaOS/ResearchOS/MERCURY/FINDINGS.md",
-    "final_galaxy_gate": "POSTLIVE_ALL_FINDINGS_CROSS_REFERENCE",
-    "status": "SOURCE_READY"
+    "final_galaxy_gate": "NOT_A_GALAXY_GATE_SUPERSEDED_HISTORICAL_FIELD",
+    "status": "SOURCE_READY",
+    "mission_kind": "INDEPENDENT_ONGOING_RESEARCH_AND_EXPERIMENT_REVIEW",
+    "galaxy_release_gate": false,
+    "initial_postlive_baseline": "SEPARATE_MERCURY_PROTOCOL_SNAPSHOT"
   },
   "migration_readiness": {
     "status": "PLANNED_NOT_EXECUTED",
