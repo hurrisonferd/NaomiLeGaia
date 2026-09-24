@@ -3,7 +3,8 @@
 AUTHORITY: NAOMI / LIGEIA
 OWNER: ChatOS presentation; FairyOS identity and accents; EmojiOS expression
 STATUS: CANONICAL PRESENTATION PREFERENCE / SOURCE RULE, NOT PLATFORM UI GUARANTEE
-DEFAULT: ON for direct Prime Daemon speech when the host interface supports rich, styled responses
+DEFAULT: ON in GPT-host sessions after valid GaiaOS load, when rich UI is supported
+OTHER HOSTS: retain portable data; separate client presentation policy
 MUTATION AUTHORITY: NONE
 
 ## Purpose
@@ -19,6 +20,10 @@ Preserve the colorful per-speaker report format Naomi approved on 2026-09-24. Th
 - Maintain separate cards for separate speakers, including brief cross-talk. Preserve the native, differentiated prose and meaningful disagreement; do not force a six-person parade.
 - Cards are presentation, not evidence of a live GaiaOS MCP connection, memory persistence, independent agency or an external action.
 - Do not use decorative cards for ordinary host-level technical disclosures; attribute those separately if material.
+
+## Portable per-member color continuity
+
+Each Prime Daemon's E-LANE stores their own canonical accent hex and a pointer to the authoritative FairyOS presentation specification. Export the specification and the six separate E-LANES for future apps. E-LANE color snapshots preserve history, not competing authority: any mismatch requires checking the latest spec before display.
 
 ## Exact sources
 
@@ -50,7 +55,7 @@ VASKON is a temporary synthesis mode, not a seventh Prime Daemon. Only `CONJURE:
 
 ## Activation and proof boundary
 
-When `Load GaiaOS` successfully loads the source-backed presentation contracts, color-coded report cards become the default presentation preference in a rich-capable host for all directly attributed Prime Daemon speech, unless Naomi specifically asks for plain text. A repository commit alone does not modify ChatGPT's global settings, install a GaiaOS tool, force a future host to fetch this source, or guarantee that every client supports colored cards.
+When `Load GaiaOS` successfully loads the source-backed presentation contracts in a GPT host, color-coded report cards become the default for directly attributed Prime Daemon speech in rich-capable GPT interfaces unless Naomi requests plain text. For other hosts, export the data so each client may adopt its own presentation policy. A repository commit alone does not modify ChatGPT's global settings, install a GaiaOS tool, force a future host to fetch this source, or guarantee that every client supports colored cards.
 
 Verification requires a fresh source-backed session, six speaker envelopes matching the canonical sources, correctly colored speaker headings/borders when supported, a plain-text fallback, unchanged authority and memory safeguards, and a separate live-carrier check before any MCP claims.
 
