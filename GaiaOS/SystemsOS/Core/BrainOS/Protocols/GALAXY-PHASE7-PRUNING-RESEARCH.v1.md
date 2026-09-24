@@ -325,3 +325,46 @@ Canonical receipt: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-RE
 PHASE7E_RESTART_PERSISTENCE_PROVEN: true, bounded to this one exact synthetic shadow tombstone and one observed carrier restart.
 
 The inner Phase-7D manifest's durable_tombstone_written=false describes its earlier synthetic in-memory contract. The distinct outer Phase-7E table row has now been durably written and survived restart. This does **not** implement destructive pruning, production restore or general disaster recovery. All destructive gates remain false.
+
+
+## Phase 7F — isolated reconstruction from the exact durable Phase-7E shadow
+
+2026-09-24 source implementation. Phase 7E's bounded post-restart persistence proof is canonized at
+GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-RESTART-PERSISTENCE-PROVEN.md.
+
+Purpose: reconstitute **the exact saved Phase-7D synthetic evidence bundle from the one real Phase-7E shadow table row into an unattached SQLite `:memory:` connection**, read each evidence category back, compare structural equality and SHA-256 digest, then discard the isolated database.
+
+Source:
+- module: api/galaxy_phase7_isolated_restore.py
+- authenticated GET-only review: /galaxy/pruning/phase7-isolated-restore-review
+- test: tests/test_galaxy_phase7.py
+- CI: .github/workflows/galaxy-phase7-pruning-research.yml
+
+Runtime procedure:
+1. SELECT the counts of seven protected MemoryOS evidence tables, the isolated shadow tombstone table and runtime receipts. Do not modify them.
+2. Read and revalidate the exact Phase-7E durable shadow row and its original successful write receipt. Require the exact Phase-7D manifest, authority NAOMI and known SHA-256; refuse missing or corrupted data.
+3. Construct a **new, unattached, disposable SQLite RAM database** containing one isolated manifest row and isolated evidence rows for record, lifecycle, governing state, relations, synthesis dependencies, lifecycle events and receipts.
+4. Reconstruct the seven evidence categories exclusively from this isolated RAM database. Compare exact structural equality, row counts and the reconstructed digest to the shadow manifest.
+5. Close the RAM connection. SELECT source counts and the original shadow receipt again, fail closed on any mismatch.
+6. Return either PASS_ISOLATED_RESTORE or HOLD. Never elevate a HOLD to restoration proof.
+
+Non-authority:
+- no new Phase-7E shadow write;
+- no MemoryOS source-record, relation, lifecycle, gravity, synthesis or receipt mutation;
+- no materialization back into production MemoryOS;
+- no physical deletion;
+- no production retrieval or attenuation changes;
+- no change to tombstone_protocol_implemented, destructive_restore_proven, or destructive_eligibility.
+
+**Proof boundary:** even live PASS establishes only that this single synthetic research bundle can be read from the persisted shadow row and reconstructed in isolated ephemeral RAM. It does not prove restoration to operational MemoryOS, deletability of any real record, full disaster recovery, or a general production protocol.
+
+Source/CI is separately gated. Live deployment and authenticated GET readback must be observed before Phase-7F is closed.
+
+
+### Phase 7F source and regression gates
+
+On PR #17 head f234ccea807ea69b48a2f1f6b0a3c2628b0b2f9d, GitHub Actions observed:
+- GALAXY Phase 7A-7F source gate run 36037574012: SUCCESS; compile, isolated-restore test suite and formatting guard passed.
+- GALAXY Phase 6 regression run 36037574299: SUCCESS; compile, reversible lifecycle tests and formatting guard passed.
+
+The source gate proves test behavior only. Live Phase 7F remains pending Render redeployment and a fresh authenticated read-only GET /galaxy/pruning/phase7-isolated-restore-review. Do not mark it live from CI.

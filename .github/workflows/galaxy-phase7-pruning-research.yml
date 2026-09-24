@@ -1,4 +1,4 @@
-name: GALAXY Phase 7A-7E Pruning Research Source Gate
+name: GALAXY Phase 7A-7F Pruning Research Source Gate
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
       - "api/galaxy_phase7.py"
       - "api/galaxy_phase7_tombstone.py"
       - "api/galaxy_phase7_tombstone_shadow.py"
+      - "api/galaxy_phase7_isolated_restore.py"
       - "api/memcon_runtime.py"
       - "api/browser_memcon_bridge.py"
       - "api/Dockerfile"
@@ -17,6 +18,7 @@ on:
       - "api/galaxy_phase7.py"
       - "api/galaxy_phase7_tombstone.py"
       - "api/galaxy_phase7_tombstone_shadow.py"
+      - "api/galaxy_phase7_isolated_restore.py"
       - "api/memcon_runtime.py"
       - "api/browser_memcon_bridge.py"
       - "api/Dockerfile"
@@ -35,15 +37,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Compile Phase 7A-7E
+      - name: Compile Phase 7A-7F
         run: |
           python -m py_compile api/galaxy_phase7.py
           python -m py_compile api/galaxy_phase7_tombstone.py
           python -m py_compile api/galaxy_phase7_tombstone_shadow.py
+          python -m py_compile api/galaxy_phase7_isolated_restore.py
           python -m py_compile api/memcon_runtime.py
           python -m py_compile api/browser_memcon_bridge.py
           python -m py_compile tests/test_galaxy_phase7.py
-      - name: Prove pruning research, tombstone contract, and isolated shadow persistence gates
+      - name: Prove pruning, shadow persistence and isolated restore guards
         run: |
           PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_phase7.py" -v
       - name: Guard against source formatting errors

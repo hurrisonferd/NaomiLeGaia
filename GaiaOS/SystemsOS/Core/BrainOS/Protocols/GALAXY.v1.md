@@ -5022,3 +5022,14 @@ Naomi's pinned continuity receipt showed the carrier boot, Render instance and p
 Canonical receipt: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-RESTART-PERSISTENCE-PROVEN.md
 
 NEXT: Phase-7F bounded nondestructive restore research or Phase-8 MERCURY audit. Destructive gates remain false and require separate explicit Naomi authorization for any future change.
+
+
+## Phase 7F source checkpoint — isolated recovery research (2026-09-24)
+
+After Phase 7E proved one exact synthetic shadow tombstone and its receipt survived a real Render restart, Phase 7F source adds authenticated read-only reconstruction into an unattached, disposable SQLite :memory: store. Its only live input is the exact Phase-7E shadow row and original write receipt. It validates the Phase-7D manifest digest, rebuilds seven synthetic evidence categories in isolated RAM, verifies equality and digest, closes that store, and proves the production MemoryOS/receipt/shadow table counts stayed unchanged. A corrupt source or inconsistent post-readback HOLDs.
+
+Source: api/galaxy_phase7_isolated_restore.py
+GET: /galaxy/pruning/phase7-isolated-restore-review
+Protocol: GaiaOS/SystemsOS/Core/BrainOS/Protocols/GALAXY-PHASE7-PRUNING-RESEARCH.v1.md
+
+Phase-7F executable source, CI and live runtime each retain separate proof gates. No new tombstone, actual MemoryOS restoration, physical pruning or production attenuation is authorized.
