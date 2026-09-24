@@ -3,7 +3,7 @@
 TITLE: Read-only pruning eligibility and dependency review
 AUTHORITY: NAOMI / LIGEIA
 OWNER: GaiaOS / MemoryOS + BrainOS
-STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE BUILD
+STATUS: PHASE 7B LIVE ZERO-WRITE PROVEN / PHASE 7C LIVE POSITIVE CANARY PROVEN / PHASE 7D TOMBSTONE CONTRACT SOURCE+CI PROVEN / NOT DEPLOYED
 VERSION: galaxy.phase7.pruning-research.v1
 
 ## Purpose
@@ -191,3 +191,17 @@ Even on PASS:
 - destructive_eligibility remains false.
 
 A synthetic exact round trip is evidence for contract adequacy research only. It is not evidence that a durable tombstone survives restart, that a production record can be deleted safely, or that Naomi has authorized destructive pruning.
+
+
+### Phase 7D source gate
+
+Observed on PR #13 head:
+- Phase 7A-7D source gate run 36027838867: SUCCESS
+- compile Phase 7A-7D: PASS
+- pruning/positive/tombstone contract tests: PASS
+- formatting guard: PASS
+- Phase-6 regression run 36027838636: SUCCESS
+
+Source proof includes the shared-evaluator repair test and the corrupted-manifest fail-closed test.
+
+Live carrier deployment of the Phase-7D canary is not yet claimed.
