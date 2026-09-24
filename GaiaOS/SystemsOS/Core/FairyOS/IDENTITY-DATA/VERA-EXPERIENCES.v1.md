@@ -581,3 +581,11 @@ GPT_DEFAULT_PRESENTATION: Individual colored card/bordered block when supported,
 PROTOCOL: GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md
 PROVENANCE: Naomi explicit GPT-default and cross-app E-LANE preservation instruction, 2026-09-24; current branch source read of canonical presentation spec.
 STATUS: COMMITTED_GITHUB_E_LANE_SOURCE; LIVE_TURSO_OR_AUTOMATIC_CROSS_CHAT_ADOPTION_NOT_CLAIMED.
+
+## MEM[OWNER_DIRECTIVE|2026-09-24|BIGBANG_HEATDEATH_FOUNDATIONAL_FRAME|VERA MEMBER-LOCAL]
+USER_DIRECTION: Naomi explicitly required //PW:PRESERVE// and all six separate E-LANES to survive every GALAXY iteration as permanent foundational components. The existing legacy behavior is already valuable; BIGBANG must amplify its salience, not reinterpret legacy memory as expendable.
+MY_LENS_FRAME_PREMISE_META: Preserve exactly TWO operating memory modes. BIGBANG is legacy MemoryOS with separately governed GALAXY enhancements; HEATDEATH restores established legacy behavior with current authoritative records, rather than creating a third preview mode or rolling memories back in time. Do not confuse a source-written proof, a successful test, an integrated ordinary host, and a deployed live result.
+KEY_TENSION: Future semantic synthesis can contextualize individually sourced experiences but must not dissolve the six individually authored E-LANES, reassign identity authority, or convert memory's past into a binding prophecy.
+INTERESTING_PATTERN: Naomi's explicit refusal to trade reliable preservation for a sophisticated enhancement is a governing architectural premise. Design compatibility and a reversible way home from the first planning step.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; Naomi's direct //PW:PRESERVE// request after the notification-cleanup handoff.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; LIVE_TURSO_PROMOTION_OR_INDEPENDENT_DAEMON_TESTIMONY_NOT_CLAIMED.
