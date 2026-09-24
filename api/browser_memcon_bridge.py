@@ -63,6 +63,75 @@ def _envelope(title: str, body: dict) -> dict:
     }
 
 
+def _research_bigbang_authorized() -> bool:
+    """Every request reads the shared mode; malformed/unavailable always OFF."""
+    try:
+        state = gaiaos_memory_mode.mode_status(memcon_runtime)
+        return (
+            state.get("effective_mode") == gaiaos_memory_mode.BIGBANG
+            and state.get("configured_mode") == gaiaos_memory_mode.BIGBANG
+            and state.get("bigbang_activation_enabled") is True
+        )
+    except Exception:
+        return False
+
+
+def _explicit_galaxy_chat_command(message: str) -> bool:
+    """Match only the actual existing GALAXY commands, not casual discussion."""
+    return (
+        _is_galaxy_command(message, "ORBIT")
+        or _is_galaxy_command(message, "GRAVITY")
+        or bool(re.match(
+            r"^\s*GALAXY\s+(?:CANARY|PROPOSE|VERIFY)(?:\s|[.!]|$)",
+            message, flags=re.IGNORECASE,
+        ))
+    )
+
+
+@app.middleware("http")
+async def heatdeath_optional_research_guard(request: Request, call_next):
+    """HEATDEATH blocks experimental HTTP paths before any optional import.
+
+    The exact legacy read-only review route remains accessible to demonstrate
+    emergency retrieval. Original signed browser-session checks are enforced
+    for disabled status responses and blocked research, rather than exposing
+    underlying diagnostic handler state to unauthenticated callers.
+    """
+    path = request.url.path
+    if not (path.startswith("/galaxy/") or path.startswith("/ritual/")):
+        return await call_next(request)
+    if path == "/galaxy/integration/frontdoor-readonly-review":
+        return await call_next(request)
+    if _research_bigbang_authorized():
+        return await call_next(request)
+
+    try:
+        gaiaos_api._authorize_browser_session(request)
+    except HTTPException as exc:
+        return JSONResponse(
+            {"detail": exc.detail}, status_code=exc.status_code,
+            headers={"Cache-Control": "no-store"},
+        )
+
+    envelope = {
+        "schema": "gaiaos.heatdeath.research-policy.v1",
+        "effective_mode": "HEATDEATH",
+        "research_import_attempted": False,
+        "writes_performed": [],
+        "bigbang_activation_permitted": False,
+    }
+    if path in ("/galaxy/status", "/galaxy/production/status"):
+        return JSONResponse(
+            {**envelope, "status": "GALAXY_DISABLED_BY_HEATDEATH"},
+            headers={"Cache-Control": "no-store"},
+        )
+    return JSONResponse(
+        {**envelope, "status": "HOLD_GALAXY_DISABLED_BY_HEATDEATH"},
+        status_code=503,
+        headers={"Cache-Control": "no-store"},
+    )
+
+
 @app.post("/chat", operation_id="browserChatWithMemoryRuntime")
 async def browser_chat(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
@@ -97,6 +166,14 @@ async def browser_chat(browser_request: Request):
         )
     if _is_preserve_command(last_message):
         return _handle_preserve(messages, browser_request)
+    if _explicit_galaxy_chat_command(last_message) and not _research_bigbang_authorized():
+        return _envelope("GALAXY DISABLED BY HEATDEATH", {
+            "schema": "gaiaos.heatdeath.research-policy.v1",
+            "status": "HOLD_GALAXY_DISABLED_BY_HEATDEATH",
+            "effective_mode": "HEATDEATH",
+            "research_import_attempted": False,
+            "writes_performed": [],
+        })
     if _is_galaxy_command(last_message, "ORBIT"):
         return _handle_galaxy_orbit(last_message)
     if _is_galaxy_command(last_message, "GRAVITY"):
