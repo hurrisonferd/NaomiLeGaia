@@ -314,3 +314,14 @@ Until that post-restart observation:
 - destructive_restore_proven remains false;
 - physical pruning remains disabled;
 - production attenuation remains disabled.
+
+
+## Phase 7E live restart-persistence closure — 2026-09-24
+
+Following the explicitly approved Phase-7E exact synthetic shadow write and PASS immediate readback, Naomi manually restarted the Render carrier. The pinned MemoryOS continuity test independently returned PASS with changed boot ID, Render instance ID and process fingerprint while recovering the exact controlled durable record. On the restarted carrier, authenticated read-only /galaxy/pruning/phase7-tombstone-shadow-review returned PASS_DURABLE_SHADOW_READBACK, unchanged exact synthetic tombstone ID, unchanged subject ID, unchanged evidence SHA-256, original linked runtime receipt, valid and exact manifest, and all ten review checks true. No new write, source-record mutation, deletion or production retrieval change occurred in this review.
+
+Canonical receipt: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-GALAXY-PHASE7E-LIVE-RESTART-PERSISTENCE-PROVEN.md
+
+PHASE7E_RESTART_PERSISTENCE_PROVEN: true, bounded to this one exact synthetic shadow tombstone and one observed carrier restart.
+
+The inner Phase-7D manifest's durable_tombstone_written=false describes its earlier synthetic in-memory contract. The distinct outer Phase-7E table row has now been durably written and survived restart. This does **not** implement destructive pruning, production restore or general disaster recovery. All destructive gates remain false.
