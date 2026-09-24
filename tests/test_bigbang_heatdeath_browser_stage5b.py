@@ -98,6 +98,7 @@ def good_packet(*, text: str = "historical context affects retrieval") -> dict:
 class FakeRequest:
     def __init__(self, message: str, role: str = "user"):
         self.data = {"messages": [{"role": role, "content": message}]}
+        self.cookies = {base.SESSION_COOKIE: "ci-only-browser-session"}
     async def json(self):
         return self.data
 
