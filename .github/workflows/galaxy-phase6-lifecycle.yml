@@ -28,6 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -41,5 +43,6 @@ jobs:
       - name: Prove reversible lifecycle and fail-closed gates locally
         run: |
           PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_phase6.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_phase5*.py" -v
       - name: Guard against source formatting errors
-        run: git diff --check HEAD~1 HEAD
+        run: git diff --check HEAD^1 HEAD
