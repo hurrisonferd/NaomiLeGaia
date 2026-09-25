@@ -148,18 +148,22 @@ class RenderConsoleBrowserContract(unittest.TestCase):
 
     def test_every_gaiaos_console_is_registered(self) -> None:
         discovered = {
-            route.path
+            route.path: route
             for route in carrier.app.routes
             if isinstance(route, APIRoute)
             and "GET" in (route.methods or set())
             and "console" in route.path
-            and isinstance(route.response_class, type)
-            and issubclass(route.response_class, HTMLResponse)
         }
         self.assertEqual(
-            discovered, CONSOLE_ROUTES,
-            "Register every new GaiaOS console and audit its interactive controls",
+            set(discovered), CONSOLE_ROUTES,
+            "Register every new Render console and audit its interactive controls",
         )
+        for path, route in discovered.items():
+            self.assertTrue(
+                isinstance(route.response_class, type)
+                and issubclass(route.response_class, HTMLResponse),
+                "Console routes must explicitly declare HTMLResponse: " + path,
+            )
 
     def test_rendered_console_js_parses_and_every_button_is_wired(self) -> None:
         with TestClient(carrier.app) as client:
