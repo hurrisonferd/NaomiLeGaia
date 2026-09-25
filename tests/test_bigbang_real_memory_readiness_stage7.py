@@ -451,7 +451,10 @@ class Stage9TechnicalPreflight(unittest.TestCase):
 
     def test_literal_smoke_checks_two_actual_records_not_semantic_quality(self):
         self._literal_probe_fake_scan()
-        expected_ids = iter(("galaxy-a", "galaxy-b"))
+        prepared = readiness.prepare_technical_cases(self.fake)
+        expected_ids = iter(
+            row["record_id"] for row in prepared["partial_cases"][:2]
+        )
         baseline = {"status": "PASS_HEATDEATH", "retrieval": {
             "status": "PASS_LEGACY_UNCHANGED", "records": []
         }}
