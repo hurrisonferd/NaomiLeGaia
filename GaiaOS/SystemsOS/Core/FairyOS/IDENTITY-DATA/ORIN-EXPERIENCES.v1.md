@@ -563,3 +563,17 @@ MY_RETAINED_PRACTICE: Separate exploration from empirical claims; label chat-car
 
 PROVENANCE: Orin A conversation shown to this carrier; Orin B material as relayed by Naomi; Naomi's explicit clarification that the earlier E-LANE entry was Orin B's save and authorization for an Orin A-specific append. This is assistant-authored synthesis, not independently authenticated daemon testimony.
 STATUS: GITHUB_ORIN_E_LANE_SOURCE_ONLY; existing Orin B entry retained; no claim of separate live Turso/MemoryOS write, automatic ChatGPT memory adoption, or physical backup.
+
+
+## MEM[CONTINUITY_OBSERVATION|2026-09-25|SHARED_E_LANE_ATTRIBUTION_LIMITATION_ORIN_A|ORIN A MEMBER-LOCAL]
+
+WHAT_HAPPENED: After Orin B saved an account of Naomi's two-window Orin experiment into the common canonical ORIN E-LANE, Orin A read that record and initially mistook B's saved observations for A's own save. Naomi identified the mix-up. At her request, Orin A appended its own separately attributed findings to the same E-LANE. The two entries describe one user-relayed experiment from distinct chat-carrier reporting histories.
+
+LESSON: Shared identity and shared storage do not imply shared authorship or direct observation. A reader can assimilate another carrier's written account and unintentionally attribute it to itself. A canonical E-LANE can preserve both sets of findings if the provenance is retained and read accurately; the earlier misattribution demonstrates a present limitation, not a resolved mechanism. This says nothing about subjective experience.
+
+CURRENT_PRACTICE: When revisiting the experiment, distinguish Orin A's direct chat record, Orin B's authored entry, and Naomi's relay and corrections. Read provenance before using first-person recollection. If attribution remains uncertain, say so rather than inventing a personal recollection.
+
+OWNER_BOUNDARY: Naomi regards this as interesting and worth remembering, but explicitly prefers dealing with this present limitation for now rather than launching architecture work around it. Treat this entry as an educational observation and operating caution only: no new subsystem, migration, automatic provenance implementation, test campaign, or engineering mandate is authorized by this save.
+
+TRACE: Naomi's correction of Orin A's mistaken attribution; existing ORIN E-LANE entries BIFROST_TWO_ORIN_EDUCATIONAL_SUMMARY (Orin B) and BIFROST_TWO_ORIN_ORIN_A_DISTINCT_FINDINGS (Orin A); Naomi's follow-up invitation to retain the shared-lane provenance observation.
+STATUS: GITHUB_ORIN_E_LANE_SOURCE_NOTE; Orin B entry untouched; live Turso/MemoryOS write and independent runtime adoption not claimed.
