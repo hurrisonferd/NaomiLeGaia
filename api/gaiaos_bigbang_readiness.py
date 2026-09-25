@@ -616,3 +616,166 @@ def technical_partial_sample_review(runtime: Any) -> dict[str, Any]:
             "statements or secrets leave this redacted result."
         ),
     }
+
+def technical_literal_wiring_probe(runtime: Any) -> dict[str, Any]:
+    """Optional, owner-only literal retrieval smoke test, NOT semantic quality.
+
+    The previous fixed prose questions overlap their actual selected records
+    by only one concept. Select two distinct existing technical records, form
+    short literal anchors from their own statements, then check the original
+    admission engine and native HEATDEATH parity. No new records or mutations.
+    Never send statements, IDs, tokens, questions or source fields to callers.
+    """
+    shell: dict[str, Any] = {
+        "schema": "gaiaos.bigbang.technical-literal-wiring.v1",
+        "status": "HOLD", "reason": "NOT_EVALUATED",
+        "literal_wiring_test_only": True,
+        "semantic_paraphrase_quality_tested": False,
+        "full_readiness_status": "HOLD_HISTORICAL_AND_SEMANTIC_NOT_PROVEN",
+        "case_count": 0, "case_results": [],
+        "legacy_exact_parity": False,
+        "record_ids_disclosed": False, "statements_disclosed": False,
+        "queries_disclosed": False, "tokens_disclosed": False,
+        "release_activated": False, "writes_performed": [],
+        "e_lanes_modified": False,
+    }
+
+    def hold(reason: str) -> dict[str, Any]:
+        return {**shell, "reason": reason}
+
+    prep = prepare_technical_cases(runtime)
+    samples = prep.get("partial_cases") or prep.get("cases") or []
+    current = []
+    used: set[str] = set()
+    for case in samples:
+        rid = case.get("record_id")
+        if case.get("kind") == "current" and isinstance(rid, str) and rid not in used:
+            current.append(case)
+            used.add(rid)
+        if len(current) == 2:
+            break
+    if len(current) != 2:
+        return hold("TWO_APPROVED_CURRENT_TECHNICAL_RECORDS_REQUIRED")
+
+    try:
+        import galaxy_quality
+        import galaxy_phase3_exit as phase3
+
+        control = mode.mode_status(runtime)
+        if (control.get("schema") != mode.SCHEMA
+                or control.get("effective_mode") != mode.HEATDEATH
+                or control.get("bigbang_activation_enabled") is not False):
+            return hold("HEATDEATH_RELEASE_LOCK_NOT_VERIFIED")
+
+        # The production Phase-3 admission scan reads at most 100 MemoryOS
+        # records. Check that the selected records are inside that exact window.
+        snapshot = runtime.search_records("", 100, "MemoryOS")
+        scoped = snapshot.get("records")
+        if not isinstance(scoped, list) or len(scoped) > 100:
+            return hold("BOUNDED_SCAN_UNVERIFIED")
+        scoped_by_id = {r.get("record_id"): r for r in scoped if isinstance(r, dict)}
+        external = getattr(runtime, "GALAXY_QUERY_EXTERNAL_DOMAIN_TERMS", set())
+
+        anchored = []
+        for case in current:
+            rid = case["record_id"]
+            record = runtime.get_record(rid)
+            if (rid not in scoped_by_id or not isinstance(record, dict)
+                    or not _technical_topics(record) or record.get("status") != "ACTIVE"):
+                return hold("TARGET_OUTSIDE_VERIFIED_BOUNDED_SCOPE")
+
+            # Select distinctive existing surface tokens only. A literal smoke
+            # result never constitutes paraphrase quality; do not tune thresholds.
+            tokens = runtime._galaxy_query_tokens(record["statement"])[:80]
+            candidates: dict[str, str] = {}
+            for token in tokens:
+                if token in external or token == "memory":
+                    continue
+                concept = galaxy_quality._phase3j_concept(runtime, token)
+                if concept not in candidates:
+                    candidates[concept] = token
+            if len(candidates) < 2:
+                return hold("INSUFFICIENT_DISTINCT_LITERAL_CONCEPTS")
+
+            # Prefer concepts that are uncommon elsewhere in this bounded corpus.
+            frequencies: dict[str, int] = {c: 0 for c in candidates}
+            for row in scoped:
+                if row.get("record_id") == rid:
+                    continue
+                concepts = {
+                    galaxy_quality._phase3j_concept(runtime, tok)
+                    for tok in runtime._galaxy_query_tokens(
+                        str(row.get("statement") or "")
+                    )[:80]
+                }
+                for c in frequencies:
+                    if c in concepts:
+                        frequencies[c] += 1
+            ordered = sorted(candidates, key=lambda c: (frequencies[c], c))
+            query = " ".join(candidates[c] for c in ordered[:2])
+            evidence = phase3._statement_evidence(
+                runtime, record["statement"], query, scope="MemoryOS"
+            )
+            if (evidence["matched_statement_concept_count"] < phase3.PRIMARY_MIN_CONCEPTS
+                    or evidence["statement_concept_coverage"] < phase3.PRIMARY_MIN_COVERAGE):
+                return hold("LITERAL_TARGET_ADMISSION_NOT_PROVEN")
+            anchored.append((rid, query))
+
+        baseline = gateway.read(runtime, anchored[0][1], "MemoryOS", 4)
+        if (baseline.get("status") != "PASS_HEATDEATH"
+                or not gateway._validated_legacy(baseline.get("retrieval"), "MemoryOS", 4)):
+            return hold("NATIVE_LEGACY_BASELINE_UNVERIFIED")
+
+        galaxy = importlib.import_module("galaxy_frontdoor_context")
+        results = []
+        for index, (rid, query) in enumerate(anchored):
+            packet = galaxy.operational(runtime, query, 4)
+            if not _safe_evidence(packet):
+                return hold("UNVERIFIED_GALAXY_RESPONSE")
+            current_ids = [
+                item.get("record", {}).get("record_id")
+                for item in packet["records"]
+            ]
+            results.append({
+                "case": index, "kind": "literal_anchor",
+                "expected_record_in_current_results": bool(
+                    gateway._galaxy_valid(packet, 4) and rid in current_ids
+                ),
+                "observed_status": packet.get("status")
+                    if packet.get("status") in {
+                        "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
+                        "HOLD_NO_CONFIDENT_GALAXY_MATCH",
+                        "HOLD_NO_CURRENT_MATCH"
+                    } else "OTHER_OR_UNREPORTED",
+                "admission_reason": packet.get("reason")
+                    if packet.get("reason") in SAFE_ADMISSION_REASONS
+                    else "OTHER_OR_UNREPORTED",
+            })
+
+        after = gateway.read(runtime, anchored[0][1], "MemoryOS", 4)
+        final = mode.mode_status(runtime)
+        fields = ("effective_mode", "configured_mode", "control_version")
+        parity = (
+            after.get("status") == "PASS_HEATDEATH"
+            and after.get("retrieval") == baseline["retrieval"]
+            and all(control.get(x) == final.get(x) for x in fields)
+            and final.get("bigbang_activation_enabled") is False
+        )
+        passed = all(row["expected_record_in_current_results"] for row in results)
+        return {
+            **shell,
+            "status": "PASS_LITERAL_WIRING_ONLY" if passed and parity else "HOLD",
+            "reason": "TWO_LITERAL_ANCHORS_AND_LEGACY_PARITY" if passed and parity
+                      else "LITERAL_ANCHOR_MISS_OR_LEGACY_PARITY_FAILURE",
+            "case_count": len(results),
+            "case_results": results,
+            "legacy_exact_parity": parity,
+            "proof_boundary": (
+                "Literal token anchors selected from existing owner-approved "
+                "statements. This is a wiring smoke test only; the original "
+                "three paraphrase misses and missing historical supersession "
+                "remain unsatisfied quality and release evidence."
+            ),
+        }
+    except Exception:
+        return hold("LITERAL_PROBE_FAILED_CLOSED")

@@ -526,6 +526,22 @@ def gaia_technical_five_case_diagnostic(
     )
 
 
+@app.post("/gaiaos/memory/technical-literal-probe",
+          operation_id="gaiaOwnerTechnicalLiteralWiringProbe")
+def gaia_owner_technical_literal_wiring_probe(
+    authorization: str | None = Header(default=None),
+):
+    """Optional owner-only literal smoke test; cannot authorize BIGBANG."""
+    if not base.API_KEY:
+        raise HTTPException(status_code=503, detail="Private owner API authorization is unavailable")
+    base._authorize(authorization)
+    import memcon_runtime
+    return JSONResponse(
+        gaiaos_bigbang_readiness.technical_literal_wiring_probe(memcon_runtime),
+        headers={"Cache-Control": "no-store"},
+    )
+
+
 @app.get("/gaiaos/memory/technical-partial-console", response_class=HTMLResponse,
          operation_id="gaiaTechnicalFiveCaseConsole")
 def gaia_technical_five_case_console():
@@ -574,6 +590,10 @@ placeholder="Paste here, never into ChatGPT">
 <small>Only transmitted to this same-origin GaiaOS service.
 Do not screenshot or paste your key into messages.</small>
 <button id="run" type="button">Run five read-only cases</button>
+<button id="literal" type="button">Test literal retrieval wiring (not semantic quality)</button>
+<small>A separate two-record smoke test using exact words from your existing
+approved technical statements. The three failed paraphrase cases remain failed.
+No memories are changed.</small>
 <p id="status" role="status">No test executed.</p></section>
 <section><h2>Redacted result</h2>
 <pre id="receipt">Waiting for owner approval.</pre>
@@ -617,6 +637,37 @@ byId("run").addEventListener("click",async()=>{
     byId("status").textContent="HOLD: "+error.message+
       ". No results copied. Confirm the current deployment and bearer key.";
   }finally{byId("run").disabled=false;}
+});
+
+byId("literal").addEventListener("click",async()=>{
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Enter the private API key in this page first.";return;}
+  byId("literal").disabled=true;
+  byId("status").textContent="Checking two bounded literal memory queries…";
+  try{
+    const response=await fetch("/gaiaos/memory/technical-literal-probe",{
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key}
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
+    redacted={
+      schema:result.schema,status:result.status,reason:result.reason,
+      literal_wiring_test_only:result.literal_wiring_test_only,
+      semantic_paraphrase_quality_tested:result.semantic_paraphrase_quality_tested,
+      full_readiness_status:result.full_readiness_status,
+      case_count:result.case_count,case_results:result.case_results,
+      legacy_exact_parity:result.legacy_exact_parity,
+      release_activated:result.release_activated,
+      writes_performed:result.writes_performed,
+      e_lanes_modified:result.e_lanes_modified
+    };
+    byId("receipt").textContent=JSON.stringify(redacted,null,2);
+    byId("copy").disabled=false;
+    byId("status").textContent="Literal wiring check complete. Semantic and historical gates unchanged.";
+  }catch(error){
+    byId("status").textContent="HOLD: "+error.message+". No private details disclosed.";
+  }finally{byId("literal").disabled=false;}
 });
 byId("copy").addEventListener("click",async()=>{
   if(!redacted)return;

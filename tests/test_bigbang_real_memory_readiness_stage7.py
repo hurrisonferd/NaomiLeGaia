@@ -436,6 +436,78 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         self.assertEqual(audit["measurements"], [])
         self.assertNotIn("galaxy-fixture", str(audit))
 
+    def _literal_probe_fake_scan(self):
+        self._insert("galaxy-a", "GALAXY relevance context gravity priority")
+        self._insert("galaxy-b", "GALAXY authority independent safeguards retrieval")
+        def search_records(query, limit, scope):
+            self.assertEqual((query, limit, scope), ("", 100, "MemoryOS"))
+            with self.fake._db() as conn:
+                rows = [dict(row) for row in conn.execute(
+                    "SELECT * FROM memory_records WHERE scope='MemoryOS'"
+                ).fetchall()]
+            return {"records": rows, "count": len(rows)}
+        self.fake.search_records = search_records
+        self.fake.GALAXY_QUERY_EXTERNAL_DOMAIN_TERMS = set()
+
+    def test_literal_smoke_checks_two_actual_records_not_semantic_quality(self):
+        self._literal_probe_fake_scan()
+        prepared = readiness.prepare_technical_cases(self.fake)
+        expected_ids = iter(
+            row["record_id"] for row in prepared["partial_cases"][:2]
+        )
+        baseline = {"status": "PASS_HEATDEATH", "retrieval": {
+            "status": "PASS_LEGACY_UNCHANGED", "records": []
+        }}
+        with patch.object(gateway, "read", return_value=baseline), patch.object(
+            gateway, "_validated_legacy", return_value=True
+        ), patch.object(
+            gateway, "_galaxy_valid", return_value=True
+        ), patch(
+            "galaxy_frontdoor_context.operational",
+            side_effect=lambda rt, query, limit: packet("current", next(expected_ids))
+        ) as operational:
+            result = readiness.technical_literal_wiring_probe(self.fake)
+        self.assertEqual(result["status"], "PASS_LITERAL_WIRING_ONLY", result)
+        self.assertEqual(result["case_count"], 2)
+        self.assertEqual(operational.call_count, 2)
+        self.assertTrue(result["legacy_exact_parity"])
+        self.assertFalse(result["semantic_paraphrase_quality_tested"])
+        self.assertTrue(result["literal_wiring_test_only"])
+        self.assertIn("HOLD", result["full_readiness_status"])
+        self.assertEqual(result["writes_performed"], [])
+        self.assertFalse(result["release_activated"])
+        for sensitive in ("galaxy-a", "galaxy-b", "gravity",
+                          "safeguards", "naomi-owner-save"):
+            self.assertNotIn(sensitive, str(result))
+
+    def test_literal_smoke_does_not_falsely_pass_on_missing_records(self):
+        self._literal_probe_fake_scan()
+        baseline = {"status": "PASS_HEATDEATH", "retrieval": {
+            "status": "PASS_LEGACY_UNCHANGED", "records": []
+        }}
+        with patch.object(gateway, "read", return_value=baseline), patch.object(
+            gateway, "_validated_legacy", return_value=True
+        ), patch.object(gateway, "_galaxy_valid", return_value=True), patch(
+            "galaxy_frontdoor_context.operational", return_value=packet("negative")
+        ):
+            result = readiness.technical_literal_wiring_probe(self.fake)
+        self.assertEqual(result["status"], "HOLD")
+        self.assertEqual(result["case_count"], 2)
+        self.assertFalse(any(r["expected_record_in_current_results"]
+                             for r in result["case_results"]))
+        self.assertTrue(result["legacy_exact_parity"])
+        self.assertFalse(result["release_activated"])
+
+    def test_literal_smoke_holds_without_two_approved_records(self):
+        self._insert("galaxy-only", "GALAXY relevance context gravity priority")
+        with patch("galaxy_frontdoor_context.operational",
+                   side_effect=AssertionError("No eligible two-record sample")):
+            result = readiness.technical_literal_wiring_probe(self.fake)
+        self.assertEqual(result["status"], "HOLD")
+        self.assertEqual(result["reason"],
+                         "TWO_APPROVED_CURRENT_TECHNICAL_RECORDS_REQUIRED")
+        self.assertEqual(result["case_results"], [])
+
     def test_partial_review_redacts_ids_and_cannot_be_full_pass(self):
         self._insert("galaxy-a", "GALAXY relevance stays query-first")
         self._insert("galaxy-b", "GALAXY gravity never grants authority")
@@ -480,10 +552,23 @@ class Stage9TechnicalPreflight(unittest.TestCase):
             self.assertEqual(page.headers["cache-control"], "no-store")
             self.assertIn('type="password"', page.text)
             self.assertIn("target_query_audit:result.target_query_audit", page.text)
+            self.assertIn('id="literal"', page.text)
+            self.assertIn("/gaiaos/memory/technical-literal-probe", page.text)
             self.assertIn('credentials:"same-origin"', page.text)
             self.assertIn('redirect:"error"', page.text)
             self.assertNotIn(secret, page.text)
             self.assertNotIn("__NONCE__", page.text)
+            literal_denied = client.post("/gaiaos/memory/technical-literal-probe")
+            self.assertEqual(literal_denied.status_code, 401)
+            with patch.object(readiness, "technical_literal_wiring_probe",
+                              return_value={"status": "HOLD", "writes_performed": []}
+                              ) as literal_probe:
+                literal_granted = client.post(
+                    "/gaiaos/memory/technical-literal-probe",
+                    headers={"Authorization": "Bearer "+secret},
+                )
+                self.assertEqual(literal_granted.status_code, 200)
+                literal_probe.assert_called_once()
             denied = client.post("/gaiaos/memory/technical-partial-review")
             self.assertEqual(denied.status_code, 401)
             self.assertEqual(denied.json()["detail"], "OWNER_AUTH_HEADER_NOT_RECEIVED")
