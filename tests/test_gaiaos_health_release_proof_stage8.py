@@ -46,6 +46,13 @@ class DeploymentProofTests(unittest.TestCase):
         self.assertFalse(proof["key_material_disclosed"])
         self.assertNotIn("private-test-sentinel", repr(proof))
 
+    def test_openai_health_proof_requires_nonblank_key(self):
+        for raw, expected in ((None, False), ("", False), ("   ", False), ("ci-provider-key", True)):
+            with self.subTest(raw_present=raw is not None), patch.object(
+                carrier, "OPENAI_API_KEY", raw
+            ):
+                self.assertIs(carrier.health()["openai_configured"], expected)
+
     def test_deployed_sha_and_registered_post_are_reported(self):
         routes = [
             SimpleNamespace(path="/gaiaos/memory/readiness", methods={"POST"}),
