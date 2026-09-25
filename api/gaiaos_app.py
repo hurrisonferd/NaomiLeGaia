@@ -565,7 +565,7 @@ def gaia_owner_augury_semantic_shadow(
         raise HTTPException(
             status_code=400, detail="EXPLICIT_MODEL_AND_TWO_EXCERPT_CONSENT_REQUIRED"
         )
-    if not base.OPENAI_API_KEY:
+    if not base.OPENAI_API_KEY or not base.OPENAI_API_KEY.strip():
         raise HTTPException(status_code=503, detail="SHADOW_MODEL_NOT_CONFIGURED")
     if not base.OPENAI_MODEL or not base.OPENAI_MODEL.strip():
         raise HTTPException(status_code=503, detail="SHADOW_MODEL_NAME_NOT_CONFIGURED")
