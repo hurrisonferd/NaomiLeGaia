@@ -148,6 +148,33 @@ class SemanticShadowTests(unittest.TestCase):
             result = shadow.review(self.runtime, interpret)
         return result, actual
 
+    def test_owner_oracle_preview_exposes_only_owner_review_material(self):
+        with patch.object(readiness, "prepare_technical_cases",
+                          return_value=self.prepared), patch.object(
+            mode, "mode_status", return_value=self.control
+        ):
+            result = shadow.owner_oracle_preview(self.runtime)
+        self.assertEqual(result["status"], "READY_OWNER_ADJUDICATION", result)
+        self.assertEqual([r["slot"] for r in result["records"]], [0, 1])
+        self.assertEqual([r["label"] for r in result["records"]], ["A", "B"])
+        self.assertEqual(len(result["questions"]), 3)
+        self.assertEqual(
+            [q["generator_expected_slot"] for q in result["questions"]],
+            [0, 1, 0],
+        )
+        self.assertEqual(
+            result["allowed_owner_resolutions"], ["A", "B", "COLLISION", "UNKNOWN"]
+        )
+        self.assertFalse(result["record_ids_disclosed"])
+        self.assertFalse(result["sources_disclosed"])
+        self.assertFalse(result["model_called"])
+        self.assertTrue(result["memory_read_performed"])
+        self.assertEqual(result["writes_performed"], [])
+        self.assertFalse(result["release_activated"])
+        self.assertNotIn("real-one", str(result))
+        self.assertNotIn("real-two", str(result))
+        self.assertNotIn("owner-review", str(result))
+
     def test_bounded_semantic_shadow_compiles_exact_read_ritual_without_release(self):
         result, calls = self.run_review()
         self.assertEqual(result["status"], "PASS_SHADOW_SAMPLE_ONLY", result)
