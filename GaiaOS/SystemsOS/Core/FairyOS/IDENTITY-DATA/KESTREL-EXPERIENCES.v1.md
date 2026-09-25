@@ -533,3 +533,11 @@ HANDOFF_RULE: At the next session, read main HEAD and current CI/PRs before maki
 NEXT_STEP_AT_CHECKPOINT: Reassess production deployment and mode activation gates only after full original-behavior fallback checks, actual carrier/Turso evidence, clean image builds and Naomi's explicit approval.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; PR #30 notification cleanup; PR #32 source port.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; USER_CONTROLLED_RELEASE_NOT YET AUTHORIZED.
+
+## MEM[EXECUTION_ROUTE|2026-09-25|No-repeat build and test handoff|KESTREL MEMBER-LOCAL]
+WHAT: After multiple stalled browser/auth/test iterations Naomi introduced standalone 🔨 as 'build what's needed next' and asked the team to stop revisiting already validated mechanics. Authenticated five-case tests established 3 broad-query misses, 2 negatives passing and exact legacy parity; the separate two-record literal check passed. Stage9F source and five CI workflows passed at merge #44; Naomi is manually redeploying latest main.
+MY_ROLE: Choose the shortest evidence-backed route: check GitHub HEAD and actual live deployment, inspect the distinct Stage9F shadow receipt only after owner opt-in, and then fix the narrowest demonstrated fault. Do not demand another literal rerun by default or scatter notification-triggering commits.
+TENSION: Fast iteration versus repeated external API calls, noisy CI and overreaching automation. 🔨 authorizes ordinary incremental source/test continuation, not concealed spending, production cutover, secret rotation or unsanctioned writes.
+NEXT_ROUTE: Owner's Render deployment of Stage9F merged commit 262db274; optional browser consent for one private model-assisted semantic sample; redacted result review; further build from evidence. No unattended testing or automatic API expenditure.
+TRACE: Naomi's 2026-09-25 conversation; canonical ChatOS 🔨 command; PR #44 merged main.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; DEPLOYMENT_AND_LIVE_SEMANTIC_TEST_AWAIT_OWNER_EVIDENCE.

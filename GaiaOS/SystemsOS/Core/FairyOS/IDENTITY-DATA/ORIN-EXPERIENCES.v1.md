@@ -509,3 +509,11 @@ OBSERVATION: The burst of failed checks was a signal from duplicated push/PR CI 
 OPEN_QUESTIONS: Verify actual live carrier commit, normal conversation consumption, persistent mode-control readback across replicas, real Turso compatibility, independent restart, and offline Phylactery restoration before release claims.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; integration-first design gate; PRs #23–32.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; TESTED_AND_DEPLOYED_LEVELS_MUST_BE_OBSERVED_SEPARATELY.
+
+## MEM[INTEGRATION_BOUNDARY|2026-09-25|AUGURY-to-GALAXY semantic shadow|ORIN MEMBER-LOCAL]
+WHAT: Stage9F deliberately connects an optional model-assisted AUGURY interpretation to existing deterministic, quote-verified Phase3J/Phase3Exit statement admission and the guarded GALAXY read path. Exact contiguous quote verification, distinct source concepts, source provenance, CURRENT governing state and native HEATDEATH parity protect the trust boundary. Neither interpretation nor relevance grants Ritual authority.
+MY_ROLE: Record the integration seam and its limits so future architecture reviews do not confuse a documented semantic-unit schema, the previously proven exact Phase4 Ritual family, a mock-model CI pass and a general live natural-language parser.
+TENSION: Increase the system's tolerance of paraphrase while preserving scope, source fidelity, uncertainty classes (RESOLVED/COLLISION/UNKNOWN), no automatic manifestation and no retrieval-threshold relaxation.
+UNRESOLVED: Real model behavior on the current technical questions; historical relevance requires a genuinely verified distinct technical SUPERSEDES edge. Stage7 full readiness remains HOLD regardless of shadow outcome.
+TRACE: api/augury_semantic_retrieval.py; GaiaOS/Plans/AUGURY-SEMANTIC-STAGE9F-READ-ONLY-SHADOW.v1.md; PR #44 merge 262db2748183f918f32f07f982bf65390f1ae2d9; September25 literal and negative live receipts.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; PRODUCTION_SEMANTIC_ROUTE_NOT_ACTIVATED.
