@@ -380,21 +380,49 @@ def review(
         )
     except Exception:
         parity = False
+    positives = [x for x in results if x["kind"] == "current"]
+    negatives = [x for x in results if x["kind"] == "negative"]
+    mechanics_passed = bool(
+        parity
+        and positives
+        and all(
+            x["resolution"] == "RESOLVED"
+            and x["source_quote_verified"]
+            and x["exact_read_ritual_compiled"]
+            and x["galaxy_readback_verified"]
+            for x in positives
+        )
+        and negatives
+        and all(x["pass"] for x in negatives)
+    )
+    oracle_passed = bool(
+        positives and all(x["expected_target_supported"] for x in positives)
+    )
     passed = all(x["pass"] for x in results) and parity
+    if passed:
+        reason = "BOUNDED_MODEL_ASSISTED_SAMPLE_ONLY"
+        oracle_state = "MATCHED"
+    elif mechanics_passed and not oracle_passed:
+        reason = "SOURCE_GROUNDED_MECHANICS_PASS_EXPECTED_TARGET_ORACLE_MISMATCH"
+        oracle_state = "MISMATCH_UNRESOLVED"
+    else:
+        reason = "SEMANTIC_CASE_FAILURE_OR_LEGACY_PARITY"
+        oracle_state = "NOT_REACHED_OR_OTHER_FAILURE"
     return {
-        **_hold(
-            "BOUNDED_MODEL_ASSISTED_SAMPLE_ONLY" if passed
-            else "SEMANTIC_CASE_FAILURE_OR_LEGACY_PARITY",
-            model_called=True,
-        ),
+        **_hold(reason, model_called=True),
         "status": "PASS_SHADOW_SAMPLE_ONLY" if passed else "HOLD",
         "case_count": CASE_COUNT, "case_results": results,
         "legacy_exact_parity": parity,
+        "source_grounded_semantic_mechanics_passed": mechanics_passed,
+        "expected_target_oracle_passed": oracle_passed,
+        "expected_target_oracle_state": oracle_state,
         "proof_boundary": (
             "This owner-invoked test evaluates two selected owner-approved "
             "technical records against three predefined questions and two "
             "unrelated negatives. Source quotes and strict GALAXY read-back "
             "are verified; model entailment is not independently proven. "
+            "An expected-target mismatch remains HOLD and must not be promoted "
+            "to PASS merely because source-grounded mechanics succeeded. "
             "Original Stage7 semantic and historical release gates remain HOLD."
         ),
     }
