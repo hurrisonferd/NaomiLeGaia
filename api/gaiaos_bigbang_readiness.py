@@ -375,15 +375,29 @@ def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
         preview["distinct_current_records_capped_at_two"] = len(chosen)
         if len(chosen) < 2:
             return hold("TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
+        if chosen[0][0] == chosen[1][0]:
+            topic = chosen[0][0]
+            third_query = {
+                "PRESERVE": "Why must Power Word PRESERVE remain available?",
+                "E_LANES": "How are six independent E-LANES protected?",
+                "HEATDEATH": "What prevents HEATDEATH from activating BIGBANG?",
+                "GALAXY": "Which GALAXY rules separate relevance and authority?",
+            }[topic]
+            queries = (*TECHNICAL_QUERIES[topic], third_query)
+        else:
+            queries = (
+                TECHNICAL_QUERIES[chosen[0][0]][0],
+                TECHNICAL_QUERIES[chosen[1][0]][0],
+                TECHNICAL_QUERIES[chosen[0][0]][1],
+            )
         cases = [
-            {"kind": "current", "query": TECHNICAL_QUERIES[topic][0],
-             "record_id": record["record_id"]}
-            for topic, record in chosen
+            {"kind": "current", "query": queries[0],
+             "record_id": chosen[0][1]["record_id"]},
+            {"kind": "current", "query": queries[1],
+             "record_id": chosen[1][1]["record_id"]},
+            {"kind": "current", "query": queries[2],
+             "record_id": chosen[0][1]["record_id"]},
         ]
-        cases.append({
-            "kind": "current", "query": TECHNICAL_QUERIES[chosen[0][0]][1],
-            "record_id": chosen[0][1]["record_id"],
-        })
         preview["current_cases_prepared"] = 3
         # Match the older record by a verified directed relation, not text
         # resemblance or REVISES. Only distinctive technical version markers
