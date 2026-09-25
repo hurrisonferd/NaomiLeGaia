@@ -656,9 +656,9 @@ _TECHNICAL_PARTIAL_CONSOLE = """<!doctype html><html lang="en"><head>
 :root{color-scheme:dark;font:16px system-ui;background:#101820;color:#f1f4f8}
 body{max-width:680px;margin:auto;padding:18px;line-height:1.5}
 section{padding:15px;margin:14px 0;border:1px solid #647185;border-radius:12px}
-h1{font-size:1.45rem}input,button{box-sizing:border-box;width:100%;
+h1{font-size:1.45rem}input,button,select{box-sizing:border-box;width:100%;
 padding:12px;margin:8px 0;border-radius:8px;font:inherit}
-input{background:#203047;color:#fff;border:1px solid #8da8c8}
+input,select{background:#203047;color:#fff;border:1px solid #8da8c8}
 button{background:#24576d;color:#fff;border:1px solid #9bb7ca;font-weight:bold}
 button:disabled{opacity:.5}small{display:block;color:#c2cede}
 pre{white-space:pre-wrap;overflow-wrap:anywhere}
@@ -685,6 +685,18 @@ the API request sets store=false.</label>
 <button id="augury" type="button">Run optional AUGURY semantic shadow</button>
 <small>This is a separate read-only test. A model answer cannot grant memory
 authority, satisfy missing historical proof or activate BIGBANG.</small>
+<button id="oracle" type="button">Review semantic ground truth locally (no model call)</button>
+<small>Owner-only diagnostic. It displays the two selected statements and three
+positive questions inside this authenticated page so you can judge A, B,
+COLLISION, or UNKNOWN. Nothing is sent to OpenAI.</small>
+<div id="oraclePanel" hidden>
+<h3>Private owner semantic review</h3>
+<small>PRIVATE: read here only. Do not screenshot, copy, or paste the statements
+or questions into chat. Only the redacted oracle receipt is safe to copy.</small>
+<pre id="oracleRecords"></pre>
+<div id="oracleChoices"></div>
+<button id="oracleReceipt" type="button" disabled>Build redacted owner-oracle receipt</button>
+</div>
 <small>A separate two-record smoke test using exact words from your existing
 approved technical statements. The three failed paraphrase cases remain failed.
 No memories are changed.</small>
@@ -698,6 +710,7 @@ Even a partial PASS leaves full readiness at HOLD.</small></section>
 "use strict";
 const byId=id=>document.getElementById(id);
 let redacted=null;
+let oracleData=null;
 byId("run").addEventListener("click",async()=>{
   const key=byId("secret").value.trim();
   if(!key){byId("status").textContent="Paste the private API key into this page first.";return;}
@@ -762,6 +775,88 @@ byId("literal").addEventListener("click",async()=>{
   }catch(error){
     byId("status").textContent="HOLD: "+error.message+". No private details disclosed.";
   }finally{byId("literal").disabled=false;}
+});
+
+byId("oracle").addEventListener("click",async()=>{
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Enter the private GaiaOS API key first.";return;}
+  byId("oracle").disabled=true;
+  byId("status").textContent="Loading private owner semantic review. No model call…";
+  try{
+    const response=await fetch("/gaiaos/memory/augury-semantic-owner-oracle-preview",{
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key}
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
+    if(result.status!=="READY_OWNER_ADJUDICATION")throw Error(result.reason||result.status);
+    oracleData=result;
+    byId("oraclePanel").hidden=false;
+    const lines=result.records.map(r=>"Statement "+r.label+":\n"+r.statement);
+    byId("oracleRecords").textContent=lines.join("\n\n");
+    const choices=byId("oracleChoices");
+    choices.replaceChildren();
+    result.questions.forEach(q=>{
+      const wrap=document.createElement("div");
+      const label=document.createElement("label");
+      label.textContent="Case "+q.case+": "+q.question;
+      const select=document.createElement("select");
+      select.id="oracleChoice"+q.case;
+      ["","A","B","COLLISION","UNKNOWN"].forEach(value=>{
+        const option=document.createElement("option");
+        option.value=value;
+        option.textContent=value||"Choose your judgment…";
+        select.appendChild(option);
+      });
+      wrap.appendChild(label);
+      wrap.appendChild(select);
+      choices.appendChild(wrap);
+    });
+    byId("oracleReceipt").disabled=false;
+    byId("status").textContent="Private oracle loaded. Judge the three questions, then build the redacted receipt.";
+  }catch(error){
+    oracleData=null;
+    byId("oraclePanel").hidden=true;
+    byId("status").textContent="HOLD: "+error.message+". No model call was made.";
+  }finally{byId("oracle").disabled=false;}
+});
+
+byId("oracleReceipt").addEventListener("click",()=>{
+  if(!oracleData)return;
+  const rows=[];
+  for(const q of oracleData.questions){
+    const choice=byId("oracleChoice"+q.case).value;
+    if(!choice){
+      byId("status").textContent="Choose A, B, COLLISION, or UNKNOWN for every case.";
+      return;
+    }
+    const ownerSlot=choice==="A"?0:choice==="B"?1:null;
+    rows.push({
+      case:q.case,
+      owner_resolution:choice,
+      owner_slot:ownerSlot,
+      generator_expected_slot:q.generator_expected_slot,
+      generator_expected_supported:ownerSlot!==null
+        ? ownerSlot===q.generator_expected_slot : false
+    });
+  }
+  redacted={
+    schema:"gaiaos.augury.semantic-owner-oracle-redacted.v1",
+    status:"OWNER_ORACLE_RECORDED",
+    case_count:rows.length,
+    case_results:rows,
+    model_called:false,
+    private_statements_copied:false,
+    private_questions_copied:false,
+    record_ids_disclosed:false,
+    sources_disclosed:false,
+    writes_performed:[],
+    release_activated:false,
+    proof_boundary:"Human owner adjudication only. No model inference was performed and BIGBANG remains locked."
+  };
+  byId("receipt").textContent=JSON.stringify(redacted,null,2);
+  byId("copy").disabled=false;
+  byId("status").textContent="Redacted owner-oracle receipt ready. Only the redacted result below is safe to copy.";
 });
 
 byId("augury").addEventListener("click",async()=>{
