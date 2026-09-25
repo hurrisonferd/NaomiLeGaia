@@ -308,6 +308,32 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         self.assertEqual(prep["preview"]["writes_performed"], [])
         self.assertFalse(prep["preview"]["review_executed"])
 
+    def test_distinct_same_topic_records_use_distinct_queries(self):
+        self._insert("galaxy-a", "GALAXY uses query relevance first")
+        self._insert("galaxy-b", "GALAXY gravity never grants authority")
+        self._insert("galaxy-old", "GALAXY v1.2 historical admission")
+        self._insert("galaxy-new", "GALAXY v2.0 supersedes historical admission")
+        self._supersedes("galaxy-old", "galaxy-new")
+        result = readiness.prepare_technical_cases(self.fake)
+        self.assertEqual(result["preview"]["status"], "PREPARED_UNTESTED")
+        self.assertEqual(result["preview"]["technical_topics"], ["GALAXY"])
+        self.assertEqual(result["preview"]["distinct_current_records_capped_at_two"], 2)
+        cases = result["cases"]
+        self.assertEqual(len(cases), 6)
+        self.assertEqual(len({x["record_id"] for x in cases[:3]}), 2)
+        self.assertEqual(len({x["query"] for x in cases[:3]}), 3)
+        self.assertEqual(cases[3]["record_id"], "galaxy-old")
+        self.assertNotIn("galaxy-old", str(result["preview"]))
+
+    def test_only_one_same_topic_record_keeps_hold(self):
+        self._insert("galaxy-only", "GALAXY preserves owner authority")
+        result = readiness.prepare_technical_cases(self.fake)
+        self.assertEqual(result["preview"]["status"], "HOLD")
+        self.assertEqual(result["preview"]["distinct_current_records_capped_at_two"], 1)
+        self.assertEqual(result["preview"]["reason"],
+                         "TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
+        self.assertEqual(result["cases"], [])
+
     def test_revises_is_not_supersedes(self):
         self._seed()
         import sqlite3
