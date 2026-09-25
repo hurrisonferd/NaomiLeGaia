@@ -529,6 +529,19 @@ def health() -> dict[str, Any]:
         "council_surface": True,
         "brain_support_surface": True,
         "hot_warm_cold_surface": True,
+        "deployment_proof": {
+            "source_commit": os.getenv("RENDER_GIT_COMMIT") or None,
+            "source_commit_verified": bool(os.getenv("RENDER_GIT_COMMIT")),
+            "stage7_readiness_route_registered": any(
+                getattr(route, "path", None) == "/gaiaos/memory/readiness"
+                and "POST" in getattr(route, "methods", set())
+                for route in app.routes
+            ),
+            "proof_boundary": (
+                "Live process environment and route registration only. "
+                "This does not prove real-store quality or authorize BIGBANG."
+            ),
+        },
     }
 
 
