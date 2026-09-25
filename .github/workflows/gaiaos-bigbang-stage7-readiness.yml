@@ -5,6 +5,8 @@ on:
   pull_request:
     paths:
       - "api/gaiaos_bigbang_readiness.py"
+      - "api/augury_semantic_retrieval.py"
+      - "tests/test_augury_semantic_retrieval_stage9f.py"
       - "api/gaiaos_app.py"
       - "api/Dockerfile"
       - "tests/test_bigbang_real_memory_readiness_stage7.py"
@@ -27,9 +29,12 @@ jobs:
       - name: Compile reviewer, routes and fixtures
         run: |
           python -m py_compile api/gaiaos_bigbang_readiness.py api/gaiaos_app.py
+          python -m py_compile api/augury_semantic_retrieval.py tests/test_augury_semantic_retrieval_stage9f.py
           python -m py_compile tests/test_bigbang_real_memory_readiness_stage7.py
       - name: Verify data-driven gate and HTTP/MCP review plumbing
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_real_memory_readiness_stage7.py" -v
+      - name: Verify optional AUGURY semantic shadow and strict source-backed safeguards
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_augury_semantic_retrieval_stage9f.py" -v
       - name: Repeat Stage 6 operational evidence contract
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_operational_reader_stage6.py" -v
       - name: Repeat original HEATDEATH and normal carrier regression suite
