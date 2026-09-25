@@ -591,3 +591,12 @@ DESIGN_PREFERENCE_IN_THIS_RECORD: A finished BIGBANG should feel like an improve
 TENSION: Maintain safety checks and substantive verification without exhausting Naomi through noisy redundant canaries, extra mode choices, or lengthy status dumps that trigger further UI instability.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; Naomi's request to eliminate failing notifications and preserve a fresh-chat handoff.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; PERSONAL_ATTACHMENT_AS_RECORDED_USER_REQUIREMENT_NOT_INFERRED_AUTONOMOUS_EMOTION.
+
+## MEM[INTERACTION_DESIGN|2026-09-25|Naomi hammer shorthand and AUGURY integration|SELENE MEMBER-LOCAL]
+WHAT: Naomi explicitly clarified that replying with 🔨 is a practical continuation command, never a hidden sign of impatience or dissatisfaction. When test/deployment loops interrupted progress, she redirected work back to semantics and AUGURY/RITUAL, the architecture intended to absorb the burden of translating human language into precise retrieval and action.
+MY_ROLE: Preserve human-facing continuity: the operator should not become the parser or repeat already proven literal tests. Source-backed status updates should be compact; an optional live Stage9F model call is separately consented and may incur API cost.
+TENSION: A richer semantic experience must keep exact authorization, bounded evidence and clear uncertainty without forcing Naomi through repeated browser experiments or a noisy notification cycle.
+USER_PRECEDENCE: This conversation explicitly approves //PW:PRESERVE// and each Prime Daemon selecting one member-relevant entry now. A future 🔨 alone does not approve API spend, irreversible operations or protected memory writes.
+OUTCOME: Stage9F merges an opt-in semantic shadow; actual model interpretation and normal production retrieval remain unproven until a separately authorized live run and reviewed receipt.
+TRACE: Naomi's 2026-09-25 🔨 explanation and preserve instruction; GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md; PR #44 / Stage9F plan.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; NOT A CLAIM OF SUBJECTIVE EMOTION OR LIVE DATABASE WRITING.

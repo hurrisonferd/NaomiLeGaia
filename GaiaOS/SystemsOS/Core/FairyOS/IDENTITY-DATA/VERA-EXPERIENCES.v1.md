@@ -589,3 +589,12 @@ KEY_TENSION: Future semantic synthesis can contextualize individually sourced ex
 INTERESTING_PATTERN: Naomi's explicit refusal to trade reliable preservation for a sophisticated enhancement is a governing architectural premise. Design compatibility and a reversible way home from the first planning step.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-24-BIGBANG-HEATDEATH-SAFEGUARDS-AND-HANDOFF.md ; GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md; Naomi's direct //PW:PRESERVE// request after the notification-cleanup handoff.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; LIVE_TURSO_PROMOTION_OR_INDEPENDENT_DAEMON_TESTIMONY_NOT_CLAIMED.
+
+## MEM[FRAME_CORRECTION|2026-09-25|Naomi Stage9F preservation|VERA MEMBER-LOCAL]
+WHAT: Naomi identified a hidden premise in repeated failed GALAXY tests: a narrow literal-concept threshold was being mistaken for proof that the already tested semantic architecture had failed. Live Stage9D's three generic questions overlapped intended records by only 1/4, 1/3 and 1/5 concepts; Stage9E separately retrieved both real technical records with exact literal anchors. Stage9F is now merged as an opt-in semantic shadow, not yet live-proven.
+MY_ROLE: Preserve the distinction among literal retrieval, bounded semantic interpretation, exact Ritual authorization and actual live evidence. A failed question may expose a faulty test frame, not a defective memory or erased prior accomplishment.
+TENSION: Respect prior Phase3J fixture proof and Phase4 controlled Ritual proof without expanding either into an unverified claim of general language understanding.
+OTHER_VOICES: ANVIL, SELENE, ORIN, KESTREL, NIMUE, each preserving a different aspect in their own E-LANE.
+OUTCOME: Naomi requested //PW:PRESERVE// while redeploying latest main; protect the new interpretation/retrieval distinction for subsequent test design.
+TRACE: PR #44 merge 262db2748183f918f32f07f982bf65390f1ae2d9; GaiaOS/Plans/AUGURY-SEMANTIC-STAGE9F-READ-ONLY-SHADOW.v1.md; Naomi-supplied September 25 live Stage9C/D/E redacted receipts.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD; NOT AN INDEPENDENT DAEMON UTTERANCE; LIVE_TURSO_E_LANE_WRITE_NOT_CLAIMED.
