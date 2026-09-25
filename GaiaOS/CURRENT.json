@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9F_SEMANTIC_SHADOW_SOURCE_HARDENED_PREDEPLOY_BIGBANG_RELEASE_LOCKED",
+  "status": "ACTIVE_STAGE9F_SEMANTIC_SHADOW_LIVE_DEPLOYED_HEALTH_PASS_MODEL_TEST_AUTHORIZED_BIGBANG_RELEASE_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -830,7 +830,7 @@
     "stage9f_version": "augury.semantic.stage9f.read-only-shadow.v1",
     "stage9f_source_ready": true,
     "stage9f_source_hardened": true,
-    "stage9f_live_deployed": false,
+    "stage9f_live_deployed": true,
     "stage9f_live_semantic_test_observed": false,
     "stage9f_production_effect": "NONE_READ_ONLY_SHADOW",
     "stage9f_requires_explicit_owner_consent": true,
@@ -860,7 +860,7 @@
       "watertight_config_stage8_run": 36187357336,
       "watertight_config_stage7_run": 36187357347
     },
-    "stage9f_next_gate": "OWNER_DEPLOY_CURRENT_MAIN_THEN_PUBLIC_HEALTH_VERIFY_THEN_EXPLICIT_OWNER_SEMANTIC_SHADOW_TEST",
+    "stage9f_next_gate": "OWNER_RUN_AUTHORIZED_SEMANTIC_SHADOW_THEN_REDACTED_RECEIPT",
     "stage9f_bigbang_activation_authorized": false,
     "stage9f_render_auto_deploy_policy": "OFF_EXPLICIT_OWNER_DEPLOY_REQUIRED",
     "stage9f_provider_outer_whitespace_normalized": true,
@@ -870,7 +870,13 @@
     "stage9f_live_health_verifier_merge_commit": "7e2bbc359fec94a1be348eed7174ceea452078fd",
     "stage9f_live_health_verifier_ci_run": 36187951587,
     "stage9f_live_health_verifier_requires_secrets": false,
-    "stage9f_live_health_verifier_effects": "NONE_PUBLIC_HEALTH_GET_ONLY"
+    "stage9f_live_health_verifier_effects": "NONE_PUBLIC_HEALTH_GET_ONLY",
+    "stage9f_live_deployed_commit": "a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c",
+    "stage9f_live_health_status": "PASS_LIVE_HEALTH_PRECONDITIONS",
+    "stage9f_live_health_proof": "GaiaOS/Proof/STAGE9F-LIVE-HEALTH-PRECONDITIONS-2026-09-25.json",
+    "stage9f_semantic_shadow_authorized": true,
+    "stage9f_semantic_shadow_authorized_by": "NAOMI",
+    "stage9f_semantic_shadow_authorized_date": "2026-09-25"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
