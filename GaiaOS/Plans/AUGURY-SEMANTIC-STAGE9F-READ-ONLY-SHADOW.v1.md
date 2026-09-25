@@ -133,6 +133,16 @@ PR #61 (merge `55fdfc9656d6cd5ddc74e976f918ae724fb4f0db`, Stage 7 run 3619032658
 
 The prior one-call Stage 9F semantic authorization was consumed by the observed live call and MUST NOT be silently reused. A second model call requires a new explicit Naomi authorization after oracle adjudication. Current source is ahead of the live `a4b77cf...` carrier and therefore requires a manual Render deployment before the owner-oracle review control is available live.
 
+## Owner-adjudicated first live sample
+
+On 2026-09-25 Naomi completed the new authenticated, model-free local owner-oracle review and supplied the redacted receipt at `GaiaOS/Proof/STAGE9F-LIVE-OWNER-ORACLE-REDACTED-2026-09-25.json`. Judgments were case 0 = B (generator A), case 1 = A (generator B), and case 2 = COLLISION (generator A). No provider call, writes, private statement/question/ID disclosure, or BIGBANG activation occurred. The redacted owner receipt documents the operator's judgment, not independent entailment certification.
+
+The deployed model's earlier three positives all returned RESOLVED with exact grounded quotes, compiled strict read-only queries and verified GALAXY read-back; all three disagreed with the generator's predetermined slot. **Conditional on both runs selecting the same ordered records and questions**, the model choices would have been B, A, B, aligning with the owner's first two answers but selecting one record for a question the owner judged COLLISION. The two independently redacted receipts lack a shared sample fingerprint, and the corpus could have changed across deployments. Do not claim confirmed agreement, error, or quantitative semantic accuracy across runs without that provenance.
+
+The field `expected_target_supported` in the first model receipt is a **slot-equality test** (`selected_record_id == generator_expected_record_id`), not a source-entailment verdict. The owner's `generator_expected_supported = false` for COLLISION arises mechanically because the owner slot is null; it does not establish that record A is unsupported. A COLLISION is a distinct, non-unique ground-truth class, not an incorrect singleton target.
+
+Next bounded engineering gate: bind a privacy-preserving, keyed sample identity (ordered two source record IDs/content and ordered case queries) to both owner and future semantic-shadow receipts, add redacted model-resolution slot/collision metadata, require an independently adjudicated non-ambiguous sample before scoring semantic success, and preserve COLLISION/UNKNOWN as first-class results. Do not weaken exact quote/provenance checks or the two-rare-concept GALAXY admission threshold. No new model call without separate fresh Naomi authorization; HEATDEATH and the historical release gate remain unchanged.
+
 ## Future proof boundary
 
 CI proves import, type contracts, source quote validation, collision/negative
