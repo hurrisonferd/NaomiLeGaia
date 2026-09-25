@@ -569,6 +569,14 @@ class AttestedComparisonRequest(BaseModel):
     model_receipt: dict[str, Any]
 
 
+class CollisionTwoSourceRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    owner_receipt: dict[str, Any]
+    case: int = Field(ge=0, le=2, strict=True)
+    quote_a: str = Field(min_length=12, max_length=240)
+    quote_b: str = Field(min_length=12, max_length=240)
+
+
 @app.post("/gaiaos/memory/augury-semantic-shadow",
           operation_id="gaiaOwnerAuguryReadOnlySemanticShadow")
 def gaia_owner_augury_semantic_shadow(
@@ -733,6 +741,39 @@ def gaia_owner_augury_compare_attested_receipts(
     )
 
 
+@app.post("/gaiaos/memory/augury-collision-two-source-shadow",
+          operation_id="gaiaOwnerAuguryCollisionTwoSourceShadow")
+def gaia_owner_augury_collision_two_source_shadow(
+    payload: CollisionTwoSourceRequest,
+    authorization: str | None = Header(default=None),
+):
+    """Exact approved A/B quotes, two strict readbacks, zero model calls."""
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503, detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    if len(json.dumps(payload.owner_receipt, ensure_ascii=False)) > 12000:
+        raise HTTPException(status_code=413, detail="OWNER_RECEIPT_TOO_LARGE")
+    import augury_semantic_collision as collision
+    import augury_semantic_receipts as receipts
+    import memcon_runtime
+
+    result = collision.review(
+        memcon_runtime,
+        owner_receipt=payload.owner_receipt,
+        case_index=payload.case,
+        quote_a=payload.quote_a,
+        quote_b=payload.quote_b,
+        fingerprint_key=base.API_KEY,
+    )
+    signed = receipts.seal("collision", result, owner_key=base.API_KEY)
+    return JSONResponse(
+        signed if signed is not None else result,
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+    )
+
+
 @app.get("/gaiaos/memory/technical-partial-console", response_class=HTMLResponse,
          operation_id="gaiaTechnicalFiveCaseConsole")
 def gaia_technical_five_case_console():
@@ -805,6 +846,25 @@ or questions into chat. Only the redacted oracle receipt is safe to copy.</small
 <pre id="oracleRecords"></pre>
 <div id="oracleChoices"></div>
 <button id="oracleReceipt" type="button" disabled>Build redacted owner-oracle receipt</button>
+<div id="collisionPanel" hidden>
+<h3>Stage 9I · Two-source collision readback (no model call)</h3>
+<small>After finalizing your owner judgment, choose a COLLISION case. Copy
+one meaningful exact contiguous excerpt from EACH private statement into its
+own box. This checks exact source membership and two strict GALAXY
+readbacks; it does not independently establish semantic entailment.
+Your excerpts remain inside this authenticated GaiaOS page.</small>
+<label for="collisionCase">Owner-adjudicated collision case</label>
+<select id="collisionCase"></select>
+<label for="collisionQuoteA">Exact support excerpt from Statement A</label>
+<textarea id="collisionQuoteA" spellcheck="false"
+ placeholder="Exact contiguous excerpt from private statement A"></textarea>
+<label for="collisionQuoteB">Exact support excerpt from Statement B</label>
+<textarea id="collisionQuoteB" spellcheck="false"
+ placeholder="Exact contiguous excerpt from private statement B"></textarea>
+<button id="collisionVerify" type="button">Verify BOTH sources read-only</button>
+<small>Only the signed redacted two-source result may be copied. Do not share
+the excerpts, statements, questions or private API key.</small>
+</div>
 </div>
 <small>A separate two-record smoke test using exact words from your existing
 approved technical statements. The three failed paraphrase cases remain failed.
@@ -832,6 +892,7 @@ Even full agreement proves only this bounded sample, never BIGBANG readiness.</s
 const byId=id=>document.getElementById(id);
 let redacted=null;
 let oracleData=null;
+let attestedOwner=null;
 byId("run").addEventListener("click",async()=>{
   const key=byId("secret").value.trim();
   if(!key){byId("status").textContent="Paste the private API key into this page first.";return;}
@@ -916,6 +977,10 @@ byId("oracle").addEventListener("click",async()=>{
       throw Error("This source sample has no authenticated comparison fingerprint.");
     }
     oracleData=result;
+    attestedOwner=null;
+    byId("collisionPanel").hidden=true;
+    byId("collisionQuoteA").value="";
+    byId("collisionQuoteB").value="";
     byId("ownerReceiptInput").value="";
     byId("oraclePanel").hidden=false;
     const lines=result.records.map(r=>"Statement "+r.label+":\\n"+r.statement);
@@ -976,6 +1041,17 @@ byId("oracleReceipt").addEventListener("click",async()=>{
       throw Error("Owner receipt is not cryptographically attested.");
     }
     redacted=result;
+    attestedOwner=result;
+    const collisionCases=result.case_results.filter(row=>row.owner_resolution==="COLLISION");
+    const collisionSelect=byId("collisionCase");
+    collisionSelect.replaceChildren();
+    collisionCases.forEach(row=>{
+      const option=document.createElement("option");
+      option.value=String(row.case);
+      option.textContent="Case "+row.case;
+      collisionSelect.appendChild(option);
+    });
+    byId("collisionPanel").hidden=collisionCases.length===0;
     byId("ownerReceiptInput").value=JSON.stringify(result,null,2);
     byId("receipt").textContent=JSON.stringify(redacted,null,2);
     byId("copy").disabled=false;
@@ -1035,6 +1111,44 @@ byId("augury").addEventListener("click",async()=>{
     byId("literal").disabled=false;
   }
 });
+byId("collisionVerify").addEventListener("click",async()=>{
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Enter the private API key first.";return;}
+  if(!attestedOwner||!attestedOwner.receipt_attestation){
+    byId("status").textContent="Finalize your signed owner COLLISION judgment first.";
+    return;
+  }
+  const caseIndex=Number(byId("collisionCase").value);
+  const quoteA=byId("collisionQuoteA").value;
+  const quoteB=byId("collisionQuoteB").value;
+  if(!Number.isInteger(caseIndex)||!quoteA||!quoteB){
+    byId("status").textContent="Choose a COLLISION case and two exact source excerpts.";
+    return;
+  }
+  byId("collisionVerify").disabled=true;
+  byId("status").textContent="Checking two exact owner source excerpts and unchanged HEATDEATH parity…";
+  try{
+    const response=await fetch("/gaiaos/memory/augury-collision-two-source-shadow",{
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
+      body:JSON.stringify({
+        owner_receipt:attestedOwner,case:caseIndex,
+        quote_a:quoteA,quote_b:quoteB
+      })
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
+    redacted=result;
+    byId("receipt").textContent=JSON.stringify(redacted,null,2);
+    byId("copy").disabled=false;
+    byId("status").textContent=result.status==="HOLD"
+      ?"HOLD: "+result.reason+". No model call was made."
+      :"Two source readbacks verified. Semantic entailment and BIGBANG remain unproven.";
+  }catch(error){
+    byId("status").textContent="HOLD: "+error.message+". No model call was made.";
+  }finally{byId("collisionVerify").disabled=false;}
+});
+
 byId("compare").addEventListener("click",async()=>{
   const key=byId("secret").value.trim();
   if(!key){byId("status").textContent="Enter the private API key first.";return;}
