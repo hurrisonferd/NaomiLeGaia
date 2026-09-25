@@ -642,9 +642,9 @@ button:disabled{opacity:.5}small{display:block;color:#c2cede}
 pre{white-space:pre-wrap;overflow-wrap:anywhere}
 </style></head><body>
 <h1>GaiaOS · Five-case diagnostic</h1>
-<p>Three approved current technical memories and two unrelated negative cases.
-This read-only diagnostic cannot satisfy the missing historical-memory gate.
-BIGBANG stays locked.</p>
+<p>Three current technical questions spanning two approved technical memories,
+plus two unrelated negative cases. This read-only diagnostic cannot satisfy
+the missing historical-memory gate. BIGBANG stays locked.</p>
 <section><label for="secret">Private GaiaOS API key from Render Environment</label>
 <input id="secret" type="password" autocomplete="off" spellcheck="false"
 placeholder="Paste here, never into ChatGPT">
