@@ -542,6 +542,65 @@ def gaia_owner_technical_literal_wiring_probe(
     )
 
 
+class AuguryShadowRequest(BaseModel):
+    explicit_semantic_shadow_consent: bool = False
+
+
+@app.post("/gaiaos/memory/augury-semantic-shadow",
+          operation_id="gaiaOwnerAuguryReadOnlySemanticShadow")
+def gaia_owner_augury_semantic_shadow(
+    payload: AuguryShadowRequest,
+    authorization: str | None = Header(default=None),
+):
+    """One explicit owner-approved model call, two bounded technical excerpts.
+
+    This isolated diagnostic NEVER switches ordinary memory retrieval or
+    qualifies for BIGBANG. Model responses are checked against verified source
+    quotes and the existing unmodified GALAXY read-only operational contract.
+    """
+    if not base.API_KEY:
+        raise HTTPException(status_code=503, detail="Private owner API authorization is unavailable")
+    base._authorize(authorization)
+    if payload.explicit_semantic_shadow_consent is not True:
+        raise HTTPException(
+            status_code=400, detail="EXPLICIT_MODEL_AND_TWO_EXCERPT_CONSENT_REQUIRED"
+        )
+    if not base.OPENAI_API_KEY:
+        raise HTTPException(status_code=503, detail="SHADOW_MODEL_NOT_CONFIGURED")
+
+    from openai import OpenAI
+    import augury_semantic_retrieval as shadow
+    import memcon_runtime
+
+    def one_bounded_model_call(excerpts_and_questions: dict[str, Any]) -> Any:
+        client = OpenAI(
+            api_key=base.OPENAI_API_KEY,
+            max_retries=0,
+            timeout=20.0,
+        )
+        # One request; no batch retry, logging, data retention, tools, or
+        # unbounded chat context. Any provider failure yields a redacted HOLD.
+        answer = client.responses.create(
+            model=base.OPENAI_MODEL,
+            instructions=shadow.MODEL_INSTRUCTIONS,
+            input=json.dumps(
+                excerpts_and_questions, ensure_ascii=False, separators=(",", ":")
+            ),
+            text={"format": {
+                "type": "json_schema", "name": "gaia_augury_shadow",
+                "strict": True, "schema": shadow.OUTPUT_SCHEMA,
+            }},
+            max_output_tokens=1600,
+            store=False,
+        )
+        if answer.status != "completed":
+            raise ValueError("Shadow model response incomplete")
+        return answer.output_text
+
+    result = shadow.review(memcon_runtime, one_bounded_model_call)
+    return JSONResponse(result, headers={"Cache-Control": "no-store"})
+
+
 @app.get("/gaiaos/memory/technical-partial-console", response_class=HTMLResponse,
          operation_id="gaiaTechnicalFiveCaseConsole")
 def gaia_technical_five_case_console():
@@ -591,6 +650,17 @@ placeholder="Paste here, never into ChatGPT">
 Do not screenshot or paste your key into messages.</small>
 <button id="run" type="button">Run five read-only cases</button>
 <button id="literal" type="button">Test literal retrieval wiring (not semantic quality)</button>
+<div style="margin-top:14px">
+<label for="semanticconsent"><input id="semanticconsent" type="checkbox"
+ style="width:auto;margin-right:8px">
+I consent to send the two selected existing technical statements and
+five staged questions to the configured OpenAI API for ONE optional model
+inference. This may incur API charges. No notes, secrets or E-LANES are sent;
+the API request sets store=false.</label>
+</div>
+<button id="augury" type="button">Run optional AUGURY semantic shadow</button>
+<small>This is a separate read-only test. A model answer cannot grant memory
+authority, satisfy missing historical proof or activate BIGBANG.</small>
 <small>A separate two-record smoke test using exact words from your existing
 approved technical statements. The three failed paraphrase cases remain failed.
 No memories are changed.</small>
@@ -668,6 +738,50 @@ byId("literal").addEventListener("click",async()=>{
   }catch(error){
     byId("status").textContent="HOLD: "+error.message+". No private details disclosed.";
   }finally{byId("literal").disabled=false;}
+});
+
+byId("augury").addEventListener("click",async()=>{
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Enter the private GaiaOS API key first.";return;}
+  if(!byId("semanticconsent").checked){
+    byId("status").textContent="Check the explicit one-call model consent box first.";
+    return;
+  }
+  byId("augury").disabled=true;
+  byId("run").disabled=true;
+  byId("literal").disabled=true;
+  byId("status").textContent="One bounded semantic shadow call is running…";
+  try{
+    const response=await fetch("/gaiaos/memory/augury-semantic-shadow",{
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
+      body:JSON.stringify({explicit_semantic_shadow_consent:true})
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
+    redacted={
+      schema:result.schema,status:result.status,reason:result.reason,
+      execution:result.execution,semantic_unit_schema:result.semantic_unit_schema,
+      semantic_interpreter_kind:result.semantic_interpreter_kind,
+      ritual_id:result.ritual_id,ritual_effect:result.ritual_effect,
+      model_called:result.model_called,case_count:result.case_count,
+      case_results:result.case_results,legacy_exact_parity:result.legacy_exact_parity,
+      historical_coverage:result.historical_coverage,
+      general_semantic_quality_proven:result.general_semantic_quality_proven,
+      full_readiness_status:result.full_readiness_status,
+      release_activated:result.release_activated,writes_performed:result.writes_performed,
+      e_lanes_modified:result.e_lanes_modified
+    };
+    byId("receipt").textContent=JSON.stringify(redacted,null,2);
+    byId("copy").disabled=false;
+    byId("status").textContent="AUGURY shadow complete; full release remains locked.";
+  }catch(error){
+    byId("status").textContent="HOLD: "+error.message+". No private data is displayed.";
+  }finally{
+    byId("augury").disabled=false;
+    byId("run").disabled=false;
+    byId("literal").disabled=false;
+  }
 });
 byId("copy").addEventListener("click",async()=>{
   if(!redacted)return;
