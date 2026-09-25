@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9F_LIVE_SEMANTIC_SHADOW_OBSERVED_HOLD_ORACLE_MISMATCH_UNRESOLVED_BIGBANG_RELEASE_LOCKED",
+  "status": "ACTIVE_STAGE9F_LIVE_HOLD_OWNER_ORACLE_REVIEW_SOURCE_READY_REDEPLOY_REQUIRED_BIGBANG_RELEASE_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -860,7 +860,7 @@
       "watertight_config_stage8_run": 36187357336,
       "watertight_config_stage7_run": 36187357347
     },
-    "stage9f_next_gate": "REPAIR_ORACLE_DIAGNOSTIC_WITHOUT_SECOND_MODEL_CALL",
+    "stage9f_next_gate": "OWNER_DEPLOY_CURRENT_MAIN_THEN_RUN_MODEL_FREE_OWNER_ORACLE_REVIEW",
     "stage9f_bigbang_activation_authorized": false,
     "stage9f_render_auto_deploy_policy": "OFF_EXPLICIT_OWNER_DEPLOY_REQUIRED",
     "stage9f_provider_outer_whitespace_normalized": true,
@@ -874,7 +874,7 @@
     "stage9f_live_deployed_commit": "a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c",
     "stage9f_live_health_status": "PASS_LIVE_HEALTH_PRECONDITIONS",
     "stage9f_live_health_proof": "GaiaOS/Proof/STAGE9F-LIVE-HEALTH-PRECONDITIONS-2026-09-25.json",
-    "stage9f_semantic_shadow_authorized": true,
+    "stage9f_semantic_shadow_authorized": false,
     "stage9f_semantic_shadow_authorized_by": "NAOMI",
     "stage9f_semantic_shadow_authorized_date": "2026-09-25",
     "stage9f_live_semantic_test_status": "HOLD",
@@ -889,7 +889,20 @@
       "negatives_unknown_passed": 2,
       "legacy_exact_parity": true
     },
-    "stage9f_live_semantic_oracle_state": "UNRESOLVED_EXPECTED_TARGET_ASSIGNMENT"
+    "stage9f_live_semantic_oracle_state": "UNRESOLVED_EXPECTED_TARGET_ASSIGNMENT",
+    "stage9f_semantic_shadow_authorization_consumed": true,
+    "stage9f_semantic_shadow_authorization_consumed_date": "2026-09-25",
+    "stage9f_oracle_mismatch_diagnostic_merge_commit": "153924f126d699e69661cb6459597ef9a13422ec",
+    "stage9f_oracle_mismatch_diagnostic_ci_run": 36189952828,
+    "stage9f_owner_oracle_review_source_ready": true,
+    "stage9f_owner_oracle_review_route": "/gaiaos/memory/augury-semantic-owner-oracle-preview",
+    "stage9f_owner_oracle_review_merge_commit": "55fdfc9656d6cd5ddc74e976f918ae724fb4f0db",
+    "stage9f_owner_oracle_review_stage7_ci_run": 36190326581,
+    "stage9f_owner_oracle_review_heatdeath_ci_run": 36190326574,
+    "stage9f_owner_oracle_review_model_call": false,
+    "stage9f_owner_oracle_review_writes": false,
+    "stage9f_current_main_live_deployed": false,
+    "stage9f_live_deployed_commit_remains": "a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
