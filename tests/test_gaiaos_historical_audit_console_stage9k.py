@@ -135,8 +135,9 @@ const sandbox={
 
 class HistoricalAuditConsoleTests(unittest.TestCase):
     def test_static_get_is_private_data_free_and_csp_nonce_works(self):
-        with TestClient(carrier.app) as client:
-            page = client.get(ROUTE)
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        page = client.get(ROUTE)
         self.assertEqual(page.status_code, 200)
         self.assertIn("no-store", page.headers.get("cache-control", ""))
         self.assertIn("no-referrer", page.headers.get("referrer-policy", ""))
@@ -152,7 +153,9 @@ class HistoricalAuditConsoleTests(unittest.TestCase):
         self.assertNotIn("private statement A", page.text)
 
     def test_audit_post_owner_only_without_model_or_memory_mutations(self):
-        with TestClient(carrier.app) as client, patch.object(
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        with patch.object(
             carrier.base, "API_KEY", KEY,
         ), patch.object(
             historical, "audit", return_value=safe_fixture(),
@@ -174,8 +177,9 @@ class HistoricalAuditConsoleTests(unittest.TestCase):
     def test_actual_served_browser_clicks_enforce_key_redact_and_copy(self):
         if shutil.which("node") is None:
             self.fail("Node.js mandatory for actual served JavaScript validation")
-        with TestClient(carrier.app) as client:
-            response=client.get(ROUTE)
+        client=TestClient(carrier.app)
+        self.addCleanup(client.close)
+        response=client.get(ROUTE)
         parser=ConsoleHTMLParser()
         parser.feed(response.text)
         self.assertEqual(len(parser.scripts),1)
@@ -199,11 +203,12 @@ class HistoricalAuditConsoleTests(unittest.TestCase):
         self.assertIn("STAGE9K_BROWSER_CLICK_SAFETY_PASS",result.stdout)
 
     def test_audit_get_has_no_effect_and_cannot_be_called_without_owner_post(self):
-        with TestClient(carrier.app) as client:
-            response=client.get(AUDIT)
-            self.assertEqual(response.status_code,405)
-            page=client.get(ROUTE)
-            self.assertEqual(page.status_code,200)
+        client=TestClient(carrier.app)
+        self.addCleanup(client.close)
+        response=client.get(AUDIT)
+        self.assertEqual(response.status_code,405)
+        page=client.get(ROUTE)
+        self.assertEqual(page.status_code,200)
 
 
 if __name__=="__main__":
