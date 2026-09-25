@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 LEAD: 58 · ANVIL
-STATUS: SOURCE-HARDENED / PRE-DEPLOY READY / LIVE SEMANTIC PROOF UNTESTED / BIGBANG LOCKED
+STATUS: LIVE DEPLOYED / PUBLIC HEALTH PASS / ONE BOUNDED SEMANTIC SHADOW AUTHORIZED / BIGBANG LOCKED
 SCOPE: MemoryOS, current owner-approved technical GALAXY records only
 MODE: HEATDEATH release-locked
 PRODUCTION EFFECT: NONE
@@ -110,6 +110,12 @@ the legacy fallback artifact, or the original Stage 7 release validator.
 No writes are performed by this shadow. Private memory may only be sent to
 the model after owner Bearer authentication and a fresh explicit consent
 checkbox; never expose a key in chat, logs, receipts or screenshots.
+
+## Live deployment receipt and owner authorization
+
+On 2026-09-25 Naomi reported the live public `/health` receipt for deployed commit `a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c`. It passed the Stage 9F live-health preconditions: source commit exact match and verified, owner API key loaded without disclosure, OpenAI key/model configured, and both Stage 7 readiness and Stage 9F semantic-shadow routes registered. Canonical redacted receipt: `GaiaOS/Proof/STAGE9F-LIVE-HEALTH-PRECONDITIONS-2026-09-25.json`.
+
+Naomi then explicitly authorized the single bounded Stage 9F AUGURY semantic-shadow invocation. Authorization does not waive the existing bearer-auth requirement, fresh consent checkbox, one-request/no-retry limit, `store=false`, redaction contract, HEATDEATH parity check, historical HOLD, or BIGBANG release lock. The live semantic result remains unobserved until the authenticated operator console returns its redacted receipt.
 
 ## Future proof boundary
 
