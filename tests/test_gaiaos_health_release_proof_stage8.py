@@ -11,6 +11,41 @@ import gaiaos_api as carrier
 
 
 class DeploymentProofTests(unittest.TestCase):
+    def test_environment_owner_key_normalization_without_secret_disclosure(self):
+        from fastapi import HTTPException
+        samples = (
+            (None, None), ("", ""), ("   ", "   "),
+            (" key-with-leading-and-trailing-spaces ", "key-with-leading-and-trailing-spaces"),
+            ("\\nkey-no-surrounding-whitespace\\t", "\\nkey-no-surrounding-whitespace\\t"),
+            ("key with internal space", "key with internal space"),
+        )
+        for raw, expected in samples:
+            with self.subTest(raw_present=raw is not None):
+                self.assertEqual(carrier._normalized_owner_key(raw), expected)
+        # A genuinely padded environment key should authenticate when the
+        # browser has trimmed its copied value, but not permit arbitrary keys.
+        with patch.object(carrier, "API_KEY", carrier._normalized_owner_key(
+            "  ci-only-owner-key  "
+        )):
+            carrier._authorize("Bearer ci-only-owner-key")
+            with self.assertRaises(HTTPException) as denied:
+                carrier._authorize("Bearer wrong-ci-key")
+            self.assertEqual(denied.exception.status_code, 401)
+        with patch.object(carrier, "API_KEY", "   "):
+            with self.assertRaises(HTTPException) as invalid:
+                carrier._authorize("Bearer    ")
+            self.assertEqual(invalid.exception.status_code, 503)
+
+    def test_public_configuration_proof_contains_no_key_material(self):
+        with patch.object(carrier, "API_KEY", "private-test-sentinel"), patch.object(
+            carrier, "AUTH_KEY_WHITESPACE_NORMALIZED", True
+        ):
+            proof = carrier.health()["authorization_config"]
+        self.assertTrue(proof["api_key_loaded"])
+        self.assertTrue(proof["environment_outer_whitespace_normalized"])
+        self.assertFalse(proof["key_material_disclosed"])
+        self.assertNotIn("private-test-sentinel", repr(proof))
+
     def test_deployed_sha_and_registered_post_are_reported(self):
         routes = [
             SimpleNamespace(path="/gaiaos/memory/readiness", methods={"POST"}),

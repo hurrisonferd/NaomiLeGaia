@@ -26,7 +26,27 @@ REPOSITORY = os.getenv("GAIAOS_REPOSITORY", "hurrisonferd/NaomiLeGaia")
 BRANCH = os.getenv("GAIAOS_BRANCH", "main")
 GITHUB_API = "https://api.github.com"
 RAW_BASE = "https://raw.githubusercontent.com"
-API_KEY = os.getenv("GAIAOS_API_KEY")
+def _normalized_owner_key(raw: str | None) -> str | None:
+    """Normalize accidental surrounding env whitespace without opening auth.
+
+    An unset key remains None. An empty/whitespace-only configured value
+    remains invalid and MUST fail closed at protected endpoints.
+    Interior characters stay exact; this never logs or returns the secret.
+    """
+    if raw is None:
+        return None
+    cleaned = raw.strip()
+    return cleaned if cleaned else raw
+
+
+_owner_key_from_env = os.getenv("GAIAOS_API_KEY")
+API_KEY = _normalized_owner_key(_owner_key_from_env)
+AUTH_KEY_WHITESPACE_NORMALIZED = bool(
+    _owner_key_from_env
+    and _owner_key_from_env.strip()
+    and _owner_key_from_env != API_KEY
+)
+del _owner_key_from_env
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
 TIMEOUT = float(os.getenv("GAIAOS_HTTP_TIMEOUT", "10"))
@@ -125,14 +145,16 @@ def _request(url: str) -> bytes:
 def _authorize(authorization: str | None) -> None:
     if API_KEY is None:
         return
+    if not API_KEY.strip():
+        raise HTTPException(status_code=503, detail="GAIAOS_API_KEY configuration is invalid")
     if authorization != f"Bearer {API_KEY}":
         raise HTTPException(status_code=401, detail="Invalid or missing API key")
 
 
 def _session_token() -> str:
     """Create a signed browser session token without exposing the server API key."""
-    if not API_KEY:
-        raise HTTPException(status_code=503, detail="GAIAOS_API_KEY is not configured on the carrier")
+    if not API_KEY or not API_KEY.strip():
+        raise HTTPException(status_code=503, detail="GAIAOS_API_KEY is not configured correctly on the carrier")
     nonce = secrets.token_urlsafe(32)
     signature = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
     return base64.urlsafe_b64encode(f"{nonce}.{signature}".encode()).decode()
@@ -524,6 +546,15 @@ def health() -> dict[str, Any]:
         "canonical_repository": REPOSITORY,
         "canonical_branch": BRANCH,
         "authentication_required": API_KEY is not None,
+        "authorization_config": {
+            "api_key_loaded": bool(API_KEY and API_KEY.strip()),
+            "environment_outer_whitespace_normalized": AUTH_KEY_WHITESPACE_NORMALIZED,
+            "key_material_disclosed": False,
+            "proof_boundary": (
+                "Non-secret process configuration only. This does not prove "
+                "that a copied value matches the running instance."
+            ),
+        },
         "openai_configured": OPENAI_API_KEY is not None,
         "mcp_endpoint": "/mcp",
         "council_surface": True,
