@@ -477,6 +477,30 @@ def gaia_technical_preflight(browser_request: Request):
     )
 
 
+@app.post("/gaiaos/memory/historical-evidence-audit",
+          operation_id="gaiaOwnerHistoricalEvidenceAudit")
+def gaia_owner_historical_evidence_audit(
+    authorization: str | None = Header(default=None),
+):
+    """Stage 9J: read-only redacted diagnosis of *real* historical prerequisites.
+
+    Private owner route, no model call, no synthetic canary, no write. A
+    historical CANDIDATE remains distinct from retrieval/release proof.
+    """
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503, detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    import gaiaos_historical_evidence_audit as historical
+    import memcon_runtime
+
+    return JSONResponse(
+        historical.audit(memcon_runtime),
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+    )
+
+
 @app.post("/gaiaos/memory/technical-review", operation_id="gaiaTechnicalSampleReview")
 def gaia_technical_sample_review(
     browser_request: Request,
