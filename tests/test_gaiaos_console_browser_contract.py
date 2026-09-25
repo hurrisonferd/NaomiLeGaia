@@ -152,7 +152,6 @@ class RenderConsoleBrowserContract(unittest.TestCase):
             for route in carrier.app.routes
             if isinstance(route, APIRoute)
             and "GET" in (route.methods or set())
-            and route.path.startswith("/gaiaos/")
             and "console" in route.path
             and isinstance(route.response_class, type)
             and issubclass(route.response_class, HTMLResponse)
