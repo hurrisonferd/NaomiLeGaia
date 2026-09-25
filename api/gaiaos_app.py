@@ -15,7 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import Header, HTTPException, Request
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from pydantic import BaseModel, Field
 from starlette.routing import Mount
 
@@ -494,6 +494,125 @@ def gaia_technical_sample_review(
         gaiaos_bigbang_readiness.technical_sample_review(memcon_runtime),
         headers={"Cache-Control": "no-store"},
     )
+
+
+@app.post("/gaiaos/memory/technical-partial-review",
+          operation_id="gaiaTechnicalFiveCaseDiagnostic")
+def gaia_technical_five_case_diagnostic(
+    authorization: str | None = Header(default=None),
+):
+    """Owner bearer required. Five real-store reads cannot pass the Stage-7 gate."""
+    if not base.API_KEY:
+        raise HTTPException(status_code=503, detail="Private owner API authorization is unavailable")
+    base._authorize(authorization)
+    import memcon_runtime
+    return JSONResponse(
+        gaiaos_bigbang_readiness.technical_partial_sample_review(memcon_runtime),
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.get("/gaiaos/memory/technical-partial-console", response_class=HTMLResponse,
+         operation_id="gaiaTechnicalFiveCaseConsole")
+def gaia_technical_five_case_console():
+    """Static operator page. Never receives or exposes memory or server secrets."""
+    import secrets
+    nonce = secrets.token_urlsafe(20)
+    source = _TECHNICAL_PARTIAL_CONSOLE.replace("__NONCE__", nonce)
+    return HTMLResponse(
+        source,
+        headers={
+            "Cache-Control": "no-store",
+            "Pragma": "no-cache",
+            "Referrer-Policy": "no-referrer",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": (
+                "default-src 'none'; connect-src 'self'; "
+                "script-src 'nonce-" + nonce + "'; "
+                "style-src 'nonce-" + nonce + "'; "
+                "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+            ),
+        },
+    )
+
+
+_TECHNICAL_PARTIAL_CONSOLE = """<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GaiaOS · Five-case diagnostic</title>
+<style nonce="__NONCE__">
+:root{color-scheme:dark;font:16px system-ui;background:#101820;color:#f1f4f8}
+body{max-width:680px;margin:auto;padding:18px;line-height:1.5}
+section{padding:15px;margin:14px 0;border:1px solid #647185;border-radius:12px}
+h1{font-size:1.45rem}input,button{box-sizing:border-box;width:100%;
+padding:12px;margin:8px 0;border-radius:8px;font:inherit}
+input{background:#203047;color:#fff;border:1px solid #8da8c8}
+button{background:#24576d;color:#fff;border:1px solid #9bb7ca;font-weight:bold}
+button:disabled{opacity:.5}small{display:block;color:#c2cede}
+pre{white-space:pre-wrap;overflow-wrap:anywhere}
+</style></head><body>
+<h1>GaiaOS · Five-case diagnostic</h1>
+<p>Three approved current technical memories and two unrelated negative cases.
+This read-only diagnostic cannot satisfy the missing historical-memory gate.
+BIGBANG stays locked.</p>
+<section><label for="secret">Private GaiaOS API key from Render Environment</label>
+<input id="secret" type="password" autocomplete="off" spellcheck="false"
+placeholder="Paste here, never into ChatGPT">
+<small>Only transmitted to this same-origin GaiaOS service.
+Do not screenshot or paste your key into messages.</small>
+<button id="run" type="button">Run five read-only cases</button>
+<p id="status" role="status">No test executed.</p></section>
+<section><h2>Redacted result</h2>
+<pre id="receipt">Waiting for owner approval.</pre>
+<button id="copy" type="button" disabled>Copy redacted receipt</button>
+<small>No statements, memory IDs, queries or secret are copied.
+Even a partial PASS leaves full readiness at HOLD.</small></section>
+<script nonce="__NONCE__">
+"use strict";
+const byId=id=>document.getElementById(id);
+let redacted=null;
+byId("run").addEventListener("click",async()=>{
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Paste the private API key into this page first.";return;}
+  byId("run").disabled=true;
+  byId("status").textContent="Running five read-only cases…";
+  try{
+    const response=await fetch("/gaiaos/memory/technical-partial-review",{
+      method:"POST",credentials:"omit",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key}
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error("HTTP "+response.status);
+    redacted={
+      schema:result.schema,status:result.status,reason:result.reason,
+      partial_review_executed:result.partial_review_executed,
+      partial_review_status:result.partial_review_status,
+      partial_review_reason:result.partial_review_reason,
+      full_readiness_status:result.full_readiness_status,
+      historical_coverage:result.historical_coverage,
+      legacy_exact_parity:result.legacy_exact_parity,
+      case_results:result.case_results,
+      release_activated:result.release_activated,
+      writes_performed:result.writes_performed,
+      e_lanes_modified:result.e_lanes_modified
+    };
+    byId("receipt").textContent=JSON.stringify(redacted,null,2);
+    byId("copy").disabled=false;
+    byId("status").textContent="Diagnostic complete; historical release gate still HOLD.";
+  }catch(error){
+    byId("status").textContent="HOLD: "+error.message+
+      ". No results copied. Confirm the current deployment and bearer key.";
+  }finally{byId("run").disabled=false;}
+});
+byId("copy").addEventListener("click",async()=>{
+  if(!redacted)return;
+  try{
+    await navigator.clipboard.writeText(JSON.stringify(redacted,null,2));
+    byId("status").textContent="Redacted receipt copied.";
+  }catch(error){
+    byId("status").textContent="Clipboard unavailable; select the redacted result above.";
+  }
+});
+</script></body></html>"""
 
 
 class GaiaAssistRequest(BaseModel):
