@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9F_OWNER_ORACLE_B_A_COLLISION_RECORDED_SAMPLE_PROVENANCE_HOLD_BIGBANG_RELEASE_LOCKED",
+  "status": "ACTIVE_STAGE9G_BOUND_SAMPLE_COLLISION_SOURCE_MERGED_LIVE_PROOF_PENDING_BIGBANG_RELEASE_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -860,7 +860,7 @@
       "watertight_config_stage8_run": 36187357336,
       "watertight_config_stage7_run": 36187357347
     },
-    "stage9f_next_gate": "BIND_STABLE_REDACTED_SAMPLE_IDENTITY_AND_ADJUDICATE_COLLISION_BEFORE_ANY_SECOND_MODEL_CALL",
+    "stage9f_next_gate": "OPTIONAL_OWNER_DEPLOY_STAGE9G_MAIN_THEN_MODEL_FREE_BOUND_ORACLE_REVIEW_FUTURE_MODEL_CALL_REQUIRES_NEW_OWNER_APPROVAL",
     "stage9f_bigbang_activation_authorized": false,
     "stage9f_render_auto_deploy_policy": "OFF_EXPLICIT_OWNER_DEPLOY_REQUIRED",
     "stage9f_provider_outer_whitespace_normalized": true,
@@ -918,7 +918,27 @@
     },
     "stage9f_owner_oracle_model_run_sample_identity_verified": false,
     "stage9f_owner_oracle_model_comparison_status": "HOLD_CROSS_RUN_SAMPLE_PROVENANCE_UNVERIFIED",
-    "stage9f_owner_oracle_collision_semantics": "COLLISION_IS_NOT_EVIDENCE_A_UNSUPPORTED"
+    "stage9f_owner_oracle_collision_semantics": "COLLISION_IS_NOT_EVIDENCE_A_UNSUPPORTED",
+    "stage9g_schema": "gaiaos.augury.semantic-sample-fingerprint.v1",
+    "stage9g_source_ready": true,
+    "stage9g_merge_commit": "fc46811a320835d51753b61a0bcf4dc090c92c41",
+    "stage9g_fingerprint_module": "api/augury_semantic_sample.py",
+    "stage9g_fingerprint_kind": "PRIVATE_OWNER_KEYED_HMAC_SHA256_ORDERED_TWO_APPROVED_RECORDS_PLUS_FIVE_CASES",
+    "stage9g_model_oracle_comparison_kind": "OFFLINE_REDACTED_SAME_SAMPLE_CATEGORICAL_COMPARISON",
+    "stage9g_collision_semantics": "OWNER_SUPPORTS_BOTH_A_AND_B_MODEL_CANDIDATES_UNVERIFIED_NO_UNIQUE_TARGET",
+    "stage9g_ci_receipts": {
+      "first_complete_stage7_after_docker_repair": 36195002008,
+      "second_complete_stage7_after_reopen": 36195041470,
+      "heatdeath_route": 36195041599,
+      "normal_boot_isolation": 36195041431
+    },
+    "stage9g_existing_stage9f_receipts_fingerprinted": false,
+    "stage9g_owner_oracle_fingerprinted_live_observed": false,
+    "stage9g_live_deploy_verified": false,
+    "stage9g_live_model_call_observed": false,
+    "stage9g_model_call_authorized": false,
+    "stage9g_bigbang_activation_authorized": false,
+    "stage9g_next_gate": "OWNER_CONTROLLED_MANUAL_DEPLOY_WHEN_DESIRED_EXACT_LIVE_COMMIT_VERIFY_THEN_OPTIONAL_NEW_MODEL_FREE_OWNER_ORACLE"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
