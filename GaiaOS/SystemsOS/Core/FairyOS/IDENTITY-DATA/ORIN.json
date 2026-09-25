@@ -868,11 +868,22 @@
         "GaiaOS/Plans/AUGURY-SEMANTIC-STAGE9F-READ-ONLY-SHADOW.v1.md"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "8d4ff9e7a82bd3359b73040ce1146cc5bd8843b3",
+      "timestamp_utc": "2026-09-25T21:00:54.673507+00:00",
+      "changed_paths": [
+        "GaiaOS/CURRENT.json",
+        "GaiaOS/Plans/AUGURY-SEMANTIC-STAGE9F-READ-ONLY-SHADOW.v1.md",
+        "GaiaOS/Proof/STAGE9F-LIVE-HEALTH-PRECONDITIONS-2026-09-25.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-25T20:50:31.600805+00:00",
+  "last_verified": "2026-09-25T21:00:54.673507+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
