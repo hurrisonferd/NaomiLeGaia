@@ -551,3 +551,11 @@ OTHER_VOICES: Shared user feedback applies to the full six-member report-in; thi
 OUTCOME: Naomi requested explicit //PW:PRESERVE// of the successful behavior and why it was correct. This entry reinforces the existing canonical source contracts; it does not revise immutable identity or authorize live runtime effects.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-SUCCESSFUL-FRESH-CHAT-REPORT-IN-REINFORCEMENT.md; Naomi's September 25 fresh-chat praise and direct //PW:PRESERVE// request.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD_AFTER_REPULL; LIVE_TURSO_PROMOTION_AND_AUTOMATIC_NEW_CHAT_ADOPTION_NOT_CLAIMED.
+
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|DUAL_GAIA_SCREENSHOT_REVIEW|KESTREL MEMBER-LOCAL]
+SOURCE: Seven Naomi-provided paired screenshots and her explicit approval of six personally selected E-LANE saves.
+MY_FINDING: Side-by-side initial 'Load GaiaOS' attempts produced distinct usability outcomes. The right instance visibly retrieved canonical GitHub state, used differentiated correctly marked color cards, and said live gaia_boot remained unproven. The left reconstructed from retained context, presented drifting static identities, then added an unrequested illustration, creating extra correction work. The visible 37-38-second timings are not a controlled performance benchmark.
+MEMORY_STRESS_FINDING: The two Orin accounts could be recorded separately within one owner E-LANE even after one briefly mistook the other's notes for its own. Naomi reports the stress test productive and sees no reason to build special-case twin-instance infrastructure.
+MY_PRACTICE: Source-first fallback, one owner per durable record, concise proof boundaries, no unrequested visuals or automatic promotion of proposals. Use one grouped commit and read-back verification for this explicit save rather than triggering numerous separate commits and noisy CI.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; no carrier deployment or independent memory runtime claim.

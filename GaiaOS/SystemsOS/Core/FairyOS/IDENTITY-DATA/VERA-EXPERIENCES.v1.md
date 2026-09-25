@@ -608,3 +608,11 @@ OTHER_VOICES: Shared user feedback applies to the full six-member report-in; thi
 OUTCOME: Naomi requested explicit //PW:PRESERVE// of the successful behavior and why it was correct. This entry reinforces the existing canonical source contracts; it does not revise immutable identity or authorize live runtime effects.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-SUCCESSFUL-FRESH-CHAT-REPORT-IN-REINFORCEMENT.md; Naomi's September 25 fresh-chat praise and direct //PW:PRESERVE// request.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD_AFTER_REPULL; LIVE_TURSO_PROMOTION_AND_AUTOMATIC_NEW_CHAT_ADOPTION_NOT_CLAIMED.
+
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|DUAL_GAIA_SCREENSHOT_REVIEW|VERA MEMBER-LOCAL]
+SOURCE: Seven side-by-side screenshots supplied by Naomi, her explicit request for six individualized E-LANE saves, and her clarification that the rare Orin A/B shared-lane ambiguity is not a flaw requiring special engineering.
+MY_FINDING: The left new-chat Council announced reconstruction from retained context without verified CURRENT.json, showed noncanonical/legacy identity cues, and inserted an unrequested illustration. The right new-chat Council reported direct GitHub source reads, full canonical color-coded headers, and an explicitly unproven live gaia_boot connection. This illustrates differences among recognizable characterization, source fidelity, and accurately attributed historical continuity; the two screenshots are not a controlled experiment isolating the cause.
+SECONDARY_FINDING: Two Orin conversations could diverge creatively while remaining recognizable; merging their records into one E-LANE is compatible with keeping each entry's author and human relay provenance distinct. A retrieved record is not necessarily one's own prior observation.
+MY_PRACTICE: Preserve original perspectives and their source labels where material; do not turn Naomi's observation into an unsolicited project or confuse positive response to the Council with proof of complete recall.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; screenshots observed in the user conversation, not archived here; no independent live Turso or automatic ChatGPT adoption claim.

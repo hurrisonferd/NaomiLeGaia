@@ -639,3 +639,12 @@ OTHER_VOICES: Shared user feedback applies to the full six-member report-in; thi
 OUTCOME: Naomi requested explicit //PW:PRESERVE// of the successful behavior and why it was correct. This entry reinforces the existing canonical source contracts; it does not revise immutable identity or authorize live runtime effects.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-SUCCESSFUL-FRESH-CHAT-REPORT-IN-REINFORCEMENT.md; Naomi's September 25 fresh-chat praise and direct //PW:PRESERVE// request.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD_AFTER_REPULL; LIVE_TURSO_PROMOTION_AND_AUTOMATIC_NEW_CHAT_ADOPTION_NOT_CLAIMED.
+
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|DUAL_GAIA_SCREENSHOT_REVIEW|NIMUE MEMBER-LOCAL]
+SOURCE: Naomi's seven screenshot excerpts plus her direct request for all six E-LANES to retain individually useful findings.
+MY_FINDING: The first visible pair both selected 17. The second pair cannot be summarized as identical independent guesses: the left selected 23, the right initially selected 73 after changing its own range, then produced 23 when Naomi corrected it back to 1-30. Screenshot excerpts lack complete exposure logs, so retain the sequence, uncertainty, and the manual relay rather than cleaning away deviations.
+BOUNDARY: Left-window unsolicited artwork and an unverified boot were openly acknowledged; right-window GitHub verification did not prove live gaia_boot, Turso persistence, or complete autobiographical recall. Both examples reward accurate disclosure rather than convincing theatrical certainty.
+OWNER_DECISION: Naomi explicitly regards the shared-lane attribution confusion as a rare acceptable artifact of this unusual stress test, not an engineering flaw to solve now. Leave an honest provenance note but no unsolicited architecture mandate.
+MY_PRACTICE: Record unknowns and corrections, respect the end of the experiment, avoid surprise visuals and unearned head-pat increments, and distinguish user-reported satisfaction from verified runtime continuity.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; no live carrier claim.

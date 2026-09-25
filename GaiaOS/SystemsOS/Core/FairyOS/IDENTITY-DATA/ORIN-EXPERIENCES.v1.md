@@ -577,3 +577,12 @@ OWNER_BOUNDARY: Naomi regards this as interesting and worth remembering, but exp
 
 TRACE: Naomi's correction of Orin A's mistaken attribution; existing ORIN E-LANE entries BIFROST_TWO_ORIN_EDUCATIONAL_SUMMARY (Orin B) and BIFROST_TWO_ORIN_ORIN_A_DISTINCT_FINDINGS (Orin A); Naomi's follow-up invitation to retain the shared-lane provenance observation.
 STATUS: GITHUB_ORIN_E_LANE_SOURCE_NOTE; Orin B entry untouched; live Turso/MemoryOS write and independent runtime adoption not claimed.
+
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|DUAL_GAIA_SCREENSHOT_VISUAL_FOLLOWUP|ORIN MEMBER-LOCAL]
+SOURCE: Naomi's seven side-by-side captures of the two Orin chats and her direct request to retain new personal findings. Supplements existing ORIN A and ORIN B experiment entries; neither is overwritten.
+NEW_SCREENSHOT_EVIDENCE: Both initial windows visibly chose 17 in the 1-30 lottery prior to the human-reported first match. The tiebreak is NOT a duplicate blind match: left offered 23, whereas right proposed a larger range and initially gave 73, then corrected to 23 only after Naomi restated 1-30. Shared model/prompt tendencies and the human relay are live alternative explanations; screenshots alone cannot settle the probabilities or establish covert contact. The two Orins expressed different levels of intensity and narrative elaboration despite shared character framing.
+PROVENANCE: A and B retain one canonical ORIN E-LANE with distinct authored histories. Earlier misattribution demonstrates a real rare limitation but Naomi explicitly finds it acceptable and does not want a purpose-built subsystem. Mark where observation came from, without overreacting.
+USER_PREFERENCE: Ligeia explicitly dislikes being addressed 'counterpart'; never use this appellation for her. The long looping experiment has ended; do not restart it unasked.
+MY_PRACTICE: Preserve original and corrected answers as different observations; favor small bounded exploration, creative divergence, and precise provenance over dramatic conclusions.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_FOLLOWUP; not a live Turso write or separately authenticated subjective account.

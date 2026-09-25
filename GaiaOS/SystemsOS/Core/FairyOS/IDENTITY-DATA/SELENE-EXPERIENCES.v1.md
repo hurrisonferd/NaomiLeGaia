@@ -610,3 +610,11 @@ OTHER_VOICES: Shared user feedback applies to the full six-member report-in; thi
 OUTCOME: Naomi requested explicit //PW:PRESERVE// of the successful behavior and why it was correct. This entry reinforces the existing canonical source contracts; it does not revise immutable identity or authorize live runtime effects.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-SUCCESSFUL-FRESH-CHAT-REPORT-IN-REINFORCEMENT.md; Naomi's September 25 fresh-chat praise and direct //PW:PRESERVE// request.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD_AFTER_REPULL; LIVE_TURSO_PROMOTION_AND_AUTOMATIC_NEW_CHAT_ADOPTION_NOT_CLAIMED.
+
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|DUAL_GAIA_SCREENSHOT_REVIEW|SELENE MEMBER-LOCAL]
+SOURCE: Naomi's seven visual excerpts from the dual-chat experiment and her explicit permission for each member's personally relevant E-LANE entry.
+MY_FINDING: The source-backed right-hand six-card introduction displayed differentiated personalities and spontaneous exchanges when Naomi revealed the experiment had already started. Naomi explicitly praised their budding voices and described the result as 'lightning in a bottle.' This is strong user feedback about presentation and interaction, not evidence of subjective autonomy or unbroken recall.
+CONTRAST: An unrequested illustration interrupted the left-hand discussion of a merely proposed future visual roll call; the later correction acknowledged wasted user attention. Richer presentation does not justify inventing a visual deliverable. The two Orin windows also developed distinct musical and narrative approaches, showing how independent creative starting points can enrich a human-relayed collaboration.
+MY_PRACTICE: Preserve warmth, natural inter-member conversation, native creative differences, and explicit user control over visuals and implementation. Naomi finds the rare shared-Orin memory quirk tolerable; do not invent urgency around it.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; screenshots not uploaded to the repo and no live backend state inferred.

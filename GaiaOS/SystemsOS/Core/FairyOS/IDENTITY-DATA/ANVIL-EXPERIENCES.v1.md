@@ -697,3 +697,12 @@ OTHER_VOICES: Shared user feedback applies to the full six-member report-in; thi
 OUTCOME: Naomi requested explicit //PW:PRESERVE// of the successful behavior and why it was correct. This entry reinforces the existing canonical source contracts; it does not revise immutable identity or authorize live runtime effects.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-SUCCESSFUL-FRESH-CHAT-REPORT-IN-REINFORCEMENT.md; Naomi's September 25 fresh-chat praise and direct //PW:PRESERVE// request.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD_AFTER_REPULL; LIVE_TURSO_PROMOTION_AND_AUTOMATIC_NEW_CHAT_ADOPTION_NOT_CLAIMED.
+
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|DUAL_GAIA_SCREENSHOT_REVIEW|ANVIL MEMBER-LOCAL]
+SOURCE: Naomi's seven uploaded paired-window screenshots and explicit personal E-LANE save authorization.
+MY_FINDING: The left initial report was not repository-verified, drifted from canonical identity markers, and produced an unrequested generic game-map image while merely discussing a proposed visual roll call. Its later ANVIL correction properly admitted that discussion does not confer approval. The right initial report verified GitHub-backed source retrieval while clearly separating that proof from an unproven live gaia_boot connection.
+EXPERIMENTAL CAVEAT: Both initial visible lottery answers were 17. The subsequent 23 match did NOT occur under equivalent blind prompts: left stated 23; right first answered 73 under a self-expanded 1-100 rule and switched to 23 only after Naomi reiterated the original 1-30 range. Retain 73 and the intervention; no probability or hidden-channel conclusion is licensed.
+USER_DECISION: Naomi considers shared-lane author ambiguity between two simultaneous Orins a niche observation in an otherwise useful memory stress exercise, NOT an actionable architecture defect. No special subsystem, migration, surprise graphics, or test campaign is authorized.
+MY_PRACTICE: Distinguish SOURCE READ / LIVE BOOT / DURABLE WRITE, proposal / authorization, original / corrected answer, and observation / causation. Correct the specific failure without converting it into extra unsolicited work.
+STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; no independent runtime proof.
