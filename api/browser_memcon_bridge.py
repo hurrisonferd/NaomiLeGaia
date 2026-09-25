@@ -844,6 +844,60 @@ def _bootstrap_browser_session_redirect(browser_request: Request):
     return response
 
 
+@app.get("/gaiaos/memory/storage-status", operation_id="gaiaosMemoryStorageStatus")
+def gaiaos_memory_storage_status(browser_request: Request):
+    """Browser-session-gated, SELECT-only storage parity after carrier restarts.
+
+    Unlike /galaxy/status, this small operational diagnostic remains available
+    under HEATDEATH. No statements, record IDs, token values, DB URLs or writes.
+    """
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    backend = memcon_runtime.storage_status()
+    fields = (
+        ("relations", "memory_relations"),
+        ("gravity_scores", "memory_gravity"),
+        ("lifecycle_rows", "memory_lifecycle"),
+        ("syntheses", "memory_syntheses"),
+        ("importance_signals", "memory_importance"),
+    )
+    try:
+        with memcon_runtime._db() as conn:
+            counts = {
+                name: int(conn.execute("SELECT COUNT(*) FROM " + table).fetchone()[0])
+                for name, table in fields
+            }
+    except Exception as exc:
+        return JSONResponse({
+            "schema": "gaiaos.memory.storage-parity.v1",
+            "status": "HOLD_STORAGE_READ_FAILED",
+            "backend": backend["backend"],
+            "remote_configured": backend["remote_configured"],
+            "error_type": type(exc).__name__,
+            "writes_performed": [],
+        }, status_code=503, headers={"Cache-Control": "no-store"})
+    return JSONResponse({
+        "schema": "gaiaos.memory.storage-parity.v1",
+        "status": (
+            "PASS_REMOTE_READ_ONLY_SNAPSHOT"
+            if backend["backend"] == "turso_libsql" and backend["remote_configured"]
+            else "HOLD_LOCAL_DURABILITY_UNPROVEN"
+        ),
+        "backend": backend["backend"],
+        "remote_configured": backend["remote_configured"],
+        "runtime_boot_id": memcon_runtime.BOOT_ID,
+        "counts": counts,
+        "writes_performed": [],
+        "proof_boundary": (
+            "Read-only sample of configured backend and current table counts. "
+            "Compare with a pre-deploy snapshot; count parity is not a backup, "
+            "full-corpus readback, or BIGBANG release authorization."
+        ),
+    }, headers={"Cache-Control": "no-store"})
+
+
 @app.get("/galaxy/retrieval/phase3h-containment-shadow", operation_id="galaxyPhase3HContainmentShadow")
 def galaxy_phase3h_containment_shadow(
     browser_request: Request, query_index: int = 0, negative_controls: bool = False,
