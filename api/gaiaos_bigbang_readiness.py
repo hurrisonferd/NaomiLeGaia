@@ -308,7 +308,12 @@ def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
             records = runtime._fetchall_dicts(
                 conn,
                 "SELECT record_id, authority, scope, statement, source, status "
-                "FROM memory_records WHERE scope='MemoryOS' "
+                "FROM memory_records WHERE scope='MemoryOS' AND ("
+                "lower(statement) LIKE '%//pw:preserve//%' OR "
+                "lower(statement) LIKE '%power word preserve%' OR "
+                "lower(statement) LIKE '%e-lane%' OR "
+                "lower(statement) LIKE '%heatdeath%' OR "
+                "lower(statement) LIKE '%galaxy%') "
                 "ORDER BY created_at DESC LIMIT 101",
             )
             supersedes = runtime._fetchall_dicts(
@@ -436,7 +441,15 @@ def technical_sample_review(runtime: Any) -> dict[str, Any]:
             {
                 "case": row.get("case"), "kind": row.get("kind"),
                 "pass": row.get("pass") is True,
-                "observed_status": row.get("observed_status"),
+                "observed_status": (
+                    row.get("observed_status")
+                    if row.get("observed_status") in {
+                        "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
+                        "HOLD_NO_CURRENT_MATCH",
+                        "HOLD_NO_CONFIDENT_GALAXY_MATCH",
+                        "HOLD_NO_MATCH",
+                    } else "UNRECOGNIZED_STATUS"
+                ),
             }
             for row in packet.get("results", [])
             if isinstance(row, dict)
