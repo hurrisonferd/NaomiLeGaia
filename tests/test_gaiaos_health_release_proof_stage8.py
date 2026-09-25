@@ -17,7 +17,7 @@ class DeploymentProofTests(unittest.TestCase):
             SimpleNamespace(path="/health", methods={"GET"}),
         ]
         with patch.dict(os.environ, {"RENDER_GIT_COMMIT": "stage8-fixture-sha"}), patch.object(
-            carrier.app, "routes", routes
+            carrier.app.router, "routes", routes
         ):
             response = carrier.health()
         self.assertEqual(response["status"], "ok")
@@ -30,7 +30,7 @@ class DeploymentProofTests(unittest.TestCase):
 
     def test_absent_commit_and_route_are_explicit_unknowns(self):
         with patch.dict(os.environ, {"RENDER_GIT_COMMIT": ""}), patch.object(
-            carrier.app, "routes", [SimpleNamespace(path="/health", methods={"GET"})]
+            carrier.app.router, "routes", [SimpleNamespace(path="/health", methods={"GET"})]
         ):
             proof = carrier.health()["deployment_proof"]
         self.assertIsNone(proof["source_commit"])
@@ -39,7 +39,7 @@ class DeploymentProofTests(unittest.TestCase):
 
     def test_get_only_route_cannot_masquerade_as_readiness(self):
         with patch.object(
-            carrier.app, "routes",
+            carrier.app.router, "routes",
             [SimpleNamespace(path="/gaiaos/memory/readiness", methods={"GET"})],
         ):
             self.assertFalse(
