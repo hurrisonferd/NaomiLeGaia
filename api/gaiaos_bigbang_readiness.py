@@ -200,3 +200,252 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
         }
     except Exception as exc:
         return _hold("REVIEW_FAILED_CLOSED", error_type=type(exc).__name__)
+
+
+# Stage 9: owner's approved GaiaOS-technical subset only. The existing
+# bearer-authorized full reviewer is unchanged. Public-browser convenience
+# is deliberately restricted to a redacted preparation verdict.
+TECHNICAL_TOPICS = {
+    "PRESERVE": ("//pw:preserve//", "power word preserve"),
+    "E_LANES": ("e-lanes", "e-lane"),
+    "HEATDEATH": ("heatdeath",),
+    "GALAXY": ("galaxy",),
+}
+TECHNICAL_QUERIES = {
+    "PRESERVE": (
+        "What must the Power Word PRESERVE command protect?",
+        "How does //PW:PRESERVE// preserve continuity?",
+    ),
+    "E_LANES": (
+        "Why are all six E-LANES independently preserved?",
+        "Which independent E-LANES survive recovery?",
+    ),
+    "HEATDEATH": (
+        "How does HEATDEATH protect original legacy memory retrieval?",
+        "What does the HEATDEATH fallback preserve?",
+    ),
+    "GALAXY": (
+        "How does GALAXY control memory relevance and authority?",
+        "Which GALAXY constraints protect memory retrieval?",
+    ),
+}
+TECHNICAL_NEGATIVES = (
+    "quantum marmalade platypus orchestra",
+    "pineapple telescope opera confetti",
+)
+_EXCLUDED_SOURCES = ("fixture", "canary", "synthetic", "calibration", "test")
+# Only explicit old-version markers can produce a distinct historical query.
+# Never infer that REVISES or a lower version number means SUPERSEDES.
+_OLD_VERSION_MARKER = __import__("re").compile(
+    r"\b(?:v[0-9]+(?:[._-][0-9]+){1,3}|phase[ -]?[0-9][a-z]|[0-9]{2}_[0-9]{2})\b",
+    __import__("re").IGNORECASE,
+)
+
+
+def _technical_topics(row: dict[str, Any]) -> list[str]:
+    """Exclude known fixture origins. Technical keywords alone are not authority."""
+    if (
+        row.get("scope") != "MemoryOS"
+        or row.get("authority") != "NAOMI"
+        or not isinstance(row.get("statement"), str)
+        or any(flag in str(row.get("source") or "").casefold()
+               for flag in _EXCLUDED_SOURCES)
+    ):
+        return []
+    statement = row["statement"].casefold()
+    return [
+        name for name, patterns in TECHNICAL_TOPICS.items()
+        if any(pattern in statement for pattern in patterns)
+    ]
+
+
+def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
+    """SELECT-only six-case discovery. Cases stay server-side, never browser-visible.
+
+    A historical case needs an explicit verified incoming SUPERSEDES edge
+    between approved technical MemoryOS records AND a distinctive old-version
+    marker absent from current technical records. No fabricated history.
+    """
+    preview: dict[str, Any] = {
+        "schema": "gaiaos.bigbang.technical-preflight.v1",
+        "status": "HOLD",
+        "reason": "NOT_EVALUATED",
+        "scope": "MemoryOS",
+        "technical_topics": [],
+        "current_cases_prepared": 0,
+        "historical_cases_prepared": 0,
+        "negative_cases_prepared": 2,
+        "record_ids_disclosed": False,
+        "statements_disclosed": False,
+        "queries_disclosed": False,
+        "writes_performed": [],
+        "e_lanes_modified": False,
+        "release_activated": False,
+        "review_executed": False,
+        "proof_boundary": (
+            "Bounded SELECT-only candidate preparation, not a live retrieval "
+            "quality result or BIGBANG authorization. Missing evidence HOLDS."
+        ),
+    }
+
+    def hold(reason: str) -> dict[str, Any]:
+        return {"preview": {**preview, "reason": reason}, "cases": []}
+
+    if getattr(runtime, "_INITIALIZED", False) is not True:
+        return hold("RUNTIME_NOT_INITIALIZED")
+    try:
+        backend = runtime.storage_status()
+        if (backend.get("backend") != "turso_libsql"
+                or backend.get("remote_configured") is not True):
+            return hold("REMOTE_STORAGE_NOT_CONFIRMED")
+        control = mode.mode_status(runtime)
+        if (control.get("schema") != mode.SCHEMA
+                or control.get("effective_mode") != mode.HEATDEATH
+                or control.get("bigbang_activation_enabled") is not False):
+            return hold("HEATDEATH_RELEASE_LOCK_NOT_VERIFIED")
+        with runtime._db() as conn:
+            # 101 rows distinguish a bounded scan from assumed complete coverage.
+            records = runtime._fetchall_dicts(
+                conn,
+                "SELECT record_id, authority, scope, statement, source, status "
+                "FROM memory_records WHERE scope='MemoryOS' "
+                "ORDER BY created_at DESC LIMIT 101",
+            )
+            supersedes = runtime._fetchall_dicts(
+                conn,
+                "SELECT source_record_id, target_record_id, authority "
+                "FROM memory_relations "
+                "WHERE status='VERIFIED' AND relation_type='SUPERSEDES' "
+                "AND verified_at IS NOT NULL LIMIT 101",
+            )
+        if len(records) > 100 or len(supersedes) > 100:
+            return hold("SOURCE_WINDOW_INCOMPLETE")
+        real = {row["record_id"]: row for row in records
+                if _technical_topics(row) and isinstance(row.get("record_id"), str)}
+        by_topic: dict[str, list[dict[str, Any]]] = {
+            topic: [] for topic in TECHNICAL_TOPICS
+        }
+        superseded_ids = {
+            edge["target_record_id"]
+            for edge in supersedes
+            if edge.get("authority") == "NAOMI"
+            and edge.get("source_record_id") in real
+            and edge.get("target_record_id") in real
+            and real[edge["source_record_id"]].get("status") == "ACTIVE"
+        }
+        for record in real.values():
+            if record.get("status") != "ACTIVE" or record["record_id"] in superseded_ids:
+                continue
+            for topic in _technical_topics(record):
+                by_topic[topic].append(record)
+        preview["technical_topics"] = [
+            topic for topic, rows in by_topic.items() if rows
+        ]
+        # Exactly two independently grounded current records, plus a second
+        # paraphrase of one. Never repeat one record as two distinct records.
+        chosen: list[tuple[str, dict[str, Any]]] = []
+        used: set[str] = set()
+        for topic, rows in by_topic.items():
+            item = next(
+                (r for r in rows if r["record_id"] not in used), None
+            )
+            if item is not None:
+                chosen.append((topic, item))
+                used.add(item["record_id"])
+            if len(chosen) == 2:
+                break
+        if len(chosen) < 2:
+            return hold("TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
+        cases = [
+            {"kind": "current", "query": TECHNICAL_QUERIES[topic][0],
+             "record_id": record["record_id"]}
+            for topic, record in chosen
+        ]
+        cases.append({
+            "kind": "current", "query": TECHNICAL_QUERIES[chosen[0][0]][1],
+            "record_id": chosen[0][1]["record_id"],
+        })
+        preview["current_cases_prepared"] = 3
+        # Match the older record by a verified directed relation, not text
+        # resemblance or REVISES. Only distinctive technical version markers
+        # can become historical retrieval queries.
+        history: dict[str, Any] | None = None
+        active_statements = [
+            row["statement"].casefold()
+            for rows in by_topic.values() for row in rows
+        ]
+        for edge in supersedes:
+            old = real.get(edge.get("target_record_id"))
+            new = real.get(edge.get("source_record_id"))
+            if (edge.get("authority") != "NAOMI" or not old or not new
+                    or new.get("status") != "ACTIVE"):
+                continue
+            for match in _OLD_VERSION_MARKER.finditer(old["statement"]):
+                marker = match.group(0)
+                if (marker.casefold() in new["statement"].casefold()
+                        or any(marker.casefold() in s for s in active_statements)):
+                    continue
+                # Distinct version marker is still merely a prospective query.
+                topic = _technical_topics(old)[0]
+                q = f"{topic.replace('_', ' ')} historical {marker} behavior"
+                history = {"kind": "historical", "query": q,
+                           "record_id": old["record_id"]}
+                break
+            if history is not None:
+                break
+        if history is None:
+            return hold("NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES")
+        cases.append(history)
+        preview["historical_cases_prepared"] = 1
+        cases.extend(
+            {"kind": "negative", "query": q}
+            for q in TECHNICAL_NEGATIVES
+        )
+        if _validate(cases) is not None:
+            return hold("SIX_CASE_CONTRACT_UNSATISFIED")
+        preview["status"] = "PREPARED_UNTESTED"
+        preview["reason"] = "SIX_TECHNICAL_CASES_SELECTED_READ_ONLY"
+        return {"preview": preview, "cases": cases}
+    except Exception as exc:
+        # Never return SQL details, row content, statements, source or secrets.
+        return {
+            "preview": {**preview, "reason": "SOURCE_READ_FAILED",
+                        "error_type": type(exc).__name__},
+            "cases": [],
+        }
+
+
+def technical_preflight(runtime: Any) -> dict[str, Any]:
+    """Public-browser-safe result: no record IDs, statements or queries."""
+    return prepare_technical_cases(runtime)["preview"]
+
+
+def technical_sample_review(runtime: Any) -> dict[str, Any]:
+    """Execute only an already prepared six-case sample; redact full reviewer."""
+    prep = prepare_technical_cases(runtime)
+    if not prep["cases"]:
+        return prep["preview"]
+    packet = review(runtime, prep["cases"])
+    return {
+        **prep["preview"],
+        "status": packet.get("status", "HOLD"),
+        "reason": packet.get("reason", "REVIEW_FAILED_CLOSED"),
+        "review_executed": True,
+        "legacy_exact_parity": packet.get("legacy_exact_parity") is True,
+        "case_results": [
+            {
+                "case": row.get("case"), "kind": row.get("kind"),
+                "pass": row.get("pass") is True,
+                "observed_status": row.get("observed_status"),
+            }
+            for row in packet.get("results", [])
+            if isinstance(row, dict)
+        ],
+        "release_activated": False,
+        "writes_performed": [],
+        "proof_boundary": (
+            "Only the approved technical six-case sample was reviewed. "
+            "All queries, records, IDs and underlying statements are redacted. "
+            "No general release or production switch is authorized."
+        ),
+    }

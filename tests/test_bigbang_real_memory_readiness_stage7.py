@@ -224,3 +224,133 @@ class ReadinessTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class Stage9TechnicalPreflight(unittest.TestCase):
+    """Never inspect production records or depend on an actual remote database."""
+
+    def setUp(self):
+        import sqlite3
+        import tempfile
+        self.temp = tempfile.TemporaryDirectory(prefix="stage9-private-fixture-")
+        self.addCleanup(self.temp.cleanup)
+        self.path = str(Path(self.temp.name) / "test.sqlite")
+        with sqlite3.connect(self.path) as db:
+            db.executescript("""
+                CREATE TABLE memory_records (
+                    record_id TEXT, authority TEXT, scope TEXT, statement TEXT,
+                    source TEXT, status TEXT, created_at TEXT
+                );
+                CREATE TABLE memory_relations (
+                    source_record_id TEXT, target_record_id TEXT,
+                    authority TEXT, status TEXT, relation_type TEXT,
+                    verified_at TEXT
+                );
+            """)
+        class FakeRuntime:
+            _INITIALIZED = True
+            storage_status = staticmethod(lambda: {
+                "backend": "turso_libsql", "remote_configured": True,
+            })
+            _fetchall_dicts = staticmethod(
+                lambda c, q: [dict(r) for r in c.execute(q).fetchall()]
+            )
+        self.fake = FakeRuntime()
+        def db_open():
+            c = sqlite3.connect(self.path)
+            c.row_factory = sqlite3.Row
+            return c
+        self.fake._db = db_open
+        self.mode_patch = patch.object(mode, "mode_status", return_value={
+            "schema": mode.SCHEMA, "effective_mode": "HEATDEATH",
+            "bigbang_activation_enabled": False,
+        })
+        self.mode_patch.start()
+        self.addCleanup(self.mode_patch.stop)
+
+    def _insert(self, rid, statement, source="naomi-owner-save", status="ACTIVE"):
+        import sqlite3
+        with sqlite3.connect(self.path) as db:
+            db.execute(
+                "INSERT INTO memory_records VALUES (?,?,?,?,?,?,?)",
+                (rid, "NAOMI", "MemoryOS", statement, source, status, rid),
+            )
+
+    def _supersedes(self, old, new, relation="SUPERSEDES", status="VERIFIED"):
+        import sqlite3
+        with sqlite3.connect(self.path) as db:
+            db.execute(
+                "INSERT INTO memory_relations VALUES (?,?,?,?,?,?)",
+                (new, old, "NAOMI", status, relation, "2026-09-24"),
+            )
+
+    def _seed(self):
+        self._insert("current-a", "Power Word preserve safeguards all memory")
+        self._insert("current-b", "six independent E-LANES keep their identity")
+        self._insert("history", "HEATDEATH v1.2 historical rollback guard")
+        self._insert("successor", "HEATDEATH v2.0 replaces old rollback guard")
+        self._supersedes("history", "successor")
+
+    def test_six_approved_cases_are_prepared_without_exposing_records(self):
+        self._seed()
+        prep = reviewer.prepare_technical_cases(self.fake)
+        self.assertEqual(prep["preview"]["status"], "PREPARED_UNTESTED")
+        self.assertEqual(len(prep["cases"]), 6)
+        self.assertEqual([c["kind"] for c in prep["cases"]],
+                         ["current", "current", "current", "historical",
+                          "negative", "negative"])
+        self.assertNotEqual(prep["cases"][0]["record_id"],
+                            prep["cases"][1]["record_id"])
+        public = str(prep["preview"])
+        for secret in ("history", "successor", "current-a", "current-b",
+                       "v1.2", "v2.0", "naomi-owner-save"):
+            self.assertNotIn(secret, public)
+        self.assertEqual(prep["preview"]["writes_performed"], [])
+        self.assertFalse(prep["preview"]["review_executed"])
+
+    def test_revises_is_not_supersedes(self):
+        self._seed()
+        import sqlite3
+        with sqlite3.connect(self.path) as db:
+            db.execute("UPDATE memory_relations SET relation_type='REVISES'")
+        result = reviewer.prepare_technical_cases(self.fake)
+        self.assertEqual(result["preview"]["status"], "HOLD")
+        self.assertEqual(result["preview"]["reason"],
+                         "NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES")
+        self.assertEqual(result["cases"], [])
+
+    def test_fixture_sources_cannot_become_real_technical_cases(self):
+        self._insert("fixture-a", "Power Word preserve safeguards memory",
+                     source="GALAXY_CANARY_FIXTURE")
+        self._insert("real-b", "six independent E-LANES keep identity")
+        result = reviewer.prepare_technical_cases(self.fake)
+        self.assertEqual(result["preview"]["reason"],
+                         "TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
+
+    def test_no_review_is_run_when_historical_evidence_missing(self):
+        self._insert("current-a", "Power Word preserve safeguards memory")
+        self._insert("current-b", "six independent E-LANES keep identity")
+        with patch.object(reviewer, "review",
+                          side_effect=AssertionError("unapproved review")):
+            result = reviewer.technical_sample_review(self.fake)
+        self.assertEqual(result["status"], "HOLD")
+        self.assertFalse(result["review_executed"])
+
+    def test_actual_reviewer_output_is_redacted_for_browser(self):
+        self._seed()
+        secret = "MEM-DO-NOT-REVEAL"
+        with patch.object(reviewer, "review", return_value={
+            "status": "PASS_READ_ONLY_SAMPLE_ONLY",
+            "reason": "SAMPLE_AND_LEGACY_PARITY",
+            "legacy_exact_parity": True,
+            "results": [{"case": 0, "kind": "current", "pass": True,
+                         "observed_status": "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
+                         "current_ids": [secret], "historical_ids": [secret]}],
+        }):
+            result = reviewer.technical_sample_review(self.fake)
+        self.assertEqual(result["status"], "PASS_READ_ONLY_SAMPLE_ONLY")
+        self.assertTrue(result["legacy_exact_parity"])
+        self.assertNotIn(secret, str(result))
+        self.assertNotIn("statement", str(result).lower())
+        self.assertEqual(result["writes_performed"], [])
+

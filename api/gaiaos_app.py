@@ -14,7 +14,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from fastapi import Header, HTTPException
+from fastapi import Header, HTTPException, Request
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 from starlette.routing import Mount
 
@@ -460,6 +461,37 @@ def gaia_bigbang_readiness_http(
     base._authorize(authorization)
     import memcon_runtime
     return gaiaos_bigbang_readiness.review(memcon_runtime, payload.cases)
+
+
+@app.get("/gaiaos/memory/technical-preflight", operation_id="gaiaTechnicalPreflight")
+def gaia_technical_preflight(browser_request: Request):
+    """Redacted convenience only: a public homepage issues browser cookies.
+
+    Do not return underlying technical record statements or identifiers here.
+    """
+    base._authorize_browser_session(browser_request)
+    import memcon_runtime
+    return JSONResponse(
+        gaiaos_bigbang_readiness.technical_preflight(memcon_runtime),
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.post("/gaiaos/memory/technical-review", operation_id="gaiaTechnicalSampleReview")
+def gaia_technical_sample_review(
+    browser_request: Request,
+    authorization: str | None = Header(default=None),
+):
+    """Owner-authenticated one-shot sample without manually locating IDs.
+
+    Bearer auth, not the publicly minted browser cookie, is mandatory here.
+    """
+    base._authorize(authorization)
+    import memcon_runtime
+    return JSONResponse(
+        gaiaos_bigbang_readiness.technical_sample_review(memcon_runtime),
+        headers={"Cache-Control": "no-store"},
+    )
 
 
 class GaiaAssistRequest(BaseModel):
