@@ -192,7 +192,7 @@ def audit(runtime: Any) -> dict[str, Any]:
             }
         if (
             old_state.get("record_id") == old["record_id"]
-            and old_state.get("state") == "HISTORICAL_SUPERSEDED"
+            and old_state.get("state") in ("HISTORICAL_SUPERSEDED", "NONACTIVE_HISTORICAL")
             and old_state.get("current_default_eligible") is False
             and old_state.get("historical_retrieval_eligible") is True
             and new_state.get("record_id") == new["record_id"]
