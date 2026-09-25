@@ -82,8 +82,11 @@ def canonicalize(kind: str, data: Any) -> dict[str, Any] | None:
             generator = item.get("generator_expected_slot")
             if (
                 not _valid_slot(generator)
+                or type(item.get("owner_slot")) is not type(slot)
                 or item.get("owner_slot") != slot
                 or item.get("owner_supported_slots") != supported
+                or not isinstance(item.get("owner_supported_slots"), list)
+                or any(type(value) is not int for value in item["owner_supported_slots"])
                 or item.get("generator_expected_supported") is not (generator in supported)
                 or item.get("generator_expected_is_unique_owner_answer")
                    is not (len(supported) == 1 and generator in supported)
@@ -112,6 +115,8 @@ def canonicalize(kind: str, data: Any) -> dict[str, Any] | None:
         if (
             not _valid_slot(selected, nullable=True)
             or candidates != expected_candidates
+            or not isinstance(candidates, list)
+            or any(type(value) is not int for value in candidates)
             or (resolution != "RESOLVED" and selected is not None)
             or (resolution == "RESOLVED" and selected is None)
         ):
@@ -155,6 +160,25 @@ def canonicalize(kind: str, data: Any) -> dict[str, Any] | None:
     }
     if kind == "model":
         clean["legacy_exact_parity"] = True
+        # Preserve a bounded status diagnosis without carrying arbitrary
+        # provider/model text into a signed redacted receipt.
+        if "reason" in data:
+            reason = data["reason"]
+            if (
+                not isinstance(reason, str) or len(reason) > 128
+                or re.fullmatch(r"[A-Z][A-Z0-9_]*", reason) is None
+            ):
+                return None
+            clean["reason"] = reason
+        if data.get("historical_coverage", False) is not False:
+            return None
+        if data.get("general_semantic_quality_proven", False) is not False:
+            return None
+        clean["historical_coverage"] = False
+        clean["general_semantic_quality_proven"] = False
+        clean["full_readiness_status"] = (
+            "HOLD_HISTORICAL_AND_GENERAL_SEMANTICS_UNPROVEN"
+        )
     return clean
 
 
