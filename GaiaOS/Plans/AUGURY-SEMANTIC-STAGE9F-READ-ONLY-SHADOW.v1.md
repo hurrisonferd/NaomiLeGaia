@@ -125,6 +125,14 @@ Canonical receipt: `GaiaOS/Proof/STAGE9F-LIVE-SEMANTIC-SHADOW-HOLD-2026-09-25.js
 
 This pattern must not be simplified to “the semantic model failed.” The current case generator assigns an expected record from the topic bucket used to choose that record, while a technical record may satisfy multiple topic buckets and same-topic record pairs are explicitly permitted. Therefore the expected target is not independently proven to be a unique semantic oracle. Until that oracle is repaired or independently adjudicated, the correct state is HOLD with source-grounded semantic mechanics observed and expected-target correctness unresolved. Do not spend another model call merely to repeat this ambiguous oracle.
 
+## Oracle-mismatch repair path
+
+PR #60 (merge `153924f126d699e69661cb6459597ef9a13422ec`, Stage 7 run 36189952828 PASS) keeps the live-shaped expected-target mismatch as HOLD but now distinguishes source-grounded semantic mechanics from expected-target oracle correctness. It does not weaken the pass gate.
+
+PR #61 (merge `55fdfc9656d6cd5ddc74e976f918ae724fb4f0db`, Stage 7 run 36190326581 PASS, HEATDEATH route run 36190326574 PASS) adds an owner-authenticated, no-store, model-free adjudication path at `/gaiaos/memory/augury-semantic-owner-oracle-preview` and a private console panel. Naomi can read the two selected statement excerpts and three current questions locally, judge each as A, B, COLLISION, or UNKNOWN, then copy only a redacted oracle receipt. Record IDs and source fields are not exposed. No OpenAI request is made.
+
+The prior one-call Stage 9F semantic authorization was consumed by the observed live call and MUST NOT be silently reused. A second model call requires a new explicit Naomi authorization after oracle adjudication. Current source is ahead of the live `a4b77cf...` carrier and therefore requires a manual Render deployment before the owner-oracle review control is available live.
+
 ## Future proof boundary
 
 CI proves import, type contracts, source quote validation, collision/negative
