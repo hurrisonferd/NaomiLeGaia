@@ -434,14 +434,33 @@ class Stage9TechnicalPreflight(unittest.TestCase):
                           page.headers["content-security-policy"])
             self.assertEqual(page.headers["cache-control"], "no-store")
             self.assertIn('type="password"', page.text)
+            self.assertIn('credentials:"same-origin"', page.text)
+            self.assertIn('redirect:"error"', page.text)
             self.assertNotIn(secret, page.text)
             self.assertNotIn("__NONCE__", page.text)
             denied = client.post("/gaiaos/memory/technical-partial-review")
             self.assertEqual(denied.status_code, 401)
+            self.assertEqual(denied.json()["detail"], "OWNER_AUTH_HEADER_NOT_RECEIVED")
+            malformed = client.post(
+                "/gaiaos/memory/technical-partial-review",
+                headers={"Authorization": "Basic invalid"},
+            )
+            self.assertEqual(malformed.status_code, 401)
+            self.assertEqual(malformed.json()["detail"],
+                             "OWNER_AUTH_BEARER_SCHEME_MISSING")
+            mismatch = client.post(
+                "/gaiaos/memory/technical-partial-review",
+                headers={"Authorization": "Bearer wrong-test-value"},
+            )
+            self.assertEqual(mismatch.status_code, 401)
+            self.assertEqual(mismatch.json()["detail"],
+                             "OWNER_AUTH_HEADER_RECEIVED_BUT_KEY_MISMATCH")
+            self.assertNotIn(secret, str(mismatch.json()))
             client.cookies.set(carrier.base.SESSION_COOKIE,
                                carrier.base._session_token())
             denied = client.post("/gaiaos/memory/technical-partial-review")
             self.assertEqual(denied.status_code, 401)
+            self.assertEqual(denied.json()["detail"], "OWNER_AUTH_HEADER_NOT_RECEIVED")
         with patch.object(carrier.base, "API_KEY", None):
             unavailable = client.post("/gaiaos/memory/technical-partial-review")
             self.assertEqual(unavailable.status_code, 503)
