@@ -504,7 +504,21 @@ def gaia_technical_five_case_diagnostic(
     """Owner bearer required. Five real-store reads cannot pass the Stage-7 gate."""
     if not base.API_KEY:
         raise HTTPException(status_code=503, detail="Private owner API authorization is unavailable")
-    base._authorize(authorization)
+    # Bounded diagnostics distinguish a browser transport failure from a key
+    # mismatch. Neither branch reveals values, lengths, hashes or record data.
+    if authorization is None:
+        raise HTTPException(status_code=401, detail="OWNER_AUTH_HEADER_NOT_RECEIVED")
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="OWNER_AUTH_BEARER_SCHEME_MISSING")
+    try:
+        base._authorize(authorization)
+    except HTTPException as exc:
+        if exc.status_code != 401:
+            raise
+        raise HTTPException(
+            status_code=401,
+            detail="OWNER_AUTH_HEADER_RECEIVED_BUT_KEY_MISMATCH",
+        ) from None
     import memcon_runtime
     return JSONResponse(
         gaiaos_bigbang_readiness.technical_partial_sample_review(memcon_runtime),
@@ -577,11 +591,11 @@ byId("run").addEventListener("click",async()=>{
   byId("status").textContent="Running five read-only cases…";
   try{
     const response=await fetch("/gaiaos/memory/technical-partial-review",{
-      method:"POST",credentials:"omit",cache:"no-store",redirect:"error",
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
       headers:{"Authorization":"Bearer "+key}
     });
     const result=await response.json();
-    if(!response.ok)throw Error("HTTP "+response.status);
+    if(!response.ok)throw Error(result.detail || ("HTTP "+response.status));
     redacted={
       schema:result.schema,status:result.status,reason:result.reason,
       partial_review_executed:result.partial_review_executed,
