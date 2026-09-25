@@ -128,7 +128,7 @@ def compare_redacted(
         or owner_receipt.get("schema")
             != "gaiaos.augury.semantic-owner-oracle-redacted.v1"
     ):
-        return _hold("REDUCTED_RECEIPT_SCHEMA_INVALID")
+        return _hold("REDACTED_RECEIPT_SCHEMA_INVALID")
     left = model_receipt.get("sample_fingerprint")
     right = owner_receipt.get("sample_fingerprint")
     if (
