@@ -31,8 +31,11 @@ def _hold(reason: str, **detail: Any) -> dict[str, Any]:
     }
 
 
-def _validate(cases: Any) -> str | None:
-    if not isinstance(cases, list) or not 6 <= len(cases) <= 12:
+def _validate(cases: Any, *, partial: bool = False) -> str | None:
+    if partial:
+        if not isinstance(cases, list) or len(cases) != 5:
+            return "EXACTLY_FIVE_PARTIAL_CASES_REQUIRED"
+    elif not isinstance(cases, list) or not 6 <= len(cases) <= 12:
         return "SIX_TO_TWELVE_CASES_REQUIRED"
     counts: Counter[str] = Counter()
     queries: set[str] = set()
@@ -55,7 +58,10 @@ def _validate(cases: Any) -> str | None:
         if kind == "current":
             current_ids.add(rid)
         counts[kind] += 1
-    if any(counts[k] < n for k, n in REQUIRED.items()):
+    if partial:
+        if counts != Counter({"current": 3, "negative": 2}):
+            return "PARTIAL_REQUIRES_THREE_CURRENT_TWO_NEGATIVE_NO_HISTORY"
+    elif any(counts[k] < n for k, n in REQUIRED.items()):
         return "INSUFFICIENT_CURRENT_HISTORICAL_OR_NEGATIVE_COVERAGE"
     if len(current_ids) < 2:
         return "TWO_DISTINCT_CURRENT_RECORDS_REQUIRED"
@@ -85,14 +91,14 @@ def _safe_evidence(packet: Any) -> bool:
     )
 
 
-def review(runtime: Any, cases: Any) -> dict[str, Any]:
+def review(runtime: Any, cases: Any, *, partial: bool = False) -> dict[str, Any]:
     """Test the *configured store*; never seed records, mutate, or switch modes.
 
     PASS means only this explicitly supplied sample passed in this one process.
     It is not representative-corpus certification, deployment proof or consent
     to enable BIGBANG.
     """
-    invalid = _validate(cases)
+    invalid = _validate(cases, partial=partial)
     if invalid:
         return _hold(invalid)
     if getattr(runtime, "_INITIALIZED", False) is not True:
@@ -178,9 +184,12 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
         passed = all(row["pass"] for row in results) and parity
         return {
             "schema": SCHEMA,
-            "status": "PASS_READ_ONLY_SAMPLE_ONLY" if passed else "HOLD",
-            "reason": "SAMPLE_AND_LEGACY_PARITY" if passed
+            "status": ("PASS_PARTIAL_CURRENT_NEGATIVE_ONLY" if partial else
+                       "PASS_READ_ONLY_SAMPLE_ONLY") if passed else "HOLD",
+            "reason": ("PARTIAL_FIVE_CASE_PARITY_NO_HISTORICAL" if partial
+                       else "SAMPLE_AND_LEGACY_PARITY") if passed
                       else "CASE_FAILURE_OR_LEGACY_PARITY_FAILURE",
+            "historical_coverage": not partial,
             "sample_count": len(cases),
             "counts": dict(Counter(item["kind"] for item in cases)),
             "results": results,
@@ -276,6 +285,7 @@ def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
         "distinct_current_records_capped_at_two": 0,
         "historical_cases_prepared": 0,
         "negative_cases_prepared": 2,
+        "partial_five_case_ready": False,
         "record_ids_disclosed": False,
         "statements_disclosed": False,
         "queries_disclosed": False,
@@ -427,7 +437,20 @@ def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
             if history is not None:
                 break
         if history is None:
-            return hold("NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES")
+            # Do not invent a historical record. Retain the three approved
+            # current cases and two negatives privately for a distinct five-case
+            # diagnostic. This never satisfies the six-case release gate.
+            partial_cases = cases + [
+                {"kind": "negative", "query": q} for q in TECHNICAL_NEGATIVES
+            ]
+            if _validate(partial_cases, partial=True) is not None:
+                return hold("PARTIAL_FIVE_CASE_CONTRACT_UNSATISFIED")
+            preview["partial_five_case_ready"] = True
+            return {
+                "preview": {**preview,
+                            "reason": "NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES"},
+                "cases": [], "partial_cases": partial_cases,
+            }
         cases.append(history)
         preview["historical_cases_prepared"] = 1
         cases.extend(
@@ -488,5 +511,52 @@ def technical_sample_review(runtime: Any) -> dict[str, Any]:
             "Only the approved technical six-case sample was reviewed. "
             "All queries, records, IDs and underlying statements are redacted. "
             "No general release or production switch is authorized."
+        ),
+    }
+
+def technical_partial_sample_review(runtime: Any) -> dict[str, Any]:
+    """Owner-only five-case diagnostic; missing history remains a release HOLD."""
+    prep = prepare_technical_cases(runtime)
+    cases = prep.get("partial_cases")
+    if cases is None and prep["cases"]:
+        cases = [c for c in prep["cases"] if c["kind"] != "historical"]
+    if not cases:
+        return prep["preview"]
+    packet = review(runtime, cases, partial=True)
+    return {
+        **prep["preview"],
+        "partial_review_executed": True,
+        "partial_review_status": packet.get("status", "HOLD"),
+        "partial_review_reason": packet.get("reason", "REVIEW_FAILED_CLOSED"),
+        "historical_coverage": False,
+        "full_readiness_status": "HOLD_MISSING_HISTORICAL_PROOF",
+        "legacy_exact_parity": packet.get("legacy_exact_parity") is True,
+        "case_results": [
+            {
+                "case": row.get("case"), "kind": row.get("kind"),
+                "pass": row.get("pass") is True,
+                "observed_status": (
+                    row.get("observed_status")
+                    if row.get("observed_status") in {
+                        "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
+                        "HOLD_NO_CURRENT_MATCH",
+                        "HOLD_NO_CONFIDENT_GALAXY_MATCH",
+                        "HOLD_NO_MATCH",
+                    } else "UNRECOGNIZED_STATUS"
+                ),
+            }
+            for row in packet.get("results", [])
+            if isinstance(row, dict)
+        ],
+        "record_ids_disclosed": False,
+        "statements_disclosed": False,
+        "queries_disclosed": False,
+        "release_activated": False,
+        "writes_performed": [],
+        "e_lanes_modified": False,
+        "proof_boundary": (
+            "Exactly three current and two adversarial negative cases; the "
+            "historical release gate remains HOLD. No record IDs, queries, "
+            "statements or secrets leave this redacted result."
         ),
     }
