@@ -798,6 +798,32 @@ def gaia_owner_augury_collision_two_source_shadow(
     )
 
 
+@app.get("/gaiaos/memory/historical-audit-console",
+         response_class=HTMLResponse,
+         operation_id="gaiaOwnerHistoricalAuditConsole")
+def gaia_owner_historical_audit_console():
+    """Static one-button owner console. The GET has no private data or key."""
+    import secrets
+    import gaiaos_historical_audit_console as page
+
+    nonce = secrets.token_urlsafe(20)
+    return HTMLResponse(
+        page.render(nonce),
+        headers={
+            "Cache-Control": "no-store",
+            "Pragma": "no-cache",
+            "Referrer-Policy": "no-referrer",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": (
+                "default-src 'none'; connect-src 'self'; "
+                "script-src 'nonce-" + nonce + "'; "
+                "style-src 'nonce-" + nonce + "'; "
+                "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+            ),
+        },
+    )
+
+
 @app.get("/gaiaos/memory/technical-partial-console", response_class=HTMLResponse,
          operation_id="gaiaTechnicalFiveCaseConsole")
 def gaia_technical_five_case_console():

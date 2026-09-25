@@ -26,6 +26,7 @@ import gaiaos_app as carrier
 # assertion below fails when a new console is added without its browser test.
 CONSOLE_ROUTES = frozenset({
     "/gaiaos/memory/technical-partial-console",
+    "/gaiaos/memory/historical-audit-console",
 })
 
 # Node is mandatory in this CI gate, not an optional skip. GitHub-hosted Linux
