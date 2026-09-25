@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9I_TWO_SOURCE_COLLISION_SOURCE_PROVEN_LIVE_DEPLOY_UNVERIFIED_BIGBANG_RELEASE_LOCKED",
+  "status": "ACTIVE_STAGE9I_OWNER_RELAY_DUAL_SOURCE_PASS_RECORDED_LIVE_SHA_UNVERIFIED_BIGBANG_RELEASE_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -982,7 +982,35 @@
     "stage9i_dual_source_live_observed": false,
     "stage9i_model_call_authorized": false,
     "stage9i_bigbang_activation_authorized": false,
-    "stage9i_next_gate": "OPTIONAL_OWNER_MANUAL_DEPLOY_CURRENT_MAIN_THEN_PUBLIC_HEALTH_EXACT_SHA_AND_NEW_SIGNED_MODEL_FREE_OWNER_COLLISION_REVIEW_TWO_SOURCE_READBACK"
+    "stage9i_next_gate": "PRESERVE_VERIFIED_OWNER_RELAY_EVIDENCE_AND_INDEPENDENT_LIVE_HEALTH_DEPLOY_SHA_WHEN_AVAILABLE_HISTORICAL_AND_GENERAL_SEMANTIC_GATES_HOLD",
+    "stage9i_live_owner_relay_observed": true,
+    "stage9i_live_owner_relay_status": "PASS_TWO_SOURCE_READBACK_ONLY",
+    "stage9i_live_owner_oracle_status": "OWNER_ORACLE_RECORDED_B_A_COLLISION",
+    "stage9i_live_owner_relay_collision_case": 2,
+    "stage9i_live_owner_relay_sample_fingerprint": "sf1_a6be37adc685c896ae19b98674f81ae2",
+    "stage9i_live_owner_relay_two_source_proof": "GaiaOS/Proof/STAGE9I-LIVE-TWO-SOURCE-OWNER-RELAY-REDACTED-2026-09-25.json",
+    "stage9i_live_owner_relay_owner_proof": "GaiaOS/Proof/STAGE9I-LIVE-OWNER-ORACLE-OWNER-RELAY-REDACTED-2026-09-25.json",
+    "stage9i_live_owner_relay_reported_checks": {
+      "owner_receipt_verified": true,
+      "quote_exact_verified": [
+        true,
+        true
+      ],
+      "strict_literal_compiled": [
+        true,
+        true
+      ],
+      "galaxy_readback_verified": [
+        true,
+        true
+      ],
+      "legacy_exact_parity": true,
+      "model_called": false,
+      "writes_performed": [],
+      "e_lanes_modified": false,
+      "release_activated": false
+    },
+    "stage9i_live_owner_relay_proof_boundary": "OWNER_RELAY_OF_AUTHENTICATED_BROWSER_REDACTED_RECEIPTS_SIGNED_MAC_UNVERIFIED_EXTERNALLY_PRIVATE_OWNER_KEY_NOT_DISCLOSED"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",

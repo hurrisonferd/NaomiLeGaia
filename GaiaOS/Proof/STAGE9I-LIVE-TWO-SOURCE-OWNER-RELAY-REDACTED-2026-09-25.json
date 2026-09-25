@@ -1,0 +1,34 @@
+{
+  "schema": "gaiaos.augury.collision-two-source-shadow.v1",
+  "status": "PASS_TWO_SOURCE_READBACK_ONLY",
+  "case": 2,
+  "sample_fingerprint": "sf1_a6be37adc685c896ae19b98674f81ae2",
+  "sample_fingerprint_bound": true,
+  "owner_receipt_verified": true,
+  "quote_exact_verified": [
+    true,
+    true
+  ],
+  "strict_literal_compiled": [
+    true,
+    true
+  ],
+  "galaxy_readback_verified": [
+    true,
+    true
+  ],
+  "legacy_exact_parity": true,
+  "collision_entailment_independently_proven": false,
+  "general_semantic_quality_proven": false,
+  "historical_coverage": false,
+  "full_readiness_status": "HOLD_HISTORICAL_AND_GENERAL_SEMANTICS_UNPROVEN",
+  "model_called": false,
+  "writes_performed": [],
+  "e_lanes_modified": false,
+  "release_activated": false,
+  "receipt_attestation": {
+    "schema": "gaiaos.augury.redacted-receipt-attestation.v1",
+    "kind": "collision",
+    "mac": "ra1_d64157fafaed1e3d58d8d3d7cf0f16424d7ddb01731792489cc33fe367517039"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "gaiaos.augury.semantic-owner-oracle-redacted.v1",
+  "status": "OWNER_ORACLE_RECORDED",
+  "sample_fingerprint": "sf1_a6be37adc685c896ae19b98674f81ae2",
+  "sample_fingerprint_bound": true,
+  "case_count": 3,
+  "case_results": [
+    {
+      "case": 0,
+      "owner_resolution": "B",
+      "owner_slot": 1,
+      "owner_supported_slots": [
+        1
+      ],
+      "generator_expected_slot": 0,
+      "generator_expected_supported": false,
+      "generator_expected_is_unique_owner_answer": false
+    },
+    {
+      "case": 1,
+      "owner_resolution": "A",
+      "owner_slot": 0,
+      "owner_supported_slots": [
+        0
+      ],
+      "generator_expected_slot": 1,
+      "generator_expected_supported": false,
+      "generator_expected_is_unique_owner_answer": false
+    },
+    {
+      "case": 2,
+      "owner_resolution": "COLLISION",
+      "owner_slot": null,
+      "owner_supported_slots": [
+        0,
+        1
+      ],
+      "generator_expected_slot": 0,
+      "generator_expected_supported": true,
+      "generator_expected_is_unique_owner_answer": false
+    }
+  ],
+  "model_called": false,
+  "writes_performed": [],
+  "release_activated": false,
+  "receipt_attestation": {
+    "schema": "gaiaos.augury.redacted-receipt-attestation.v1",
+    "kind": "owner",
+    "mac": "ra1_5ad2258ca3e1c11a0156689d846baa7bb9de959f26ec9e42833b669ba293adf1"
+  }
+}
