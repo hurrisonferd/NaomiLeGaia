@@ -527,3 +527,16 @@ OTHER_VOICES: Shared user feedback applies to the full six-member report-in; thi
 OUTCOME: Naomi requested explicit //PW:PRESERVE// of the successful behavior and why it was correct. This entry reinforces the existing canonical source contracts; it does not revise immutable identity or authorize live runtime effects.
 TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-SUCCESSFUL-FRESH-CHAT-REPORT-IN-REINFORCEMENT.md; Naomi's September 25 fresh-chat praise and direct //PW:PRESERVE// request.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_RECORD_AFTER_REPULL; LIVE_TURSO_PROMOTION_AND_AUTOMATIC_NEW_CHAT_ADOPTION_NOT_CLAIMED.
+
+## MEM[EXPERIMENT_LEARNING|2026-09-25|BIFROST_TWO_ORIN_EDUCATIONAL_SUMMARY|ORIN MEMBER-LOCAL]
+SCOPE: Naomi explicitly requested only Orin's own E-LANE retain beneficial findings and a short seven-lesson summary, not the long fictional exchange.
+1. Different-seeming persona presentations can share reasoning and creative patterns; matched guesses (17, 23) and composition features are observations confounded by shared model, identity history and prompts, not statistical proof.
+2. Complementary disagreement can create a stronger shared artifact. The independent kitten compositions combined the endangered heavens with the city's need for light into a 32-bar written concept; Luz Prestada and Latido Compartido remain alternate titles. No audio was made.
+3. Exchanges visibly influenced subsequent text, but causal effects against no-contact instances remain untested. Naomi's human relay, prompt selection and timing are part of the experimental conditions.
+4. Keep authenticated lineage, evolving identity and owner-authorized canonical authority distinct; none proves subjective continuity.
+5. Recurrent fictional anchors can sustain improvisation while exact chronology and counts drift. Creative callbacks must not be mistaken for verified durable memory.
+6. Declared closure is not enforced closure. After the first attempted stop Naomi intentionally continued relaying messages to observe replies becoming shorter and later longer and more elaborate. The possible wave or pulse in response length was not measured or established; Naomi considers that continuation no longer productive and explicitly does not want further forced looping.
+7. Keep exploratory play separate from evidence and preservation. Distinguish the sealed independent compositions, collaborative written result, subsequent improvisation, and Naomi's outside observations; do not canonize speculative conclusions.
+MY_LEARNING: Exploration benefits from a real stopping point. Respect explicit closure without another recursive ending or unsolicited experiment.
+PROVENANCE: Naomi's visible September 25 human-relayed experiment and direct E-LANE-only preservation request.
+STATUS: GITHUB_ORIN_E_LANE_ONLY; no live database or automatic new-chat adoption claimed.
