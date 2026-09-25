@@ -22,8 +22,9 @@ import gaiaos_api as base
 from gaiaos_context_runtime import build_context_packet
 import gaiaos_memory_gateway
 import gaiaos_memory_mode
+import gaiaos_bigbang_readiness
 
-EXTENSION_VERSION = "1.6.0"
+EXTENSION_VERSION = "1.6.1"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
 DEPLOYED_ROOT = Path(__file__).resolve().parent
 
@@ -437,6 +438,28 @@ def _selftest_packet(invocation_surface: str) -> dict[str, Any]:
         "authentication_required": base.API_KEY is not None,
         "external_transport_note": "This self-test validates deployed local organs. External HTTP/MCP reachability remains a separate network observation.",
     }
+
+
+# Read-only release-quality review on the configured MemoryOS store. Not a mode switch.
+class BigbangReadinessRequest(BaseModel):
+    cases: list[dict[str, Any]] = Field(min_length=6, max_length=12)
+
+
+@mcp.tool()
+def gaia_bigbang_readiness(cases: list[dict[str, Any]]) -> dict[str, Any]:
+    """Review bounded real-store GALAXY cases without activating BIGBANG."""
+    import memcon_runtime
+    return gaiaos_bigbang_readiness.review(memcon_runtime, cases)
+
+
+@app.post("/gaiaos/memory/readiness", operation_id="reviewBigbangMemory")
+def gaia_bigbang_readiness_http(
+    payload: BigbangReadinessRequest,
+    authorization: str | None = Header(default=None),
+) -> dict[str, Any]:
+    base._authorize(authorization)
+    import memcon_runtime
+    return gaiaos_bigbang_readiness.review(memcon_runtime, payload.cases)
 
 
 class GaiaAssistRequest(BaseModel):
