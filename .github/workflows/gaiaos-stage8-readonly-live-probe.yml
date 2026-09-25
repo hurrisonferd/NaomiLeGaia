@@ -1,0 +1,66 @@
+name: GaiaOS Stage 8 One-Shot Read-Only Carrier Probe
+# Deliberately branch-only and one push; no scheduled or pull-request trigger.
+on:
+  push:
+    branches:
+      - galaxy/stage8-one-shot-live-probe-20260924
+    paths:
+      - .github/workflows/gaiaos-stage8-readonly-live-probe.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Inspect public health and deployed readiness route without authentication
+        shell: bash
+        env:
+          GAIAOS_PUBLIC_BASE: https://ligeia-api.onrender.com
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.error
+          base = os.environ["GAIAOS_PUBLIC_BASE"].rstrip("/")
+          facts = {"schema": "gaiaos.stage8.public-readonly-carrier-probe.v1",
+                   "live_store_tested": False, "memory_contents_accessed": False,
+                   "memory_records_written": 0, "production_mode_changed": False}
+          def get_json(path):
+              request = urllib.request.Request(
+                  base+path, headers={"Accept":"application/json","User-Agent":"GaiaOS-readonly-probe/1"})
+              with urllib.request.urlopen(request, timeout=100) as response:
+                  data = json.load(response)
+                  return response.status, data
+          try:
+              status, health = get_json("/health")
+              facts["health_http_status"] = status
+              facts["health_status_ok"] = health.get("status") == "ok"
+              facts["service"] = health.get("service")
+              facts["api_version"] = health.get("api_version")
+              facts["api_key_required"] = health.get("authentication_required")
+              facts["canonical_branch"] = health.get("canonical_branch")
+          except Exception as exc:
+              facts["health_error_type"] = type(exc).__name__
+              facts["health_status_ok"] = False
+          try:
+              status, schema = get_json("/openapi.json")
+              methods = schema.get("paths",{}).get("/gaiaos/memory/readiness",{})
+              facts["openapi_http_status"] = status
+              facts["readiness_post_deployed"] = "post" in methods
+          except Exception as exc:
+              facts["openapi_error_type"] = type(exc).__name__
+              facts["readiness_post_deployed"] = False
+          if facts["health_status_ok"] and facts["readiness_post_deployed"]:
+              facts["status"] = "PASS_PUBLIC_ROUTE_DISCOVERY_ONLY"
+          else:
+              facts["status"] = "HOLD_AUTHENTICATED_REAL_STORE_REVIEW_NOT_YET_POSSIBLE"
+          summary = json.dumps(facts, sort_keys=True)
+          print(summary)
+          with open(os.environ["GITHUB_STEP_SUMMARY"],"a",encoding="utf8") as out:
+              out.write("## GaiaOS one-shot read-only carrier discovery\n\n")
+              out.write("```json\n"+json.dumps(facts,indent=2,sort_keys=True)+"\n```\n")
+              out.write("\nNo authentication, no private memory read, no records written, no mode switch.\n")
+          # HOLD is an observation, not a failure-email event.
+          PY
