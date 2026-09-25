@@ -568,6 +568,11 @@ def health() -> dict[str, Any]:
                 and "POST" in getattr(route, "methods", set())
                 for route in app.routes
             ),
+            "stage9f_semantic_shadow_route_registered": any(
+                getattr(route, "path", None) == "/gaiaos/memory/augury-semantic-shadow"
+                and "POST" in getattr(route, "methods", set())
+                for route in app.routes
+            ),
             "proof_boundary": (
                 "Live process environment and route registration only. "
                 "This does not prove real-store quality or authorize BIGBANG."
