@@ -119,7 +119,7 @@
     "vaskon_runtime": "api/vaskon_runtime.py",
     "vaskon_test_endpoint": "/vaskon/test"
   },
-  "proof_ceiling": "Phase 3 retrieval, Phase 4 controlled revision/supersession, Phase 5 read-only eligibility/mutation design, Phase 6 lifecycle rollback/reactivation, and Phase 7 historical/tombstone/isolated-restore safety have bounded proof receipts. Stage 9 real-memory diagnostics showed three natural-language paraphrase misses while exact/literal read-back remained intact. Stage 9F now source-connects one explicitly owner-consented AUGURY semantic interpretation request to deterministic, source-quote-verified, read-only GALAXY retrieval. PRs #46-#50 and #52 hardened provider-key/model-name fail-closed behavior, built-image route proof, public non-secret deployment proof, and the route-local whitespace-key guard; Stage 7, Stage 8, and HEATDEATH regression gates passed. Current main source is pre-deploy ready for Stage 9F, but live deployment of this revision, actual model semantic quality, full representative Stage 7 real-store readiness, authentic technical historical SUPERSEDES coverage, Turso/restart/multi-replica recovery, and BIGBANG activation remain unproven. Production retrieval remains HEATDEATH/release-locked and unrestricted global weighting remains OFF.",
+  "proof_ceiling": "Phase 3 retrieval, Phase 4 controlled revision/supersession, Phase 5 read-only eligibility/mutation design, Phase 6 lifecycle rollback/reactivation, and Phase 7 historical/tombstone/isolated-restore safety have bounded proof receipts. Stage 9 real-memory diagnostics showed three natural-language paraphrase misses while exact/literal read-back remained intact. Stage 9F now source-connects one explicitly owner-consented AUGURY semantic interpretation request to deterministic, source-quote-verified, read-only GALAXY retrieval. PRs #46-#50, #52 and #54 hardened provider-key/model-name fail-closed behavior, built-image route proof, public non-secret deployment proof, route-local whitespace-key rejection, explicit manual Render deployment policy and normalized provider/model environment values; Stage 7, Stage 8, and HEATDEATH regression gates passed. Current main source is pre-deploy ready for Stage 9F, but live deployment of this revision, actual model semantic quality, full representative Stage 7 real-store readiness, authentic technical historical SUPERSEDES coverage, Turso/restart/multi-replica recovery, and BIGBANG activation remain unproven. Production retrieval remains HEATDEATH/release-locked and unrestricted global weighting remains OFF.",
   "laws": [
     "NAOMI RETAINS FINAL AUTHORITY",
     "READ != ACT",
@@ -838,13 +838,15 @@
     "stage9f_model_retries": 0,
     "stage9f_health_proof_fields": [
       "openai_configured",
+      "openai_key_outer_whitespace_normalized",
       "openai_model_configured",
+      "openai_model_outer_whitespace_normalized",
       "deployment_proof.source_commit",
       "deployment_proof.source_commit_verified",
       "deployment_proof.stage7_readiness_route_registered",
       "deployment_proof.stage9f_semantic_shadow_route_registered"
     ],
-    "stage9f_source_hardening_merge_commit": "5b62e940066ecca628ed1809075c19d413d9ccbe",
+    "stage9f_source_hardening_merge_commit": "eb50733a3873cb9354f825b2d2889602f16b8e1f",
     "stage9f_ci_receipts": {
       "missing_provider_key_regression_run": 36172116571,
       "container_route_preflight_run": 36175639343,
@@ -854,10 +856,15 @@
       "final_stage8_deployment_parity_run": 36182422061,
       "final_heatdeath_route_regression_run": 36182421947,
       "route_whitespace_provider_guard_stage7_run": 36183592466,
-      "route_whitespace_provider_guard_heatdeath_run": 36183592601
+      "route_whitespace_provider_guard_heatdeath_run": 36183592601,
+      "watertight_config_stage8_run": 36187357336,
+      "watertight_config_stage7_run": 36187357347
     },
     "stage9f_next_gate": "OWNER_DEPLOY_CURRENT_MAIN_THEN_PUBLIC_HEALTH_VERIFY_THEN_EXPLICIT_OWNER_SEMANTIC_SHADOW_TEST",
-    "stage9f_bigbang_activation_authorized": false
+    "stage9f_bigbang_activation_authorized": false,
+    "stage9f_render_auto_deploy_policy": "OFF_EXPLICIT_OWNER_DEPLOY_REQUIRED",
+    "stage9f_provider_outer_whitespace_normalized": true,
+    "stage9f_model_outer_whitespace_normalized": true
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
