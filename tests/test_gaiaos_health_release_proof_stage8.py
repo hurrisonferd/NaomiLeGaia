@@ -53,6 +53,13 @@ class DeploymentProofTests(unittest.TestCase):
             ):
                 self.assertIs(carrier.health()["openai_configured"], expected)
 
+    def test_openai_model_health_proof_requires_nonblank_name(self):
+        for raw, expected in ((None, False), ("", False), ("   ", False), ("ci-model-only", True)):
+            with self.subTest(raw_present=raw is not None), patch.object(
+                carrier, "OPENAI_MODEL", raw
+            ):
+                self.assertIs(carrier.health()["openai_model_configured"], expected)
+
     def test_deployed_sha_and_registered_post_are_reported(self):
         routes = [
             SimpleNamespace(path="/gaiaos/memory/readiness", methods={"POST"}),

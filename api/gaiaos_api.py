@@ -556,6 +556,7 @@ def health() -> dict[str, Any]:
             ),
         },
         "openai_configured": bool(OPENAI_API_KEY and OPENAI_API_KEY.strip()),
+        "openai_model_configured": bool(OPENAI_MODEL and OPENAI_MODEL.strip()),
         "mcp_endpoint": "/mcp",
         "council_surface": True,
         "brain_support_surface": True,
