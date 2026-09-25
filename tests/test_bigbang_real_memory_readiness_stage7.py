@@ -87,6 +87,7 @@ def packet(kind: str, rid: str | None = None) -> dict:
         "schema": gateway.GALAXY_SCHEMA, "execution": "READ_ONLY",
         "scope": "MemoryOS", "status": status, "records": current,
         "count": len(current), "historical_context": history,
+        "reason": "NO_PRIMARY_CANDIDATE" if kind == "negative" else None,
         "verified_linked_context": [],
         "ranking": gateway.GALAXY_RANKING,
         "galaxy_weighting_applied": kind == "current",
@@ -142,6 +143,19 @@ class ReadinessTests(unittest.TestCase):
                 self.assertEqual(out["status"], "HOLD")
                 self.assertFalse(out["release_activated"])
 
+    def test_negative_must_reach_actual_scan_not_a_blocked_preflight(self):
+        bad = packet("negative")
+        bad["reason"] = "EXTERNAL_DOMAIN_DISAMBIGUATOR"
+        out = self.run_sample({"pumpkin astronomy collision": bad})
+        self.assertEqual(out["status"], "HOLD")
+        self.assertFalse(out["results"][4]["pass"])
+
+    def test_untrusted_mutation_marker_cannot_pass_negative(self):
+        bad = packet("negative")
+        bad["e_lanes_modified"] = True
+        out = self.run_sample({"pumpkin astronomy collision": bad})
+        self.assertEqual(out["reason"], "UNVERIFIED_GALAXY_RESPONSE")
+
     def test_superseded_record_never_counts_as_current(self):
         out = self.run_sample({
             "historical superseded evidence": packet("current", "MEM-OLD"),
@@ -166,6 +180,8 @@ class ReadinessTests(unittest.TestCase):
                 out = readiness.review(self.rt, cases)
                 self.assertEqual(out["status"], "HOLD")
         self.assertEqual(self.rt.read_count, 0)
+        bad_kind = [dict(CASES[0], kind=[]), *CASES[1:]]
+        self.assertEqual(readiness.review(self.rt, bad_kind)["status"], "HOLD")
 
     def test_uninitialized_and_broken_galaxy_fail_closed(self):
         self.rt._INITIALIZED = False

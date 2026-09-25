@@ -2,6 +2,7 @@ name: GaiaOS HEATDEATH Stage 5C Normal Boot Isolation
 
 on:
   push:
+    branches: [main]
     paths:
       - "api/gaiaos_lazy_diagnostics.py"
       - "api/browser_memcon_bridge.py"
