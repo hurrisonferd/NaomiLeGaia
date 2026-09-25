@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9F_SEMANTIC_SHADOW_LIVE_DEPLOYED_HEALTH_PASS_MODEL_TEST_AUTHORIZED_BIGBANG_RELEASE_LOCKED",
+  "status": "ACTIVE_STAGE9F_LIVE_SEMANTIC_SHADOW_OBSERVED_HOLD_ORACLE_MISMATCH_UNRESOLVED_BIGBANG_RELEASE_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -831,7 +831,7 @@
     "stage9f_source_ready": true,
     "stage9f_source_hardened": true,
     "stage9f_live_deployed": true,
-    "stage9f_live_semantic_test_observed": false,
+    "stage9f_live_semantic_test_observed": true,
     "stage9f_production_effect": "NONE_READ_ONLY_SHADOW",
     "stage9f_requires_explicit_owner_consent": true,
     "stage9f_model_store": false,
@@ -860,7 +860,7 @@
       "watertight_config_stage8_run": 36187357336,
       "watertight_config_stage7_run": 36187357347
     },
-    "stage9f_next_gate": "OWNER_RUN_AUTHORIZED_SEMANTIC_SHADOW_THEN_REDACTED_RECEIPT",
+    "stage9f_next_gate": "REPAIR_ORACLE_DIAGNOSTIC_WITHOUT_SECOND_MODEL_CALL",
     "stage9f_bigbang_activation_authorized": false,
     "stage9f_render_auto_deploy_policy": "OFF_EXPLICIT_OWNER_DEPLOY_REQUIRED",
     "stage9f_provider_outer_whitespace_normalized": true,
@@ -876,7 +876,20 @@
     "stage9f_live_health_proof": "GaiaOS/Proof/STAGE9F-LIVE-HEALTH-PRECONDITIONS-2026-09-25.json",
     "stage9f_semantic_shadow_authorized": true,
     "stage9f_semantic_shadow_authorized_by": "NAOMI",
-    "stage9f_semantic_shadow_authorized_date": "2026-09-25"
+    "stage9f_semantic_shadow_authorized_date": "2026-09-25",
+    "stage9f_live_semantic_test_status": "HOLD",
+    "stage9f_live_semantic_test_reason": "SEMANTIC_CASE_FAILURE_OR_LEGACY_PARITY",
+    "stage9f_live_semantic_test_proof": "GaiaOS/Proof/STAGE9F-LIVE-SEMANTIC-SHADOW-HOLD-2026-09-25.json",
+    "stage9f_live_semantic_mechanics": {
+      "positives_resolved": 3,
+      "positives_source_quote_verified": 3,
+      "positives_exact_read_ritual_compiled": 3,
+      "positives_galaxy_readback_verified": 3,
+      "positives_expected_target_supported": 0,
+      "negatives_unknown_passed": 2,
+      "legacy_exact_parity": true
+    },
+    "stage9f_live_semantic_oracle_state": "UNRESOLVED_EXPECTED_TARGET_ASSIGNMENT"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",

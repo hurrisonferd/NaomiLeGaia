@@ -1,0 +1,81 @@
+{
+  "schema": "gaiaos.augury.semantic-read-shadow.v1",
+  "authority": "NAOMI",
+  "observed_by": "NAOMI_BROWSER_RELAY",
+  "observed_at_date": "2026-09-25",
+  "status": "HOLD",
+  "reason": "SEMANTIC_CASE_FAILURE_OR_LEGACY_PARITY",
+  "execution": "OWNER_INVOKED_SHADOW_READ_ONLY",
+  "semantic_unit_schema": "gaiaos.semantic-unit.v1",
+  "semantic_interpreter_kind": "MODEL_ASSISTED_BOUNDED_SOURCE_COMPARISON",
+  "ritual_id": "GALAXY.MEMORYOS.READ_ONLY.SHADOW.v1",
+  "ritual_effect": "READ_ONLY",
+  "model_called": true,
+  "case_count": 5,
+  "case_results": [
+    {
+      "case": 0,
+      "kind": "current",
+      "resolution": "RESOLVED",
+      "source_quote_verified": true,
+      "exact_read_ritual_compiled": true,
+      "galaxy_readback_verified": true,
+      "expected_target_supported": false,
+      "pass": false
+    },
+    {
+      "case": 1,
+      "kind": "current",
+      "resolution": "RESOLVED",
+      "source_quote_verified": true,
+      "exact_read_ritual_compiled": true,
+      "galaxy_readback_verified": true,
+      "expected_target_supported": false,
+      "pass": false
+    },
+    {
+      "case": 2,
+      "kind": "current",
+      "resolution": "RESOLVED",
+      "source_quote_verified": true,
+      "exact_read_ritual_compiled": true,
+      "galaxy_readback_verified": true,
+      "expected_target_supported": false,
+      "pass": false
+    },
+    {
+      "case": 3,
+      "kind": "negative",
+      "resolution": "UNKNOWN",
+      "source_quote_verified": false,
+      "exact_read_ritual_compiled": false,
+      "galaxy_readback_verified": false,
+      "expected_target_supported": false,
+      "pass": true
+    },
+    {
+      "case": 4,
+      "kind": "negative",
+      "resolution": "UNKNOWN",
+      "source_quote_verified": false,
+      "exact_read_ritual_compiled": false,
+      "galaxy_readback_verified": false,
+      "expected_target_supported": false,
+      "pass": true
+    }
+  ],
+  "legacy_exact_parity": true,
+  "historical_coverage": false,
+  "general_semantic_quality_proven": false,
+  "full_readiness_status": "HOLD_HISTORICAL_AND_GENERAL_SEMANTICS_UNPROVEN",
+  "release_activated": false,
+  "writes_performed": [],
+  "e_lanes_modified": false,
+  "interpretation_boundary": {
+    "source_grounded_positive_mechanics_observed": true,
+    "negative_controls_passed": true,
+    "legacy_parity_passed": true,
+    "predetermined_target_oracle_matched": false,
+    "conclusion": "Observed HOLD is preserved exactly. This receipt does not by itself distinguish model semantic error from invalid or ambiguous expected-target assignment."
+  }
+}
