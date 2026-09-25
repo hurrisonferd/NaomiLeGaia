@@ -117,6 +117,14 @@ On 2026-09-25 Naomi reported the live public `/health` receipt for deployed comm
 
 Naomi then explicitly authorized the single bounded Stage 9F AUGURY semantic-shadow invocation. Authorization does not waive the existing bearer-auth requirement, fresh consent checkbox, one-request/no-retry limit, `store=false`, redaction contract, HEATDEATH parity check, historical HOLD, or BIGBANG release lock. The live semantic result remains unobserved until the authenticated operator console returns its redacted receipt.
 
+## First live semantic-shadow result
+
+On 2026-09-25 Naomi executed the single authorized live Stage 9F semantic-shadow call. The redacted receipt returned `HOLD` with reason `SEMANTIC_CASE_FAILURE_OR_LEGACY_PARITY`. All three current cases were `RESOLVED`; each returned an exact source quote, compiled an exact read-only ritual, and verified GALAXY read-back. Both negative controls returned `UNKNOWN` and passed. Native HEATDEATH retrieval remained exactly equal before/after. The only failed positive field was `expected_target_supported` on all three current cases.
+
+Canonical receipt: `GaiaOS/Proof/STAGE9F-LIVE-SEMANTIC-SHADOW-HOLD-2026-09-25.json`.
+
+This pattern must not be simplified to “the semantic model failed.” The current case generator assigns an expected record from the topic bucket used to choose that record, while a technical record may satisfy multiple topic buckets and same-topic record pairs are explicitly permitted. Therefore the expected target is not independently proven to be a unique semantic oracle. Until that oracle is repaired or independently adjudicated, the correct state is HOLD with source-grounded semantic mechanics observed and expected-target correctness unresolved. Do not spend another model call merely to repeat this ambiguous oracle.
+
 ## Future proof boundary
 
 CI proves import, type contracts, source quote validation, collision/negative
