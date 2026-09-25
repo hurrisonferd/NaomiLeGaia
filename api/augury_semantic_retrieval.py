@@ -126,6 +126,47 @@ def _validate_model(result: Any) -> list[dict[str, Any]] | None:
     return sorted(cases, key=lambda x: x["case"])
 
 
+def _semantic_unit(
+    index: int, question: str, decision: dict[str, Any],
+) -> dict[str, Any]:
+    """Materialize GAIA_SEMANTIC_UNIT's required typed fields internally.
+
+    This read-only unit is NEVER serialized to the external receipt: it
+    contains the private user question and possible model-supplied quote.
+    An untrusted MODEL candidate is not an approved ritual or authority.
+    """
+    resolution = decision["resolution"]
+    return {
+        "schema": "gaiaos.semantic-unit.v1",
+        "semantic_id": f"stage9f-read-shadow-case-{index}",
+        "resolution": resolution,
+        "raw_surface": question,
+        "provenance": {"kind": "BOUNDED_OWNER_INVOKED_SOURCE_COMPARISON"},
+        "semantic_class": "INFERENCE" if resolution == "RESOLVED" else "UNKNOWN",
+        "speech_act": "QUESTION",
+        "ritual_candidates": ([{
+            "ritual_id": RITUAL_ID, "effect_class": "READ_ONLY",
+            "authority": "NONE", "state": "MODEL_CANDIDATE_UNVERIFIED",
+        }] if resolution == "RESOLVED" else []),
+        "ritual_selection_state": (
+            "CANDIDATE" if resolution == "RESOLVED"
+            else "COLLISION" if resolution == "COLLISION" else "NONE"
+        ),
+        "unknowns": [] if resolution == "RESOLVED" else [
+            "SEMANTIC_UNIQUENESS_NOT_PROVEN"
+        ],
+        "collisions": ([{"kind": "MULTIPLE_PLAUSIBLE_STATEMENTS"}]
+                       if resolution == "COLLISION" else []),
+        "loss_report": {
+            "source_quote_verified": False,
+            "material_qualifiers_verified": False,
+            "general_semantics_verified": False,
+        },
+        "authority_request": None,
+        "selected_ritual": None,
+    }
+
+
 def _compile_read_only_query(
     runtime: Any, statement: str, quote: str, population: list[dict[str, Any]],
 ) -> str | None:
@@ -270,6 +311,9 @@ def review(
     galaxy = importlib.import_module("galaxy_frontdoor_context")
     results = []
     for index, (case, decision) in enumerate(zip(cases, decisions)):
+        unit = _semantic_unit(index, case["query"], decision)
+        if unit["schema"] != "gaiaos.semantic-unit.v1" or unit["speech_act"] != "QUESTION":
+            return _hold("SEMANTIC_UNIT_CONTRACT_INVALID", model_called=True)
         result = {
             "case": index, "kind": case["kind"],
             "resolution": decision["resolution"],
@@ -298,6 +342,13 @@ def review(
             results.append(result)
             continue
         result["exact_read_ritual_compiled"] = True
+        # Typed conversion is permitted only after the quote is source-checked.
+        unit["loss_report"]["source_quote_verified"] = True
+        unit["selected_ritual"] = {
+            "ritual_id": RITUAL_ID, "scope": "MemoryOS",
+            "query": query, "limit": 4, "effect_class": "READ_ONLY",
+        }
+        unit["ritual_selection_state"] = "SELECTED"
         try:
             packet = galaxy.operational(runtime, query, 4)
             if gateway._galaxy_valid(packet, 4):
