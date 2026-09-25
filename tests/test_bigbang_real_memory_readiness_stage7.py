@@ -299,6 +299,18 @@ class Stage9TechnicalPreflight(unittest.TestCase):
             c.row_factory = sqlite3.Row
             return c
         self.fake._db = db_open
+        import memcon_runtime
+        self.fake._galaxy_query_tokens = staticmethod(
+            memcon_runtime._galaxy_query_tokens
+        )
+        def get_record(record_id):
+            with db_open() as conn:
+                row = conn.execute(
+                    "SELECT * FROM memory_records WHERE record_id=?",
+                    (record_id,),
+                ).fetchone()
+            return dict(row) if row is not None else None
+        self.fake.get_record = get_record
         self.mode_patch = patch.object(mode, "mode_status", return_value={
             "schema": mode.SCHEMA, "effective_mode": "HEATDEATH",
             "bigbang_activation_enabled": False,
@@ -391,6 +403,38 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         self.assertEqual(full["status"], "HOLD")
         self.assertFalse(full["review_executed"])
 
+    def test_read_only_target_query_audit_reports_only_numeric_evidence(self):
+        self._insert("galaxy-a", "GALAXY relevance stays query-first")
+        self._insert("galaxy-b", "GALAXY gravity never grants authority")
+        prep = readiness.prepare_technical_cases(self.fake)
+        audit = readiness._target_query_audit(self.fake, prep["partial_cases"])
+        self.assertEqual(audit["status"], "READ_ONLY_TARGET_QUERY_AUDIT")
+        self.assertEqual(len(audit["measurements"]), 3)
+        for row in audit["measurements"]:
+            self.assertIs(type(row["target_meets_statement_admission"]), bool)
+            self.assertGreaterEqual(row["matched_concept_count"], 0)
+            self.assertGreaterEqual(row["query_concept_count"], 0)
+            self.assertEqual(row["minimum_matching_concepts"], 2)
+            self.assertGreater(row["minimum_coverage"], 0.66)
+        serialized = str(audit)
+        for sensitive in ("galaxy-a", "galaxy-b",
+                          "relevance stays query-first",
+                          "gravity never grants authority",
+                          "naomi-owner-save"):
+            self.assertNotIn(sensitive, serialized)
+        self.assertEqual(prep["preview"]["status"], "HOLD")
+
+    def test_query_audit_fails_closed_on_unapproved_target(self):
+        self._insert("galaxy-fixture", "GALAXY fixture-only example",
+                     source="synthetic-calibration-fixture")
+        case = {"kind": "current",
+                "query": "GALAXY fixture-only example",
+                "record_id": "galaxy-fixture"}
+        audit = readiness._target_query_audit(self.fake, [case])
+        self.assertEqual(audit["status"], "HOLD_TARGET_RECORD_UNVERIFIED")
+        self.assertEqual(audit["measurements"], [])
+        self.assertNotIn("galaxy-fixture", str(audit))
+
     def test_partial_review_redacts_ids_and_cannot_be_full_pass(self):
         self._insert("galaxy-a", "GALAXY relevance stays query-first")
         self._insert("galaxy-b", "GALAXY gravity never grants authority")
@@ -434,6 +478,7 @@ class Stage9TechnicalPreflight(unittest.TestCase):
                           page.headers["content-security-policy"])
             self.assertEqual(page.headers["cache-control"], "no-store")
             self.assertIn('type="password"', page.text)
+            self.assertIn("target_query_audit:result.target_query_audit", page.text)
             self.assertIn('credentials:"same-origin"', page.text)
             self.assertIn('redirect:"error"', page.text)
             self.assertNotIn(secret, page.text)
