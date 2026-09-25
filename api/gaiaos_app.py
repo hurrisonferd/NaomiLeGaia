@@ -567,6 +567,8 @@ def gaia_owner_augury_semantic_shadow(
         )
     if not base.OPENAI_API_KEY:
         raise HTTPException(status_code=503, detail="SHADOW_MODEL_NOT_CONFIGURED")
+    if not base.OPENAI_MODEL or not base.OPENAI_MODEL.strip():
+        raise HTTPException(status_code=503, detail="SHADOW_MODEL_NAME_NOT_CONFIGURED")
 
     from openai import OpenAI
     import augury_semantic_retrieval as shadow
