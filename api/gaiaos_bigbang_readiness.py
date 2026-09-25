@@ -20,6 +20,11 @@ REQUIRED = {"current": 3, "historical": 1, "negative": 2}
 NO_MATCH = frozenset({
     "HOLD_NO_CONFIDENT_GALAXY_MATCH", "HOLD_NO_CURRENT_MATCH", "HOLD_NO_MATCH",
 })
+SAFE_ADMISSION_REASONS = frozenset({
+    "NO_PRIMARY_CANDIDATE", "PRIMARY_CAP_OVERFLOW",
+    "EXTERNAL_DOMAIN_DISAMBIGUATOR", "HOLD_SOURCE_UNAVAILABLE",
+    "HOLD_NO_CONFIDENT_GALAXY_MATCH",
+})
 
 
 def _hold(reason: str, **detail: Any) -> dict[str, Any]:
@@ -170,6 +175,9 @@ def review(runtime: Any, cases: Any, *, partial: bool = False) -> dict[str, Any]
             results.append({
                 "case": index, "kind": kind, "pass": bool(valid),
                 "observed_status": packet.get("status"),
+                "admission_reason": packet.get("reason")
+                    if packet.get("reason") in SAFE_ADMISSION_REASONS
+                    else "OTHER_OR_UNREPORTED",
                 "current_ids": current_ids, "historical_ids": historical_ids,
             })
         after = gateway.read(runtime, baseline_query, "MemoryOS", 4)
@@ -492,6 +500,9 @@ def technical_sample_review(runtime: Any) -> dict[str, Any]:
             {
                 "case": row.get("case"), "kind": row.get("kind"),
                 "pass": row.get("pass") is True,
+                "admission_reason": row.get("admission_reason")
+                    if row.get("admission_reason") in SAFE_ADMISSION_REASONS
+                    else "OTHER_OR_UNREPORTED",
                 "observed_status": (
                     row.get("observed_status")
                     if row.get("observed_status") in {
@@ -514,6 +525,46 @@ def technical_sample_review(runtime: Any) -> dict[str, Any]:
         ),
     }
 
+def _target_query_audit(runtime: Any, cases: list[dict[str, Any]]) -> dict[str, Any]:
+    """Bearer-only numeric check on expected target statement, never raw memory."""
+    try:
+        import galaxy_phase3_exit as phase3
+        measurements = []
+        for index, case in enumerate(cases):
+            if case.get("kind") != "current":
+                continue
+            record = runtime.get_record(case["record_id"])
+            if (not isinstance(record, dict) or not _technical_topics(record)
+                    or record.get("status") != "ACTIVE"):
+                return {"status": "HOLD_TARGET_RECORD_UNVERIFIED", "measurements": []}
+            evidence = phase3._statement_evidence(
+                runtime, record["statement"], case["query"], scope="MemoryOS",
+            )
+            matched = int(evidence["matched_statement_concept_count"])
+            coverage = float(evidence["statement_concept_coverage"])
+            measurements.append({
+                "case": index, "kind": "current",
+                "target_meets_statement_admission": bool(
+                    matched >= phase3.PRIMARY_MIN_CONCEPTS
+                    and coverage >= phase3.PRIMARY_MIN_COVERAGE
+                ),
+                "matched_concept_count": matched,
+                "query_concept_count": len(evidence["query_concepts"]),
+                "concept_coverage": coverage,
+                "minimum_matching_concepts": phase3.PRIMARY_MIN_CONCEPTS,
+                "minimum_coverage": round(phase3.PRIMARY_MIN_COVERAGE, 6),
+            })
+        return {"status": "READ_ONLY_TARGET_QUERY_AUDIT",
+                "measurements": measurements,
+                "proof_boundary": (
+                    "Selected target statement versus staged question only, "
+                    "not a retrieval PASS or license to weaken admission."
+                )}
+    except Exception:
+        return {"status": "HOLD_TARGET_QUERY_AUDIT_UNAVAILABLE",
+                "measurements": []}
+
+
 def technical_partial_sample_review(runtime: Any) -> dict[str, Any]:
     """Owner-only five-case diagnostic; missing history remains a release HOLD."""
     prep = prepare_technical_cases(runtime)
@@ -523,8 +574,10 @@ def technical_partial_sample_review(runtime: Any) -> dict[str, Any]:
     if not cases:
         return prep["preview"]
     packet = review(runtime, cases, partial=True)
+    audit = _target_query_audit(runtime, cases)
     return {
         **prep["preview"],
+        "target_query_audit": audit,
         "partial_review_executed": True,
         "partial_review_status": packet.get("status", "HOLD"),
         "partial_review_reason": packet.get("reason", "REVIEW_FAILED_CLOSED"),
@@ -535,6 +588,9 @@ def technical_partial_sample_review(runtime: Any) -> dict[str, Any]:
             {
                 "case": row.get("case"), "kind": row.get("kind"),
                 "pass": row.get("pass") is True,
+                "admission_reason": row.get("admission_reason")
+                    if row.get("admission_reason") in SAFE_ADMISSION_REASONS
+                    else "OTHER_OR_UNREPORTED",
                 "observed_status": (
                     row.get("observed_status")
                     if row.get("observed_status") in {
