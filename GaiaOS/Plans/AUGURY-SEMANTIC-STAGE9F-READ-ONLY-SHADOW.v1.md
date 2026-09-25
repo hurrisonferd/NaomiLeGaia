@@ -70,8 +70,9 @@ The Stage 9F source path is now hardened through small isolated PRs before any l
 - PR #48: public /health exposes only a non-secret boolean proving Stage 9F route registration. CI run 36182108184 PASS.
 - PR #49: blank or whitespace-only provider keys cannot report configured. CI run 36182255384 PASS.
 - PR #50: blank or whitespace-only model names fail closed before SDK construction; /health exposes non-secret model-name readiness. Final Stage 7 semantic-safety run 36182421936 PASS, Stage 8 deployment-parity run 36182422061 PASS, and HEATDEATH route-regression run 36182421947 PASS.
+- PR #52: whitespace-only provider keys are rejected by the Stage 9F route itself before SDK construction; the console wording now correctly states three questions spanning two approved memories. Stage 7 run 36183592466 PASS and HEATDEATH route-regression run 36183592601 PASS.
 
-Canonical source-hardening merge receipt: `d22d0259601d4d61a14fec87b3c5c053a37ee78b`.
+Canonical source-hardening merge receipt: `5b62e940066ecca628ed1809075c19d413d9ccbe`.
 
 These receipts prove source behavior and built-image wiring only. They do not prove the live Render carrier is on this revision or that the configured model resolves the five owner-approved cases correctly.
 
