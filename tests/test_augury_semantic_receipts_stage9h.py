@@ -164,6 +164,40 @@ class StrictReceiptTests(unittest.TestCase):
         changed_model = {**good_model, "sample_fingerprint": "sf1_" + "f" * 32}
         self.assertFalse(receipts.verified("model", changed_model, owner_key=KEY))
 
+    def test_numeric_type_coercion_cannot_alter_signed_receipts(self):
+        owner = receipts.seal("owner", owner_receipt(), owner_key=KEY)
+        model = receipts.seal("model", model_receipt(), owner_key=KEY)
+        bool_owner = {
+            **owner,
+            "case_results": [dict(row) for row in owner["case_results"]],
+        }
+        bool_owner["case_results"][0]["owner_slot"] = True
+        self.assertFalse(receipts.verified("owner", bool_owner, owner_key=KEY))
+        bool_owner = {
+            **owner,
+            "case_results": [dict(row) for row in owner["case_results"]],
+        }
+        bool_owner["case_results"][1]["owner_supported_slots"] = [False]
+        self.assertFalse(receipts.verified("owner", bool_owner, owner_key=KEY))
+        bool_model = {
+            **model,
+            "case_results": [dict(row) for row in model["case_results"]],
+        }
+        bool_model["case_results"][0]["model_candidate_slots"] = [True]
+        self.assertFalse(receipts.verified("model", bool_model, owner_key=KEY))
+
+    def test_model_diagnosis_is_bounded_and_historical_gate_stays_locked(self):
+        payload = {**model_receipt(), "reason":
+                   "SOURCE_GROUNDED_MECHANICS_PASS_EXPECTED_TARGET_ORACLE_MISMATCH"}
+        attested = receipts.seal("model", payload, owner_key=KEY)
+        self.assertEqual(attested["reason"], payload["reason"])
+        self.assertFalse(attested["historical_coverage"])
+        self.assertFalse(attested["general_semantic_quality_proven"])
+        self.assertIn("HOLD", attested["full_readiness_status"])
+        self.assertTrue(receipts.verified("model", attested, owner_key=KEY))
+        payload["reason"] = "private excerpt must not leak!"
+        self.assertIsNone(receipts.seal("model", payload, owner_key=KEY))
+
     def test_old_unbound_or_fabricated_readback_cannot_be_attested(self):
         old = model_receipt()
         old.pop("sample_fingerprint")
