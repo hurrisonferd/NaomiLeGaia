@@ -343,6 +343,26 @@ class ShadowRouteTests(unittest.TestCase):
         reviewed.assert_not_called()
         sdk.assert_not_called()
 
+    def test_whitespace_provider_key_blocks_before_review_or_sdk(self):
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        with patch.object(carrier.base, "API_KEY", "ci-owner-key"), patch.object(
+            carrier.base, "OPENAI_API_KEY", "   "
+        ), patch.object(
+            carrier.base, "OPENAI_MODEL", "ci-model"
+        ), patch.object(shadow, "review") as reviewed, patch("openai.OpenAI") as sdk:
+            response = client.post(
+                "/gaiaos/memory/augury-semantic-shadow",
+                json={"explicit_semantic_shadow_consent": True},
+                headers={"Authorization": "Bearer ci-owner-key"},
+            )
+        self.assertEqual(response.status_code, 503)
+        self.assertEqual(response.json()["detail"], "SHADOW_MODEL_NOT_CONFIGURED")
+        reviewed.assert_not_called()
+        sdk.assert_not_called()
+
     def test_missing_provider_key_blocks_before_review_or_sdk(self):
         from fastapi.testclient import TestClient
         import gaiaos_app as carrier
