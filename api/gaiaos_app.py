@@ -605,6 +605,7 @@ byId("run").addEventListener("click",async()=>{
       historical_coverage:result.historical_coverage,
       legacy_exact_parity:result.legacy_exact_parity,
       case_results:result.case_results,
+      target_query_audit:result.target_query_audit,
       release_activated:result.release_activated,
       writes_performed:result.writes_performed,
       e_lanes_modified:result.e_lanes_modified
