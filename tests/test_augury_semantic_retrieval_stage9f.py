@@ -148,6 +148,33 @@ class SemanticShadowTests(unittest.TestCase):
             result = shadow.review(self.runtime, interpret)
         return result, actual
 
+    def test_owner_oracle_preview_exposes_only_owner_review_material(self):
+        with patch.object(readiness, "prepare_technical_cases",
+                          return_value=self.prepared), patch.object(
+            mode, "mode_status", return_value=self.control
+        ):
+            result = shadow.owner_oracle_preview(self.runtime)
+        self.assertEqual(result["status"], "READY_OWNER_ADJUDICATION", result)
+        self.assertEqual([r["slot"] for r in result["records"]], [0, 1])
+        self.assertEqual([r["label"] for r in result["records"]], ["A", "B"])
+        self.assertEqual(len(result["questions"]), 3)
+        self.assertEqual(
+            [q["generator_expected_slot"] for q in result["questions"]],
+            [0, 1, 0],
+        )
+        self.assertEqual(
+            result["allowed_owner_resolutions"], ["A", "B", "COLLISION", "UNKNOWN"]
+        )
+        self.assertFalse(result["record_ids_disclosed"])
+        self.assertFalse(result["sources_disclosed"])
+        self.assertFalse(result["model_called"])
+        self.assertTrue(result["memory_read_performed"])
+        self.assertEqual(result["writes_performed"], [])
+        self.assertFalse(result["release_activated"])
+        self.assertNotIn("real-one", str(result))
+        self.assertNotIn("real-two", str(result))
+        self.assertNotIn("owner-review", str(result))
+
     def test_bounded_semantic_shadow_compiles_exact_read_ritual_without_release(self):
         result, calls = self.run_review()
         self.assertEqual(result["status"], "PASS_SHADOW_SAMPLE_ONLY", result)
@@ -306,6 +333,56 @@ class SemanticShadowTests(unittest.TestCase):
 
 
 class ShadowRouteTests(unittest.TestCase):
+    def test_owner_oracle_route_is_authenticated_model_free_and_no_store(self):
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        private_fixture = {
+            "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+            "status": "READY_OWNER_ADJUDICATION",
+            "records": [
+                {"slot": 0, "label": "A", "statement": "private statement A"},
+                {"slot": 1, "label": "B", "statement": "private statement B"},
+            ],
+            "questions": [
+                {"case": 0, "question": "private question", "generator_expected_slot": 0}
+            ],
+            "model_called": False, "writes_performed": [],
+            "release_activated": False,
+        }
+        with patch.object(carrier.base, "API_KEY", "ci-owner-key"), patch.object(
+            shadow, "owner_oracle_preview", return_value=private_fixture
+        ) as preview, patch("openai.OpenAI") as sdk:
+            denied = client.post(
+                "/gaiaos/memory/augury-semantic-owner-oracle-preview"
+            )
+            self.assertEqual(denied.status_code, 401)
+            response = client.post(
+                "/gaiaos/memory/augury-semantic-owner-oracle-preview",
+                headers={"Authorization": "Bearer ci-owner-key"},
+            )
+            self.assertEqual(response.status_code, 200, response.text)
+            self.assertEqual(
+                response.json()["status"], "READY_OWNER_ADJUDICATION"
+            )
+            self.assertEqual(response.headers.get("cache-control"), "no-store")
+            preview.assert_called_once()
+            sdk.assert_not_called()
+
+            page = client.get("/gaiaos/memory/technical-partial-console")
+            self.assertEqual(page.status_code, 200)
+            self.assertIn('id="oracle"', page.text)
+            self.assertIn('id="oraclePanel"', page.text)
+            self.assertIn('id="oracleReceipt"', page.text)
+            self.assertIn(
+                "/gaiaos/memory/augury-semantic-owner-oracle-preview",
+                page.text,
+            )
+            self.assertIn("Nothing is sent to OpenAI", page.text)
+            self.assertNotIn("private statement A", page.text)
+            self.assertNotIn("private question", page.text)
+
     def test_owner_consent_guards_api_and_one_no_store_model_call(self):
         from fastapi.testclient import TestClient
         import gaiaos_app as carrier

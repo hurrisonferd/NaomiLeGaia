@@ -209,6 +209,147 @@ def _compile_read_only_query(
     return query
 
 
+def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
+    """Prepare private owner-only semantic ground truth without model inference.
+
+    The caller must enforce owner authentication and no-store response headers.
+    This packet intentionally contains the two approved statement excerpts and
+    three current questions so Naomi can adjudicate A/B/COLLISION/UNKNOWN
+    locally in the GaiaOS browser. It never returns record IDs or source fields,
+    never calls a model, and never writes state.
+    """
+    prep = readiness.prepare_technical_cases(runtime)
+    cases = prep.get("partial_cases")
+    if cases is None and prep.get("cases"):
+        cases = [c for c in prep["cases"] if c.get("kind") != "historical"]
+    if readiness._validate(cases, partial=True) is not None:
+        return {
+            "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+            "status": "HOLD",
+            "reason": "APPROVED_FIVE_CASE_SAMPLE_UNAVAILABLE",
+            "model_called": False,
+            "writes_performed": [],
+            "release_activated": False,
+        }
+
+    current_ids: list[str] = []
+    for case in cases:
+        rid = case.get("record_id")
+        if case.get("kind") == "current" and rid not in current_ids:
+            current_ids.append(rid)
+    if len(current_ids) != 2:
+        return {
+            "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+            "status": "HOLD",
+            "reason": "TWO_DISTINCT_OWNER_APPROVED_RECORDS_REQUIRED",
+            "model_called": False,
+            "writes_performed": [],
+            "release_activated": False,
+        }
+
+    state = mode.mode_status(runtime)
+    if (
+        state.get("schema") != mode.SCHEMA
+        or state.get("effective_mode") != mode.HEATDEATH
+        or state.get("bigbang_activation_enabled") is not False
+    ):
+        return {
+            "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+            "status": "HOLD",
+            "reason": "HEATDEATH_RELEASE_LOCK_NOT_VERIFIED",
+            "model_called": False,
+            "writes_performed": [],
+            "release_activated": False,
+        }
+
+    try:
+        snapshot = runtime.search_records("", 100, "MemoryOS")
+        population = snapshot.get("records")
+        if (
+            not isinstance(population, list)
+            or len(population) > 100
+            or snapshot.get("scope_applied") != "MemoryOS"
+        ):
+            raise ValueError("bounded scope unavailable")
+        scoped = {
+            r.get("record_id"): r for r in population if isinstance(r, dict)
+        }
+        statements: list[str] = []
+        for rid in current_ids:
+            row = runtime.get_record(rid)
+            governing = runtime.galaxy_governing_state(rid)
+            if (
+                not isinstance(row, dict)
+                or rid not in scoped
+                or row.get("record_id") != rid
+                or row.get("scope") != "MemoryOS"
+                or row.get("status") != "ACTIVE"
+                or row.get("authority") != "NAOMI"
+                or not readiness._technical_topics(row)
+                or scoped[rid].get("statement") != row.get("statement")
+                or not row.get("source")
+                or governing.get("current_default_eligible") is not True
+            ):
+                raise ValueError("technical provenance unavailable")
+            statement = row.get("statement")
+            if not isinstance(statement, str) or not 1 <= len(statement) <= MAX_STATEMENT:
+                raise ValueError("statement outside bounded contract")
+            statements.append(statement)
+    except Exception:
+        return {
+            "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+            "status": "HOLD",
+            "reason": "PRIVATE_SOURCE_READ_FAILED_CLOSED",
+            "model_called": False,
+            "writes_performed": [],
+            "release_activated": False,
+        }
+
+    questions = []
+    for index, case in enumerate(cases):
+        if case.get("kind") != "current":
+            continue
+        q = case.get("query")
+        if not isinstance(q, str) or not 1 <= len(q) <= MAX_QUERY:
+            return {
+                "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+                "status": "HOLD",
+                "reason": "QUESTION_OUTSIDE_BOUNDED_CONTRACT",
+                "model_called": False,
+                "writes_performed": [],
+                "release_activated": False,
+            }
+        questions.append({
+            "case": index,
+            "question": q,
+            "generator_expected_slot": current_ids.index(case["record_id"]),
+        })
+
+    return {
+        "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+        "status": "READY_OWNER_ADJUDICATION",
+        "records": [
+            {"slot": i, "label": "A" if i == 0 else "B", "statement": statement}
+            for i, statement in enumerate(statements)
+        ],
+        "questions": questions,
+        "allowed_owner_resolutions": ["A", "B", "COLLISION", "UNKNOWN"],
+        "record_ids_disclosed": False,
+        "sources_disclosed": False,
+        "model_called": False,
+        "memory_read_performed": True,
+        "writes_performed": [],
+        "release_activated": False,
+        "proof_boundary": (
+            "Private owner-browser adjudication only. Statements and questions "
+            "must remain in the authenticated GaiaOS page and must not be pasted "
+            "into ChatGPT, screenshots, logs or public receipts. This performs "
+            "no provider/model inference and cannot activate BIGBANG."
+        ),
+    }
+
+
+
 def review(
     runtime: Any,
     interpret: Callable[[dict[str, Any]], Any],
