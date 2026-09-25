@@ -161,7 +161,7 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
                 valid = (
                     packet.get("status") in NO_MATCH
                     and not current and not historical
-                    and not packet["verified_linked_context"]
+                    and not packet.get("verified_linked_context", [])
                 )
             results.append({
                 "case": index, "kind": kind, "pass": bool(valid),
