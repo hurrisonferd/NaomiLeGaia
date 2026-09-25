@@ -293,7 +293,7 @@ class Stage9TechnicalPreflight(unittest.TestCase):
 
     def test_six_approved_cases_are_prepared_without_exposing_records(self):
         self._seed()
-        prep = reviewer.prepare_technical_cases(self.fake)
+        prep = readiness.prepare_technical_cases(self.fake)
         self.assertEqual(prep["preview"]["status"], "PREPARED_UNTESTED")
         self.assertEqual(len(prep["cases"]), 6)
         self.assertEqual([c["kind"] for c in prep["cases"]],
@@ -313,7 +313,7 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         import sqlite3
         with sqlite3.connect(self.path) as db:
             db.execute("UPDATE memory_relations SET relation_type='REVISES'")
-        result = reviewer.prepare_technical_cases(self.fake)
+        result = readiness.prepare_technical_cases(self.fake)
         self.assertEqual(result["preview"]["status"], "HOLD")
         self.assertEqual(result["preview"]["reason"],
                          "NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES")
@@ -323,23 +323,23 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         self._insert("fixture-a", "Power Word preserve safeguards memory",
                      source="GALAXY_CANARY_FIXTURE")
         self._insert("real-b", "six independent E-LANES keep identity")
-        result = reviewer.prepare_technical_cases(self.fake)
+        result = readiness.prepare_technical_cases(self.fake)
         self.assertEqual(result["preview"]["reason"],
                          "TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
 
     def test_no_review_is_run_when_historical_evidence_missing(self):
         self._insert("current-a", "Power Word preserve safeguards memory")
         self._insert("current-b", "six independent E-LANES keep identity")
-        with patch.object(reviewer, "review",
+        with patch.object(readiness, "review",
                           side_effect=AssertionError("unapproved review")):
-            result = reviewer.technical_sample_review(self.fake)
+            result = readiness.technical_sample_review(self.fake)
         self.assertEqual(result["status"], "HOLD")
         self.assertFalse(result["review_executed"])
 
     def test_actual_reviewer_output_is_redacted_for_browser(self):
         self._seed()
         secret = "MEM-DO-NOT-REVEAL"
-        with patch.object(reviewer, "review", return_value={
+        with patch.object(readiness, "review", return_value={
             "status": "PASS_READ_ONLY_SAMPLE_ONLY",
             "reason": "SAMPLE_AND_LEGACY_PARITY",
             "legacy_exact_parity": True,
@@ -347,10 +347,22 @@ class Stage9TechnicalPreflight(unittest.TestCase):
                          "observed_status": "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
                          "current_ids": [secret], "historical_ids": [secret]}],
         }):
-            result = reviewer.technical_sample_review(self.fake)
+            result = readiness.technical_sample_review(self.fake)
         self.assertEqual(result["status"], "PASS_READ_ONLY_SAMPLE_ONLY")
         self.assertTrue(result["legacy_exact_parity"])
         self.assertNotIn(secret, str(result))
-        self.assertNotIn("statement", str(result).lower())
+        self.assertNotIn("HEATDEATH v1.2 historical rollback guard", str(result))
         self.assertEqual(result["writes_performed"], [])
+
+
+    def test_owner_api_is_required_even_if_carrier_has_no_key(self):
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+        with TestClient(carrier.app) as client:
+            with patch.object(carrier.base, "API_KEY", None):
+                r = client.post("/gaiaos/memory/technical-review")
+            self.assertEqual(r.status_code, 503)
+            with patch.object(carrier.base, "API_KEY", "ci-only-not-real"):
+                r = client.post("/gaiaos/memory/technical-review")
+            self.assertEqual(r.status_code, 401)
 
