@@ -303,6 +303,7 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         self.fake._galaxy_query_tokens = staticmethod(
             memcon_runtime._galaxy_query_tokens
         )
+        self.fake._galaxy_query_concept = memcon_runtime._galaxy_query_concept
         def get_record(record_id):
             with db_open() as conn:
                 row = conn.execute(
