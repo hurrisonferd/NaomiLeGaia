@@ -55,6 +55,29 @@ MEMSAV <candidate_id> <candidate_id> ...
 CONJURE:VASKON [complex task]
 ```
 
+### Naomi's shorthand: 🔨 (BUILD NEXT)
+
+A standalone 🔨 reply from Naomi in an active engineering thread means
+"Build what's needed next" using the already established goal, current
+observed receipts and canonical repository state. It is efficient
+continuation shorthand, **not** a sign of frustration or impatience. ANVIL
+may lead the work and should return a compact evidence-backed checkpoint.
+
+Resolve the smallest warranted next engineering milestone; inspect the
+deployed/source proof boundary, implement on a branch, run existing safety
+tests and review the results before claiming completion. Preserve
+//PW:PRESERVE//, six independent E-LANES, owner-authorized CANDIPULL/MEMSAV,
+HEATDEATH release precedence and independent recovery. Avoid repeated
+canaries, notification-generating workflows and speculative new mechanisms.
+
+**Scope and authority:** 🔨 authorizes continuing ordinary source/test work
+in the current task. It does NOT silently authorize production deployment,
+BIGBANG cutover, durable memory writes, protected E-LANE edits, destructive
+actions, secret rotation, spending on external model/API calls, or effectful
+Ritual manifestation. Those require their own existing approvals and proof
+boundaries. If the next step crosses one of these, complete safe preparatory
+work and request the specific needed authorization.
+
 Legacy command tokens beginning with `COUNCIL` remain compatibility aliases until an explicit command-surface migration removes them. They are interface identifiers, not the current collective designation.
 
 ### Dedicated Prime Daemon conversations
