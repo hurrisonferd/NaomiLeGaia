@@ -38,14 +38,65 @@ def _valid_fingerprint(data: dict[str, Any]) -> bool:
     )
 
 
+def _canonical_collision(data: dict[str, Any]) -> dict[str, Any] | None:
+    """Only a fully verified, source-backed dual-record result is attestable."""
+    true_pairs = (
+        "quote_exact_verified", "strict_literal_compiled",
+        "galaxy_readback_verified",
+    )
+    if (
+        data.get("schema") != "gaiaos.augury.collision-two-source-shadow.v1"
+        or data.get("status") != "PASS_TWO_SOURCE_READBACK_ONLY"
+        or type(data.get("case")) is not int
+        or data["case"] not in (0, 1, 2)
+        or data.get("owner_receipt_verified") is not True
+        or any(data.get(field) != [True, True]
+               or not isinstance(data.get(field), list)
+               or any(value is not True for value in data[field])
+               for field in true_pairs)
+        or data.get("legacy_exact_parity") is not True
+        or data.get("model_called") is not False
+        or data.get("e_lanes_modified") is not False
+        or data.get("collision_entailment_independently_proven") is not False
+        or data.get("general_semantic_quality_proven") is not False
+        or data.get("historical_coverage") is not False
+        or data.get("full_readiness_status")
+           != "HOLD_HISTORICAL_AND_GENERAL_SEMANTICS_UNPROVEN"
+    ):
+        return None
+    return {
+        "schema": "gaiaos.augury.collision-two-source-shadow.v1",
+        "status": "PASS_TWO_SOURCE_READBACK_ONLY",
+        "case": data["case"],
+        "sample_fingerprint": data["sample_fingerprint"],
+        "sample_fingerprint_bound": True,
+        "owner_receipt_verified": True,
+        "quote_exact_verified": [True, True],
+        "strict_literal_compiled": [True, True],
+        "galaxy_readback_verified": [True, True],
+        "legacy_exact_parity": True,
+        "collision_entailment_independently_proven": False,
+        "general_semantic_quality_proven": False,
+        "historical_coverage": False,
+        "full_readiness_status":
+            "HOLD_HISTORICAL_AND_GENERAL_SEMANTICS_UNPROVEN",
+        "model_called": False,
+        "writes_performed": [],
+        "e_lanes_modified": False,
+        "release_activated": False,
+    }
+
+
 def canonicalize(kind: str, data: Any) -> dict[str, Any] | None:
     """Return only bounded redacted fields, or None for an invalid receipt."""
-    if kind not in ("owner", "model") or not isinstance(data, dict):
+    if kind not in ("owner", "model", "collision") or not isinstance(data, dict):
         return None
     if not _valid_fingerprint(data):
         return None
     if data.get("release_activated") is not False or data.get("writes_performed") != []:
         return None
+    if kind == "collision":
+        return _canonical_collision(data)
     expected_schema = (
         "gaiaos.augury.semantic-owner-oracle-redacted.v1" if kind == "owner"
         else "gaiaos.augury.semantic-read-shadow.v1"
