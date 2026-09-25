@@ -549,10 +549,23 @@ class Stage9TechnicalPreflight(unittest.TestCase):
             self.assertEqual(page.headers["cache-control"], "no-store")
             self.assertIn('type="password"', page.text)
             self.assertIn("target_query_audit:result.target_query_audit", page.text)
+            self.assertIn('id="literal"', page.text)
+            self.assertIn("/gaiaos/memory/technical-literal-probe", page.text)
             self.assertIn('credentials:"same-origin"', page.text)
             self.assertIn('redirect:"error"', page.text)
             self.assertNotIn(secret, page.text)
             self.assertNotIn("__NONCE__", page.text)
+            literal_denied = client.post("/gaiaos/memory/technical-literal-probe")
+            self.assertEqual(literal_denied.status_code, 401)
+            with patch.object(readiness, "technical_literal_wiring_probe",
+                              return_value={"status": "HOLD", "writes_performed": []}
+                              ) as literal_probe:
+                literal_granted = client.post(
+                    "/gaiaos/memory/technical-literal-probe",
+                    headers={"Authorization": "Bearer "+secret},
+                )
+                self.assertEqual(literal_granted.status_code, 200)
+                literal_probe.assert_called_once()
             denied = client.post("/gaiaos/memory/technical-partial-review")
             self.assertEqual(denied.status_code, 401)
             self.assertEqual(denied.json()["detail"], "OWNER_AUTH_HEADER_NOT_RECEIVED")
