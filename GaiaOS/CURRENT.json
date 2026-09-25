@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9F_LIVE_HOLD_OWNER_ORACLE_REVIEW_SOURCE_READY_REDEPLOY_REQUIRED_BIGBANG_RELEASE_LOCKED",
+  "status": "ACTIVE_STAGE9F_OWNER_ORACLE_B_A_COLLISION_RECORDED_SAMPLE_PROVENANCE_HOLD_BIGBANG_RELEASE_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -860,7 +860,7 @@
       "watertight_config_stage8_run": 36187357336,
       "watertight_config_stage7_run": 36187357347
     },
-    "stage9f_next_gate": "OWNER_DEPLOY_CURRENT_MAIN_THEN_RUN_MODEL_FREE_OWNER_ORACLE_REVIEW",
+    "stage9f_next_gate": "BIND_STABLE_REDACTED_SAMPLE_IDENTITY_AND_ADJUDICATE_COLLISION_BEFORE_ANY_SECOND_MODEL_CALL",
     "stage9f_bigbang_activation_authorized": false,
     "stage9f_render_auto_deploy_policy": "OFF_EXPLICIT_OWNER_DEPLOY_REQUIRED",
     "stage9f_provider_outer_whitespace_normalized": true,
@@ -902,7 +902,23 @@
     "stage9f_owner_oracle_review_model_call": false,
     "stage9f_owner_oracle_review_writes": false,
     "stage9f_current_main_live_deployed": false,
-    "stage9f_live_deployed_commit_remains": "a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c"
+    "stage9f_live_deployed_commit_remains": "a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c",
+    "stage9f_owner_oracle_review_observed": true,
+    "stage9f_owner_oracle_review_status": "OWNER_ORACLE_RECORDED",
+    "stage9f_owner_oracle_review_proof": "GaiaOS/Proof/STAGE9F-LIVE-OWNER-ORACLE-REDACTED-2026-09-25.json",
+    "stage9f_owner_oracle_judgments": {
+      "case0": "B",
+      "case1": "A",
+      "case2": "COLLISION",
+      "generator_expected": [
+        "A",
+        "B",
+        "A"
+      ]
+    },
+    "stage9f_owner_oracle_model_run_sample_identity_verified": false,
+    "stage9f_owner_oracle_model_comparison_status": "HOLD_CROSS_RUN_SAMPLE_PROVENANCE_UNVERIFIED",
+    "stage9f_owner_oracle_collision_semantics": "COLLISION_IS_NOT_EVIDENCE_A_UNSUPPORTED"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",

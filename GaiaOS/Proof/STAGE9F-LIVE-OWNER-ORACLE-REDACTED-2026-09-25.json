@@ -1,0 +1,36 @@
+{
+  "schema": "gaiaos.augury.semantic-owner-oracle-redacted.v1",
+  "status": "OWNER_ORACLE_RECORDED",
+  "case_count": 3,
+  "case_results": [
+    {
+      "case": 0,
+      "owner_resolution": "B",
+      "owner_slot": 1,
+      "generator_expected_slot": 0,
+      "generator_expected_supported": false
+    },
+    {
+      "case": 1,
+      "owner_resolution": "A",
+      "owner_slot": 0,
+      "generator_expected_slot": 1,
+      "generator_expected_supported": false
+    },
+    {
+      "case": 2,
+      "owner_resolution": "COLLISION",
+      "owner_slot": null,
+      "generator_expected_slot": 0,
+      "generator_expected_supported": false
+    }
+  ],
+  "model_called": false,
+  "private_statements_copied": false,
+  "private_questions_copied": false,
+  "record_ids_disclosed": false,
+  "sources_disclosed": false,
+  "writes_performed": [],
+  "release_activated": false,
+  "proof_boundary": "Human owner adjudication only. No model inference was performed and BIGBANG remains locked."
+}
