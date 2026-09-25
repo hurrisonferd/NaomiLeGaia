@@ -100,7 +100,10 @@ class SemanticShadowTests(unittest.TestCase):
             },
         }
 
-    def run_review(self, model_result=None, *, packet_kind="valid"):
+    def run_review(
+        self, model_result=None, *, packet_kind="valid",
+        fingerprint_key=None, expected_sample_fingerprint=None,
+    ):
         chosen = decisions() if model_result is None else model_result
         slot_ids = ("real-one", "real-two")
         responses = iter(
@@ -145,7 +148,11 @@ class SemanticShadowTests(unittest.TestCase):
                     self.assertNotIn("record_id", record)
                     self.assertNotIn("source", record)
                 return chosen
-            result = shadow.review(self.runtime, interpret)
+            result = shadow.review(
+                self.runtime, interpret,
+                fingerprint_key=fingerprint_key,
+                expected_sample_fingerprint=expected_sample_fingerprint,
+            )
         return result, actual
 
     def test_owner_oracle_preview_exposes_only_owner_review_material(self):
@@ -174,6 +181,47 @@ class SemanticShadowTests(unittest.TestCase):
         self.assertNotIn("real-one", str(result))
         self.assertNotIn("real-two", str(result))
         self.assertNotIn("owner-review", str(result))
+
+    def test_owner_and_model_receipts_bind_exact_same_private_sample(self):
+        with patch.object(readiness, "prepare_technical_cases",
+                          return_value=self.prepared), patch.object(
+            mode, "mode_status", return_value=self.control
+        ):
+            oracle = shadow.owner_oracle_preview(
+                self.runtime, fingerprint_key="ci-owner-key",
+            )
+        model, _ = self.run_review(fingerprint_key="ci-owner-key")
+        self.assertEqual(oracle["status"], "READY_OWNER_ADJUDICATION")
+        self.assertTrue(oracle["sample_fingerprint_bound"])
+        self.assertTrue(model["sample_fingerprint_bound"])
+        self.assertEqual(
+            oracle["sample_fingerprint"], model["sample_fingerprint"],
+        )
+        self.assertRegex(oracle["sample_fingerprint"], r"^sf1_[a-f0-9]{32}$")
+        self.assertNotIn("ci-owner-key", str(oracle))
+        self.assertNotIn("ci-owner-key", str(model))
+        for secret in ("real-one", "real-two", "owner-review"):
+            self.assertNotIn(secret, str(model))
+
+    def test_source_drift_blocks_before_a_second_model_call(self):
+        with patch.object(readiness, "prepare_technical_cases",
+                          return_value=self.prepared), patch.object(
+            mode, "mode_status", return_value=self.control
+        ):
+            first = shadow.owner_oracle_preview(
+                self.runtime, fingerprint_key="ci-owner-key",
+            )
+            self.runtime.records[0]["statement"] += " New owner-approved context."
+            result = shadow.review(
+                self.runtime,
+                lambda _: self.fail("Changed sample reached model"),
+                fingerprint_key="ci-owner-key",
+                expected_sample_fingerprint=first["sample_fingerprint"],
+            )
+        self.assertEqual(result["status"], "HOLD")
+        self.assertEqual(result["reason"], "SAMPLE_CHANGED_BEFORE_MODEL_CALL")
+        self.assertFalse(result["model_called"])
+        self.assertFalse(result["release_activated"])
 
     def test_bounded_semantic_shadow_compiles_exact_read_ritual_without_release(self):
         result, calls = self.run_review()
@@ -262,6 +310,16 @@ class SemanticShadowTests(unittest.TestCase):
         result, calls = self.run_review(bad)
         self.assertEqual(result["status"], "HOLD")
         self.assertFalse(result["case_results"][0]["pass"])
+        self.assertEqual(result["reason"], "COLLISION_REPORTED_NEEDS_INDEPENDENT_OWNER_ORACLE")
+        self.assertEqual(
+            result["case_results"][0]["model_candidate_slots"], [0, 1],
+        )
+        self.assertIsNone(
+            result["case_results"][0]["expected_target_supported"]
+        )
+        self.assertFalse(
+            result["case_results"][0]["expected_target_applicable"]
+        )
         self.assertEqual(calls.call_count, 2)
 
     def test_missing_actual_galaxy_readback_is_not_success(self):
@@ -348,6 +406,8 @@ class ShadowRouteTests(unittest.TestCase):
             "questions": [
                 {"case": 0, "question": "private question", "generator_expected_slot": 0}
             ],
+            "sample_fingerprint": "sf1_" + "a" * 32,
+            "sample_fingerprint_bound": True,
             "model_called": False, "writes_performed": [],
             "release_activated": False,
         }
@@ -368,6 +428,9 @@ class ShadowRouteTests(unittest.TestCase):
             )
             self.assertEqual(response.headers.get("cache-control"), "no-store")
             preview.assert_called_once()
+            self.assertEqual(
+                preview.call_args.kwargs["fingerprint_key"], "ci-owner-key",
+            )
             sdk.assert_not_called()
 
             page = client.get("/gaiaos/memory/technical-partial-console")
@@ -424,7 +487,7 @@ class ShadowRouteTests(unittest.TestCase):
         ), patch.object(
             carrier.base, "OPENAI_MODEL", "ci-model-only"
         ), patch.object(
-            shadow, "review", side_effect=lambda runtime, interpret: {
+            shadow, "review", side_effect=lambda runtime, interpret, **kwargs: {
                 "schema": shadow.SCHEMA,
                 "status": "HOLD",
                 "probe_result": interpret({
@@ -465,6 +528,9 @@ class ShadowRouteTests(unittest.TestCase):
             self.assertEqual(approved.status_code, 200, approved.text)
             self.assertEqual(approved.json()["status"], "HOLD")
             reviewed.assert_called_once()
+            self.assertEqual(
+                reviewed.call_args.kwargs["fingerprint_key"], "ci-owner-key",
+            )
             sdk.assert_called_once()
             call = sdk.return_value.responses.create
             call.assert_called_once()
@@ -490,7 +556,7 @@ class ShadowRouteTests(unittest.TestCase):
         ), patch.object(
             carrier.base, "OPENAI_MODEL", normalized_model
         ), patch.object(
-            shadow, "review", side_effect=lambda runtime, interpret: {
+            shadow, "review", side_effect=lambda runtime, interpret, **kwargs: {
                 "schema": shadow.SCHEMA,
                 "status": "HOLD",
                 "probe_result": interpret({

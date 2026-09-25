@@ -544,6 +544,11 @@ def gaia_owner_technical_literal_wiring_probe(
 
 class AuguryShadowRequest(BaseModel):
     explicit_semantic_shadow_consent: bool = False
+    # Optional binding from the owner's preceding model-free oracle review.
+    # A changed source sample fails closed BEFORE the provider is invoked.
+    expected_sample_fingerprint: str | None = Field(
+        default=None, pattern=r"^sf1_[a-f0-9]{32}$",
+    )
 
 
 @app.post("/gaiaos/memory/augury-semantic-shadow",
@@ -599,7 +604,11 @@ def gaia_owner_augury_semantic_shadow(
             raise ValueError("Shadow model response incomplete")
         return answer.output_text
 
-    result = shadow.review(memcon_runtime, one_bounded_model_call)
+    result = shadow.review(
+        memcon_runtime, one_bounded_model_call,
+        fingerprint_key=base.API_KEY,
+        expected_sample_fingerprint=payload.expected_sample_fingerprint,
+    )
     return JSONResponse(result, headers={"Cache-Control": "no-store"})
 
 
@@ -618,7 +627,7 @@ def gaia_owner_augury_semantic_oracle_preview(
     import augury_semantic_retrieval as shadow
     import memcon_runtime
 
-    result = shadow.owner_oracle_preview(memcon_runtime)
+    result = shadow.owner_oracle_preview(memcon_runtime, fingerprint_key=base.API_KEY)
     return JSONResponse(
         result,
         headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
@@ -790,6 +799,10 @@ byId("oracle").addEventListener("click",async()=>{
     const result=await response.json();
     if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
     if(result.status!=="READY_OWNER_ADJUDICATION")throw Error(result.reason||result.status);
+    if(result.sample_fingerprint_bound!==true||
+       !/^sf1_[a-f0-9]{32}$/.test(result.sample_fingerprint||"")){
+      throw Error("This source sample has no authenticated comparison fingerprint.");
+    }
     oracleData=result;
     byId("oraclePanel").hidden=false;
     const lines=result.records.map(r=>"Statement "+r.label+":\\n"+r.statement);
@@ -831,19 +844,27 @@ byId("oracleReceipt").addEventListener("click",()=>{
       return;
     }
     const ownerSlot=choice==="A"?0:choice==="B"?1:null;
+    const supported=choice==="A"?[0]:choice==="B"?[1]:
+      choice==="COLLISION"?[0,1]:[];
+    const expectedSupported=supported.includes(q.generator_expected_slot);
     rows.push({
       case:q.case,
       owner_resolution:choice,
       owner_slot:ownerSlot,
+      owner_supported_slots:supported,
       generator_expected_slot:q.generator_expected_slot,
-      generator_expected_supported:ownerSlot!==null
-        ? ownerSlot===q.generator_expected_slot : false
+      generator_expected_supported:expectedSupported,
+      generator_expected_is_unique_owner_answer:
+        supported.length===1&&expectedSupported
     });
   }
   redacted={
     schema:"gaiaos.augury.semantic-owner-oracle-redacted.v1",
     status:"OWNER_ORACLE_RECORDED",
     case_count:rows.length,
+    sample_fingerprint:oracleData.sample_fingerprint,
+    sample_fingerprint_bound:true,
+    sample_fingerprint_schema:oracleData.sample_fingerprint_schema,
     case_results:rows,
     model_called:false,
     private_statements_copied:false,
@@ -871,10 +892,14 @@ byId("augury").addEventListener("click",async()=>{
   byId("literal").disabled=true;
   byId("status").textContent="One bounded semantic shadow call is running…";
   try{
+    const request={explicit_semantic_shadow_consent:true};
+    if(oracleData&&oracleData.sample_fingerprint_bound===true){
+      request.expected_sample_fingerprint=oracleData.sample_fingerprint;
+    }
     const response=await fetch("/gaiaos/memory/augury-semantic-shadow",{
       method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
       headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
-      body:JSON.stringify({explicit_semantic_shadow_consent:true})
+      body:JSON.stringify(request)
     });
     const result=await response.json();
     if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
@@ -884,6 +909,8 @@ byId("augury").addEventListener("click",async()=>{
       semantic_interpreter_kind:result.semantic_interpreter_kind,
       ritual_id:result.ritual_id,ritual_effect:result.ritual_effect,
       model_called:result.model_called,case_count:result.case_count,
+      sample_fingerprint:result.sample_fingerprint,
+      sample_fingerprint_bound:result.sample_fingerprint_bound,
       case_results:result.case_results,legacy_exact_parity:result.legacy_exact_parity,
       historical_coverage:result.historical_coverage,
       general_semantic_quality_proven:result.general_semantic_quality_proven,

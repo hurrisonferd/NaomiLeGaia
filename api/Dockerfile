@@ -35,6 +35,7 @@ COPY api/galaxy_phase7_tombstone.py ./galaxy_phase7_tombstone.py
 COPY api/galaxy_phase7_tombstone_shadow.py ./galaxy_phase7_tombstone_shadow.py
 COPY api/galaxy_phase7_isolated_restore.py ./galaxy_phase7_isolated_restore.py
 COPY api/augury_ritual.py ./augury_ritual.py
+COPY api/augury_semantic_sample.py ./augury_semantic_sample.py
 COPY api/augury_semantic_retrieval.py ./augury_semantic_retrieval.py
 COPY api/memcon_entrypoint.py ./memcon_entrypoint.py
 COPY api/browser_memcon_bridge.py ./browser_memcon_bridge.py

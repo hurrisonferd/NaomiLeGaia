@@ -20,6 +20,7 @@ from typing import Any, Callable
 import gaiaos_bigbang_readiness as readiness
 import gaiaos_memory_gateway as gateway
 import gaiaos_memory_mode as mode
+import augury_semantic_sample as sample
 
 SCHEMA = "gaiaos.augury.semantic-read-shadow.v1"
 RITUAL_ID = "GALAXY.MEMORYOS.READ_ONLY.SHADOW.v1"
@@ -86,6 +87,8 @@ def _hold(reason: str, *, model_called: bool = False) -> dict[str, Any]:
         "full_readiness_status": "HOLD_HISTORICAL_AND_GENERAL_SEMANTICS_UNPROVEN",
         "historical_coverage": False, "general_semantic_quality_proven": False,
         "legacy_exact_parity": False,
+        "sample_fingerprint": None,
+        "sample_fingerprint_bound": False,
         "record_ids_disclosed": False, "statements_disclosed": False,
         "queries_disclosed": False, "quotes_disclosed": False,
         "model_text_disclosed": False,
@@ -209,7 +212,9 @@ def _compile_read_only_query(
     return query
 
 
-def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
+def owner_oracle_preview(
+    runtime: Any, *, fingerprint_key: str | None = None,
+) -> dict[str, Any]:
     """Prepare private owner-only semantic ground truth without model inference.
 
     The caller must enforce owner authentication and no-store response headers.
@@ -275,6 +280,7 @@ def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
             r.get("record_id"): r for r in population if isinstance(r, dict)
         }
         statements: list[str] = []
+        sample_records: list[dict[str, str]] = []
         for rid in current_ids:
             row = runtime.get_record(rid)
             governing = runtime.galaxy_governing_state(rid)
@@ -295,6 +301,10 @@ def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
             if not isinstance(statement, str) or not 1 <= len(statement) <= MAX_STATEMENT:
                 raise ValueError("statement outside bounded contract")
             statements.append(statement)
+            sample_records.append({
+                "record_id": rid, "statement": statement,
+                "source": row["source"],
+            })
     except Exception:
         return {
             "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
@@ -325,6 +335,16 @@ def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
             "generator_expected_slot": current_ids.index(case["record_id"]),
         })
 
+    fingerprint = sample.fingerprint(
+        owner_key=fingerprint_key, records=sample_records, cases=cases,
+    )
+    if fingerprint_key is not None and fingerprint is None:
+        return {
+            "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
+            "status": "HOLD", "reason": "SAMPLE_FINGERPRINT_UNAVAILABLE",
+            "model_called": False, "writes_performed": [],
+            "release_activated": False,
+        }
     return {
         "schema": "gaiaos.augury.semantic-owner-oracle-preview.v1",
         "status": "READY_OWNER_ADJUDICATION",
@@ -333,6 +353,9 @@ def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
             for i, statement in enumerate(statements)
         ],
         "questions": questions,
+        "sample_fingerprint": fingerprint,
+        "sample_fingerprint_bound": fingerprint is not None,
+        "sample_fingerprint_schema": sample.SCHEMA,
         "allowed_owner_resolutions": ["A", "B", "COLLISION", "UNKNOWN"],
         "record_ids_disclosed": False,
         "sources_disclosed": False,
@@ -353,6 +376,9 @@ def owner_oracle_preview(runtime: Any) -> dict[str, Any]:
 def review(
     runtime: Any,
     interpret: Callable[[dict[str, Any]], Any],
+    *,
+    fingerprint_key: str | None = None,
+    expected_sample_fingerprint: str | None = None,
 ) -> dict[str, Any]:
     """Exactly one owner-authorized semantic inference and bounded read-backs.
 
@@ -392,6 +418,7 @@ def review(
             return _hold("BOUNDED_SCOPE_UNVERIFIED")
         scoped = {r.get("record_id"): r for r in population if isinstance(r, dict)}
         statements = []
+        sample_records: list[dict[str, str]] = []
         for rid in current_ids:
             row = runtime.get_record(rid)
             governing = runtime.galaxy_governing_state(rid)
@@ -409,6 +436,20 @@ def review(
             if not isinstance(statement, str) or not 1 <= len(statement) <= MAX_STATEMENT:
                 return _hold("SOURCE_EXCERPT_OUTSIDE_BOUNDED_CONTRACT")
             statements.append(statement)
+            sample_records.append({
+                "record_id": rid, "statement": statement,
+                "source": row["source"],
+            })
+        fingerprint = sample.fingerprint(
+            owner_key=fingerprint_key, records=sample_records, cases=cases,
+        )
+        if fingerprint_key is not None and fingerprint is None:
+            return _hold("SAMPLE_FINGERPRINT_UNAVAILABLE")
+        if (
+            expected_sample_fingerprint is not None
+            and fingerprint != expected_sample_fingerprint
+        ):
+            return _hold("SAMPLE_CHANGED_BEFORE_MODEL_CALL")
         questions = []
         for index, case in enumerate(cases):
             q = case["query"]
@@ -461,7 +502,26 @@ def review(
             "source_quote_verified": False,
             "exact_read_ritual_compiled": False,
             "galaxy_readback_verified": False,
-            "expected_target_supported": False,
+            "expected_target_supported": (
+                None if case["kind"] == "current"
+                and decision["resolution"] != "RESOLVED" else False
+            ),
+            "generator_expected_slot": (
+                current_ids.index(case["record_id"])
+                if case["kind"] == "current" else None
+            ),
+            "model_selected_slot": (
+                decision["slot"] if decision["resolution"] == "RESOLVED"
+                else None
+            ),
+            "model_candidate_slots": (
+                [decision["slot"]] if decision["resolution"] == "RESOLVED"
+                else [0, 1] if decision["resolution"] == "COLLISION" else []
+            ),
+            "expected_target_applicable": (
+                case["kind"] == "current"
+                and decision["resolution"] == "RESOLVED"
+            ),
             "pass": False,
         }
         if case["kind"] == "negative":
@@ -543,6 +603,11 @@ def review(
     if passed:
         reason = "BOUNDED_MODEL_ASSISTED_SAMPLE_ONLY"
         oracle_state = "MATCHED"
+    elif any(
+        x["resolution"] == "COLLISION" for x in positives
+    ):
+        reason = "COLLISION_REPORTED_NEEDS_INDEPENDENT_OWNER_ORACLE"
+        oracle_state = "NOT_APPLICABLE_NONUNIQUE_CASE"
     elif mechanics_passed and not oracle_passed:
         reason = "SOURCE_GROUNDED_MECHANICS_PASS_EXPECTED_TARGET_ORACLE_MISMATCH"
         oracle_state = "MISMATCH_UNRESOLVED"
@@ -553,6 +618,8 @@ def review(
         **_hold(reason, model_called=True),
         "status": "PASS_SHADOW_SAMPLE_ONLY" if passed else "HOLD",
         "case_count": CASE_COUNT, "case_results": results,
+        "sample_fingerprint": fingerprint,
+        "sample_fingerprint_bound": fingerprint is not None,
         "legacy_exact_parity": parity,
         "source_grounded_semantic_mechanics_passed": mechanics_passed,
         "expected_target_oracle_passed": oracle_passed,
@@ -562,6 +629,9 @@ def review(
             "technical records against three predefined questions and two "
             "unrelated negatives. Source quotes and strict GALAXY read-back "
             "are verified; model entailment is not independently proven. "
+            "A model-reported COLLISION is a claim that both approved "
+            "statements might answer, not proof that both do. It remains HOLD "
+            "until independently owner-adjudicated on an identically bound sample. "
             "An expected-target mismatch remains HOLD and must not be promoted "
             "to PASS merely because source-grounded mechanics succeeded. "
             "Original Stage7 semantic and historical release gates remain HOLD."

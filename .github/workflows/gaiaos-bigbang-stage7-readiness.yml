@@ -6,6 +6,9 @@ on:
     paths:
       - "api/gaiaos_bigbang_readiness.py"
       - "api/augury_semantic_retrieval.py"
+      - "api/augury_semantic_sample.py"
+      - "tests/test_augury_semantic_sample_stage9g.py"
+      - "GaiaOS/Plans/AUGURY-SEMANTIC-STAGE9G-BOUND-SAMPLE-COLLISION.v1.md"
       - "tests/test_augury_semantic_retrieval_stage9f.py"
       - "tests/test_gaiaos_console_browser_contract.py"
       - "GaiaOS/Plans/GAIAOS-RENDER-CONSOLE-BROWSER-INTEGRITY.v1.md"
@@ -37,6 +40,8 @@ jobs:
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_real_memory_readiness_stage7.py" -v
       - name: Verify optional AUGURY semantic shadow and strict source-backed safeguards
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_augury_semantic_retrieval_stage9f.py" -v
+      - name: Verify keyed sample identity and collision-aware redacted comparison
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_augury_semantic_sample_stage9g.py" -v
       - name: Verify actual served console JavaScript and every button handler
         run: |
           node --version
