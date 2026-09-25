@@ -26,12 +26,11 @@ REPOSITORY = os.getenv("GAIAOS_REPOSITORY", "hurrisonferd/NaomiLeGaia")
 BRANCH = os.getenv("GAIAOS_BRANCH", "main")
 GITHUB_API = "https://api.github.com"
 RAW_BASE = "https://raw.githubusercontent.com"
-def _normalized_owner_key(raw: str | None) -> str | None:
-    """Normalize accidental surrounding env whitespace without opening auth.
+def _normalized_env_value(raw: str | None) -> str | None:
+    """Normalize accidental outer whitespace while preserving fail-closed blanks.
 
-    An unset key remains None. An empty/whitespace-only configured value
-    remains invalid and MUST fail closed at protected endpoints.
-    Interior characters stay exact; this never logs or returns the secret.
+    Unset stays None. Whitespace-only stays whitespace-only so downstream
+    nonblank checks still fail closed. Interior characters are never changed.
     """
     if raw is None:
         return None
@@ -39,16 +38,39 @@ def _normalized_owner_key(raw: str | None) -> str | None:
     return cleaned if cleaned else raw
 
 
+# Backward-compatible name for the owner-auth normalization contract.
+_normalized_owner_key = _normalized_env_value
+
 _owner_key_from_env = os.getenv("GAIAOS_API_KEY")
-API_KEY = _normalized_owner_key(_owner_key_from_env)
+API_KEY = _normalized_env_value(_owner_key_from_env)
 AUTH_KEY_WHITESPACE_NORMALIZED = bool(
     _owner_key_from_env
     and _owner_key_from_env.strip()
     and _owner_key_from_env != API_KEY
 )
 del _owner_key_from_env
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-5.6-luna")
+
+_openai_key_from_env = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY = _normalized_env_value(_openai_key_from_env)
+OPENAI_KEY_WHITESPACE_NORMALIZED = bool(
+    _openai_key_from_env
+    and _openai_key_from_env.strip()
+    and _openai_key_from_env != OPENAI_API_KEY
+)
+del _openai_key_from_env
+
+_openai_model_from_env = os.getenv("OPENAI_MODEL")
+OPENAI_MODEL = (
+    _normalized_env_value(_openai_model_from_env)
+    if _openai_model_from_env is not None
+    else "gpt-5.6-luna"
+)
+OPENAI_MODEL_WHITESPACE_NORMALIZED = bool(
+    _openai_model_from_env
+    and _openai_model_from_env.strip()
+    and _openai_model_from_env != OPENAI_MODEL
+)
+del _openai_model_from_env
 TIMEOUT = float(os.getenv("GAIAOS_HTTP_TIMEOUT", "10"))
 SESSION_COOKIE = "gaiaos_session"
 MCP_PUBLIC_HOST = os.getenv("MCP_PUBLIC_HOST", "ligeia-api.onrender.com")
@@ -556,7 +578,9 @@ def health() -> dict[str, Any]:
             ),
         },
         "openai_configured": bool(OPENAI_API_KEY and OPENAI_API_KEY.strip()),
+        "openai_key_outer_whitespace_normalized": OPENAI_KEY_WHITESPACE_NORMALIZED,
         "openai_model_configured": bool(OPENAI_MODEL and OPENAI_MODEL.strip()),
+        "openai_model_outer_whitespace_normalized": OPENAI_MODEL_WHITESPACE_NORMALIZED,
         "mcp_endpoint": "/mcp",
         "council_surface": True,
         "brain_support_surface": True,
