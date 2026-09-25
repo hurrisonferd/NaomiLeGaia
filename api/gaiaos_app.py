@@ -603,6 +603,28 @@ def gaia_owner_augury_semantic_shadow(
     return JSONResponse(result, headers={"Cache-Control": "no-store"})
 
 
+@app.post("/gaiaos/memory/augury-semantic-owner-oracle-preview",
+          operation_id="gaiaOwnerAugurySemanticOraclePreview")
+def gaia_owner_augury_semantic_oracle_preview(
+    authorization: str | None = Header(default=None),
+):
+    """Owner-only local ground-truth review; never calls the model."""
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503,
+            detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    import augury_semantic_retrieval as shadow
+    import memcon_runtime
+
+    result = shadow.owner_oracle_preview(memcon_runtime)
+    return JSONResponse(
+        result,
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+    )
+
+
 @app.get("/gaiaos/memory/technical-partial-console", response_class=HTMLResponse,
          operation_id="gaiaTechnicalFiveCaseConsole")
 def gaia_technical_five_case_console():
