@@ -41,6 +41,10 @@ jobs:
               facts["api_version"] = health.get("api_version")
               facts["api_key_required"] = health.get("authentication_required")
               facts["canonical_branch"] = health.get("canonical_branch")
+              proof = health.get("deployment_proof") or {}
+              facts["deployed_source_commit"] = proof.get("source_commit")
+              facts["deployed_commit_verified"] = proof.get("source_commit_verified") is True
+              facts["health_reports_readiness_route"] = proof.get("stage7_readiness_route_registered")
           except Exception as exc:
               facts["health_error_type"] = type(exc).__name__
               facts["health_status_ok"] = False
@@ -72,7 +76,8 @@ jobs:
               facts["readiness_post_deployed"]
               or facts.get("readiness_get_status") in (401, 403, 405, 422)
           )
-          if facts["health_status_ok"] and facts["readiness_route_observed"]:
+          facts["merged_stage8_commit_live"] = str(facts.get("deployed_source_commit") or "").startswith("c7505db17803")
+          if facts["health_status_ok"] and facts["readiness_route_observed"] and facts["merged_stage8_commit_live"]:
               facts["status"] = "PASS_PUBLIC_ROUTE_DISCOVERY_ONLY"
           else:
               facts["status"] = "HOLD_AUTHENTICATED_REAL_STORE_REVIEW_NOT_YET_POSSIBLE"
