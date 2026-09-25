@@ -422,38 +422,39 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         from fastapi.testclient import TestClient
         import gaiaos_app as carrier
         secret = "isolated-stage9c-test-key"
-        with TestClient(carrier.app) as client:
-            with patch.object(carrier.base, "API_KEY", secret), patch.object(
-                readiness, "technical_partial_sample_review",
-                side_effect=AssertionError("No unauthorized memory access")
-            ):
-                page = client.get("/gaiaos/memory/technical-partial-console")
-                self.assertEqual(page.status_code, 200)
-                self.assertIn("default-src 'none'",
-                              page.headers["content-security-policy"])
-                self.assertEqual(page.headers["cache-control"], "no-store")
-                self.assertIn('type="password"', page.text)
-                self.assertNotIn(secret, page.text)
-                self.assertNotIn("__NONCE__", page.text)
-                denied = client.post("/gaiaos/memory/technical-partial-review")
-                self.assertEqual(denied.status_code, 401)
-                client.cookies.set(carrier.base.SESSION_COOKIE,
-                                   carrier.base._session_token())
-                denied = client.post("/gaiaos/memory/technical-partial-review")
-                self.assertEqual(denied.status_code, 401)
-            with patch.object(carrier.base, "API_KEY", None):
-                unavailable = client.post("/gaiaos/memory/technical-partial-review")
-                self.assertEqual(unavailable.status_code, 503)
-            with patch.object(carrier.base, "API_KEY", secret), patch.object(
-                readiness, "technical_partial_sample_review",
-                return_value={"status": "HOLD", "writes_performed": []}
-            ) as allowed:
-                granted = client.post(
-                    "/gaiaos/memory/technical-partial-review",
-                    headers={"Authorization": "Bearer "+secret}
-                )
-                self.assertEqual(granted.status_code, 200)
-                allowed.assert_called_once()
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        with patch.object(carrier.base, "API_KEY", secret), patch.object(
+            readiness, "technical_partial_sample_review",
+            side_effect=AssertionError("No unauthorized memory access")
+        ):
+            page = client.get("/gaiaos/memory/technical-partial-console")
+            self.assertEqual(page.status_code, 200)
+            self.assertIn("default-src 'none'",
+                          page.headers["content-security-policy"])
+            self.assertEqual(page.headers["cache-control"], "no-store")
+            self.assertIn('type="password"', page.text)
+            self.assertNotIn(secret, page.text)
+            self.assertNotIn("__NONCE__", page.text)
+            denied = client.post("/gaiaos/memory/technical-partial-review")
+            self.assertEqual(denied.status_code, 401)
+            client.cookies.set(carrier.base.SESSION_COOKIE,
+                               carrier.base._session_token())
+            denied = client.post("/gaiaos/memory/technical-partial-review")
+            self.assertEqual(denied.status_code, 401)
+        with patch.object(carrier.base, "API_KEY", None):
+            unavailable = client.post("/gaiaos/memory/technical-partial-review")
+            self.assertEqual(unavailable.status_code, 503)
+        with patch.object(carrier.base, "API_KEY", secret), patch.object(
+            readiness, "technical_partial_sample_review",
+            return_value={"status": "HOLD", "writes_performed": []}
+        ) as allowed:
+            granted = client.post(
+                "/gaiaos/memory/technical-partial-review",
+                headers={"Authorization": "Bearer "+secret}
+            )
+            self.assertEqual(granted.status_code, 200)
+            allowed.assert_called_once()
 
     def test_revises_is_not_supersedes(self):
         self._seed()
