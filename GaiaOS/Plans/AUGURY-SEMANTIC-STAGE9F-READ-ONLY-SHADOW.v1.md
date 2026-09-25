@@ -71,8 +71,9 @@ The Stage 9F source path is now hardened through small isolated PRs before any l
 - PR #49: blank or whitespace-only provider keys cannot report configured. CI run 36182255384 PASS.
 - PR #50: blank or whitespace-only model names fail closed before SDK construction; /health exposes non-secret model-name readiness. Final Stage 7 semantic-safety run 36182421936 PASS, Stage 8 deployment-parity run 36182422061 PASS, and HEATDEATH route-regression run 36182421947 PASS.
 - PR #52: whitespace-only provider keys are rejected by the Stage 9F route itself before SDK construction; the console wording now correctly states three questions spanning two approved memories. Stage 7 run 36183592466 PASS and HEATDEATH route-regression run 36183592601 PASS.
+- PR #54: Render source policy explicitly disables auto-deploy; provider key and model name normalize accidental outer whitespace before Stage 9F SDK use; /health reports non-secret normalization state; deployment-parity CI now gates render.yaml. Stage 8 run 36187357336 PASS and Stage 7 run 36187357347 PASS.
 
-Canonical source-hardening merge receipt: `5b62e940066ecca628ed1809075c19d413d9ccbe`.
+Canonical source-hardening merge receipt: `eb50733a3873cb9354f825b2d2889602f16b8e1f`.
 
 These receipts prove source behavior and built-image wiring only. They do not prove the live Render carrier is on this revision or that the configured model resolves the five owner-approved cases correctly.
 
@@ -80,7 +81,7 @@ These receipts prove source behavior and built-image wiring only. They do not pr
 
 The next boundary is intentionally linear and must not be collapsed into one opaque operation:
 
-1. Owner explicitly authorizes deployment of current `main` to the normal GaiaOS carrier. Deployment itself is a separate authority event and is not implied by ordinary source/test work or the hammer shorthand.
+1. Source policy requires manual deployment (`render.yaml` sets `autoDeployTrigger: off`). Owner explicitly authorizes deployment of current `main` to the normal GaiaOS carrier. Deployment itself is a separate authority event and is not implied by ordinary source/test work or the hammer shorthand.
 2. Read public `GET /health` only. Require all of the following before any semantic model call:
    - `status == "ok"`
    - `deployment_proof.source_commit` equals the intended deployed `main` commit
