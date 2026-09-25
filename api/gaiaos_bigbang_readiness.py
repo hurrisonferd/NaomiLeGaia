@@ -273,6 +273,7 @@ def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
         "scope": "MemoryOS",
         "technical_topics": [],
         "current_cases_prepared": 0,
+        "distinct_current_records_capped_at_two": 0,
         "historical_cases_prepared": 0,
         "negative_cases_prepared": 2,
         "record_ids_disclosed": False,
@@ -359,6 +360,19 @@ def prepare_technical_cases(runtime: Any) -> dict[str, Any]:
                 used.add(item["record_id"])
             if len(chosen) == 2:
                 break
+        # Topic diversity is preferred, not mandatory. Stage 7 requires two
+        # different current RECORDS, even when both concern GALAXY.
+        if len(chosen) < 2:
+            for topic, rows in by_topic.items():
+                for record in rows:
+                    if record["record_id"] not in used:
+                        chosen.append((topic, record))
+                        used.add(record["record_id"])
+                    if len(chosen) == 2:
+                        break
+                if len(chosen) == 2:
+                    break
+        preview["distinct_current_records_capped_at_two"] = len(chosen)
         if len(chosen) < 2:
             return hold("TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
         cases = [
