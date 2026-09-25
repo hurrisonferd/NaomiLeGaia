@@ -128,6 +128,44 @@ class ReadinessTests(unittest.TestCase):
         self.assertFalse(result["release_activated"])
         self.assertFalse(result["mode_control_modified"])
 
+    def test_five_case_partial_pass_does_not_satisfy_six_case_gate(self):
+        cases = [c for c in CASES if c["kind"] != "historical"]
+        def operational(runtime, query, limit):
+            self.assertIs(runtime, self.rt)
+            self.assertEqual(limit, 4)
+            case = next(c for c in cases if c["query"] == query)
+            return packet(case["kind"], case.get("record_id"))
+        with patch("galaxy_frontdoor_context.operational", side_effect=operational):
+            partial = readiness.review(self.rt, cases, partial=True)
+        self.assertEqual(partial["status"], "PASS_PARTIAL_CURRENT_NEGATIVE_ONLY")
+        self.assertFalse(partial["historical_coverage"])
+        self.assertTrue(partial["legacy_exact_parity"])
+        self.assertEqual([r["kind"] for r in partial["results"]],
+                         ["current", "current", "current", "negative", "negative"])
+        self.assertFalse(partial["release_activated"])
+        self.assertEqual(partial["writes_performed"], [])
+        self.assertEqual(self.rt.write_count, 0)
+        full = readiness.review(self.rt, cases)
+        self.assertEqual(full["status"], "HOLD")
+        self.assertEqual(full["reason"], "SIX_TO_TWELVE_CASES_REQUIRED")
+
+    def test_partial_fails_closed_on_negative_match_or_history(self):
+        cases = [c for c in CASES if c["kind"] != "historical"]
+        with self.subTest("historical forbidden"):
+            invalid = readiness.review(self.rt, CASES, partial=True)
+            self.assertEqual(invalid["status"], "HOLD")
+        with self.subTest("negative matched"):
+            def operational(runtime, query, limit):
+                case = next(c for c in cases if c["query"] == query)
+                if case["kind"] == "negative":
+                    return packet("current", "MEM-A")
+                return packet(case["kind"], case.get("record_id"))
+            with patch("galaxy_frontdoor_context.operational", side_effect=operational):
+                outcome = readiness.review(self.rt, cases, partial=True)
+            self.assertEqual(outcome["status"], "HOLD")
+            self.assertFalse(outcome["results"][3]["pass"])
+            self.assertFalse(outcome["release_activated"])
+
     def test_false_positive_and_missing_primary_fail_quality(self):
         for bad in (
             packet("current", "MEM-A"),
@@ -333,6 +371,89 @@ class Stage9TechnicalPreflight(unittest.TestCase):
         self.assertEqual(result["preview"]["reason"],
                          "TWO_DISTINCT_CURRENT_TECHNICAL_RECORDS_NOT_PROVEN")
         self.assertEqual(result["cases"], [])
+
+    def test_partial_prepared_when_real_history_unavailable(self):
+        self._insert("galaxy-a", "GALAXY relevance stays query-first")
+        self._insert("galaxy-b", "GALAXY gravity never grants authority")
+        prep = readiness.prepare_technical_cases(self.fake)
+        self.assertEqual(prep["preview"]["status"], "HOLD")
+        self.assertEqual(prep["preview"]["reason"],
+                         "NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES")
+        self.assertTrue(prep["preview"]["partial_five_case_ready"])
+        self.assertEqual(prep["cases"], [])
+        self.assertEqual(len(prep["partial_cases"]), 5)
+        self.assertEqual([c["kind"] for c in prep["partial_cases"]],
+                         ["current", "current", "current", "negative", "negative"])
+        with patch.object(readiness, "review", side_effect=AssertionError(
+            "Full Stage 7 review must not run without real history"
+        )):
+            full = readiness.technical_sample_review(self.fake)
+        self.assertEqual(full["status"], "HOLD")
+        self.assertFalse(full["review_executed"])
+
+    def test_partial_review_redacts_ids_and_cannot_be_full_pass(self):
+        self._insert("galaxy-a", "GALAXY relevance stays query-first")
+        self._insert("galaxy-b", "GALAXY gravity never grants authority")
+        secret = "MEM-SENSITIVE-NEVER-EXPOSE"
+        with patch.object(readiness, "review", return_value={
+            "status": "PASS_PARTIAL_CURRENT_NEGATIVE_ONLY",
+            "reason": "PARTIAL_FIVE_CASE_PARITY_NO_HISTORICAL",
+            "legacy_exact_parity": True,
+            "results": [{"case": 0, "kind": "current", "pass": True,
+                         "observed_status": "PASS_GALAXY_OPERATIONAL_RETRIEVAL",
+                         "current_ids": [secret], "historical_ids": [secret]}],
+        }) as actual:
+            outcome = readiness.technical_partial_sample_review(self.fake)
+        actual.assert_called_once()
+        self.assertTrue(actual.call_args.kwargs["partial"])
+        self.assertEqual(outcome["status"], "HOLD")
+        self.assertEqual(outcome["full_readiness_status"],
+                         "HOLD_MISSING_HISTORICAL_PROOF")
+        self.assertEqual(outcome["partial_review_status"],
+                         "PASS_PARTIAL_CURRENT_NEGATIVE_ONLY")
+        self.assertFalse(outcome["historical_coverage"])
+        self.assertNotIn(secret, str(outcome))
+        self.assertNotIn("galaxy-a", str(outcome))
+        self.assertNotIn("galaxy-b", str(outcome))
+        self.assertEqual(outcome["writes_performed"], [])
+        self.assertFalse(outcome["release_activated"])
+
+    def test_mobile_console_is_static_and_partial_post_needs_owner_bearer(self):
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+        secret = "isolated-stage9c-test-key"
+        with TestClient(carrier.app) as client:
+            with patch.object(carrier.base, "API_KEY", secret), patch.object(
+                readiness, "technical_partial_sample_review",
+                side_effect=AssertionError("No unauthorized memory access")
+            ):
+                page = client.get("/gaiaos/memory/technical-partial-console")
+                self.assertEqual(page.status_code, 200)
+                self.assertIn("default-src 'none'",
+                              page.headers["content-security-policy"])
+                self.assertEqual(page.headers["cache-control"], "no-store")
+                self.assertIn('type="password"', page.text)
+                self.assertNotIn(secret, page.text)
+                self.assertNotIn("__NONCE__", page.text)
+                denied = client.post("/gaiaos/memory/technical-partial-review")
+                self.assertEqual(denied.status_code, 401)
+                client.cookies.set(carrier.base.SESSION_COOKIE,
+                                   carrier.base._session_token())
+                denied = client.post("/gaiaos/memory/technical-partial-review")
+                self.assertEqual(denied.status_code, 401)
+            with patch.object(carrier.base, "API_KEY", None):
+                unavailable = client.post("/gaiaos/memory/technical-partial-review")
+                self.assertEqual(unavailable.status_code, 503)
+            with patch.object(carrier.base, "API_KEY", secret), patch.object(
+                readiness, "technical_partial_sample_review",
+                return_value={"status": "HOLD", "writes_performed": []}
+            ) as allowed:
+                granted = client.post(
+                    "/gaiaos/memory/technical-partial-review",
+                    headers={"Authorization": "Bearer "+secret}
+                )
+                self.assertEqual(granted.status_code, 200)
+                allowed.assert_called_once()
 
     def test_revises_is_not_supersedes(self):
         self._seed()
