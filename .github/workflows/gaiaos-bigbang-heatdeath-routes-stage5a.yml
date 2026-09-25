@@ -2,6 +2,7 @@ name: GaiaOS BIGBANG HEATDEATH Stage 5A Route Wiring
 
 on:
   push:
+    branches: [main]
     paths:
       - "api/gaiaos_app.py"
       - "api/Dockerfile"

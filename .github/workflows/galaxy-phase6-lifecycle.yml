@@ -2,6 +2,7 @@ name: GALAXY Phase 6 Reversible Lifecycle Source Gate
 
 on:
   push:
+    branches: [main]
     paths:
       - "api/galaxy_phase6.py"
       - "api/galaxy_phase6_controls.py"

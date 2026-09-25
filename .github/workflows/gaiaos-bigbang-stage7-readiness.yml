@@ -1,0 +1,47 @@
+name: GaiaOS BIGBANG Stage 7 Readiness Gate
+
+on:
+  # One review run per PR revision. Avoid duplicate push+PR emails.
+  pull_request:
+    paths:
+      - "api/gaiaos_bigbang_readiness.py"
+      - "api/gaiaos_app.py"
+      - "api/Dockerfile"
+      - "tests/test_bigbang_real_memory_readiness_stage7.py"
+      - "GaiaOS/Plans/BIGBANG-STAGE7-REAL-MEMORY-READINESS.v1.md"
+      - ".github/workflows/gaiaos-bigbang-stage7-readiness.yml"
+  workflow_dispatch:
+
+jobs:
+  real-store-review-contract-and-safety-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install normal carrier and test dependencies
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+      - name: Compile reviewer, routes and fixtures
+        run: |
+          python -m py_compile api/gaiaos_bigbang_readiness.py api/gaiaos_app.py
+          python -m py_compile tests/test_bigbang_real_memory_readiness_stage7.py
+      - name: Verify data-driven gate and HTTP/MCP review plumbing
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_real_memory_readiness_stage7.py" -v
+      - name: Repeat Stage 6 operational evidence contract
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_operational_reader_stage6.py" -v
+      - name: Repeat original HEATDEATH and normal carrier regression suite
+        run: |
+          for test in test_bigbang_heatdeath_browser_stage5b.py test_bigbang_heatdeath_routes_stage5a.py test_heatdeath_stage5d_research_policy.py test_heatdeath_stage5c_normal_boot.py test_heatdeath_legacy_recovery_stage4.py test_gaiaos_memory_gateway_stage3.py test_gaiaos_memory_mode_stage2.py test_legacy_memory_baseline.py; do
+            PYTHONPATH=api python -m unittest discover -s tests -p "$test" -v || exit 1
+          done
+      - name: Build normal image and independent HEATDEATH image
+        run: |
+          docker build --file api/Dockerfile --tag gaiaos-normal:stage7 .
+          docker build --file api/Dockerfile.legacy-recovery --build-arg RECOVERY_SOURCE_COMMIT="$GITHUB_SHA" --tag gaiaos-heatdeath:stage7 .
+          docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage7.sqlite gaiaos-normal:stage7 -c "import gaiaos_bigbang_readiness as r; assert callable(r.review); print('STAGE7_NORMAL_IMAGE_PASS')"
+          docker run --rm --entrypoint python gaiaos-heatdeath:stage7 -c "import sys, gaiaos_legacy_recovery_app as a; assert a.SERVICE == 'gaiaos-legacy-recovery'; assert not any(n.startswith('galaxy_') for n in sys.modules); print('STAGE7_HEATDEATH_IMAGE_PASS')"
+      - name: Source whitespace
+        run: git diff --check HEAD^1 HEAD
