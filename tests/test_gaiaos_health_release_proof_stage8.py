@@ -49,6 +49,7 @@ class DeploymentProofTests(unittest.TestCase):
     def test_deployed_sha_and_registered_post_are_reported(self):
         routes = [
             SimpleNamespace(path="/gaiaos/memory/readiness", methods={"POST"}),
+            SimpleNamespace(path="/gaiaos/memory/augury-semantic-shadow", methods={"POST"}),
             SimpleNamespace(path="/health", methods={"GET"}),
         ]
         with patch.dict(os.environ, {"RENDER_GIT_COMMIT": "stage8-fixture-sha"}), patch.object(
@@ -60,6 +61,7 @@ class DeploymentProofTests(unittest.TestCase):
         self.assertEqual(proof["source_commit"], "stage8-fixture-sha")
         self.assertTrue(proof["source_commit_verified"])
         self.assertTrue(proof["stage7_readiness_route_registered"])
+        self.assertTrue(proof["stage9f_semantic_shadow_route_registered"])
         self.assertNotIn("memory_records", response)
         self.assertNotIn("database_url", str(response).lower())
 
@@ -71,6 +73,7 @@ class DeploymentProofTests(unittest.TestCase):
         self.assertIsNone(proof["source_commit"])
         self.assertFalse(proof["source_commit_verified"])
         self.assertFalse(proof["stage7_readiness_route_registered"])
+        self.assertFalse(proof["stage9f_semantic_shadow_route_registered"])
 
     def test_get_only_route_cannot_masquerade_as_readiness(self):
         with patch.object(
