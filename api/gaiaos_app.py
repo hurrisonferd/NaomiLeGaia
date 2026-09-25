@@ -486,6 +486,8 @@ def gaia_technical_sample_review(
 
     Bearer auth, not the publicly minted browser cookie, is mandatory here.
     """
+    if not base.API_KEY:
+        raise HTTPException(status_code=503, detail="Private owner API authorization is unavailable")
     base._authorize(authorization)
     import memcon_runtime
     return JSONResponse(
