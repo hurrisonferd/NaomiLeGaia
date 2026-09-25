@@ -764,9 +764,10 @@ _TECHNICAL_PARTIAL_CONSOLE = """<!doctype html><html lang="en"><head>
 :root{color-scheme:dark;font:16px system-ui;background:#101820;color:#f1f4f8}
 body{max-width:680px;margin:auto;padding:18px;line-height:1.5}
 section{padding:15px;margin:14px 0;border:1px solid #647185;border-radius:12px}
-h1{font-size:1.45rem}input,button,select{box-sizing:border-box;width:100%;
+h1{font-size:1.45rem}input,button,select,textarea{box-sizing:border-box;width:100%;
 padding:12px;margin:8px 0;border-radius:8px;font:inherit}
-input,select{background:#203047;color:#fff;border:1px solid #8da8c8}
+input,select,textarea{background:#203047;color:#fff;border:1px solid #8da8c8}
+textarea{min-height:125px;resize:vertical}
 button{background:#24576d;color:#fff;border:1px solid #9bb7ca;font-weight:bold}
 button:disabled{opacity:.5}small{display:block;color:#c2cede}
 pre{white-space:pre-wrap;overflow-wrap:anywhere}
@@ -814,6 +815,18 @@ No memories are changed.</small>
 <button id="copy" type="button" disabled>Copy redacted receipt</button>
 <small>No statements, memory IDs, queries or secret are copied.
 Even a partial PASS leaves full readiness at HOLD.</small></section>
+<section><h2>Stage 9H · Compare attested redacted receipts</h2>
+<small>Read-only. Only paste redacted receipts issued by this authenticated
+GaiaOS console. Old unsigned Stage 9F receipts cannot be authenticated or
+retroactively paired. No model call is made by this comparison.</small>
+<label for="ownerReceiptInput">Attested owner-oracle receipt</label>
+<textarea id="ownerReceiptInput" placeholder="Paste signed redacted owner receipt only" spellcheck="false"></textarea>
+<label for="modelReceiptInput">Attested AUGURY semantic-shadow receipt</label>
+<textarea id="modelReceiptInput" placeholder="Paste signed redacted AUGURY receipt only" spellcheck="false"></textarea>
+<button id="compare" type="button">Compare matching signed receipts (no model call)</button>
+<small>Both receipts must share the exact source-sample fingerprint.
+Even full agreement proves only this bounded sample, never BIGBANG readiness.</small>
+</section>
 <script nonce="__NONCE__">
 "use strict";
 const byId=id=>document.getElementById(id);
@@ -903,6 +916,7 @@ byId("oracle").addEventListener("click",async()=>{
       throw Error("This source sample has no authenticated comparison fingerprint.");
     }
     oracleData=result;
+    byId("ownerReceiptInput").value="";
     byId("oraclePanel").hidden=false;
     const lines=result.records.map(r=>"Statement "+r.label+":\\n"+r.statement);
     byId("oracleRecords").textContent=lines.join("\\n\\n");
@@ -933,50 +947,42 @@ byId("oracle").addEventListener("click",async()=>{
   }finally{byId("oracle").disabled=false;}
 });
 
-byId("oracleReceipt").addEventListener("click",()=>{
+byId("oracleReceipt").addEventListener("click",async()=>{
   if(!oracleData)return;
-  const rows=[];
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Enter the private API key first.";return;}
+  const choices=[];
   for(const q of oracleData.questions){
-    const choice=byId("oracleChoice"+q.case).value;
-    if(!choice){
-      byId("status").textContent="Choose A, B, COLLISION, or UNKNOWN for every case.";
+    const resolution=byId("oracleChoice"+q.case).value;
+    if(!resolution){
+      byId("status").textContent="Judge every case A, B, COLLISION or UNKNOWN.";
       return;
     }
-    const ownerSlot=choice==="A"?0:choice==="B"?1:null;
-    const supported=choice==="A"?[0]:choice==="B"?[1]:
-      choice==="COLLISION"?[0,1]:[];
-    const expectedSupported=supported.includes(q.generator_expected_slot);
-    rows.push({
-      case:q.case,
-      owner_resolution:choice,
-      owner_slot:ownerSlot,
-      owner_supported_slots:supported,
-      generator_expected_slot:q.generator_expected_slot,
-      generator_expected_supported:expectedSupported,
-      generator_expected_is_unique_owner_answer:
-        supported.length===1&&expectedSupported
-    });
+    choices.push({case:q.case,resolution});
   }
-  redacted={
-    schema:"gaiaos.augury.semantic-owner-oracle-redacted.v1",
-    status:"OWNER_ORACLE_RECORDED",
-    case_count:rows.length,
-    sample_fingerprint:oracleData.sample_fingerprint,
-    sample_fingerprint_bound:true,
-    sample_fingerprint_schema:oracleData.sample_fingerprint_schema,
-    case_results:rows,
-    model_called:false,
-    private_statements_copied:false,
-    private_questions_copied:false,
-    record_ids_disclosed:false,
-    sources_disclosed:false,
-    writes_performed:[],
-    release_activated:false,
-    proof_boundary:"Human owner adjudication only. No model inference was performed and BIGBANG remains locked."
-  };
-  byId("receipt").textContent=JSON.stringify(redacted,null,2);
-  byId("copy").disabled=false;
-  byId("status").textContent="Redacted owner-oracle receipt ready. Only the redacted result below is safe to copy.";
+  byId("oracleReceipt").disabled=true;
+  byId("status").textContent="Checking that the private sample is unchanged and attesting your choices…";
+  try{
+    const response=await fetch("/gaiaos/memory/augury-semantic-owner-oracle-finalize",{
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
+      body:JSON.stringify({
+        expected_sample_fingerprint:oracleData.sample_fingerprint,choices
+      })
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error(result.detail||result.reason||("HTTP "+response.status));
+    if(result.status!=="OWNER_ORACLE_RECORDED"||!result.receipt_attestation){
+      throw Error("Owner receipt is not cryptographically attested.");
+    }
+    redacted=result;
+    byId("ownerReceiptInput").value=JSON.stringify(result,null,2);
+    byId("receipt").textContent=JSON.stringify(redacted,null,2);
+    byId("copy").disabled=false;
+    byId("status").textContent="Attested owner receipt ready. Copy only the redacted result.";
+  }catch(error){
+    byId("status").textContent="HOLD: "+error.message+". No model call was made.";
+  }finally{byId("oracleReceipt").disabled=false;}
 });
 
 byId("augury").addEventListener("click",async()=>{
@@ -1002,11 +1008,10 @@ byId("augury").addEventListener("click",async()=>{
     });
     const result=await response.json();
     if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
-    redacted={
+    const authenticated=result.sample_fingerprint_bound===true&&
+      result.receipt_attestation&&result.receipt_attestation.kind==="model";
+    redacted=authenticated?result:{
       schema:result.schema,status:result.status,reason:result.reason,
-      execution:result.execution,semantic_unit_schema:result.semantic_unit_schema,
-      semantic_interpreter_kind:result.semantic_interpreter_kind,
-      ritual_id:result.ritual_id,ritual_effect:result.ritual_effect,
       model_called:result.model_called,case_count:result.case_count,
       sample_fingerprint:result.sample_fingerprint,
       sample_fingerprint_bound:result.sample_fingerprint_bound,
@@ -1014,9 +1019,11 @@ byId("augury").addEventListener("click",async()=>{
       historical_coverage:result.historical_coverage,
       general_semantic_quality_proven:result.general_semantic_quality_proven,
       full_readiness_status:result.full_readiness_status,
-      release_activated:result.release_activated,writes_performed:result.writes_performed,
-      e_lanes_modified:result.e_lanes_modified
+      release_activated:result.release_activated,writes_performed:result.writes_performed
     };
+    if(authenticated){
+      byId("modelReceiptInput").value=JSON.stringify(redacted,null,2);
+    }
     byId("receipt").textContent=JSON.stringify(redacted,null,2);
     byId("copy").disabled=false;
     byId("status").textContent="AUGURY shadow complete; full release remains locked.";
@@ -1028,6 +1035,35 @@ byId("augury").addEventListener("click",async()=>{
     byId("literal").disabled=false;
   }
 });
+byId("compare").addEventListener("click",async()=>{
+  const key=byId("secret").value.trim();
+  if(!key){byId("status").textContent="Enter the private API key first.";return;}
+  byId("compare").disabled=true;
+  byId("status").textContent="Comparing only signed redacted receipts. No model call…";
+  try{
+    const owner=JSON.parse(byId("ownerReceiptInput").value);
+    const model=JSON.parse(byId("modelReceiptInput").value);
+    if(!owner||!model||!owner.receipt_attestation||!model.receipt_attestation){
+      throw Error("Both redacted receipts need Stage 9H attestations.");
+    }
+    const response=await fetch("/gaiaos/memory/augury-semantic-compare",{
+      method:"POST",credentials:"same-origin",cache:"no-store",redirect:"error",
+      headers:{"Authorization":"Bearer "+key,"Content-Type":"application/json"},
+      body:JSON.stringify({owner_receipt:owner,model_receipt:model})
+    });
+    const result=await response.json();
+    if(!response.ok)throw Error(result.detail||("HTTP "+response.status));
+    redacted=result;
+    byId("receipt").textContent=JSON.stringify(redacted,null,2);
+    byId("copy").disabled=false;
+    byId("status").textContent=result.status==="HOLD"
+      ?"HOLD: "+result.reason+". BIGBANG remains locked."
+      :"Bounded receipt agreement observed. BIGBANG remains locked.";
+  }catch(error){
+    byId("status").textContent="HOLD: "+error.message+". No model call was made.";
+  }finally{byId("compare").disabled=false;}
+});
+
 byId("copy").addEventListener("click",async()=>{
   if(!redacted)return;
   try{
