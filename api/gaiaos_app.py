@@ -12,11 +12,11 @@ import json
 import os
 import re
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from fastapi import Header, HTTPException, Request
 from fastapi.responses import HTMLResponse, JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from starlette.routing import Mount
 
 import gaiaos_api as base
@@ -551,6 +551,24 @@ class AuguryShadowRequest(BaseModel):
     )
 
 
+class OwnerOracleChoice(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    case: int = Field(ge=0, le=2, strict=True)
+    resolution: Literal["A", "B", "COLLISION", "UNKNOWN"]
+
+
+class OwnerOracleFinalizeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    expected_sample_fingerprint: str = Field(pattern=r"^sf1_[a-f0-9]{32}$")
+    choices: list[OwnerOracleChoice] = Field(min_length=3, max_length=3)
+
+
+class AttestedComparisonRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    owner_receipt: dict[str, Any]
+    model_receipt: dict[str, Any]
+
+
 @app.post("/gaiaos/memory/augury-semantic-shadow",
           operation_id="gaiaOwnerAuguryReadOnlySemanticShadow")
 def gaia_owner_augury_semantic_shadow(
@@ -609,7 +627,14 @@ def gaia_owner_augury_semantic_shadow(
         fingerprint_key=base.API_KEY,
         expected_sample_fingerprint=payload.expected_sample_fingerprint,
     )
-    return JSONResponse(result, headers={"Cache-Control": "no-store"})
+    # Only a complete, source-validated, fingerprinted result is attestable.
+    # Early HOLDs remain unsigned, not silently upgraded to comparison proof.
+    import augury_semantic_receipts as receipts
+    attested = receipts.seal("model", result, owner_key=base.API_KEY)
+    return JSONResponse(
+        attested if attested is not None else result,
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+    )
 
 
 @app.post("/gaiaos/memory/augury-semantic-owner-oracle-preview",
@@ -628,6 +653,80 @@ def gaia_owner_augury_semantic_oracle_preview(
     import memcon_runtime
 
     result = shadow.owner_oracle_preview(memcon_runtime, fingerprint_key=base.API_KEY)
+    return JSONResponse(
+        result,
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+    )
+
+
+@app.post("/gaiaos/memory/augury-semantic-owner-oracle-finalize",
+          operation_id="gaiaOwnerAugurySemanticOracleFinalize")
+def gaia_owner_augury_semantic_oracle_finalize(
+    payload: OwnerOracleFinalizeRequest,
+    authorization: str | None = Header(default=None),
+):
+    """Attest human choices only after re-reading exactly the same private sample."""
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503, detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    import augury_semantic_retrieval as shadow
+    import augury_semantic_receipts as receipts
+    import memcon_runtime
+
+    preview = shadow.owner_oracle_preview(
+        memcon_runtime, fingerprint_key=base.API_KEY,
+    )
+    if (
+        preview.get("status") != "READY_OWNER_ADJUDICATION"
+        or preview.get("sample_fingerprint_bound") is not True
+        or preview.get("sample_fingerprint") != payload.expected_sample_fingerprint
+    ):
+        return JSONResponse(
+            {"status": "HOLD", "reason": "OWNER_SAMPLE_CHANGED_OR_UNAVAILABLE",
+             "model_called": False, "writes_performed": [],
+             "release_activated": False},
+            status_code=409,
+            headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+        )
+    owner = receipts.owner_from_adjudication(
+        sample_fingerprint=preview["sample_fingerprint"],
+        questions=preview["questions"],
+        choices=[choice.model_dump() for choice in payload.choices],
+    )
+    attested = receipts.seal("owner", owner, owner_key=base.API_KEY)
+    if attested is None:
+        raise HTTPException(status_code=422, detail="OWNER_ORACLE_CHOICE_INVALID")
+    return JSONResponse(
+        attested,
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
+    )
+
+
+@app.post("/gaiaos/memory/augury-semantic-compare",
+          operation_id="gaiaOwnerAuguryCompareAttestedReceipts")
+def gaia_owner_augury_compare_attested_receipts(
+    payload: AttestedComparisonRequest,
+    authorization: str | None = Header(default=None),
+):
+    """Compare two short redacted receipts, never reading memory or calling a model."""
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503, detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    # Reject overlong or privately augmented submissions before comparing.
+    if any(
+        len(json.dumps(receipt, ensure_ascii=False)) > 12000
+        for receipt in (payload.owner_receipt, payload.model_receipt)
+    ):
+        raise HTTPException(status_code=413, detail="REDACTED_RECEIPT_TOO_LARGE")
+    import augury_semantic_receipts as receipts
+
+    result = receipts.compare_attested(
+        payload.model_receipt, payload.owner_receipt, owner_key=base.API_KEY,
+    )
     return JSONResponse(
         result,
         headers={"Cache-Control": "no-store", "Pragma": "no-cache"},
