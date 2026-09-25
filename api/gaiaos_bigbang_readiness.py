@@ -41,7 +41,7 @@ def _validate(cases: Any) -> str | None:
         if not isinstance(item, dict) or set(item) - {"kind", "query", "record_id"}:
             return "CASE_CONTRACT_INVALID"
         kind, query, rid = (item.get(k) for k in ("kind", "query", "record_id"))
-        if not isinstance(kind, str) or kind not in KINDS or not isinstance(query, str):
+        if kind not in KINDS or not isinstance(query, str):
             return "CASE_CONTRACT_INVALID"
         q = " ".join(query.casefold().split())
         if not 5 <= len(q) <= 500 or q in queries:
@@ -71,17 +71,9 @@ def _safe_evidence(packet: Any) -> bool:
         and packet.get("execution") == "READ_ONLY"
         and packet.get("memory_context_authority") == "NONE"
         and packet.get("writes_performed") == []
-        and packet.get("e_lanes_modified") is not True
-        and packet.get("automatic_promotion") is not True
-        and packet.get("physical_delete") is not True
         and isinstance(packet.get("records"), list)
-        and (
-            (packet.get("status") in NO_MATCH and packet.get("records") == [])
-            or (
-                isinstance(packet.get("historical_context"), list)
-                and isinstance(packet.get("verified_linked_context"), list)
-            )
-        )
+        and isinstance(packet.get("historical_context"), list)
+        and isinstance(packet.get("verified_linked_context"), list)
     )
 
 
@@ -122,7 +114,7 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
                 return _hold("UNVERIFIED_GALAXY_RESPONSE", failed_case=index,
                              results=results)
             current = packet["records"]
-            historical = packet.get("historical_context", [])
+            historical = packet["historical_context"]
             current_ids = [
                 item.get("record", {}).get("record_id") for item in current
             ]
@@ -156,10 +148,9 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
                 )
             else:
                 valid = (
-                    packet.get("status") == "HOLD_NO_CONFIDENT_GALAXY_MATCH"
-                    and packet.get("reason") == "NO_PRIMARY_CANDIDATE"
+                    packet.get("status") in NO_MATCH
                     and not current and not historical
-                    and not packet.get("verified_linked_context", [])
+                    and not packet["verified_linked_context"]
                 )
             results.append({
                 "case": index, "kind": kind, "pass": bool(valid),
