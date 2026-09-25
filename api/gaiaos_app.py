@@ -857,10 +857,10 @@ Your excerpts remain inside this authenticated GaiaOS page.</small>
 <select id="collisionCase"></select>
 <label for="collisionQuoteA">Exact support excerpt from Statement A</label>
 <textarea id="collisionQuoteA" spellcheck="false"
- placeholder="Exact contiguous excerpt from private statement A"></textarea>
+ placeholder="Exact excerpt from approved Statement A"></textarea>
 <label for="collisionQuoteB">Exact support excerpt from Statement B</label>
 <textarea id="collisionQuoteB" spellcheck="false"
- placeholder="Exact contiguous excerpt from private statement B"></textarea>
+ placeholder="Exact excerpt from approved Statement B"></textarea>
 <button id="collisionVerify" type="button">Verify BOTH sources read-only</button>
 <small>Only the signed redacted two-source result may be copied. Do not share
 the excerpts, statements, questions or private API key.</small>
