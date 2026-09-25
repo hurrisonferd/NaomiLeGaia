@@ -47,6 +47,7 @@ jobs:
           docker build --file api/Dockerfile --tag gaiaos-normal:stage7 .
           docker build --file api/Dockerfile.legacy-recovery --build-arg RECOVERY_SOURCE_COMMIT="$GITHUB_SHA" --tag gaiaos-heatdeath:stage7 .
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage7.sqlite gaiaos-normal:stage7 -c "import gaiaos_bigbang_readiness as r; assert callable(r.review); print('STAGE7_NORMAL_IMAGE_PASS')"
+          docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9f.sqlite gaiaos-normal:stage7 -c "import augury_semantic_retrieval as s, gaiaos_app as a; assert s.RITUAL_ID == 'GALAXY.MEMORYOS.READ_ONLY.SHADOW.v1'; assert any(getattr(r, 'path', None) == '/gaiaos/memory/augury-semantic-shadow' for r in a.app.routes); print('STAGE9F_CONTAINER_ROUTE_PASS')"
           docker run --rm --entrypoint python gaiaos-heatdeath:stage7 -c "import sys, gaiaos_legacy_recovery_app as a; assert a.SERVICE == 'gaiaos-legacy-recovery'; assert not any(n.startswith('galaxy_') for n in sys.modules); print('STAGE7_HEATDEATH_IMAGE_PASS')"
       - name: Source whitespace
         run: git diff --check HEAD^1 HEAD
