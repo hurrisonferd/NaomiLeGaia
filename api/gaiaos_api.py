@@ -555,7 +555,7 @@ def health() -> dict[str, Any]:
                 "that a copied value matches the running instance."
             ),
         },
-        "openai_configured": OPENAI_API_KEY is not None,
+        "openai_configured": bool(OPENAI_API_KEY and OPENAI_API_KEY.strip()),
         "mcp_endpoint": "/mcp",
         "council_surface": True,
         "brain_support_surface": True,
