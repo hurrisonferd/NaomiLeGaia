@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - api/gaiaos_api.py
+      - render.yaml
       - tests/test_gaiaos_health_release_proof_stage8.py
       - .github/workflows/gaiaos-stage8-deployment-parity.yml
   workflow_dispatch:
