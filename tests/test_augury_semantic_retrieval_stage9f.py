@@ -101,7 +101,14 @@ class SemanticShadowTests(unittest.TestCase):
         }
 
     def run_review(self, model_result=None, *, packet_kind="valid"):
-        responses = iter(["real-one", "real-two", "real-one"])
+        chosen = decisions() if model_result is None else model_result
+        slot_ids = ("real-one", "real-two")
+        responses = iter(
+            slot_ids[item["slot"]]
+            for item in chosen.get("cases", [])[:3]
+            if item.get("resolution") == "RESOLVED"
+            and item.get("slot") in (0, 1)
+        )
 
         def operational(runtime, query, limit):
             self.assertIs(runtime, self.runtime)
@@ -137,7 +144,7 @@ class SemanticShadowTests(unittest.TestCase):
                     self.assertEqual(set(record), {"slot", "statement"})
                     self.assertNotIn("record_id", record)
                     self.assertNotIn("source", record)
-                return decisions() if model_result is None else model_result
+                return chosen
             result = shadow.review(self.runtime, interpret)
         return result, actual
 
@@ -147,6 +154,9 @@ class SemanticShadowTests(unittest.TestCase):
         self.assertEqual(calls.call_count, 3)
         self.assertTrue(result["model_called"])
         self.assertTrue(result["legacy_exact_parity"])
+        self.assertTrue(result["source_grounded_semantic_mechanics_passed"])
+        self.assertTrue(result["expected_target_oracle_passed"])
+        self.assertEqual(result["expected_target_oracle_state"], "MATCHED")
         self.assertEqual(result["case_count"], 5)
         self.assertTrue(all(r["pass"] for r in result["case_results"]))
         self.assertFalse(result["general_semantic_quality_proven"])
@@ -157,6 +167,44 @@ class SemanticShadowTests(unittest.TestCase):
         for secret in ("real-one", "real-two", "relevance from gravity",
                        "owner authority independently", "owner-review"):
             self.assertNotIn(secret, str(result))
+
+    def test_source_grounded_oracle_mismatch_is_specific_hold(self):
+        opposite = {"cases": [
+            {"case": 0, "resolution": "RESOLVED", "slot": 1,
+             "support_quote": "owner authority independently"},
+            {"case": 1, "resolution": "RESOLVED", "slot": 0,
+             "support_quote": "relevance from gravity"},
+            {"case": 2, "resolution": "RESOLVED", "slot": 1,
+             "support_quote": "owner authority independently"},
+            {"case": 3, "resolution": "UNKNOWN", "slot": None,
+             "support_quote": None},
+            {"case": 4, "resolution": "UNKNOWN", "slot": None,
+             "support_quote": None},
+        ]}
+        result, calls = self.run_review(opposite)
+        self.assertEqual(result["status"], "HOLD", result)
+        self.assertEqual(
+            result["reason"],
+            "SOURCE_GROUNDED_MECHANICS_PASS_EXPECTED_TARGET_ORACLE_MISMATCH",
+        )
+        self.assertEqual(calls.call_count, 3)
+        self.assertTrue(result["source_grounded_semantic_mechanics_passed"])
+        self.assertFalse(result["expected_target_oracle_passed"])
+        self.assertEqual(
+            result["expected_target_oracle_state"], "MISMATCH_UNRESOLVED"
+        )
+        self.assertTrue(result["legacy_exact_parity"])
+        self.assertTrue(all(
+            row["source_quote_verified"]
+            and row["exact_read_ritual_compiled"]
+            and row["galaxy_readback_verified"]
+            and not row["expected_target_supported"]
+            and not row["pass"]
+            for row in result["case_results"][:3]
+        ))
+        self.assertTrue(all(row["pass"] for row in result["case_results"][3:]))
+        self.assertFalse(result["release_activated"])
+        self.assertEqual(result["writes_performed"], [])
 
     def test_fabricated_quote_cannot_be_read_back(self):
         bad = decisions()
