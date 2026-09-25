@@ -383,6 +383,35 @@ class ShadowRouteTests(unittest.TestCase):
             self.assertNotIn("private statement A", page.text)
             self.assertNotIn("private question", page.text)
 
+    def test_actual_served_console_javascript_is_syntactically_valid(self):
+        """Catch Python triple-quoted HTML consuming JS newline escapes."""
+        import shutil
+        import subprocess
+        import tempfile
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        page = client.get("/gaiaos/memory/technical-partial-console")
+        self.assertEqual(page.status_code, 200)
+        script = page.text.split("<script nonce=", 1)[1].split(">", 1)[1].split(
+            "</script>", 1
+        )[0]
+        # These must remain literal JS backslash-n escapes in the rendered
+        # browser script, not become raw line breaks inside JS strings.
+        self.assertIn('r.label+":\\n"+r.statement', script)
+        self.assertIn('lines.join("\\n\\n")', script)
+        if shutil.which("node"):
+            with tempfile.TemporaryDirectory() as folder:
+                script_path = Path(folder) / "served-gaiaos-console.js"
+                script_path.write_text(script, encoding="utf-8")
+                checked = subprocess.run(
+                    ["node", "--check", str(script_path)],
+                    capture_output=True, text=True, check=False,
+                )
+                self.assertEqual(checked.returncode, 0, checked.stderr)
+
     def test_owner_consent_guards_api_and_one_no_store_model_call(self):
         from fastapi.testclient import TestClient
         import gaiaos_app as carrier
