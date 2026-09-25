@@ -792,8 +792,8 @@ byId("oracle").addEventListener("click",async()=>{
     if(result.status!=="READY_OWNER_ADJUDICATION")throw Error(result.reason||result.status);
     oracleData=result;
     byId("oraclePanel").hidden=false;
-    const lines=result.records.map(r=>"Statement "+r.label+":\n"+r.statement);
-    byId("oracleRecords").textContent=lines.join("\n\n");
+    const lines=result.records.map(r=>"Statement "+r.label+":\\n"+r.statement);
+    byId("oracleRecords").textContent=lines.join("\\n\\n");
     const choices=byId("oracleChoices");
     choices.replaceChildren();
     result.questions.forEach(q=>{
