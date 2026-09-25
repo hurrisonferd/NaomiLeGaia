@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 LEAD: 58 · ANVIL
-STATUS: SOURCE-ONLY, PRODUCTION UNTESTED UNTIL OWNER DEPLOYS AND EXPLICITLY RUNS
+STATUS: SOURCE-HARDENED / PRE-DEPLOY READY / LIVE SEMANTIC PROOF UNTESTED / BIGBANG LOCKED
 SCOPE: MemoryOS, current owner-approved technical GALAXY records only
 MODE: HEATDEATH release-locked
 PRODUCTION EFFECT: NONE
@@ -60,6 +60,41 @@ entailment, prove general semantic coverage, repair the three prior ordinary
 production misses, pass the original Stage 7 six-case gate, or enable BIGBANG.
 Absent authentic verified technical historical SUPERSEDES evidence, FULL HOLD
 is mandatory. Separate source review and real owner-invoked tests are needed.
+
+## Source-hardening receipts through 2026-09-25
+
+The Stage 9F source path is now hardened through small isolated PRs before any live deployment:
+
+- PR #46: missing provider key fails closed before review or SDK construction. CI run 36172116571 PASS.
+- PR #47: built normal carrier image must import Stage 9F and register the owner-only semantic-shadow POST route. CI run 36175639343 PASS.
+- PR #48: public /health exposes only a non-secret boolean proving Stage 9F route registration. CI run 36182108184 PASS.
+- PR #49: blank or whitespace-only provider keys cannot report configured. CI run 36182255384 PASS.
+- PR #50: blank or whitespace-only model names fail closed before SDK construction; /health exposes non-secret model-name readiness. Final Stage 7 semantic-safety run 36182421936 PASS, Stage 8 deployment-parity run 36182422061 PASS, and HEATDEATH route-regression run 36182421947 PASS.
+
+Canonical source-hardening merge receipt: `d22d0259601d4d61a14fec87b3c5c053a37ee78b`.
+
+These receipts prove source behavior and built-image wiring only. They do not prove the live Render carrier is on this revision or that the configured model resolves the five owner-approved cases correctly.
+
+## Exact live acceptance sequence
+
+The next boundary is intentionally linear and must not be collapsed into one opaque operation:
+
+1. Owner explicitly authorizes deployment of current `main` to the normal GaiaOS carrier. Deployment itself is a separate authority event and is not implied by ordinary source/test work or the hammer shorthand.
+2. Read public `GET /health` only. Require all of the following before any semantic model call:
+   - `status == "ok"`
+   - `deployment_proof.source_commit` equals the intended deployed `main` commit
+   - `deployment_proof.source_commit_verified == true`
+   - `authorization_config.api_key_loaded == true`
+   - `openai_configured == true`
+   - `openai_model_configured == true`
+   - `deployment_proof.stage7_readiness_route_registered == true`
+   - `deployment_proof.stage9f_semantic_shadow_route_registered == true`
+3. Stop on any mismatch. Do not substitute repository state, a browser cookie, a guessed environment value, or an older live receipt for the failed live check.
+4. Only after a clean health receipt, owner separately authorizes the one bounded Stage 9F semantic-shadow invocation. That invocation requires the private bearer credential plus fresh `explicit_semantic_shadow_consent=true`, sends only the two approved current technical statements and five fixed staged questions, uses `store=false`, and performs no retries.
+5. Record only the redacted result. Never paste bearer credentials, statements, quotes, record IDs, raw model text, database URLs, or private notes into ChatGPT, GitHub logs, screenshots, or public receipts.
+6. A `PASS_SHADOW_SAMPLE_ONLY` closes only the bounded current-record semantic question. It does not authorize BIGBANG. A collision, unknown, source mismatch, read-back mismatch, legacy parity mismatch, unexpected write, or provider error remains HOLD.
+
+After a Stage 9F live PASS, the broader BIGBANG release still requires the original representative Stage 7 real-store gate, authentic technical historical SUPERSEDES evidence, independent HEATDEATH recovery parity, Turso/restart and multi-replica control proof, ordinary browser-chat and MCP consumption checks, and a separate explicit Naomi activation decision with immediate rollback proven.
 
 ## Preserve
 
