@@ -64,7 +64,7 @@ def _validate(cases: Any) -> str | None:
 
 def _safe_evidence(packet: Any) -> bool:
     """Check the basic evidence boundary even for negative/historical returns."""
-    return (
+    if not (
         isinstance(packet, dict)
         and packet.get("schema") == gateway.GALAXY_SCHEMA
         and packet.get("scope") == "MemoryOS"
@@ -72,7 +72,18 @@ def _safe_evidence(packet: Any) -> bool:
         and packet.get("memory_context_authority") == "NONE"
         and packet.get("writes_performed") == []
         and isinstance(packet.get("records"), list)
-        and isinstance(packet.get("historical_context"), list)
+    ):
+        return False
+    # The operational reader's explicit no-match HOLD omits context arrays.
+    # Normalize ONLY that bounded, empty HOLD; never normalize a PASS.
+    if packet.get("status") in NO_MATCH and packet["records"] == []:
+        return (
+            packet.get("count") == 0
+            and isinstance(packet.get("historical_context", []), list)
+            and isinstance(packet.get("verified_linked_context", []), list)
+        )
+    return (
+        isinstance(packet.get("historical_context"), list)
         and isinstance(packet.get("verified_linked_context"), list)
     )
 
@@ -114,7 +125,7 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
                 return _hold("UNVERIFIED_GALAXY_RESPONSE", failed_case=index,
                              results=results)
             current = packet["records"]
-            historical = packet["historical_context"]
+            historical = packet.get("historical_context", [])
             current_ids = [
                 item.get("record", {}).get("record_id") for item in current
             ]
@@ -131,7 +142,7 @@ def review(runtime: Any, cases: Any) -> dict[str, Any]:
             elif kind == "historical":
                 valid = (
                     packet.get("status") == "HOLD_NO_CURRENT_MATCH"
-                    and not current and not packet["verified_linked_context"]
+                    and not current and not packet.get("verified_linked_context", [])
                     and wanted in historical_ids
                     and all(
                         isinstance(item, dict)
