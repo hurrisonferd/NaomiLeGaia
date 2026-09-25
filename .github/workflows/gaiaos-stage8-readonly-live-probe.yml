@@ -52,7 +52,27 @@ jobs:
           except Exception as exc:
               facts["openapi_error_type"] = type(exc).__name__
               facts["readiness_post_deployed"] = False
-          if facts["health_status_ok"] and facts["readiness_post_deployed"]:
+          # GET is intentionally the wrong method for these POST-only routes.
+          # A 405 proves path registration without credentials or reading records.
+          for label, path in [
+              ("assist_get_status", "/gaiaos/assist"),
+              ("readiness_get_status", "/gaiaos/memory/readiness"),
+          ]:
+              try:
+                  with urllib.request.urlopen(
+                      urllib.request.Request(base+path, method="GET"),
+                      timeout=45,
+                  ) as response:
+                      facts[label] = response.status
+              except urllib.error.HTTPError as exc:
+                  facts[label] = exc.code
+              except Exception as exc:
+                  facts[label+"_error_type"] = type(exc).__name__
+          facts["readiness_route_observed"] = (
+              facts["readiness_post_deployed"]
+              or facts.get("readiness_get_status") in (401, 403, 405, 422)
+          )
+          if facts["health_status_ok"] and facts["readiness_route_observed"]:
               facts["status"] = "PASS_PUBLIC_ROUTE_DISCOVERY_ONLY"
           else:
               facts["status"] = "HOLD_AUTHENTICATED_REAL_STORE_REVIEW_NOT_YET_POSSIBLE"
