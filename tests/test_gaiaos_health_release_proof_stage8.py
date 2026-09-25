@@ -36,6 +36,28 @@ class DeploymentProofTests(unittest.TestCase):
                 carrier._authorize("Bearer    ")
             self.assertEqual(invalid.exception.status_code, 503)
 
+    def test_provider_and_model_outer_whitespace_normalization(self):
+        samples = (
+            (None, None),
+            ("", ""),
+            ("   ", "   "),
+            ("  ci-provider-key  ", "ci-provider-key"),
+            ("  gpt-5.6-luna  ", "gpt-5.6-luna"),
+            ("key with internal space", "key with internal space"),
+        )
+        for raw, expected in samples:
+            with self.subTest(raw=raw):
+                self.assertEqual(carrier._normalized_env_value(raw), expected)
+
+    def test_render_blueprint_requires_manual_deploy(self):
+        render_yaml = (Path(__file__).resolve().parents[1] / "render.yaml").read_text(
+            encoding="utf-8"
+        )
+        self.assertEqual(render_yaml.count("autoDeployTrigger: off"), 1)
+        service_block = render_yaml.split("services:", 1)[1].split("envVars:", 1)[0]
+        self.assertIn("name: gaiaos-loader-api", service_block)
+        self.assertIn("autoDeployTrigger: off", service_block)
+
     def test_public_configuration_proof_contains_no_key_material(self):
         with patch.object(carrier, "API_KEY", "private-test-sentinel"), patch.object(
             carrier, "AUTH_KEY_WHITESPACE_NORMALIZED", True
@@ -45,6 +67,21 @@ class DeploymentProofTests(unittest.TestCase):
         self.assertTrue(proof["environment_outer_whitespace_normalized"])
         self.assertFalse(proof["key_material_disclosed"])
         self.assertNotIn("private-test-sentinel", repr(proof))
+
+    def test_openai_health_reports_normalization_state_without_key_material(self):
+        with patch.object(carrier, "OPENAI_API_KEY", "ci-provider-key"), patch.object(
+            carrier, "OPENAI_KEY_WHITESPACE_NORMALIZED", True
+        ), patch.object(
+            carrier, "OPENAI_MODEL", "gpt-5.6-luna"
+        ), patch.object(
+            carrier, "OPENAI_MODEL_WHITESPACE_NORMALIZED", True
+        ):
+            response = carrier.health()
+        self.assertTrue(response["openai_configured"])
+        self.assertTrue(response["openai_key_outer_whitespace_normalized"])
+        self.assertTrue(response["openai_model_configured"])
+        self.assertTrue(response["openai_model_outer_whitespace_normalized"])
+        self.assertNotIn("ci-provider-key", repr(response))
 
     def test_openai_health_proof_requires_nonblank_key(self):
         for raw, expected in ((None, False), ("", False), ("   ", False), ("ci-provider-key", True)):

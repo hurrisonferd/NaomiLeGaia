@@ -323,6 +323,45 @@ class ShadowRouteTests(unittest.TestCase):
             self.assertNotIn("ci-provider-key", kwargs["input"])
 
 
+    def test_outer_whitespace_is_normalized_before_sdk_use(self):
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+        client = TestClient(carrier.app)
+        self.addCleanup(client.close)
+        normalized_key = carrier.base._normalized_env_value("  ci-provider-key  ")
+        normalized_model = carrier.base._normalized_env_value("  ci-model-only  ")
+        fake_response = SimpleNamespace(status="completed", output_text='{"cases":[]}')
+        with patch.object(carrier.base, "API_KEY", "ci-owner-key"), patch.object(
+            carrier.base, "OPENAI_API_KEY", normalized_key
+        ), patch.object(
+            carrier.base, "OPENAI_MODEL", normalized_model
+        ), patch.object(
+            shadow, "review", side_effect=lambda runtime, interpret: {
+                "schema": shadow.SCHEMA,
+                "status": "HOLD",
+                "probe_result": interpret({
+                    "operation": "AUGURY_RETRIEVAL_SHADOW",
+                    "scope": "MemoryOS",
+                    "records": [{"slot": 0, "statement": "ci fixture A"},
+                                {"slot": 1, "statement": "ci fixture B"}],
+                    "questions": [{"case": i, "question": "ci question"} for i in range(5)],
+                }),
+                "writes_performed": [],
+            }
+        ), patch("openai.OpenAI") as sdk:
+            sdk.return_value.responses.create.return_value = fake_response
+            response = client.post(
+                "/gaiaos/memory/augury-semantic-shadow",
+                json={"explicit_semantic_shadow_consent": True},
+                headers={"Authorization": "Bearer ci-owner-key"},
+            )
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(sdk.call_args.kwargs["api_key"], "ci-provider-key")
+        self.assertEqual(
+            sdk.return_value.responses.create.call_args.kwargs["model"],
+            "ci-model-only",
+        )
+
     def test_blank_model_name_blocks_before_review_or_sdk(self):
         from fastapi.testclient import TestClient
         import gaiaos_app as carrier
