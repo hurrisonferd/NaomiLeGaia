@@ -1,0 +1,32 @@
+{
+  "schema": "gaiaos.stage9f.live-health-verification.v1",
+  "authority": "NAOMI",
+  "observed_by": "NAOMI_BROWSER_RELAY",
+  "observed_at_date": "2026-09-25",
+  "status": "PASS_LIVE_HEALTH_PRECONDITIONS",
+  "service": "gaiaos-carrier",
+  "api_version": "1.6.1",
+  "canonical_repository": "hurrisonferd/NaomiLeGaia",
+  "canonical_branch": "main",
+  "deployment_proof": {
+    "source_commit": "a4b77cf83efa4e1f8501b185cf5d0d5779da8e8c",
+    "source_commit_verified": true,
+    "stage7_readiness_route_registered": true,
+    "stage9f_semantic_shadow_route_registered": true
+  },
+  "authorization_config": {
+    "api_key_loaded": true,
+    "environment_outer_whitespace_normalized": false,
+    "key_material_disclosed": false
+  },
+  "openai_configured": true,
+  "openai_key_outer_whitespace_normalized": false,
+  "openai_model_configured": true,
+  "openai_model_outer_whitespace_normalized": false,
+  "semantic_shadow_invoked": false,
+  "memory_read_performed": false,
+  "model_call_performed": false,
+  "writes_performed": [],
+  "bigbang_activation_performed": false,
+  "proof_boundary": "Live public process configuration and route registration only. Does not prove semantic quality, MemoryOS/Turso quality, historical coverage, recovery, or authorize BIGBANG."
+}
