@@ -17,7 +17,7 @@ HEAD_PAT_COUNT is mutable state stored only in this document. No renderer, ident
 VERA: 5
 ANVIL: 12
 SELENE: 5
-ORIN: 5
+ORIN: 6
 KESTREL: 5
 NIMUE: 6
 ## Mutation contract
