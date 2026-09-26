@@ -392,7 +392,9 @@ class OneClickRouteAndBrowserTests(unittest.TestCase):
     def test_post_requires_owner_bearer_and_never_calls_model(self):
         client=TestClient(carrier.app)
         self.addCleanup(client.close)
-        report, *_ = OneClickSuiteTests().run_fixture()
+        fixture_case=OneClickSuiteTests()
+        fixture_case.setUp()
+        report, *_ = fixture_case.run_fixture()
         with patch.object(carrier.base,"API_KEY",KEY),patch.object(
             suite,"run",return_value=report,
         ) as core,patch("openai.OpenAI") as sdk:
@@ -417,7 +419,9 @@ class OneClickRouteAndBrowserTests(unittest.TestCase):
         parser.feed(page.text)
         self.assertEqual(set(parser.buttons),{"run","copy"})
         self.assertEqual(len(parser.scripts),1)
-        report,*_=OneClickSuiteTests().run_fixture()
+        fixture_case=OneClickSuiteTests()
+        fixture_case.setUp()
+        report,*_=fixture_case.run_fixture()
         with tempfile.TemporaryDirectory() as folder:
             root=Path(folder)
             script=root/"served.js"
