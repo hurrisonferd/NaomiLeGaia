@@ -16,7 +16,8 @@ import gaiaos_bigbang_readiness as readiness
 import gaiaos_historical_evidence_audit as history
 from test_gaiaos_historical_evidence_stage9j import SyntheticMemoryStore
 from test_gaiaos_one_click_stage9l import (
-    HEALTH, CONTROL, PREFLIGHT, HISTORY, LITERAL, SyntheticStore,
+    CONTROL, PREFLIGHT, HISTORY, LITERAL, SyntheticStore,
+    health as stage9l_health,
 )
 
 
@@ -161,7 +162,7 @@ class OneClickIntegrationTests(unittest.TestCase):
         ), patch.object(scout, "scout", return_value=fixture) as lead, patch(
             "openai.OpenAI"
         ) as sdk:
-            result = suite.run(store, carrier_health=lambda: HEALTH)
+            result = suite.run(store, carrier_health=stage9l_health)
             sdk.assert_not_called()
             lead.assert_called_once_with(store)
         self.assertEqual(result["status"], "SAFE_CHECKS_COMPLETE_RELEASE_LOCKED")
