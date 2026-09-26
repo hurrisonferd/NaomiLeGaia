@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9L_ONE_CLICK_SAFE_SUITE_SOURCE_PASS_LIVE_DEPLOY_UNVERIFIED_BIGBANG_LOCKED",
+  "status": "ACTIVE_STAGE9L_OWNER_RELAY_LIVE_FOUR_CHECKS_PASS_TWO_HISTORICAL_HOLDS_BIGBANG_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -1094,7 +1094,27 @@
     "stage9l_live_deploy_verified": false,
     "stage9l_one_click_live_observed": false,
     "stage9l_bigbang_activation_authorized": false,
-    "stage9l_next_gate": "AFTER_CURRENT_OWNER_DEPLOY_VERIFY_ACTUAL_HEALTH_SHA_MANUALLY_DEPLOY_NEW_MAIN_IF_NEEDED_THEN_OPEN_ONE_CLICK_CONSOLE_RUN_SAFE_CHECKS_SHARE_ONLY_REDACTED_REPORT"
+    "stage9l_next_gate": "IDENTIFY_AN_ACTUAL_OWNER_AUTHORIZED_TECHNICAL_SUPERSESSION_AND_DISTINCT_OLD_VERSION_MARKER_OR_WAIT_IF_NONE_EXISTS_DO_NOT_CREATE_TEST_HISTORY",
+    "stage9l_owner_relay_observed": true,
+    "stage9l_owner_relay_proof": "GaiaOS/Proof/STAGE9L-LIVE-ONE-CLICK-OWNER-RELAY-REDACTED-2026-09-25.json",
+    "stage9l_owner_relay_running_commit": "e4cdb00f8e7f8730347ea5e3eee48cbfe6b9a9bf",
+    "stage9l_owner_relay_status": "SAFE_CHECKS_COMPLETE_RELEASE_LOCKED",
+    "stage9l_owner_relay_subchecks": {
+      "deployment": "PASS",
+      "heatdeath": "PASS",
+      "memory_storage": "PASS",
+      "technical_sample": "HOLD_NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES",
+      "historical_evidence": "HOLD_NO_VERIFIED_OWNER_SUPERSEDES_IN_BOUNDED_WINDOW",
+      "current_literal_readback": "PASS_LITERAL_WIRING_ONLY"
+    },
+    "stage9l_owner_relay_historical_window_complete": true,
+    "stage9l_owner_relay_approved_technical_records_in_window": 3,
+    "stage9l_owner_relay_distinct_current_technical_records": 2,
+    "stage9l_owner_relay_verified_owner_supersedes_in_window": 0,
+    "stage9l_owner_relay_reported_model_calls": 0,
+    "stage9l_owner_relay_reported_writes": [],
+    "stage9l_owner_relay_reported_bigbang_activation": false,
+    "stage9l_owner_relay_evidence_boundary": "OWNER_RELAY_OF_ONE_CLICK_CONSOLE_REDACTED_REPORT_NO_INDEPENDENT_EXTERNAL_RUNTIME_ATTESTATION"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
