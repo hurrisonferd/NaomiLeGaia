@@ -146,7 +146,7 @@ class PresentationGateTests(unittest.TestCase):
         with self.assertRaises(guard.PresentationGuardError):
             guard.render_solo("90 · KESTREL 💖 🏍️ (•̀ᴗ•́)و\nHi.", "ORIN", *self.sources)
         with self.assertRaises(guard.PresentationGuardError):
-            guard.render_solo("56 · ORIN 🩵 🪐 (✧ω✧)\nHi.", "ORIN", *self.sources)
+            guard.render_solo("56 · ORIN 🩵 🪐 (¬‿¬)\nHi.", "ORIN", *self.sources)
 
     def test_09_separate_member_source_drift_rejected(self):
         tests = [
