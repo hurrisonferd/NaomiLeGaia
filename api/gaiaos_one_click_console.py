@@ -70,6 +70,8 @@ const actions={
  RESOLVE_REAL_HISTORICAL_EVIDENCE_GAP:"A genuine historical prerequisite is still missing.",
  OWNER_REVIEW_VERIFIED_REVISES_LEADS_WITHOUT_PROMOTION:
   "A real revision lead may exist. Owner review is needed before any change.",
+ OWNER_REVIEW_INELIGIBLE_REVISION_ENDPOINTS:
+  "The existing revision endpoints do not both qualify. Review the reason before making any change.",
  INSPECT_CURRENT_LITERAL_READBACK:"Inspect the current read-only retrieval result.",
  OWNER_REVIEW_HISTORICAL_AND_SEMANTIC_EVIDENCE:
   "Safe checks finished. Historical and semantic release proof still requires review."
@@ -100,6 +102,30 @@ const revisionCountNames=[
  "active_successor_revision_pairs_in_window",
  "distinct_old_marker_leads_in_window"
 ];
+const endpointReasons=new Set([
+ "INVALID_PARENT_SAMPLE","RUNTIME_NOT_INITIALIZED","REMOTE_STORAGE_NOT_CONFIRMED",
+ "HEATDEATH_RELEASE_LOCK_NOT_VERIFIED","BOUNDED_WINDOW_INCOMPLETE",
+ "PARENT_SAMPLE_CHANGED","TOO_MANY_EDGES_FOR_BOUNDED_DIAGNOSIS",
+ "MALFORMED_VERIFIED_EDGE","TARGETED_ENDPOINT_READ_UNVERIFIED",
+ "BOUNDED_ENDPOINT_READ_FAILED","RELEASE_LOCK_CHANGED_OR_UNVERIFIED",
+ "PARENT_SCOUT_DISAGREEMENT","INELIGIBLE_ENDPOINTS_CLASSIFIED",
+ "ENDPOINT_DIAGNOSTIC_UNVERIFIED","ENDPOINT_DIAGNOSTIC_UNAVAILABLE"
+]);
+const endpointTypes=new Set([
+ "ELIGIBLE_REAL_TECHNICAL","MISSING_RECORD","WRONG_SCOPE",
+ "NON_OWNER_AUTHORITY","EXCLUDED_PROVENANCE","NON_TECHNICAL_STATEMENT",
+ "OUTSIDE_BOUNDED_WINDOW","SELF_REFERENTIAL_REVISION"
+]);
+const endpointDescriptions={
+ ELIGIBLE_REAL_TECHNICAL:"meets the real technical-source rules",
+ MISSING_RECORD:"could not be found",
+ WRONG_SCOPE:"is not in MemoryOS",
+ NON_OWNER_AUTHORITY:"is not recorded under the owner's authority",
+ EXCLUDED_PROVENANCE:"is from an excluded fixture, test or calibration source",
+ NON_TECHNICAL_STATEMENT:"does not contain an approved technical topic",
+ OUTSIDE_BOUNDED_WINDOW:"falls outside the bounded Stage 7 sample",
+ SELF_REFERENTIAL_REVISION:"refers to the same record on both sides"
+};
 const reasons=new Set([
  "RUNNING_COMMIT_IDENTIFIED","DEPLOYED_SOURCE_UNVERIFIED","CARRIER_HEALTH_UNAVAILABLE",
  "HEATDEATH_LOCK_VERIFIED","HEATDEATH_RELEASE_LOCK_UNVERIFIED",
@@ -226,6 +252,60 @@ function safeResult(source){
          throw Error("Revision-lead window status malformed.");
        }
        cleanScout.window_complete=scout.window_complete===true;
+       if(scout.endpoint_diagnostic!==undefined){
+         if(scout.reason!=="NO_APPROVED_OWNER_REVISES_PAIR"||
+            !cleanScout.window_complete||!cleanScout.counts||
+            cleanScout.counts.approved_owner_revision_pairs_in_window!==0){
+           throw Error("Endpoint diagnosis has no eligible parent revision scan.");
+         }
+         const diagnostic=scout.endpoint_diagnostic;
+         if(!diagnostic||
+            !["HOLD","CLASSIFIED_EXISTING_REVISION_ONLY"].includes(diagnostic.status)||
+            !endpointReasons.has(diagnostic.reason)||
+            diagnostic.lead_is_a_supersession!==false||
+            typeof diagnostic.lead_owner_review_required!=="boolean"){
+           throw Error("Endpoint diagnosis could not be safely verified.");
+         }
+         const cleanDiagnostic={
+           status:diagnostic.status,reason:diagnostic.reason,
+           lead_owner_review_required:diagnostic.lead_owner_review_required,
+           lead_is_a_supersession:false
+         };
+         if(diagnostic.status==="CLASSIFIED_EXISTING_REVISION_ONLY"){
+           const edgeCount=diagnostic.owner_revision_edges_checked;
+           if(diagnostic.reason!=="INELIGIBLE_ENDPOINTS_CLASSIFIED"||
+              !diagnostic.window_complete||!diagnostic.endpoint_scan_complete||
+              diagnostic.lead_owner_review_required!==true||
+              !Number.isInteger(edgeCount)||edgeCount<1||edgeCount>10||
+              edgeCount!==cleanScout.counts.verified_owner_revises_in_window){
+             throw Error("Endpoint classification has invalid proof bounds.");
+           }
+           cleanDiagnostic.owner_revision_edges_checked=edgeCount;
+           cleanDiagnostic.window_complete=true;
+           cleanDiagnostic.endpoint_scan_complete=true;
+           for(const role of ["older_endpoint_reasons","newer_endpoint_reasons"]){
+             const counts=diagnostic[role];
+             if(!counts||typeof counts!=="object"||Array.isArray(counts)||
+                Object.keys(counts).some(key=>!endpointTypes.has(key))||
+                Object.values(counts).some(value=>!Number.isInteger(value)||
+                   value<1||value>edgeCount)||
+                Object.values(counts).reduce((a,b)=>a+b,0)!==edgeCount){
+               throw Error("Endpoint classification counts are unsafe.");
+             }
+             cleanDiagnostic[role]={};
+             for(const [key,value] of Object.entries(counts)){
+               cleanDiagnostic[role][key]=value;
+             }
+           }
+           if(cleanDiagnostic.older_endpoint_reasons.ELIGIBLE_REAL_TECHNICAL===edgeCount&&
+              cleanDiagnostic.newer_endpoint_reasons.ELIGIBLE_REAL_TECHNICAL===edgeCount){
+             throw Error("Eligible pair conflicts with rejected revision scan.");
+           }
+         }else if(diagnostic.lead_owner_review_required!==false){
+           throw Error("Incomplete endpoint scan cannot request owner changes.");
+         }
+         cleanScout.endpoint_diagnostic=cleanDiagnostic;
+       }
        clean.revision_leads=cleanScout;
      }
    }
@@ -269,9 +349,26 @@ function render(report){
  const history=report.checks.historical_evidence;
  const detail=historyReasons[history.reason];
  const leads=history.revision_leads;
- byId("summary").textContent=leads&&leads.lead_owner_review_required
-   ?"A verified revision lead exists, but only you can decide whether it truly supersedes the older memory."
-   :(detail||actions[report.next_action]);
+ const diagnosed=leads&&leads.endpoint_diagnostic;
+ if(diagnosed&&diagnosed.status==="CLASSIFIED_EXISTING_REVISION_ONLY"){
+   const summaries=[];
+   for(const [role,field] of [
+     ["Older","older_endpoint_reasons"],
+     ["Newer","newer_endpoint_reasons"]
+   ]){
+     for(const [code,count] of Object.entries(diagnosed[field])){
+       if(code!=="ELIGIBLE_REAL_TECHNICAL"){
+         summaries.push(role+" side: "+count+" "+endpointDescriptions[code]+".");
+       }
+     }
+   }
+   byId("summary").textContent=summaries.join(" ")||
+      "An existing revision failed eligibility. No relationship was changed.";
+ }else{
+   byId("summary").textContent=leads&&leads.lead_owner_review_required
+     ?"A verified revision lead exists, but only you can decide whether it truly supersedes the older memory."
+     :(detail||actions[report.next_action]);
+ }
  byId("report").textContent=JSON.stringify(report,null,2);
 }
 byId("run").addEventListener("click",async()=>{
