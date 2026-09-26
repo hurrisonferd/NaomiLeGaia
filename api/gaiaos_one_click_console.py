@@ -317,6 +317,55 @@ function safeResult(source){
      }
      clean.legacy_exact_parity=check.legacy_exact_parity;
      clean.record_hits=check.record_hits;
+     if(check.owner_evidence_replay!==undefined){
+       if(check.status!=="PASS_LITERAL_WIRING_ONLY"){
+         throw Error("Owner evidence replay lacks a verified literal parent.");
+       }
+       const e=check.owner_evidence_replay;
+       const allowedHold=[
+        "OWNER_KEY_UNAVAILABLE","ARCHIVED_RECEIPT_UNAVAILABLE",
+        "ARCHIVED_ATTESTATION_INVALID_OR_KEY_ROTATED",
+        "ARCHIVED_OWNER_COLLISION_CONTRACT_UNVERIFIED",
+        "HEATDEATH_RELEASE_LOCK_UNVERIFIED","LIVE_SOURCE_SAMPLE_UNAVAILABLE",
+        "ARCHIVED_SAMPLE_NOT_CURRENT","RELEASE_LOCK_CHANGED",
+        "OWNER_REPLAY_UNVERIFIED"
+       ];
+       if(!e||typeof e!=="object"||
+          !["HOLD","PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE"].includes(e.status)){
+         throw Error("Owner evidence replay status is unverified.");
+       }
+       if(e.status==="HOLD"){
+         if(!allowedHold.includes(e.reason)){
+           throw Error("Owner evidence replay reason is unverified.");
+         }
+         clean.owner_evidence_replay={status:"HOLD",reason:e.reason};
+       }else{
+         if(e.reason!=="ARCHIVED_ATTESTATIONS_REBOUND_TO_CURRENT_SAMPLE"||
+            e.source_attestations_verified!==true||
+            e.live_sample_matches_archive!==true||
+            e.owner_labeled_current_cases!==3||
+            e.owner_single_source_cases!==2||
+            e.owner_collision_cases!==1||
+            e.archived_two_source_literal_readback_attested!==true||
+            e.archived_signed_model_receipt_in_repo!==false||
+            e.model_comparison_performed!==false||
+            e.semantic_entailment_independently_proven!==false){
+           throw Error("Owner evidence replay violates its strict proof contract.");
+         }
+         clean.owner_evidence_replay={
+           status:e.status,reason:e.reason,
+           source_attestations_verified:true,
+           live_sample_matches_archive:true,
+           owner_labeled_current_cases:3,
+           owner_single_source_cases:2,
+           owner_collision_cases:1,
+           archived_two_source_literal_readback_attested:true,
+           archived_signed_model_receipt_in_repo:false,
+           model_comparison_performed:false,
+           semantic_entailment_independently_proven:false
+         };
+       }
+     }
    }
    report.checks[key]=clean;
  }
@@ -368,6 +417,13 @@ function render(report){
    byId("summary").textContent=leads&&leads.lead_owner_review_required
      ?"A verified revision lead exists, but only you can decide whether it truly supersedes the older memory."
      :(detail||actions[report.next_action]);
+ }
+ const ownerProof=report.checks.current_literal_readback.owner_evidence_replay;
+ if(ownerProof){
+   byId("summary").textContent+=" "+
+     (ownerProof.status==="PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE"
+      ?"Earlier signed owner judgments match the current sample. No signed model receipt is archived; general semantics remain unproven."
+      :"Archived owner evidence still needs verification: "+ownerProof.reason+".");
  }
  byId("report").textContent=JSON.stringify(report,null,2);
 }
