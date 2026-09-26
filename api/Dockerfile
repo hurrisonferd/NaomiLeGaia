@@ -22,6 +22,7 @@ COPY api/gaiaos_historical_evidence_audit.py ./gaiaos_historical_evidence_audit.
 COPY api/gaiaos_revision_lineage_scout.py ./gaiaos_revision_lineage_scout.py
 COPY api/gaiaos_revision_endpoint_audit.py ./gaiaos_revision_endpoint_audit.py
 COPY api/gaiaos_historical_audit_console.py ./gaiaos_historical_audit_console.py
+COPY api/gaiaos_owner_evidence_replay.py ./gaiaos_owner_evidence_replay.py
 COPY api/gaiaos_one_click_readiness.py ./gaiaos_one_click_readiness.py
 COPY api/gaiaos_one_click_console.py ./gaiaos_one_click_console.py
 COPY api/gaiaos_lazy_diagnostics.py ./gaiaos_lazy_diagnostics.py
