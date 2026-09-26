@@ -364,6 +364,61 @@ function safeResult(source){
            model_comparison_performed:false,
            semantic_entailment_independently_proven:false
          };
+         const b=e.owner_generator_baseline;
+         if(!b||b.schema!=="gaiaos.galaxy.stage9q.owner-generator-baseline.v1"||
+            !["HOLD","BOUNDED_OWNER_GENERATOR_BASELINE_ONLY"].includes(b.status)){
+           throw Error("Owner-label baseline missing or unverified.");
+         }
+         if(b.status==="HOLD"){
+           if(b.reason!=="OWNER_LABEL_CONTRACT_UNVERIFIED"){
+             throw Error("Owner-label baseline HOLD reason unverified.");
+           }
+           clean.owner_evidence_replay.owner_generator_baseline={
+             schema:b.schema,status:"HOLD",reason:b.reason
+           };
+         }else{
+           if(b.reason!=="SIGNED_OWNER_LABELS_VS_GENERATOR_TARGETS"||
+              b.model_receipt_compared!==false||
+              b.independent_entailment_proven!==false||
+              b.historical_retrieval_proven!==false||
+              b.general_semantic_quality_proven!==false||
+              b.model_called!==false||b.e_lanes_modified!==false||
+              b.release_activated!==false||
+              !Array.isArray(b.writes_performed)||b.writes_performed.length!==0){
+             throw Error("Owner-label baseline exceeds its evidence boundary.");
+           }
+           const fields=[
+             "owner_labeled_current_cases","owner_collision_cases",
+             "owner_unknown_cases","generator_unique_owner_support",
+             "generator_nonunique_owner_support",
+             "generator_not_owner_supported","negative_controls_owner_adjudicated"
+           ];
+           const counts={};
+           for(const field of fields){
+             if(!Number.isInteger(b[field])||b[field]<0||b[field]>3){
+               throw Error("Owner-label baseline contains invalid counts.");
+             }
+             counts[field]=b[field];
+           }
+           if(counts.owner_labeled_current_cases!==3||
+              counts.negative_controls_owner_adjudicated!==0||
+              counts.owner_collision_cases+counts.owner_unknown_cases>3||
+              counts.generator_nonunique_owner_support>
+                counts.owner_collision_cases||
+              counts.generator_unique_owner_support+
+                counts.generator_nonunique_owner_support+
+                counts.generator_not_owner_supported+
+                counts.owner_unknown_cases!==3){
+             throw Error("Owner-label baseline counts contradict its contract.");
+           }
+           clean.owner_evidence_replay.owner_generator_baseline={
+             schema:b.schema,status:b.status,reason:b.reason,...counts,
+             model_receipt_compared:false,independent_entailment_proven:false,
+             historical_retrieval_proven:false,general_semantic_quality_proven:false,
+             model_called:false,writes_performed:[],e_lanes_modified:false,
+             release_activated:false
+           };
+         }
        }
      }
    }
@@ -424,6 +479,16 @@ function render(report){
      (ownerProof.status==="PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE"
       ?"Earlier signed owner judgments match the current sample. No signed model receipt is archived; general semantics remain unproven."
       :"Archived owner evidence still needs verification: "+ownerProof.reason+".");
+   const baseline=ownerProof.owner_generator_baseline;
+   if(baseline){
+     byId("summary").textContent+=" "+
+       (baseline.status==="BOUNDED_OWNER_GENERATOR_BASELINE_ONLY"
+        ?"Owner-label baseline: "+baseline.generator_unique_owner_support+
+         " uniquely supported, "+baseline.generator_nonunique_owner_support+
+         " supported but nonunique, "+baseline.generator_not_owner_supported+
+         " unsupported generator targets. This is not model-quality evidence."
+        :"Owner-label baseline remains HOLD.");
+   }
  }
  byId("report").textContent=JSON.stringify(report,null,2);
 }
