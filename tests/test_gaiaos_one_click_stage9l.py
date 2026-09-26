@@ -17,6 +17,7 @@ import gaiaos_app as carrier
 import gaiaos_one_click_readiness as suite
 import gaiaos_bigbang_readiness as readiness
 import gaiaos_historical_evidence_audit as historical
+import gaiaos_revision_lineage_scout as lineage
 import gaiaos_memory_mode as mode
 from test_gaiaos_console_browser_contract import ConsoleHTMLParser
 
@@ -131,7 +132,13 @@ class OneClickSuiteTests(unittest.TestCase):
         ) as history_read, patch.object(
             readiness, "technical_literal_wiring_probe",
             return_value=lit if lit is not None else LITERAL,
-        ) as literal, patch("openai.OpenAI") as sdk:
+        ) as literal, patch.object(
+            lineage, "scout",
+            return_value={
+                **lineage._base("NO_VERIFIED_OWNER_REVISES_IN_WINDOW"),
+                "window_complete": True,
+            },
+        ), patch("openai.OpenAI") as sdk:
             result = suite.run(self.runtime, carrier_health=health)
             sdk.assert_not_called()
         return result, lock, source, history_read, literal

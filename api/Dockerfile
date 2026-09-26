@@ -18,6 +18,7 @@ COPY api/gaiaos_memory_mode.py ./gaiaos_memory_mode.py
 COPY api/gaiaos_memory_gateway.py ./gaiaos_memory_gateway.py
 COPY api/gaiaos_bigbang_readiness.py ./gaiaos_bigbang_readiness.py
 COPY api/gaiaos_historical_evidence_audit.py ./gaiaos_historical_evidence_audit.py
+COPY api/gaiaos_revision_lineage_scout.py ./gaiaos_revision_lineage_scout.py
 COPY api/gaiaos_historical_audit_console.py ./gaiaos_historical_audit_console.py
 COPY api/gaiaos_one_click_readiness.py ./gaiaos_one_click_readiness.py
 COPY api/gaiaos_one_click_console.py ./gaiaos_one_click_console.py

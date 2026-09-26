@@ -16,6 +16,7 @@ from typing import Any, Callable
 
 import gaiaos_bigbang_readiness as readiness
 import gaiaos_historical_evidence_audit as history
+import gaiaos_revision_lineage_scout as lineage
 import gaiaos_memory_mode as mode
 
 SCHEMA = "gaiaos.stage9l.owner-one-click-safe-checks.v1"
@@ -234,6 +235,72 @@ def _history(data: Any) -> dict[str, Any]:
     return out
 
 
+_REVISION_REASONS = frozenset({
+    "RUNTIME_NOT_INITIALIZED", "REMOTE_STORAGE_NOT_CONFIRMED",
+    "HEATDEATH_RELEASE_LOCK_NOT_VERIFIED", "BOUNDED_SOURCE_READ_FAILED",
+    "BOUNDED_WINDOW_INCOMPLETE", "NO_VERIFIED_OWNER_REVISES_IN_WINDOW",
+    "NO_APPROVED_OWNER_REVISES_PAIR", "NO_ACTIVE_NEWER_RECORD",
+    "NO_DISTINCT_OLD_VERSION_MARKER", "REVISES_LEADS_REQUIRE_OWNER_REVIEW",
+    "RELEASE_LOCK_CHANGED_OR_UNVERIFIED",
+})
+_REVISION_COUNTS = (
+    "approved_technical_records_in_window",
+    "verified_owner_revises_in_window",
+    "approved_owner_revision_pairs_in_window",
+    "active_successor_revision_pairs_in_window",
+    "distinct_old_marker_leads_in_window",
+)
+
+
+def _revision_leads(data: Any) -> dict[str, Any]:
+    """Only finite aggregate provenance leads; never an automatic SUPERSEDES."""
+    hold = {"status": "HOLD", "reason": "REVISION_LEADS_UNVERIFIED",
+            "lead_owner_review_required": False}
+    if (
+        not isinstance(data, dict)
+        or data.get("schema") != lineage.SCHEMA
+        or data.get("status") not in ("HOLD", "LEADS_FOUND_OWNER_REVIEW_ONLY")
+        or data.get("reason") not in _REVISION_REASONS
+        or data.get("model_called") is not False
+        or data.get("writes_performed") != []
+        or data.get("e_lanes_modified") is not False
+        or data.get("release_activated") is not False
+        or data.get("lead_is_a_supersession") is not False
+        or data.get("historical_retrieval_proven") is not False
+        or data.get("general_semantic_quality_proven") is not False
+        or data.get("record_ids_disclosed") is not False
+        or data.get("statements_disclosed") is not False
+        or data.get("markers_disclosed") is not False
+        or data.get("sources_disclosed") is not False
+        or type(data.get("window_complete")) is not bool
+    ):
+        return hold
+    reason = data["reason"]
+    lead = (
+        data["status"] == "LEADS_FOUND_OWNER_REVIEW_ONLY"
+        and reason == "REVISES_LEADS_REQUIRE_OWNER_REVIEW"
+        and data.get("lead_owner_review_required") is True
+        and data.get("window_complete") is True
+    )
+    if data["status"] == "LEADS_FOUND_OWNER_REVIEW_ONLY" and not lead:
+        return hold
+    out = {
+        "status": data["status"], "reason": reason,
+        "window_complete": data["window_complete"],
+        "lead_owner_review_required": lead,
+        "lead_is_a_supersession": False,
+    }
+    if out["window_complete"]:
+        counts = {key: data.get(key) for key in _REVISION_COUNTS}
+        if any(type(value) is not int or value < 0 or value > 100
+               for value in counts.values()):
+            return hold
+        if lead and counts["distinct_old_marker_leads_in_window"] < 1:
+            return hold
+        out["counts"] = counts
+    return out
+
+
 def _literal(data: Any) -> dict[str, Any]:
     if (
         not isinstance(data, dict)
@@ -334,6 +401,23 @@ def run(
             "historical_case_prepared": False,
         }
 
+    # Advisory ONLY. A verified REVISES lead is not a SUPERSEDES edge.
+    # Reuse the same owner click; add no button and never manufacture history.
+    if (
+        checks["historical_evidence"].get("reason")
+            == "NO_VERIFIED_OWNER_SUPERSEDES_IN_WINDOW"
+        and checks["historical_evidence"].get("bounded_window_complete") is True
+    ):
+        try:
+            checks["historical_evidence"]["revision_leads"] = _revision_leads(
+                lineage.scout(runtime)
+            )
+        except Exception:
+            checks["historical_evidence"]["revision_leads"] = {
+                "status": "HOLD", "reason": "REVISION_LEADS_UNAVAILABLE",
+                "lead_owner_review_required": False,
+            }
+
     # Actual read-only literal proof requires two independently approved
     # current records. No model inference and no synthetic production writes.
     if checks["technical_sample"].get("distinct_current_records") == 2:
@@ -375,6 +459,11 @@ def run(
         result["next_action"] = "VERIFY_RUNNING_DEPLOYMENT_COMMIT"
     elif technical["status"] == "HOLD" and not technical.get("partial_five_case_ready"):
         result["next_action"] = "REVIEW_APPROVED_CURRENT_TECHNICAL_MEMORIES"
+    elif (
+        historical.get("revision_leads", {}).get("status")
+            == "LEADS_FOUND_OWNER_REVIEW_ONLY"
+    ):
+        result["next_action"] = "OWNER_REVIEW_VERIFIED_REVISES_LEADS_WITHOUT_PROMOTION"
     elif historical["status"] == "HOLD":
         result["next_action"] = "RESOLVE_REAL_HISTORICAL_EVIDENCE_GAP"
     elif literal["status"] != "PASS_LITERAL_WIRING_ONLY":
