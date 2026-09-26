@@ -17,6 +17,7 @@ from typing import Any, Callable
 import gaiaos_bigbang_readiness as readiness
 import gaiaos_historical_evidence_audit as history
 import gaiaos_revision_lineage_scout as lineage
+import gaiaos_revision_endpoint_audit as endpoint_audit
 import gaiaos_memory_mode as mode
 
 SCHEMA = "gaiaos.stage9l.owner-one-click-safe-checks.v1"
@@ -301,6 +302,88 @@ def _revision_leads(data: Any) -> dict[str, Any]:
     return out
 
 
+_ENDPOINT_REASONS = frozenset({
+    "INVALID_PARENT_SAMPLE", "RUNTIME_NOT_INITIALIZED",
+    "REMOTE_STORAGE_NOT_CONFIRMED", "HEATDEATH_RELEASE_LOCK_NOT_VERIFIED",
+    "BOUNDED_WINDOW_INCOMPLETE", "PARENT_SAMPLE_CHANGED",
+    "TOO_MANY_EDGES_FOR_BOUNDED_DIAGNOSIS", "MALFORMED_VERIFIED_EDGE",
+    "TARGETED_ENDPOINT_READ_UNVERIFIED", "BOUNDED_ENDPOINT_READ_FAILED",
+    "RELEASE_LOCK_CHANGED_OR_UNVERIFIED", "PARENT_SCOUT_DISAGREEMENT",
+    "INELIGIBLE_ENDPOINTS_CLASSIFIED",
+})
+_ENDPOINT_TYPES = frozenset(endpoint_audit.REASONS)
+
+
+def _endpoint_reasons(data: Any) -> dict[str, Any]:
+    """Redact and validate the endpoint diagnosis before reaching the browser."""
+    hold = {
+        "status": "HOLD", "reason": "ENDPOINT_DIAGNOSTIC_UNVERIFIED",
+        "endpoint_scan_complete": False,
+        "lead_owner_review_required": False,
+        "lead_is_a_supersession": False,
+    }
+    if (
+        not isinstance(data, dict)
+        or data.get("schema") != endpoint_audit.SCHEMA
+        or data.get("status") not in ("HOLD", "CLASSIFIED_EXISTING_REVISION_ONLY")
+        or data.get("reason") not in _ENDPOINT_REASONS
+        or data.get("relation_created") is not False
+        or data.get("lead_is_a_supersession") is not False
+        or data.get("historical_retrieval_proven") is not False
+        or data.get("general_semantic_quality_proven") is not False
+        or data.get("model_called") is not False
+        or data.get("writes_performed") != []
+        or data.get("e_lanes_modified") is not False
+        or data.get("release_activated") is not False
+        or data.get("record_ids_disclosed") is not False
+        or data.get("statements_disclosed") is not False
+        or data.get("sources_disclosed") is not False
+        or data.get("markers_disclosed") is not False
+    ):
+        return hold
+    if data["status"] == "HOLD":
+        if data["reason"] == "INELIGIBLE_ENDPOINTS_CLASSIFIED":
+            return hold
+        return {**hold, "reason": data["reason"]}
+    edges = data.get("owner_revision_edges_checked")
+    older = data.get("older_endpoint_reasons")
+    newer = data.get("newer_endpoint_reasons")
+    if (
+        data["reason"] != "INELIGIBLE_ENDPOINTS_CLASSIFIED"
+        or data.get("window_complete") is not True
+        or data.get("endpoint_scan_complete") is not True
+        or data.get("lead_owner_review_required") is not True
+        or type(edges) is not int
+        or not 1 <= edges <= endpoint_audit.MAX_EDGES
+        or not isinstance(older, dict)
+        or not isinstance(newer, dict)
+    ):
+        return hold
+    for group in (older, newer):
+        if (
+            not set(group) <= _ENDPOINT_TYPES
+            or any(type(n) is not int or not 1 <= n <= edges
+                   for n in group.values())
+            or sum(group.values()) != edges
+        ):
+            return hold
+    if (
+        older.get("ELIGIBLE_REAL_TECHNICAL", 0) == edges
+        and newer.get("ELIGIBLE_REAL_TECHNICAL", 0) == edges
+    ):
+        return hold
+    return {
+        "status": "CLASSIFIED_EXISTING_REVISION_ONLY",
+        "reason": "INELIGIBLE_ENDPOINTS_CLASSIFIED",
+        "window_complete": True, "endpoint_scan_complete": True,
+        "owner_revision_edges_checked": edges,
+        "older_endpoint_reasons": dict(older),
+        "newer_endpoint_reasons": dict(newer),
+        "lead_owner_review_required": True,
+        "lead_is_a_supersession": False,
+    }
+
+
 def _literal(data: Any) -> dict[str, Any]:
     if (
         not isinstance(data, dict)
@@ -417,6 +500,37 @@ def run(
                 "status": "HOLD", "reason": "REVISION_LEADS_UNAVAILABLE",
                 "lead_owner_review_required": False,
             }
+        scout_result = checks["historical_evidence"]["revision_leads"]
+        counts = scout_result.get("counts") or {}
+        history_counts = checks["historical_evidence"].get("counts") or {}
+        if (
+            scout_result.get("reason") == "NO_APPROVED_OWNER_REVISES_PAIR"
+            and scout_result.get("window_complete") is True
+            and counts.get("approved_owner_revision_pairs_in_window") == 0
+            and counts.get("verified_owner_revises_in_window", 0) > 0
+            and counts.get("approved_technical_records_in_window")
+                == history_counts.get("approved_technical_records_in_window")
+        ):
+            try:
+                scout_result["endpoint_diagnostic"] = _endpoint_reasons(
+                    endpoint_audit.audit(
+                        runtime,
+                        expected_verified_owner_edges=counts[
+                            "verified_owner_revises_in_window"
+                        ],
+                        expected_approved_records=counts[
+                            "approved_technical_records_in_window"
+                        ],
+                    )
+                )
+            except Exception:
+                scout_result["endpoint_diagnostic"] = {
+                    "status": "HOLD",
+                    "reason": "ENDPOINT_DIAGNOSTIC_UNAVAILABLE",
+                    "endpoint_scan_complete": False,
+                    "lead_owner_review_required": False,
+                    "lead_is_a_supersession": False,
+                }
 
     # Actual read-only literal proof requires two independently approved
     # current records. No model inference and no synthetic production writes.
@@ -459,6 +573,11 @@ def run(
         result["next_action"] = "VERIFY_RUNNING_DEPLOYMENT_COMMIT"
     elif technical["status"] == "HOLD" and not technical.get("partial_five_case_ready"):
         result["next_action"] = "REVIEW_APPROVED_CURRENT_TECHNICAL_MEMORIES"
+    elif (
+        historical.get("revision_leads", {}).get("endpoint_diagnostic", {}).get("status")
+            == "CLASSIFIED_EXISTING_REVISION_ONLY"
+    ):
+        result["next_action"] = "OWNER_REVIEW_INELIGIBLE_REVISION_ENDPOINTS"
     elif (
         historical.get("revision_leads", {}).get("status")
             == "LEADS_FOUND_OWNER_REVIEW_ONLY"
