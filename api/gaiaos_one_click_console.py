@@ -68,6 +68,8 @@ const actions={
  VERIFY_RUNNING_DEPLOYMENT_COMMIT:"Verify which commit is running on Render.",
  REVIEW_APPROVED_CURRENT_TECHNICAL_MEMORIES:"Check that two approved current memories are eligible.",
  RESOLVE_REAL_HISTORICAL_EVIDENCE_GAP:"A genuine historical prerequisite is still missing.",
+ OWNER_REVIEW_VERIFIED_REVISES_LEADS_WITHOUT_PROMOTION:
+  "A real revision lead may exist. Owner review is needed before any change.",
  INSPECT_CURRENT_LITERAL_READBACK:"Inspect the current read-only retrieval result.",
  OWNER_REVIEW_HISTORICAL_AND_SEMANTIC_EVIDENCE:
   "Safe checks finished. Historical and semantic release proof still requires review."
@@ -83,6 +85,21 @@ const historyReasons={
  STAGE7_SIX_CASE_CONTRACT_NOT_PREPARED:"The full six-case history sample is not ready.",
  BOUNDED_WINDOW_INCOMPLETE:"The bounded history window is incomplete."
 };
+const revisionReasons=new Set([
+ "RUNTIME_NOT_INITIALIZED","REMOTE_STORAGE_NOT_CONFIRMED",
+ "HEATDEATH_RELEASE_LOCK_NOT_VERIFIED","BOUNDED_SOURCE_READ_FAILED",
+ "BOUNDED_WINDOW_INCOMPLETE","NO_VERIFIED_OWNER_REVISES_IN_WINDOW",
+ "NO_APPROVED_OWNER_REVISES_PAIR","NO_ACTIVE_NEWER_RECORD",
+ "NO_DISTINCT_OLD_VERSION_MARKER","REVISES_LEADS_REQUIRE_OWNER_REVIEW",
+ "RELEASE_LOCK_CHANGED_OR_UNVERIFIED","REVISION_LEADS_UNVERIFIED",
+ "REVISION_LEADS_UNAVAILABLE"
+]);
+const revisionCountNames=[
+ "approved_technical_records_in_window","verified_owner_revises_in_window",
+ "approved_owner_revision_pairs_in_window",
+ "active_successor_revision_pairs_in_window",
+ "distinct_old_marker_leads_in_window"
+];
 const reasons=new Set([
  "RUNNING_COMMIT_IDENTIFIED","DEPLOYED_SOURCE_UNVERIFIED","CARRIER_HEALTH_UNAVAILABLE",
  "HEATDEATH_LOCK_VERIFIED","HEATDEATH_RELEASE_LOCK_UNVERIFIED",
@@ -175,6 +192,42 @@ function safeResult(source){
          clean.counts[name]=value;
        }
      }
+     if(check.revision_leads!==undefined){
+       const scout=check.revision_leads;
+       if(!scout||!["HOLD","LEADS_FOUND_OWNER_REVIEW_ONLY"].includes(scout.status)||
+          !revisionReasons.has(scout.reason)||
+          typeof scout.lead_owner_review_required!=="boolean"||
+          (scout.status==="LEADS_FOUND_OWNER_REVIEW_ONLY"&&
+           (scout.reason!=="REVISES_LEADS_REQUIRE_OWNER_REVIEW"||
+            scout.lead_owner_review_required!==true))||
+          (scout.status!=="LEADS_FOUND_OWNER_REVIEW_ONLY"&&
+           scout.lead_owner_review_required!==false)){
+         throw Error("Revision-lead evidence shape unverified.");
+       }
+       const cleanScout={
+         status:scout.status,reason:scout.reason,
+         lead_owner_review_required:scout.lead_owner_review_required,
+         lead_is_a_supersession:false
+       };
+       if(scout.window_complete===true){
+         if(!scout.counts||typeof scout.counts!=="object"){
+           throw Error("Revision-lead counts unverified.");
+         }
+         cleanScout.counts={};
+         for(const name of revisionCountNames){
+           const value=scout.counts[name];
+           if(!Number.isInteger(value)||value<0||value>100){
+             throw Error("Revision-lead count outside safe bounds.");
+           }
+           cleanScout.counts[name]=value;
+         }
+       }else if(scout.window_complete!==undefined&&
+                scout.window_complete!==false){
+         throw Error("Revision-lead window status malformed.");
+       }
+       cleanScout.window_complete=scout.window_complete===true;
+       clean.revision_leads=cleanScout;
+     }
    }
    if(key==="current_literal_readback"&&check.status!=="SKIPPED"){
      if(typeof check.legacy_exact_parity!=="boolean"||
@@ -215,7 +268,10 @@ function render(report){
  }
  const history=report.checks.historical_evidence;
  const detail=historyReasons[history.reason];
- byId("summary").textContent=detail||actions[report.next_action];
+ const leads=history.revision_leads;
+ byId("summary").textContent=leads&&leads.lead_owner_review_required
+   ?"A verified revision lead exists, but only you can decide whether it truly supersedes the older memory."
+   :(detail||actions[report.next_action]);
  byId("report").textContent=JSON.stringify(report,null,2);
 }
 byId("run").addEventListener("click",async()=>{
