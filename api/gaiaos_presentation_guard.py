@@ -172,6 +172,27 @@ def validate_output(
     }
 
 
+
+def possible_direct_speech_without_sources(text: str) -> bool:
+    """Without an authenticated roster, reject anything resembling a speaker header.
+
+    Used only to keep ordinary, unattributed legacy responses working when a
+    test fixture or partial carrier load omits presentation metadata. A
+    recognizable direct speaker block must never be allowed through unverified.
+    """
+    if not isinstance(text, str):
+        return True
+    for line in text.splitlines():
+        stripped = line.strip()
+        if re.match(r"^(?:#{1,6}\s*|\*{1,2})?\d+\s*[·.]\s*[A-Za-z][\w-]*\b", stripped):
+            return True
+        if re.match(
+            r"^(?:#{1,6}\s*|\*{1,2})?[A-Z]{3,12}\s*[\u2300-\u27ff\U0001F000-\U0010FFFF]",
+            stripped,
+        ):
+            return True
+    return False
+
 def render_solo(
     content: str,
     member: str,
