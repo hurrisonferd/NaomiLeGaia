@@ -346,4 +346,13 @@ def compare_attested(
     answer = sample.compare_redacted(model_receipt, owner_receipt)
     # The underlying categorical comparison never constitutes release proof.
     answer["authenticated_redacted_receipts"] = True
+    if answer.get("sample_match_verified") is True:
+        # Stage9O uses only ALREADY HMAC-verified Stage9H receipts. No new
+        # owner action, model inference, MemoryOS query or persistent write.
+        import augury_semantic_evaluation as evaluation
+
+        diagnosis = evaluation.audit(answer, model_receipt, owner_receipt)
+        if diagnosis.get("status") != "BOUNDED_OWNER_LABELS_CLASSIFIED":
+            return sample._hold("OWNER_LABEL_AUDIT_FAILED_CLOSED")
+        answer["owner_labeled_audit"] = diagnosis
     return answer
