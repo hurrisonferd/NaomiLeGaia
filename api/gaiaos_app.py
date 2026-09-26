@@ -798,6 +798,52 @@ def gaia_owner_augury_collision_two_source_shadow(
     )
 
 
+@app.post("/gaiaos/memory/one-click-readiness",
+          operation_id="gaiaOwnerOneClickSafeReadiness")
+def gaia_owner_one_click_safe_readiness(
+    authorization: str | None = Header(default=None),
+):
+    """One request, six bounded no-effect checks, no model calls."""
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503, detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    import gaiaos_one_click_readiness as oneclick
+    import memcon_runtime
+
+    result = oneclick.run(memcon_runtime, carrier_health=base.health)
+    return JSONResponse(
+        result,
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache",
+                 "Referrer-Policy": "no-referrer"},
+    )
+
+
+@app.get("/gaiaos/memory/one-click-console", response_class=HTMLResponse,
+         operation_id="gaiaOwnerOneClickConsole")
+def gaia_owner_one_click_console():
+    """CSP-nonced static UI. GET accesses neither memory nor owner key."""
+    import secrets
+    import gaiaos_one_click_console as page
+
+    nonce = secrets.token_urlsafe(20)
+    return HTMLResponse(
+        page.render(nonce),
+        headers={
+            "Cache-Control": "no-store", "Pragma": "no-cache",
+            "Referrer-Policy": "no-referrer",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": (
+                "default-src 'none'; connect-src 'self'; "
+                "script-src 'nonce-" + nonce + "'; "
+                "style-src 'nonce-" + nonce + "'; "
+                "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+            ),
+        },
+    )
+
+
 @app.get("/gaiaos/memory/historical-audit-console",
          response_class=HTMLResponse,
          operation_id="gaiaOwnerHistoricalAuditConsole")
