@@ -19,6 +19,8 @@ COPY api/gaiaos_memory_gateway.py ./gaiaos_memory_gateway.py
 COPY api/gaiaos_bigbang_readiness.py ./gaiaos_bigbang_readiness.py
 COPY api/gaiaos_historical_evidence_audit.py ./gaiaos_historical_evidence_audit.py
 COPY api/gaiaos_historical_audit_console.py ./gaiaos_historical_audit_console.py
+COPY api/gaiaos_one_click_readiness.py ./gaiaos_one_click_readiness.py
+COPY api/gaiaos_one_click_console.py ./gaiaos_one_click_console.py
 COPY api/gaiaos_lazy_diagnostics.py ./gaiaos_lazy_diagnostics.py
 COPY api/gaiaos_chat_memory.py ./gaiaos_chat_memory.py
 COPY api/galaxy_frontdoor_context.py ./galaxy_frontdoor_context.py
