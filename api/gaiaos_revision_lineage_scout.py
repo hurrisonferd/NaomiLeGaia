@@ -132,7 +132,7 @@ def scout(runtime: Any) -> dict[str, Any]:
             report["reason"] = "NO_ACTIVE_NEWER_RECORD"
         else:
             current_statements = [
-                row["statement"].casefold()
+                (row["record_id"], row["statement"].casefold())
                 for row in approved.values() if row.get("status") == "ACTIVE"
             ]
             leads = 0
@@ -142,8 +142,11 @@ def scout(runtime: Any) -> dict[str, Any]:
                     marker = found.group(0).casefold()
                     if (
                         marker not in newer_text
-                        and not any(marker in text for text in current_statements
-                                    if text != old_text.casefold())
+                        and not any(
+                            marker in statement
+                            for record_id, statement in current_statements
+                            if record_id != old["record_id"]
+                        )
                     ):
                         leads += 1
                         break
