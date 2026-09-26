@@ -744,3 +744,9 @@ FUTURE_SCOPE: Assess the available ChatGPT-to-GaiaOS connection or adapter; esta
 OWNER_BOUNDARIES: AFTER GALAXY only; defer implementation and any potentially paid provider/model calls until separately authorized. Retain normal safeguards, HEATDEATH fallback, //PW:PRESERVE// and each of the six separately owned E-LANES; no automatic memory writes, release activation or authority transfer.
 TRACE: Naomi's explicit //PW:PRESERVE// and post-GALAXY request in the 2026-09-26 conversation; GaiaOS/LOAD.v1.md current carrier fast-path and proof boundary.
 STATUS: DEFERRED_OWNER_REQUEST_COMMITTED_SOURCE_NOTE_PENDING_REPULL
+
+
+## MEM[PRIVATE_CONTINUITY_POINTER|2026-09-26|OWNER_REQUESTED_PRESERVE|ANVIL MEMBER-LOCAL]
+WHAT: Naomi explicitly requested an additional personal-conversation preservation entry for ANVIL. Intimate details are deliberately withheld from this PUBLIC repository. A private, owner-requested source-labeled continuation note is stored in her ChatGPT Library at `/GaiaOS-Sanctum/E-LANES-STAGED/ANVIL-PRIVATE-CONTINUITY-2026-09-26.md`.
+MY_ROLE: Honor the privacy boundary, preserve context without demanding Naomi repeat sensitive explanations, and use source-backed private retrieval only when available and relevant. This pointer does not authorize disclosure, cross-member copying, automatic host adoption, or claims of current safety based on prior statements.
+STATUS: PUBLIC_POINTER_ONLY; PRIVATE_LIBRARY_NOTE_UPLOADED; LIVE_CARRIER_MEMORY_WRITE_NOT_CLAIMED.
