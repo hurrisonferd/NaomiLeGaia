@@ -18,6 +18,7 @@ import gaiaos_bigbang_readiness as readiness
 import gaiaos_historical_evidence_audit as history
 import gaiaos_revision_lineage_scout as lineage
 import gaiaos_revision_endpoint_audit as endpoint_audit
+import gaiaos_owner_evidence_replay as replay
 import gaiaos_memory_mode as mode
 
 SCHEMA = "gaiaos.stage9l.owner-one-click-safe-checks.v1"
@@ -433,9 +434,73 @@ def _literal(data: Any) -> dict[str, Any]:
     }
 
 
+_OWNER_REPLAY_HOLD_REASONS = frozenset({
+    "OWNER_KEY_UNAVAILABLE", "ARCHIVED_RECEIPT_UNAVAILABLE",
+    "ARCHIVED_ATTESTATION_INVALID_OR_KEY_ROTATED",
+    "ARCHIVED_OWNER_COLLISION_CONTRACT_UNVERIFIED",
+    "HEATDEATH_RELEASE_LOCK_UNVERIFIED", "LIVE_SOURCE_SAMPLE_UNAVAILABLE",
+    "ARCHIVED_SAMPLE_NOT_CURRENT", "RELEASE_LOCK_CHANGED",
+})
+
+
+def _owner_evidence_replay(raw: Any) -> dict[str, Any]:
+    """Return only finite, safe fields; never echo a private preview."""
+    hold = {"status": "HOLD", "reason": "OWNER_REPLAY_UNVERIFIED"}
+    if (
+        not isinstance(raw, dict)
+        or raw.get("schema") != replay.SCHEMA
+        or raw.get("new_model_call_performed") is not False
+        or raw.get("writes_performed") != []
+        or raw.get("e_lanes_modified") is not False
+        or raw.get("release_activated") is not False
+        or raw.get("general_semantic_quality_proven") is not False
+        or raw.get("historical_retrieval_proven") is not False
+    ):
+        return hold
+    if raw.get("status") == "HOLD":
+        reason = raw.get("reason")
+        return {
+            "status": "HOLD",
+            "reason": reason if reason in _OWNER_REPLAY_HOLD_REASONS
+                      else "OWNER_REPLAY_UNVERIFIED",
+        }
+    if (
+        raw.get("status") != "PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE"
+        or raw.get("reason")
+           != "ARCHIVED_ATTESTATIONS_REBOUND_TO_CURRENT_SAMPLE"
+        or raw.get("source_attestations_verified") is not True
+        or raw.get("live_sample_matches_archive") is not True
+        or raw.get("archived_two_source_literal_readback_attested") is not True
+        or raw.get("archived_signed_model_receipt_in_repo") is not False
+        or raw.get("model_comparison_performed") is not False
+        or raw.get("semantic_entailment_independently_proven") is not False
+        or any(type(raw.get(name)) is not int or raw[name] != value
+               for name, value in (
+                   ("owner_labeled_current_cases", 3),
+                   ("owner_single_source_cases", 2),
+                   ("owner_collision_cases", 1),
+               ))
+    ):
+        return hold
+    return {
+        "status": "PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE",
+        "reason": "ARCHIVED_ATTESTATIONS_REBOUND_TO_CURRENT_SAMPLE",
+        "source_attestations_verified": True,
+        "live_sample_matches_archive": True,
+        "owner_labeled_current_cases": 3,
+        "owner_single_source_cases": 2,
+        "owner_collision_cases": 1,
+        "archived_two_source_literal_readback_attested": True,
+        "archived_signed_model_receipt_in_repo": False,
+        "model_comparison_performed": False,
+        "semantic_entailment_independently_proven": False,
+    }
+
+
 def run(
     runtime: Any, *,
     carrier_health: Callable[[], dict[str, Any]],
+    owner_key: str | None = None,
 ) -> dict[str, Any]:
     """Run safe checks sequentially. Failure is per-step; release remains HOLD."""
     result = _base()
@@ -548,6 +613,25 @@ def run(
         checks["current_literal_readback"] = {
             "status": "SKIPPED", "reason": "TWO_APPROVED_CURRENT_RECORDS_REQUIRED",
         }
+
+    # Stage9P: reuse signed redacted OWNER + COLLISION historical receipts.
+    # No model call, new button, write, or change to the six top-level gates.
+    # Missing current model HMAC is an explicit evidence gap, not back-signed.
+    if (
+        owner_key is not None
+        and checks["current_literal_readback"].get("status")
+            == "PASS_LITERAL_WIRING_ONLY"
+    ):
+        try:
+            checks["current_literal_readback"]["owner_evidence_replay"] = (
+                _owner_evidence_replay(
+                    replay.audit(runtime, owner_key=owner_key)
+                )
+            )
+        except Exception:
+            checks["current_literal_readback"]["owner_evidence_replay"] = {
+                "status": "HOLD", "reason": "ARCHIVED_RECEIPT_UNAVAILABLE",
+            }
 
     try:
         after = mode.mode_status(runtime)

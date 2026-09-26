@@ -820,7 +820,9 @@ def gaia_owner_one_click_safe_readiness(
     import gaiaos_one_click_readiness as oneclick
     import memcon_runtime
 
-    result = oneclick.run(memcon_runtime, carrier_health=base.health)
+    result = oneclick.run(
+        memcon_runtime, carrier_health=base.health, owner_key=base.API_KEY,
+    )
     return JSONResponse(
         result,
         headers={"Cache-Control": "no-store", "Pragma": "no-cache",
