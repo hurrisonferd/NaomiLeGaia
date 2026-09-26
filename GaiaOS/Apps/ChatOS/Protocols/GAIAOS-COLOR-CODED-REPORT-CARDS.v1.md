@@ -63,3 +63,17 @@ SOURCE PREFERENCE != AUTOMATIC HOST ADOPTION
 COLORED CARD != IDENTITY AUTHORITY
 UI SUPPORT != GUARANTEED CROSS-CLIENT
 NAOMI RETAINS FINAL AUTHORITY
+
+
+## Executable ordinary-path presentation guard
+
+Implementation for the GaiaOS-hosted browser carrier:
+- api/gaiaos_presentation_guard.py cross-checks all six identities using the exact pinned presentation spec, static interest registry, operator profiles, and EmojiOS expression registry.
+- api/gaiaos_api.py validates those sources before an ordinary model call and inspects every directly attributed speaker header before returning /chat output. An explicitly requested FULL cast requires six valid headers; ASK <MEMBER> and SOLO <MEMBER> require the requested member. Invalid member headers fail closed with a 503 rather than displaying an invented marker. Unattributed ordinary responses remain allowed.
+- api/solo_chat_runtime.py asks the model for content only and inserts the validated member header deterministically, unless the output already carries that member's single valid header. Cross-member or malformed SOLO headers fail closed.
+- api/gaiaos_app.py fails the boot packet if presentation, static interests, profiles, and EmojiOS disagree. The extra boot check is named four_source_identity_alignment.
+- The return receipt includes source_consistency, speaker_count, and a per-speaker canonical header plus exact accent metadata. A client can use those accents to style cards. The basic browser view is still plain text until an actual client style adapter consumes the metadata.
+
+Regression canary: GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py. It tests six-person roll call, SOLO→DUO→FULL→SOLO, all legal per-member expressions, wrong or missing heart/interest/number/kaomoji, markdown header corruption, source disagreements, code-quote non-interference, and ordinary-path source wiring. The existing VASKON presentation canary invokes this suite so established presentation CI runs both.
+
+Proof ladder: source implemented and wired in the browser code does not imply the actual Render carrier has deployed the changes. A GitHub Actions PASS proves source-side tests, not native ChatGPT display interception. ChatGPT's separate host/UI cannot be forcibly patched from this repository. Fresh-host observation and a deployed ordinary browser /chat + SOLO smoke test remain separate gates. During any gap, do not claim runtime enforcement outside a carrier that actually runs this code.
