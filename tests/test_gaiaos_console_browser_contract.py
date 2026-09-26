@@ -28,6 +28,7 @@ CONSOLE_ROUTES = frozenset({
     "/gaiaos/memory/technical-partial-console",
     "/gaiaos/memory/historical-audit-console",
     "/gaiaos/memory/one-click-console",
+    "/gaiaos/memory/one-click-console",
 })
 
 # Node is mandatory in this CI gate, not an optional skip. GitHub-hosted Linux
