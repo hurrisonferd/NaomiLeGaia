@@ -238,5 +238,75 @@ class ReplayTests(unittest.TestCase):
         self.assertEqual(page.count('id="run"'), 1)
 
 
+    def test_actual_served_oneclick_browser_redacts_nested_replay(self):
+        import shutil
+        import subprocess
+
+        from fastapi.testclient import TestClient
+        import gaiaos_app as carrier
+        from test_gaiaos_one_click_stage9l import (
+            BROWSER_HARNESS, OneClickSuiteTests, PAGE,
+        )
+        from test_gaiaos_console_browser_contract import ConsoleHTMLParser
+
+        self.assertIsNotNone(shutil.which("node"), "Node.js required")
+        with TestClient(carrier.app) as client:
+            page = client.get(PAGE)
+        parser = ConsoleHTMLParser()
+        parser.feed(page.text)
+        self.assertEqual(set(parser.buttons), {"run", "copy"})
+        self.assertEqual(len(parser.scripts), 1)
+
+        fixture = OneClickSuiteTests()
+        fixture.setUp()
+        report, *_ = fixture.run_fixture()
+        status = self.run_replay()
+        visible = oneclick._owner_evidence_replay(status)
+        report["checks"]["current_literal_readback"]["owner_evidence_replay"] = {
+            **visible, "private": "DO_NOT_EXPOSE_NESTED_SOURCE",
+        }
+        # Exercise actual served JS with a valid nested result followed
+        # by an altered verification flag. Never allow the latter to copy.
+        before = ' process.stdout.write("STAGE9L_ONE_CLICK_BROWSER_PASS\\n");'
+        after = """
+ assert.equal(
+  copiedJSON.checks.current_literal_readback.owner_evidence_replay.status,
+  "PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE"
+ );
+ assert.equal(
+  copiedJSON.checks.current_literal_readback.owner_evidence_replay
+   .live_sample_matches_archive,true
+ );
+ response={...fixture,checks:{...fixture.checks,
+  current_literal_readback:{...fixture.checks.current_literal_readback,
+   owner_evidence_replay:{...fixture.checks.current_literal_readback
+    .owner_evidence_replay,model_comparison_performed:true}}}};
+ await events.run();
+ assert.equal(nodes.copy.disabled,true,"Tampered nested proof must not copy");
+ assert.ok(!nodes.report.textContent.includes("DO_NOT_EXPOSE"));
+ process.stdout.write("STAGE9P_NESTED_BROWSER_PASS\\n");
+""" + before
+        self.assertIn(before, BROWSER_HARNESS)
+        harness_text = BROWSER_HARNESS.replace(before, after)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "served.js").write_text(
+                parser.scripts[0][1], encoding="utf-8"
+            )
+            (root / "fixture.json").write_text(
+                json.dumps(report), encoding="utf-8"
+            )
+            (root / "harness.js").write_text(
+                harness_text, encoding="utf-8"
+            )
+            result = subprocess.run(
+                ["node", str(root / "harness.js"),
+                 str(root / "served.js"), str(root / "fixture.json")],
+                capture_output=True, text=True, timeout=20,
+            )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("STAGE9P_NESTED_BROWSER_PASS", result.stdout)
+
+
 if __name__ == "__main__":
     unittest.main()
