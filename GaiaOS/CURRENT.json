@@ -7,7 +7,7 @@
   "operator_alias_equivalence": "NAOMI == LIGEIA",
   "owner": "GaiaOS",
   "platform_version": "v0.001.014-dev",
-  "status": "ACTIVE_STAGE9M_AUTHENTIC_REVISION_SCOUT_SOURCE_PASS_LIVE_UNVERIFIED_HISTORICAL_HOLD_BIGBANG_LOCKED",
+  "status": "ACTIVE_STAGE9M_OWNER_RELAY_LIVE_REVISION_EDGE_FOUND_NO_APPROVED_PAIR_HISTORICAL_HOLD_BIGBANG_LOCKED",
   "loader": "GaiaOS/LOAD.v1.md",
   "version_pointer": "GaiaOS/VERSION.json",
   "continuity_integrity": "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
@@ -1135,7 +1135,28 @@
     "stage9m_general_semantic_quality_proven": false,
     "stage9m_model_call_authorized": false,
     "stage9m_bigbang_activation_authorized": false,
-    "stage9m_next_gate": "OPTIONAL_OWNER_MANUAL_DEPLOY_CURRENT_MAIN_THEN_USE_SAME_ONE_CLICK_BUTTON_TO_SEE_BOUNDED_VERIFIED_REVISES_LEADS_IF_ANY_HUMAN_REVIEW_REQUIRED_NEVER_AUTO_SUPERSEDES"
+    "stage9m_next_gate": "DIAGNOSE_WHY_EXISTING_VERIFIED_REVISES_ENDPOINTS_FAIL_REAL_APPROVED_TECHNICAL_PAIR_FILTER_WITHOUT_DISCLOSING_PRIVATE_IDS_OR_CREATING_RELATIONS",
+    "stage9m_owner_relay_observed": true,
+    "stage9m_owner_relay_proof": "GaiaOS/Proof/STAGE9M-LIVE-REVISION-SCOUT-OWNER-RELAY-REDACTED-2026-09-25.json",
+    "stage9m_owner_relay_running_commit": "d783fa4be8eab0dfef6a7cb24f3bc9ac611bb258",
+    "stage9m_owner_relay_status": "SAFE_CHECKS_COMPLETE_RELEASE_LOCKED",
+    "stage9m_owner_relay_subchecks": {
+      "deployment": "PASS",
+      "heatdeath": "PASS",
+      "memory_storage": "PASS_TURSO_REMOTE_CONFIGURED",
+      "technical_sample": "HOLD_NO_VERIFIED_DISTINCT_TECHNICAL_SUPERSEDES",
+      "historical_evidence": "HOLD_NO_VERIFIED_OWNER_SUPERSEDES_IN_WINDOW",
+      "current_literal_readback": "PASS_LITERAL_WIRING_ONLY"
+    },
+    "stage9m_owner_relay_approved_technical_records_in_window": 3,
+    "stage9m_owner_relay_verified_owner_supersedes_in_window": 0,
+    "stage9m_owner_relay_verified_owner_revises_in_window": 1,
+    "stage9m_owner_relay_approved_owner_revision_pairs_in_window": 0,
+    "stage9m_owner_relay_distinct_old_marker_leads_in_window": 0,
+    "stage9m_owner_relay_revision_lead_status": "HOLD_NO_APPROVED_OWNER_REVISES_PAIR",
+    "stage9m_owner_relay_historical_window_complete": true,
+    "stage9m_owner_relay_revision_window_complete": true,
+    "stage9m_owner_relay_evidence_boundary": "OWNER_RELAY_REDACTED_ONE_CLICK_REPORT_NOT_INDEPENDENT_EXTERNAL_SERVER_ATTESTATION;ZERO_ELIGIBLE_PAIRS_MEANS_MARKER_STAGE_NOT_REACHED"
   },
   "augury_ritual": {
     "schema": "gaiaos.augury-ritual.current.v1",
