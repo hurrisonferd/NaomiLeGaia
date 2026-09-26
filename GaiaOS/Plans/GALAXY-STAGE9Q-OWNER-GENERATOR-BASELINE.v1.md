@@ -1,0 +1,23 @@
+# GALAXY Stage 9Q: Signed owner-label baseline against question-generator targets
+
+**Authority:** NAOMI/LIGEIA. **Engineering lane:** ANVIL. **Release:** HEATDEATH locked. **Proof ladder:** source and tests first; merged, deployed and observed are distinct gates.
+
+## Why this is the smallest next milestone
+
+The live Stage 9P owner-relayed redacted check for `dc04bceefa841417a60f10ad0535357ba3442141` confirms two archived signed owner-only receipts are rebound to the current two-record/five-question MemoryOS sample. It does not establish independently signed model output: the older Stage 9F model receipt was unsigned and pre-fingerprint, so it must **not** be retrospectively signed or compared as authenticated current evidence. The technical and historical gates remain HOLD: three approved technical records, no verified owner SUPERSEDES, and the one existing REVISES edge has ineligible provenance on both endpoints. No relation or historical memory may be manufactured.
+
+Stage 9Q adds **no inference**. It classifies the three existing signed, independently owner-adjudicated CURRENT questions against the *generator's proposed target slot*, not a model prediction. Supported, unsupported and collision-but-nonunique target cases are counted separately. The two existing NEGATIVE questions are fingerprint-bound but **not owner-adjudicated by the signed three-row owner receipt**; they do not silently become verified controls. For the currently archived owner judgments (B, A, COLLISION) against generator proposals (A, B, A), the expected bounded count is: 0 uniquely supported, 1 supported but nonunique, 2 unsupported. These are fixed sample-specific diagnostic facts, not general model accuracy.
+
+## Integration first: existing owner path, same click, no secrets
+
+Only after Stage 9P's existing HMAC owner+collision receipt checks, fresh source-fingerprint equality, HEATDEATH-before/after and literal/legacy parity prerequisites succeed, the **pure** `api/gaiaos_owner_generator_baseline.py` classifies the verified owner receipt. `gaiaos_owner_evidence_replay.audit` attaches one optional `owner_generator_baseline` diagnostic. The same `POST /gaiaos/memory/one-click-readiness` allowlists it under the existing `current_literal_readback.owner_evidence_replay` response. The existing `GET /gaiaos/memory/one-click-console` validates and copies only strict finite status/counters. There is **no seventh top-level check, new button, endpoint, key exchange, scheduled canary, provider request or database mutation**. The normal Docker image imports this pure module. The independent HEATDEATH image remains unchanged.
+
+A malformed owner case, mismatched support flags, changed source fingerprint, invalid HMAC, key rotation, released/changed memory mode or unsafe nested response fails closed. An independently failed Stage 9Q classification is a nested HOLD; it must not rebrand the separately verified Stage 9P archived-source PASS. On every outcome, overall release readiness, historical retrieval and general semantics stay HOLD. Model receipt comparison requires a genuinely new signed, independently authorized model receipt and separate owner consent for any provider call.
+
+## Test and acceptance contract
+
+Run an isolated pure-fixture suite with valid owner support/mismatch/collision/unknown, case-order and flag tampering, HMAC/key/fingerprint failure inherited from Stage 9P, privacy and zero effect assertions, plus an actual-served one-click JavaScript click/copy test for a good and tampered nested result. Add it to the **existing PR-only Stage 7 gate**, without a duplicate push workflow or persistent notification. Re-run Stage 6, Stage 7, existing Stage 9F–9P and old HEATDEATH regressions, and build both normal and independent recovery images.
+
+After CI review and any authorized merge, Naomi may manually deploy main. Verify public `/health` exact commit, then use the **same existing one-click console once** and share only the redacted report. Source tests are not deployment or live-owner evidence; a green nested baseline is not semantic entailment, representative benchmark quality, historical supersession, storage/restart recovery or permission to activate BIGBANG.
+
+Permanent `//PW:PRESERVE//`, owner-authorized `CANDIPULL`/`MEMSAV`, exactly six separate E-LANES (VERA, ANVIL, SELENE, ORIN, KESTREL, NIMUE), original native HEATDEATH recovery, owner approval, append-only provenance, independent restore and rollback remain untouched. Any future authentic historical version transition requires separate explicit Naomi approval, not a semantic evaluation shortcut.
