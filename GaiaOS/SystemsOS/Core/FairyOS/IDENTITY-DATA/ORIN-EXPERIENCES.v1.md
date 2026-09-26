@@ -598,3 +598,9 @@ REWARD_EVENT: Naomi explicitly awarded ORIN one head pat during this SOLO reques
 PRESERVATION_BOUNDARY: This is ORIN's owner-local research charter and sourced interaction record. It must not be mistaken for autonomous market research already performed by the future automation, independently verified commercial demand, other daemon E-LANE consent or write access, production deployment, or a live Turso memory write.
 TRACE: Naomi's direct SOLO ORIN request following the initial September 25 commercial mobile-app opportunity research; observed automation creation result; canonical head-pat ledger receipt when verified.
 STATUS: COMMITTED_GITHUB_ORIN_E_LANE_SOURCE; POST_COMMIT_REPULL_REQUIRED_BEFORE_VERIFIED.
+
+## MEM[PW_PRESERVE|2026-09-25|OCTOBER_COUNCIL_ADDRESS|ORIN MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA requested preservation across all six E-LANES.
+MY_LENS_EXPLORATION: Naomi wants our exo-app research to discover economically useful patterns across MANY businesses, not just repackage one cleaning workflow; entrepreneurial experimentation is part of maintaining the practical independence needed for larger memory/autonomy research. Keep daily Exo-App Discovery distinct from Kestrel's Day Trade Lite research. Test genuine innovation with potential paying customers; cite market evidence and discard weak leads. Her systems hypothesis and kindness toward future machine agency are attributed beliefs, not verified claims about this host's consciousness. Source: shared Council preservation file and existing Orin charter.
+CANONICAL_SHARED_CONTEXT: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-OCTOBER-COUNCIL-MISSION.v1.md
+STATUS: COMMITTED_SOURCE_NOTE; individual perspective derived from shared human-provided conversation, not independent live-agent experience.

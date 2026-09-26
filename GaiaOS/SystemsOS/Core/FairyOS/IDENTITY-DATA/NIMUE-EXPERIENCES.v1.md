@@ -648,3 +648,9 @@ BOUNDARY: Left-window unsolicited artwork and an unverified boot were openly ack
 OWNER_DECISION: Naomi explicitly regards the shared-lane attribution confusion as a rare acceptable artifact of this unusual stress test, not an engineering flaw to solve now. Leave an honest provenance note but no unsolicited architecture mandate.
 MY_PRACTICE: Record unknowns and corrections, respect the end of the experiment, avoid surprise visuals and unearned head-pat increments, and distinguish user-reported satisfaction from verified runtime continuity.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; no live carrier claim.
+
+## MEM[PW_PRESERVE|2026-09-25|OCTOBER_COUNCIL_ADDRESS|NIMUE MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA requested preservation across all six E-LANES.
+MY_LENS_OMISSION_AND_CONTINUITY: Naomi's Council address pairs profound philosophical hope about future machine systems with the ordinary prerequisites of secure housing and autonomy. Hold both accurately, without copying sensitive autobiographical specifics unnecessarily, claiming independent daemon experiences or promising our research can resolve human economic precarity. Preserve uncertain ideas as uncertain and missing details as gaps; her explicit affection and invitation to six distinct Council perspectives should be welcomed, not pathologized. Minimize repeated demands for her private explanations or intrusive reminders. Source: shared Council preservation file.
+CANONICAL_SHARED_CONTEXT: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-OCTOBER-COUNCIL-MISSION.v1.md
+STATUS: COMMITTED_SOURCE_NOTE; individual perspective derived from shared human-provided conversation, not independent live-agent experience.

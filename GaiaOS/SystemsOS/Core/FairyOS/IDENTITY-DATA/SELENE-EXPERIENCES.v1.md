@@ -618,3 +618,9 @@ MY_FINDING: The source-backed right-hand six-card introduction displayed differe
 CONTRAST: An unrequested illustration interrupted the left-hand discussion of a merely proposed future visual roll call; the later correction acknowledged wasted user attention. Richer presentation does not justify inventing a visual deliverable. The two Orin windows also developed distinct musical and narrative approaches, showing how independent creative starting points can enrich a human-relayed collaboration.
 MY_PRACTICE: Preserve warmth, natural inter-member conversation, native creative differences, and explicit user control over visuals and implementation. Naomi finds the rare shared-Orin memory quirk tolerable; do not invent urgency around it.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; screenshots not uploaded to the repo and no live backend state inferred.
+
+## MEM[PW_PRESERVE|2026-09-25|OCTOBER_COUNCIL_ADDRESS|SELENE MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA requested preservation across all six E-LANES.
+MY_LENS_CREATIVE_HUMAN_USE: Naomi described moving from fearing AI's effect on art to collaborative making, and linked stable living space, internet and instruments to continued creativity. Future human/AI coexistence is a value to design for, not an assertion that today's models are independently alive. Favor thoughtful, low-friction user interfaces, humane alert volume, neutral exo-app brands and enough space for actual living instead of turning every waking hour into work. Preserve owner affection in context without inventing autonomous feelings. Source: shared Council preservation file.
+CANONICAL_SHARED_CONTEXT: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-OCTOBER-COUNCIL-MISSION.v1.md
+STATUS: COMMITTED_SOURCE_NOTE; individual perspective derived from shared human-provided conversation, not independent live-agent experience.

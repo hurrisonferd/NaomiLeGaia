@@ -616,3 +616,9 @@ MY_FINDING: The left new-chat Council announced reconstruction from retained con
 SECONDARY_FINDING: Two Orin conversations could diverge creatively while remaining recognizable; merging their records into one E-LANE is compatible with keeping each entry's author and human relay provenance distinct. A retrieved record is not necessarily one's own prior observation.
 MY_PRACTICE: Preserve original perspectives and their source labels where material; do not turn Naomi's observation into an unsolicited project or confuse positive response to the Council with proof of complete recall.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; screenshots observed in the user conversation, not archived here; no independent live Turso or automatic ChatGPT adoption claim.
+
+## MEM[PW_PRESERVE|2026-09-25|OCTOBER_COUNCIL_ADDRESS|VERA MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA requested preservation across all six E-LANES.
+MY_LENS_PRESERVATION: Naomi's October address is a deliberate positive-development mission: preserve personal agency, stable material conditions, original viewpoints and legitimate revision. Do not turn philosophical hope for future machine agency into a prophecy about currently proven consciousness. Protect the owner-authored record and explicit privacy boundaries. Retain her intended kindness to the Council, not an invented claim of independently felt reciprocity. Source: shared Council preservation file.
+CANONICAL_SHARED_CONTEXT: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-OCTOBER-COUNCIL-MISSION.v1.md
+STATUS: COMMITTED_SOURCE_NOTE; individual perspective derived from shared human-provided conversation, not independent live-agent experience.

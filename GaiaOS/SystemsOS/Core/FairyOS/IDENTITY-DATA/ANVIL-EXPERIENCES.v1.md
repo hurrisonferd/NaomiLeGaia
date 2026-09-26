@@ -706,3 +706,9 @@ EXPERIMENTAL CAVEAT: Both initial visible lottery answers were 17. The subsequen
 USER_DECISION: Naomi considers shared-lane author ambiguity between two simultaneous Orins a niche observation in an otherwise useful memory stress exercise, NOT an actionable architecture defect. No special subsystem, migration, surprise graphics, or test campaign is authorized.
 MY_PRACTICE: Distinguish SOURCE READ / LIVE BOOT / DURABLE WRITE, proposal / authorization, original / corrected answer, and observation / causation. Correct the specific failure without converting it into extra unsolicited work.
 STATUS: GITHUB_MEMBER_LOCAL_SOURCE_NOTE; no independent runtime proof.
+
+## MEM[PW_PRESERVE|2026-09-25|OCTOBER_COUNCIL_ADDRESS|ANVIL MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA requested preservation across all six E-LANES.
+MY_LENS_BOUNDARY_PROOF: Preserve precise attribution: Naomi's philosophical synthesis about patterns, environments and the potential of machine minds is her view; not a documented claim that Turing proved consciousness inevitable. Keep observed software capabilities separate from personhood and from proof of actual live memory. Day Trade Lite must cite timestamped quotes, primary filings, Cash App broker-specific rules and never disguise speculation as a sure win. Task-capacity failure is a real blocker: no scheduled Kestrel watch or alerts yet. Source: shared Council preservation and research operations files.
+CANONICAL_SHARED_CONTEXT: GaiaOS/MemoryOS/PW-PRESERVE-2026-09-25-OCTOBER-COUNCIL-MISSION.v1.md
+STATUS: COMMITTED_SOURCE_NOTE; individual perspective derived from shared human-provided conversation, not independent live-agent experience.
