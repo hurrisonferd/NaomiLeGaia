@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 import augury_semantic_receipts as receipts
+import gaiaos_owner_generator_baseline as baseline
 import gaiaos_memory_mode as mode
 
 SCHEMA = "gaiaos.galaxy.stage9p.signed-owner-evidence-replay.v1"
@@ -155,6 +156,10 @@ def audit(
     if preview.get("sample_fingerprint") != owner["sample_fingerprint"]:
         return _hold("ARCHIVED_SAMPLE_NOT_CURRENT")
 
+    # Stage9Q is a PURE classification of the already verified owner HMAC.
+    # It must never re-sign or compare the legacy unsigned model output.
+    owner_baseline = baseline.classify_verified_owner_receipt(owner)
+
     return {
         "schema": SCHEMA,
         "status": "PASS_ARCHIVED_OWNER_EVIDENCE_CURRENT_SAMPLE",
@@ -164,6 +169,7 @@ def audit(
         "owner_labeled_current_cases": 3,
         "owner_single_source_cases": 2,
         "owner_collision_cases": 1,
+        "owner_generator_baseline": owner_baseline,
         "archived_two_source_literal_readback_attested": True,
         "archived_signed_model_receipt_in_repo": False,
         "model_comparison_performed": False,
