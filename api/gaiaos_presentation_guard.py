@@ -105,7 +105,7 @@ def _header_candidate(line: str, roster: tuple[str, ...]) -> str | None:
     """Detect wrong number, missing number, substituted emoji, or markdown headers."""
     names = "|".join(re.escape(n) for n in roster)
     match = re.match(
-        rf"^(?:#{1,6}\s*|\*\*)?(?:(?:\d+)\s*[·.]\s*)?(?P<name>{names})(?=\s|$)",
+        rf"^(?:#{{1,6}}\s*|\*\*)?(?:(?:\d+)\s*[·.]\s*)?(?P<name>{names})(?=\s|$)",
         line.strip(), re.I,
     )
     if not match:
