@@ -7,6 +7,10 @@ on:
       - "api/gaiaos_bigbang_readiness.py"
       - "api/gaiaos_historical_evidence_audit.py"
       - "api/gaiaos_historical_audit_console.py"
+      - "api/gaiaos_one_click_readiness.py"
+      - "api/gaiaos_one_click_console.py"
+      - "tests/test_gaiaos_one_click_stage9l.py"
+      - "GaiaOS/Plans/GALAXY-STAGE9L-ONE-CLICK-SAFE-CHECKS.v1.md"
       - "tests/test_gaiaos_historical_audit_console_stage9k.py"
       - "GaiaOS/Plans/GALAXY-STAGE9K-ONE-BUTTON-HISTORY-CONSOLE.v1.md"
       - "tests/test_gaiaos_historical_evidence_stage9j.py"
@@ -48,6 +52,7 @@ jobs:
           python -m py_compile api/gaiaos_bigbang_readiness.py api/gaiaos_app.py
           python -m py_compile api/gaiaos_historical_evidence_audit.py tests/test_gaiaos_historical_evidence_stage9j.py
           python -m py_compile api/gaiaos_historical_audit_console.py tests/test_gaiaos_historical_audit_console_stage9k.py
+          python -m py_compile api/gaiaos_one_click_readiness.py api/gaiaos_one_click_console.py tests/test_gaiaos_one_click_stage9l.py
           python -m py_compile api/augury_semantic_retrieval.py tests/test_augury_semantic_retrieval_stage9f.py
           python -m py_compile api/augury_semantic_receipts.py tests/test_augury_semantic_receipts_stage9h.py
           python -m py_compile api/augury_semantic_collision.py tests/test_augury_semantic_collision_stage9i.py
@@ -58,6 +63,8 @@ jobs:
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_historical_evidence_stage9j.py" -v
       - name: Verify Stage9K real rendered owner history page and redacted click-path safety
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_historical_audit_console_stage9k.py" -v
+      - name: Verify one-click six-check source safety and actual button path
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_one_click_stage9l.py" -v
       - name: Verify optional AUGURY semantic shadow and strict source-backed safeguards
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_augury_semantic_retrieval_stage9f.py" -v
       - name: Verify keyed sample identity and collision-aware redacted comparison
@@ -84,6 +91,7 @@ jobs:
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage7.sqlite gaiaos-normal:stage7 -c "import gaiaos_bigbang_readiness as r; assert callable(r.review); print('STAGE7_NORMAL_IMAGE_PASS')"
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9j.sqlite gaiaos-normal:stage7 -c "import gaiaos_historical_evidence_audit as h, gaiaos_app as a; assert callable(h.audit); assert any(getattr(r, 'path', None) == '/gaiaos/memory/historical-evidence-audit' for r in a.app.routes); print('STAGE9J_HISTORY_DIAGNOSTIC_IMAGE_PASS')"
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9k.sqlite gaiaos-normal:stage7 -c "import gaiaos_historical_audit_console as c, gaiaos_app as a; assert '<script nonce=\"ci-nonce\"' in c.render('ci-nonce'); assert any(getattr(r, 'path', None) == '/gaiaos/memory/historical-audit-console' for r in a.app.routes); print('STAGE9K_OWNER_HISTORY_PAGE_IMAGE_PASS')"
+          docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9l.sqlite gaiaos-normal:stage7 -c "import gaiaos_one_click_readiness as r, gaiaos_one_click_console as c, gaiaos_app as a; assert callable(r.run) and '<script nonce=\"ci-nonce\"' in c.render('ci-nonce'); assert any(getattr(x, 'path', None) == '/gaiaos/memory/one-click-console' for x in a.app.routes); assert any(getattr(x, 'path', None) == '/gaiaos/memory/one-click-readiness' for x in a.app.routes); print('STAGE9L_ONE_CLICK_NORMAL_IMAGE_PASS')"
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9f.sqlite gaiaos-normal:stage7 -c "import augury_semantic_retrieval as s, gaiaos_app as a; assert s.RITUAL_ID == 'GALAXY.MEMORYOS.READ_ONLY.SHADOW.v1'; assert any(getattr(r, 'path', None) == '/gaiaos/memory/augury-semantic-shadow' for r in a.app.routes); print('STAGE9F_CONTAINER_ROUTE_PASS')"
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9h.sqlite gaiaos-normal:stage7 -c "import augury_semantic_receipts as r, gaiaos_app as a; assert callable(r.compare_attested); assert any(getattr(x, 'path', None) == '/gaiaos/memory/augury-semantic-compare' for x in a.app.routes); print('STAGE9H_CONTAINER_ROUTE_PASS')"
           docker run --rm --entrypoint python -e MEMCONOS_DB_PATH=/tmp/gaiaos-stage9i.sqlite gaiaos-normal:stage7 -c "import augury_semantic_collision as r, gaiaos_app as a; assert callable(r.review); assert any(getattr(x, 'path', None) == '/gaiaos/memory/augury-collision-two-source-shadow' for x in a.app.routes); print('STAGE9I_CONTAINER_ROUTE_PASS')"
