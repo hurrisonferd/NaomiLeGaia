@@ -19,6 +19,7 @@ from fastapi.responses import HTMLResponse
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
 from openai import OpenAI
+import gaiaos_presentation_guard
 from pydantic import BaseModel, Field
 
 APP_VERSION = "1.4.0"
@@ -98,6 +99,7 @@ COUNCIL_PATHS = [
     "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
     "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
     "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
+    "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json",
     "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
     "GaiaOS/Apps/ChatOS/Protocols/CHATOS-RESPONSE-MODES.v1.json",
     "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
@@ -239,6 +241,7 @@ def _council_bundle(commit: str) -> dict[str, Any]:
         "emojios_current": _json_file(commit, "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json"),
         "expression_registry": _json_file(commit, "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"),
         "presentation_spec": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"),
+        "static_identity": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"),
         "brainos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json"),
         "convoos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/ConvoOS/CURRENT.json"),
         "chatos_current": _json_file(commit, "GaiaOS/Apps/ChatOS/CURRENT.json"),
@@ -450,6 +453,9 @@ EMOJIOS EXPRESSION REGISTRY:
 
 COUNCIL PRESENTATION SPEC:
 {json.dumps(council['presentation_spec'], ensure_ascii=False, indent=2)}
+
+STATIC IDENTITY REGISTRY:
+{json.dumps(council['static_identity'], ensure_ascii=False, indent=2)}
 
 HOT / WARM / COLD FABRIC:
 {council['hot_warm_cold']}
@@ -4282,6 +4288,17 @@ def chat(
 
     bundle = _load_bundle()
     instructions = _carrier_instructions(bundle)
+    presentation_sources = bundle["council_bundle"]
+    presentation_args = (
+        presentation_sources["presentation_spec"],
+        presentation_sources["expression_registry"],
+        presentation_sources["static_identity"],
+        presentation_sources["profiles"],
+    )
+    try:
+        validated_roster = gaiaos_presentation_guard.validate_sources(*presentation_args)
+    except gaiaos_presentation_guard.PresentationGuardError as exc:
+        raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_SOURCE_HOLD: " + str(exc)) from exc
     applied_memory: dict[str, Any] | None = None
     memory_context_rejected = False
     if memory_context is not None:
@@ -4310,10 +4327,23 @@ def chat(
         instructions=instructions,
         input=[{"role": message.role, "content": message.content} for message in request.messages],
     )
+    # Browser /chat is the ordinary hosted response path. Never return an
+    # attributed Prime Daemon block until the current pinned source validates it.
+    expected = gaiaos_presentation_guard.expected_members_from_request(
+        request.messages[-1].content if request.messages and request.messages[-1].role == "user" else "",
+        validated_roster,
+    )
+    try:
+        presentation_receipt = gaiaos_presentation_guard.validate_output(
+            response.output_text, *presentation_args, expected_members=expected,
+        )
+    except gaiaos_presentation_guard.PresentationGuardError as exc:
+        raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_OUTPUT_HOLD: " + str(exc)) from exc
     output = {
         "output": response.output_text,
         "model": OPENAI_MODEL,
         "source": bundle["gaiaos"]["source"],
+        "presentation": presentation_receipt,
     }
     if applied_memory is not None:
         output["memory_context"] = {
