@@ -19,6 +19,7 @@ import gaiaos_historical_evidence_audit as history
 import gaiaos_revision_lineage_scout as lineage
 import gaiaos_revision_endpoint_audit as endpoint_audit
 import gaiaos_owner_evidence_replay as replay
+import gaiaos_owner_generator_baseline as owner_baseline
 import gaiaos_memory_mode as mode
 
 SCHEMA = "gaiaos.stage9l.owner-one-click-safe-checks.v1"
@@ -443,6 +444,66 @@ _OWNER_REPLAY_HOLD_REASONS = frozenset({
 })
 
 
+
+def _owner_generator_baseline(raw: Any) -> dict[str, Any]:
+    """Allowlist Stage9Q aggregate counts only. A failure cannot upgrade proof."""
+    hold = {"schema": owner_baseline.SCHEMA, "status": "HOLD",
+            "reason": owner_baseline.HOLD_REASON}
+    if (
+        not isinstance(raw, dict)
+        or raw.get("schema") != owner_baseline.SCHEMA
+        or raw.get("model_receipt_compared") is not False
+        or raw.get("independent_entailment_proven") is not False
+        or raw.get("historical_retrieval_proven") is not False
+        or raw.get("general_semantic_quality_proven") is not False
+        or raw.get("model_called") is not False
+        or raw.get("writes_performed") != []
+        or raw.get("e_lanes_modified") is not False
+        or raw.get("release_activated") is not False
+    ):
+        return hold
+    if raw.get("status") == "HOLD":
+        return hold
+    if (raw.get("status") != owner_baseline.STATUS
+            or raw.get("reason") != "SIGNED_OWNER_LABELS_VS_GENERATOR_TARGETS"):
+        return hold
+    names = (
+        "owner_labeled_current_cases", "owner_collision_cases",
+        "owner_unknown_cases", "generator_unique_owner_support",
+        "generator_nonunique_owner_support",
+        "generator_not_owner_supported", "negative_controls_owner_adjudicated",
+    )
+    counts = {name: raw.get(name) for name in names}
+    if (
+        any(type(value) is not int or not 0 <= value <= 3
+            for value in counts.values())
+        or counts["owner_labeled_current_cases"] != 3
+        or counts["negative_controls_owner_adjudicated"] != 0
+        or counts["owner_collision_cases"] + counts["owner_unknown_cases"] > 3
+        or sum(counts[name] for name in (
+            "generator_unique_owner_support",
+            "generator_nonunique_owner_support",
+            "generator_not_owner_supported",
+            "owner_unknown_cases",
+        )) != 3
+        or counts["generator_nonunique_owner_support"]
+            > counts["owner_collision_cases"]
+    ):
+        return hold
+    return {
+        "schema": owner_baseline.SCHEMA,
+        "status": owner_baseline.STATUS,
+        "reason": "SIGNED_OWNER_LABELS_VS_GENERATOR_TARGETS",
+        **counts,
+        "model_receipt_compared": False,
+        "independent_entailment_proven": False,
+        "general_semantic_quality_proven": False,
+        "historical_retrieval_proven": False,
+        "model_called": False, "writes_performed": [],
+        "e_lanes_modified": False, "release_activated": False,
+    }
+
+
 def _owner_evidence_replay(raw: Any) -> dict[str, Any]:
     """Return only finite, safe fields; never echo a private preview."""
     hold = {"status": "HOLD", "reason": "OWNER_REPLAY_UNVERIFIED"}
@@ -490,6 +551,9 @@ def _owner_evidence_replay(raw: Any) -> dict[str, Any]:
         "owner_labeled_current_cases": 3,
         "owner_single_source_cases": 2,
         "owner_collision_cases": 1,
+        "owner_generator_baseline": _owner_generator_baseline(
+            raw.get("owner_generator_baseline")
+        ),
         "archived_two_source_literal_readback_attested": True,
         "archived_signed_model_receipt_in_repo": False,
         "model_comparison_performed": False,
