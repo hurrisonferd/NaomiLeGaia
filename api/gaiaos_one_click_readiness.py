@@ -174,9 +174,12 @@ def _preflight(data: Any) -> dict[str, Any]:
     ]
     if any(type(value) is not int or value < 0 or value > 6 for value in counts):
         return {"status": "HOLD", "reason": "TECHNICAL_PREFLIGHT_UNVERIFIED"}
+    reason = _reason(data.get("reason"), _PREP_REASONS)
+    if status == "PREPARED_UNTESTED" and reason != "SIX_TECHNICAL_CASES_SELECTED_READ_ONLY":
+        return {"status": "HOLD", "reason": "TECHNICAL_PREFLIGHT_UNVERIFIED"}
     return {
         "status": status,
-        "reason": _reason(data.get("reason"), _PREP_REASONS),
+        "reason": reason,
         "current_cases_prepared": counts[0],
         "distinct_current_records": counts[1],
         "historical_cases_prepared": counts[2],
@@ -203,7 +206,8 @@ def _history(data: Any) -> dict[str, Any]:
         or data.get("general_semantic_quality_proven") is not False
         or type(data.get("bounded_window_complete")) is not bool
     ):
-        return {"status": "HOLD", "reason": "HISTORICAL_AUDIT_UNVERIFIED"}
+        return {"status": "HOLD", "reason": "HISTORICAL_AUDIT_UNVERIFIED",
+                "bounded_window_complete": False, "historical_case_prepared": False}
     reason = _reason(data.get("reason"), _HISTORY_REASONS)
     valid_candidate = (
         data["status"] == "CANDIDATE_PRESENT_UNTESTED"
@@ -211,7 +215,8 @@ def _history(data: Any) -> dict[str, Any]:
         and data.get("historical_case_prepared") is True
     )
     if data["status"] == "CANDIDATE_PRESENT_UNTESTED" and not valid_candidate:
-        return {"status": "HOLD", "reason": "HISTORICAL_AUDIT_UNVERIFIED"}
+        return {"status": "HOLD", "reason": "HISTORICAL_AUDIT_UNVERIFIED",
+                "bounded_window_complete": False, "historical_case_prepared": False}
     out = {
         "status": data["status"],
         "reason": reason,
@@ -222,7 +227,9 @@ def _history(data: Any) -> dict[str, Any]:
     if out["bounded_window_complete"]:
         counts = {k: data.get(k) for k in _COUNT_NAMES}
         if any(type(v) is not int or v < 0 or v > 100 for v in counts.values()):
-            return {"status": "HOLD", "reason": "HISTORICAL_COUNTS_UNVERIFIED"}
+            return {"status": "HOLD", "reason": "HISTORICAL_COUNTS_UNVERIFIED",
+                        "bounded_window_complete": False,
+                        "historical_case_prepared": False}
         out["counts"] = counts
     return out
 
@@ -242,26 +249,34 @@ def _literal(data: Any) -> dict[str, Any]:
         or data.get("literal_wiring_test_only") is not True
         or data.get("semantic_paraphrase_quality_tested") is not False
     ):
-        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED"}
+        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED",
+                "record_hits": [], "legacy_exact_parity": False}
     rows = data.get("case_results")
     if not isinstance(rows, list) or len(rows) > 2:
-        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED"}
+        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED",
+                "record_hits": [], "legacy_exact_parity": False}
     hits = [
         row.get("expected_record_in_current_results")
         for row in rows if isinstance(row, dict)
     ]
     if len(hits) != len(rows) or any(type(hit) is not bool for hit in hits):
-        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED"}
+        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED",
+                "record_hits": [], "legacy_exact_parity": False}
     parity = data.get("legacy_exact_parity") is True
     success = (
         data["status"] == "PASS_LITERAL_WIRING_ONLY"
         and len(hits) == 2 and all(hits) and parity
     )
     if data["status"] == "PASS_LITERAL_WIRING_ONLY" and not success:
-        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED"}
+        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED",
+                "record_hits": [], "legacy_exact_parity": False}
+    reason = _reason(data.get("reason"), _LITERAL_REASONS)
+    if success and reason != "TWO_LITERAL_ANCHORS_AND_LEGACY_PARITY":
+        return {"status": "HOLD", "reason": "LITERAL_PROBE_UNVERIFIED",
+                "record_hits": [], "legacy_exact_parity": False}
     return {
         "status": data["status"],
-        "reason": _reason(data.get("reason"), _LITERAL_REASONS),
+        "reason": reason,
         "record_hits": hits,
         "legacy_exact_parity": parity,
         "semantic_quality_tested": False,
@@ -315,6 +330,8 @@ def run(
     except Exception:
         checks["historical_evidence"] = {
             "status": "HOLD", "reason": "HISTORICAL_AUDIT_FAILED_CLOSED",
+            "bounded_window_complete": False,
+            "historical_case_prepared": False,
         }
 
     # Actual read-only literal proof requires two independently approved
@@ -327,6 +344,7 @@ def run(
         except Exception:
             checks["current_literal_readback"] = {
                 "status": "HOLD", "reason": "LITERAL_PROBE_FAILED_CLOSED",
+                "record_hits": [], "legacy_exact_parity": False,
             }
     else:
         checks["current_literal_readback"] = {
