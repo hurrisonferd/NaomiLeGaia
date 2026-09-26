@@ -477,6 +477,27 @@ def gaia_technical_preflight(browser_request: Request):
     )
 
 
+@app.post("/gaiaos/memory/one-click-readiness",
+          operation_id="gaiaOwnerOneClickSafeReadiness")
+def gaia_owner_one_click_safe_readiness(
+    authorization: str | None = Header(default=None),
+):
+    """One explicit owner action for bounded, pre-existing, read-only checks."""
+    if not base.API_KEY:
+        raise HTTPException(
+            status_code=503, detail="Private owner API authorization is unavailable",
+        )
+    base._authorize(authorization)
+    import gaiaos_one_click_readiness as suite
+    import memcon_runtime
+
+    return JSONResponse(
+        suite.run(memcon_runtime, carrier_health=base.health),
+        headers={"Cache-Control": "no-store", "Pragma": "no-cache",
+                 "Referrer-Policy": "no-referrer"},
+    )
+
+
 @app.post("/gaiaos/memory/historical-evidence-audit",
           operation_id="gaiaOwnerHistoricalEvidenceAudit")
 def gaia_owner_historical_evidence_audit(
@@ -832,6 +853,32 @@ def gaia_owner_one_click_console():
         page.render(nonce),
         headers={
             "Cache-Control": "no-store", "Pragma": "no-cache",
+            "Referrer-Policy": "no-referrer",
+            "X-Content-Type-Options": "nosniff",
+            "Content-Security-Policy": (
+                "default-src 'none'; connect-src 'self'; "
+                "script-src 'nonce-" + nonce + "'; "
+                "style-src 'nonce-" + nonce + "'; "
+                "base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+            ),
+        },
+    )
+
+
+@app.get("/gaiaos/memory/one-click-console",
+         response_class=HTMLResponse,
+         operation_id="gaiaOwnerOneClickSafeConsole")
+def gaia_owner_one_click_safe_console():
+    """Static owner-only control page, zero private data until explicit POST."""
+    import secrets
+    import gaiaos_one_click_console as page
+
+    nonce = secrets.token_urlsafe(20)
+    return HTMLResponse(
+        page.render(nonce),
+        headers={
+            "Cache-Control": "no-store",
+            "Pragma": "no-cache",
             "Referrer-Policy": "no-referrer",
             "X-Content-Type-Options": "nosniff",
             "Content-Security-Policy": (
