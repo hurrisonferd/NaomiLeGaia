@@ -24,6 +24,7 @@ from gaiaos_context_runtime import build_context_packet
 import gaiaos_memory_gateway
 import gaiaos_memory_mode
 import gaiaos_bigbang_readiness
+import gaiaos_presentation_guard
 
 EXTENSION_VERSION = "1.6.1"
 CONTEXT_MODE = "SOURCE_PINNED_DICTIONARY_GRAPH_READ_ONLY"
@@ -129,6 +130,7 @@ VERSION_PATH = "GaiaOS/VERSION.json"
 
 PRESENTATION_SPEC_PATH = "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
 EXPRESSION_REGISTRY_PATH = "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+STATIC_IDENTITY_PATH = "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"
 HEAD_PAT_COUNTERS_PATH = "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
 
 def _parse_head_pat_counters(text: str) -> dict[str, int]:
@@ -144,6 +146,7 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
     version = _read_local_json(VERSION_PATH)
     presentation = _read_local_json(PRESENTATION_SPEC_PATH)
     expressions = _read_local_json(EXPRESSION_REGISTRY_PATH)
+    static_identity = _read_local_json(STATIC_IDENTITY_PATH)
     matrix = _read_local_json(DISPATCH_MATRIX_PATH)
     profiles = _read_local_json(OPERATOR_PROFILES_PATH)
     counters = _parse_head_pat_counters(_read_local_text(HEAD_PAT_COUNTERS_PATH))
@@ -158,6 +161,11 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
         "head_pats_exact": set(counters.keys()) == set(expected),
         "presentation_fail_closed": presentation.get("failure_policy") == "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
     }
+    try:
+        gaiaos_presentation_guard.validate_sources(presentation, expressions, static_identity, profiles)
+        checks["four_source_identity_alignment"] = True
+    except gaiaos_presentation_guard.PresentationGuardError:
+        checks["four_source_identity_alignment"] = False
     if not all(checks.values()):
         raise HTTPException(status_code=503, detail={"status":"NOT_VERIFIED","checks":checks})
     identities = {}

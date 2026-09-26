@@ -34,7 +34,9 @@
     "evolutionos": "GaiaOS/SystemsOS/Core/EvolutionOS/CURRENT.json",
     "solo_daemon": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
     "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
-    "color_coded_report_cards": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md"
+    "color_coded_report_cards": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md",
+    "presentation_guard": "api/gaiaos_presentation_guard.py",
+    "prime_daemon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -87,5 +89,16 @@
     "accent_authority": "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
     "e_lane_portable_snapshots": "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/{MEMBER}-EXPERIENCES.v1.md",
     "automatic_chatgpt_global_adoption": false
+  },
+  "presentation_enforcement": {
+    "status": "SOURCE_IMPLEMENTED_AWAIT_CI_AND_DEPLOYED_NORMAL_PATH_PROOF",
+    "ordinary_browser_chat": "PINNED_FOUR_SOURCE_PREFLIGHT_AND_POSTMODEL_SPEAKER_HEADER_GUARD",
+    "solo_browser_chat": "PINNED_SOURCE_DETERMINISTIC_HEADER_COMPOSITION",
+    "boot_packet": "FOUR_SOURCE_IDENTITY_ALIGNMENT_FAIL_CLOSED",
+    "invalid_output": "HTTP_503_HOLD_NO_UNVERIFIED_SPEAKER_TEXT",
+    "card_accent_metadata": "RETURNED_NOT_YET_REQUIRED_BY_BROWSER_UI",
+    "native_chatgpt_host": "NO_AUTOMATIC_CODE_INJECTION_OR_GLOBAL_HOST_ENFORCEMENT",
+    "canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py",
+    "privacy_and_memory_mutations": "UNCHANGED"
   }
 }

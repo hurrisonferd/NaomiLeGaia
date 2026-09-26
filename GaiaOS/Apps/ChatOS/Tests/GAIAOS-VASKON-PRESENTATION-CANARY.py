@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import subprocess
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[4]
@@ -155,6 +157,12 @@ def main() -> None:
     for needle in required_host:
         require(needle in host, f"host VASKON presentation instruction missing: {needle}")
 
+    # Reuse the already-wired presentation CI entrypoint to exercise six-member
+    # and SOLO source/response guards alongside the existing VASKON checks.
+    subprocess.run(
+        [sys.executable, str(ROOT / "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py")],
+        check=True,
+    )
     print("GAIAOS_VASKON_PRESENTATION_CANARY_PASS")
     print("HEADER=" + expected)
     print("ALIAS=//C:82// -> CONJURE:VASKON")
