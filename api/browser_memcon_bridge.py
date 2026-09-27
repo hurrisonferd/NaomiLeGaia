@@ -133,6 +133,121 @@ async def heatdeath_optional_research_guard(request: Request, call_next):
     )
 
 
+@app.get("/chat/recovery", response_class=HTMLResponse,
+         operation_id="isolatedNoMemoryCarrierRecoveryPage")
+def isolated_carrier_recovery_page(browser_request: Request):
+    """Browser-facing recovery form; signature alone is not owner identity."""
+    if not gaiaos_api.API_KEY or not gaiaos_api.API_KEY.strip():
+        raise HTTPException(status_code=503, detail="Owner browser authentication is not configured")
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    # No lookup, no SOLO session inference, no memory/release-controller read.
+    return HTMLResponse(
+        """<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GaiaOS | Isolated Recovery</title>
+<style>body{background:#141414;color:#f1f1f1;font:16px system-ui;max-width:740px;margin:0 auto;padding:24px}
+textarea{box-sizing:border-box;width:100%;min-height:120px;padding:12px;background:#242424;color:white}
+button{padding:12px 18px;margin-top:12px}label{display:block;margin:16px 0}
+pre{white-space:pre-wrap;overflow-wrap:anywhere}</style></head><body>
+<h1>GaiaOS | Isolated Recovery</h1>
+<p>The memory backend or SOLO session may be unavailable. This page starts
+a <strong>new, generic chat</strong>. It cannot resume SOLO, verify the six
+E-LANES, retrieve memories or prove database recovery.</p>
+<form><textarea maxlength="20000" required placeholder="Start a new generic question"></textarea>
+<label><input type="checkbox" required> I understand this is a new
+memory-free generic chat, not my previous SOLO or Council session.</label>
+<button type="submit">Send isolated question</button></form><pre id="output"></pre>
+<script>
+const form=document.querySelector("form");
+form.onsubmit=async event=>{
+ event.preventDefault();
+ const input=form.querySelector("textarea"),output=document.querySelector("#output");
+ const message=input.value.trim();
+ if(!message||!form.querySelector("input").checked)return;
+ output.textContent="Sending as a NEW generic, memory-free request...";
+ try{
+  const res=await fetch("/chat/recovery",{method:"POST",credentials:"same-origin",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({messages:[{role:"user",content:message}],
+    include_memory:false,recovery_acknowledged:true})});
+  const json=await res.json();
+  output.textContent=res.ok?json.output:
+   "HOLD: "+(typeof json.detail==="string"?json.detail:
+    (json.detail&&json.detail.status)||"Recovery request unavailable");
+ }catch(_){output.textContent="Recovery carrier unavailable; no memory changes attempted."}
+};
+</script></body></html>""",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@app.post("/chat/recovery", operation_id="explicitNoMemoryCarrierRecovery")
+async def isolated_carrier_recovery(browser_request: Request):
+    """Independent explicit plain hosted chat even if MemconOS/Turso is down.
+
+    NEVER infer that an existing SOLO session has ended. The user must opt
+    into generic non-SOLO chat, with memory explicitly disabled on this
+    request. This route reads no DB, no shared mode state, no gateway and no
+    optional GALAXY modules. It cannot claim durable recall or E-LANE writes.
+    """
+    if not gaiaos_api.API_KEY or not gaiaos_api.API_KEY.strip():
+        raise HTTPException(status_code=503, detail="Owner browser authentication is not configured")
+    gaiaos_api._authorize_browser_session(browser_request)
+    payload = await browser_request.json()
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=422, detail="Chat payload must be an object")
+    if (payload.get("recovery_acknowledged") is not True
+            or payload.get("include_memory") is not False):
+        raise HTTPException(status_code=409, detail={
+            "schema": "gaiaos.heatdeath.isolated-chat-recovery.v1",
+            "status": "HOLD_EXPLICIT_NO_MEMORY_RECOVERY_ACK_REQUIRED",
+            "recovery_acknowledged_required": True,
+            "include_memory_must_be_false": True,
+            "solo_session_restored": False,
+            "writes_performed": [],
+        })
+    try:
+        validated = gaiaos_api.ChatRequest.model_validate(payload)
+    except Exception:
+        raise HTTPException(status_code=422, detail="Invalid recovery chat payload") from None
+    # A former SOLO or Council conversation must not silently be transferred
+    # into an unrelated generic model session during a backend outage.
+    if len(validated.messages) != 1 or validated.messages[0].role != "user":
+        raise HTTPException(status_code=409, detail={
+            "schema": "gaiaos.heatdeath.isolated-chat-recovery.v1",
+            "status": "HOLD_START_FRESH_GENERIC_MESSAGE_ONLY",
+            "solo_session_restored": False,
+            "writes_performed": [],
+        })
+    # The caller knowingly starts GENERIC chat. No implicit SOLO resume,
+    # MemconOS access, GALAXY scoring, memory promotion or E-LANE mutation.
+    answer = _original_chat(validated, browser_request, memory_context=None)
+    return {
+        **answer,
+        "recovery_receipt": {
+            "schema": "gaiaos.heatdeath.isolated-chat-recovery.v1",
+            "status": "PASS_EXPLICIT_PLAIN_CHAT_NO_MEMORY",
+            "existing_signed_browser_session_required": True,
+            "owner_identity_independently_verified": False,
+            "explicit_no_memory_acknowledgment": True,
+            "solo_state_checked": False,
+            "solo_session_restored": False,
+            "galaxy_retrieval_attempted": False,
+            "memconos_backend_access_attempted": False,
+            "memory_writes_performed": [],
+            "e_lanes_modified": False,
+            "bigbang_activated": False,
+            "proof_boundary": (
+                "Generic, isolated hosted-chat response ONLY. Existing SOLO "
+                "state and memory history remain unverified; source-backed "
+                "presentation rules still apply. This is not database recovery."
+            ),
+        },
+    }
+
+
 @app.post("/chat", operation_id="browserChatWithMemoryRuntime")
 async def browser_chat(browser_request: Request):
     gaiaos_api._authorize_browser_session(browser_request)
@@ -159,7 +274,30 @@ async def browser_chat(browser_request: Request):
         return _handle_solo(last_message, browser_request)
     if _is_command(last_message, "ENDSOLO"):
         return _handle_endsolo(browser_request)
-    solo = memcon_runtime.get_solo_session(_browser_session_id(browser_request))
+    # This lookup is necessary to preserve SOLO identity. If the authoritative
+    # store is down, we cannot establish that this browser is not in SOLO.
+    # Do NOT silently impersonate an ordinary/council session. Provide a
+    # separate, explicitly acknowledged non-SOLO emergency carrier route.
+    try:
+        solo = memcon_runtime.get_solo_session(
+            _browser_session_id(browser_request)
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail={
+            "schema": "gaiaos.heatdeath.solo-identity-boundary.v1",
+            "status": "HOLD_SOLO_STATE_UNVERIFIED",
+            "error_type": type(exc).__name__,
+            "recovery_endpoint": "/chat/recovery",
+            "recovery_requires_explicit_acknowledgment": True,
+            "memory_contents_returned": False,
+            "solo_identity_restored": False,
+            "proof_boundary": (
+                "Memory storage unavailable: active SOLO identity cannot be "
+                "read. The ordinary chat route cannot safely guess a persona. "
+                "Explicit /chat/recovery is a separate generic, memory-free "
+                "carrier session and does not restore SOLO continuity."
+            ),
+        }) from None
     if solo:
         return solo_chat_runtime.respond(
             [{"role": m.get("role"), "content": m.get("content")} for m in messages],

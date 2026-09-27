@@ -61,6 +61,10 @@ class PublicReadIntegrationTests(unittest.TestCase):
             self.addCleanup(item.stop)
         self.client = TestClient(served.app, base_url="https://testserver")
         self.client.cookies.set(carrier.SESSION_COOKIE, carrier._session_token())
+        # Fixtures must explicitly initialize their own synthetic DB. The
+        # actual Render carrier no longer opens MemconOS while importing, so
+        # tests may not silently rely on that deprecated side effect.
+        runtime.initialize()
         # Each method gets an independent synthetic row population even though
         # the process-local temporary SQLite fixture persists across tests.
         with runtime._db() as conn:
