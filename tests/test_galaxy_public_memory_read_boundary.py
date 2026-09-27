@@ -193,6 +193,56 @@ class PublicReadIntegrationTests(unittest.TestCase):
         )
         self._no_archive_text(boot.json())
 
+    def test_real_host_bootstrap_observe_and_candidate_routes_use_existing_auth(self):
+        # CI exposed a separate, pre-existing source-level failure:
+        # memcon_entrypoint referenced undefined "base" in these HTTP routes,
+        # although it already defines a correct _auth() helper.
+        unauthorized = self.client.get(
+            "/gaiaos/bootstrap",
+            params={"query": "VERIFIED LEGACY"},
+        )
+        self.assertEqual(unauthorized.status_code, 401)
+        unauthorized_candidates = self.client.get("/memoryos/candidates")
+        self.assertEqual(unauthorized_candidates.status_code, 401)
+        with patch.object(
+            entry.gaiaos_app, "_read_local_json",
+            return_value={"platform_version": "CI-ISOLATED"},
+        ), patch.object(
+            entry.gaiaos_app, "_deployed_source",
+            return_value="CI-NO-REMOTE-SOURCE",
+        ):
+            boot = self.client.get(
+                "/gaiaos/bootstrap", headers=TOKEN,
+                params={"query": "VERIFIED LEGACY",
+                        "scope": "MemoryOS", "limit": 10},
+            )
+        self.assertEqual(boot.status_code, 200, boot.text)
+        self.assertEqual(
+            boot.json()["memory"]["retrieval"]["records"][0]["record_id"],
+            self.safe,
+        )
+        observed = self.client.post(
+            "/memoryos/observe", headers=TOKEN,
+            json={
+                "source": "ci:synthetic:observe",
+                "statement": "Synthetic only observational memory candidate",
+                "owner": "ANVIL", "why_material": "CI route proof",
+            },
+        )
+        self.assertEqual(observed.status_code, 200, observed.text)
+        self.assertEqual(observed.json()["status"], "CANDIDATE")
+        self.assertEqual(observed.json()["durable_write"], "NOT_PERFORMED")
+        listed = self.client.get(
+            "/memoryos/candidates", headers=TOKEN,
+            params={"limit": 2, "status": "CANDIDATE"},
+        )
+        self.assertEqual(listed.status_code, 200, listed.text)
+        listed_post = self.client.post(
+            "/memoryos/candidates", headers=TOKEN,
+            json={"limit": 2, "status": "CANDIDATE"},
+        )
+        self.assertEqual(listed_post.status_code, 200, listed_post.text)
+
     def test_legacy_preview_cannot_return_any_mixed_archive_record(self):
         outcome = front.preview(runtime, "CALIBRATION", 3)
         self.assertEqual(
