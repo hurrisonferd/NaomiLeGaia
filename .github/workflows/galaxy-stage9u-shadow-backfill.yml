@@ -1,0 +1,42 @@
+name: GALAXY Stage 9U Isolated Gravity Backfill and Rollback
+
+on:
+  pull_request:
+    paths:
+      - "api/galaxy_shadow_backfill_stage9u.py"
+      - "tests/test_galaxy_shadow_backfill_stage9u.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9U-SHADOW-BACKFILL-AND-ROLLBACK.v1.md"
+      - ".github/workflows/galaxy-stage9u-shadow-backfill.yml"
+  push:
+    paths:
+      - "api/galaxy_shadow_backfill_stage9u.py"
+      - "tests/test_galaxy_shadow_backfill_stage9u.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9U-SHADOW-BACKFILL-AND-ROLLBACK.v1.md"
+      - ".github/workflows/galaxy-stage9u-shadow-backfill.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-gravity-ledger-rollback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Stage 9U and prerequisite prototypes
+        run: python -m py_compile api/galaxy_shadow_backfill_stage9u.py api/galaxy_archive_staging.py api/galaxy_archive_preflight.py tests/test_galaxy_shadow_backfill_stage9u.py
+      - name: Prove Stage 9U signed backfill, compare-before-write, old-score ledger and rollback
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_shadow_backfill_stage9u.py" -v
+      - name: Preserve Stage 9T pinned source and in-memory archive proof
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_staging_stage9t.py" -v
+      - name: Preserve Stage 9S six separate E-LANES and source-preflight baseline
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_preflight_stage9s.py" -v
+      - name: Preserve Stage 9R read-only historical-gravity baseline
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_legacy_gravity_stage9r.py" -v
+      - name: Check whitespace integrity
+        run: git diff --check HEAD~1 HEAD
