@@ -66,6 +66,23 @@ After that, privately set the four GAIAOS_STAGE9V_* variables below and execute 
 
 Official CLI references: https://docs.turso.tech/cli/db/create ; https://docs.turso.tech/cli/db/tokens/create ; https://docs.turso.tech/cli/db/shell .
 
+## Owner-local zero-credential provisioning bundle
+
+Before provisioning or touching any remote database, Naomi may generate an exact two-file setup bundle LOCALLY, outside both the original and future Git repositories. This is OPTIONAL source-only preparation, not creation of a Turso database. Review the source before executing it with private environment access.
+
+On Naomi's own trusted workstation, after reviewing the committed generator:
+
+    mkdir -p "$HOME/private"
+    chmod 700 "$HOME/private"
+    python api/galaxy_stage9v_setup_bundle.py \
+      --destination "$HOME/private/gaiaos-stage9v-setup" \
+      --database-name gaiaos-galaxy-stage9v \
+      --confirm-local-only
+
+The destination must be a NEW directory that does not exist yet; no script overwrites an existing identity. The generator performs NO database connection, NO shell execution and NO source-repo mutation. It creates mode-0600 stage9v-new-staging-identity.sql and stage9v-local-setup-manifest.json in a private mode-0700 directory. The SQL creates ONLY the two approved staging identity/canary tables and inserts a freshly generated UUIDv4 owner marker. The manifest includes that UUID, staging-name LABEL and the SQL SHA-256 for Naomi's own inspection. No database URL, token or production content is needed. The CLI stdout includes only bounded statuses and the non-secret SQL digest; the UUID remains in the private local files.
+
+After independently creating an EMPTY staging Turso database under Naomi's authority, inspect the provider-level database identity and source code, and manually apply ONLY the generated SQL to the NEW staging database via the trusted Turso SQL console or shell. Never point the SQL at the old production database. The generated UUID is a marker for future preflight, NOT standalone proof that the provider targets differ. Use a short-lived READ-ONLY token for the next stage. If Naomi has not yet created a wholly owned GitHub repository, she can run the reviewed Python preflight locally, keeping every token on her workstation. Do not install new staging credentials into hurrisonferd/NaomiLeGaia. The optional credential-bearing GitHub workflow remains disabled there even if its source is merged.
+
 ## Read-only operator preflight: no tokens in chats or Git
 
 Before signing or running the single canary, use the explicit read-only operator CLI, api/galaxy_stage9v_operator_preflight.py. It requires four separately supplied PRIVATE environment variables:
