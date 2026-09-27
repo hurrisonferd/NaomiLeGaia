@@ -59,7 +59,7 @@ class IsolatedConnector:
             raise AssertionError("PRODUCTION TARGET OR CREDENTIAL USED")
         self.calls.append((url, token))
         conn = sqlite3.connect(self.path)
-        if self.ack_lost_once:
+        if self.ack_lost_once and len(self.calls) == 2:
             self.ack_lost_once = False
 
             class LostAck:
