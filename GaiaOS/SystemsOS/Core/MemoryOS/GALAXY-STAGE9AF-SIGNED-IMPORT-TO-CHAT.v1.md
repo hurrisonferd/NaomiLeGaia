@@ -1,0 +1,25 @@
+# GALAXY Stage 9AF: exact signed imported archive through real served chat
+
+AUTHORITY: NAOMI/LIGEIA. STATUS: SOURCE-ONLY STACKED DRAFT above Stage 9AE #106. No merge, live Turso, actual OpenAI call, deployed browser proof, real source archive, owner identity attestation, released BIGBANG, E-LANE mutation or SOVREP cutover.
+
+## The integration gap
+
+Stage 9AD proved the historical HOLD row can remain ineligible for real Stage 9U scoring during an isolated in-memory exercise. Stage 9AE separately hardened operational GALAXY, the independent legacy gateway and the final browser instruction builder to exclude historical HOLD and the unreleased archive source prefix. But their tests previously substituted hand-written records. A mismatch between actual Stage 9Y's SQL record/receipt shape and the real browser adapter could still go unnoticed.
+
+Stage 9AF exercises the **actual pinned-source, signed, canary-bound Stage 9Y imported row from an existing disposable LOCAL fixture** through the real Stage 9AE and Stage 9W source boundaries. This is not just another mock payload: the record is read from the exact same native SQLite file that retains the Stage 9V identity, independently pinned canary, Stage 9Y batch/item receipts and eventual Stage 9Z rollback ledger.
+
+A new test-only native SQLite adapter is constructed ONLY after the existing Stage 9Y/9Z source code independently verifies the full signed original import manifest, batch status, exact unchanged source and per-row ledger fingerprints, identity and canary, and six expected table names. It rejects an arbitrary disk path, in-memory source, attached database, unknown table/view/trigger, changed original signature, changed source/status, missing explicit test-only confirmation, invalid original key and a previously rolled-back import. Its test-only runtime can maliciously **claim CURRENT governing status and a VERIFIED graph edge** while still sourcing the actual untouched imported record. That adversarial behavior is deliberate to test release boundaries; this adapter MUST never become production MemconOS.
+
+## Exact cross-module proof
+
+1. Actual imported, signed record has STAGED_HISTORICAL_HOLD, source galaxy-archive-v1:<independent fingerprint>, original statement, valid local canary and intact one-item batch receipt. The adapter reads it from the disk file each time, not a cached Python dict.
+2. Forge a CURRENT governing state and maximum untrusted gravity for the actual held record in the candidate pool. The real operational GALAXY reader must reject it BEFORE gravity scoring or handing it to the gateway, regardless of the fake governing state.
+3. Put that same actual imported row through the unchanged legacy reader with mock HEATDEATH and mock BIGBANG mode. The independent memory gateway MUST return HOLD with no raw legacy envelope, not a plausible memory response. With a separate synthetic clean current record, a malicious GALAXY pool advertising the staged archive must trigger explicit HEATDEATH fallback to clean legacy evidence only. A forged VERIFIED graph edge must not leak the archived statement as linked context.
+4. Supply the actual signed local runtime through the **real** server-side memory bridge used by the hosted GaiaOS app, with a synthetic test-only BIGBANG mode and fake model client. The actual served FastAPI POST /chat must still return an ordinary non-memory response while omitting the held record, source and any private error from both the model instructions and HTTP body. Repeat against a clean legacy result whose malicious GALAXY pool attempts to smuggle in a signed held source.
+5. Sign a separate Stage 9Z rollback of the same imported row. The existing adapter MUST now see zero imported memory rows, any new signed fixture adapter must refuse the rolled-back batch, the original ledger and canary must remain, and the real served chat must still contain no old statement. A tampered ACTIVE status with the unreleased archive source must not pass either the signed adapter validation or the independent legacy gateway.
+
+All synthetic signing keys, credentials, model responses and source strings stay local to GitHub Actions. Receipts and responses expose no actual record statements, source locations, URLs, identity UUIDs, HMAC keys or provider secrets. The tests also run the previous Stage 9AE/W browser, emergency HEATDEATH, Stage 9Y/Z, gravity HOLD and six separate E-LANE safeguards.
+
+## Deferred owner gates
+
+The source code remains UNMERGED: successful GitHub CI does not mean the latest Render main deploy includes it. No independent provider-level Turso database ID or alias check, scoped credential verification, real signed staging import/rollback, actual restored source/replica persistence, model coefficient calibration or browser deployment observation has occurred. Those remain separately approved owner-PC gates. The real sovmem-staging and sovmem-main databases are untouched; sovmem-main must stay clean for the independent Phylactery migration. Retain six unique E-LANES, //PW:PRESERVE//, original source/provenance, HEATDEATH fallback and BIGBANG LOCKED.
