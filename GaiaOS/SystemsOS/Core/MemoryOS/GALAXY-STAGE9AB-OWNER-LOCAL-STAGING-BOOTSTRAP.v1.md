@@ -18,30 +18,21 @@ After verifying an entirely empty remote staging schema namespace through read-o
 
 ## Exact PC handoff, only after owner approval and source review
 
-First, use the new private generators in a trusted checkout. On a Unix-like PC the *private file creation only* steps are:
+ONE reviewed prep command invokes both existing private generators and verifies their matching source hashes, marker and exact output. On a Unix-like PC, the PRIVATE FILE-ONLY prep is:
 
     mkdir -p "$HOME/private"
     chmod 700 "$HOME/private"
 
-    python api/galaxy_stage9v_setup_bundle.py \
-      --destination "$HOME/private/stage9v-setup" \
-      --database-name sovmem-staging \
+    python api/galaxy_stage9ab_prepare_private_bundle.py \
+      --destination "$HOME/private/sovmem-staging-init" \
       --confirm-local-only
 
-    python api/galaxy_stage9aa_local_schema_bundle.py \
-      --destination "$HOME/private/stage9aa-schema" \
-      --staging-name-label sovmem-staging \
-      --confirm-local-file-only
+It creates exactly four mode-0600 files in two private subfolders and NO database connection. It refuses existing output to avoid silently regenerating a second marker for an already-initialized database. Retain the original bundle until the independent migration and restore are completed. No raw UUID, credentials or paths are logged to GitHub or chat.
 
-These commands DO NOT connect to any database. Do not repeat them and accidentally generate a different UUID for an already-initialized staging installation. Retain the original private manifest/SQL bundles until SOVMEM is migrated and independently restored; never place them in the shared GitHub repository or chat.
-
-Then run the Stage 9AB CLI with the FOUR private files and no --apply to validate the bundle without even opening a staging socket:
+Then, while still offline, dry-run the entire reviewed source bundle using a SINGLE directory path:
 
     python api/galaxy_stage9ab_owner_local_bootstrap.py \
-      --stage9v-manifest "$HOME/private/stage9v-setup/stage9v-local-setup-manifest.json" \
-      --stage9v-sql "$HOME/private/stage9v-setup/stage9v-new-staging-identity.sql" \
-      --stage9aa-manifest "$HOME/private/stage9aa-schema/stage9aa-local-schema-manifest.json" \
-      --stage9aa-sql "$HOME/private/stage9aa-schema/stage9aa-canonical-preimport-tables.sql"
+      --bundle-dir "$HOME/private/sovmem-staging-init"
 
 This command is a dry-run even if private Turso environment variables happen to exist. At the LIVE gate, after Naomi independently reviews the staging/main Turso provider identities, appropriate staging-only access, SQL, source-commit and rollback risks, an explicitly authorized owner-local run sets the standard four GAIAOS_STAGE9V_* variables privately and repeats the command with --apply --confirm-provider-ids-reviewed --confirm-staging-only --confirm-main-untouched. The GAIAOS_STAGE9V_PRODUCTION_URL comparison value for this specific bootstrap must identify sovmem-main (not the original GaiaOS production). This runner connects ONLY to the staging URL, not either other database. Nothing is submitted to ChatGPT or to GitHub Actions. If on Windows PowerShell, use Windows-appropriate private folder permissions and line-continuation syntax rather than running the above bash commands as-is; operator-specific exact steps can be supplied later.
 
