@@ -1,0 +1,41 @@
+name: GALAXY Stage 9X Owner-Local Signed Canary Source Gate
+
+# MOCKED/local tests only. No operator dispatch, secrets or real Turso access.
+on:
+  push:
+    paths:
+      - "api/galaxy_stage9x_owner_canary.py"
+      - "tests/test_galaxy_stage9x_owner_canary.py"
+      - ".github/workflows/galaxy-stage9x-owner-local-canary.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_stage9x_owner_canary.py"
+      - "tests/test_galaxy_stage9x_owner_canary.py"
+      - ".github/workflows/galaxy-stage9x-owner-local-canary.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-stage9x-and-stage9v-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install public local-test dependencies only
+        run: python -m pip install "libsql>=0.1,<1.0" "PyYAML>=6,<7"
+      - name: Signed operator gate and local SQLite sentinel/regression tests
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9x_owner_canary.py' -v
+      - name: Stage 9V local two-connection staging probe regression
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9v_staging_turso.py' -v
+      - name: Stage 9V actual libsql driver, local fixture only
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9v_real_libsql_contract.py' -v
+      - name: Stage 9V read-only preflight and redacted receipt regression
+        run: |
+          python -m unittest discover -s tests -p 'test_galaxy_stage9v_operator_preflight.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9v_readonly_receipt.py' -v
