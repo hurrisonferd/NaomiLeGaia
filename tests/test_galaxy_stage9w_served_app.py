@@ -161,5 +161,95 @@ class GaiaOSDeployedAppTests(unittest.TestCase):
             read.assert_called_once()
 
 
+    def test_served_frontdoor_implicit_gate_fails_closed_on_incomplete_control(self):
+        """Actual /gaiaos/assist cannot trigger an implicit read on fake BIGBANG."""
+        cases = (
+            {"schema": mode.SCHEMA, "effective_mode": mode.BIGBANG,
+             "configured_mode": mode.HEATDEATH, "bigbang_activation_enabled": True},
+            {"schema": "MALFORMED", "effective_mode": mode.BIGBANG,
+             "configured_mode": mode.BIGBANG, "bigbang_activation_enabled": True},
+            {"schema": mode.SCHEMA, "effective_mode": mode.BIGBANG,
+             "bigbang_activation_enabled": True},
+            {"schema": mode.SCHEMA, "effective_mode": mode.BIGBANG,
+             "configured_mode": mode.BIGBANG, "bigbang_activation_enabled": "true"},
+            RuntimeError("STAGE9W-PRIVATE-ERROR-MUST-NOT-LEAK"),
+        )
+        def config(path):
+            if path == deployed.CURRENT_PATH:
+                return {"platform_version": "stage9w.test"}
+            if path == deployed.VERSION_PATH:
+                return {"version": "stage9w.test"}
+            raise AssertionError("unexpected source path")
+
+        with patch.object(deployed, "_deployed_commit", return_value="a" * 40), \
+             patch.object(deployed, "_deployed_source", return_value="STAGE9W-SOURCE"), \
+             patch.object(deployed, "_read_local_json", side_effect=config), \
+             patch.object(deployed, "_infer_signals", return_value=[]), \
+             patch.object(deployed, "_requested_members_from_text", return_value=[]), \
+             patch.object(carrier, "_dispatch_packet", return_value={
+                 "selected": [], "unknown_requested_members": [],
+             }), \
+             patch.object(gateway, "read") as gateway_read:
+            for control in cases:
+                with self.subTest(control=type(control).__name__):
+                    with patch.object(mode, "mode_status",
+                                      side_effect=control if isinstance(control, Exception) else None,
+                                      return_value=control if isinstance(control, dict) else None):
+                        result = self.client.post(
+                            "/gaiaos/assist",
+                            headers={"Authorization": "Bearer " + SIGNING_KEY},
+                            json={"request": "Should never implicitly query these memories",
+                                  "include_context": False},
+                        )
+                    self.assertEqual(result.status_code, 200, result.text)
+                    self.assertNotIn("memory_context", result.json())
+                    self.assertNotIn("STAGE9W-PRIVATE-ERROR", result.text)
+                    gateway_read.assert_not_called()
+
+    def test_served_frontdoor_test_only_full_gate_and_explicit_optout(self):
+        fake_control = {
+            "schema": mode.SCHEMA, "effective_mode": mode.BIGBANG,
+            "configured_mode": mode.BIGBANG, "bigbang_activation_enabled": True,
+        }
+        def config(path):
+            return (
+                {"platform_version": "stage9w.test"}
+                if path == deployed.CURRENT_PATH else
+                {"version": "stage9w.test"}
+            )
+
+        with patch.object(deployed, "_deployed_commit", return_value="a" * 40), \
+             patch.object(deployed, "_deployed_source", return_value="STAGE9W-SOURCE"), \
+             patch.object(deployed, "_read_local_json", side_effect=config), \
+             patch.object(deployed, "_infer_signals", return_value=[]), \
+             patch.object(deployed, "_requested_members_from_text", return_value=[]), \
+             patch.object(carrier, "_dispatch_packet", return_value={
+                 "selected": [], "unknown_requested_members": [],
+             }), \
+             patch.object(mode, "mode_status", return_value=fake_control), \
+             patch.object(gateway, "read", return_value={
+                 "status": "PASS_BIGBANG", "effective_mode": mode.BIGBANG,
+                 "writes_performed": [], "e_lanes_modified": False,
+             }) as gateway_read:
+            result = self.client.post(
+                "/gaiaos/assist",
+                headers={"Authorization": "Bearer " + SIGNING_KEY},
+                json={"request": "read existing gravity only", "include_context": False},
+            )
+            self.assertEqual(result.status_code, 200, result.text)
+            self.assertEqual(result.json()["memory_context"]["status"], "PASS_BIGBANG")
+            gateway_read.assert_called_once()
+            gateway_read.reset_mock()
+            optout = self.client.post(
+                "/gaiaos/assist",
+                headers={"Authorization": "Bearer " + SIGNING_KEY},
+                json={"request": "no memory", "include_context": False,
+                      "include_memory": False},
+            )
+            self.assertEqual(optout.status_code, 200, optout.text)
+            self.assertNotIn("memory_context", optout.json())
+            gateway_read.assert_not_called()
+
+
 if __name__ == "__main__":
     unittest.main()
