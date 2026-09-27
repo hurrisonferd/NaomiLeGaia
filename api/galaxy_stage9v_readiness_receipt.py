@@ -62,8 +62,13 @@ def make_receipt(report: Any, *, commit: str, run_id: str) -> dict[str, Any]:
         report.get("provider_database_separation_independently_verified") is False,
         report.get("live_owner_authentication_verified") is False,
     ))
+    hashes_valid = all(
+        isinstance(report.get(key), str)
+        and re.fullmatch(r"[0-9a-f]{64}", report[key]) is not None
+        for key in ("staging_url_sha256", "production_url_sha256", "staging_uuid_sha256")
+    ) and report.get("staging_url_sha256") != report.get("production_url_sha256")
     remote_pass = (
-        status == PASS and assert_zero_effect
+        status == PASS and assert_zero_effect and hashes_valid
         and report.get("staging_turso_remotely_observed") is True
         and report.get("test_connector_injected") is False
         and report.get("staging_marker_readback_verified") is True
