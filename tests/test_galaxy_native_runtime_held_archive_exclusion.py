@@ -213,14 +213,63 @@ class SignedNativeHeldArchiveTests(unittest.TestCase):
         for row in self.held:
             self.assertNotIn(row["statement"], response.text)
             self.assertNotIn(row["statement"], str(mcp))
-        # Known-ID owner-only raw audit is deliberate, NOT implicit context.
+        # Exact-ID privileged HTTP/MCP reads are AUDITED operations, unlike
+        # pure internal get_record(): staging intentionally has no runtime_receipts.
+        # Misrouting the full carrier to the 6-table sandbox must FAIL CLOSED
+        # without exposing an unaudited HOLD statement, not a raw SQL 500.
         exact = client.get(
             f"/memconos/read/{self.held[0]['record_id']}", headers=auth,
         )
-        self.assertEqual(exact.status_code, 200)
+        self.assertEqual(exact.status_code, 503, exact.text)
         self.assertEqual(
-            exact.json()["record"]["status"], "STAGED_HISTORICAL_HOLD",
+            exact.json()["detail"], "HOLD_AUDITED_READ_LEDGER_UNAVAILABLE",
         )
+        self.assertNotIn(self.held[0]["statement"], exact.text)
+        mcp_exact = entry.memcon_read(self.held[0]["record_id"])
+        self.assertEqual(
+            mcp_exact["status"], "HOLD_AUDITED_READ_LEDGER_UNAVAILABLE",
+        )
+        self.assertNotIn(self.held[0]["statement"], str(mcp_exact))
+        # Source remains accessible by exact ID through a pure local audit
+        # adapter. No implicit read/search surface may return held rows.
+        self.assertEqual(
+            store.get_record(self.held[0]["record_id"])["status"],
+            "STAGED_HISTORICAL_HOLD",
+        )
+        self.fx.protected()
+
+    def test_full_original_runtime_still_writes_real_audited_owner_read_receipt(self):
+        # The actual MemconOS carrier (unlike staging) has runtime_receipts.
+        full = Path(_RUNNING.name) / "ci-carrier.db"
+        with patch.object(store, "_db", side_effect=lambda: native_db(full)):
+            store.write_record(
+                authority="NAOMI", approved=True,
+                record_type="TEST", scope="MemoryOS",
+                statement="explicit approved exact id", source="owner:test",
+                status="ACTIVE", record_id="MEM-EXPLICIT-OWNER-AUDIT",
+            )
+            client = TestClient(served.app, base_url="https://testserver")
+            authorized = client.get(
+                "/memconos/read/MEM-EXPLICIT-OWNER-AUDIT",
+                headers={"Authorization": "Bearer STAGE9-FAKE-OWNER-KEY"},
+            )
+            self.assertEqual(authorized.status_code, 200, authorized.text)
+            self.assertEqual(
+                authorized.json()["record"]["status"], "ACTIVE",
+            )
+            self.assertEqual(
+                authorized.json()["receipt"]["result"], "SUCCESS",
+            )
+            mcp_read = entry.memcon_read("MEM-EXPLICIT-OWNER-AUDIT")
+            self.assertTrue(mcp_read["found"])
+            self.assertEqual(mcp_read["receipt"]["result"], "SUCCESS")
+            with native_db(full) as db:
+                self.assertGreaterEqual(
+                    db.execute(
+                        "SELECT COUNT(*) FROM runtime_receipts "
+                        "WHERE record_id='MEM-EXPLICIT-OWNER-AUDIT'"
+                    ).fetchone()[0], 2,
+                )
         self.fx.protected()
 
     def test_real_memory_runtime_and_gateway_hold_reads_never_promote(self):
