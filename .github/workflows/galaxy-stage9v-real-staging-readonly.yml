@@ -53,6 +53,7 @@ jobs:
           set -euo pipefail
           set +x
           umask 077
+          trap 'rm -f "$RUNNER_TEMP/stage9v-private-report.json"' EXIT
           set +e
           python api/galaxy_stage9v_operator_preflight.py --confirm-read-only > "$RUNNER_TEMP/stage9v-private-report.json"
           preflight_exit=$?
