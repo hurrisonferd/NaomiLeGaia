@@ -196,7 +196,8 @@ class Stage9VManualWorkflowPolicyTests(unittest.TestCase):
         self.assertEqual(set(jobs), {"verify-readonly-staging"})
         job = jobs["verify-readonly-staging"]
         for necessary in (
-            "github.repository == 'hurrisonferd/NaomiLeGaia'",
+            "github.repository_owner == 'Ligeia621'",
+            "github.repository != 'hurrisonferd/NaomiLeGaia'",
             "github.ref == 'refs/heads/main'",
             "github.actor == 'Ligeia621'",
             "github.triggering_actor == 'Ligeia621'",
@@ -205,6 +206,8 @@ class Stage9VManualWorkflowPolicyTests(unittest.TestCase):
         ):
             self.assertIn(necessary, job["if"])
         self.assertEqual(job["environment"], "gaiaos-stage9v-read-only")
+        self.assertIn("github.repository_owner == 'Ligeia621'", job["if"])
+        self.assertIn("github.repository != 'hurrisonferd/NaomiLeGaia'", job["if"])
         self.assertLessEqual(int(job["timeout-minutes"]), 5)
 
     def test_no_autotrigger_production_credentials_schema_or_write_code(self):
