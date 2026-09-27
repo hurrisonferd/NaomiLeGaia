@@ -7,6 +7,7 @@ from fastapi import Header, HTTPException
 from pydantic import BaseModel, Field
 
 import gaiaos_app
+import gaiaos_public_memory_boundary as public_archive
 import memcon_runtime
 
 MEMORY_RUNTIME_PATH = "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.py"
@@ -82,14 +83,20 @@ def memcon_health(authorization: str | None = Header(default=None)) -> dict[str,
 def memcon_read_http(record_id: str, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     _auth(authorization)
     record = memcon_runtime.get_record(record_id)
-    if record is None:
+    # A staging alias must never expose held source content by exact ID.
+    # Deliberately indistinguishable from an unknown ID on this general API.
+    if record is None or public_archive.unreleased(record):
         raise HTTPException(status_code=404, detail="MemconOS record not found")
     return {"record":record,"receipt":memcon_runtime._receipt("READ",record_id,"SUCCESS","Record retrieved from runtime store")}
 
 @app.get("/memconos/search", operation_id="searchMemcon")
 def memcon_search_http(q: str = "", limit: int = 20, scope: str | None = None, authorization: str | None = Header(default=None)) -> dict[str, Any]:
     _auth(authorization)
-    return memcon_runtime.search_records(q,limit,scope)
+    # Never stream a partial clean/held mixture, even with valid owner auth.
+    result = memcon_runtime.search_records(q,limit,scope)
+    if public_archive.unreleased_in_search(result):
+        raise HTTPException(status_code=409, detail=public_archive.redacted_hold())
+    return result
 
 @app.post("/memconos/write", operation_id="writeMemconRecord")
 def memcon_write_http(payload: MemoryWrite, authorization: str | None = Header(default=None)) -> dict[str, Any]:
@@ -264,14 +271,16 @@ def memory_candidates_post_http(payload: MemoryCandidatePull,
 def memcon_read(record_id: str) -> dict[str, Any]:
     """Read one durable MemconOS record and return a runtime receipt."""
     record=memcon_runtime.get_record(record_id)
-    if record is None:
+    if record is None or public_archive.unreleased(record):
         return {"found":False,"record_id":record_id,"runtime":memcon_runtime.SCHEMA_VERSION}
     return {"found":True,"record":record,"receipt":memcon_runtime._receipt("READ",record_id,"SUCCESS","Record retrieved from runtime store")}
 
 @mcp.tool()
 def memcon_search(query: str = "", limit: int = 20) -> dict[str, Any]:
     """Search durable MemconOS records."""
-    return memcon_runtime.search_records(query,limit)
+    result = memcon_runtime.search_records(query,limit)
+    return (public_archive.redacted_hold()
+            if public_archive.unreleased_in_search(result) else result)
 
 @mcp.tool()
 def candipull(session_id: str | None = None, status: str | None = "CANDIDATE", limit: int = 50) -> dict[str, Any]:
