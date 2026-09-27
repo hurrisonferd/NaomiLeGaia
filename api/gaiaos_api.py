@@ -145,6 +145,7 @@ class ChatMessage(BaseModel):
 
 class ChatRequest(BaseModel):
     messages: list[ChatMessage] = Field(min_length=1, max_length=40)
+    include_memory: bool | None = None  # False always opts out, including after BIGBANG release.
 
 
 class DispatchRequest(BaseModel):
@@ -4274,7 +4275,6 @@ def galaxy_query_relevance_quality_review(browser_request: Request):
     return response
 
 
-@app.post("/chat")
 def chat(
     request: ChatRequest,
     browser_request: Request,
@@ -4392,6 +4392,31 @@ def chat(
             "source_authority": "NONE",
         }
     return output
+
+
+@app.post("/chat")
+def browser_chat(request: ChatRequest, browser_request: Request) -> dict[str, Any]:
+    """Normal hosted chat. Only server-sourced, verified evidence may be injected.
+
+    Unlike the internal chat() test hook, this route has NO memory_context
+    parameter. An arbitrary JSON memory_context supplied by a browser is
+    ignored; only the owner-gated server bridge can build trusted context.
+    HEATDEATH keeps its original implicit-memory-off behavior.
+    """
+    _authorize_browser_session(browser_request)
+    if not OPENAI_API_KEY:
+        raise HTTPException(status_code=503, detail="OPENAI_API_KEY is not configured on the carrier")
+    context = None
+    if request.include_memory is not False and request.messages[-1].role == "user":
+        try:
+            import gaiaos_chat_auto_memory
+            context = gaiaos_chat_auto_memory.prepare_for_browser(
+                request.messages[-1].content
+            )
+        except Exception:
+            # Optional GALAXY failure cannot prevent original HEATDEATH chat.
+            context = None
+    return chat(request, browser_request, memory_context=context)
 
 
 # The MCP server is mounted alongside the existing browser/API carrier.
