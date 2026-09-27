@@ -21,6 +21,20 @@ MAX_REPORT_BYTES = 8192
 SHA = re.compile(r"[0-9a-f]{40}\Z")
 RUN = re.compile(r"[0-9]{1,24}\Z")
 
+# Never hash arbitrarily extended private reports into an exported receipt.
+REPORT_KEYS = frozenset({
+    "schema", "status", "execution", "reads_performed", "writes_performed",
+    "production_turso_accessed", "memory_records_modified",
+    "gravity_modified", "e_lanes_modified", "mode_control_modified",
+    "canary_written", "staging_turso_remotely_observed",
+    "provider_database_separation_independently_verified",
+    "live_owner_authentication_verified", "staging_url_sha256",
+    "production_url_sha256", "staging_uuid_sha256",
+    "staging_marker_readback_verified", "canary_table_select_verified",
+    "test_connector_injected", "next_gate", "error_type",
+    "missing_variable_names",
+})
+
 
 def make_receipt(report: Any, *, commit: str, run_id: str) -> dict[str, Any]:
     """Allowlist fields only. Fail closed on contradictory or missing proof."""
@@ -30,6 +44,8 @@ def make_receipt(report: Any, *, commit: str, run_id: str) -> dict[str, Any]:
         raise ValueError("invalid workflow run")
     if not isinstance(report, dict):
         raise ValueError("preflight report must be an object")
+    if any(not isinstance(key, str) for key in report) or not set(report) <= REPORT_KEYS:
+        raise ValueError("unrecognized report fields, possibly sensitive")
     status = report.get("status")
     if not isinstance(status, str) or not re.fullmatch(r"(PASS|HOLD)_[A-Z0-9_]{1,100}", status):
         raise ValueError("unrecognized preflight result")
