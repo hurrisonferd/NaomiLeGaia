@@ -202,7 +202,12 @@ def _ordinary_chat(payload: dict, browser_request: Request, query: str) -> dict:
     """
     validated = gaiaos_api.ChatRequest.model_validate(payload)
     # No retrieval or altered model prompt for the original legacy mode.
-    if not validated.messages or validated.messages[-1].role != "user":
+    # The production Render entrypoint is browser_memcon_bridge, NOT
+    # gaiaos_api.browser_chat. Honor the same explicit browser memory opt-out
+    # here before even consulting the BIGBANG controller or scanning a DB.
+    if (validated.include_memory is False
+            or not validated.messages
+            or validated.messages[-1].role != "user"):
         return _original_chat(validated, browser_request)
     try:
         current = gaiaos_memory_mode.mode_status(memcon_runtime)

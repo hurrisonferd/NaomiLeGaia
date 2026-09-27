@@ -1,0 +1,96 @@
+name: GALAXY Real Render Entrypoint Integration Repair
+
+# Tests actual Docker CMD, not only the alternate gaiaos_app FastAPI object.
+# Synthetic isolated SQLite, mock future owner approval, no live Turso/OpenAI,
+# no Render deploy, no source merge, no real token or archive, BIGBANG stays OFF.
+on:
+  push:
+    paths:
+      - "api/Dockerfile"
+      - "api/browser_memcon_bridge.py"
+      - "tests/test_galaxy_actual_render_bridge_integration.py"
+      - ".github/workflows/galaxy-real-render-bridge-integration.yml"
+  pull_request:
+    paths:
+      - "api/Dockerfile"
+      - "api/browser_memcon_bridge.py"
+      - "tests/test_galaxy_actual_render_bridge_integration.py"
+      - ".github/workflows/galaxy-real-render-bridge-integration.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  actual-docker-served-chat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install actual carrier and synthetic API test-client deps
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0" "PyYAML>=6.0,<7.0"
+      - name: Compile real Render entrypoint and actual hosted-chat integration tests
+        run: |
+          python -m py_compile api/browser_memcon_bridge.py
+          python -m py_compile api/gaiaos_api.py
+          python -m py_compile tests/test_galaxy_actual_render_bridge_integration.py
+      - name: Test actual browser_memcon_bridge /chat, source-backed GALAXY retrieval, opt-out and emergency recovery
+        run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_actual_render_bridge_integration.py' -v
+      - name: Regress independent Stage 9W alternate-route browser integration and Stage 9AE hold barrier
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9w_browser_chat_wiring.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9w_served_app.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ae_staged_history_barrier.py' -v
+      - name: Regress independent HEATDEATH recovery and real operational gateway
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_bigbang_operational_reader_stage6.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_gaiaos_memory_gateway_stage3.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_heatdeath_legacy_recovery_stage4.py' -v
+      - name: Build the actual Render Dockerfile, not a source-checkout imitation
+        run: docker build -f api/Dockerfile -t gaiaos-galaxy-real-bridge:ci .
+      - name: Inspect actual built container OFFLINE with no network or real credentials
+        run: |
+          docker run --rm -i --network none \
+            -e MEMCONOS_DB_PATH=/tmp/ci-isolated-memcon.sqlite \
+            -e GAIAOS_API_KEY=CI-ONLY-NOT-REAL-OWNER-KEY \
+            -e RENDER_GIT_COMMIT=CI-ONLY-NOT-A-DEPLOYED-REVISION \
+            gaiaos-galaxy-real-bridge:ci python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          from fastapi.routing import APIRoute
+          import browser_memcon_bridge as bridge
+          import gaiaos_memory_mode as mode
+          import memcon_runtime as runtime
+          modules = ("galaxy_legacy_gravity", "gaiaos_chat_auto_memory",
+                     "galaxy_frontdoor_context", "gaiaos_memory_gateway",
+                     "gaiaos_chat_memory")
+          assert all(importlib.util.find_spec(name) for name in modules)
+          for private in ("galaxy_stage9ag_staging_historical_import",
+                          "galaxy_stage9ah_signed_staging_rollback",
+                          "galaxy_stage9ab_owner_local_bootstrap",
+                          "galaxy_archive_staging"):
+              assert importlib.util.find_spec(private) is None, private
+          routes = [r for r in bridge.app.routes if isinstance(r, APIRoute)
+                    and r.path == "/chat" and "POST" in r.methods]
+          assert len(routes) == 1
+          assert routes[0].endpoint is bridge.browser_chat
+          assert mode.mode_status(runtime)["effective_mode"] == mode.HEATDEATH
+          assert mode.mode_status(runtime)["bigbang_activation_enabled"] is False
+          assert (Path("/app/GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA")
+                  / "VERA-EXPERIENCES.v1.md").exists()
+          print("PASS: actual Render image has ONE real /chat, complete read-only "
+                "GALAXY runtime dependency set, no private operator tooling, "
+                "six-lane source tree and BIGBANG LOCKED")
+          PY
+      - name: Six member E-LANES and permanent preservation source invariants
+        run: |
+          test "$(find GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA -maxdepth 1 -name '*-EXPERIENCES.v1.md' | wc -l)" -eq 6
+          for daemon in VERA ANVIL SELENE ORIN KESTREL NIMUE; do
+            test -f "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/$daemon-EXPERIENCES.v1.md"
+          done
+          test ! -e GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VASKON-EXPERIENCES.v1.md
+          grep -Fq '//PW:PRESERVE//' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md

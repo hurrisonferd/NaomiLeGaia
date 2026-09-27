@@ -28,6 +28,13 @@ COPY api/gaiaos_one_click_readiness.py ./gaiaos_one_click_readiness.py
 COPY api/gaiaos_one_click_console.py ./gaiaos_one_click_console.py
 COPY api/gaiaos_lazy_diagnostics.py ./gaiaos_lazy_diagnostics.py
 COPY api/gaiaos_chat_memory.py ./gaiaos_chat_memory.py
+# Actual Render entrypoint browser_memcon_bridge imports the read gateway;
+# its operational GALAXY branch lazily requires galaxy_legacy_gravity.
+# The alternate GaiaOS extension browser /chat uses auto_memory lazily.
+# Package ONLY these read-only runtime dependencies, NOT owner-local staging
+# importers, private source handling, migration scripts or test signers.
+COPY api/gaiaos_chat_auto_memory.py ./gaiaos_chat_auto_memory.py
+COPY api/galaxy_legacy_gravity.py ./galaxy_legacy_gravity.py
 COPY api/galaxy_frontdoor_context.py ./galaxy_frontdoor_context.py
 COPY api/gaiaos_app.py ./gaiaos_app.py
 COPY api/memcon_runtime.py ./memcon_runtime.py
