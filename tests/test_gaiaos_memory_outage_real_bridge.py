@@ -69,6 +69,12 @@ assert "PRIVATE-SYNTHETIC" not in down.text
 assert store._INITIALIZED is False
 
 client.cookies.set(base.SESSION_COOKIE, base._session_token())
+page = client.get("/chat/recovery")
+assert page.status_code == 200, page.text
+assert "new, generic chat" in page.text
+assert "recovery_acknowledged:true" in page.text
+assert page.headers["cache-control"] == "no-store"
+assert calls["db"] == 1
 normal = client.post("/chat", json={
     "messages": [{"role": "user", "content": "General, non-Daemon question"}],
     "include_memory": False,
@@ -98,6 +104,17 @@ wrong_truthy = client.post("/chat/recovery", json={
     "include_memory": False, "recovery_acknowledged": 1,
 })
 assert wrong_truthy.status_code == 409, wrong_truthy.text
+past_solo = client.post("/chat/recovery", json={
+    "messages": [
+        {"role": "assistant", "content": "Previous SOLO conversation"},
+        {"role": "user", "content": "New generic offline question"},
+    ],
+    "include_memory": False, "recovery_acknowledged": True,
+})
+assert past_solo.status_code == 409, past_solo.text
+assert past_solo.json()["detail"]["status"] == (
+    "HOLD_START_FRESH_GENERIC_MESSAGE_ONLY"
+)
 assert calls["db"] == before
 
 class FakeProvider:
@@ -169,6 +186,10 @@ assert store._INITIALIZED is False
 # Import and even independent carrier liveness must not create a database.
 client = TestClient(bridge.app, base_url="https://testserver")
 assert client.get("/health").status_code == 200
+home = client.get("/")
+assert home.status_code == 200, home.text
+assert "/chat/recovery" in home.text
+assert "SOLO state cannot be checked" in home.text
 assert store._INITIALIZED is False
 assert not Path(os.environ["MEMCONOS_DB_PATH"]).exists()
 auth = {"Authorization": "Bearer " + os.environ["GAIAOS_API_KEY"]}
