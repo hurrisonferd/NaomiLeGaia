@@ -350,12 +350,21 @@ def _frontdoor_packet(
     # inventing a third mode. Explicit false always opts out in either mode.
     should_read_memory = include_memory
     if should_read_memory is None:
-        import memcon_runtime
-        control = gaiaos_memory_mode.mode_status(memcon_runtime)
-        should_read_memory = (
-            control.get("effective_mode") == gaiaos_memory_mode.BIGBANG
-            and control.get("bigbang_activation_enabled") is True
-        )
+        # Match the browser chat/gateway four-part gate. Malformed mode state,
+        # unavailable MemconOS or a failed control read must NOT activate an
+        # implicit legacy or GALAXY memory lookup.
+        try:
+            import memcon_runtime
+            control = gaiaos_memory_mode.mode_status(memcon_runtime)
+            should_read_memory = (
+                isinstance(control, dict)
+                and control.get("schema") == gaiaos_memory_mode.SCHEMA
+                and control.get("effective_mode") == gaiaos_memory_mode.BIGBANG
+                and control.get("configured_mode") == gaiaos_memory_mode.BIGBANG
+                and control.get("bigbang_activation_enabled") is True
+            )
+        except Exception:
+            should_read_memory = False
     memory_context = None
     if should_read_memory:
         import memcon_runtime
