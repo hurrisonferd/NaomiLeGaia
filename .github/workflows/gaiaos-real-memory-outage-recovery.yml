@@ -7,12 +7,14 @@ on:
     paths:
       - "api/memcon_entrypoint.py"
       - "api/browser_memcon_bridge.py"
+      - "api/gaiaos_api.py"
       - "tests/test_gaiaos_memory_outage_real_bridge.py"
       - ".github/workflows/gaiaos-real-memory-outage-recovery.yml"
   pull_request:
     paths:
       - "api/memcon_entrypoint.py"
       - "api/browser_memcon_bridge.py"
+      - "api/gaiaos_api.py"
       - "tests/test_gaiaos_memory_outage_real_bridge.py"
       - ".github/workflows/gaiaos-real-memory-outage-recovery.yml"
 
@@ -35,7 +37,7 @@ jobs:
       - name: Compile actual boot adapter, Render entrypoint and fresh-process tests
         run: |
           python -m py_compile api/memcon_entrypoint.py \
-            api/browser_memcon_bridge.py \
+            api/browser_memcon_bridge.py api/gaiaos_api.py \
             tests/test_gaiaos_memory_outage_real_bridge.py
       - name: Fresh process local and fake remote failures, signed generic recovery
         run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_gaiaos_memory_outage_real_bridge.py' -v
