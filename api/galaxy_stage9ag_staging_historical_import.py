@@ -169,7 +169,7 @@ def _receipt_ok(
                 or receipt.get("export_sha256") != approval["export_sha256"]
                 or receipt.get("source_sha256") != approval["source_sha256"]
                 or receipt.get("canary_sha256") != approval["canary_sha256"]
-                or receipt.get("remote_storage_written") is not False
+                or receipt.get("remote_observation_pending_external_review") is not True
                 or receipt.get("receipt_sha256") != y._sha(y._bytes({
                     k: val for k, val in receipt.items()
                     if k != "receipt_sha256"
@@ -432,7 +432,7 @@ def stage_first_signed_batch(
                 "live_owner_authentication_verified": False,
                 # The receipt is source-computed; no assertion of real remote
                 # proof until independent fresh readback and connector check.
-                "remote_storage_written": False,
+                "remote_observation_pending_external_review": True,
             }
             receipt["receipt_sha256"] = y._sha(y._bytes(receipt))
             mac = hmac.new(
