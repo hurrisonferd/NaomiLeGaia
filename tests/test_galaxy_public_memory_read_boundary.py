@@ -52,6 +52,9 @@ class PublicReadIntegrationTests(unittest.TestCase):
         patches = [
             patch.object(carrier, "API_KEY", SESSION_KEY),
             patch.object(runtime, "STORAGE_BACKEND", "local_sqlite"),
+            # Source checkout keeps GaiaOS at repository root; the actual
+            # Render Dockerfile correctly copies it under /app alongside api/.
+            patch.object(entry.gaiaos_app, "DEPLOYED_ROOT", ROOT),
         ]
         for item in patches:
             item.start()
