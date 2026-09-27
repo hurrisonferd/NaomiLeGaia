@@ -58,6 +58,10 @@ class PublicReadIntegrationTests(unittest.TestCase):
             self.addCleanup(item.stop)
         self.client = TestClient(served.app, base_url="https://testserver")
         self.client.cookies.set(carrier.SESSION_COOKIE, carrier._session_token())
+        # Each method gets an independent synthetic row population even though
+        # the process-local temporary SQLite fixture persists across tests.
+        with runtime._db() as conn:
+            conn.execute("DELETE FROM memory_records")
         self.safe = runtime.write_record(
             authority="NAOMI", approved=True, record_type="TEST",
             scope="MemoryOS", statement=SAFE_WORDS, source=SAFE_SOURCE,
