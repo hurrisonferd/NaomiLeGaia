@@ -292,6 +292,28 @@ class Stage9UBackfillTests(unittest.TestCase):
         self.conn.commit()
         self.assertEqual(self.apply(plan)["status"], "HOLD_REPLAY_DRIFT")
 
+    def test_replay_requires_unchanged_original_source_not_just_score(self):
+        plan = self.plan()
+        self.apply(plan)
+        self.conn.execute(
+            "UPDATE memory_importance SET gate_units=5 WHERE record_id=?", (IDS[1],),
+        )
+        self.conn.commit()
+        self.assertEqual(self.apply(plan)["status"], "HOLD_REPLAY_SOURCE_DRIFT")
+
+    def test_repeat_rollback_checks_restored_rows_still_match(self):
+        plan = self.plan()
+        self.apply(plan)
+        self.assertEqual(self.rollback(plan)["status"], "PASS_IN_MEMORY_ROLLBACK_READBACK")
+        # Record A originally had NO gravity; an unrelated new score cannot
+        # be represented as an already-verified restored state.
+        self.conn.execute(
+            "INSERT INTO memory_gravity VALUES (?,?,?,?,?,?,?)",
+            (IDS[0], .42, "newer-model", "{}", "{}", "later", None),
+        )
+        self.conn.commit()
+        self.assertEqual(self.rollback(plan)["status"], "HOLD_ROLLBACK_REPLAY_DRIFT")
+
     def test_historical_hold_and_six_other_scopes_never_backfilled(self):
         self.conn.execute(
             "UPDATE memory_records SET status='STAGED_HISTORICAL_HOLD' WHERE record_id=?",
