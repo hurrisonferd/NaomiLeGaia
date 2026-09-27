@@ -114,7 +114,7 @@ class Stage9VOwnerLocalBundleTests(unittest.TestCase):
                 self.assertFalse(self.dest.exists())
 
     def test_uuid_sql_interpolation_rejects_other_values(self):
-        for item in ("' OR 1=1 --", "abc", str(uuid.uuid1()), str(uuid.uuid4()).upper()):
+        for item in ("' OR 1=1 --", "abc", str(uuid.uuid1()), "8744D4F4-CEA2-4D42-8B68-3F6CD349912A"):
             with self.subTest(item=item):
                 with self.assertRaises(ValueError):
                     setup.make_sql(item)
