@@ -1,7 +1,9 @@
 name: GALAXY Stage 9V Real Staging Read-Only Owner Gate
 
 # Intentionally NO pull_request, push, schedule or workflow_run trigger.
-# Eligible only after this workflow is reviewed and merged onto main.
+# This is a PORTABLE TEMPLATE. It is deliberately DISABLED in the original
+# hurrisonferd-owned repository, even after any merge to its main branch.
+# Run only after a separately reviewed copy is installed in an account-owned repo.
 on:
   workflow_dispatch:
     inputs:
@@ -24,7 +26,8 @@ concurrency:
 jobs:
   verify-readonly-staging:
     if: >-
-      github.repository == 'hurrisonferd/NaomiLeGaia' &&
+      github.repository_owner == 'Ligeia621' &&
+      github.repository != 'hurrisonferd/NaomiLeGaia' &&
       github.ref == 'refs/heads/main' &&
       github.actor == 'Ligeia621' &&
       github.triggering_actor == 'Ligeia621' &&
@@ -32,8 +35,10 @@ jobs:
       inputs.confirmation == 'STAGING_READ_ONLY'
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    # Owner MUST manually configure this environment's required reviewers and
-    # four secrets before dispatch. A name alone is not a protection policy.
+    # Ligeia MUST configure this environment and its four secrets inside HER
+    # own repository after independently reviewing this workflow. Never enter
+    # independent Turso credentials into the original hurrisonferd repo.
+    # A name alone is not a protection policy; private-plan reviewers may vary.
     environment: gaiaos-stage9v-read-only
     steps:
       - uses: actions/checkout@v4
