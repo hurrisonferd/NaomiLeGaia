@@ -159,6 +159,64 @@ class Stage9WBrowserRouting(unittest.TestCase):
         self.assertEqual(result.status_code, 200, result.text)
         prep.assert_not_called()
 
+    def test_second_gate_control_outage_discards_memory_but_serves_chat(self):
+        packet = prepared()
+        # Preparation already succeeded in the optional server bridge.
+        # A lost control connection at the SECOND gate must not abort /chat.
+        with patch.object(automatic, "prepare_for_browser", return_value=packet), patch.object(
+            mode, "mode_status", side_effect=ConnectionError("PRIVATE-TURSO-TOKEN")
+        ):
+            result = self.post()
+        self.assertEqual(result.status_code, 200, result.text)
+        self.assertEqual(len(self.model.calls), 1)
+        self.assertEqual(self.model.calls[0]["instructions"], "Trusted carrier.")
+        self.assertEqual(
+            result.json()["memory_context"]["status"],
+            "HOLD_NOT_APPLIED_UNVERIFIED_OR_HEATDEATH",
+        )
+        self.assertNotIn("PRIVATE-TURSO-TOKEN", result.text)
+        self.assertNotIn("MEM-STAGE9W-CURRENT", self.model.calls[0]["instructions"])
+
+    def test_second_gate_requires_schema_and_ignores_activation_truthy(self):
+        packet = prepared()
+        altered = (
+            {**AUTH, "schema": "INVALID"},
+            {**AUTH, "bigbang_activation_enabled": 1},
+            {**AUTH, "configured_mode": mode.HEATDEATH},
+            HEATDEATH,
+            None,
+        )
+        for control in altered:
+            with self.subTest(control=control):
+                self.model.calls.clear()
+                with patch.object(automatic, "prepare_for_browser", return_value=packet), patch.object(
+                    mode, "mode_status", return_value=control
+                ):
+                    result = self.post()
+                self.assertEqual(result.status_code, 200, result.text)
+                self.assertEqual(len(self.model.calls), 1)
+                self.assertEqual(self.model.calls[0]["instructions"], "Trusted carrier.")
+                self.assertEqual(
+                    result.json()["memory_context"]["status"],
+                    "HOLD_NOT_APPLIED_UNVERIFIED_OR_HEATDEATH",
+                )
+
+    def test_second_gate_instruction_builder_failure_never_leaks_partial_memory(self):
+        packet = prepared()
+        with patch.object(automatic, "prepare_for_browser", return_value=packet), patch.object(
+            mode, "mode_status", return_value=AUTH
+        ), patch.object(
+            evidence, "instructions", side_effect=ValueError("PRIVATE-MEMORY-DATA")
+        ):
+            result = self.post()
+        self.assertEqual(result.status_code, 200, result.text)
+        self.assertEqual(self.model.calls[0]["instructions"], "Trusted carrier.")
+        self.assertEqual(
+            result.json()["memory_context"]["status"],
+            "HOLD_NOT_APPLIED_UNVERIFIED_OR_HEATDEATH",
+        )
+        self.assertNotIn("PRIVATE-MEMORY-DATA", result.text)
+
     def test_malformed_injected_evidence_fails_second_guard_at_model_call(self):
         packet = prepared()
         packet["current_records"][0]["current_default_eligible"] = False
