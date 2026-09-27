@@ -17,6 +17,7 @@ import importlib
 from typing import Any
 
 import gaiaos_memory_mode as mode
+import gaiaos_public_memory_boundary as public_archive
 import legacy_memory_reader as legacy
 
 SCHEMA = "gaiaos.memory-gateway.v1"
@@ -57,17 +58,8 @@ def _hold(reason: str, *, control_reason: str | None = None,
 
 
 def _unreleased_staging_row(record: Any) -> bool:
-    """Pure, dependency-free exclusion, including forged ACTIVE archive rows.
-
-    Never import optional GALAXY code in HEATDEATH: a missing draft module
-    must not take down the emergency legacy route.
-    """
-    if not isinstance(record, dict):
-        return True
-    source = record.get("source")
-    return (record.get("status") == "STAGED_HISTORICAL_HOLD"
-            or (isinstance(source, str)
-                and source.startswith("galaxy-archive-v1:")))
+    """One dependency-free shared rule for all GaiaOS public read surfaces."""
+    return public_archive.unreleased(record)
 
 
 def _validated_legacy(payload: Any, scope: str | None, limit: int) -> bool:

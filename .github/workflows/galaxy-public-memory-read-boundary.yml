@@ -1,0 +1,99 @@
+name: GALAXY Actual Public Memory Read Boundary
+
+# Source-only review. Uses a temp native SQLite fixture and offline-built
+# Render image. NO remote Turso/real credentials/model, data migrations,
+# automatic merge or BIGBANG activation.
+on:
+  push:
+    paths:
+      - "api/gaiaos_public_memory_boundary.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/memcon_entrypoint.py"
+      - "api/galaxy_frontdoor_context.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/Dockerfile"
+      - "tests/test_galaxy_public_memory_read_boundary.py"
+      - ".github/workflows/galaxy-public-memory-read-boundary.yml"
+  pull_request:
+    paths:
+      - "api/gaiaos_public_memory_boundary.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/memcon_entrypoint.py"
+      - "api/galaxy_frontdoor_context.py"
+      - "api/browser_memcon_bridge.py"
+      - "api/Dockerfile"
+      - "tests/test_galaxy_public_memory_read_boundary.py"
+      - ".github/workflows/galaxy-public-memory-read-boundary.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  actual-host-and-mcp-read-boundary:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install original runtime and actual FastAPI HTTP test client
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+      - name: Compile real public HTTP/MCP and served browser modules
+        run: |
+          python -m py_compile api/gaiaos_public_memory_boundary.py \
+            api/gaiaos_memory_gateway.py api/memcon_entrypoint.py \
+            api/galaxy_frontdoor_context.py api/browser_memcon_bridge.py \
+            tests/test_galaxy_public_memory_read_boundary.py
+      - name: Actual HTTP, MCP, legacy preview and browser ORBIT/GRAVITY read barrier
+        run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_public_memory_read_boundary.py' -v
+      - name: Preserve Stage 9AE independent historical archive exclusion
+        run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ae_staged_history_barrier.py' -v
+      - name: Preserve actual Render bridge opt-out, BIGBANG mock, HEATDEATH and fallback
+        run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_actual_render_bridge_integration.py' -v
+      - name: Preserve real operational reader and standalone legacy memory recovery
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_bigbang_operational_reader_stage6.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_heatdeath_legacy_recovery_stage4.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9w_served_app.py' -v
+      - name: Build actual Render image with public archive guard
+        run: docker build -f api/Dockerfile -t gaiaos-public-archive-guard:ci .
+      - name: Inspect real image OFFLINE, check gateway and shared public exclusion
+        run: |
+          docker run --rm -i --network none \
+            -e MEMCONOS_DB_PATH=/tmp/ci-isolated-db.sqlite \
+            -e GAIAOS_API_KEY=CI-SYNTHETIC-NOT-REAL-TOKEN \
+            -e RENDER_GIT_COMMIT=CI-SYNTHETIC-NOT-REAL-DEPLOY \
+            gaiaos-public-archive-guard:ci python - <<'PY'
+          import importlib.util
+          from fastapi.routing import APIRoute
+          import browser_memcon_bridge as served
+          import gaiaos_public_memory_boundary as guard
+          import gaiaos_memory_gateway as gateway
+          import gaiaos_memory_mode as mode
+          import memcon_runtime as runtime
+          assert importlib.util.find_spec("gaiaos_public_memory_boundary")
+          for name in ("galaxy_stage9ag_staging_historical_import",
+                       "galaxy_stage9ah_signed_staging_rollback",
+                       "galaxy_archive_staging"):
+              assert importlib.util.find_spec(name) is None
+          staged = {"record_id":"CI-SYNTHETIC", "status":"ACTIVE",
+                    "source":"galaxy-archive-v1:"+"a"*64}
+          assert guard.unreleased(staged)
+          assert gateway._unreleased_staging_row(staged)
+          assert guard.redacted_hold()["records"] == []
+          assert mode.mode_status(runtime)["effective_mode"] == "HEATDEATH"
+          routes = [r for r in served.app.routes if isinstance(r,APIRoute)
+                    and r.path=="/chat" and "POST" in r.methods]
+          assert len(routes)==1 and routes[0].endpoint is served.browser_chat
+          print("PASS: real image contains same release-locked public read boundary and no migration tools")
+          PY
+      - name: Preserve six E-LANE source identities and mandatory preservation
+        run: |
+          for member in VERA ANVIL SELENE ORIN KESTREL NIMUE; do
+            test -f "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/$member-EXPERIENCES.v1.md"
+          done
+          test ! -e GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VASKON-EXPERIENCES.v1.md
+          grep -Fq '//PW:PRESERVE//' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md

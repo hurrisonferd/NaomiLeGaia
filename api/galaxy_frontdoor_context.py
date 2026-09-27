@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from typing import Any
 
+import gaiaos_public_memory_boundary as public_archive
+
 SCHEMA = "gaiaos.galaxy.frontdoor-memory-context.v1"
 VERSION = "galaxy.frontdoor.shadow-legacy-read.v1"
 MAX_RECORDS = 6
@@ -66,6 +68,11 @@ def preview(runtime: Any, query: str, limit: int = 3) -> dict[str, Any]:
         rows = result.get("records")
         if not isinstance(rows, list) or len(rows) > limit:
             return _hold("HOLD_SOURCE_INVALID", query=query, limit=limit)
+        # Independent legacy preview is a public read surface too. A single
+        # staged/forged archive aborts the entire result, not partial history.
+        if any(public_archive.unreleased(row) for row in rows):
+            return _hold("HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW",
+                         query=query, limit=limit)
         seen: set[str] = set()
         evidence: list[dict[str, Any]] = []
         for row in rows:
@@ -77,6 +84,12 @@ def preview(runtime: Any, query: str, limit: int = 3) -> dict[str, Any]:
             seen.add(rid)
             neighborhood = runtime.galaxy_record(rid)
             governing = runtime.galaxy_governing_state(rid)
+            # The second source re-read can change independently of the
+            # search snapshot. Do not trust forged CURRENT governing state.
+            if (not isinstance(neighborhood, dict)
+                    or public_archive.unreleased(neighborhood.get("record"))):
+                return _hold("HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW",
+                             query=query, limit=limit)
             if (
                 not isinstance(neighborhood, dict)
                 or (neighborhood.get("record") or {}).get("record_id") != rid

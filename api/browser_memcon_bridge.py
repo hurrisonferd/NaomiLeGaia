@@ -18,6 +18,7 @@ import memcon_entrypoint
 import memcon_runtime
 import gaiaos_memory_mode
 import gaiaos_memory_gateway
+import gaiaos_public_memory_boundary as public_archive
 import gaiaos_chat_memory
 from gaiaos_lazy_diagnostics import deferred
 
@@ -357,6 +358,8 @@ def _handle_galaxy_orbit(command: str) -> dict:
     result = memcon_runtime.galaxy_record(record_id)
     if result is None:
         return _envelope("PW:ORBIT HOLD", {"status": "HOLD", "reason": "Unknown durable record_id", "record_id": record_id})
+    if public_archive.unreleased(result.get("record")):
+        return _envelope("PW:ORBIT HOLD", public_archive.redacted_hold())
     return _envelope("PW:ORBIT", {"status": "OBSERVED", "record_id": record_id, "orbit": result, "writes_performed": []})
 
 
@@ -372,6 +375,9 @@ def _handle_galaxy_gravity(command: str) -> dict:
             "proof_boundary": "PW:GRAVITY is inspection-only. Shadow scoring must be explicitly run through the Phase-2 canary or another approved scoring surface.",
         })
     try:
+        record = memcon_runtime.get_record(record_id)
+        if record is not None and public_archive.unreleased(record):
+            return _envelope("PW:GRAVITY HOLD", public_archive.redacted_hold())
         preview = memcon_runtime.galaxy_gravity_preview(record_id)
     except KeyError:
         return _envelope("PW:GRAVITY HOLD", {"status": "HOLD", "reason": "Unknown durable record_id", "record_id": record_id})
