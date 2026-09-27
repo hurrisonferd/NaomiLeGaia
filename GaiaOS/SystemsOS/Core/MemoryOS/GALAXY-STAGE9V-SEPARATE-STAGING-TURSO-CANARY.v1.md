@@ -50,6 +50,23 @@ The probe refuses to create or alter any schema; the owner/admin must pre-provis
 
 Do NOT install those tables or marker in production as a shortcut. Use staging-only scoped tokens, preferably limited to the necessary marker SELECT and canary SELECT/INSERT. Verify actual Turso database identity and alias separation through owner/provider administration BEFORE authorizing a write. This source code checks its configured URL and marker, not Turso's platform control-plane identity.
 
+## Read-only operator preflight: no tokens in chats or Git
+
+Before signing or running the single canary, use the explicit read-only operator CLI, api/galaxy_stage9v_operator_preflight.py. It requires four separately supplied PRIVATE environment variables:
+
+- GAIAOS_STAGE9V_STAGING_URL: newly provisioned staging Turso endpoint, never the current MemoryOS production URL.
+- GAIAOS_STAGE9V_STAGING_TOKEN: a staging-only credential kept in the operator's secure environment; never paste into ChatGPT, GitHub comments, commits, CI logs or screenshots.
+- GAIAOS_STAGE9V_PRODUCTION_URL: the existing production endpoint URL used ONLY for identity comparison. The probe never accepts or uses the production token.
+- GAIAOS_STAGE9V_STAGING_UUID: a fresh v4 UUID already installed in exactly one manually provisioned staging identity marker.
+
+The exact command, after setting those variables privately, is:
+
+    python api/galaxy_stage9v_operator_preflight.py --confirm-read-only
+
+No environment is mutated by this command. The CLI refuses missing variables, identical staging/production URLs, invalid URL formats or UUIDs. It opens ONLY the staging endpoint, SELECTs the identity marker, verifies the read-only SELECT contract of the preprovisioned canary table and closes the connection. It NEVER inserts even a canary. Its JSON output contains only statuses, query counts and one-way endpoint/identity hashes, not URLs, tokens, source memory or stored content. A PASS proves read access to the supplied staging marker and canary table, NOT owner authentication, Turso control-plane identity or provider-level alias separation.
+
+This preflight is source-only until the branch is reviewed, merged and deliberately installed in the owner's own authorized operator environment. Do NOT run arbitrary code from an unreviewed PR with live credentials. Keep the manual one-canary signed-approval step separate: read-only readiness is not write authorization.
+
 ## Failure, proof and restart bounds
 
 If the initial write reports a failure after an INSERT attempt, or reopening fails after COMMIT, the result is a HOLD with STAGING_CANARY_WRITE_OUTCOME_UNVERIFIED. The owner must retry the SAME run ID and nonce to establish whether the original commit is present. Do not assume a failed response implies no write. No token, archive text or URL is echoed into the result.
