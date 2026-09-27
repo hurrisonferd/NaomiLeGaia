@@ -349,6 +349,28 @@ def stage_historical_fixture(
             conn.rollback()  # Exact replay MUST do zero writes.
             replay = True
         else:
+            # An approved rollback must not silently resurrect historical
+            # records under a fresh approval ID. Separate reactivation needs
+            # its OWN reviewed, versioned design; source key alone is not it.
+            # Stage 9Y-only fixtures without a Stage 9Z ledger are unchanged.
+            has_rollback_ledger = conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' "
+                "AND name='galaxy_stage9z_rollbacks'"
+            ).fetchone() is not None
+            if has_rollback_ledger:
+                source_keys = tuple(item["source_key_sha256"] for item in items)
+                placeholders = ",".join("?" for _ in source_keys)
+                prior_rollback = conn.execute(
+                    "SELECT 1 FROM galaxy_stage9z_rollbacks AS z "
+                    "JOIN galaxy_stage9y_items AS i "
+                    "ON i.approval_id=z.import_approval_id "
+                    "WHERE z.status='ROLLED_BACK_LOCAL_FIXTURE' "
+                    f"AND i.source_key_sha256 IN ({placeholders}) LIMIT 1",
+                    source_keys,
+                ).fetchone()
+                if prior_rollback is not None:
+                    conn.rollback()
+                    return _hold("HOLD_PREVIOUSLY_ROLLED_BACK_SOURCE")
             # All collision checks run BEFORE the FIRST insertion.
             for item in items:
                 source = "galaxy-archive-v1:" + item["source_key_sha256"]
