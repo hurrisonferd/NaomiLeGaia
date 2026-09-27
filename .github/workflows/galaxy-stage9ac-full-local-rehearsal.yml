@@ -1,0 +1,59 @@
+name: GALAXY Stage 9AC Full LOCAL Migration Rehearsal
+
+# All endpoints, tokens, source data, staging/main DBs and HMAC keys are
+# SYNTHETIC. No live Turso credentials, requests, deployment or manual action.
+on:
+  push:
+    paths:
+      - "api/galaxy_stage9ac_full_local_rehearsal.py"
+      - "tests/test_galaxy_stage9ac_full_local_rehearsal.py"
+      - ".github/workflows/galaxy-stage9ac-full-local-rehearsal.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_stage9ac_full_local_rehearsal.py"
+      - "tests/test_galaxy_stage9ac_full_local_rehearsal.py"
+      - ".github/workflows/galaxy-stage9ac-full-local-rehearsal.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  synthetic-end-to-end-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install actual libSQL driver for isolated LOCAL file, never Turso
+        run: python -m pip install "libsql>=0.1,<1.0"
+      - name: Full 9AB to 9Z integration plus false-remote-evidence negative tests
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9ac_full_local_rehearsal.py' -v
+      - name: One-command synthetic native SQLite rehearsal as standalone CLI
+        run: python api/galaxy_stage9ac_full_local_rehearsal.py --local-fixture-only --driver native
+      - name: One-command synthetic REAL libSQL driver LOCAL file rehearsal
+        run: python api/galaxy_stage9ac_full_local_rehearsal.py --local-fixture-only --driver libsql
+      - name: Guard predecessor bootstrap, preimport, import, rollback
+        run: |
+          python -m unittest discover -s tests -p 'test_galaxy_stage9ab_owner_local_bootstrap.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9ab_prepare_private_bundle.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9aa_preimport_readonly.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9z_local_rollback.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9y_canonical_staging.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_archive_preflight_stage9s.py' -v
+      - name: No remote connector invocation, production or real credentials
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src = Path("api/galaxy_stage9ac_full_local_rehearsal.py").read_text()
+          for unexpected in (
+              "GAIAOS_STAGE9V_STAGING_TOKEN", "TURSO_AUTH_TOKEN",
+              "os.environ", "requests.", "httpx.", "import memcon_runtime",
+              "import gaiaos_memory_gateway", "production_url=os.getenv",
+          ):
+              assert unexpected not in src, unexpected
+          print("PASS: local synthetic rehearsal contains no external token or network flow")
+          PY
