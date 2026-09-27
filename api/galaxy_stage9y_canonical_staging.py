@@ -28,8 +28,8 @@ TARGET = "LOCAL_CANONICAL_STAGING_SQLITE_FIXTURE_ONLY"
 STATUS = stage9t.STAGED_STATUS
 ROOT = Path(__file__).resolve().parents[1]
 BATCH_CAP = 25
-HEX = re.compile(r"[0-9a-f]{64}\\Z")
-ID = re.compile(r"[A-Za-z0-9_.:-]{8,100}\\Z")
+HEX = re.compile(r"[0-9a-f]{64}\Z")
+ID = re.compile(r"[A-Za-z0-9_.:-]{8,100}\Z")
 RECORD_COLS = (
     "record_id", "authority", "record_type", "scope", "statement", "source",
     "status", "version", "created_at", "updated_at", "supersedes", "notes",
