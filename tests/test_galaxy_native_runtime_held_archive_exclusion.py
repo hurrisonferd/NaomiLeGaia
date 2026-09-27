@@ -83,6 +83,10 @@ class SignedNativeHeldArchiveTests(unittest.TestCase):
         self.patches = [
             patch.object(store, "_db", side_effect=lambda: native_db(fx.stage)),
             patch.object(store, "_INITIALIZED", True),
+            # Docker COPY places GaiaOS at /app/GaiaOS; the CI source
+            # checkout instead keeps the tree at repository-root/GaiaOS.
+            # Inject that exact checkout root without changing production.
+            patch.object(served.gaiaos_app, "DEPLOYED_ROOT", ROOT),
             patch.object(carrier, "API_KEY", "STAGE9-FAKE-OWNER-KEY"),
         ]
         for item in self.patches:
