@@ -12,6 +12,10 @@ The new pure public archive guard has no optional GALAXY imports, no database, n
 
 Actual Render Dockerfile now packages this pure guard and deliberately excludes owner-local import/export, signing, rollback and migration scripts. Invariants: no data writes or promotions, no stage status upgrades, no mode changes, no identity claims, BIGBANG remains locked, preserve all six individual E-LANES and the //PW:PRESERVE// command.
 
+## Additional actual runtime defect found during this integration
+
+The first CI run proved the direct archive-read tests, then its existing host-bootstrap HTTP integration test failed. Source checkout needed the expected GaiaOS runtime root fixture; after that was corrected, the test exposed a genuine pre-existing NameError: four authenticated HTTP handlers in memcon_entrypoint (host bootstrap, memory observe, and GET/POST candidate listings) called an undefined module name "base" instead of the correct existing _auth helper. This draft fixes all four handlers and adds explicit tests of their real HTTP session/bearer authentication and local synthetic candidate lifecycle. This source repair is not a claim that they have already been redeployed.
+
 ## Proof and remaining requirements
 
 CI uses the REAL Render bridge app and REAL disposable local SQLite records: one safe ACTIVE, one explicit STAGED_HISTORICAL_HOLD, and one forged ACTIVE archive-source record. It tests authenticated HTTP/MCP exact ID and search, no-partial-leak mixed batches, unchanged native clean returns, HTTP denied before DB access, host bootstrap and existing gateway HOLDS, preview reread changes and served-browser direct ORBIT/GRAVITY denial, plus the existing real Render bridge and HEATDEATH regressions. CI builds the exact Render Docker image and checks the guard in a network-disabled container with no secrets. These synthetic checks cannot prove remote Turso identity, actual live memory safety, real Render SHA or authorized enhanced recall.
