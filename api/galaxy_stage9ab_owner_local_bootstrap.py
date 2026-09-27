@@ -15,6 +15,7 @@ import os
 import re
 import stat
 import sqlite3
+from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import urlsplit
 
