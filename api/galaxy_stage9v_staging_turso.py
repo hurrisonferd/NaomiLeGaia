@@ -41,7 +41,7 @@ def _hold(status: str, *, error_type: str | None = None,
         "production_gravity_modified": False, "e_lanes_modified": False,
         "mode_control_modified": False, "bigbang_activated": False,
         "writes_performed": (
-            ["STAGING_CANARY_COMMITTED_READBACK_UNVERIFIED"]
+            ["STAGING_CANARY_WRITE_OUTCOME_UNVERIFIED"]
             if committed_but_unverified else []
         ),
         "live_owner_identity_verified": False,
@@ -94,10 +94,16 @@ def _row(cursor: Any) -> dict[str, Any] | None:
 
 def _identity(conn: Any, expected_id: str) -> bool:
     try:
-        row = _row(conn.execute(
+        cursor = conn.execute(
             "SELECT schema,environment,database_id,authority,status "
-            "FROM galaxy_stage9v_staging_identity",
-        ))
+            "FROM galaxy_stage9v_staging_identity LIMIT 2",
+        )
+        rows = cursor.fetchall()
+        if len(rows) != 1:
+            return False
+        names = [col[0] if isinstance(col, (tuple, list))
+                 else getattr(col, "name", str(col)) for col in cursor.description]
+        row = dict(rows[0]) if hasattr(rows[0], "keys") else dict(zip(names, rows[0]))
     except Exception:
         return False
     return row == {
@@ -176,6 +182,7 @@ def prove_staging_turso_canary(
 
     conn = None
     committed = False
+    write_attempted = False
     duplicate = False
     created_at = None
     try:
@@ -203,6 +210,7 @@ def prove_staging_turso_canary(
                 conn.commit()
             else:
                 created_at = datetime.now(timezone.utc).isoformat()
+                write_attempted = True
                 conn.execute(
                     "INSERT INTO galaxy_stage9v_canaries "
                     "(run_id,nonce_sha256,database_id,created_at) VALUES (?,?,?,?)",
@@ -217,7 +225,8 @@ def prove_staging_turso_canary(
             except Exception:
                 pass
         return _hold("HOLD_STAGING_CONNECT_OR_WRITE_FAILED",
-                     error_type=type(exc).__name__, committed_but_unverified=committed)
+                     error_type=type(exc).__name__,
+                     committed_but_unverified=committed or write_attempted)
     finally:
         if conn is not None:
             try:
