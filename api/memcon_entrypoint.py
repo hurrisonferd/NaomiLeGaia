@@ -14,7 +14,10 @@ MEMORY_RUNTIME_PATH = "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.p
 
 app = gaiaos_app.app
 mcp = gaiaos_app.mcp
-memcon_runtime.initialize()
+# Do not connect to Turso or create a local SQLite file while importing the
+# normal Render app. An outage must not prevent HEATDEATH carrier startup.
+# Each memory operation still initializes the existing runtime on demand.
+# In particular, DO NOT substitute an empty local DB for failed remote storage.
 
 def _memory_runtime():
     return gaiaos_app._gaia_runtime(MEMORY_RUNTIME_PATH, "gaia_memory_runtime")
@@ -73,11 +76,53 @@ def _auth(authorization: str | None) -> None:
 
 @app.get("/memconos/health", operation_id="memconHealth")
 def memcon_health(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    """Authenticated, explicit storage readiness, never optimistic durability.
+
+    Liveness belongs to the independent carrier /healthz, not to the database.
+    This endpoint alone is permitted to try the optional backend on demand.
+    An unavailable Turso connection must NEVER open an empty local fallback.
+    """
     _auth(authorization)
-    memcon_runtime.initialize()
-    return {"status":"ok","runtime":memcon_runtime.SCHEMA_VERSION,"database":str(memcon_runtime.DB_PATH),
-            "durable_backend":True,"automatic_persistence":False,"authority":"NAOMI",
-            "memoryos_lifecycle":True}
+    backend = memcon_runtime.storage_status()
+    try:
+        memcon_runtime.initialize()
+        # initialize() is a once-per-process schema setup. A subsequent outage
+        # must not be masked by its _INITIALIZED flag: verify a fresh read.
+        with memcon_runtime._db() as conn:
+            conn.execute("SELECT 1 FROM memory_records LIMIT 1").fetchone()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail={
+            "schema": "gaiaos.memconos.storage-health.v2",
+            "status": "HOLD_STORAGE_UNAVAILABLE",
+            "backend": backend["backend"],
+            "remote_configured": backend["remote_configured"],
+            "error_type": type(exc).__name__,
+            "durability_verified": False,
+            "writes_performed": [],
+            "proof_boundary": "Carrier liveness does not imply memory availability.",
+        }) from None
+    return {
+        "schema": "gaiaos.memconos.storage-health.v2",
+        "status": "ok",
+        "runtime": memcon_runtime.SCHEMA_VERSION,
+        "backend": backend["backend"],
+        "remote_configured": backend["remote_configured"],
+        "storage_reachable": True,
+        # Neither a successful SELECT nor remote configuration proves a
+        # restart/replica-safe owner backup or long-term durability.
+        "durable_backend": False,
+        "durability_verified": False,
+        "restart_canary_verified": False,
+        "automatic_persistence": False,
+        "authority": "NAOMI",
+        "memoryos_lifecycle": True,
+        "writes_performed": [],
+        "proof_boundary": (
+            "Authenticated backend query succeeded. No post-restart "
+            "persistence, provider identity, full historical backup, "
+            "six-E-LANE recovery or BIGBANG activation proven."
+        ),
+    }
 
 @app.get("/memconos/read/{record_id}", operation_id="readMemconRecord")
 def memcon_read_http(record_id: str, authorization: str | None = Header(default=None)) -> dict[str, Any]:
