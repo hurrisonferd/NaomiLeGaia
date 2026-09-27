@@ -381,7 +381,7 @@ class FirstSignedStagingTests(unittest.TestCase):
             def __init__(self): self.calls = 0
             def __call__(self, url, token):
                 self.calls += 1
-                if self.calls == 6:
+                if self.calls == 5:
                     raise OSError("PRIVATE-FRESH-REOPEN-FAIL")
                 return factory(url, token)
         bad = FailFinal()
