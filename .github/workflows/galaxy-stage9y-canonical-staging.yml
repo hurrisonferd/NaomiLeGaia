@@ -1,0 +1,47 @@
+name: GALAXY Stage 9Y Canonical Staging LOCAL Fixture Gate
+
+# This workflow is intentionally source-only. No secrets, external Turso,
+# workflow_dispatch, deployment, production memory or real owner approval.
+on:
+  push:
+    paths:
+      - "api/galaxy_stage9y_canonical_staging.py"
+      - "tests/test_galaxy_stage9y_canonical_staging.py"
+      - ".github/workflows/galaxy-stage9y-canonical-staging.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_stage9y_canonical_staging.py"
+      - "tests/test_galaxy_stage9y_canonical_staging.py"
+      - ".github/workflows/galaxy-stage9y-canonical-staging.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  local-only-canonical-staging-and-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage 9Y exact signed canonical file-backed fixture and safety tests
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9y_canonical_staging.py' -v
+      - name: Stage 9T independently pinned source/provenance and in-memory regression
+        run: python -m unittest discover -s tests -p 'test_galaxy_archive_staging_stage9t.py' -v
+      - name: Stage 9S read-only archive preflight regression
+        run: python -m unittest discover -s tests -p 'test_galaxy_archive_preflight_stage9s.py' -v
+      - name: Stage 9X locally signed canary gate regression
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9x_owner_canary.py' -v
+      - name: Assert Stage 9Y has no external DB driver or production runtime import
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("api/galaxy_stage9y_canonical_staging.py").read_text()
+          for forbidden in ("import libsql", "import memcon_runtime", "import gaiaos_memory_gateway", "turso_libsql", "TURSO_AUTH_TOKEN"):
+              assert forbidden not in p, forbidden
+          print("PASS: Stage 9Y is LOCAL FIXTURE ONLY with no remote database driver")
+          PY
