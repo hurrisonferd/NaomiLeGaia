@@ -226,6 +226,18 @@ class Stage9SArchivePreflightTests(unittest.TestCase):
         self.assertEqual(res["items"][0]["status"], "HOLD_EXISTING_SOURCE_CONFLICT")
         self.assertEqual(self.rt.conn.total_changes, before)
 
+    def test_proposed_record_id_collision_with_other_source_holds(self):
+        proposed = archive.preflight_archive_batch(packet())["items"][0]
+        self.rt.conn.execute(
+            "INSERT INTO memory_records VALUES (?,?,?,?,?)",
+            (proposed["proposed_record_id"], "MemoryOS",
+             "another-source-with-an-existing-record-id", "different", "{}"),
+        )
+        before = self.rt.conn.total_changes
+        result = archive.preflight_archive_batch(packet(), runtime=self.rt)
+        self.assertEqual(result["items"][0]["status"], "HOLD_RECORD_ID_COLLISION")
+        self.assertEqual(self.rt.conn.total_changes, before)
+
     def test_tuple_cursor_rows_are_supported(self):
         other = FakeRuntime(tuple_rows=True)
         self.addCleanup(other.close)
