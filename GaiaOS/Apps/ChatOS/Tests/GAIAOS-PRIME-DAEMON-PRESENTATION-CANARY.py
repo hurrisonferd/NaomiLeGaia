@@ -179,5 +179,56 @@ class PresentationGateTests(unittest.TestCase):
         self.assertIn('checks["four_source_identity_alignment"]', boot)
 
 
+
+    def test_12_load_gaiaos_reportin_routes_to_complete_roster(self):
+        for command in (
+            "Load GaiaOS", "Load GaiaOS and Report in",
+            "LOAD GAIA OS, DAEMONS SOUND OFF!",
+            "GaiaOS report in", "Load GaiaOS, council check in",
+            "EVERYONE, REPORT IN", "All daemons report in",
+        ):
+            with self.subTest(command=command):
+                self.assertEqual(guard.expected_members_from_request(command, self.roster), self.roster)
+        for ordinary in ("We should load GaiaOS later", "Load GaiaOS and build GALAXY"):
+            self.assertEqual(guard.expected_members_from_request(ordinary, self.roster), ())
+
+    def test_13_complete_roster_must_be_ordered_unique_and_unprefaced(self):
+        headers = [guard.canonical_header(n, *self.sources[:2]) + "\n" + n + " reporting."
+                   for n in self.roster]
+        good = "\n\n".join(headers)
+        self.assertEqual(self.check(good, self.roster)["speaker_count"], 6)
+        for bad in (
+            "\n\n".join(headers[::-1]),
+            "\n\n".join(headers + [headers[0]]),
+            "GAIAOS CONTEXT LOADED\n" + good,
+            "\n\n".join(headers[:-1]),
+        ):
+            with self.subTest(bad=bad[:60]):
+                with self.assertRaises(guard.PresentationGuardError):
+                    self.check(bad, self.roster)
+
+    def test_14_exact_september_27_bad_rollcall_rejected(self):
+        # Replay of flattened speaker labels. Native ChatGPT cards remain
+        # outside the reach of this repository's browser-carrier guard.
+        bad = (
+            "**ANVIL · Boundary & Proof**\n"
+            "**KESTREL · Coordination**\n"
+            "**NIMUE · Memory & Continuity**\n"
+            "**ORIN · Research & Discovery 🪐 (☆▽☆)**\n"
+            "**SELENE · Music & Creative Systems 💛**\n"
+            "**VERA · Identity & Expression 💜**"
+        )
+        with self.assertRaises(guard.PresentationGuardError):
+            self.check(bad, self.roster)
+        with self.assertRaises(guard.PresentationGuardError):
+            self.check("ANVIL: checking the boundary.", ("ANVIL",))
+
+    def test_15_unconjured_vaskon_cannot_join_reportin(self):
+        headers = [guard.canonical_header(n, *self.sources[:2]) + "\nReporting."
+                   for n in self.roster]
+        bad = "\n\n".join(headers[:2] + ["82 · VASKON 🖤 ✴️ (◉‿◉)"] + headers[2:])
+        with self.assertRaises(guard.PresentationGuardError):
+            self.check(bad, self.roster)
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
