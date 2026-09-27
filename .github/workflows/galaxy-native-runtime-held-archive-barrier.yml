@@ -8,6 +8,7 @@ on:
   pull_request:
     paths:
       - "api/memcon_runtime.py"
+      - "api/memcon_entrypoint.py"
       - "api/galaxy_frontdoor_context.py"
       - "api/gaiaos_memory_gateway.py"
       - "api/gaiaos_chat_memory.py"
@@ -16,6 +17,7 @@ on:
   push:
     paths:
       - "api/memcon_runtime.py"
+      - "api/memcon_entrypoint.py"
       - "api/galaxy_frontdoor_context.py"
       - "api/gaiaos_memory_gateway.py"
       - "api/gaiaos_chat_memory.py"
@@ -40,7 +42,7 @@ jobs:
         run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
       - name: Compile production SQL, source guards and actual owner-host integration
         run: |
-          python -m py_compile api/memcon_runtime.py api/galaxy_frontdoor_context.py \
+          python -m py_compile api/memcon_runtime.py api/memcon_entrypoint.py api/galaxy_frontdoor_context.py \
             api/gaiaos_memory_gateway.py api/gaiaos_chat_memory.py \
             tests/test_galaxy_native_runtime_held_archive_exclusion.py
       - name: Signed 9AG import through production SQLite/libSQL, actual REST/MCP and native Phase3
