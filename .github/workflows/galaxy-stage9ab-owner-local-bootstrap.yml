@@ -1,0 +1,61 @@
+name: GALAXY Stage 9AB Owner-Local Staging Bootstrap LOCAL Fixture Gate
+
+# No real Turso, secrets, deployment, dispatch or remote mutations in Actions.
+on:
+  push:
+    paths:
+      - "api/galaxy_stage9ab_owner_local_bootstrap.py"
+      - "api/galaxy_stage9ab_prepare_private_bundle.py"
+      - "tests/test_galaxy_stage9ab_owner_local_bootstrap.py"
+      - "tests/test_galaxy_stage9ab_prepare_private_bundle.py"
+      - ".github/workflows/galaxy-stage9ab-owner-local-bootstrap.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_stage9ab_owner_local_bootstrap.py"
+      - "api/galaxy_stage9ab_prepare_private_bundle.py"
+      - "tests/test_galaxy_stage9ab_owner_local_bootstrap.py"
+      - "tests/test_galaxy_stage9ab_prepare_private_bundle.py"
+      - ".github/workflows/galaxy-stage9ab-owner-local-bootstrap.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  owner-local-staging-bootstrap-fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install real libSQL driver for disposable LOCAL file tests only
+        run: python -m pip install "libsql>=0.1,<1.0"
+      - name: Test 9AB default no-connect dry-run, exact schema and rollback failure isolation
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9ab_owner_local_bootstrap.py' -v
+      - name: One-command no-connection owner-private bundle and dry-run handoff
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9ab_prepare_private_bundle.py' -v
+      - name: Predecessor 9AA readonly preimport, private file and local driver regression
+        run: |
+          python -m unittest discover -s tests -p 'test_galaxy_stage9aa_preimport_readonly.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9aa_local_schema_bundle.py' -v
+      - name: Predecessor 9Z local rollback and 9Y canonical import regression
+        run: |
+          python -m unittest discover -s tests -p 'test_galaxy_stage9z_local_rollback.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_stage9y_canonical_staging.py' -v
+      - name: No production token or application runtime in source
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          src = Path("api/galaxy_stage9ab_owner_local_bootstrap.py").read_text()
+          for forbidden in (
+              "import memcon_runtime", "import gaiaos_memory_gateway",
+              "TURSO_AUTH_TOKEN", "sovmem-main-token",
+              "stage_historical_fixture(", "rollback_local_import(",
+              "os.environ.get('GAIAOS_STAGE9V_PRODUCTION_TOKEN')",
+          ):
+              assert forbidden not in src, forbidden
+          print("PASS: owner-only staging schema runner carries no production token")
+          PY
