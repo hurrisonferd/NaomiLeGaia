@@ -1,0 +1,48 @@
+name: GALAXY Stage 9Z Signed Local Rollback Source Gate
+
+# Source/fixture tests ONLY: no secrets, dispatch, deployments, real Turso.
+on:
+  push:
+    paths:
+      - "api/galaxy_stage9z_local_rollback.py"
+      - "api/galaxy_stage9y_canonical_staging.py"
+      - "tests/test_galaxy_stage9z_local_rollback.py"
+      - ".github/workflows/galaxy-stage9z-local-rollback.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_stage9z_local_rollback.py"
+      - "api/galaxy_stage9y_canonical_staging.py"
+      - "tests/test_galaxy_stage9z_local_rollback.py"
+      - ".github/workflows/galaxy-stage9z-local-rollback.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  signed-local-rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage 9Z exact independent signed local rollback and anti-resurrection
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9z_local_rollback.py' -v
+      - name: Stage 9Y canonical staging regression
+        run: python -m unittest discover -s tests -p 'test_galaxy_stage9y_canonical_staging.py' -v
+      - name: Stage 9T pinned source and Stage 9S six-lane preflight regression
+        run: |
+          python -m unittest discover -s tests -p 'test_galaxy_archive_staging_stage9t.py' -v
+          python -m unittest discover -s tests -p 'test_galaxy_archive_preflight_stage9s.py' -v
+      - name: Assert rollback does not access real Turso or production runtime
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path("api/galaxy_stage9z_local_rollback.py").read_text()
+          for name in ("import libsql", "import memcon_runtime", "TURSO_AUTH_TOKEN", "import gaiaos_memory_gateway"):
+              assert name not in p, name
+          print("PASS: no remote driver, token access or production memory runtime")
+          PY
