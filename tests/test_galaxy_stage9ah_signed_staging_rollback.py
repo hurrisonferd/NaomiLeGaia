@@ -306,6 +306,13 @@ class FirstStagingRollbackTests(unittest.TestCase):
             result,
         )
         self.assertEqual(self.fx.counts(), (2, 1, 2, 0))
+        # Restore the deliberately corrupted synthetic canary so the common
+        # preservation assertion tests the rollback, not the attack fixture.
+        with sqlite3.connect(self.fx.stage) as db:
+            db.execute(
+                "UPDATE galaxy_stage9v_canaries SET nonce_sha256=?",
+                (self.fx.canary["nonce_sha256"],),
+            )
         self.protected()
 
     def test_failed_batch_status_update_rolls_back_any_prior_row_deletes(self):
