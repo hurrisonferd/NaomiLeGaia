@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - "api/gaiaos_api.py"
+      - "api/gaiaos_app.py"
       - "api/gaiaos_chat_auto_memory.py"
       - "api/gaiaos_chat_memory.py"
       - "api/gaiaos_memory_gateway.py"
@@ -15,6 +16,7 @@ on:
   push:
     paths:
       - "api/gaiaos_api.py"
+      - "api/gaiaos_app.py"
       - "api/gaiaos_chat_auto_memory.py"
       - "api/gaiaos_chat_memory.py"
       - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
