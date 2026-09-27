@@ -13,6 +13,8 @@ In live use, it calls the repository's already-pinned libsql Python driver (libs
 
 This is a staging TARGET PROOF only. It does not yet test actual owner-approved memory import or full historical-gravity backfill over remote libSQL. The connector-injected CI suite uses a separate local SQLite file to model two connections; those tests deliberately report staging_turso_verified=false and cannot stand in for remote proof.
 
+A second Stage 9V CI suite installs the repository's real Python libsql driver and uses it against a disposable LOCAL libSQL database. It executes the same identity SELECT, BEGIN IMMEDIATE, INSERT, commit, connection close/reopen, exact readback, replay, conflict HOLD, and revoked-marker HOLD via that driver. It also verifies the live connector's database/auth_token call signature without opening a remote connection. This eliminates a mocked-driver compatibility gap, but still deliberately injects the local connector, returns staging_turso_verified=false and never uses a real Turso credential. A local driver PASS must not be promoted to remote staging proof.
+
 ## Fail-closed staging trust contract
 
 Before any database connection, require:
