@@ -1,0 +1,38 @@
+name: GALAXY Stage 9S Historical Archive Preflight
+
+on:
+  pull_request:
+    paths:
+      - "api/galaxy_archive_preflight.py"
+      - "tests/test_galaxy_archive_preflight_stage9s.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9S-ARCHIVE-IMPORT-PREFLIGHT.v1.md"
+      - ".github/workflows/galaxy-stage9s-archive-preflight.yml"
+  push:
+    paths:
+      - "api/galaxy_archive_preflight.py"
+      - "tests/test_galaxy_archive_preflight_stage9s.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9S-ARCHIVE-IMPORT-PREFLIGHT.v1.md"
+      - ".github/workflows/galaxy-stage9s-archive-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  zero-write-provenance-preflight:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile bounded preflight and Stage 9R historical reader
+        run: python -m py_compile api/galaxy_archive_preflight.py api/galaxy_legacy_gravity.py tests/test_galaxy_archive_preflight_stage9s.py
+      - name: Prove archive collision, date, source and six-E-LANE fail-closed behavior
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_preflight_stage9s.py" -v
+      - name: Preserve Stage 9R historical-gravity and zero-write baseline
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_legacy_gravity_stage9r.py" -v
+      - name: Verify no whitespace corruption
+        run: git diff --check HEAD~1 HEAD
