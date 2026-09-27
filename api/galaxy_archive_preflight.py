@@ -78,7 +78,8 @@ def _inspect(item: Any, archive: dict[str, Any], index: int) -> tuple[dict[str, 
     attribution = item.get("attribution_basis")
     if (not _text(source_record_id, 200) or not _text(statement, 8000)
             or not _text(record_type, 80) or not _text(evidence_ref, 500)
-            or confidence not in DATE_CONFIDENCE or attribution not in ATTRIBUTION):
+            or not isinstance(confidence, str) or confidence not in DATE_CONFIDENCE
+            or not isinstance(attribution, str) or attribution not in ATTRIBUTION):
         return public, None
     if not _valid_date(item.get("original_created_at"), confidence):
         public["status"] = "HOLD_DATE_UNVERIFIED"
@@ -88,7 +89,7 @@ def _inspect(item: Any, archive: dict[str, Any], index: int) -> tuple[dict[str, 
             public["status"] = "HOLD_MEMBER_SCOPE_CONFLICT"
             return public, None
         target = "MemoryOS"
-    elif scope == "E_LANE" and member in MEMBERS:
+    elif scope == "E_LANE" and isinstance(member, str) and member in MEMBERS:
         target = "E_LANE:" + member
     else:
         public["status"] = "HOLD_SCOPE_OR_MEMBER_INVALID"
@@ -143,7 +144,8 @@ def preflight_archive_batch(packet: Any, *, runtime: Any = None) -> dict[str, An
     except (TypeError, ValueError, OverflowError):
         return _base("HOLD_PACKET_INVALID")
     archive = packet.get("archive")
-    if (not isinstance(archive, dict) or archive.get("source_kind") not in KINDS
+    if (not isinstance(archive, dict) or not isinstance(archive.get("source_kind"), str)
+            or archive.get("source_kind") not in KINDS
             or not _text(archive.get("source_system"), 120)
             or not _text(archive.get("document_id"), 300)
             or not _text(archive.get("source_locator"), 500)):
@@ -217,6 +219,7 @@ def preflight_archive_batch(packet: Any, *, runtime: Any = None) -> dict[str, An
                 except (ValueError, TypeError, AttributeError):
                     provenance = {}
                 if (row["scope"] == "MemoryOS"
+                        and isinstance(row.get("statement"), str)
                         and hashlib.sha256(row["statement"].encode("utf-8")).hexdigest()
                         == internal["statement_sha256"]
                         and provenance.get("source_key_sha256") == internal["source_key_sha256"]
