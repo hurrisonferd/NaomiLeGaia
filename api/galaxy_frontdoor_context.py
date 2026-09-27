@@ -29,6 +29,7 @@ def _hold(reason: str, *, query: str, limit: int, error_type: str | None = None)
         "galaxy_weighting_applied": False,
         "production_retrieval_changed": False,
         "writes_performed": [],
+        "e_lanes_modified": False,
         "memory_context_authority": "NONE",
         "proof_boundary": (
             "An opt-in legacy baseline read is not semantic relevance or automatic "
