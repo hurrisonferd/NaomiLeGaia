@@ -363,8 +363,20 @@ def search_records(query: str, limit: int = 20, scope: str | None = None) -> dic
     terms = [term.strip().lower() for term in query.split() if term.strip()]
     limit = max(1, min(int(limit), 100))
 
-    clauses: list[str] = []
-    params: list[Any] = []
+    # A staging import is not permission to surface historical content as
+    # ordinary recall. Exclude held status AND its canonical archive source
+    # independently, before ORDER/LIMIT, including blank-query, unscoped,
+    # raw REST/MCP and original HEATDEATH readers. Old ACTIVE/HISTORICAL rows
+    # and all six independent E-LANE scopes keep their native semantics.
+    # Explicit owner-audit get_record(id) and signed receipts remain intact.
+    clauses: list[str] = [
+        "upper(status) != ?",
+        "lower(source) NOT LIKE ?",
+    ]
+    params: list[Any] = [
+        "STAGED_HISTORICAL_HOLD",
+        "galaxy-archive-v1:%",
+    ]
 
     if scope:
         clauses.append("scope = ?")
@@ -558,8 +570,12 @@ def galaxy_phase3_candidate_pool(query: str, *, scope: str = "MemoryOS", limit: 
     with _db() as conn:
         rows = _fetchall_dicts(
             conn,
-            "SELECT * FROM memory_records WHERE scope=? ORDER BY created_at DESC LIMIT ?",
-            (scope, scan_limit),
+            # The experimental Phase-3 native scan bypasses search_records.
+            # Apply the SAME unreleased-archive rule BEFORE LIMIT here too.
+            "SELECT * FROM memory_records "
+            "WHERE scope=? AND upper(status) != ? AND lower(source) NOT LIKE ? "
+            "ORDER BY created_at DESC LIMIT ?",
+            (scope, "STAGED_HISTORICAL_HOLD", "galaxy-archive-v1:%", scan_limit),
         )
 
     relevant = []
