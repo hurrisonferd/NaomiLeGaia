@@ -14,6 +14,19 @@ VERSION = "galaxy.frontdoor.shadow-legacy-read.v1"
 MAX_RECORDS = 6
 
 
+def _unreleased_archive(record: Any) -> bool:
+    """An ungraduated imported archive cannot be ordinary preview evidence."""
+    if not isinstance(record, dict):
+        return True
+    status = record.get("status")
+    source = record.get("source")
+    return (
+        isinstance(status, str) and status.upper() == "STAGED_HISTORICAL_HOLD"
+        or isinstance(source, str)
+        and source.lower().startswith("galaxy-archive-v1:")
+    )
+
+
 def _hold(reason: str, *, query: str, limit: int, error_type: str | None = None) -> dict[str, Any]:
     result = {
         "schema": SCHEMA,
@@ -74,8 +87,15 @@ def preview(runtime: Any, query: str, limit: int = 3) -> dict[str, Any]:
             rid = row.get("record_id")
             if not isinstance(rid, str) or not rid or rid in seen or row.get("scope") != "MemoryOS":
                 return _hold("HOLD_SOURCE_INVALID", query=query, limit=limit)
+            # An injected/misrouted runtime may bypass native SQL filtering.
+            # Refuse the WHOLE preview before retrieving any details or
+            # returning partial previously collected source statements.
+            if _unreleased_archive(row):
+                return _hold("HOLD_UNRELEASED_STAGED_ARCHIVE", query=query, limit=limit)
             seen.add(rid)
             neighborhood = runtime.galaxy_record(rid)
+            if isinstance(neighborhood, dict) and _unreleased_archive(neighborhood.get("record")):
+                return _hold("HOLD_UNRELEASED_STAGED_ARCHIVE", query=query, limit=limit)
             governing = runtime.galaxy_governing_state(rid)
             if (
                 not isinstance(neighborhood, dict)
@@ -185,9 +205,7 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             # Stage 9AE: a signed local archive import is NOT historical
             # graduation. Neither forged governing state nor a stale gravity
             # score may upgrade an unapproved Stage 9Y held row.
-            if (record.get("status") == "STAGED_HISTORICAL_HOLD"
-                    or (isinstance(record.get("source"), str)
-                        and record["source"].startswith("galaxy-archive-v1:"))):
+            if _unreleased_archive(record):
                 return _hold("HOLD_UNRELEASED_STAGED_ARCHIVE", query=query, limit=limit)
             governing = runtime.galaxy_governing_state(rid)
             if governing.get("record_id") != rid:
