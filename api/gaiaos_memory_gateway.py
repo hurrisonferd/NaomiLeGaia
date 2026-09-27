@@ -65,9 +65,12 @@ def _unreleased_staging_row(record: Any) -> bool:
     if not isinstance(record, dict):
         return True
     source = record.get("source")
-    return (record.get("status") == "STAGED_HISTORICAL_HOLD"
-            or (isinstance(source, str)
-                and source.startswith("galaxy-archive-v1:")))
+    status = record.get("status")
+    return (
+        isinstance(status, str) and status.upper() == "STAGED_HISTORICAL_HOLD"
+        or isinstance(source, str)
+        and source.lower().startswith("galaxy-archive-v1:")
+    )
 
 
 def _validated_legacy(payload: Any, scope: str | None, limit: int) -> bool:
