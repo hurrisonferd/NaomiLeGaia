@@ -56,6 +56,20 @@ def _hold(reason: str, *, control_reason: str | None = None,
     return result
 
 
+def _unreleased_staging_row(record: Any) -> bool:
+    """Pure, dependency-free exclusion, including forged ACTIVE archive rows.
+
+    Never import optional GALAXY code in HEATDEATH: a missing draft module
+    must not take down the emergency legacy route.
+    """
+    if not isinstance(record, dict):
+        return True
+    source = record.get("source")
+    return (record.get("status") == "STAGED_HISTORICAL_HOLD"
+            or (isinstance(source, str)
+                and source.startswith("galaxy-archive-v1:")))
+
+
 def _validated_legacy(payload: Any, scope: str | None, limit: int) -> bool:
     """Require the original native envelope, not a made-up success wrapper."""
     if not isinstance(payload, dict):
@@ -115,6 +129,7 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
         if (
             not isinstance(rid, str) or not rid or rid in seen
             or record.get("scope") != "MemoryOS"
+            or _unreleased_staging_row(record)
             or not record.get("source")
             or item.get("source_provenance") != record.get("source")
             or state.get("record_id") != rid
@@ -136,6 +151,7 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
         if (
             not isinstance(record, dict)
             or record.get("scope") != "MemoryOS"
+            or _unreleased_staging_row(record)
             or not record.get("record_id")
             or not record.get("source")
             or record.get("source") != item.get("source_provenance")
@@ -156,6 +172,7 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
         if (
             not isinstance(record, dict)
             or record.get("scope") != "MemoryOS"
+            or _unreleased_staging_row(record)
             or not record.get("record_id")
             or not record.get("source")
             or record.get("source") != item.get("source_provenance")
@@ -241,6 +258,15 @@ def read(runtime: Any, query: str = "", scope: str | None = None,
     if not _validated_legacy(original, scope, limit):
         return {
             **_hold("HOLD_LEGACY_CONTRACT_INVALID", control_reason=control_reason),
+            "configured_mode": control.get("configured_mode"),
+        }
+    # Stage 9AE: if an alias/misconfigured legacy reader ever surfaces a
+    # Stage 9Y HOLD row, never return that raw envelope, even in HEATDEATH
+    # or BIGBANG fallback. Preserve *unchanged* valid legacy reads otherwise.
+    if any(_unreleased_staging_row(record) for record in original["records"]):
+        return {
+            **_hold("HOLD_UNRELEASED_ARCHIVE_IN_LEGACY",
+                    control_reason=control_reason),
             "configured_mode": control.get("configured_mode"),
         }
 
