@@ -133,6 +133,7 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
     synthesis, writes an E-LANE, or changes the approved candidate pool.
     """
     import galaxy_phase3_exit
+    import galaxy_legacy_gravity
 
     if not isinstance(query, str) or not 1 <= len(query.strip()) <= 20000:
         return _hold("HOLD_QUERY_INVALID", query="", limit=0)
@@ -191,16 +192,14 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
 
             relevance = candidate.get("relevance") or {}
             coverage = float(relevance.get("coverage") or 0.0)
-            gravity = detail.get("gravity") or {}
-            # A stored gravity row is acceptable. An absent row is previewed
-            # using the approved Phase-2 model without writing a score.
-            if gravity:
-                gravity_score = float(gravity.get("gravity_score") or 0.0)
-                gravity_basis = "STORED"
-            else:
-                gravity_preview = runtime.galaxy_gravity_preview(rid)
-                gravity_score = float(gravity_preview.get("gravity_score") or 0.0)
-                gravity_basis = "READ_ONLY_PREVIEW"
+            # Existing records may predate GALAXY or carry stale score versions.
+            # Resolve against the active model in memory only; never impute
+            # an absent gravity row as zero or change any underlying record.
+            gravity_resolution = galaxy_legacy_gravity.resolve_for_retrieval(
+                runtime, rid, detail.get("gravity"),
+            )
+            gravity_score = gravity_resolution["score"]
+            gravity_basis = gravity_resolution["basis"]
             if not 0.0 <= coverage <= 1.0 or not 0.0 <= gravity_score <= 1.0:
                 return _hold("HOLD_SCORE_INVALID", query=query, limit=limit)
             score = round(0.8 * coverage + 0.2 * gravity_score, 6)
@@ -214,6 +213,12 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
                 "gravity": {
                     "score": gravity_score,
                     "basis": gravity_basis,
+                    "score_version": gravity_resolution["score_version"],
+                    "backfill_required": gravity_resolution["backfill_required"],
+                    "owner_importance_status": (
+                        "OWNER_SET" if detail.get("importance") is not None
+                        else "UNSET_NOT_ZERO"
+                    ),
                     "explicit_importance_included_in_model": True,
                 },
                 "relevance": relevance,
