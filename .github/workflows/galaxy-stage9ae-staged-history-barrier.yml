@@ -1,0 +1,82 @@
+name: GALAXY Stage 9AE Held Archive Browser Read Barrier
+
+# SOURCE-ONLY tests. No live Turso, real archive, OpenAI API call, deploy,
+# privileged secrets, mode activation, rollback or E-LANE mutation.
+on:
+  push:
+    paths:
+      - "api/galaxy_frontdoor_context.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/gaiaos_chat_memory.py"
+      - "tests/test_galaxy_stage9ae_staged_history_barrier.py"
+      - ".github/workflows/galaxy-stage9ae-staged-history-barrier.yml"
+  pull_request:
+    paths:
+      - "api/galaxy_frontdoor_context.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/gaiaos_chat_memory.py"
+      - "tests/test_galaxy_stage9ae_staged_history_barrier.py"
+      - ".github/workflows/galaxy-stage9ae-staged-history-barrier.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  legacy-galaxy-browser-hard-stop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install carrier + local test client, NO real network services invoked
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0" "PyYAML>=6.0,<7.0"
+      - name: Compile barrier, gateway and actual /chat app
+        run: python -m py_compile api/galaxy_frontdoor_context.py api/gaiaos_memory_gateway.py api/gaiaos_chat_memory.py tests/test_galaxy_stage9ae_staged_history_barrier.py
+      - name: Prove held/ungraduated archives cannot enter primary, historical, linked, legacy or served chat evidence
+        run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ae_staged_history_barrier.py' -v
+      - name: Preserve Stage 9W served app, browser and independent graph linkage
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9w_browser_chat_wiring.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9w_served_app.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9w_verified_linkage.py' -v
+      - name: Preserve Stage 6 read-only operational reader, Stage 3 gateway and HEATDEATH recovery
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_bigbang_operational_reader_stage6.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_gaiaos_memory_gateway_stage3.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_heatdeath_legacy_recovery_stage4.py' -v
+      - name: Preserve signed Stage 9AD held-history shadow, source and rollback
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ad_held_gravity_shadow.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9y_canonical_staging.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9z_local_rollback.py' -v
+      - name: Preserve six independent member E-LANES and permanent preserve protocol
+        run: |
+          for member in VERA ANVIL SELENE ORIN KESTREL NIMUE; do
+            test -f "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/$member-EXPERIENCES.v1.md"
+          done
+          grep -Fq '//PW:PRESERVE//' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md
+          test ! -e GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VASKON-EXPERIENCES.v1.md
+      - name: Emergency gateway has no imported optional GALAXY dependency
+        run: |
+          python - <<'PY'
+          import ast
+          from pathlib import Path
+          g=Path("api/gaiaos_memory_gateway.py").read_text()
+          tree=ast.parse(g)
+          top_imports=[
+              n.module for n in tree.body
+              if isinstance(n,ast.ImportFrom)
+          ]
+          top_imports += [
+              alias.name for n in tree.body if isinstance(n,ast.Import)
+              for alias in n.names
+          ]
+          assert "galaxy_archive_staging" not in top_imports
+          assert "galaxy_stage9ae_staged_history_barrier" not in top_imports
+          assert 'STAGED_HISTORICAL_HOLD' in g
+          print("PASS: HEATDEATH gateway keeps independent dependency-free archive exclusion")
+          PY
