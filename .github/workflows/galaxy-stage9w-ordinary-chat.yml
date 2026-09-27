@@ -11,6 +11,7 @@ on:
       - "api/galaxy_frontdoor_context.py"
       - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
       - "tests/test_galaxy_stage9w_served_app.py"
+      - "tests/test_bigbang_heatdeath_routes_stage5a.py"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9W-ORDINARY-BROWSER-CHAT-INTEGRATION.v1.md"
       - ".github/workflows/galaxy-stage9w-ordinary-chat.yml"
   push:
@@ -21,6 +22,7 @@ on:
       - "api/gaiaos_chat_memory.py"
       - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
       - "tests/test_galaxy_stage9w_served_app.py"
+      - "tests/test_bigbang_heatdeath_routes_stage5a.py"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9W-ORDINARY-BROWSER-CHAT-INTEGRATION.v1.md"
       - ".github/workflows/galaxy-stage9w-ordinary-chat.yml"
   workflow_dispatch:
@@ -46,6 +48,8 @@ jobs:
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9w_browser_chat_wiring.py" -v
       - name: Prove the actual served GaiaOS extension, signed browser auth and frontdoor legacy semantics
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9w_served_app.py" -v
+      - name: Preserve original Stage 5A frontdoor contract on strict four-part gate
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_heatdeath_routes_stage5a.py" -v
       - name: Preserve core BIGBANG/HEATDEATH mode gateway
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
       - name: Preserve operational reader and older-memory read-only gravity preview
