@@ -1,0 +1,44 @@
+name: GALAXY Stage 9T Pinned Archive In-Memory Staging
+
+on:
+  pull_request:
+    paths:
+      - "api/galaxy_archive_staging.py"
+      - "api/galaxy_archive_preflight.py"
+      - "tests/test_galaxy_archive_staging_stage9t.py"
+      - "tests/test_galaxy_archive_preflight_stage9s.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9T-PINNED-ARCHIVE-STAGING.v1.md"
+      - ".github/workflows/galaxy-stage9t-pinned-staging.yml"
+  push:
+    paths:
+      - "api/galaxy_archive_staging.py"
+      - "api/galaxy_archive_preflight.py"
+      - "tests/test_galaxy_archive_staging_stage9t.py"
+      - "tests/test_galaxy_archive_preflight_stage9s.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9T-PINNED-ARCHIVE-STAGING.v1.md"
+      - ".github/workflows/galaxy-stage9t-pinned-staging.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-export-isolated-staging:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Stage 9R / 9S / 9T modules
+        run: python -m py_compile api/galaxy_legacy_gravity.py api/galaxy_archive_preflight.py api/galaxy_archive_staging.py tests/test_galaxy_archive_staging_stage9t.py
+      - name: Prove pinned bytes, exact approval, atomic in-memory staging and replay
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_staging_stage9t.py" -v
+      - name: Preserve Stage 9S six-E-LANE and source-provenance gates
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_preflight_stage9s.py" -v
+      - name: Preserve Stage 9R zero-write historical-gravity gate
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_legacy_gravity_stage9r.py" -v
+      - name: Verify whitespace integrity
+        run: git diff --check HEAD~1 HEAD
