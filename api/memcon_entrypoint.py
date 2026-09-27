@@ -224,12 +224,12 @@ def _observe_memory(payload: MemoryObserve) -> dict[str, Any]:
 @app.get("/gaiaos/bootstrap", operation_id="bootstrapGaiaOSHost")
 def gaiaos_bootstrap_http(query: str = "", scope: str | None = None, limit: int = 10,
                           authorization: str | None = Header(default=None)) -> dict[str, Any]:
-    base._authorize(authorization)
+    _auth(authorization)
     return _bootstrap_context(query, scope, limit)
 
 @app.post("/memoryos/observe", operation_id="observeMemoryInteraction")
 def memory_observe_http(payload: MemoryObserve, authorization: str | None = Header(default=None)) -> dict[str, Any]:
-    base._authorize(authorization)
+    _auth(authorization)
     return _observe_memory(payload)
 
 @mcp.tool()
@@ -256,14 +256,14 @@ class MemoryCandidatePull(BaseModel):
 @app.get("/memoryos/candidates", operation_id="listMemoryCandidates")
 def memory_candidates_http(session_id: str | None = None, status: str | None = "CANDIDATE",
                            limit: int = 50, authorization: str | None = Header(default=None)) -> dict[str, Any]:
-    base._authorize(authorization)
+    _auth(authorization)
     return memcon_runtime.list_memory_candidates(session_id, status, limit)
 
 
 @app.post("/memoryos/candidates", operation_id="listMemoryCandidatesPost")
 def memory_candidates_post_http(payload: MemoryCandidatePull,
                                 authorization: str | None = Header(default=None)) -> dict[str, Any]:
-    base._authorize(authorization)
+    _auth(authorization)
     return memcon_runtime.list_memory_candidates(payload.session_id, payload.status, payload.limit)
 
 
