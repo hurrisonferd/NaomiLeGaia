@@ -24,6 +24,7 @@ import galaxy_stage9x_owner_canary as x
 import galaxy_stage9y_canonical_staging as y
 import galaxy_stage9z_local_rollback as z
 import galaxy_stage9aa_preimport_readonly as aa
+import galaxy_stage9ad_held_gravity_shadow as ad
 import galaxy_stage9ab_owner_local_bootstrap as ab
 import galaxy_stage9ab_prepare_private_bundle as prep
 import galaxy_stage9v_setup_bundle as vsetup
@@ -50,6 +51,7 @@ EXPECTED = {
     "preimport": "PASS_LOCAL_READ_ONLY_SCHEMA_FIXTURE",
     "import": "PASS_LOCAL_CANONICAL_STAGING_REOPEN_FIXTURE",
     "import_replay": "PASS_LOCAL_EXACT_REPLAY_ZERO_WRITE",
+    "held_gravity_shadow": "PASS_LOCAL_HELD_ARCHIVE_GRAVITY_SHADOW_REHEARSAL",
     "rollback": "PASS_LOCAL_ROLLBACK_RECEIPT_REOPEN",
     "rollback_replay": "PASS_LOCAL_ROLLBACK_EXACT_REPLAY_ZERO_WRITE",
     "resurrection": "HOLD_PREVIOUSLY_ROLLED_BACK_SOURCE",
@@ -270,6 +272,25 @@ def run_local_rehearsal(*, driver: str = "native") -> dict[str, Any]:
                 if (stages["import_replay"] != EXPECTED["import_replay"]
                         or imported_again.get("writes_performed") != []):
                     return _report("HOLD_IMPORT_REPLAY", driver=driver, steps=stages)
+                # Stage 9AD connects 9Y's exact signed held history to
+                # actual Stage 9U gravity code on a SEPARATE in-memory copy.
+                # Neither staged rows nor the on-disk 9Y/9Z receipts change.
+                shadow = ad.rehearse_held_archive_gravity_shadow(
+                    fixture_connection=native, fixture_root=root,
+                    config=original_conf,
+                    original_manifest=original_manifest,
+                    original_signature=original_sig,
+                    original_key=IMPORT_KEY,
+                    original_receipt=imported["receipt"],
+                    confirm_synthetic_local_only=True,
+                )
+                stages["held_gravity_shadow"] = shadow["status"]
+                if (stages["held_gravity_shadow"] != EXPECTED["held_gravity_shadow"]
+                        or shadow.get("held_historical_records_preserved") != 2
+                        or shadow.get("source_original_and_receipts_retained") is not True
+                        or shadow.get("held_historical_gravity_rows_written") != 0):
+                    return _report("HOLD_HELD_GRAVITY_SHADOW_BOUNDARY",
+                                   driver=driver, steps=stages)
                 post_import = aa.check_preimport_staging(
                     config=conf, pin=pin,
                     confirm_independent_canary_pin=True, connector=connector,
