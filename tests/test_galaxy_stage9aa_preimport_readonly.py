@@ -195,7 +195,6 @@ class LocalReadOnlyReadinessTests(unittest.TestCase):
     def test_pin_or_alias_mismatch_holds_before_any_connection(self):
         base = pin()
         for change in (
-            {"pin": {**base, "canary_sha256": "0" * 64}},
             {"pin": {**base, "staging_uuid_sha256": "0" * 64}},
             {"pin": {**base, "production_url_sha256": "0" * 64}},
             {"pin": {**base, "unexpected_token": TOKEN}},
@@ -209,6 +208,18 @@ class LocalReadOnlyReadinessTests(unittest.TestCase):
                 out = self.assess(**change)
                 self.assertTrue(out["status"].startswith("HOLD_"), out)
         self.assertEqual(self.factory.opens, [])
+
+    def test_well_formed_but_wrong_canary_digest_requires_readonly_comparison(self):
+        # A valid 64-hex digest cannot be rejected just by offline shape.
+        # Its mismatch is established by two SELECT-only staging connections.
+        wrong = {**pin(), "canary_sha256": "0" * 64}
+        out = self.assess(pin=wrong)
+        self.assertEqual(out["status"], "HOLD_PREVIOUS_CANARY_MISSING_OR_CHANGED")
+        self.assertEqual(len(self.factory.opens), 2)
+        self.assertTrue(all(
+            q.strip().upper().startswith("SELECT ") for q in self.factory.queries
+        ))
+        self.assertEqual(out["staging_writes_performed"], [])
 
     def test_canary_missing_changed_or_multiple_holds_without_data_write(self):
         with sqlite3.connect(self.dbfile) as db:
