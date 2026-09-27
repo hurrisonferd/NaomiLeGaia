@@ -1,0 +1,70 @@
+name: GALAXY Stage 9W Ordinary Chat Memory Wiring
+
+on:
+  pull_request:
+    paths:
+      - "api/gaiaos_api.py"
+      - "api/gaiaos_chat_auto_memory.py"
+      - "api/gaiaos_chat_memory.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/galaxy_frontdoor_context.py"
+      - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9W-ORDINARY-BROWSER-CHAT-INTEGRATION.v1.md"
+      - ".github/workflows/galaxy-stage9w-ordinary-chat.yml"
+  push:
+    paths:
+      - "api/gaiaos_api.py"
+      - "api/gaiaos_chat_auto_memory.py"
+      - "api/gaiaos_chat_memory.py"
+      - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
+      - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9W-ORDINARY-BROWSER-CHAT-INTEGRATION.v1.md"
+      - ".github/workflows/galaxy-stage9w-ordinary-chat.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  normal-browser-routing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install carrier, real libSQL and test client dependencies
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+      - name: Compile actual browser chat route, gateway bridge and tests
+        run: python -m py_compile api/gaiaos_api.py api/gaiaos_chat_auto_memory.py api/gaiaos_chat_memory.py tests/test_galaxy_stage9w_browser_chat_wiring.py
+      - name: Prove actual normal FastAPI /chat gate, opt-out and browser injection HOLD
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9w_browser_chat_wiring.py" -v
+      - name: Preserve core BIGBANG/HEATDEATH mode gateway
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
+      - name: Preserve operational reader and older-memory read-only gravity preview
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_bigbang_operational_reader_stage6.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_legacy_gravity_stage9r.py" -v
+      - name: Preserve standalone HEATDEATH recovery independently
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_heatdeath_legacy_recovery_stage4.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_legacy_memory_baseline.py" -v
+      - name: Preserve Stage 9S-9V prototype regressions
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_preflight_stage9s.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_archive_staging_stage9t.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_shadow_backfill_stage9u.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_staging_turso.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_real_libsql_contract.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_operator_preflight.py" -v
+      - name: Assert permanent preserve and six separate member files in source
+        run: |
+          test "$(find GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA -maxdepth 1 -name '*-EXPERIENCES.v1.md' | wc -l)" -eq 6
+          for member in VERA ANVIL SELENE ORIN KESTREL NIMUE; do
+            test -f "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/$member-EXPERIENCES.v1.md"
+          done
+          grep -Fq '//PW:PRESERVE//' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md
+          grep -Fq 'cross-member' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md
+      - name: Verify source whitespace integrity
+        run: git diff --check HEAD~1 HEAD
