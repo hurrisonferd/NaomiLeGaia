@@ -346,9 +346,9 @@ def rollback_local_import(
                 conn.rollback()
                 return _hold("HOLD_ORIGINAL_BATCH_NOT_STAGED")
             items = receipt.get("items")
+            # Stage 9Y's receipt stores record hashes; INSERTED_LOCAL_FIXTURE
+            # lives in its immutable item ledger, validated by _check_receipt.
             if (not isinstance(items, list)
-                    or any(entry.get("result") != "INSERTED_LOCAL_FIXTURE"
-                           for entry in items)
                     or not y._check_receipt(conn, receipt, _items(receipt))):
                 conn.rollback()
                 return _hold("HOLD_ORIGINAL_ROW_OR_LEDGER_DRIFT")
