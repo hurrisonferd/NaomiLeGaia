@@ -136,7 +136,7 @@ async def heatdeath_optional_research_guard(request: Request, call_next):
 @app.get("/chat/recovery", response_class=HTMLResponse,
          operation_id="isolatedNoMemoryCarrierRecoveryPage")
 def isolated_carrier_recovery_page(browser_request: Request):
-    """Owner-facing recovery form usable on a phone without a developer tool."""
+    """Browser-facing recovery form; signature alone is not owner identity."""
     if not gaiaos_api.API_KEY or not gaiaos_api.API_KEY.strip():
         raise HTTPException(status_code=503, detail="Owner browser authentication is not configured")
     bootstrap = _bootstrap_browser_session_redirect(browser_request)
@@ -229,7 +229,8 @@ async def isolated_carrier_recovery(browser_request: Request):
         "recovery_receipt": {
             "schema": "gaiaos.heatdeath.isolated-chat-recovery.v1",
             "status": "PASS_EXPLICIT_PLAIN_CHAT_NO_MEMORY",
-            "browser_authentication_required": True,
+            "existing_signed_browser_session_required": True,
+            "owner_identity_independently_verified": False,
             "explicit_no_memory_acknowledgment": True,
             "solo_state_checked": False,
             "solo_session_restored": False,
