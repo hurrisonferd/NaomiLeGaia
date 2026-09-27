@@ -181,6 +181,13 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
                 return _hold("HOLD_SCOPE_OR_ID_CHANGED", query=query, limit=limit)
             if record.get("statement") != candidate.get("statement"):
                 return _hold("HOLD_STATEMENT_CHANGED", query=query, limit=limit)
+            # Stage 9AE: a signed local archive import is NOT historical
+            # graduation. Neither forged governing state nor a stale gravity
+            # score may upgrade an unapproved Stage 9Y held row.
+            if (record.get("status") == "STAGED_HISTORICAL_HOLD"
+                    or (isinstance(record.get("source"), str)
+                        and record["source"].startswith("galaxy-archive-v1:"))):
+                return _hold("HOLD_UNRELEASED_STAGED_ARCHIVE", query=query, limit=limit)
             governing = runtime.galaxy_governing_state(rid)
             if governing.get("record_id") != rid:
                 return _hold("HOLD_GOVERNING_STATE_CHANGED", query=query, limit=limit)
@@ -274,6 +281,11 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             detail = runtime.galaxy_record(rid)
             if not detail or (detail.get("record") or {}).get("scope") != "MemoryOS":
                 return _hold("HOLD_LINKED_SCOPE_INVALID", query=query, limit=limit)
+            linked_record = detail["record"]
+            if (linked_record.get("status") == "STAGED_HISTORICAL_HOLD"
+                    or (isinstance(linked_record.get("source"), str)
+                        and linked_record["source"].startswith("galaxy-archive-v1:"))):
+                return _hold("HOLD_UNRELEASED_LINKED_ARCHIVE", query=query, limit=limit)
             stored = [
                 edge for edge in (detail.get("relations") or [])
                 if isinstance(edge, dict) and edge.get("status") == "VERIFIED"
