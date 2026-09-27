@@ -23,6 +23,14 @@ If HEATDEATH is effective, control is malformed, Turso cannot import, GALAXY can
 
 The existing Stage-2 mode service deliberately ALWAYS returns bigbang_activation_enabled=false, even if someone writes BIGBANG into its mode-control table. Therefore Stage 9W alone CANNOT ACTIVATE BIGBANG. It adds future-ready normal routing, not a release switch or implicit memory collection.
 
+## Served-app integration and consistent frontdoor gate
+
+The deployed GaiaOS extension imports `gaiaos_api` and shares its **same FastAPI app instance**. The Stage 9W served-app test now imports `gaiaos_app` itself and uses its actual app routes with TestClient rather than testing the base app only. It verifies exactly one public POST /chat route, one MCP mount, a real signed secure HttpOnly cookie obtained through the normal browser home page, failed authentication before any memory lookup or model call, explicit browser memory opt-out, and the regular POST /gaiaos/assist source front door. OpenAI responses are mocked and Turso is never connected.
+
+The separate POST /gaiaos/assist frontdoor now applies the **same four-part implicit BIGBANG authorization check** as ordinary browser chat: exact mode schema, effective BIGBANG, configured BIGBANG and boolean activation enabled. A malformed, contradictory or unreadable mode state returns no implicit memory_context and makes no gateway call. Explicit include_memory=true still uses the original gateway and HEATDEATH fallback; explicit false always skips retrieval. The tests simulate authorized mode only in process and verify negative controls and exceptions. They do not enable the actual release gate, which remains hard-locked in Stage 2.
+
+The Stage 9W source CI includes the updated Stage 9V sovereign-workflow contract, redacted receipt negative tests and owner-local setup SQL validation. A green merged-branch source suite is a necessary review signal, not remote staging, a deployed carrier run or production release proof.
+
 ## Proof and remaining gates
 
 Stage 9W CI must run the actual FastAPI /chat route with a mocked model: HEATDEATH, authorized test-only BIGBANG, explicit opt-out, browser injection, missing optional module, stale/invalid evidence, and the last-user-message boundary. It must preserve gateway, Stage 6 operational reader, Stage 9R–9V tests, standalone HEATDEATH recovery and the permanent //PW:PRESERVE// + exactly six independent E-LANES source contract.
