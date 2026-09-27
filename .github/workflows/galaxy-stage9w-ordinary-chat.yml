@@ -9,6 +9,7 @@ on:
       - "api/gaiaos_memory_gateway.py"
       - "api/galaxy_frontdoor_context.py"
       - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
+      - "tests/test_galaxy_stage9w_served_app.py"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9W-ORDINARY-BROWSER-CHAT-INTEGRATION.v1.md"
       - ".github/workflows/galaxy-stage9w-ordinary-chat.yml"
   push:
@@ -17,6 +18,7 @@ on:
       - "api/gaiaos_chat_auto_memory.py"
       - "api/gaiaos_chat_memory.py"
       - "tests/test_galaxy_stage9w_browser_chat_wiring.py"
+      - "tests/test_galaxy_stage9w_served_app.py"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9W-ORDINARY-BROWSER-CHAT-INTEGRATION.v1.md"
       - ".github/workflows/galaxy-stage9w-ordinary-chat.yml"
   workflow_dispatch:
@@ -35,11 +37,13 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install carrier, real libSQL and test client dependencies
-        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0" "PyYAML>=6.0,<7.0"
       - name: Compile actual browser chat route, gateway bridge and tests
-        run: python -m py_compile api/gaiaos_api.py api/gaiaos_chat_auto_memory.py api/gaiaos_chat_memory.py tests/test_galaxy_stage9w_browser_chat_wiring.py
+        run: python -m py_compile api/gaiaos_api.py api/gaiaos_app.py api/gaiaos_chat_auto_memory.py api/gaiaos_chat_memory.py tests/test_galaxy_stage9w_browser_chat_wiring.py tests/test_galaxy_stage9w_served_app.py
       - name: Prove actual normal FastAPI /chat gate, opt-out and browser injection HOLD
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9w_browser_chat_wiring.py" -v
+      - name: Prove the actual served GaiaOS extension, signed browser auth and frontdoor legacy semantics
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9w_served_app.py" -v
       - name: Preserve core BIGBANG/HEATDEATH mode gateway
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_gaiaos_memory_gateway_stage3.py" -v
       - name: Preserve operational reader and older-memory read-only gravity preview
@@ -58,6 +62,8 @@ jobs:
           PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_staging_turso.py" -v
           PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_real_libsql_contract.py" -v
           PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_operator_preflight.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_readonly_receipt.py" -v
+          PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_owner_local_setup.py" -v
       - name: Assert permanent preserve and six separate member files in source
         run: |
           test "$(find GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA -maxdepth 1 -name '*-EXPERIENCES.v1.md' | wc -l)" -eq 6
