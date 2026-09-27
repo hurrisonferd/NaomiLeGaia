@@ -21,6 +21,7 @@ from typing import Any, Callable
 import galaxy_stage9ag_staging_historical_import as ag
 import galaxy_stage9y_canonical_staging as y
 import galaxy_stage9v_staging_turso as v
+import galaxy_stage9z_local_rollback as z
 import galaxy_stage9aa_preimport_readonly as aa
 
 SCHEMA = "gaiaos.galaxy.stage9ah.first-staging-signed-rollback.v1"
@@ -201,11 +202,11 @@ def _batch(conn: Any, import_id: str) -> dict[str, Any] | None:
 
 def _rollback_ledger(conn: Any) -> list[dict[str, Any]]:
     cursor = conn.execute(
-        f"SELECT {','.join(y.z.LEDGER_COLS)} FROM galaxy_stage9z_rollbacks"
+        f"SELECT {','.join(z.LEDGER_COLS)} FROM galaxy_stage9z_rollbacks"
     )
     result = []
     for row in cursor.fetchall():
-        keys = y.z.LEDGER_COLS
+        keys = z.LEDGER_COLS
         result.append(dict(row) if hasattr(row, "keys") else dict(zip(keys, row)))
     return result
 
@@ -485,8 +486,8 @@ def rollback_first_staging_batch(
             )
             conn.execute(
                 f"INSERT INTO galaxy_stage9z_rollbacks "
-                f"({','.join(y.z.LEDGER_COLS)}) VALUES "
-                f"({','.join('?' for _ in y.z.LEDGER_COLS)})",
+                f"({','.join(z.LEDGER_COLS)}) VALUES "
+                f"({','.join('?' for _ in z.LEDGER_COLS)})",
                 (
                     rollback_approval["rollback_id"],
                     original_approval["approval_id"],
