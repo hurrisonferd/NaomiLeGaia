@@ -258,9 +258,16 @@ class Stage9UBackfillTests(unittest.TestCase):
         self.assertIsNone(c.execute(
             "SELECT * FROM memory_gravity WHERE record_id=?", (IDS[0],),
         ).fetchone())
-        self.assertEqual(c.execute(
-            "SELECT COUNT(*) FROM galaxy_stage9u_item_ledger",
-        ).fetchone()[0], 0)
+        # SQLite rolls back the CREATE TABLE itself when a later row fails.
+        # Either an absent ledger or a present empty ledger proves no receipt survived.
+        has_ledger = c.execute(
+            "SELECT 1 FROM sqlite_master WHERE type='table' "
+            "AND name='galaxy_stage9u_item_ledger'",
+        ).fetchone()
+        if has_ledger:
+            self.assertEqual(c.execute(
+                "SELECT COUNT(*) FROM galaxy_stage9u_item_ledger",
+            ).fetchone()[0], 0)
         self.assertFalse(c.in_transaction)
 
     def test_rollback_refuses_overwrite_when_score_changes(self):
