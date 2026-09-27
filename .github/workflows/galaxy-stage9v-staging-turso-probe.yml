@@ -5,18 +5,24 @@ on:
     paths:
       - "api/galaxy_stage9v_staging_turso.py"
       - "api/galaxy_stage9v_operator_preflight.py"
+      - "api/galaxy_stage9v_readiness_receipt.py"
       - "tests/test_galaxy_stage9v_staging_turso.py"
       - "tests/test_galaxy_stage9v_real_libsql_contract.py"
       - "tests/test_galaxy_stage9v_operator_preflight.py"
+      - "tests/test_galaxy_stage9v_readonly_receipt.py"
+      - ".github/workflows/galaxy-stage9v-real-staging-readonly.yml"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9V-SEPARATE-STAGING-TURSO-CANARY.v1.md"
       - ".github/workflows/galaxy-stage9v-staging-turso-probe.yml"
   push:
     paths:
       - "api/galaxy_stage9v_staging_turso.py"
       - "api/galaxy_stage9v_operator_preflight.py"
+      - "api/galaxy_stage9v_readiness_receipt.py"
       - "tests/test_galaxy_stage9v_staging_turso.py"
       - "tests/test_galaxy_stage9v_real_libsql_contract.py"
       - "tests/test_galaxy_stage9v_operator_preflight.py"
+      - "tests/test_galaxy_stage9v_readonly_receipt.py"
+      - ".github/workflows/galaxy-stage9v-real-staging-readonly.yml"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9V-SEPARATE-STAGING-TURSO-CANARY.v1.md"
       - ".github/workflows/galaxy-stage9v-staging-turso-probe.yml"
   workflow_dispatch:
@@ -35,15 +41,17 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install actual libSQL Python driver for local compatibility proof
-        run: python -m pip install "libsql>=0.1,<1.0"
+        run: python -m pip install "libsql>=0.1,<1.0" "PyYAML>=6.0,<7.0"
       - name: Compile staging connection and earlier milestone modules
-        run: python -m py_compile api/galaxy_stage9v_staging_turso.py api/galaxy_stage9v_operator_preflight.py api/galaxy_shadow_backfill_stage9u.py api/galaxy_archive_staging.py api/galaxy_archive_preflight.py tests/test_galaxy_stage9v_staging_turso.py tests/test_galaxy_stage9v_real_libsql_contract.py tests/test_galaxy_stage9v_operator_preflight.py
+        run: python -m py_compile api/galaxy_stage9v_staging_turso.py api/galaxy_stage9v_operator_preflight.py api/galaxy_stage9v_readiness_receipt.py api/galaxy_shadow_backfill_stage9u.py api/galaxy_archive_staging.py api/galaxy_archive_preflight.py tests/test_galaxy_stage9v_staging_turso.py tests/test_galaxy_stage9v_real_libsql_contract.py tests/test_galaxy_stage9v_operator_preflight.py
       - name: Prove separate DB marker, signed one-canary gate, reopen readback and negative paths
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_staging_turso.py" -v
       - name: Test actual libSQL local driver, transaction, fresh connection and canary contract
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_real_libsql_contract.py" -v
       - name: Prove read-only operator preflight, source identity and no secret echoes
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_operator_preflight.py" -v
+      - name: Verify allowlisted artifact, owner-only manual trigger and secret boundaries
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_readonly_receipt.py" -v
       - name: Preserve Stage 9U isolated backfill and rollback
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_shadow_backfill_stage9u.py" -v
       - name: Preserve Stage 9T pinned archive and in-memory staging
