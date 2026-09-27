@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import re
+import stat
 import sqlite3
 from typing import Any, Callable
 from urllib.parse import urlsplit
@@ -328,10 +329,12 @@ def main(argv: list[str] | None = None) -> int:
         description="Dry-run owner-private two-bundle STAGING bootstrap; "
                     "NO DB connection without explicit --apply + approvals."
     )
-    parser.add_argument("--stage9v-manifest", required=True)
-    parser.add_argument("--stage9v-sql", required=True)
-    parser.add_argument("--stage9aa-manifest", required=True)
-    parser.add_argument("--stage9aa-sql", required=True)
+    parser.add_argument("--bundle-dir",
+                        help="Brand-new owner-only directory from 9AB preparation")
+    parser.add_argument("--stage9v-manifest")
+    parser.add_argument("--stage9v-sql")
+    parser.add_argument("--stage9aa-manifest")
+    parser.add_argument("--stage9aa-sql")
     parser.add_argument("--staging-name", default="sovmem-staging")
     parser.add_argument("--main-name", default="sovmem-main")
     parser.add_argument("--apply", action="store_true")
@@ -340,10 +343,38 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--confirm-main-untouched", action="store_true")
     args = parser.parse_args(argv)
     try:
-        vmanifest = _private_json(args.stage9v_manifest)
-        asmanifest = _private_json(args.stage9aa_manifest)
-        vsql = x._private_file(args.stage9v_sql, MAX_BUNDLE_BYTES)
-        assql = x._private_file(args.stage9aa_sql, MAX_BUNDLE_BYTES)
+        if args.bundle_dir:
+            if any((
+                args.stage9v_manifest, args.stage9v_sql,
+                args.stage9aa_manifest, args.stage9aa_sql,
+            )):
+                raise ValueError("choose either private bundle or four input paths")
+            base = Path(args.bundle_dir).expanduser()
+            if base.is_symlink():
+                raise ValueError("symlink bundle directory")
+            base = base.resolve(strict=True)
+            info = base.stat()
+            if (not stat.S_ISDIR(info.st_mode)
+                    or info.st_mode & 0o077
+                    or base == vsetup._ROOT or vsetup._ROOT in base.parents
+                    or (hasattr(os, "getuid") and info.st_uid != os.getuid())):
+                raise ValueError("owner-only private directory required")
+            vm = str(base / "stage9v" / vsetup._MANIFEST_NAME)
+            vs = str(base / "stage9v" / vsetup._SQL_NAME)
+            am = str(base / "stage9aa" / aabundle.MANIFEST_NAME)
+            ass = str(base / "stage9aa" / aabundle.SQL_NAME)
+        else:
+            paths = (
+                args.stage9v_manifest, args.stage9v_sql,
+                args.stage9aa_manifest, args.stage9aa_sql,
+            )
+            if not all(paths):
+                raise ValueError("four private bundle paths required")
+            vm, vs, am, ass = paths
+        vmanifest = _private_json(vm)
+        asmanifest = _private_json(am)
+        vsql = x._private_file(vs, MAX_BUNDLE_BYTES)
+        assql = x._private_file(ass, MAX_BUNDLE_BYTES)
     except (OSError, UnicodeError, ValueError, TypeError):
         out = _report("HOLD_OWNER_PRIVATE_BUNDLE_FILES_INVALID")
         print(json.dumps(out, sort_keys=True))
