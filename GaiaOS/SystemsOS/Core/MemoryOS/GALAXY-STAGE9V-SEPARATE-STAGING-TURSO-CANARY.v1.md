@@ -50,6 +50,22 @@ The probe refuses to create or alter any schema; the owner/admin must pre-provis
 
 Do NOT install those tables or marker in production as a shortcut. Use staging-only scoped tokens, preferably limited to the necessary marker SELECT and canary SELECT/INSERT. Verify actual Turso database identity and alias separation through owner/provider administration BEFORE authorizing a write. This source code checks its configured URL and marker, not Turso's platform control-plane identity.
 
+## One-time owner provisioning of a physically separate staging database
+
+This is a manual OWNER TASK, not a performed action of the Stage 9V source build. Use Naomi's own Turso account or a deliberately authorized isolated staging environment, not the old production database, not a production clone and not credentials taken from the existing Render carrier. From an authenticated Turso CLI in a trusted terminal, choose an unused name and run:
+
+    turso db create gaiaos-galaxy-stage9v --wait
+    turso db show --url gaiaos-galaxy-stage9v
+    turso db tokens create gaiaos-galaxy-stage9v --read-only --expiration 1d
+
+The first command creates an empty independent target. The second gives the staging URL. The third creates a SHORT-LIVED, READ-ONLY token sufficient for the operator preflight. Keep its output PRIVATE. Never put either this token or the later write token in ChatGPT, a PR, screenshots or GitHub Actions logs. Confirm the new database's provider identity and alias separation independently in Turso administration; distinct URL strings alone are not enough. If the chosen name is unavailable, use another distinct staging name consistently.
+
+Generate a fresh random UUID v4 privately and use the STAGING-ONLY SQL from the previous section, either in the Turso dashboard's SQL console or through the authenticated command turso db shell gaiaos-galaxy-stage9v. Install the exact single staging identity row and the separate stage9v_canaries table into the NEW database only. Do not use --from-db for this isolation proof; that would copy production data into staging and increase unnecessary exposure.
+
+After that, privately set the four GAIAOS_STAGE9V_* variables below and execute only the read-only readiness CLI. This action does not require a write-capable database token. The one-canary write requires a second, separately approved staging-only token, signed manifest and exact owner authorization; do not repurpose the read-only token or assume preflight PASS authorizes a write.
+
+Official CLI references: https://docs.turso.tech/cli/db/create ; https://docs.turso.tech/cli/db/tokens/create ; https://docs.turso.tech/cli/db/shell .
+
 ## Read-only operator preflight: no tokens in chats or Git
 
 Before signing or running the single canary, use the explicit read-only operator CLI, api/galaxy_stage9v_operator_preflight.py. It requires four separately supplied PRIVATE environment variables:
