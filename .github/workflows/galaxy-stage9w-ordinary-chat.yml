@@ -65,6 +65,7 @@ jobs:
             test -f "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/$member-EXPERIENCES.v1.md"
           done
           grep -Fq '//PW:PRESERVE//' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md
-          grep -Fq 'cross-member' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md
+          grep -Fq 'Do not flatten them' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md
+          test ! -e GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VASKON-EXPERIENCES.v1.md
       - name: Verify source whitespace integrity
         run: git diff --check HEAD~1 HEAD
