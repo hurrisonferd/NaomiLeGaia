@@ -127,6 +127,7 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
     linked = payload["verified_linked_context"]
     if len(history) > 4 or len(linked) > 2:
         return False
+    history_seen = set(seen)
     for item in history:
         if not isinstance(item, dict):
             return False
@@ -138,11 +139,14 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
             or not record.get("record_id")
             or not record.get("source")
             or record.get("source") != item.get("source_provenance")
+            or record.get("record_id") in history_seen
             or not isinstance(governing, dict)
             or governing.get("record_id") != record.get("record_id")
             or governing.get("current_default_eligible") is not False
         ):
             return False
+        history_seen.add(record["record_id"])
+    linked_seen = set(history_seen)
     for item in linked:
         if not isinstance(item, dict):
             return False
@@ -158,12 +162,17 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
             or item.get("context_only") is not True
             or not isinstance(governing, dict)
             or governing.get("record_id") != record.get("record_id")
+            or record.get("record_id") in linked_seen
             or not isinstance(edges, list) or not edges
         ):
             return False
-        if not any(
+        # The operational reader must publish only its fresh, exact matches
+        # to live VERIFIED edges. Never re-label a revoked, missing-status,
+        # unrelated or historical-only edge as current verified context.
+        if not all(
             isinstance(edge, dict)
             and edge.get("edge_id")
+            and edge.get("status") == "VERIFIED"
             and (
                 (edge.get("source_record_id") == record["record_id"]
                  and edge.get("target_record_id") in seen)
@@ -173,6 +182,7 @@ def _galaxy_valid(payload: Any, requested_limit: int) -> bool:
             for edge in edges
         ):
             return False
+        linked_seen.add(record["record_id"])
     return True
 
 
