@@ -29,7 +29,7 @@ The deployed GaiaOS extension imports `gaiaos_api` and shares its **same FastAPI
 
 The separate POST /gaiaos/assist frontdoor now applies the **same four-part implicit BIGBANG authorization check** as ordinary browser chat: exact mode schema, effective BIGBANG, configured BIGBANG and boolean activation enabled. A malformed, contradictory or unreadable mode state returns no implicit memory_context and makes no gateway call. Explicit include_memory=true still uses the original gateway and HEATDEATH fallback; explicit false always skips retrieval. The tests simulate authorized mode only in process and verify negative controls and exceptions. They do not enable the actual release gate, which remains hard-locked in Stage 2.
 
-The Stage 9W source CI includes the updated Stage 9V sovereign-workflow contract, redacted receipt negative tests and owner-local setup SQL validation. A green merged-branch source suite is a necessary review signal, not remote staging, a deployed carrier run or production release proof.
+The Stage 9W source CI includes the updated Stage 9V sovereign-workflow contract, redacted receipt negative tests and owner-local setup SQL validation. It also reruns the original Stage 5A served-frontdoor regression rather than relying on the new Stage 9W tests alone. That legacy test previously simulated a future BIGBANG authorization without a mode schema; the fixture now supplies the same complete four-part hypothetical authorization expected by all entry points. Missing schema remains an authorization HOLD, not a relaxation of the gate. A green merged-branch source suite is a necessary review signal, not remote staging, a deployed carrier run or production release proof.
 
 ## Proof and remaining gates
 
