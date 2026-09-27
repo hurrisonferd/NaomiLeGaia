@@ -199,6 +199,8 @@ class Stage9VManualWorkflowPolicyTests(unittest.TestCase):
             "github.repository == 'hurrisonferd/NaomiLeGaia'",
             "github.ref == 'refs/heads/main'",
             "github.actor == 'Ligeia621'",
+            "github.triggering_actor == 'Ligeia621'",
+            "github.run_attempt == 1",
             "inputs.confirmation == 'STAGING_READ_ONLY'",
         ):
             self.assertIn(necessary, job["if"])
