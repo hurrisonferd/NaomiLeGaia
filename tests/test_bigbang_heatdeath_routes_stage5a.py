@@ -95,7 +95,10 @@ class Stage5ARoutes(unittest.TestCase):
         self.assertEqual(result["memory_context"]["retrieval"], NATIVE)
 
     def test_future_approved_bigbang_auto_routes_but_explicit_false_opts_out(self):
+        # The test-only future release gate must supply the FULL signed-mode
+        # shape; an absent schema is not real BIGBANG authorization.
         approved = {
+            "schema": mode.SCHEMA,
             "effective_mode": mode.BIGBANG,
             "configured_mode": mode.BIGBANG,
             "bigbang_activation_enabled": True,
