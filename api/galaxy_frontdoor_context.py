@@ -249,7 +249,7 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             -item["ranking"]["score"],
             item["record"]["record_id"],
         ))
-        admitted_ids = {item["record"]["record_id"] for item in current}
+        admitted_ids = {item["record"]["record_id"] for item in current[:limit]}
         linked = []
         for candidate in pool.get("linked_context_candidates") or []:
             rid = candidate.get("record_id")
@@ -261,12 +261,13 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             # mention any primary while belonging to another graph node.
             valid_edges = [
                 edge for edge in edges
-                if isinstance(edge, dict) and edge.get("edge_id") and (
+                if (isinstance(edge, dict) and edge.get("edge_id")
+                    and edge.get("status") in (None, "VERIFIED") and (
                     (edge.get("source_record_id") == rid
                      and edge.get("target_record_id") in admitted_ids)
                     or (edge.get("target_record_id") == rid
                         and edge.get("source_record_id") in admitted_ids)
-                )
+                ))
             ]
             if not valid_edges:
                 return _hold("HOLD_LINKED_EDGE_INVALID", query=query, limit=limit)
@@ -280,19 +281,32 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             # The graph can change between admission and the second read.
             # Never use a revoked, removed or endpoint-changed relationship
             # just because the candidate pool contained an earlier snapshot.
-            if not any(
-                live.get("edge_id") == admitted.get("edge_id")
-                and live.get("source_record_id") == admitted.get("source_record_id")
-                and live.get("target_record_id") == admitted.get("target_record_id")
-                for admitted in valid_edges for live in stored
-            ):
+            # The candidate list is untrusted admission evidence, not the
+            # final VERIFIED edge list. Emit ONLY exact still-verified live
+            # links to returned primaries. Never forward unrelated/revoked
+            # candidate edges or include links to truncated-away primaries.
+            confirmed = {}
+            for admitted in valid_edges:
+                for live in stored:
+                    if (
+                        live.get("edge_id") == admitted.get("edge_id")
+                        and live.get("source_record_id") == admitted.get("source_record_id")
+                        and live.get("target_record_id") == admitted.get("target_record_id")
+                    ):
+                        confirmed[live["edge_id"]] = {
+                            "edge_id": live["edge_id"],
+                            "source_record_id": live["source_record_id"],
+                            "target_record_id": live["target_record_id"],
+                            "status": "VERIFIED",
+                        }
+            if not confirmed:
                 return _hold("HOLD_LINKED_EDGE_CHANGED", query=query, limit=limit)
             governing = runtime.galaxy_governing_state(rid)
             linked.append({
                 "record": detail["record"],
                 "source_provenance": detail["record"].get("source"),
                 "governing_state": governing,
-                "verified_direct_primary_edges": edges,
+                "verified_direct_primary_edges": list(confirmed.values()),
                 "context_only": True,
                 "not_identity_authority": True,
             })
