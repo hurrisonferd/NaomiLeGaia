@@ -133,6 +133,56 @@ async def heatdeath_optional_research_guard(request: Request, call_next):
     )
 
 
+@app.get("/chat/recovery", response_class=HTMLResponse,
+         operation_id="isolatedNoMemoryCarrierRecoveryPage")
+def isolated_carrier_recovery_page(browser_request: Request):
+    """Owner-facing recovery form usable on a phone without a developer tool."""
+    if not gaiaos_api.API_KEY or not gaiaos_api.API_KEY.strip():
+        raise HTTPException(status_code=503, detail="Owner browser authentication is not configured")
+    bootstrap = _bootstrap_browser_session_redirect(browser_request)
+    if bootstrap is not None:
+        return bootstrap
+    gaiaos_api._authorize_browser_session(browser_request)
+    # No lookup, no SOLO session inference, no memory/release-controller read.
+    return HTMLResponse(
+        """<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GaiaOS | Isolated Recovery</title>
+<style>body{background:#141414;color:#f1f1f1;font:16px system-ui;max-width:740px;margin:0 auto;padding:24px}
+textarea{box-sizing:border-box;width:100%;min-height:120px;padding:12px;background:#242424;color:white}
+button{padding:12px 18px;margin-top:12px}label{display:block;margin:16px 0}
+pre{white-space:pre-wrap;overflow-wrap:anywhere}</style></head><body>
+<h1>GaiaOS | Isolated Recovery</h1>
+<p>The memory backend or SOLO session may be unavailable. This page starts
+a <strong>new, generic chat</strong>. It cannot resume SOLO, verify the six
+E-LANES, retrieve memories or prove database recovery.</p>
+<form><textarea maxlength="20000" required placeholder="Start a new generic question"></textarea>
+<label><input type="checkbox" required> I understand this is a new
+memory-free generic chat, not my previous SOLO or Council session.</label>
+<button type="submit">Send isolated question</button></form><pre id="output"></pre>
+<script>
+const form=document.querySelector("form");
+form.onsubmit=async event=>{
+ event.preventDefault();
+ const input=form.querySelector("textarea"),output=document.querySelector("#output");
+ const message=input.value.trim();
+ if(!message||!form.querySelector("input").checked)return;
+ output.textContent="Sending as a NEW generic, memory-free request...";
+ try{
+  const res=await fetch("/chat/recovery",{method:"POST",credentials:"same-origin",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({messages:[{role:"user",content:message}],
+    include_memory:false,recovery_acknowledged:true})});
+  const json=await res.json();
+  output.textContent=res.ok?json.output:
+   "HOLD: "+(typeof json.detail==="string"?json.detail:
+    (json.detail&&json.detail.status)||"Recovery request unavailable");
+ }catch(_){output.textContent="Recovery carrier unavailable; no memory changes attempted."}
+};
+</script></body></html>""",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
 @app.post("/chat/recovery", operation_id="explicitNoMemoryCarrierRecovery")
 async def isolated_carrier_recovery(browser_request: Request):
     """Independent explicit plain hosted chat even if MemconOS/Turso is down.
@@ -142,6 +192,8 @@ async def isolated_carrier_recovery(browser_request: Request):
     request. This route reads no DB, no shared mode state, no gateway and no
     optional GALAXY modules. It cannot claim durable recall or E-LANE writes.
     """
+    if not gaiaos_api.API_KEY or not gaiaos_api.API_KEY.strip():
+        raise HTTPException(status_code=503, detail="Owner browser authentication is not configured")
     gaiaos_api._authorize_browser_session(browser_request)
     payload = await browser_request.json()
     if not isinstance(payload, dict):
@@ -160,6 +212,15 @@ async def isolated_carrier_recovery(browser_request: Request):
         validated = gaiaos_api.ChatRequest.model_validate(payload)
     except Exception:
         raise HTTPException(status_code=422, detail="Invalid recovery chat payload") from None
+    # A former SOLO or Council conversation must not silently be transferred
+    # into an unrelated generic model session during a backend outage.
+    if len(validated.messages) != 1 or validated.messages[0].role != "user":
+        raise HTTPException(status_code=409, detail={
+            "schema": "gaiaos.heatdeath.isolated-chat-recovery.v1",
+            "status": "HOLD_START_FRESH_GENERIC_MESSAGE_ONLY",
+            "solo_session_restored": False,
+            "writes_performed": [],
+        })
     # The caller knowingly starts GENERIC chat. No implicit SOLO resume,
     # MemconOS access, GALAXY scoring, memory promotion or E-LANE mutation.
     answer = _original_chat(validated, browser_request, memory_context=None)
