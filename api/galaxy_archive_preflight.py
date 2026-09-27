@@ -187,13 +187,16 @@ def preflight_archive_batch(packet: Any, *, runtime: Any = None) -> dict[str, An
                   if internal is not None and public[i]["status"] == "REVIEW_REQUIRED"]
         if lookup:
             tags = [internal["source_tag"] for _, internal in lookup]
+            proposed_ids = [public[i]["proposed_record_id"] for i, _ in lookup]
             placeholders = ",".join("?" for _ in tags)
+            id_placeholders = ",".join("?" for _ in proposed_ids)
             try:
                 with runtime._db() as conn:
                     cursor = conn.execute(
                         "SELECT record_id, scope, source, statement, notes "
-                        f"FROM memory_records WHERE source IN ({placeholders})",
-                        tuple(tags),
+                        f"FROM memory_records WHERE source IN ({placeholders}) "
+                        f"OR record_id IN ({id_placeholders})",
+                        tuple(tags + proposed_ids),
                     )
                     names = [col[0] if isinstance(col, (tuple, list)) else col.name
                              for col in cursor.description]
@@ -204,10 +207,17 @@ def preflight_archive_batch(packet: Any, *, runtime: Any = None) -> dict[str, An
                 result["error_type"] = type(exc).__name__
                 return result
             by_source: dict[str, list[dict[str, Any]]] = {}
+            by_id: dict[str, dict[str, Any]] = {}
             for match in matches:
                 by_source.setdefault(match["source"], []).append(match)
+                by_id[match["record_id"]] = match
             for index, internal in lookup:
                 matching = by_source.get(internal["source_tag"], [])
+                proposed = public[index]["proposed_record_id"]
+                occupied = by_id.get(proposed)
+                if occupied is not None and occupied["source"] != internal["source_tag"]:
+                    public[index]["status"] = "HOLD_RECORD_ID_COLLISION"
+                    continue
                 if not matching:
                     continue
                 if len(matching) != 1:
