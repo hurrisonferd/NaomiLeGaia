@@ -5,12 +5,14 @@ on:
     paths:
       - "api/galaxy_stage9v_staging_turso.py"
       - "tests/test_galaxy_stage9v_staging_turso.py"
+      - "tests/test_galaxy_stage9v_real_libsql_contract.py"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9V-SEPARATE-STAGING-TURSO-CANARY.v1.md"
       - ".github/workflows/galaxy-stage9v-staging-turso-probe.yml"
   push:
     paths:
       - "api/galaxy_stage9v_staging_turso.py"
       - "tests/test_galaxy_stage9v_staging_turso.py"
+      - "tests/test_galaxy_stage9v_real_libsql_contract.py"
       - "GaiaOS/SystemsOS/Core/MemoryOS/GALAXY-STAGE9V-SEPARATE-STAGING-TURSO-CANARY.v1.md"
       - ".github/workflows/galaxy-stage9v-staging-turso-probe.yml"
   workflow_dispatch:
@@ -28,10 +30,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      - name: Install actual libSQL Python driver for local compatibility proof
+        run: python -m pip install "libsql>=0.1,<1.0"
       - name: Compile staging connection and earlier milestone modules
-        run: python -m py_compile api/galaxy_stage9v_staging_turso.py api/galaxy_shadow_backfill_stage9u.py api/galaxy_archive_staging.py api/galaxy_archive_preflight.py tests/test_galaxy_stage9v_staging_turso.py
+        run: python -m py_compile api/galaxy_stage9v_staging_turso.py api/galaxy_shadow_backfill_stage9u.py api/galaxy_archive_staging.py api/galaxy_archive_preflight.py tests/test_galaxy_stage9v_staging_turso.py tests/test_galaxy_stage9v_real_libsql_contract.py
       - name: Prove separate DB marker, signed one-canary gate, reopen readback and negative paths
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_staging_turso.py" -v
+      - name: Test actual libSQL local driver, transaction, fresh connection and canary contract
+        run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_stage9v_real_libsql_contract.py" -v
       - name: Preserve Stage 9U isolated backfill and rollback
         run: PYTHONPATH=api python -m unittest discover -s tests -p "test_galaxy_shadow_backfill_stage9u.py" -v
       - name: Preserve Stage 9T pinned archive and in-memory staging
