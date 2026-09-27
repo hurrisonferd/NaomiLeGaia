@@ -117,6 +117,11 @@ def validate_prepared(evidence: Any) -> bool:
                 or len(item["statement"]) > MAX_STATEMENT
                 or not isinstance(item.get("source"), str)
                 or not item["source"] or len(item["source"]) > MAX_SOURCE
+                # Independent second guard at the actual model-instruction
+                # boundary. Even a forged prepared packet with eligible=True
+                # cannot inject a Stage 9Y HOLD or ungraduated archive.
+                or item.get("status") == "STAGED_HISTORICAL_HOLD"
+                or item["source"].startswith("galaxy-archive-v1:")
                 or not isinstance(item.get("statement_truncated"), bool)
                 or not isinstance(item.get("source_truncated"), bool)
                 or (not context_only and item.get("current_default_eligible") is not True)
