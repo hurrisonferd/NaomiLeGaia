@@ -323,6 +323,12 @@ def apply_shadow_plan(
                 if ledger is None or _sha(_gravity(conn, item["record_id"])) != ledger["new_gravity_sha256"]:
                     conn.rollback()
                     return _hold("HOLD_REPLAY_DRIFT")
+                # A matching score alone is not proof that the original facts,
+                # owner importance or governing context remained unchanged.
+                source_hash, _ = _source_snapshot(conn, item["record_id"])
+                if source_hash != item["source_snapshot_sha256"]:
+                    conn.rollback()
+                    return _hold("HOLD_REPLAY_SOURCE_DRIFT")
             conn.commit()
             return {
                 **_hold("PASS_REPLAY_VERIFIED"), "idempotent": True,
@@ -461,6 +467,21 @@ def rollback_shadow_batch(
             conn.rollback()
             return _hold("HOLD_UNKNOWN_OR_CONFLICTING_BATCH")
         if batch["status"] == "ROLLED_BACK":
+            # A replayed rollback is only verified if every restored old score
+            # (including old absence) still matches the immutable ledger.
+            restored_ledger = _all(
+                conn, "SELECT record_id,old_gravity_json FROM galaxy_stage9u_item_ledger "
+                "WHERE batch_id=?", (batch_id,),
+            )
+            expected_items = json.loads(batch["receipt_json"])["items"]
+            if len(restored_ledger) != len(expected_items):
+                conn.rollback()
+                return _hold("HOLD_ROLLBACK_REPLAY_LEDGER_INCOMPLETE")
+            for saved in restored_ledger:
+                original = json.loads(saved["old_gravity_json"]) if saved["old_gravity_json"] else None
+                if _sha(_gravity(conn, saved["record_id"])) != _sha(original):
+                    conn.rollback()
+                    return _hold("HOLD_ROLLBACK_REPLAY_DRIFT")
             conn.commit()
             return {**_hold("PASS_ALREADY_ROLLED_BACK"), "idempotent": True}
         entries = _all(
