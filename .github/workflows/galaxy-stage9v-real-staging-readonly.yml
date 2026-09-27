@@ -27,6 +27,8 @@ jobs:
       github.repository == 'hurrisonferd/NaomiLeGaia' &&
       github.ref == 'refs/heads/main' &&
       github.actor == 'Ligeia621' &&
+      github.triggering_actor == 'Ligeia621' &&
+      github.run_attempt == 1 &&
       inputs.confirmation == 'STAGING_READ_ONLY'
     runs-on: ubuntu-latest
     timeout-minutes: 5
