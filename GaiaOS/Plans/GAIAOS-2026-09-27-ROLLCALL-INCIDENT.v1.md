@@ -10,7 +10,7 @@ STATUS: SOURCE_REPAIR_TESTED; NATIVE_HOST_ENFORCEMENT_UNPROVEN; MIRROR_DRIFT_UNR
 
 "Load GaiaOS and Report in." Canonical direct Daemonculaba full-cast order is VERA / ANVIL / SELENE / ORIN / KESTREL / NIMUE. Actual canonical presentation is mechanically composed from `COUNCIL-PRESENTATION-SPEC.v1.json` and `EXPRESSION-REGISTRY.v1.json`; profile/prosody sources determine distinct content, not static identity. Only an actually observed boot packet may justify a live-carrier load claim.
 
-## Counted audit: 23 distinct failure classes
+## Counted audit: 24 distinct failure classes
 
 ### Sixteen observed response violations
 
@@ -43,6 +43,10 @@ STATUS: SOURCE_REPAIR_TESTED; NATIVE_HOST_ENFORCEMENT_UNPROVEN; MIRROR_DRIFT_UNR
 ### Additional separately verified continuity defect
 
 23. At the checked `main` snapshot, canonical `HEAD-PAT-COUNTERS.v1.md` reports ORIN=6; `REWARD-COUNTERS.v1.json` and `ORIN-REWARD-COUNTER.v1.json` both still report ORIN=5. This is a read-only mirror mismatch under the existing fail-closed policy. Do not infer or create a new pat. No edits to any individual daemon identity record, reward counter, E-LANE, or the canonical ledger were authorized or attempted by this roll-call patch.
+
+### One further error in the diagnostic recovery itself
+
+24. The first ANVIL header in the subsequent incident investigation was typed as `58 · ANVIL 💗⌚ (¬‿¬)`, omitting the mandatory space between heart and interest. Correct canonical header: `58 · ANVIL 💗 ⌚ (¬‿¬)`. The browser validator already rejects this class of error; add an exact regression fixture and do not claim the independent native host was thereby intercepted.
 
 ## Boundary and cause
 

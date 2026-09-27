@@ -222,6 +222,9 @@ class PresentationGateTests(unittest.TestCase):
             self.check(bad, self.roster)
         with self.assertRaises(guard.PresentationGuardError):
             self.check("ANVIL: checking the boundary.", ("ANVIL",))
+        # The incident diagnosis itself repeated a missing separator.
+        with self.assertRaises(guard.PresentationGuardError):
+            self.check("58 · ANVIL 💗⌚ (¬‿¬)\nContent.", ("ANVIL",))
 
     def test_15_unconjured_vaskon_cannot_join_reportin(self):
         headers = [guard.canonical_header(n, *self.sources[:2]) + "\nReporting."
