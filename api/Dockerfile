@@ -17,6 +17,7 @@ COPY api/gaiaos_context_runtime.py ./gaiaos_context_runtime.py
 COPY api/legacy_memory_reader.py ./legacy_memory_reader.py
 COPY api/gaiaos_memory_mode.py ./gaiaos_memory_mode.py
 COPY api/gaiaos_memory_gateway.py ./gaiaos_memory_gateway.py
+COPY api/gaiaos_public_memory_boundary.py ./gaiaos_public_memory_boundary.py
 COPY api/gaiaos_bigbang_readiness.py ./gaiaos_bigbang_readiness.py
 COPY api/gaiaos_historical_evidence_audit.py ./gaiaos_historical_evidence_audit.py
 COPY api/gaiaos_revision_lineage_scout.py ./gaiaos_revision_lineage_scout.py
