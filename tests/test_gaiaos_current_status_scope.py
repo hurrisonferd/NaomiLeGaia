@@ -12,6 +12,7 @@ class CurrentStatusScopeTest(unittest.TestCase):
         cls.summary = cls.status["proof_ceiling"]
 
     def test_later_source_does_not_report_stage9f_predeploy_as_current(self):
+        self.assertEqual(self.status["status"], "ACTIVE_STAGE9Q_MAIN_SOURCE_HEATDEATH_BIGBANG_LOCKED_LIVE_PROOF_SEPARATE")
         self.assertIn("Stage 9Q model-free owner-label baseline", self.summary)
         self.assertNotIn("Current main source is pre-deploy ready for Stage 9F", self.summary)
         self.assertIn("9Q's source merge and CI do not prove a live Stage 9Q", self.summary)
