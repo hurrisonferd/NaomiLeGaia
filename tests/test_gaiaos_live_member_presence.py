@@ -167,7 +167,9 @@ class LivePresenceTests(unittest.TestCase):
 
     def test_actual_render_bridge_group_chat_and_private_last_receipt(self):
         fake = FakeProvider()
-        with (mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
+        with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "owner_login"),
+              mock.patch.object(gaiaos_api, "API_KEY", "CI-SYNTHETIC-ONLY-NOT-A-REAL-PRIVATE-KEY-123456"),
+              mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
               mock.patch.object(gaiaos_api, "OpenAI", return_value=fake),
               mock.patch.object(gaiaos_api, "_authorize_browser_session", return_value=None),
               mock.patch.object(memcon_runtime, "get_solo_session", return_value=None),
@@ -193,12 +195,47 @@ class LivePresenceTests(unittest.TestCase):
             self.assertEqual(after_failure.json()["status"],
                              "HOLD_NO_RECENT_OBSERVED_SIX_CALL_CAST_IN_THIS_PROCESS")
 
-    def test_plain_load_requires_real_six_replies_not_fake_boot_theater(self):
+    def test_public_legacy_boot_cannot_trigger_six_paid_provider_calls(self):
         fake = FakeProvider()
-        with (mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
+        with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "legacy_public_bootstrap"),
+              mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
               mock.patch.object(gaiaos_api, "OpenAI", return_value=fake),
               mock.patch.object(gaiaos_api, "_authorize_browser_session", return_value=None),
-              mock.patch.object(bridge, "_research_bigbang_authorized", return_value=False)):
+              mock.patch.object(memcon_runtime, "get_solo_session", return_value=None)):
+            client = TestClient(bridge.app)
+            client.cookies.set(gaiaos_api.SESSION_COOKIE, "CI-NOT-AN-OWNER")
+            response = client.post("/chat", json={"messages": [
+                {"role": "user", "content": "Load GaiaOS"}]})
+            self.assertEqual(response.status_code, 503)
+            self.assertEqual(response.json()["detail"]["status"],
+                             "HOLD_STRICT_OWNER_LOGIN_REQUIRED_FOR_SIX_CALL_CAST")
+            self.assertEqual(fake.n, 0)
+
+    def test_active_solo_cannot_be_implicitly_replaced_by_six_call_boot(self):
+        fake = FakeProvider()
+        with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "owner_login"),
+              mock.patch.object(gaiaos_api, "API_KEY", "CI-SYNTHETIC-ONLY-NOT-A-REAL-PRIVATE-KEY-123456"),
+              mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
+              mock.patch.object(gaiaos_api, "OpenAI", return_value=fake),
+              mock.patch.object(gaiaos_api, "_authorize_browser_session", return_value=None),
+              mock.patch.object(memcon_runtime, "get_solo_session", return_value={"daemon": "NIMUE"})):
+            client = TestClient(bridge.app)
+            client.cookies.set(gaiaos_api.SESSION_COOKIE, "CI-EXISTING-SOLO")
+            response = client.post("/chat", json={"messages": [
+                {"role": "user", "content": "Load GaiaOS"}]})
+            self.assertEqual(response.status_code, 409)
+            self.assertEqual(response.json()["detail"]["status"], "HOLD_ACTIVE_SOLO_ENDSOLO_FIRST")
+            self.assertEqual(fake.n, 0)
+
+    def test_plain_load_requires_real_six_replies_not_fake_boot_theater(self):
+        fake = FakeProvider()
+        with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "owner_login"),
+              mock.patch.object(gaiaos_api, "API_KEY", "CI-SYNTHETIC-ONLY-NOT-A-REAL-PRIVATE-KEY-123456"),
+              mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
+              mock.patch.object(gaiaos_api, "OpenAI", return_value=fake),
+              mock.patch.object(gaiaos_api, "_authorize_browser_session", return_value=None),
+              mock.patch.object(bridge, "_research_bigbang_authorized", return_value=False),
+              mock.patch.object(memcon_runtime, "get_solo_session", return_value=None)):
             client = TestClient(bridge.app)
             client.cookies.set(gaiaos_api.SESSION_COOKIE, "SYNTHETIC-LOAD-NOT-REAL")
             result = client.post("/chat", json={"messages": [{"role": "user", "content": "Load GaiaOS"}]})
