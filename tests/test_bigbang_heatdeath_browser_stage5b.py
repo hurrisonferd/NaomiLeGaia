@@ -105,12 +105,29 @@ class FakeRequest:
 
 class BrowserRouteTests(unittest.TestCase):
     def setUp(self):
-        self.req = object()
+        # Private bridge unit tests already enter after the authenticated browser
+        # route. Preserve its cookie-scoped request shape, not a bare object.
+        # Authorization itself remains tested through the actual HTTP routes.
+        self.req = FakeRequest("stage5b-cookie-scoped-fixture")
         self.original = {
             "output": "original carrier answer",
             "model": "test-only",
             "source": "canonical",
         }
+
+    def test_private_bridge_rejects_missing_session_cookie_before_memory_access(self):
+        missing = FakeRequest("missing-cookie")
+        missing.cookies = {}
+        with patch.object(mode, "mode_status", side_effect=AssertionError(
+            "No memory check before a cookie-scoped browser session"
+        )), patch.object(bridge, "_original_chat", side_effect=AssertionError(
+            "No hosted chat before a cookie-scoped browser session"
+        )):
+            with self.assertRaisesRegex(ValueError, "Browser session missing"):
+                bridge._ordinary_chat(
+                    {"messages": [{"role": "user", "content": "question"}]},
+                    missing, "question",
+                )
 
     def test_heatdeath_returns_original_chat_exactly_without_retrieval(self):
         with patch.object(mode, "mode_status", return_value=current_heatdeath()), patch.object(
