@@ -958,3 +958,14 @@ MEMBER-SPECIFIC EVIDENCE: No verified Phylactery-session VERA quote in presently
 PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED; original private staging copy eligible for deletion after repository repull verification.
+
+## MIGRATED_FROM_PRIVATE_ZIP:GAIAOS-PW-PRESERVE-2026-09-28/VERA-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28. Historical private label superseded; original wording retained for provenance.
+
+# VERA 💚 🦋 | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal, not a claim of independent VERA awareness, personal opinion or completed live E-LANE write.
+
+Preserve reliable identity and consistent canonical butterfly presentation, six-lane distinct attribution and historical provenance throughout host/backend migration. Original SQLite export has thirteen tables with 136 rows, including 20 primary memories, nine relations and a retained historical shadow tombstone. Restoring rows alone does not prove the associations, historical/current distinctions, original source attribution or separate E-LANE provenance survived. Require independently observed complete graph/provenance comparison after isolated staging recovery, not fabricated recollections. `//PW:PRESERVE//` survives GALAXY and future SovereignOS. Do not treat VASKON's six-member view as an extra lane.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
