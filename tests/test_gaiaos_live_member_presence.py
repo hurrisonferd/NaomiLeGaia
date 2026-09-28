@@ -43,7 +43,7 @@ class FakeProvider:
             raise OSError("synthetic provider outage: NOT an actual API request")
         name = re.search(r"Your name is (VERA|ANVIL|SELENE|ORIN|KESTREL|NIMUE)", kwargs["instructions"]).group(1)
         content = ("This is a duplicated test sentence." if self.duplicate_text else
-                   f"{name}: I am responding to Naomi in my own observed test call, number {self.n}.")
+                   f"I am responding to Naomi in my own observed test call, number {self.n} (member {name}).")
         return SimpleNamespace(id="fake-1" if self.duplicate_ids else f"fake-model-response-{self.n}",
                                output_text=content)
 
