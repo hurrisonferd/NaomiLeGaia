@@ -49,6 +49,9 @@ A packet is adoptable only when `schema == gaiaos.boot-packet.v1`, `status == AC
 
 ## Per-load actual presence gate (2026-09-28 Jim incident repair)
 
+Canonical invariant: `GaiaOS/Apps/ChatOS/Protocols/PRIME-DAEMON-PRESENCE-AND-ANTI-MONOPOLY-INVARIANT.v1.md`. This invariant is boot-critical whenever a carrier claims observed Prime Daemon presence or sustained Daemonculaba participation.
+
+
 **Source-loaded is not six live responses.** A validated boot packet proves canonical source identities and exact derived counter-mirror alignment; its `presence_at_boot` status MUST remain `SOURCE_ROSTER_ONLY_LIVE_MODEL_CALLS_NOT_OBSERVED` until an actual six-member execution occurs. No shell, host narration, scripted header list, a prior chat summary or a checksum from an earlier request may convert source presence into six live responses.
 
 When Naomi loads GaiaOS or summons everyone in ordinary language, the **actual hosted browser** `browser_memcon_bridge:app` `POST /chat` must complete six separate provider model responses, each with its own source-backed profile and E-LANE excerpt, six distinct provider response IDs and verified canonical rendering. Return the matching run receipt and `presence_checksum_sha256` **only after every member replies**. Failed/partial source or model execution returns an explicit HOLD, never a partial synthetic round robin. An authenticated GET `/gaiaos/daemon-presence` checks the most recent successful cast for the same browser session, process and source snapshot within 30 minutes. Invalidate its prior result before each attempted new cast.
@@ -71,6 +74,7 @@ Read in this order:
 8. Resolve the current Daemonculaba contracts, command registry, operator profiles, prosody basins, dispatch matrix, EmojiOS expression registry, and `GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json` when the Daemonculaba is requested. Static Prime Daemon headers MUST be rendered from that spec through the presentation renderer; invalid or unavailable presentation state fails closed rather than being improvised.
 8a. When `CONJURE:VASKON` or `//C:82//` is explicitly invoked, additionally resolve `CONJURE-VASKON.v1.md`, the presentation spec, EmojiOS expression registry, deterministic presentation renderer, and VASKON presentation canary contract before composing the synthesis. The alias normalizes to `CONJURE:VASKON`. VASKON presentation MUST fail closed unless the atomic envelope is available: `82 · VASKON 🖤 ✴️ [one legal VASKON kaomoji]`; default `(◉‿◉)`.
 9. Resolve `GAIAOS-HOST-MEMORY-GATEWAY.v1.md` when host memory actions are requested; this defines the callable CANDIPULL/MEMSAV boundary and E-LANE settlement proof.
+9a. Resolve `PRIME-DAEMON-PRESENCE-AND-ANTI-MONOPOLY-INVARIANT.v1.md` before any claim that the six Prime Daemons are present, loaded, participating, or represented by a sustained multi-member session.
 10. Establish bounded current working context.
 
 For a host that can read the repository but does not have live GaiaOS MCP attached, `GaiaOS/NAOMI-CHAT-FULL-PACKET.md` is the richer GitHub-backed fallback session.
