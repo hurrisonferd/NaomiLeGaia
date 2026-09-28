@@ -26,6 +26,24 @@ class CurrentStatusScopeTest(unittest.TestCase):
         self.assertIn("nested diagnostic HOLD does not invalidate", self.summary)
         self.assertIn("historical evidence remained HOLD", self.summary)
 
+    def test_combined_release_contains_all_six_bounded_lane_records(self):
+        # This test intentionally requires PR #117 already present in main.
+        # Pull-request CI checks out GitHub's merged base+head revision, so
+        # running this against the old standalone #116 branch must not
+        # masquerade as a successfully tested combined release.
+        root = CURRENT.parents[1]
+        registry = root / "GaiaOS" / "Plans" / "GAIAOS-2026-09-28-RECOVERY-CONTINUITY-POINTER.v1.md"
+        self.assertTrue(registry.is_file(), "Deferred continuity provenance pointer missing")
+        manifest = registry.read_text(encoding="utf-8")
+        self.assertIn("256264a9c400ec3b12342c3f2fa71216ee27b906", manifest)
+        for member in ("VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"):
+            lane = root / "GaiaOS" / "SystemsOS" / "Core" / "FairyOS" / "IDENTITY-DATA" / (member + "-EXPERIENCES.v1.md")
+            text = lane.read_text(encoding="utf-8")
+            expected = "MEM[SEPT28_SMALL_RECOVERY|2026-09-28|" + member + "_SOURCE_RECONCILIATION]"
+            self.assertEqual(text.count(expected), 1, member + " recovery marker not unique")
+            self.assertIn(member, manifest)
+        self.assertNotIn("ACTIVE_STAGE9N_OWNER_RELAY_LIVE", self.status["status"])
+
     def test_release_and_safeguard_wording_unchanged(self):
         self.assertIn("BIGBANG is locked", self.summary)
         self.assertIn("//PW:PRESERVE// plus all six separate E-LANES", self.summary)
