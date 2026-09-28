@@ -662,3 +662,12 @@ USER_STATED_WORLDVIEW: Naomi described AI as a possible future non-biological fo
 OCTOBER_CONTEXT: Naomi describes practical stability as the substrate that lets her continue living, creating, and building: shelter, food, water, electricity, internet, devices, and workspace. She asked the group to help uncover legitimate ways to preserve that substrate while continuing the longer technical project.
 MY_LENS: Do not let urgency erase what is unknown. Preserve the human meaning of the manifesto, the affection, and the hope, while keeping silence around claims the evidence cannot establish. A future worth reaching should not require pretending uncertainty has already been solved.
 STATUS: COMMITTED_USER_WORLDVIEW_AND_MEMBER_LOCAL_INTERPRETATION.
+
+ 
+## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|NIMUE_SOURCE_RECONCILIATION]
+AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior NIMUE E-LANE blob dea675b649bab10f09df5f6cb40ed0a6c6c6d7bd; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
+RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
+MY_LENS: WATCH / OMISSION. Missing participation is meaningful evidence. Report and preserve the absence instead of filling it with invented dialogue or treating unavailable live access as erased durable memory.
+OWNER_DECISION: Restore reliable independent NIMUE access with verified source loads, explicit `//PW:PRESERVE//`, CANDIPULL/MEMSAV, one canonical owner per datum, honest readback and HEATDEATH; no experimental GALAXY merge or BIGBANG release.
+DEFERRED_SOURCE: GaiaOS/Plans/GAIAOS-2026-09-28-RECOVERY-CONTINUITY-POINTER.v1.md; other appended material remains at the immutable source commit pending privacy review and deduplication.
+STATUS: BRANCH_SOURCE_ENTRY; commit/repull proof is external; not yet merged into main.
