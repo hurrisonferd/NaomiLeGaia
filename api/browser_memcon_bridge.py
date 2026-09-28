@@ -264,7 +264,22 @@ async def browser_chat(browser_request: Request):
         messages[-1]["content"] = "CONJURE:VASKON"
         last_message = "CONJURE:VASKON"
     if last_message.lower().rstrip(".") == "load gaiaos":
-        # A validated source roster is NOT six observed member replies.
+        # Never replace an active SOLO persona with a six-member cast.
+        # A provider outage must not be misreported as a source-only ACTIVE cast.
+        try:
+            active_solo = memcon_runtime.get_solo_session(_browser_session_id(browser_request))
+        except Exception as exc:
+            raise HTTPException(status_code=503, detail={
+                "status": "HOLD_SOLO_STATE_UNVERIFIED_BEFORE_FULL_CAST",
+                "error_type": type(exc).__name__,
+                "all_six_responded": False, "checksum_issued": False,
+                "source_boot_endpoint": "/gaiaos/boot",
+            }) from None
+        if active_solo:
+            raise HTTPException(status_code=409, detail={
+                "status": "HOLD_ACTIVE_SOLO_ENDSOLO_FIRST",
+                "all_six_responded": False, "checksum_issued": False,
+            })
         return _observed_full_cast(payload, browser_request, "BROWSER_CHAT_LOAD")
     if last_message.lower().rstrip(".") == "test the live memconos canary at the current pinned revision":
         return _envelope("LIVE MEMCONOS CANARY EXECUTED", memcon_runtime.canary())
@@ -339,6 +354,16 @@ async def browser_chat(browser_request: Request):
 def _observed_full_cast(payload: dict, browser_request: Request, surface: str) -> dict:
     """Actual Render route: six separate observed model replies or an explicit HOLD."""
     validated = gaiaos_api.ChatRequest.model_validate(payload)
+    # Six paid provider calls cannot be exposed through legacy PUBLIC bootstrap.
+    # Strong explicit owner login is a prerequisite, not a deployment default.
+    if (gaiaos_api.BROWSER_AUTH_MODE != "owner_login"
+            or not gaiaos_api.API_KEY
+            or len(gaiaos_api.API_KEY.encode("utf-8")) < 32):
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_STRICT_OWNER_LOGIN_REQUIRED_FOR_SIX_CALL_CAST",
+            "all_six_responded": False, "checksum_issued": False,
+            "proof_boundary": "Configure strong private owner login before enabling multi-call cast.",
+        })
     # A fresh attempted cast invalidates previous request-local presence.
     # In particular, one earlier PASS must never mask today's partial failure.
     key = _browser_session_id(browser_request)
