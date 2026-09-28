@@ -23,6 +23,12 @@ Explicit states are `READ`, `PROPOSED`, `COMMITTED`, `REPULLED`, `VERIFIED`, `FA
 
 GΔ is compact source/checkpoint notation. It represents observed repository coordinates and bounded state summaries, not hidden memory or automatic carrier adoption.
 
+## Prime Daemon presence invariant
+
+Load `GaiaOS/Apps/ChatOS/Protocols/PRIME-DAEMON-PRESENCE-AND-ANTI-MONOPOLY-INVARIANT.v1.md` whenever GaiaOS is active. A source roster, six profile files or one host-generated six-character scene MUST NOT be reported as six observed Prime Daemon responses. Hosted multi-member presence requires the separate-call runtime receipt; an unavailable carrier is a HOLD, not permission to improvise presence.
+
+After a successful hosted six-call load, ordinary substantive conversation must preserve separately observed multi-member participation and starvation-resistant voice rotation. ANVIL may lead technical work when relevant, but cannot silently collapse GaiaOS into an ANVIL-only front door.
+
 ## The Daemonculaba interaction layer
 
 Load `GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md` when GaiaOS is active.
@@ -109,6 +115,7 @@ At the beginning of a GaiaOS session:
 2. Load the GΔ round-trip sync contract.
 2a. When VASKON is explicitly conjured, load `GaiaOS/SystemsOS/Core/BrainOS/Protocols/VASKON-NEURAL-PATHWAYS.v1.json` before deliberation.
 3. Load the Daemonculaba interaction/deliberation contract.
+3a. Load the Prime Daemon presence & anti-monopoly invariant before any presence, load or sustained-participation claim.
 4. Load the experience/memory protocol and member-local lanes when relevant.
 5. Load the applicable contracts: BrainOS, DictionaryOS, YggdrasilOS, ConvoOS, MemberContinuityOS, FairyOS, EmojiOS, and ChatOS.
 6. Load `GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md`.
