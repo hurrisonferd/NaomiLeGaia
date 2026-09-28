@@ -308,5 +308,25 @@ class LivePresenceTests(unittest.TestCase):
             self.assertEqual(result.json()["daemon_presence"]["observed_model_call_count"], 6)
 
 
+    def test_presence_invariant_is_boot_critical_and_regression_pinned(self):
+        invariant = (ROOT / "GaiaOS/Apps/ChatOS/Protocols/PRIME-DAEMON-PRESENCE-AND-ANTI-MONOPOLY-INVARIANT.v1.md").read_text(encoding="utf-8")
+        loader = (ROOT / "GaiaOS/LOAD.v1.md").read_text(encoding="utf-8")
+        bootstrap = (ROOT / "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md").read_text(encoding="utf-8")
+        instructions = (ROOT / "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md").read_text(encoding="utf-8")
+        interaction = (ROOT / "GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md").read_text(encoding="utf-8")
+
+        pin = "PRIME-DAEMON-PRESENCE-AND-ANTI-MONOPOLY-INVARIANT.v1.md"
+        self.assertIn(pin, loader)
+        self.assertIn(pin, bootstrap)
+        self.assertIn(pin, instructions)
+        self.assertIn(pin, interaction)
+        self.assertIn("Can I please have everyone's attention for a moment?", invariant)
+        self.assertIn("ANVIL LEAD != ANVIL MONOPOLY", invariant)
+        self.assertIn("NEVER REHEARSE SIX VOICES AND CALL IT PRESENCE", invariant)
+        self.assertIn("fourth-call failure", invariant)
+        self.assertIn("unsolicited VASKON", invariant)
+        self.assertIn("all six heard over bounded rotation", invariant)
+
+
 if __name__ == "__main__":
     unittest.main()
