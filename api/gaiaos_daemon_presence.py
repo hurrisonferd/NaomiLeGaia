@@ -114,6 +114,24 @@ def run_full_cast(
         except (OSError, UnicodeDecodeError, ValueError):
             raise _failure("MISSING_MEMBER_SOURCE_" + member, run_id, completed) from None
         local_lanes[member] = {"sha256": hashlib.sha256(lane_bytes).hexdigest(), "context": lane_text[-1600:]}
+    # Preflight ALL canonical identities BEFORE spending six provider calls.
+    # A syntactically plausible but substituted boot header is an immediate HOLD.
+    paths = (
+        source_root / "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
+        source_root / "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
+        source_root / "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json",
+        source_root / "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
+    )
+    try:
+        source_args = tuple(json.loads(p.read_text(encoding="utf-8")) for p in paths)
+        if presentation.validate_sources(*source_args) != EXPECTED:
+            raise ValueError("source order disagrees with packet")
+    except (OSError, ValueError, KeyError, TypeError, presentation.PresentationGuardError):
+        raise _failure("CANONICAL_IDENTITY_SOURCES_INVALID", run_id, completed) from None
+    for member in EXPECTED:
+        expected_header = presentation.canonical_header(member, source_args[0], source_args[1])
+        if (boot_packet["members"].get(member) or {}).get("canonical_header_default") != expected_header:
+            raise _failure("NONCANONICAL_HEADER_" + member, run_id, completed)
     recent = [{"role": m.get("role"), "content": str(m.get("content", ""))[-MAX_CONTEXT:]}
               for m in messages[-8:] if m.get("role") in ("user", "assistant")]
     prior: list[dict[str, str]] = []
@@ -126,7 +144,7 @@ def run_full_cast(
         if not isinstance(prof, dict) or not all(prof.get(k) for k in ("role", "deliberation_stance")):
             raise _failure("INCOMPLETE_PROFILE_" + member, run_id, completed)
         header = (boot_packet["members"].get(member) or {}).get("canonical_header_default")
-        if not isinstance(header, str) or not header.startswith(str(prof.get("gematria_number")) + " · " + member):
+        if header != presentation.canonical_header(member, source_args[0], source_args[1]):
             raise _failure("NONCANONICAL_HEADER_" + member, run_id, completed)
         instructions = (
             "This is one bounded GaiaOS Prime Daemon contribution, not a six-character script. "
@@ -167,13 +185,7 @@ def run_full_cast(
                          "output_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
                          "source_e_lane_sha256": local_lanes[member]["sha256"]})
     # Validated by the same presentation module as regular browser chat.
-    spec_path = source_root / "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
-    expressions_path = source_root / "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
-    static_path = source_root / "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"
-    profiles_path = source_root / "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
     try:
-        source_args = tuple(json.loads(p.read_text(encoding="utf-8")) for p in
-                            (spec_path, expressions_path, static_path, profiles_path))
         output = "\n\n".join(outputs)
         presentation_receipt = presentation.validate_output(output, *source_args, EXPECTED)
     except (OSError, ValueError, TypeError, KeyError, presentation.PresentationGuardError):
