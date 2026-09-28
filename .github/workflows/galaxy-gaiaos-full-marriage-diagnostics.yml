@@ -82,6 +82,7 @@ jobs:
             test_galaxy_public_memory_read_boundary.py \
             test_galaxy_actual_render_bridge_integration.py \
             test_gaiaos_memory_outage_real_bridge.py \
+            test_gaiaos_strict_owner_login.py \
             test_galaxy_stage9ae_staged_history_barrier.py \
             test_galaxy_stage9af_signed_import_to_chat.py \
             test_galaxy_stage9w_browser_chat_wiring.py \
@@ -168,6 +169,9 @@ jobs:
           import gaiaos_api as carrier
           import gaiaos_memory_mode as mode
           import gaiaos_public_memory_boundary as guard
+          assert carrier.BROWSER_AUTH_MODE in carrier.BROWSER_AUTH_MODES
+          assert callable(carrier.owner_login)
+          assert callable(carrier.owner_login_form)
           import gaiaos_presentation_guard as cast
           assert served.app is entry.app
           assert not db_calls, "Import made a database connection"
