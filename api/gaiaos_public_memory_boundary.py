@@ -20,10 +20,12 @@ def unreleased(record: Any) -> bool:
     """Deny forged ACTIVE records carrying the canonical archive source too."""
     if not isinstance(record, dict):
         return True
+    status = record.get("status")
     source = record.get("source")
     return (
-        record.get("status") == STAGING_STATUS
-        or (isinstance(source, str) and source.startswith(SOURCE_PREFIX))
+        isinstance(status, str) and status.strip().upper() == STAGING_STATUS
+        or isinstance(source, str)
+        and source.lstrip().lower().startswith(SOURCE_PREFIX)
     )
 
 
