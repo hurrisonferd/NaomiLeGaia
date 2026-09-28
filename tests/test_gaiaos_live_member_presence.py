@@ -132,6 +132,39 @@ class LivePresenceTests(unittest.TestCase):
                 self.run_six(root=root)
             self.assertEqual(e.exception.reason, "MISSING_MEMBER_SOURCE_NIMUE")
 
+    def test_boot_fail_closed_on_derived_reward_mirror_drift(self):
+        import fastapi
+        canonical = gaiaos_app._parse_head_pat_counters(
+            gaiaos_app._read_local_text(gaiaos_app.HEAD_PAT_COUNTERS_PATH))
+        self.assertTrue(gaiaos_app._verified_counter_mirrors(canonical))
+        original = gaiaos_app._read_local_json
+
+        def drift(path):
+            value = original(path)
+            if path == gaiaos_app.REWARD_MIRROR_PATH:
+                value = copy.deepcopy(value)
+                value["counters"]["ORIN"]["head_pats"] = 5
+                value["counters"]["ORIN"]["total"] = 5
+            return value
+
+        with mock.patch.object(gaiaos_app, "_read_local_json", side_effect=drift):
+            self.assertFalse(gaiaos_app._verified_counter_mirrors(canonical))
+            with self.assertRaises(fastapi.HTTPException) as exc:
+                gaiaos_app._boot_packet("SYNTHETIC_DRIFT")
+            self.assertEqual(exc.exception.status_code, 503)
+            self.assertFalse(exc.exception.detail["checks"]["head_pat_mirrors_exact"])
+
+    def test_unsolicited_vaskon_is_not_a_seventh_or_default_voice(self):
+        args = (
+            gaiaos_app._read_local_json(gaiaos_app.PRESENTATION_SPEC_PATH),
+            gaiaos_app._read_local_json(gaiaos_app.EXPRESSION_REGISTRY_PATH),
+            gaiaos_app._read_local_json(gaiaos_app.STATIC_IDENTITY_PATH),
+            self.profiles,
+        )
+        with self.assertRaises(guard.PresentationGuardError):
+            guard.validate_output("82 · VASKON 🖤 ✴️ (◉‿◉)\\nHello.", *args)
+        self.assertFalse(presence.explicit_full_cast_request("//C:82//"))
+
     def test_actual_render_bridge_group_chat_and_private_last_receipt(self):
         fake = FakeProvider()
         with (mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
