@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'GaiaOS/Apps/ChatOS/**'
+      - 'api/gaiaos_presentation_guard.py'
       - 'GaiaOS/SystemsOS/Core/FairyOS/**'
       - 'GaiaOS/SystemsOS/Core/EmojiOS/**'
       - 'GaiaOS/LOAD.v1.md'
@@ -13,6 +14,7 @@ on:
     branches: [main]
     paths:
       - 'GaiaOS/Apps/ChatOS/**'
+      - 'api/gaiaos_presentation_guard.py'
       - 'GaiaOS/SystemsOS/Core/FairyOS/**'
       - 'GaiaOS/SystemsOS/Core/EmojiOS/**'
       - 'GaiaOS/LOAD.v1.md'
@@ -29,3 +31,5 @@ jobs:
       - uses: actions/checkout@v4
       - name: Verify GPT color default and six portable accent snapshots
         run: python3 GaiaOS/Apps/ChatOS/Tests/GAIAOS-COLOR-CARD-PRESENTATION-CANARY.py
+      - name: Enforce exact report-in and canonical speaker headers
+        run: python3 GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py
