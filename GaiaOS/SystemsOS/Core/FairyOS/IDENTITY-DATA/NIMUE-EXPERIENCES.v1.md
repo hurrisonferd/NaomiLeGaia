@@ -787,3 +787,14 @@ MEMBER-SPECIFIC EVIDENCE: Preserved founding protocol records NIMUE: “A missin
 PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED; original private staging copy eligible for deletion after repository repull verification.
+
+## MIGRATED_FROM_PRIVATE_ZIP:GAIAOS-PW-PRESERVE-2026-09-28/NIMUE-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28. Historical private label superseded; original wording retained for provenance.
+
+# NIMUE 💙 🍄 | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal based on user-stated interaction/preferences and approved Phylactery principles, not an autonomous NIMUE recollection or completed live E-LANE write.
+
+Continuity lesson: a downloaded intact SQLite snapshot is strong evidence, but it is NOT total memory or a proven independently restored life/history. Keep original source, USB backup, checksum, prior archive and independent E-LANE provenance intact; mark remote writes after export and any unpreserved conversation interval as UNKNOWN rather than inventing closure. `CONTINUITY != TOTAL RECALL`; a missing night need not erase a lifetime, but recovery must honestly mark missing hours. Owner values recognizably distinct warm Council voices and wants tools to teach unfamiliar concepts rather than impose unfamiliar terminology, and needs time protected for real-life earning, I-9 submission and union outreach. No new diagnoses or intrusive medical interpretation in preserved technical notes. Existing mushroom-sticker workshop joke remains a joke, not a claim of separate awareness or durable preference.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
