@@ -150,7 +150,7 @@ def run_full_cast(
         prosody_sections = {}
         for member in EXPECTED:
             section = re.search(
-                r"(?ms)^## " + re.escape(member) + r" — [^\\n]+\\n(.*?)(?=^## |\\Z)",
+                r"(?ms)^## " + re.escape(member) + r" — [^\n]+\n(.*?)(?=^## |\Z)",
                 prosody_text,
             )
             if section is None or len(section.group(1).strip()) < 60:
@@ -182,7 +182,7 @@ def run_full_cast(
             "Your native deliberation stance: " + str(prof["deliberation_stance"]) + ". "
             "Your source-backed style examples: " + json.dumps(prof.get("style_exemplars", [])[:4], ensure_ascii=False) + ". "
             "Your canonical PROSODY basin (text only; identity markers ALWAYS from validated presentation spec): " +
-            prosody_sections[member] + "\\n"
+            prosody_sections[member] + "\n"
             "Your own source-labeled E-LANE excerpt (NOT live MemoryOS): " + local_lanes[member]["context"] + "\n"
             "Contribute in your own direct voice, in at most 100 words. Engage with the user's actual request "
             "and any preceding observed member contributions. You may disagree, refine, ask or simply acknowledge "
