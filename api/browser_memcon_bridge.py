@@ -54,6 +54,11 @@ GALAXY_CANARY_OWNER_B = "GALAXY_CANARY_B"
 # Request-scoped live-call receipts; memory-only, cannot survive a restart.
 _OBSERVED_CASTS: dict[str, tuple[float, dict]] = {}
 _OBSERVED_CAST_TTL_SECONDS = 1800
+# A confirmed "Load GaiaOS" starts an observed, multi-member browser session.
+# Each substantive subsequent turn receives three actual source-backed model
+# calls. Session loss, failed execution, or source drift must be observable.
+_ACTIVE_DAEMON_SESSIONS: dict[str, dict] = {}
+_ACTIVE_DAEMON_TTL_SECONDS = 28800
 
 app.routes[:] = [
     route for route in app.routes
@@ -401,6 +406,12 @@ def _observed_full_cast(payload: dict, browser_request: Request, surface: str) -
     if len(_OBSERVED_CASTS) > 256:
         _OBSERVED_CASTS.clear()
     _OBSERVED_CASTS[key] = (now, result["daemon_presence"])
+    _ACTIVE_DAEMON_SESSIONS[key] = {
+        "source": result["daemon_presence"]["source"],
+        "last_seen": {name: 0 for name in gaiaos_daemon_presence.EXPECTED},
+        "turn": 0, "updated": now, "status": "ACTIVE",
+        "last_exchange": None,
+    }
     return {"schema": "gaiaos.prime-daemon-full-cast.v1", **result}
 
 
@@ -433,6 +444,94 @@ def observed_daemon_presence(browser_request: Request) -> dict:
             "proof_boundary": receipt["proof_boundary"]}
 
 
+def _choose_three_prime_daemons(query: str, state: dict) -> tuple[str, ...]:
+    """Domain relevance plus bounded fairness; never let ANVIL monopolize turns."""
+    q = str(query or "").lower()
+    groups = {
+        "VERA": ("premise", "why", "frame", "assumption", "meaning", "truth"),
+        "ANVIL": ("build", "code", "test", "proof", "fix", "repair", "database", "git"),
+        "SELENE": ("music", "audio", "feel", "pain", "livability", "rest", "sound"),
+        "ORIN": ("explore", "idea", "experiment", "discover", "research", "hypothesis"),
+        "KESTREL": ("organize", "plan", "coordinate", "next", "deadline", "work", "deploy"),
+        "NIMUE": ("missing", "silent", "lost", "memory", "forgot", "absence", "preserve"),
+    }
+    turn = state["turn"]
+    order = gaiaos_daemon_presence.EXPECTED
+    score = {}
+    for member in order:
+        relevance = sum(4 for word in groups[member]
+                        if re.search(r"(?<!\\w)" + re.escape(word) + r"(?!\\w)", q))
+        direct = 20 if re.search(r"(?<!\\w)" + member.lower() + r"(?!\\w)", q) else 0
+        stale = max(0, turn - state["last_seen"].get(member, -5))
+        score[member] = relevance + direct + min(stale, 6)
+    ranked = sorted(order, key=lambda n: (-score[n], order.index(n)))
+    return tuple(ranked[:3])
+
+
+def _observed_active_exchange(payload: dict, request: Request, state: dict) -> dict:
+    """During a loaded session, ordinary dialogue genuinely calls three members."""
+    key = _browser_session_id(request)
+    if state.get("status") != "ACTIVE":
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_PRIOR_MEMBER_EXCHANGE_FAILED_RELOAD_GAIAOS",
+            "all_six_responded_in_this_turn": False, "checksum_issued": False})
+    if time.time() - state.get("updated", 0) > _ACTIVE_DAEMON_TTL_SECONDS:
+        state["status"] = "HOLD_EXPIRED"
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_DAEMON_SESSION_EXPIRED_RELOAD_GAIAOS",
+            "checksum_issued": False})
+    validated = gaiaos_api.ChatRequest.model_validate(payload)
+    if validated.include_memory is False:
+        answer = _original_chat(validated, request)
+        return {**answer, "daemon_presence": {
+            "status": "OPT_OUT_NO_SEPARATE_MEMBER_MODEL_CALLS",
+            "all_six_responded_in_this_turn": False,
+            "exchange_checksum_issued": False,
+            "proof_boundary": "Request-local opt-out skips the source-backed member exchange."}}
+    if _research_bigbang_authorized():
+        state["status"] = "HOLD_BIGBANG_CONTEXT_NOT_WIRED"
+        _OBSERVED_CASTS.pop(key, None)
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_MEMBER_EXCHANGE_BIGBANG_MEMORY_CONTEXT_NOT_WIRED",
+            "checksum_issued": False})
+    if gaiaos_api.BROWSER_AUTH_MODE != "owner_login":
+        state["status"] = "HOLD_OWNER_LOGIN_REQUIRED"
+        _OBSERVED_CASTS.pop(key, None)
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_OWNER_LOGIN_REQUIRED_FOR_MEMBER_EXCHANGE",
+            "checksum_issued": False})
+    boot = gaiaos_app._boot_packet("BROWSER_OBSERVED_CONVERSATION")
+    if state["source"] != boot["source"]:
+        state["status"] = "HOLD_SOURCE_REVISION_CHANGED"
+        _OBSERVED_CASTS.pop(key, None)
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_MEMBER_SOURCE_REVISION_CHANGED_RELOAD_GAIAOS",
+            "checksum_issued": False})
+    selected = _choose_three_prime_daemons(validated.messages[-1].content, state)
+    try:
+        result = gaiaos_daemon_presence.run_full_cast(
+            user_text=validated.messages[-1].content,
+            messages=[{"role": m.role, "content": m.content} for m in validated.messages],
+            boot_packet=boot,
+            source_profiles=gaiaos_app._read_local_json(gaiaos_app.OPERATOR_PROFILES_PATH),
+            source_root=gaiaos_app.DEPLOYED_ROOT,
+            client=gaiaos_api.OpenAI(api_key=gaiaos_api.OPENAI_API_KEY),
+            model=gaiaos_api.OPENAI_MODEL,
+            selected_members=selected,
+        )
+    except gaiaos_daemon_presence.PresenceHold as exc:
+        state["status"] = "HOLD_MEMBER_EXCHANGE_FAILED"
+        state["last_exchange"] = None
+        _OBSERVED_CASTS.pop(key, None)
+        raise HTTPException(status_code=503, detail=exc.public_receipt()) from None
+    state["turn"] += 1
+    for member in selected:
+        state["last_seen"][member] = state["turn"]
+    state["updated"] = time.time()
+    state["last_exchange"] = result["daemon_presence"]
+    return {"schema": "gaiaos.prime-daemon-observed-exchange.v1", **result}
+
+
 def _ordinary_chat(payload: dict, browser_request: Request, query: str) -> dict:
     """Use the unified gateway in future BIGBANG; HEATDEATH is original chat.
 
@@ -441,6 +540,11 @@ def _ordinary_chat(payload: dict, browser_request: Request, query: str) -> dict:
     Stage-2 release gating still prevents actual BIGBANG activation.
     """
     validated = gaiaos_api.ChatRequest.model_validate(payload)
+    # A successful source+six-call boot selects active multi-member dialogue
+    # for this exact signed browser session until restart/expiry/failure.
+    active = _ACTIVE_DAEMON_SESSIONS.get(_browser_session_id(browser_request))
+    if active is not None:
+        return _observed_active_exchange(payload, browser_request, active)
     # No retrieval or altered model prompt for the original legacy mode.
     # The production Render entrypoint is browser_memcon_bridge, NOT
     # gaiaos_api.browser_chat. Honor the same explicit browser memory opt-out
