@@ -976,6 +976,14 @@ def _bootstrap_browser_session_redirect(browser_request: Request):
     fresh isolated webview. This does not bypass carrier authorization; it only
     performs the already-public browser-session bootstrap in the same request.
     """
+    if gaiaos_api.BROWSER_AUTH_MODE not in gaiaos_api.BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if gaiaos_api.BROWSER_AUTH_MODE == "owner_login":
+        if browser_request.cookies.get(gaiaos_api.SESSION_COOKIE):
+            return None
+        # Do not mint a public cookie in an isolated webview. The independent
+        # SOS owner must supply the configured secret on the login page.
+        return RedirectResponse(url="/gaiaos/owner-login", status_code=303)
     if gaiaos_api.API_KEY is None or browser_request.cookies.get(gaiaos_api.SESSION_COOKIE):
         return None
     target = browser_request.url.path
