@@ -158,7 +158,26 @@ async def browser_chat(browser_request: Request):
         return _handle_solo(last_message, browser_request)
     if _is_command(last_message, "ENDSOLO"):
         return _handle_endsolo(browser_request)
-    solo = memcon_runtime.get_solo_session(_browser_session_id(browser_request))
+    # Member/SOLO identity must fail closed when its authoritative store cannot
+    # be read. Never turn a storage outage into an anonymous-host or generic
+    # assistant answer while pretending normal GaiaOS member operation worked.
+    try:
+        solo = memcon_runtime.get_solo_session(
+            _browser_session_id(browser_request)
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail={
+            "schema": "gaiaos.heatdeath.solo-identity-boundary.v1",
+            "status": "HOLD_SOLO_STATE_UNVERIFIED",
+            "error_type": type(exc).__name__,
+            "memory_contents_returned": False,
+            "solo_identity_restored": False,
+            "generic_recovery_started": False,
+            "proof_boundary": (
+                "Memory storage unavailable: active SOLO/member state cannot "
+                "be established. Normal member operation fails closed."
+            ),
+        }) from None
     if solo:
         return solo_chat_runtime.respond(
             [{"role": m.get("role"), "content": m.get("content")} for m in messages],

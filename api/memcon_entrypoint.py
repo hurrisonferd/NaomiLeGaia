@@ -13,7 +13,10 @@ MEMORY_RUNTIME_PATH = "GaiaOS/SystemsOS/Core/MemoryOS/Runtime/GAIAOS-MEMORY.v1.p
 
 app = gaiaos_app.app
 mcp = gaiaos_app.mcp
-memcon_runtime.initialize()
+# Do not connect to Turso or create a local SQLite file while importing the
+# normal GaiaOS carrier. Carrier/source boot must remain available even when
+# durable memory is unavailable. Memory operations initialize on demand and
+# an unavailable configured remote backend must never become local fallback.
 
 def _memory_runtime():
     return gaiaos_app._gaia_runtime(MEMORY_RUNTIME_PATH, "gaia_memory_runtime")
@@ -72,11 +75,76 @@ def _auth(authorization: str | None) -> None:
 
 @app.get("/memconos/health", operation_id="memconHealth")
 def memcon_health(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    """Authenticated reachability probe, NOT a zero-write or durability test.
+
+    Runtime initialize() can issue CREATE TABLE/INDEX statements on first use.
+    Opening the selected backend can also execute connection PRAGMAs (including
+    local journal settings). This endpoint does not request memory promotion or
+    an audit receipt; it does not measure every possible backend write effect.
+    """
     _auth(authorization)
-    memcon_runtime.initialize()
-    return {"status":"ok","runtime":memcon_runtime.SCHEMA_VERSION,"database":str(memcon_runtime.DB_PATH),
-            "durable_backend":True,"automatic_persistence":False,"authority":"NAOMI",
-            "memoryos_lifecycle":True}
+    backend = memcon_runtime.storage_status()
+    schema_initialized_at_entry = bool(memcon_runtime._INITIALIZED)
+    fresh_select_attempted = False
+
+    def reported_side_effects() -> dict[str, Any]:
+        return {
+            "schema_initialization_called": True,
+            "schema_ddl_possible": not schema_initialized_at_entry,
+            "backend_connection_side_effects_possible": True,
+            "fresh_select_attempted": fresh_select_attempted,
+            "memory_promotion_requested": False,
+            "audit_receipt_insert_requested": False,
+            "backend_write_effects_exhaustively_measured": False,
+            "proof_boundary": (
+                "This route requests no record promotion or READ audit insert. "
+                "First-use schema DDL and storage-connection effects are "
+                "possible; their actual backend mutations are not measured."
+            ),
+        }
+
+    try:
+        memcon_runtime.initialize()
+        # The once-per-process flag can remain true after a later outage.
+        # Check a fresh backend read instead of trusting that flag.
+        with memcon_runtime._db() as conn:
+            fresh_select_attempted = True
+            conn.execute("SELECT 1 FROM memory_records LIMIT 1").fetchone()
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail={
+            "schema": "gaiaos.memconos.storage-health.v2",
+            "status": "HOLD_STORAGE_UNAVAILABLE",
+            "backend": backend["backend"],
+            "remote_configured": backend["remote_configured"],
+            "storage_reachable": False,
+            "error_type": type(exc).__name__,
+            "durability_verified": False,
+            "side_effects": reported_side_effects(),
+            "proof_boundary": (
+                "Carrier liveness and configured backend do not establish "
+                "memory availability, zero writes, or restart durability."
+            ),
+        }) from None
+    return {
+        "schema": "gaiaos.memconos.storage-health.v2",
+        "status": "ok",
+        "runtime": memcon_runtime.SCHEMA_VERSION,
+        "backend": backend["backend"],
+        "remote_configured": backend["remote_configured"],
+        "storage_reachable": True,
+        "durable_backend": False,
+        "durability_verified": False,
+        "restart_canary_verified": False,
+        "automatic_persistence": False,
+        "authority": "NAOMI",
+        "memoryos_lifecycle": True,
+        "side_effects": reported_side_effects(),
+        "proof_boundary": (
+            "Authenticated backend query succeeded, but first-use schema and "
+            "connection effects are possible and have not been fully measured. "
+            "Restart persistence and fresh-session recall are separate tests."
+        ),
+    }
 
 @app.get("/memconos/read/{record_id}", operation_id="readMemconRecord")
 def memcon_read_http(record_id: str, authorization: str | None = Header(default=None)) -> dict[str, Any]:
