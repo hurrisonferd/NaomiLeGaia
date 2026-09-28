@@ -23,8 +23,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "api"))
 sys.path.insert(0, str(ROOT / "tests"))
 
-# The actual served-app imports memcon_entrypoint which INITIALIZES the
-# backend at module import. Isolate BEFORE that import and ban remote secrets.
+# The real Render app now DEFERS all memory DB initialization at import.
+# Isolate the configured fixture BEFORE the actual bridge is imported.
 _RUNNING = tempfile.TemporaryDirectory(prefix="gaiaos-native-hold-ci-")
 os.environ["MEMCONOS_DB_PATH"] = str(Path(_RUNNING.name) / "ci-carrier.db")
 os.environ.pop("TURSO_DATABASE_URL", None)
@@ -213,22 +213,21 @@ class SignedNativeHeldArchiveTests(unittest.TestCase):
         for row in self.held:
             self.assertNotIn(row["statement"], response.text)
             self.assertNotIn(row["statement"], str(mcp))
-        # Exact-ID privileged HTTP/MCP reads are AUDITED operations, unlike
-        # pure internal get_record(): staging intentionally has no runtime_receipts.
-        # Misrouting the full carrier to the 6-table sandbox must FAIL CLOSED
-        # without exposing an unaudited HOLD statement, not a raw SQL 500.
+        # The merged public API refuses ungraduated records by exact ID,
+        # indistinguishable from an unknown ID, BEFORE any receipt write.
+        # A separate audit-eligible clean record still requires a receipt.
         exact = client.get(
             f"/memconos/read/{self.held[0]['record_id']}", headers=auth,
         )
-        self.assertEqual(exact.status_code, 503, exact.text)
-        self.assertEqual(
-            exact.json()["detail"], "HOLD_AUDITED_READ_LEDGER_UNAVAILABLE",
+        unknown = client.get(
+            "/memconos/read/MEM-UNKNOWN-CI", headers=auth,
         )
+        self.assertEqual(exact.status_code, 404, exact.text)
+        self.assertEqual(exact.json(), unknown.json())
         self.assertNotIn(self.held[0]["statement"], exact.text)
         mcp_exact = entry.memcon_read(self.held[0]["record_id"])
-        self.assertEqual(
-            mcp_exact["status"], "HOLD_AUDITED_READ_LEDGER_UNAVAILABLE",
-        )
+        self.assertFalse(mcp_exact["found"])
+        self.assertNotIn("record", mcp_exact)
         self.assertNotIn(self.held[0]["statement"], str(mcp_exact))
         # Source remains accessible by exact ID through a pure local audit
         # adapter. No implicit read/search surface may return held rows.
@@ -242,6 +241,10 @@ class SignedNativeHeldArchiveTests(unittest.TestCase):
         # The actual MemconOS carrier (unlike staging) has runtime_receipts.
         full = Path(_RUNNING.name) / "ci-carrier.db"
         with patch.object(store, "_db", side_effect=lambda: native_db(full)):
+            # #114 intentionally REMOVES eager DB boot from the actual Render
+            # app; this full-schema test must initialize its own fixture.
+            with patch.object(store, "_INITIALIZED", False):
+                store.initialize()
             store.write_record(
                 authority="NAOMI", approved=True,
                 record_type="TEST", scope="MemoryOS",
@@ -320,7 +323,7 @@ class SignedNativeHeldArchiveTests(unittest.TestCase):
             def galaxy_record(self, rid):
                 raise AssertionError("STAGED RECORD DETAILS MUST NOT BE READ")
         out = preview.preview(MisconfiguredRead(), "archived", limit=3)
-        self.assertEqual(out["status"], "HOLD_UNRELEASED_STAGED_ARCHIVE")
+        self.assertEqual(out["status"], "HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW")
         self.assertEqual(out["records"], [])
         self.assertEqual(out["writes_performed"], [])
         self.assertNotIn(row["statement"], str(out))
@@ -346,7 +349,7 @@ class SignedNativeHeldArchiveTests(unittest.TestCase):
                     },
                 }
         out = preview.preview(SwappedRead(), "approved", 3)
-        self.assertEqual(out["status"], "HOLD_UNRELEASED_STAGED_ARCHIVE")
+        self.assertEqual(out["status"], "HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW")
         self.assertEqual(out["records"], [])
 
     def test_operational_and_gateway_independent_lowercase_guard_prevents_scoring(self):
