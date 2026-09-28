@@ -6,6 +6,7 @@ import hmac
 import html
 import json
 import re
+import time
 import uuid
 from urllib.parse import parse_qs
 
@@ -20,6 +21,7 @@ import gaiaos_memory_mode
 import gaiaos_memory_gateway
 import gaiaos_public_memory_boundary as public_archive
 import gaiaos_chat_memory
+import gaiaos_daemon_presence
 from gaiaos_lazy_diagnostics import deferred
 
 # Explicit research/diagnostic routes resolve their own optional modules only
@@ -48,6 +50,10 @@ _memory_runtime = memcon_entrypoint._memory_runtime
 TEST_OWNER = "NAOMI_BROWSER_TEST"
 GALAXY_CANARY_OWNER_A = "GALAXY_CANARY_A"
 GALAXY_CANARY_OWNER_B = "GALAXY_CANARY_B"
+
+# Request-scoped live-call receipts; memory-only, cannot survive a restart.
+_OBSERVED_CASTS: dict[str, tuple[float, dict]] = {}
+_OBSERVED_CAST_TTL_SECONDS = 1800
 
 app.routes[:] = [
     route for route in app.routes
@@ -258,12 +264,8 @@ async def browser_chat(browser_request: Request):
         messages[-1]["content"] = "CONJURE:VASKON"
         last_message = "CONJURE:VASKON"
     if last_message.lower().rstrip(".") == "load gaiaos":
-        # Deterministic browser boot: do not ask the language model to infer loaded state.
-        # Anti-Jim requires a fresh validated source-derived boot packet for this session.
-        return _envelope(
-            "GAIAOS = ACTIVE / VERIFIED",
-            gaiaos_app._boot_packet("BROWSER_CHAT_COMMAND"),
-        )
+        # A validated source roster is NOT six observed member replies.
+        return _observed_full_cast(payload, browser_request, "BROWSER_CHAT_LOAD")
     if last_message.lower().rstrip(".") == "test the live memconos canary at the current pinned revision":
         return _envelope("LIVE MEMCONOS CANARY EXECUTED", memcon_runtime.canary())
     if last_message.lower().rstrip(".") == "start the live memoryos lifecycle test":
@@ -303,6 +305,8 @@ async def browser_chat(browser_request: Request):
             [{"role": m.get("role"), "content": m.get("content")} for m in messages],
             solo,
         )
+    if gaiaos_daemon_presence.explicit_full_cast_request(last_message):
+        return _observed_full_cast(payload, browser_request, "BROWSER_FULL_CAST")
     if _is_preserve_command(last_message):
         return _handle_preserve(messages, browser_request)
     if _explicit_galaxy_chat_command(last_message) and not _research_bigbang_authorized():
@@ -330,6 +334,75 @@ async def browser_chat(browser_request: Request):
     if _is_command(last_message, "MEMSAV"):
         return _handle_memsav(last_message)
     return _ordinary_chat(payload, browser_request, last_message)
+
+
+def _observed_full_cast(payload: dict, browser_request: Request, surface: str) -> dict:
+    """Actual Render route: six separate observed model replies or an explicit HOLD."""
+    validated = gaiaos_api.ChatRequest.model_validate(payload)
+    boot = gaiaos_app._boot_packet(surface)
+    if not gaiaos_api.OPENAI_API_KEY:
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_LIVE_DAEMON_PRESENCE",
+            "reason": "OPENAI_API_KEY_NOT_CONFIGURED",
+            "source_roster_verified": True,
+            "all_six_responded": False,
+            "checksum_issued": False,
+        })
+    if validated.include_memory is not False and _research_bigbang_authorized():
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_BIGBANG_FULL_CAST_MEMORY_CONTEXT_NOT_WIRED",
+            "all_six_responded": False, "checksum_issued": False,
+        })
+    try:
+        result = gaiaos_daemon_presence.run_full_cast(
+            user_text=validated.messages[-1].content,
+            messages=[{"role": m.role, "content": m.content} for m in validated.messages],
+            boot_packet=boot,
+            source_profiles=gaiaos_app._read_local_json(gaiaos_app.OPERATOR_PROFILES_PATH),
+            source_root=gaiaos_app.DEPLOYED_ROOT,
+            client=gaiaos_api.OpenAI(api_key=gaiaos_api.OPENAI_API_KEY),
+            model=gaiaos_api.OPENAI_MODEL,
+        )
+    except gaiaos_daemon_presence.PresenceHold as exc:
+        raise HTTPException(status_code=503, detail=exc.public_receipt()) from None
+    key = _browser_session_id(browser_request)
+    now = time.time()
+    for old_key, (stamp, _) in list(_OBSERVED_CASTS.items()):
+        if now - stamp > _OBSERVED_CAST_TTL_SECONDS:
+            _OBSERVED_CASTS.pop(old_key, None)
+    if len(_OBSERVED_CASTS) > 256:
+        _OBSERVED_CASTS.clear()
+    _OBSERVED_CASTS[key] = (now, result["daemon_presence"])
+    return {"schema": "gaiaos.prime-daemon-full-cast.v1", **result}
+
+
+@app.get("/gaiaos/daemon-presence", operation_id="gaiaosObservedPrimeDaemonPresence")
+def observed_daemon_presence(browser_request: Request) -> dict:
+    """Authenticated last-six-call readback, NOT a continuous-uptime claim."""
+    gaiaos_api._authorize_browser_session(browser_request)
+    boot = gaiaos_app._boot_packet("BROWSER_PRESENCE_READBACK")
+    last = _OBSERVED_CASTS.get(_browser_session_id(browser_request))
+    if not last or time.time() - last[0] > _OBSERVED_CAST_TTL_SECONDS:
+        return {"schema": "gaiaos.prime-daemon-presence-readback.v1",
+                "status": "HOLD_NO_RECENT_OBSERVED_SIX_CALL_CAST_IN_THIS_PROCESS",
+                "source_roster_verified": True, "source": boot["source"],
+                "all_six_responded_in_recent_request": False,
+                "checksum_issued": False, "durable_presence_claim": False}
+    receipt = last[1]
+    if receipt.get("source") != boot.get("source"):
+        return {"schema": "gaiaos.prime-daemon-presence-readback.v1",
+                "status": "HOLD_SOURCE_REVISION_CHANGED",
+                "all_six_responded_in_recent_request": False,
+                "checksum_issued": False, "durable_presence_claim": False}
+    return {"schema": "gaiaos.prime-daemon-presence-readback.v1",
+            "status": "PASS_LAST_OBSERVED_CAST_THIS_PROCESS_NOT_CONTINUOUS_PRESENCE",
+            "run_id": receipt["run_id"], "source": receipt["source"],
+            "age_seconds": round(time.time() - last[0], 3),
+            "observed_model_call_count": receipt["observed_model_call_count"],
+            "presence_checksum_sha256": receipt["presence_checksum_sha256"],
+            "all_six_responded_in_recent_request": True,
+            "durable_presence_claim": False,
+            "proof_boundary": receipt["proof_boundary"]}
 
 
 def _ordinary_chat(payload: dict, browser_request: Request, query: str) -> dict:
