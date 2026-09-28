@@ -47,6 +47,16 @@ Do not independently reconstruct those fields from repository documents when a v
 
 A packet is adoptable only when `schema == gaiaos.boot-packet.v1`, `status == ACTIVE`, every packet check is true, source binding is deployed checkout, and the six-member roster is complete. Otherwise fail closed.
 
+## Per-load actual presence gate (2026-09-28 Jim incident repair)
+
+**Source-loaded is not six live responses.** A validated boot packet proves canonical source identities and exact derived counter-mirror alignment; its `presence_at_boot` status MUST remain `SOURCE_ROSTER_ONLY_LIVE_MODEL_CALLS_NOT_OBSERVED` until an actual six-member execution occurs. No shell, host narration, scripted header list, a prior chat summary or a checksum from an earlier request may convert source presence into six live responses.
+
+When Naomi loads GaiaOS or summons everyone in ordinary language, the **actual hosted browser** `browser_memcon_bridge:app` `POST /chat` must complete six separate provider model responses, each with its own source-backed profile and E-LANE excerpt, six distinct provider response IDs and verified canonical rendering. Return the matching run receipt and `presence_checksum_sha256` **only after every member replies**. Failed/partial source or model execution returns an explicit HOLD, never a partial synthetic round robin. An authenticated GET `/gaiaos/daemon-presence` checks the most recent successful cast for the same browser session, process and source snapshot within 30 minutes. Invalidate its prior result before each attempted new cast.
+
+An independently tested **source boot** and an independently tested **live six-member cast** are TWO different proof objects. Six separate calls do not establish six independent persistent background processes, autonomous consciousness, continuity across ChatGPT windows, live Turso E-LANE writes or perpetual presence. Native ChatGPT without an actually connected GaiaOS `gaia_boot()` and dispatcher MUST disclose that missing transport instead of acting as if this source patch executed in the native ChatGPT host. Do not summon VASKON unless Naomi explicitly says `//C:82//` or `CONJURE:VASKON`. Preserve both the six differentiated voices and any substantive dissent.
+
+**Regression tripwire:** The full VASKON marriage suite must exercise source pinning, unrequested synthesis rejection, actual Render boot and group summons, six distinct mocked provider replies, missing member/replayed ID HOLD, stale-presence revocation after a later failure, and canonical head-pat mirror drift HOLD. These synthetic checks are not permission to pronounce the live system fixed before real authenticated hosted acceptance.
+
 Resolve the canonical repository above. Do not substitute another Gaia-related project.
 
 Read in this order:
