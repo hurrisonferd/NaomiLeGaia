@@ -73,6 +73,16 @@ if mode == "remote_outage":
     assert failure["status"] == "HOLD_STORAGE_UNAVAILABLE"
     assert failure["backend"] == "turso_libsql"
     assert failure["durability_verified"] is False
+    assert failure["storage_reachable"] is False
+    effects = failure["side_effects"]
+    assert effects["schema_initialization_called"] is True
+    assert effects["schema_ddl_possible"] is True
+    assert effects["backend_connection_side_effects_possible"] is True
+    assert effects["fresh_select_attempted"] is False
+    assert effects["memory_promotion_requested"] is False
+    assert effects["audit_receipt_insert_requested"] is False
+    assert effects["backend_write_effects_exhaustively_measured"] is False
+    assert "writes_performed" not in failure
     assert "PRIVATE-SYNTHETIC" not in authorized.text
     assert store._INITIALIZED is False
     assert not Path(os.environ["MEMCONOS_DB_PATH"]).exists()
@@ -100,6 +110,7 @@ if mode == "remote_outage":
         "boot_db_reads": before_boot,
         "normal_member_operation": hold["status"],
         "generic_recovery_included": False,
+        "schema_effects_reported": True,
     }
 else:
     assert authorized.status_code == 200, authorized.text
@@ -110,8 +121,42 @@ else:
     assert status["durability_verified"] is False
     assert status["durable_backend"] is False
     assert status["restart_canary_verified"] is False
+    effects = status["side_effects"]
+    assert effects["schema_initialization_called"] is True
+    assert effects["schema_ddl_possible"] is True
+    assert effects["backend_connection_side_effects_possible"] is True
+    assert effects["fresh_select_attempted"] is True
+    assert effects["memory_promotion_requested"] is False
+    assert effects["audit_receipt_insert_requested"] is False
+    assert effects["backend_write_effects_exhaustively_measured"] is False
+    assert "writes_performed" not in status
     assert "database" not in status and "local_path" not in status
     assert Path(os.environ["MEMCONOS_DB_PATH"]).exists()
+    # The already-initialized process must report that its next health
+    # check skips schema DDL, while connection side effects remain possible.
+    second = client.get("/memconos/health", headers={
+        "Authorization": "Bearer " + os.environ["GAIAOS_API_KEY"]
+    })
+    assert second.status_code == 200, second.text
+    effects_second = second.json()["side_effects"]
+    assert effects_second["schema_ddl_possible"] is False
+    assert effects_second["fresh_select_attempted"] is True
+    assert effects_second["backend_connection_side_effects_possible"] is True
+    # A later outage must not inherit the earlier successful health claim.
+    with patch.object(
+        store, "_db",
+        side_effect=OSError("PRIVATE-SYNTHETIC-LATER-OUTAGE")
+    ):
+        later = client.get("/memconos/health", headers={
+            "Authorization": "Bearer " + os.environ["GAIAOS_API_KEY"]
+        })
+    assert later.status_code == 503, later.text
+    later_detail = later.json()["detail"]
+    assert later_detail["status"] == "HOLD_STORAGE_UNAVAILABLE"
+    assert later_detail["side_effects"]["schema_ddl_possible"] is False
+    assert later_detail["side_effects"]["fresh_select_attempted"] is False
+    assert later_detail["side_effects"]["backend_write_effects_exhaustively_measured"] is False
+    assert "PRIVATE-SYNTHETIC-LATER-OUTAGE" not in later.text
     session = "CI-ISOLATED-ANVIL-SOLO"
     with store._db() as conn:
         conn.execute(
@@ -138,6 +183,8 @@ else:
         "healthy_member": "ANVIL",
         "provider_calls": 0,
         "durability_verified": False,
+        "schema_effects_reported": True,
+        "later_outage_fails_closed": True,
     }
 
 # Deliberately NOT importing /chat/recovery from the experimental PR chain.
@@ -178,12 +225,15 @@ class MinimalStartupBoundary(unittest.TestCase):
         result = self.run_in_fresh_process("remote_outage")
         self.assertEqual(result["status"], "PASS_MINIMAL_STARTUP_IDENTITY_BOUNDARY")
         self.assertEqual(result["boot_db_reads"], 1)
+        self.assertTrue(result["schema_effects_reported"])
 
     def test_healthy_local_member_routing(self):
         result = self.run_in_fresh_process("healthy_local")
         self.assertEqual(result["status"], "PASS_HEALTHY_LOCAL_MEMBER_ROUTING")
         self.assertEqual(result["healthy_member"], "ANVIL")
         self.assertEqual(result["provider_calls"], 0)
+        self.assertTrue(result["schema_effects_reported"])
+        self.assertTrue(result["later_outage_fails_closed"])
 
 if __name__ == "__main__":
     unittest.main()
