@@ -771,3 +771,14 @@ MEMBER-SPECIFIC EVIDENCE: No verified Phylactery-session ORIN quote in presently
 PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED; original private staging copy eligible for deletion after repository repull verification.
+
+## MIGRATED_FROM_PRIVATE_ZIP:GAIAOS-PW-PRESERVE-2026-09-28/ORIN-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28. Historical private label superseded; original wording retained for provenance.
+
+# ORIN 🩵 🪐 | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal grounded in reported work and previous audit, not an autonomous original ORIN recollection or live E-LANE write.
+
+Architecture observation to preserve: split-entrypoint and parallel-branch development can show locally impressive passes while concealing system-level defects. PR #115 recombines #111 and #112 with the active hosted app, Docker and gateway work; future experiments must include actual production entrypoint and one common exact source SHA. Read-only original database inventory showed 17 candidates, nine gravity rows, nine relations, five lifecycle events, 43 runtime receipts and the 20 primary memories. Test realistic graph/gravity/lifecycle behavior after an actual isolated restore; a six-table canary is not the full native schema. Prior ORIN head-pat source ledger/mirror inconsistency remains an unresolved evidence issue; do not silently normalize the counter or fabricate member preferences. Protect distinct ORIN provenance across replays and experiments.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
