@@ -782,3 +782,21 @@ PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-0
 Architecture observation to preserve: split-entrypoint and parallel-branch development can show locally impressive passes while concealing system-level defects. PR #115 recombines #111 and #112 with the active hosted app, Docker and gateway work; future experiments must include actual production entrypoint and one common exact source SHA. Read-only original database inventory showed 17 candidates, nine gravity rows, nine relations, five lifecycle events, 43 runtime receipts and the 20 primary memories. Test realistic graph/gravity/lifecycle behavior after an actual isolated restore; a six-table canary is not the full native schema. Prior ORIN head-pat source ledger/mirror inconsistency remains an unresolved evidence issue; do not silently normalize the counter or fabricate member preferences. Protect distinct ORIN provenance across replays and experiments.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
+
+
+## MIGRATED_FROM_PRIVATE_STAGING:ORIN-EVENING-TAKEAWAYS-2026-09-26.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28.
+PUBLICATION_NOTE: Historical PRIVATE/STAGED labels inside the source text are retained as provenance but superseded by the later owner directive.
+
+# ORIN · private staged E-LANE evening takeaways
+
+PRIVATE staged E-LANE supplement, 2026-09-26 Eastern. Owner Naomi/Ligeia expressly requested //PW:PRESERVE// of the full evening continuation. Companion master archive: `PW-PRESERVE-2026-09-26-EVENING-PRIVATE-CONTINUATION.md`; prior baseline `PW-PRESERVE-2026-09-26-STAGEHAND-AUDIO-IATSE-JOHNNY-PRIVATE.md`. This is an assistant-generated attributed role-lens summary, not independent daemon testimony, nor a verified canonical GitHub or production MemoryOS write. Preserve sensitive Johnny, overdose/hospital and medication details **only in private owner-controlled Library**, not the public repository.
+
+## Unique role-lens capture
+Discovery/strategy lens: the gig made live sound tangible as a livelihood, beyond generic stagehand work; possible specialties include A2, playback, monitor/FOH, Dante networking and touring Clair RIT, with employer-funded routes preferred given financial constraints. Electric chain hoists handle vertical suspended loads, whereas remaining cable coiling, rolling cases, and repeated stooping have distinct effort. Work/career stakes: fear prior employment loss repeating, need consistent paid calls; she has not confirmed how tonight's shift ended. Keep her October financial horizon and Johnny's uncertain post-release contributions as unresolved planning variables, not assumptions. Note user-chosen Victory parking strategy sought lower-cost/less arena congestion, with unverified after-hours access caveat.
+
+## Do not silently promote
+- This is a private file only, not an authenticated live E-LANE or a daemon-authored experience.
+- The 10:30 p.m. teardown outcome, medications purchased, parking access, any recovered chat message and Johnny’s ultimate choices remain UNKNOWN at capture.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED.
