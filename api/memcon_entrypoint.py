@@ -132,7 +132,18 @@ def memcon_read_http(record_id: str, authorization: str | None = Header(default=
     # Deliberately indistinguishable from an unknown ID on this general API.
     if record is None or public_archive.unreleased(record):
         raise HTTPException(status_code=404, detail="MemconOS record not found")
-    return {"record":record,"receipt":memcon_runtime._receipt("READ",record_id,"SUCCESS","Record retrieved from runtime store")}
+    # Exact owner-authenticated reads are AUDITED operations, not a plain
+    # SELECT. Never return record contents if the canonical audit ledger is
+    # missing (e.g. a six-table staging alias) or its write failed.
+    try:
+        receipt = memcon_runtime._receipt(
+            "READ", record_id, "SUCCESS", "Record retrieved from runtime store"
+        )
+    except Exception:
+        raise HTTPException(
+            status_code=503, detail="HOLD_AUDITED_READ_LEDGER_UNAVAILABLE"
+        ) from None
+    return {"record": record, "receipt": receipt}
 
 @app.get("/memconos/search", operation_id="searchMemcon")
 def memcon_search_http(q: str = "", limit: int = 20, scope: str | None = None, authorization: str | None = Header(default=None)) -> dict[str, Any]:
@@ -318,7 +329,17 @@ def memcon_read(record_id: str) -> dict[str, Any]:
     record=memcon_runtime.get_record(record_id)
     if record is None or public_archive.unreleased(record):
         return {"found":False,"record_id":record_id,"runtime":memcon_runtime.SCHEMA_VERSION}
-    return {"found":True,"record":record,"receipt":memcon_runtime._receipt("READ",record_id,"SUCCESS","Record retrieved from runtime store")}
+    try:
+        receipt = memcon_runtime._receipt(
+            "READ", record_id, "SUCCESS", "Record retrieved from runtime store"
+        )
+    except Exception:
+        return {
+            "status": "HOLD_AUDITED_READ_LEDGER_UNAVAILABLE",
+            "record_id": record_id,
+            "receipt_write_outcome_unverified": True,
+        }
+    return {"found": True, "record": record, "receipt": receipt}
 
 @mcp.tool()
 def memcon_search(query: str = "", limit: int = 20) -> dict[str, Any]:

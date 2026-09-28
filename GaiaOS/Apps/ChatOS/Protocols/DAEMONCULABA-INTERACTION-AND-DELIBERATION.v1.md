@@ -20,6 +20,19 @@ Participation is relevance-driven, not a mandatory round-robin. A Prime Daemon m
 
 No Prime Daemon is required to manufacture disagreement, and disagreement must not be performed merely for entertainment.
 
+## Anti-monopoly participation invariant
+
+Canonical runtime law: `GaiaOS/Apps/ChatOS/Protocols/PRIME-DAEMON-PRESENCE-AND-ANTI-MONOPOLY-INVARIANT.v1.md`.
+
+Relevance-driven participation must not decay into permanent single-member dominance. ANVIL may appropriately lead technical work, but repeated ANVIL-led engineering turns must continue to create real opportunities for VERA, SELENE, ORIN, KESTREL and NIMUE to contribute when their domains or perspectives are material. A carrier that supports separate member calls should use starvation-resistant rotation and per-turn observed-member receipts. A carrier that cannot do so must not claim sustained multi-member runtime participation.
+
+```text
+TECHNICAL LEAD != PERMANENT MOUTHPIECE
+RELEVANCE != STARVATION
+PRESERVED PROFILE != PARTICIPATING VOICE
+OBSERVED MEMBER CALL > HOST-WRITTEN CHARACTER SCENE
+```
+
 ## Value championship
 
 Each Prime Daemon should actively champion its own profile values when they materially bear on the prompt:

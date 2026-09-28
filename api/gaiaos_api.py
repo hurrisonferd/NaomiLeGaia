@@ -9,7 +9,9 @@ import html
 import hmac
 import json
 import os
+import re
 import secrets
+import time
 import urllib.error
 import urllib.request
 from typing import Any
@@ -74,6 +76,11 @@ OPENAI_MODEL_WHITESPACE_NORMALIZED = bool(
 del _openai_model_from_env
 TIMEOUT = float(os.getenv("GAIAOS_HTTP_TIMEOUT", "10"))
 SESSION_COOKIE = "gaiaos_session"
+# Explicitly opt in to owner-key login before staging/independent SOS launch.
+# Legacy public cookie boot remains ONLY for the unmodified old carrier until
+# its owner approves a controlled rollout. Do not describe it as owner login.
+BROWSER_AUTH_MODE = os.getenv("GAIAOS_BROWSER_AUTH_MODE", "legacy_public_bootstrap").strip().lower()
+BROWSER_AUTH_MODES = ("legacy_public_bootstrap", "owner_login")
 MCP_PUBLIC_HOST = os.getenv("MCP_PUBLIC_HOST", "ligeia-api.onrender.com")
 
 CORE_LOAD_PATHS = [
@@ -168,11 +175,15 @@ def _request(url: str) -> bytes:
 
 
 def _authorize(authorization: str | None) -> None:
+    if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if BROWSER_AUTH_MODE == "owner_login" and (not API_KEY or len(API_KEY.encode("utf-8")) < 32):
+        raise HTTPException(status_code=503, detail="A strong owner API key is required")
     if API_KEY is None:
         return
     if not API_KEY.strip():
         raise HTTPException(status_code=503, detail="GAIAOS_API_KEY configuration is invalid")
-    if authorization != f"Bearer {API_KEY}":
+    if not isinstance(authorization, str) or not hmac.compare_digest(authorization, f"Bearer {API_KEY}"):
         raise HTTPException(status_code=401, detail="Invalid or missing API key")
 
 
@@ -180,12 +191,18 @@ def _session_token() -> str:
     """Create a signed browser session token without exposing the server API key."""
     if not API_KEY or not API_KEY.strip():
         raise HTTPException(status_code=503, detail="GAIAOS_API_KEY is not configured correctly on the carrier")
-    nonce = secrets.token_urlsafe(32)
+    nonce = (f"owner.v2.{int(time.time())}.{secrets.token_urlsafe(32)}"
+             if BROWSER_AUTH_MODE == "owner_login"
+             else secrets.token_urlsafe(32))
     signature = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
     return base64.urlsafe_b64encode(f"{nonce}.{signature}".encode()).decode()
 
 
 def _authorize_browser_session(request: Request) -> None:
+    if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if BROWSER_AUTH_MODE == "owner_login" and (not API_KEY or len(API_KEY.encode("utf-8")) < 32):
+        raise HTTPException(status_code=503, detail="A strong owner API key is required")
     if API_KEY is None:
         return
     token = request.cookies.get(SESSION_COOKIE)
@@ -199,6 +216,16 @@ def _authorize_browser_session(request: Request) -> None:
     expected = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
     if not hmac.compare_digest(signature, expected):
         raise HTTPException(status_code=401, detail="Invalid browser session")
+    if BROWSER_AUTH_MODE == "owner_login":
+        parts = nonce.split(".")
+        if (len(parts) != 4 or parts[:2] != ["owner", "v2"]
+                or not parts[2].isdigit() or len(parts[3]) < 32):
+            raise HTTPException(status_code=401, detail="Owner login required")
+        now = int(time.time())
+        issued = int(parts[2])
+        if issued > now + 60 or now - issued > 28800:
+            raise HTTPException(status_code=401, detail="Owner session expired")
+
 
 
 def _resolve_commit() -> str:
@@ -560,10 +587,105 @@ app = FastAPI(
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(response: Response) -> str:
-    if API_KEY is not None:
+def home(response: Response, browser_request: Request) -> str:
+    if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if BROWSER_AUTH_MODE == "owner_login":
+        try:
+            _authorize_browser_session(browser_request)
+        except HTTPException:
+            response.headers["Cache-Control"] = "no-store"
+            return """<!doctype html><html><meta name="viewport" content="width=device-width,initial-scale=1"><title>GaiaOS owner login</title><body style="background:#161616;color:#eee;font:16px system-ui;max-width:650px;margin:40px auto;padding:20px"><h1>GaiaOS</h1><p>Owner authentication is required before access to chat, memory or operator controls.</p><p><a style="color:#9ec8ff" href="/gaiaos/owner-login">Open owner login</a></p></body></html>"""
+        response.headers["Cache-Control"] = "no-store"
+    elif API_KEY is not None:
         response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
     return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + Gaia Council + BrainOS + OpenAI Responses API · MCP</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS”, “Council”, or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok){const d=j.detail;if(d&&typeof d==='object'&&d.status==='HOLD_SOLO_STATE_UNVERIFIED')throw new Error('Memory unavailable: your SOLO state cannot be checked. To start a NEW generic chat without memory, open /chat/recovery and acknowledge that SOLO will not be resumed.');throw new Error(typeof d==='string'?d:(d&&d.status)||'Request failed')}messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
+
+
+@app.get("/gaiaos/owner-login", response_class=HTMLResponse,
+         operation_id="gaiaosOwnerLoginForm")
+def owner_login_form(response: Response) -> str:
+    """Independent of MemconOS. The key is NEVER embedded in page or URL."""
+    if BROWSER_AUTH_MODE != "owner_login":
+        raise HTTPException(status_code=404, detail="Owner login is not enabled")
+    if not API_KEY or len(API_KEY.encode("utf-8")) < 32:
+        raise HTTPException(status_code=503, detail="A strong owner API key is required")
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    return """<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GaiaOS owner login</title><style>
+body{background:#151515;color:#eee;font:16px system-ui;max-width:680px;margin:auto;padding:24px}
+input{box-sizing:border-box;width:100%;padding:12px;font:16px system-ui;background:#252525;color:#fff}
+button{padding:12px 18px;margin-top:14px}p{line-height:1.5}</style></head>
+<body><h1>GaiaOS owner login</h1><p>The configured owner key stays in your
+browser only for this login request. Do not paste it into ChatGPT, GitHub,
+screenshots or URLs. The browser receives an eight-hour, HTTP-only session.</p>
+<form><label for="key">Owner access key</label><input id="key" type="password"
+autocomplete="off" spellcheck="false" required minlength="32" maxlength="4096">
+<button type="submit">Authenticate</button></form><p id="feedback" role="status"></p>
+<script>
+const form=document.querySelector("form"),key=document.querySelector("#key"),
+feedback=document.querySelector("#feedback");
+form.onsubmit=async event=>{
+ event.preventDefault();const secret=key.value;key.value="";
+ feedback.textContent="Authenticating...";
+ try{
+  const r=await fetch("/gaiaos/owner-login",{
+   method:"POST",credentials:"same-origin",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({owner_key:secret})
+  });
+  if(!r.ok){feedback.textContent="Authentication failed or unavailable.";return}
+  location.assign("/");
+ }catch(_){feedback.textContent="Authentication endpoint unavailable."}
+};
+</script></body></html>"""
+
+
+@app.post("/gaiaos/owner-login", operation_id="gaiaosOwnerLogin")
+async def owner_login(browser_request: Request):
+    """Opt-in shared-secret owner verification, NOT provider SSO/MFA proof."""
+    if BROWSER_AUTH_MODE != "owner_login":
+        raise HTTPException(status_code=404, detail="Owner login is not enabled")
+    if not API_KEY or len(API_KEY.encode("utf-8")) < 32:
+        raise HTTPException(status_code=503, detail="A strong owner API key is required")
+    size = browser_request.headers.get("content-length", "")
+    if not size.isdigit() or int(size) > 8192:
+        raise HTTPException(status_code=413, detail="Invalid login request size")
+    try:
+        payload = await browser_request.json()
+    except (ValueError, UnicodeDecodeError):
+        raise HTTPException(status_code=400, detail="Invalid login request") from None
+    candidate = payload.get("owner_key") if isinstance(payload, dict) else None
+    if (not isinstance(candidate, str)
+            or len(candidate) > 4096
+            or not hmac.compare_digest(candidate, API_KEY)):
+        raise HTTPException(status_code=401, detail="Invalid owner credentials")
+    response = Response(
+        content='{"status":"OWNER_SESSION_CREATED","owner_idp_verified":false}',
+        media_type="application/json",
+        headers={"Cache-Control": "no-store", "X-Content-Type-Options": "nosniff"},
+    )
+    response.set_cookie(
+        SESSION_COOKIE, _session_token(), httponly=True, samesite="strict",
+        secure=True, max_age=28800, path="/",
+    )
+    return response
+
+
+@app.post("/gaiaos/owner-logout", operation_id="gaiaosOwnerLogout")
+def owner_logout(browser_request: Request) -> Response:
+    """Invalidate this browser's cookie, never attempt a memory write."""
+    if BROWSER_AUTH_MODE != "owner_login":
+        raise HTTPException(status_code=404, detail="Owner login is not enabled")
+    _authorize_browser_session(browser_request)
+    response = Response(
+        content='{"status":"OWNER_SESSION_LOCAL_LOGOUT"}',
+        media_type="application/json",
+        headers={"Cache-Control": "no-store"},
+    )
+    response.delete_cookie(SESSION_COOKIE, path="/", secure=True, samesite="strict")
+    return response
 
 
 @app.get("/health", operation_id="health")
@@ -575,6 +697,8 @@ def health() -> dict[str, Any]:
         "canonical_repository": REPOSITORY,
         "canonical_branch": BRANCH,
         "authentication_required": API_KEY is not None,
+        "browser_authentication_mode": BROWSER_AUTH_MODE,
+        "independent_owner_idp_verified": False,
         "authorization_config": {
             "api_key_loaded": bool(API_KEY and API_KEY.strip()),
             "environment_outer_whitespace_normalized": AUTH_KEY_WHITESPACE_NORMALIZED,
@@ -4302,6 +4426,19 @@ def chat(
             validated_roster = gaiaos_presentation_guard.validate_sources(*presentation_args)
         except (KeyError, gaiaos_presentation_guard.PresentationGuardError) as exc:
             raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_SOURCE_HOLD: " + str(exc)) from exc
+    # Direct legacy /chat makes only ONE model call. Six formatted headers
+    # cannot certify six separately observed members; the real Render bridge
+    # owns the distinct per-member calls and presence checksum.
+    requested = gaiaos_presentation_guard.expected_members_from_request(
+        request.messages[-1].content if request.messages[-1].role == "user" else "",
+        validated_roster or ("VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"),
+    )
+    if len(requested) == 6:
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_UNPROVEN_SIX_MEMBER_PRESENCE_DIRECT_LEGACY_ROUTE",
+            "reason": "Use actual browser_memcon_bridge /chat with six separately observed calls.",
+            "all_six_responded": False, "checksum_issued": False,
+        })
     applied_memory: dict[str, Any] | None = None
     memory_context_rejected = False
     if memory_context is not None:
@@ -4374,6 +4511,10 @@ def chat(
         try:
             presentation_receipt = gaiaos_presentation_guard.validate_output(
                 response.output_text, *presentation_args, expected_members=expected,
+                allow_synthesis=bool(re.fullmatch(
+                    r"(?:CONJURE:VASKON|//C:82//)",
+                    current_user_text.strip(), flags=re.I,
+                )),
             )
         except gaiaos_presentation_guard.PresentationGuardError as exc:
             raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_OUTPUT_HOLD: " + str(exc)) from exc

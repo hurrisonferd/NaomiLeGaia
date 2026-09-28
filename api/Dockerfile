@@ -12,6 +12,7 @@ COPY api/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY api/gaiaos_presentation_guard.py ./gaiaos_presentation_guard.py
+COPY api/gaiaos_daemon_presence.py ./gaiaos_daemon_presence.py
 COPY api/gaiaos_api.py ./gaiaos_api.py
 COPY api/gaiaos_context_runtime.py ./gaiaos_context_runtime.py
 COPY api/legacy_memory_reader.py ./legacy_memory_reader.py

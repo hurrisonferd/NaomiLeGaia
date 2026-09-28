@@ -1,0 +1,106 @@
+name: GALAXY Native Runtime and Actual Host Staged-Archive Barrier
+
+# A signed historical batch must not leak from the lowest common read path,
+# even if staging is accidentally used as the configured runtime backend.
+# CI is isolated LOCAL SQLite/libSQL, no remote Turso/keys/archives, no owner
+# release approval, no merges/deploy, and BIGBANG remains locked.
+on:
+  pull_request:
+    paths:
+      - "api/memcon_runtime.py"
+      - "api/memcon_entrypoint.py"
+      - "api/galaxy_frontdoor_context.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/gaiaos_chat_memory.py"
+      - "tests/test_galaxy_native_runtime_held_archive_exclusion.py"
+      - ".github/workflows/galaxy-native-runtime-held-archive-barrier.yml"
+  push:
+    paths:
+      - "api/memcon_runtime.py"
+      - "api/memcon_entrypoint.py"
+      - "api/galaxy_frontdoor_context.py"
+      - "api/gaiaos_memory_gateway.py"
+      - "api/gaiaos_chat_memory.py"
+      - "tests/test_galaxy_native_runtime_held_archive_exclusion.py"
+      - ".github/workflows/galaxy-native-runtime-held-archive-barrier.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  actual-native-host-default-retrieval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install actual carrier, public libSQL local driver and isolated HTTP fixture
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0"
+      - name: Compile production SQL, source guards and actual owner-host integration
+        run: |
+          python -m py_compile api/memcon_runtime.py api/memcon_entrypoint.py api/galaxy_frontdoor_context.py \
+            api/gaiaos_memory_gateway.py api/gaiaos_chat_memory.py \
+            tests/test_galaxy_native_runtime_held_archive_exclusion.py
+      - name: Signed 9AG import through production SQLite/libSQL, actual REST/MCP and native Phase3
+        run: PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_native_runtime_held_archive_exclusion.py' -v
+      - name: Preserve 9AG independently signed import and exact 9AH rollback
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ag_staging_historical_import.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ah_signed_staging_rollback.py' -v
+      - name: Preserve independent gateway HOLD, owner approvals, normal browser and HEATDEATH baseline
+        run: |
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_stage9ae_staged_history_barrier.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_galaxy_actual_render_bridge_integration.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_legacy_memory_baseline.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_gaiaos_memory_gateway_stage3.py' -v
+          PYTHONPATH=api python -m unittest discover -s tests -p 'test_bigbang_operational_reader_stage6.py' -v
+      - name: Build actual Render image including repaired low-level runtime
+        run: docker build -f api/Dockerfile -t gaiaos-native-held-barrier:ci .
+      - name: Test native runtime functions INSIDE actual image without network or secrets
+        run: |
+          docker run --rm -i --network none \
+            -e MEMCONOS_DB_PATH=/tmp/ci-only-native-memcon.sqlite \
+            -e GAIAOS_API_KEY=CI-FAKE-NOT-OWNER-KEY \
+            gaiaos-native-held-barrier:ci python - <<'PY'
+          import memcon_runtime as store
+          import memcon_entrypoint as entry
+          import gaiaos_memory_mode as mode
+          import browser_memcon_bridge as actual
+          from fastapi.routing import APIRoute
+          store.write_record(
+              authority="NAOMI", approved=True, record_type="CI_TEST",
+              record_id="MEM-CI-APPROVED", scope="MemoryOS",
+              statement="approved current evidence", source="ci:approved",
+              status="ACTIVE",
+          )
+          store.write_record(
+              authority="NAOMI", approved=True, record_type="CI_TEST",
+              record_id="MEM-CI-UNRELEASED", scope="MemoryOS",
+              statement="unreleased historical private evidence",
+              source="GaLaXy-ArChIvE-V1:" + "a"*64,
+              status="STAGED_HISTORICAL_HOLD",
+          )
+          actual_rows = store.search_records("", 10, "MemoryOS")
+          assert [r["record_id"] for r in actual_rows["records"]] == ["MEM-CI-APPROVED"]
+          assert [r["record_id"] for r in entry.memcon_search("",10)["records"]] == ["MEM-CI-APPROVED"]
+          assert store.get_record("MEM-CI-UNRELEASED")["status"] == "STAGED_HISTORICAL_HOLD"
+          assert store.galaxy_phase3_candidate_pool("approved evidence")["scope_eligible_population_count"] == 1
+          assert mode.mode_status(store)["effective_mode"] == "HEATDEATH"
+          routes=[r for r in actual.app.routes if isinstance(r, APIRoute)
+                  and r.path=="/chat" and "POST" in r.methods]
+          assert len(routes)==1 and routes[0].endpoint is actual.browser_chat
+          print("PASS: actual built image filters imported HOLDS in native/MCP/Phase3,"
+                " preserves direct privileged audit and real HEATDEATH")
+          PY
+      - name: Preserve six distinct E-LANES and no extra aggregate memory persona
+        run: |
+          test "$(find GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA -maxdepth 1 -name '*-EXPERIENCES.v1.md' | wc -l)" -eq 6
+          for member in VERA ANVIL SELENE ORIN KESTREL NIMUE; do
+            test -f "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/$member-EXPERIENCES.v1.md"
+          done
+          test ! -e GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VASKON-EXPERIENCES.v1.md
+          grep -Fq '//PW:PRESERVE//' GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md

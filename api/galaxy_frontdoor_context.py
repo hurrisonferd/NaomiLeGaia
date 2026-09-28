@@ -83,13 +83,14 @@ def preview(runtime: Any, query: str, limit: int = 3) -> dict[str, Any]:
                 return _hold("HOLD_SOURCE_INVALID", query=query, limit=limit)
             seen.add(rid)
             neighborhood = runtime.galaxy_record(rid)
-            governing = runtime.galaxy_governing_state(rid)
-            # The second source re-read can change independently of the
-            # search snapshot. Do not trust forged CURRENT governing state.
+            # Validate the independently re-read record BEFORE asking for its
+            # governing state: a forged archived source must not trigger any
+            # further backend reads or leak under a partially staged schema.
             if (not isinstance(neighborhood, dict)
                     or public_archive.unreleased(neighborhood.get("record"))):
                 return _hold("HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW",
                              query=query, limit=limit)
+            governing = runtime.galaxy_governing_state(rid)
             if (
                 not isinstance(neighborhood, dict)
                 or (neighborhood.get("record") or {}).get("record_id") != rid
@@ -198,9 +199,7 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             # Stage 9AE: a signed local archive import is NOT historical
             # graduation. Neither forged governing state nor a stale gravity
             # score may upgrade an unapproved Stage 9Y held row.
-            if (record.get("status") == "STAGED_HISTORICAL_HOLD"
-                    or (isinstance(record.get("source"), str)
-                        and record["source"].startswith("galaxy-archive-v1:"))):
+            if public_archive.unreleased(record):
                 return _hold("HOLD_UNRELEASED_STAGED_ARCHIVE", query=query, limit=limit)
             governing = runtime.galaxy_governing_state(rid)
             if governing.get("record_id") != rid:
@@ -296,9 +295,7 @@ def operational(runtime: Any, query: str, limit: int = 4) -> dict[str, Any]:
             if not detail or (detail.get("record") or {}).get("scope") != "MemoryOS":
                 return _hold("HOLD_LINKED_SCOPE_INVALID", query=query, limit=limit)
             linked_record = detail["record"]
-            if (linked_record.get("status") == "STAGED_HISTORICAL_HOLD"
-                    or (isinstance(linked_record.get("source"), str)
-                        and linked_record["source"].startswith("galaxy-archive-v1:"))):
+            if public_archive.unreleased(linked_record):
                 return _hold("HOLD_UNRELEASED_LINKED_ARCHIVE", query=query, limit=limit)
             stored = [
                 edge for edge in (detail.get("relations") or [])

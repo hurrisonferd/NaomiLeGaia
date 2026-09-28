@@ -1,0 +1,207 @@
+name: VASKON Full GALAXY GaiaOS Marriage Diagnostic Suite
+
+# One exact source revision across independent council/native/HTTP/browser,
+# signed historical migration and ACTUAL Render Docker build. No real Turso,
+# private source, owner credentials, Render deployment, merge or BIGBANG change.
+# A green workflow certifies SOURCE/LOCAL/IMAGE checks ONLY. Distinct release
+# HOLDS remain in non-secret diagnostic JSON, NEVER green production claims.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  canonical-source-and-release-holds:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile ALL carrier and tests, not only touched components
+        run: python -m compileall -q api tests
+      - name: Generate source-wide non-secret release diagnostic JSON
+        run: |
+          mkdir -p ci-evidence
+          python tests/galaxy_gaiaos_marriage_diagnostics.py \
+            --out ci-evidence/galaxy-gaiaos-marriage-source-diagnostics.json
+      - name: Actual six-member reporting and canonical presentation canaries
+        run: |
+          python GaiaOS/Apps/ChatOS/Tests/GAIAOS-COLOR-CARD-PRESENTATION-CANARY.py
+          python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py
+      - name: Distinguish green source from mandatory unresolved release blockers
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("ci-evidence/galaxy-gaiaos-marriage-source-diagnostics.json").read_text())
+          assert r["status"] == "SOURCE_CONTRACTS_PASS_WITH_SEPARATE_RELEASE_HOLDS"
+          assert len(r["release_holds"]) >= 6
+          assert r["native_schema"]["six_table_staging_is_complete_sovmem_migration"] is False
+          assert r["external_turso_connections"] == 0
+          assert r["bigbang_activated"] is False
+          assert r["production_deploy_observed"] is False
+          print("PASS: one-source architecture and six-E-LANE contracts; "
+                "REAL TURSO, INDEPENDENT AUTH, FULL MIGRATION, BIGBANG and "
+                "LIVE RENDER remain explicit RELEASE HOLDS.")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: vaskon-source-diagnostics-release-holds
+          path: ci-evidence/*.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  actual-served-chat-and-read-surfaces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install same carrier runtime and real LOCAL libSQL driver
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0" "PyYAML>=6.0,<7.0"
+      - name: Cross-component native/GALAXY/HTTP/MCP, actual browser and fallback
+        env:
+          TURSO_DATABASE_URL: ""
+          TURSO_AUTH_TOKEN: ""
+        run: |
+          set -euo pipefail
+          for test in \
+            test_galaxy_native_runtime_held_archive_exclusion.py \
+            test_galaxy_public_memory_read_boundary.py \
+            test_galaxy_actual_render_bridge_integration.py \
+            test_gaiaos_memory_outage_real_bridge.py \
+            test_gaiaos_strict_owner_login.py \
+            test_gaiaos_live_member_presence.py \
+            test_galaxy_stage9ae_staged_history_barrier.py \
+            test_galaxy_stage9af_signed_import_to_chat.py \
+            test_galaxy_stage9w_browser_chat_wiring.py \
+            test_galaxy_stage9w_served_app.py \
+            test_galaxy_stage9w_verified_linkage.py \
+            test_bigbang_operational_reader_stage6.py \
+            test_gaiaos_memory_gateway_stage3.py \
+            test_heatdeath_legacy_recovery_stage4.py; do
+            echo "REAL-APP REGRESSION: $test"
+            PYTHONPATH=api python -m unittest discover -s tests -p "$test" -v
+          done
+
+  complete-isolated-signed-staging-and-lifecycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 28
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install actual LOCAL libSQL staging driver only
+        run: python -m pip install -r api/requirements.txt "httpx>=0.27,<1.0" "PyYAML>=6.0,<7.0"
+      - name: Verify preflight, signed import/rollback, shadow and reversible memory
+        env:
+          TURSO_DATABASE_URL: ""
+          TURSO_AUTH_TOKEN: ""
+        run: |
+          set -euo pipefail
+          for test in \
+            test_galaxy_archive_preflight_stage9s.py \
+            test_galaxy_archive_staging_stage9t.py \
+            test_galaxy_shadow_backfill_stage9u.py \
+            test_galaxy_stage9v_real_libsql_contract.py \
+            test_galaxy_stage9v_operator_preflight.py \
+            test_galaxy_stage9aa_local_schema_bundle.py \
+            test_galaxy_stage9aa_preimport_readonly.py \
+            test_galaxy_stage9ab_owner_local_bootstrap.py \
+            test_galaxy_stage9ab_prepare_private_bundle.py \
+            test_galaxy_stage9ac_full_local_rehearsal.py \
+            test_galaxy_stage9ad_held_gravity_shadow.py \
+            test_galaxy_stage9x_owner_canary.py \
+            test_galaxy_stage9y_canonical_staging.py \
+            test_galaxy_stage9z_local_rollback.py \
+            test_galaxy_stage9ag_staging_historical_import.py \
+            test_galaxy_stage9ah_signed_staging_rollback.py; do
+            echo "SIGNED-ISOLATED REGRESSION: $test"
+            PYTHONPATH=api python -m unittest discover -s tests -p "$test" -v
+          done
+
+  actual-production-image-and-emergency-boot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 24
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build the ACTUAL production Dockerfile
+        run: docker build --pull -f api/Dockerfile -t gaiaos-galaxy-marriage:ci .
+      - name: Import exact Render browser entrypoint with network DISABLED
+        run: |
+          docker run --rm -i --network none \
+            -e TURSO_DATABASE_URL=libsql://ci-never-connect.invalid \
+            -e TURSO_AUTH_TOKEN=CI-FAKE-NEVER-REAL-CREDENTIAL \
+            -e GAIAOS_API_KEY=CI-SYNTHETIC-NOT-OWNER \
+            -e OPENAI_API_KEY=CI-FAKE-NOT-A-PROVIDER-KEY \
+            -e MEMCONOS_DB_PATH=/tmp/ci-should-never-create.sqlite \
+            -e RENDER_GIT_COMMIT=CI-SOURCE-NOT-DEPLOYED \
+            gaiaos-galaxy-marriage:ci python - <<'PY'
+          import importlib.util
+          from pathlib import Path
+          from fastapi.routing import APIRoute
+          import memcon_runtime as runtime
+          assert not Path("/tmp/ci-should-never-create.sqlite").exists()
+          assert runtime._INITIALIZED is False
+          db_calls=[]
+          def unreachable():
+              db_calls.append("CI_UNREACHABLE")
+              raise OSError("PRIVATE-CI-FAILURE-NOT-RETURNED")
+          runtime._db=unreachable
+          import browser_memcon_bridge as served
+          import memcon_entrypoint as entry
+          import gaiaos_api as carrier
+          import gaiaos_memory_mode as mode
+          import gaiaos_public_memory_boundary as guard
+          assert carrier.BROWSER_AUTH_MODE in carrier.BROWSER_AUTH_MODES
+          assert callable(carrier.owner_login)
+          assert callable(carrier.owner_login_form)
+          import gaiaos_presentation_guard as cast
+          import gaiaos_daemon_presence as live_cast
+          assert callable(live_cast.run_full_cast)
+          assert live_cast.EXPECTED == ('VERA', 'ANVIL', 'SELENE', 'ORIN', 'KESTREL', 'NIMUE')
+          assert served.app is entry.app
+          assert not db_calls, "Import made a database connection"
+          assert carrier.health()["status"]=="ok"
+          assert not db_calls
+          assert mode.mode_status(runtime)["effective_mode"]==mode.HEATDEATH
+          routes=[r for r in served.app.routes if isinstance(r, APIRoute)]
+          assert len([r for r in routes if r.path=="/chat" and "POST" in r.methods])==1
+          assert len([r for r in routes if r.path=="/chat/recovery" and "POST" in r.methods])==1
+          assert guard.unreleased({"source":"GaLaXy-ArChIvE-V1:"+"a"*64,"status":"ACTIVE"})
+          assert guard.unreleased({"source":"ci:fake","status":"staged_historical_hold"})
+          for name in ("galaxy_legacy_gravity","galaxy_frontdoor_context",
+                       "gaiaos_chat_memory","gaiaos_chat_auto_memory",
+                       "gaiaos_public_memory_boundary"):
+              assert importlib.util.find_spec(name)
+          for excluded in ("galaxy_stage9ag_staging_historical_import",
+                           "galaxy_stage9ah_signed_staging_rollback",
+                           "galaxy_stage9ab_owner_local_bootstrap",
+                           "galaxy_archive_staging"):
+              assert importlib.util.find_spec(excluded) is None
+          lanes=Path("/app/GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA")
+          assert len(list(lanes.glob("*-EXPERIENCES.v1.md")))==6
+          assert not (lanes/"VASKON-EXPERIENCES.v1.md").exists()
+          assert not Path("/tmp/ci-should-never-create.sqlite").exists()
+          print("PASS: ACTUAL offline Render image; one /chat; fresh explicit "
+                "recovery; ZERO DB boot connections; six E-LANES; "
+                "native/shared archival guard; owner-private tooling excluded; "
+                "BIGBANG LOCKED. NOT LIVE RENDER/TURSO PROOF.")
+          PY

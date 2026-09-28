@@ -92,9 +92,22 @@ def canonical_header(
 def expected_members_from_request(text: str, roster: tuple[str, ...]) -> tuple[str, ...]:
     """Narrow explicit requests only; never infer a cast from casual discussion."""
     line = str(text or "").strip().rstrip(".!?").strip()
+    # Load/report-in is a full-cast command, not a casual reference.
+    # Exact matching avoids auto-summoning the whole cast in ordinary discussion.
+    if re.fullmatch(
+        r"(?:LOAD\s+GAIA\s*OS|GAIA\s*OS)"
+        r"(?:\s*(?:,|and)?\s*(?:(?:the\s+)?(?:prime\s+daemons?|daemons?|council|daemonculaba)\s+)?"
+        r"(?:report\s+in|sound\s+off|roll\s*call|check\s+in))?",
+        line, re.I,
+    ):
+        return roster
     if re.fullmatch(r"(?:COUNCIL EVERYONE|FULL CAST|FULL COUNCIL|ALL DAEMONS(?: REPORT IN)?|EVERYONE(?: REPORT IN)?|EVERYBODY(?: REPORT IN)?|THE DAEMONCULABA REPORT IN)", line, re.I):
         return roster
-    if re.search(r"\b(?:everyone|everybody|all six|all daemons|full cast)\b.{0,45}\b(?:report in|join us|check in|speak)\b", line, re.I):
+    if re.search(
+        r"\b(?:everyone|everybody|all six|all daemons|whole family|whole group|full cast)\b"
+        r".{0,75}\b(?:attention|report in|join us|check in|speak|listen|hear me|sound off)\b",
+        line, re.I,
+    ):
         return roster
     names = "|".join(re.escape(n) for n in roster)
     match = re.fullmatch(rf"(?:ASK|SOLO)\s+({names})(?:\s+.*)?", line, re.I)
@@ -114,7 +127,8 @@ def _header_candidate(line: str, roster: tuple[str, ...]) -> str | None:
     has_numeric = bool(re.match(r"^(?:#{1,6}\s*|\*\*)?\d+\s*[·.]", line.strip()))
     has_emoji = bool(re.match(r"^\s*[\u2300-\u27ff\U0001F000-\U0010FFFF]", tail))
     has_markdown = line.lstrip().startswith(("#", "**"))
-    return match.group("name").upper() if (has_numeric or has_emoji or has_markdown) else None
+    has_role_label = bool(re.match(r"^\s*[:·\-–—]\s*\S", tail))
+    return match.group("name").upper() if (has_numeric or has_emoji or has_markdown or has_role_label) else None
 
 
 def validate_output(
@@ -124,6 +138,8 @@ def validate_output(
     static: dict[str, Any],
     profiles: dict[str, Any],
     expected_members: tuple[str, ...] = (),
+    *,
+    allow_synthesis: bool = False,
 ) -> dict[str, Any]:
     """Validate visible speaker blocks. Omit quoted/fenced code examples."""
     roster = validate_sources(spec, expressions, static, profiles)
@@ -138,6 +154,8 @@ def validate_output(
         }
         for name in roster
     }
+    strict_full_cast = (len(expected_members) == EXPECTED_ROSTER_SIZE
+                        and set(expected_members) == set(roster))
     seen: list[str] = []
     cards: list[dict[str, str]] = []
     fenced = False
@@ -148,7 +166,14 @@ def validate_output(
             continue
         if fenced or line.startswith(">"):
             continue
+        # In full-cast mode the first visible line must be a real speaker,
+        # and the synthesis cannot be conjured by a model-generated header.
         member = _header_candidate(raw, roster)
+        if re.match(r"^(?:82\s*[·.]\s*)?VASKON(?:\b|\s)|^//C:82//", line, re.I):
+            if strict_full_cast or not allow_synthesis:
+                raise PresentationGuardError("VASKON requires a separate explicit conjure")
+        if strict_full_cast and not seen and member is None and line:
+            raise PresentationGuardError("full-cast report began with host narration")
         if member is None:
             continue
         if raw != line or line not in acceptable[member]:
@@ -159,6 +184,8 @@ def validate_output(
             "header": line,
             "accent": spec["members"][member]["accent"],
         })
+    if strict_full_cast and seen != list(roster):
+        raise PresentationGuardError("full cast requires each canonical speaker once in source order")
     missing = [name for name in expected_members if name not in seen]
     if missing:
         raise PresentationGuardError("missing required speaker: " + ",".join(missing))
@@ -169,6 +196,7 @@ def validate_output(
         "speaker_count": len(cards),
         "speakers": cards,
         "source_consistency": True,
+        "proof_scope": "SOURCE_PRESENTATION_ONLY_NOT_LIVE_PROCESS_OR_ELANE_READBACK",
     }
 
 
