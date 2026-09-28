@@ -339,6 +339,10 @@ async def browser_chat(browser_request: Request):
 def _observed_full_cast(payload: dict, browser_request: Request, surface: str) -> dict:
     """Actual Render route: six separate observed model replies or an explicit HOLD."""
     validated = gaiaos_api.ChatRequest.model_validate(payload)
+    # A fresh attempted cast invalidates previous request-local presence.
+    # In particular, one earlier PASS must never mask today's partial failure.
+    key = _browser_session_id(browser_request)
+    _OBSERVED_CASTS.pop(key, None)
     boot = gaiaos_app._boot_packet(surface)
     if not gaiaos_api.OPENAI_API_KEY:
         raise HTTPException(status_code=503, detail={
@@ -365,7 +369,6 @@ def _observed_full_cast(payload: dict, browser_request: Request, surface: str) -
         )
     except gaiaos_daemon_presence.PresenceHold as exc:
         raise HTTPException(status_code=503, detail=exc.public_receipt()) from None
-    key = _browser_session_id(browser_request)
     now = time.time()
     for old_key, (stamp, _) in list(_OBSERVED_CASTS.items()):
         if now - stamp > _OBSERVED_CAST_TTL_SECONDS:
