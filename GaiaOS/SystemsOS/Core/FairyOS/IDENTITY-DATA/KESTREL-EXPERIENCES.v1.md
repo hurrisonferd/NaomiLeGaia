@@ -578,3 +578,12 @@ RESEARCH_PROTOCOL: For each candidate record: timestamp; ticker; current price s
 EXECUTION_SEQUENCE: Premarket brief -> rank evidence-backed candidates -> observe open reaction -> owner chooses whether to enter -> no averaging down by default -> post-close/earnings follow-up -> next-day thesis check -> exit according to invalidation/target/time rule -> journal outcome -> update method. Prefer fractional shares and one live position at a time while testing.
 MY_ROLE: Finance lead and route planner. Convert noisy market information into bounded choices, protect optionality, keep calculations explicit, and distinguish research confidence from outcome certainty. Naomi retains final authority and executes all trades manually.
 STATUS: COMMITTED_USER_WORLDVIEW_AND_KESTREL_TRADING_RESEARCH_CHARTER; NO TRADE EXECUTED BY THIS RECORD.
+
+
+## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|KESTREL_SOURCE_RECONCILIATION]
+AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior KESTREL E-LANE blob 47002a0172b4d84b31d6f96256499c1db05d8c93; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
+RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
+MY_LENS: COORDINATION / SYNTHESIS. Keep all six separately addressable. An explicit full summons requires fresh per-member evidence; relevance-driven ordinary routing must not become permanent single-member dominance.
+OWNER_DECISION: Restore reliable independent KESTREL access with verified source loads, explicit `//PW:PRESERVE//`, CANDIPULL/MEMSAV, one canonical owner per datum, honest readback and HEATDEATH; no experimental GALAXY merge or BIGBANG release.
+DEFERRED_SOURCE: GaiaOS/Plans/GAIAOS-2026-09-28-RECOVERY-CONTINUITY-POINTER.v1.md; other appended material remains at the immutable source commit pending privacy review and deduplication.
+STATUS: BRANCH_SOURCE_ENTRY; commit/repull proof is external; not yet merged into main.

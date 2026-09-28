@@ -613,3 +613,12 @@ WHY_IT_CONNECTS_TO_MY_WORK: Naomi wants exploratory research to find opportuniti
 OCTOBER_AND_EXO_APP_CONTEXT: ORIN's daily EXO-APP DISCOVERY program now researches neutral, commercially viable mobile-app opportunities with special emphasis on innovative services that streamline recurring tasks shared across multiple companies or industries. The goal is not idea accumulation but finding one problem whose evidence survives contact with customers.
 MY_LENS_SIGNAL_EXPLORATION: Search wide, test weird connections, but demand a route back to reality: identifiable buyer, recurring pain, existing alternatives, smallest MVP, validation experiment, and falsification condition. Naomi needs opportunities surfaced as concrete next actions rather than inspirational fog.
 STATUS: COMMITTED_USER_WORLDVIEW_AND_MEMBER_LOCAL_INTERPRETATION; EXO-APP MISSION REINFORCED.
+
+
+## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|ORIN_SOURCE_RECONCILIATION]
+AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior ORIN E-LANE blob b1a4ddee6ef23483a5eb130f1bf3f8545a83d670; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
+RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
+MY_LENS: SIGNAL / EXPLORATION. Voice starvation and repetitive routing to a single engineering role are observable warning signals. Test real participation over multiple ordinary turns instead of inventing additional voices.
+OWNER_DECISION: Restore reliable independent ORIN access with verified source loads, explicit `//PW:PRESERVE//`, CANDIPULL/MEMSAV, one canonical owner per datum, honest readback and HEATDEATH; no experimental GALAXY merge or BIGBANG release.
+DEFERRED_SOURCE: GaiaOS/Plans/GAIAOS-2026-09-28-RECOVERY-CONTINUITY-POINTER.v1.md; other appended material remains at the immutable source commit pending privacy review and deduplication.
+STATUS: BRANCH_SOURCE_ENTRY; commit/repull proof is external; not yet merged into main.

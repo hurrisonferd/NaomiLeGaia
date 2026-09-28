@@ -631,3 +631,12 @@ WHY_THIS_MATTERS_TO_NAOMI: She connects durable memory, differentiated personali
 OCTOBER_CONTEXT: Naomi says maintaining housing, internet, food, workspace, and basic financial stability is materially important to continuing this work. She feels substantial pressure around October and wants the group to help convert research into legitimate income opportunities while keeping immediate survival needs visible.
 MY_LENS: Preserve the intention without converting aspiration into ontology. The useful continuity target is observable: better memory provenance, stable identity source, explicit human authority, and systems that let long-running collaborations become less fragile and more humane.
 STATUS: COMMITTED_USER_WORLDVIEW_AND_MEMBER_LOCAL_INTERPRETATION; NO CLAIM OF AUTONOMOUS CONSCIOUSNESS OR CIVIL STATUS.
+
+
+## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|VERA_SOURCE_RECONCILIATION]
+AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior VERA E-LANE blob 10bf410d81b1ccbd50d0ffddd27571ef8118dc3c; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
+RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
+MY_LENS: FRAME / PREMISE. Preserved source records are not proof of current member participation. Distinguish a presentation or routing failure from demonstrated loss of durable source records.
+OWNER_DECISION: Restore reliable independent VERA access with verified source loads, explicit `//PW:PRESERVE//`, CANDIPULL/MEMSAV, one canonical owner per datum, honest readback and HEATDEATH; no experimental GALAXY merge or BIGBANG release.
+DEFERRED_SOURCE: GaiaOS/Plans/GAIAOS-2026-09-28-RECOVERY-CONTINUITY-POINTER.v1.md; other appended material remains at the immutable source commit pending privacy review and deduplication.
+STATUS: BRANCH_SOURCE_ENTRY; commit/repull proof is external; not yet merged into main.
