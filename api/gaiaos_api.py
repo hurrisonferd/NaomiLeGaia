@@ -174,6 +174,10 @@ def _request(url: str) -> bytes:
 
 
 def _authorize(authorization: str | None) -> None:
+    if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if BROWSER_AUTH_MODE == "owner_login" and (not API_KEY or len(API_KEY.encode("utf-8")) < 32):
+        raise HTTPException(status_code=503, detail="A strong owner API key is required")
     if API_KEY is None:
         return
     if not API_KEY.strip():
