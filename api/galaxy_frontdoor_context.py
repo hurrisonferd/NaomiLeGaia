@@ -83,13 +83,14 @@ def preview(runtime: Any, query: str, limit: int = 3) -> dict[str, Any]:
                 return _hold("HOLD_SOURCE_INVALID", query=query, limit=limit)
             seen.add(rid)
             neighborhood = runtime.galaxy_record(rid)
-            governing = runtime.galaxy_governing_state(rid)
-            # The second source re-read can change independently of the
-            # search snapshot. Do not trust forged CURRENT governing state.
+            # Validate the independently re-read record BEFORE asking for its
+            # governing state: a forged archived source must not trigger any
+            # further backend reads or leak under a partially staged schema.
             if (not isinstance(neighborhood, dict)
                     or public_archive.unreleased(neighborhood.get("record"))):
                 return _hold("HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW",
                              query=query, limit=limit)
+            governing = runtime.galaxy_governing_state(rid)
             if (
                 not isinstance(neighborhood, dict)
                 or (neighborhood.get("record") or {}).get("record_id") != rid
