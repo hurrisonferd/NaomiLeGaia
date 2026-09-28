@@ -67,7 +67,7 @@ assert db_calls==[]
 # mode is enabled, even when the same shared secret has not yet been rotated.
 with patch.object(carrier,"BROWSER_AUTH_MODE","legacy_public_bootstrap"):
     legacy=carrier._session_token()
-client.cookies.set(carrier.SESSION_COOKIE,legacy,secure=True)
+client.cookies.set(carrier.SESSION_COOKIE,legacy)
 assert client.post("/chat/recovery",json={
     "messages":[{"role":"user","content":"CI generic question"}],
     "recovery_acknowledged":True,"include_memory":False,
@@ -78,7 +78,7 @@ for seconds_ago in (28801,-90):
     nonce=f"owner.v2.{int(time.time())-seconds_ago}.{secrets.token_urlsafe(32)}"
     signature=hmac.new(key.encode(),nonce.encode(),hashlib.sha256).hexdigest()
     cookie=base64.urlsafe_b64encode(f"{nonce}.{signature}".encode()).decode()
-    client.cookies.set(carrier.SESSION_COOKIE,cookie,secure=True)
+    client.cookies.set(carrier.SESSION_COOKIE,cookie)
     invalid=client.post("/chat/recovery",json={
         "messages":[{"role":"user","content":"CI generic question"}],
         "recovery_acknowledged":True,"include_memory":False,
