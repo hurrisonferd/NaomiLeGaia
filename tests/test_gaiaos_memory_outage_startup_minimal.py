@@ -43,6 +43,11 @@ else:
 import browser_memcon_bridge as bridge
 import memcon_entrypoint as entry
 import gaiaos_api as base
+import gaiaos_app as source
+# In Docker, copied GaiaOS/ sits alongside gaiaos_app.py under /app.
+# In the GitHub checkout, the source directory is at the repository root.
+# Exercise the identical canonical source without creating a fake app.
+source.DEPLOYED_ROOT = Path.cwd().resolve()
 
 assert bridge.app is entry.app
 assert store._INITIALIZED is False
