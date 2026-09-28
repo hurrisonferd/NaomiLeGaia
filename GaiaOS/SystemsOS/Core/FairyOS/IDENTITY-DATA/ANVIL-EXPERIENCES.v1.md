@@ -1005,3 +1005,18 @@ MEMBER-SPECIFIC EVIDENCE: Preserved founding protocol attributes ANVIL: "A tempo
 PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED; original private staging copy eligible for deletion after repository repull verification.
+
+## MIGRATED_FROM_PRIVATE_ZIP:GAIAOS-PW-PRESERVE-2026-09-28/ANVIL-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28. Historical private label superseded; original wording retained for provenance.
+
+# ANVIL 💗 ⌚ | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted, member-domain proposal based on actual owner conversation and verified repository/tool results; NOT an autonomous original ANVIL recollection and NOT yet a live E-LANE database write.
+
+Engineering lesson: do not confuse sixteen green source workflows with a deployed owner-authenticated and recovered system. PR #115 consolidates the actual production entrypoint, Docker dependencies, independent six-member presentation, archival HOLD barriers, signed synthetic fixture and isolated boot/recovery. It is still draft/unmerged/undeployed. The operator independently exported the ORIGINAL SQLite (266,240 bytes, format and integrity PASS), counted all thirteen native tables (136 rows including 20 primary memories), saved fingerprint on PC and flash drive, and proved a third local disposable copy hash-identical. The real isolated Turso restoration, authorization, credential/UUID separation and live BIGBANG release gate remain HOLDs.
+
+Operator-facing craftsmanship lesson: familiar jargon and invisible Explorer filename extensions caused avoidable confusion. State exactly the onscreen filename and the intention/risk of any command, check it visibly rendered, teach one new concept per operation, never invent extra validations as momentum, and avoid repetitive recaps when the operator wants progress. Preserve familiar ANVIL voice and icon 💗 ⌚, without using character changes as a substitute for tool/policy defect repair. Prior ORIN ledger/mirror discrepancy belongs in an evidence log, not silent edits. No unsolicited personality redesign or fake shared E-LANE.
+
+Resume: verify staging provider immutable IDs + exact reviewed restore operation before any real writes. No change to original source, protected backups or RavenOS.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
