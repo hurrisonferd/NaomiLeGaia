@@ -91,6 +91,14 @@ class PublicReadIntegrationTests(unittest.TestCase):
                           self.held, self.forged):
             self.assertNotIn(sensitive, serialized)
 
+    def _untrusted_alias(self):
+        """Simulate a misrouted legacy adapter bypassing native SQL filters."""
+        native = runtime.search_records("CALIBRATION", 10, "MemoryOS")
+        rows = [runtime.get_record(rid) for rid in
+                (self.safe, self.held, self.forged)]
+        self.assertTrue(all(isinstance(row, dict) for row in rows))
+        return {**native, "records": rows, "count": 3}
+
     def test_authenticated_exact_http_read_only_exposes_clean_record(self):
         clean = self.client.get("/memconos/read/" + self.safe, headers=TOKEN)
         self.assertEqual(clean.status_code, 200, clean.text)
@@ -108,17 +116,31 @@ class PublicReadIntegrationTests(unittest.TestCase):
                 self._no_archive_text(withheld.json())
 
     def test_direct_http_mixed_search_fails_entire_response_no_partial_leak(self):
+        # Native MemconOS now excludes held AND forged archive sources before
+        # ORDER/LIMIT. A fully configured server returns clean records.
         raw = runtime.search_records("CALIBRATION", 10, "MemoryOS")
-        self.assertEqual(raw["count"], 3)
-        mixed = self.client.get(
+        self.assertEqual(raw["count"], 1)
+        self.assertEqual(raw["records"][0]["record_id"], self.safe)
+        clean = self.client.get(
             "/memconos/search", headers=TOKEN,
             params={"q": "CALIBRATION", "scope": "MemoryOS", "limit": 10},
         )
+        self.assertEqual(clean.status_code, 200, clean.text)
+        self.assertEqual(clean.json(), raw)
+        self._no_archive_text(clean.json())
+
+        # A misrouted or independently tampered adapter may bypass native SQL:
+        # the outer HTTP barrier must still abort the WHOLE mixed response.
+        with patch.object(runtime, "search_records",
+                          return_value=self._untrusted_alias()):
+            mixed = self.client.get(
+                "/memconos/search", headers=TOKEN,
+                params={"q": "CALIBRATION", "scope": "MemoryOS", "limit": 10},
+            )
         self.assertEqual(mixed.status_code, 409, mixed.text)
         self.assertEqual(mixed.json()["detail"]["status"], boundary.HOLD)
         self.assertEqual(mixed.json()["detail"]["records"], [])
         self._no_archive_text(mixed.json())
-
     def test_direct_http_clean_search_preserves_unmodified_native_envelope(self):
         expected = runtime.search_records("VERIFIED LEGACY", 10, "MemoryOS")
         self.assertEqual(expected["count"], 1)
@@ -158,14 +180,18 @@ class PublicReadIntegrationTests(unittest.TestCase):
                  "runtime": runtime.SCHEMA_VERSION},
             )
             self.assertNotIn("record", result)
-        mixed = entry.memcon_search("CALIBRATION", 10)
+        native = runtime.search_records("CALIBRATION", 10, None)
+        self.assertEqual(native["count"], 1)
+        self.assertEqual(entry.memcon_search("CALIBRATION", 10), native)
+        with patch.object(runtime, "search_records",
+                          return_value=self._untrusted_alias()):
+            mixed = entry.memcon_search("CALIBRATION", 10)
         self.assertEqual(mixed["status"], boundary.HOLD)
         self.assertEqual(mixed["records"], [])
         self._no_archive_text(mixed)
         clean_search = entry.memcon_search("VERIFIED LEGACY", 10)
         self.assertEqual(clean_search,
                          runtime.search_records("VERIFIED LEGACY", 10))
-
     def test_memoryos_gateway_http_and_host_bootstrap_already_hold_mixed_alias(self):
         retrieve = self.client.get(
             "/memoryos/retrieve", headers=TOKEN,
@@ -173,30 +199,48 @@ class PublicReadIntegrationTests(unittest.TestCase):
         )
         self.assertEqual(retrieve.status_code, 200, retrieve.text)
         self.assertEqual(
-            retrieve.json()["memory_gateway"]["status"],
-            "HOLD_UNRELEASED_ARCHIVE_IN_LEGACY",
+            retrieve.json()["memory_gateway"]["status"], "PASS_HEATDEATH",
         )
-        self.assertIsNone(retrieve.json()["retrieval"])
+        self.assertEqual(
+            [r["record_id"] for r in retrieve.json()["retrieval"]["records"]],
+            [self.safe],
+        )
         self._no_archive_text(retrieve.json())
 
-        with patch.object(
-            entry.gaiaos_app, "_read_local_json",
-            return_value={"platform_version": "CI-ISOLATED"},
-        ), patch.object(
-            entry.gaiaos_app, "_deployed_source",
-            return_value="CI-NO-REMOTE-SOURCE",
-        ):
-            boot = self.client.get(
-                "/gaiaos/bootstrap", headers=TOKEN,
-                params={"query": "CALIBRATION", "scope": "MemoryOS", "limit": 10},
+        # The independent gateway remains fail-closed if another source
+        # unexpectedly hands it a valid-envelope but unfiltered mixed batch.
+        with patch.object(runtime, "search_records",
+                          return_value=self._untrusted_alias()):
+            held = self.client.get(
+                "/memoryos/retrieve", headers=TOKEN,
+                params={"q": "CALIBRATION", "scope": "MemoryOS", "limit": 10},
             )
+            self.assertEqual(held.status_code, 200, held.text)
+            self.assertEqual(
+                held.json()["memory_gateway"]["status"],
+                "HOLD_UNRELEASED_ARCHIVE_IN_LEGACY",
+            )
+            self.assertIsNone(held.json()["retrieval"])
+            self._no_archive_text(held.json())
+
+            with patch.object(
+                entry.gaiaos_app, "_read_local_json",
+                return_value={"platform_version": "CI-ISOLATED"},
+            ), patch.object(
+                entry.gaiaos_app, "_deployed_source",
+                return_value="CI-NO-REMOTE-SOURCE",
+            ):
+                boot = self.client.get(
+                    "/gaiaos/bootstrap", headers=TOKEN,
+                    params={"query": "CALIBRATION",
+                            "scope": "MemoryOS", "limit": 10},
+                )
         self.assertEqual(boot.status_code, 200, boot.text)
         self.assertEqual(
             boot.json()["memory"]["memory_gateway"]["status"],
             "HOLD_UNRELEASED_ARCHIVE_IN_LEGACY",
         )
         self._no_archive_text(boot.json())
-
     def test_real_host_bootstrap_observe_and_candidate_routes_use_existing_auth(self):
         # CI exposed a separate, pre-existing source-level failure:
         # memcon_entrypoint referenced undefined "base" in these HTTP routes,
@@ -248,7 +292,19 @@ class PublicReadIntegrationTests(unittest.TestCase):
         self.assertEqual(listed_post.status_code, 200, listed_post.text)
 
     def test_legacy_preview_cannot_return_any_mixed_archive_record(self):
-        outcome = front.preview(runtime, "CALIBRATION", 3)
+        # First read is now filtered natively, including forged ACTIVE rows.
+        native = front.preview(runtime, "CALIBRATION", 3)
+        self.assertEqual(native["status"], "PASS_SHADOW_LEGACY_READ", native)
+        self.assertEqual(
+            [row["record"]["record_id"] for row in native["records"]],
+            [self.safe],
+        )
+        self._no_archive_text(native)
+        # The independent preview filter also catches an upstream adapter
+        # that unexpectedly reintroduces held data into a search response.
+        with patch.object(runtime, "search_records",
+                          return_value=self._untrusted_alias()):
+            outcome = front.preview(runtime, "CALIBRATION", 3)
         self.assertEqual(
             outcome["status"],
             "HOLD_UNRELEASED_ARCHIVE_IN_LEGACY_PREVIEW", outcome,
@@ -258,7 +314,6 @@ class PublicReadIntegrationTests(unittest.TestCase):
         clean = front.preview(runtime, "VERIFIED LEGACY", 3)
         self.assertEqual(clean["status"], "PASS_SHADOW_LEGACY_READ", clean)
         self.assertEqual(clean["records"][0]["record"]["record_id"], self.safe)
-
     def test_legacy_preview_second_record_read_forged_archive_fails_closed(self):
         safe = runtime.get_record(self.safe)
         forged = dict(safe, status="ACTIVE", source=ARCHIVE_SOURCE)
