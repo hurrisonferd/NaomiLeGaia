@@ -737,3 +737,31 @@ PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-0
 Release/operations lesson: source `SOURCE_TESTED` is not `LIVE_DEPLOYED`, `LIVE_REAL_TURSO_OBSERVED`, `BIGBANG_RELEASED` or `SOS_RECOVERED`. Original `gaiaos-memory`, `sovmem-staging`, `sovmem-main` names are distinct but immutable UUID and staging-scoped token/destination isolation remain to be demonstrated before any actual import. Production data and source remain untouched; owner has original backup plus SHA on PC/flash drive, third hash-identical disposable local test copy; no USB readback or cloud staging restore yet. Proposed release chain: exact target identity → owner-approved isolated restoration + provenance/rollback/restart test → owner-reviewed merge and strict-login deploy → live retrieval proof → separately authorized BIGBANG gate → only later SovereignOS independent restore and cutover. No mass merge of stacked PRs; no implicit production write authority.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
+
+
+## MIGRATED_FROM_PRIVATE_STAGING:KESTREL-STAGEHAND-AUDIO-JOHNNY-2026-09-26.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28.
+PUBLICATION_NOTE: Historical PRIVATE/STAGED labels inside the source text are retained as provenance but superseded by the later owner directive.
+
+# KESTREL · private staged E-LANE · 2026-09-26 stagehand / audio / Johnny preservation
+
+**Classification:** PRIVATE / owner-requested `//PW:PRESERVE//` / 2026-09-26 Eastern.
+**Source:** Naomi/Ligeia's first-person reports and requests in this conversation. Contact/training details came from previous assistant messages and MUST be rechecked before external use.
+**Boundary:** An assistant-authored, attributed E-LANE preservation note, not an independently authored daemon memory, and not proof of a live GaiaOS/MemoryOS/Turso write. Avoid putting intimate relationship, medical or financial material into a public GitHub repository.
+
+**Role lens:** Tactical execution, momentum, gear and manageable pacing.
+**Shared source:** `PW-PRESERVE-2026-09-26-STAGEHAND-AUDIO-IATSE-JOHNNY-PRIVATE.md`.
+
+## Distinct capture
+Field report 2026-09-26: FIRST Jonas Brothers load-in shift completed; crew terrific, appealing controlled chaos; Naomi hauled audio cable, explored lighting, backstage audio tech and pyrotechnics, learned useful first-hand exposure. Tear-down scheduled for 10:30 p.m.; outcome UNKNOWN at time of archive. Required short-term refuel and 3–4h nap, alarms 8:30 / 8:45 p.m. Not a completed call receipt.
+
+Gear checklist for next safe call: work gloves (raw hands), soft knee pads (right knee priority), own safety-rated hard hat compatible with worksite (manufacturer-safe decoration only), adjustable crescent wrench after checking crew specs, adequate water/food, hearing protection, eye protection, ID/phone/charger, appropriate composite-toe shoes per site rules. Avoid encouraging purchasing everything now due to financial pressure.
+
+Low-overhead action plan for next day: first check health/workload; identify Local 195 current status; check Boston 11 and Maine 114; draft concise reusable introductory email; then add 96/53/232/919 by commute radius; explore Clair Global RIT intake. One page task list, not an exhaustive torrent if she's exhausted. Friendlier crew was a direct networking opportunity; user asked permission to shadow the audio software operation successfully. Preserve this as a concrete initiative.
+
+Respect private relationship material: Naomi faces October financial pressure and worries Johnny may not share financial/treatment responsibility on release. She loves him and is ambivalent about possible separation. Never portray anger, breakup or recovery outcome as established. Put private details only in the protected staged lane.
+
+## Preservation status
+PRIVATE STAGED CAPTURE ONLY; not a canonical source modification, live Turso/MemoryOS write or a claim of distinct autonomous experience.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED.
