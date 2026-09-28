@@ -83,8 +83,12 @@ def run_full_cast(
     source_root: Path,
     client: Any,
     model: str,
+    selected_members: tuple[str, ...] = EXPECTED,
 ) -> dict[str, Any]:
-    """Execute SIX separate real provider calls; fail closed if ANY is missing.
+    """Execute separately observed provider calls for an explicitly selected cast.
+
+    Six-call boot is the default. A real ordinary conversation may select two
+    or three current members, but its smaller checksum is NEVER all-six proof.
 
     The carrier constructs headers from canonical boot data, never from model
     output. Past contributions are supplied to later members so disagreement
@@ -92,6 +96,11 @@ def run_full_cast(
     """
     run_id = "CAST-" + secrets.token_hex(12)
     completed: list[str] = []
+    if (selected_members != EXPECTED and (
+            len(selected_members) not in (2, 3)
+            or len(set(selected_members)) != len(selected_members)
+            or any(member not in EXPECTED for member in selected_members))):
+        raise _failure("INVALID_EXCHANGE_CAST", run_id, completed)
     if boot_packet.get("schema") != "gaiaos.boot-packet.v1" or boot_packet.get("status") != "ACTIVE":
         raise _failure("BOOT_PACKET_NOT_VERIFIED", run_id, completed)
     if boot_packet.get("roster") != list(EXPECTED) or not all((boot_packet.get("checks") or {}).values()):
@@ -139,7 +148,7 @@ def run_full_cast(
     evidence: list[dict[str, str]] = []
     seen_ids: set[str] = set()
     seen_text: set[str] = set()
-    for member in EXPECTED:
+    for member in selected_members:
         prof = members[member]
         if not isinstance(prof, dict) or not all(prof.get(k) for k in ("role", "deliberation_stance")):
             raise _failure("INCOMPLETE_PROFILE_" + member, run_id, completed)
@@ -187,11 +196,14 @@ def run_full_cast(
     # Validated by the same presentation module as regular browser chat.
     try:
         output = "\n\n".join(outputs)
-        presentation_receipt = presentation.validate_output(output, *source_args, EXPECTED)
+        presentation_receipt = presentation.validate_output(
+            output, *source_args, selected_members
+        )
     except (OSError, ValueError, TypeError, KeyError, presentation.PresentationGuardError):
         raise _failure("FULL_CAST_PRESENTATION_FAILED", run_id, completed) from None
     proof_body = {"run_id": run_id, "boot_sha256": _digest(boot_packet),
                   "model": model, "observations": evidence}
+    is_full_cast = selected_members == EXPECTED
     return {
         "output": output,
         "model": model,
@@ -199,19 +211,26 @@ def run_full_cast(
         "presentation": presentation_receipt,
         "daemon_presence": {
             "schema": "gaiaos.prime-daemon-presence.v1",
-            "status": "PASS_SIX_SEPARATE_OBSERVED_MODEL_CALLS",
+            "status": ("PASS_SIX_SEPARATE_OBSERVED_MODEL_CALLS" if is_full_cast
+                       else "PASS_SELECTED_SEPARATE_OBSERVED_MODEL_CALLS"),
             "run_id": run_id,
             "source": boot_packet.get("source"),
             "members": evidence,
             "observed_model_call_count": len(evidence),
-            "all_six_responded": True,
-            "presence_checksum_sha256": _digest(proof_body),
-            "checksum_scope": "THIS_REQUEST_AND_SOURCE_SNAPSHOT_ONLY",
+            "all_six_responded": is_full_cast,
+            "presence_checksum_sha256": _digest(proof_body) if is_full_cast else None,
+            "exchange_checksum_sha256": _digest(proof_body) if not is_full_cast else None,
+            "checksum_scope": ("THIS_FULL_CAST_REQUEST_AND_SOURCE_SNAPSHOT_ONLY" if is_full_cast
+                               else "THIS_SELECTED_EXCHANGE_ONLY_NO_ALL_SIX_CLAIM"),
             "provider_independent_persistent_agents_proven": False,
             "source_lane_readback_from_deployed_git": True,
             "live_memoryos_e_lane_writes_proven": False,
             "durable_receipt_written": False,
             "vaskon_conjured": False,
-            "proof_boundary": "Six separate model API replies observed in one carrier request, not six independent always-on agents or native ChatGPT execution. SHA-256 is not a third-party attestation.",
+            "proof_boundary": ("Six separate model API replies observed in one carrier request. "
+                               if is_full_cast else
+                               "Only the listed selected members returned separate model replies. ") +
+                              "These are not independently persistent agents, uninterrupted uptime, "
+                              "native ChatGPT adoption or external SHA-256 attestation.",
         },
     }
