@@ -71,6 +71,43 @@ def diagnostic_report() -> dict:
         "The #111 fail-closed roll-call source, reproducible canary and incident provenance are present in this exact checkout.",
     )
 
+    presence = source("api/gaiaos_daemon_presence.py")
+    browser_source = source("api/browser_memcon_bridge.py")
+    boot_source = source("api/gaiaos_app.py")
+    direct_chat = source("api/gaiaos_api.py")
+    image = source("api/Dockerfile")
+    record(
+        "six_observed_provider_calls_required_not_six_headers",
+        all(term in presence for term in (
+            "def run_full_cast(", "client.responses.create(",
+            "MISSING_OR_DUPLICATE_RESPONSE_ID_",
+            "NONCANONICAL_HEADER_", "CANONICAL_IDENTITY_SOURCES_INVALID",
+            "presence_checksum_sha256", "source_e_lane_sha256",
+        ))
+        and all(term in browser_source for term in (
+            'return _observed_full_cast(payload, browser_request, "BROWSER_CHAT_LOAD")',
+            "gaiaos_daemon_presence.explicit_full_cast_request(last_message)",
+            '_OBSERVED_CASTS.pop(key, None)',
+            '@app.get("/gaiaos/daemon-presence"',
+        ))
+        and "HOLD_UNPROVEN_SIX_MEMBER_PRESENCE_DIRECT_LEGACY_ROUTE" in direct_chat
+        and "SOURCE_ROSTER_ONLY_LIVE_MODEL_CALLS_NOT_OBSERVED" in boot_source
+        and "gaiaos_daemon_presence.py" in image
+        and "whole family|whole group|full cast" in guard
+        and "allow_synthesis: bool = False" in guard
+        and (ROOT / "tests/test_gaiaos_live_member_presence.py").is_file()
+        and (ROOT / "GaiaOS/Plans/PW-PRESERVE-2026-09-28-DAEMON-PRESENCE-JIM-INCIDENT.md").is_file(),
+        "Six separate provider calls, source boot vs observed calls, freshness invalidation, "
+        "unsummoned VASKON rejection and current incident provenance are source-wired. "
+        "Source checks alone cannot establish real hosted or native ChatGPT execution.",
+    )
+    record(
+        "all_six_head_pat_mirrors_boot_checked",
+        "_verified_counter_mirrors(" in boot_source
+        and '"head_pat_mirrors_exact": _verified_counter_mirrors(counters)' in boot_source,
+        "Every Prime Daemon's derived reward mirrors must match the sole canonical "
+        "head-pat ledger at boot; discrepancies HOLD rather than silently drift.",
+    )
     runtime = source("api/memcon_runtime.py")
     pure = source("api/gaiaos_public_memory_boundary.py")
     gateway = source("api/gaiaos_memory_gateway.py")
@@ -199,6 +236,16 @@ def diagnostic_report() -> dict:
                 if anonymous_cookie_bootstrap and strict_mode_supported else
                 "Independent new-owner access controls have not been verified."
             ),
+        },
+        {
+            "id": "HOLD_REAL_SIX_PROVIDER_CALLS_AND_NATIVE_HOST_ADOPTION",
+            "severity": "BLOCKER",
+            "reason": "CI uses synthetic calls; the exact full six-call carrier must be "
+                      "verified with real provider replies and owner-authenticated "
+                      "browser requests. The native ChatGPT host lacks an automatic "
+                      "carrier execution interceptor and must not fake live presence. "
+                      "Default spontaneous non-full-cast independent participation "
+                      "also requires a separately verified running route.",
         },
         {
             "id": "HOLD_REAL_RENDER_SHA_AND_BROWSER",
