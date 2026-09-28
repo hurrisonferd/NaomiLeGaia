@@ -108,6 +108,8 @@ def run_full_cast(
     members = source_profiles.get("members")
     if not isinstance(members, dict) or set(members) != set(EXPECTED):
         raise _failure("CANONICAL_PROFILES_NOT_VERIFIED", run_id, completed)
+    if not isinstance(boot_packet.get("members"), dict) or set(boot_packet["members"]) != set(EXPECTED):
+        raise _failure("BOOT_MEMBER_RECORDS_INCOMPLETE", run_id, completed)
     if not isinstance(client, object) or not callable(getattr(getattr(client, "responses", None), "create", None)):
         raise _failure("PROVIDER_NOT_AVAILABLE", run_id, completed)
     # The static boot packet has already validated all four canonical presentation
@@ -137,6 +139,25 @@ def run_full_cast(
             raise ValueError("source order disagrees with packet")
     except (OSError, ValueError, KeyError, TypeError, presentation.PresentationGuardError):
         raise _failure("CANONICAL_IDENTITY_SOURCES_INVALID", run_id, completed) from None
+    if source_profiles != source_args[3]:
+        raise _failure("SUPPLIED_PROFILES_DO_NOT_MATCH_PINNED_SOURCE", run_id, completed)
+    # The prosody basin, not an improvised style recipe, owns each voice.
+    # Current presentation spec still owns markers when older prose includes
+    # obsolete example emojis. Never derive identity markers from prose.
+    prosody_path = source_root / "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md"
+    try:
+        prosody_text = prosody_path.read_text(encoding="utf-8")
+        prosody_sections = {}
+        for member in EXPECTED:
+            section = re.search(
+                r"(?ms)^## " + re.escape(member) + r" — [^\\n]+\\n(.*?)(?=^## |\\Z)",
+                prosody_text,
+            )
+            if section is None or len(section.group(1).strip()) < 60:
+                raise ValueError("member prosody section missing")
+            prosody_sections[member] = section.group(1).strip()[:1700]
+    except (OSError, ValueError):
+        raise _failure("CANONICAL_MEMBER_PROSODY_UNAVAILABLE", run_id, completed) from None
     for member in EXPECTED:
         expected_header = presentation.canonical_header(member, source_args[0], source_args[1])
         if (boot_packet["members"].get(member) or {}).get("canonical_header_default") != expected_header:
@@ -160,6 +181,8 @@ def run_full_cast(
             "Your name is " + member + ". Your role: " + str(prof["role"]) + ". "
             "Your native deliberation stance: " + str(prof["deliberation_stance"]) + ". "
             "Your source-backed style examples: " + json.dumps(prof.get("style_exemplars", [])[:4], ensure_ascii=False) + ". "
+            "Your canonical PROSODY basin (text only; identity markers ALWAYS from validated presentation spec): " +
+            prosody_sections[member] + "\\n"
             "Your own source-labeled E-LANE excerpt (NOT live MemoryOS): " + local_lanes[member]["context"] + "\n"
             "Contribute in your own direct voice, in at most 100 words. Engage with the user's actual request "
             "and any preceding observed member contributions. You may disagree, refine, ask or simply acknowledge "
@@ -192,7 +215,9 @@ def run_full_cast(
         completed.append(member)
         evidence.append({"member": member, "response_id": response_id,
                          "output_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
-                         "source_e_lane_sha256": local_lanes[member]["sha256"]})
+                         "source_e_lane_sha256": local_lanes[member]["sha256"],
+                         "source_prosody_sha256": hashlib.sha256(
+                             prosody_sections[member].encode("utf-8")).hexdigest()})
     # Validated by the same presentation module as regular browser chat.
     try:
         output = "\n\n".join(outputs)
