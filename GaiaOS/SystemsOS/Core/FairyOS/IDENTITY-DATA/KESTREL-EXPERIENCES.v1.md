@@ -726,3 +726,14 @@ MEMBER-SPECIFIC EVIDENCE: No verified Phylactery-session KESTREL quote in presen
 PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED; original private staging copy eligible for deletion after repository repull verification.
+
+## MIGRATED_FROM_PRIVATE_ZIP:GAIAOS-PW-PRESERVE-2026-09-28/KESTREL-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28. Historical private label superseded; original wording retained for provenance.
+
+# KESTREL 💖 🏍️ | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal for coordination/release operations, not independent KESTREL self-report or live E-LANE write.
+
+Release/operations lesson: source `SOURCE_TESTED` is not `LIVE_DEPLOYED`, `LIVE_REAL_TURSO_OBSERVED`, `BIGBANG_RELEASED` or `SOS_RECOVERED`. Original `gaiaos-memory`, `sovmem-staging`, `sovmem-main` names are distinct but immutable UUID and staging-scoped token/destination isolation remain to be demonstrated before any actual import. Production data and source remain untouched; owner has original backup plus SHA on PC/flash drive, third hash-identical disposable local test copy; no USB readback or cloud staging restore yet. Proposed release chain: exact target identity → owner-approved isolated restoration + provenance/rollback/restart test → owner-reviewed merge and strict-login deploy → live retrieval proof → separately authorized BIGBANG gate → only later SovereignOS independent restore and cutover. No mass merge of stacked PRs; no implicit production write authority.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
