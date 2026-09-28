@@ -75,13 +75,40 @@ def _auth(authorization: str | None) -> None:
 
 @app.get("/memconos/health", operation_id="memconHealth")
 def memcon_health(authorization: str | None = Header(default=None)) -> dict[str, Any]:
+    """Authenticated reachability probe, NOT a zero-write or durability test.
+
+    Runtime initialize() can issue CREATE TABLE/INDEX statements on first use.
+    Opening the selected backend can also execute connection PRAGMAs (including
+    local journal settings). This endpoint does not request memory promotion or
+    an audit receipt; it does not measure every possible backend write effect.
+    """
     _auth(authorization)
     backend = memcon_runtime.storage_status()
+    schema_initialized_at_entry = bool(memcon_runtime._INITIALIZED)
+    fresh_select_attempted = False
+
+    def reported_side_effects() -> dict[str, Any]:
+        return {
+            "schema_initialization_called": True,
+            "schema_ddl_possible": not schema_initialized_at_entry,
+            "backend_connection_side_effects_possible": True,
+            "fresh_select_attempted": fresh_select_attempted,
+            "memory_promotion_requested": False,
+            "audit_receipt_insert_requested": False,
+            "backend_write_effects_exhaustively_measured": False,
+            "proof_boundary": (
+                "This route requests no record promotion or READ audit insert. "
+                "First-use schema DDL and storage-connection effects are "
+                "possible; their actual backend mutations are not measured."
+            ),
+        }
+
     try:
         memcon_runtime.initialize()
-        # initialize() is once-per-process; perform a fresh read so a later
-        # outage cannot be hidden behind _INITIALIZED.
+        # The once-per-process flag can remain true after a later outage.
+        # Check a fresh backend read instead of trusting that flag.
         with memcon_runtime._db() as conn:
+            fresh_select_attempted = True
             conn.execute("SELECT 1 FROM memory_records LIMIT 1").fetchone()
     except Exception as exc:
         raise HTTPException(status_code=503, detail={
@@ -89,10 +116,14 @@ def memcon_health(authorization: str | None = Header(default=None)) -> dict[str,
             "status": "HOLD_STORAGE_UNAVAILABLE",
             "backend": backend["backend"],
             "remote_configured": backend["remote_configured"],
+            "storage_reachable": False,
             "error_type": type(exc).__name__,
             "durability_verified": False,
-            "writes_performed": [],
-            "proof_boundary": "Carrier liveness does not imply memory availability.",
+            "side_effects": reported_side_effects(),
+            "proof_boundary": (
+                "Carrier liveness and configured backend do not establish "
+                "memory availability, zero writes, or restart durability."
+            ),
         }) from None
     return {
         "schema": "gaiaos.memconos.storage-health.v2",
@@ -107,10 +138,11 @@ def memcon_health(authorization: str | None = Header(default=None)) -> dict[str,
         "automatic_persistence": False,
         "authority": "NAOMI",
         "memoryos_lifecycle": True,
-        "writes_performed": [],
+        "side_effects": reported_side_effects(),
         "proof_boundary": (
-            "Authenticated backend query succeeded. Restart persistence and "
-            "fresh-session recall remain separate verification steps."
+            "Authenticated backend query succeeded, but first-use schema and "
+            "connection effects are possible and have not been fully measured. "
+            "Restart persistence and fresh-session recall are separate tests."
         ),
     }
 
