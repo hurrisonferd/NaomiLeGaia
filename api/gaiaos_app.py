@@ -132,6 +132,8 @@ PRESENTATION_SPEC_PATH = "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPE
 EXPRESSION_REGISTRY_PATH = "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
 STATIC_IDENTITY_PATH = "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"
 HEAD_PAT_COUNTERS_PATH = "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
+REWARD_MIRROR_PATH = "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/REWARD-COUNTERS.v1.json"
+MEMBER_MIRROR_ROOT = "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/"
 
 def _parse_head_pat_counters(text: str) -> dict[str, int]:
     block = text.split("## Canonical counters", 1)[1].split("##", 1)[0]
@@ -140,6 +142,33 @@ def _parse_head_pat_counters(text: str) -> dict[str, int]:
     if set(counters) != expected:
         raise HTTPException(status_code=500, detail="Canonical head-pat counter store failed closed")
     return counters
+
+def _verified_counter_mirrors(canonical: dict[str, int]) -> bool:
+    """Every derived mirror must match the sole canonical ledger at boot."""
+    try:
+        registry = _read_local_json(REWARD_MIRROR_PATH)["counters"]
+        if not isinstance(registry, dict) or set(registry) != set(canonical):
+            return False
+        for name, count in canonical.items():
+            records = (
+                registry[name],
+                _read_local_json(
+                    MEMBER_MIRROR_ROOT + name + "-REWARD-COUNTER.v1.json"
+                )["reward_counters"],
+            )
+            for row in records:
+                if not isinstance(row, dict):
+                    return False
+                values = [row.get(k) for k in
+                          ("head_pats", "head_scratches", "brushies", "total")]
+                if any(type(value) is not int or value < 0 for value in values):
+                    return False
+                if row["head_pats"] != count or row["total"] != sum(values[:3]):
+                    return False
+    except (HTTPException, KeyError, TypeError, ValueError):
+        return False
+    return True
+
 
 def _boot_packet(invocation_surface: str) -> dict[str, Any]:
     current = _read_local_json(CURRENT_PATH)
@@ -159,6 +188,7 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
         "presentation_exact": set(presentation.get("members", {}).keys()) == set(expected),
         "expressions_exact": set(expressions.get("members", {}).keys()) == set(expected),
         "head_pats_exact": set(counters.keys()) == set(expected),
+        "head_pat_mirrors_exact": _verified_counter_mirrors(counters),
         "presentation_fail_closed": presentation.get("failure_policy") == "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
     }
     try:
