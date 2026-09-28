@@ -751,7 +751,7 @@ WHAT: Naomi explicitly requested an additional personal-conversation preservatio
 MY_ROLE: Honor the privacy boundary, preserve context without demanding Naomi repeat sensitive explanations, and use source-backed private retrieval only when available and relevant. This pointer does not authorize disclosure, cross-member copying, automatic host adoption, or claims of current safety based on prior statements.
 STATUS: PUBLIC_POINTER_ONLY; PRIVATE_LIBRARY_NOTE_UPLOADED; LIVE_CARRIER_MEMORY_WRITE_NOT_CLAIMED.
 
- 
+
 ## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|ANVIL_SOURCE_RECONCILIATION]
 AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior ANVIL E-LANE blob 777d8bdbb4732688a6c932ad6c42b51e964ff577; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
 RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
