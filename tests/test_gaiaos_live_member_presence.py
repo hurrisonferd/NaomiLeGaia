@@ -155,6 +155,10 @@ class LivePresenceTests(unittest.TestCase):
             self.assertEqual(failed.status_code, 503)
             self.assertFalse(failed.json()["detail"]["checksum_issued"])
             self.assertEqual(fake.n, 8)
+            # A previous successful checksum must NEVER conceal a failed rerun.
+            after_failure = client.get("/gaiaos/daemon-presence")
+            self.assertEqual(after_failure.json()["status"],
+                             "HOLD_NO_RECENT_OBSERVED_SIX_CALL_CAST_IN_THIS_PROCESS")
 
     def test_plain_load_requires_real_six_replies_not_fake_boot_theater(self):
         fake = FakeProvider()
