@@ -10,6 +10,7 @@ import hmac
 import json
 import os
 import secrets
+import time
 import urllib.error
 import urllib.request
 from typing import Any
@@ -185,7 +186,9 @@ def _session_token() -> str:
     """Create a signed browser session token without exposing the server API key."""
     if not API_KEY or not API_KEY.strip():
         raise HTTPException(status_code=503, detail="GAIAOS_API_KEY is not configured correctly on the carrier")
-    nonce = secrets.token_urlsafe(32)
+    nonce = (f"owner.v2.{int(time.time())}.{secrets.token_urlsafe(32)}"
+             if BROWSER_AUTH_MODE == "owner_login"
+             else secrets.token_urlsafe(32))
     signature = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
     return base64.urlsafe_b64encode(f"{nonce}.{signature}".encode()).decode()
 
@@ -193,9 +196,9 @@ def _session_token() -> str:
 def _authorize_browser_session(request: Request) -> None:
     if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
         raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if BROWSER_AUTH_MODE == "owner_login" and (not API_KEY or len(API_KEY.encode("utf-8")) < 32):
+        raise HTTPException(status_code=503, detail="A strong owner API key is required")
     if API_KEY is None:
-        if BROWSER_AUTH_MODE == "owner_login":
-            raise HTTPException(status_code=503, detail="Owner authentication is not configured")
         return
     token = request.cookies.get(SESSION_COOKIE)
     if not token:
@@ -208,6 +211,15 @@ def _authorize_browser_session(request: Request) -> None:
     expected = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
     if not hmac.compare_digest(signature, expected):
         raise HTTPException(status_code=401, detail="Invalid browser session")
+    if BROWSER_AUTH_MODE == "owner_login":
+        parts = nonce.split(".")
+        if (len(parts) != 4 or parts[:2] != ["owner", "v2"]
+                or not parts[2].isdigit() or len(parts[3]) < 32):
+            raise HTTPException(status_code=401, detail="Owner login required")
+        now = int(time.time())
+        issued = int(parts[2])
+        if issued > now + 60 or now - issued > 28800:
+            raise HTTPException(status_code=401, detail="Owner session expired")
 
 
 
