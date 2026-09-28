@@ -67,7 +67,18 @@ jobs:
           assert calls == []
           down = client.get("/memconos/health", headers={"Authorization": "Bearer CI-ONLY-API-KEY"})
           assert down.status_code == 503 and down.json()["detail"]["status"] == "HOLD_STORAGE_UNAVAILABLE"
-          assert down.json()["detail"]["backend"] == "turso_libsql"
+          detail = down.json()["detail"]
+          assert detail["backend"] == "turso_libsql"
+          assert detail["storage_reachable"] is False
+          effects = detail["side_effects"]
+          assert effects["schema_initialization_called"] is True
+          assert effects["schema_ddl_possible"] is True
+          assert effects["backend_connection_side_effects_possible"] is True
+          assert effects["fresh_select_attempted"] is False
+          assert effects["memory_promotion_requested"] is False
+          assert effects["audit_receipt_insert_requested"] is False
+          assert effects["backend_write_effects_exhaustively_measured"] is False
+          assert "writes_performed" not in detail
           assert "CI_PRIVATE_SENTINEL" not in down.text
           client.cookies.set(base.SESSION_COOKIE, base._session_token())
           before = len(calls)
