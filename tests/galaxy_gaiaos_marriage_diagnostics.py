@@ -170,8 +170,21 @@ def diagnostic_report() -> dict:
     )
 
     browser = source("api/gaiaos_api.py")
+    strict_mode_supported = all(s in browser for s in (
+        'BROWSER_AUTH_MODE = os.getenv("GAIAOS_BROWSER_AUTH_MODE"',
+        'if BROWSER_AUTH_MODE == "owner_login"',
+        '@app.post("/gaiaos/owner-login"',
+        'max_age=28800',
+        'owner.v2.',
+        'def owner_logout(',
+    )) and (ROOT / "tests/test_gaiaos_strict_owner_login.py").is_file()
+    record(
+        "opt_in_browser_owner_key_login_source_gate",
+        strict_mode_supported,
+        "Explicit opt-in owner-key login prevents public cookie issuance, rejects legacy cookies, enforces server-side expiry, and requires a strong configured owner key. Current default remains legacy pending owner-controlled rollout; not independent MFA/identity proof.",
+    )
     anonymous_cookie_bootstrap = (
-        "def home(response: Response)" in browser
+        'BROWSER_AUTH_MODE = os.getenv("GAIAOS_BROWSER_AUTH_MODE", "legacy_public_bootstrap")' in browser
         and 'response.set_cookie(SESSION_COOKIE, _session_token()' in browser
     )
     release_holds = [
@@ -179,10 +192,11 @@ def diagnostic_report() -> dict:
             "id": "HOLD_OWNER_AUTHENTICATION",
             "severity": "BLOCKER",
             "reason": (
-                "The currently served GaiaOS home issues a signed session cookie "
-                "to visitors without independent Naomi login; a cookie signature "
-                "does not establish sole-owner access."
-                if anonymous_cookie_bootstrap else
+                "Current GaiaOS default is legacy public cookie bootstrap, "
+                "NOT owner authentication. Source now provides optional strict "
+                "owner-key login, but owner-controlled configuration, independent "
+                "human/MFA proof and live access-control testing remain pending."
+                if anonymous_cookie_bootstrap and strict_mode_supported else
                 "Independent new-owner access controls have not been verified."
             ),
         },
