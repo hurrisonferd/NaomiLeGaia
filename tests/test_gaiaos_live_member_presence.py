@@ -227,6 +227,70 @@ class LivePresenceTests(unittest.TestCase):
             self.assertEqual(response.json()["detail"]["status"], "HOLD_ACTIVE_SOLO_ENDSOLO_FIRST")
             self.assertEqual(fake.n, 0)
 
+    def test_after_load_real_three_member_turns_and_fair_voice_rotation(self):
+        fake = FakeProvider()
+        with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "owner_login"),
+              mock.patch.object(gaiaos_api, "API_KEY", "CI-SYNTHETIC-ONLY-NOT-A-REAL-PRIVATE-KEY-123456"),
+              mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
+              mock.patch.object(gaiaos_api, "OpenAI", return_value=fake),
+              mock.patch.object(gaiaos_api, "_authorize_browser_session", return_value=None),
+              mock.patch.object(memcon_runtime, "get_solo_session", return_value=None),
+              mock.patch.object(bridge, "_research_bigbang_authorized", return_value=False)):
+            client = TestClient(bridge.app)
+            client.cookies.set(gaiaos_api.SESSION_COOKIE, "CI-OBSERVED-FAIR-SESSION")
+            boot = client.post("/chat", json={"messages": [
+                {"role": "user", "content": "Load GaiaOS"}]})
+            self.assertEqual(boot.status_code, 200, boot.text[:800])
+            self.assertEqual(fake.n, 6)
+            heard = set()
+            selected_turns = []
+            for _ in range(4):
+                response = client.post("/chat", json={"messages": [
+                    {"role": "user", "content": "Build and test the GALAXY memory repair."}]})
+                self.assertEqual(response.status_code, 200, response.text[:800])
+                j = response.json()
+                proof = j["daemon_presence"]
+                self.assertEqual(proof["observed_model_call_count"], 3)
+                self.assertFalse(proof["all_six_responded"])
+                self.assertIsNone(proof["presence_checksum_sha256"])
+                self.assertEqual(len(proof["exchange_checksum_sha256"]), 64)
+                self.assertEqual(j["presentation"]["speaker_count"], 3)
+                selected = [m["member"] for m in proof["members"]]
+                selected_turns.append(selected)
+                heard.update(selected)
+            self.assertEqual(fake.n, 18)
+            self.assertEqual(heard, set(presence.EXPECTED),
+                             "Repeated technical work must not silence the other Prime Daemons")
+            self.assertTrue(all("ANVIL" in turn for turn in selected_turns))
+
+    def test_failed_active_exchange_blocks_old_success_and_single_host_fallback(self):
+        fake = FakeProvider()
+        with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "owner_login"),
+              mock.patch.object(gaiaos_api, "API_KEY", "CI-SYNTHETIC-ONLY-NOT-A-REAL-PRIVATE-KEY-123456"),
+              mock.patch.object(gaiaos_api, "OPENAI_API_KEY", "SYNTHETIC-NONSECRET"),
+              mock.patch.object(gaiaos_api, "OpenAI", return_value=fake),
+              mock.patch.object(gaiaos_api, "_authorize_browser_session", return_value=None),
+              mock.patch.object(memcon_runtime, "get_solo_session", return_value=None),
+              mock.patch.object(bridge, "_research_bigbang_authorized", return_value=False)):
+            client = TestClient(bridge.app)
+            client.cookies.set(gaiaos_api.SESSION_COOKIE, "CI-EXCHANGE-FAIL-SESSION")
+            start = client.post("/chat", json={"messages": [
+                {"role": "user", "content": "Load GaiaOS"}]})
+            self.assertEqual(start.status_code, 200, start.text[:800])
+            self.assertEqual(fake.n, 6)
+            fake.fail_at = 8
+            request = {"messages": [{"role": "user", "content": "Build a proof."}]}
+            bad = client.post("/chat", json=request)
+            self.assertEqual(bad.status_code, 503)
+            self.assertFalse(bad.json()["detail"]["checksum_issued"])
+            self.assertEqual(client.get("/gaiaos/daemon-presence").json()["status"],
+                             "HOLD_NO_RECENT_OBSERVED_SIX_CALL_CAST_IN_THIS_PROCESS")
+            followup = client.post("/chat", json=request)
+            self.assertEqual(followup.status_code, 503)
+            self.assertEqual(followup.json()["detail"]["status"],
+                             "HOLD_PRIOR_MEMBER_EXCHANGE_FAILED_RELOAD_GAIAOS")
+            self.assertEqual(fake.n, 8)
+
     def test_plain_load_requires_real_six_replies_not_fake_boot_theater(self):
         fake = FakeProvider()
         with (mock.patch.object(gaiaos_api, "BROWSER_AUTH_MODE", "owner_login"),
