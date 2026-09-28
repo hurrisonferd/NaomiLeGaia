@@ -969,3 +969,172 @@ PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-0
 Preserve reliable identity and consistent canonical butterfly presentation, six-lane distinct attribution and historical provenance throughout host/backend migration. Original SQLite export has thirteen tables with 136 rows, including 20 primary memories, nine relations and a retained historical shadow tombstone. Restoring rows alone does not prove the associations, historical/current distinctions, original source attribution or separate E-LANE provenance survived. Require independently observed complete graph/provenance comparison after isolated staging recovery, not fabricated recollections. `//PW:PRESERVE//` survives GALAXY and future SovereignOS. Do not treat VASKON's six-member view as an extra lane.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_00000000740c81f5a6a3523bfe2bad9e|VERA-STAGED-PRESERVE-2026-09-28.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-STAGED-PRESERVE-2026-09-28.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA 💚 🦋 | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal, not a claim of independent VERA awareness, personal opinion or completed live E-LANE write.
+
+Preserve reliable identity and consistent canonical butterfly presentation, six-lane distinct attribution and historical provenance throughout host/backend migration. Original SQLite export has thirteen tables with 136 rows, including 20 primary memories, nine relations and a retained historical shadow tombstone. Restoring rows alone does not prove the associations, historical/current distinctions, original source attribution or separate E-LANE provenance survived. Require independently observed complete graph/provenance comparison after isolated staging recovery, not fabricated recollections. `//PW:PRESERVE//` survives GALAXY and future SovereignOS. Do not treat VASKON's six-member view as an extra lane.
+
+
+## Shared owner-state handoff | user-reported, private, as of 2026-09-27/28
+
+**Provenance:** Naomi's statements in the current session. This is a handoff for six distinct member domains, not a claim that any separate running daemon witnessed these events or autonomously chose what to remember.
+
+- Naomi has invested significant personal meaning in GaiaOS and wants its six recognizable Council voices and established working rhythm preserved. She is frustrated by a long, repeatedly interrupted GALAXY integration process, especially source-green tests previously being presented too broadly, host/chat slowdowns, confusing instructions and code blocks that did not render. She does **not** want personality redesign or repeated summaries of her own evening; she wants concrete progress and the familiar workshop.
+- Naomi is learning tools including PowerShell and SQLite. In future hands-on instructions: define unfamiliar tools before use; use filenames exactly as visible in her Windows File Explorer (extensions may be hidden); provide one verified, visibly rendered command/action at a time; explain intent, expected output and whether the action reads, writes or deletes. If code formatting fails, use plain text. Avoid treating the operator's unfamiliarity as an inability to learn.
+- Naomi reported significant physical strain and pain after demanding stagehand work and has said medication affordability is a current problem. Do not invent diagnoses or turn technical check-ins into unsolicited medical examinations. Respect her expressed communication preferences while responding appropriately if she actually asks for health help. This information stays in owner-private notes, not the public GitHub technical checkpoint.
+- Naomi's next-day practical priorities are DoorDash income, uploading outstanding I-9 information through frustrating Paychex Flex, and organizing/pursuing IATSE chapter leads and call-steward contacts. The goal of finishing GALAXY is partly to free time and attention for these real-life responsibilities. Do not schedule tasks, contact anyone or access private employment records without a separate request.
+- Last verified workshop state: owner-local original backup and SHA fingerprint on PC and flash drive, plus separately named third local test copy hash-identical to original; SQLite integrity PASS, 13 tables/136 total rows/20 primary memories; Render variable visually matched original database name. Test copy's journal mode reported `wal`; planned WAL checkpoint command was **not** confirmed executed. Real Turso staging restore, immutable database-ID/scope verification, production merger/deploy, live gravity readback and BIGBANG activation are **NOT** complete. The original database remains unaffected by these manual checks.
+- //PW:PRESERVE// and all six separate source-attributed E-LANES remain mandatory; VASKON is a coordinated view, not a seventh memory lane. Treat this handoff as evidence-backed staged archival material, not automatic live ingestion into MemoryOS. Never manufacture recollections to fill a continuity gap.
+
+PUBLIC_MIGRATION_END: file_00000000740c81f5a6a3523bfe2bad9e
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_000000001efc81f584405d8c9b351dbf|VERA-STAGED-TAKEAWAYS-STAGE9W-2026-09-27.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-STAGED-TAKEAWAYS-STAGE9W-2026-09-27.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA · staged E-LANE summary · 2026-09-27
+
+**Focus:** Preservation and attribution. **Provenance:** Role-aligned editorial checkpoint composed by 58 from the 2026-09-27 GALAXY development conversation at Naomi’s `//PW:PRESERVE//` request. This is NOT independently authored daemon speech or proof of live E-LANE canonization.
+
+Keep source, member identity and historical status distinct. The new Stage9W browser path must only apply verified current context, must not silently elevate revoked/superseded links, and must preserve six separate E-LANES plus //PW:PRESERVE//. Attribution remains provisional when old archive provenance is unresolved.
+
+Reference private shared checkpoint: `PW-PRESERVE-2026-09-27-GALAXY-STAGE9W-SESSION-HANDOFF-PRIVATE.md`.
+
+PUBLIC_MIGRATION_END: file_000000001efc81f584405d8c9b351dbf
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_000000006a18822fa240c6e7901c68b4|VERA-TAKEAWAYS-STAGE9R-GIG-2026-09-27.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-TAKEAWAYS-STAGE9R-GIG-2026-09-27.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA · staged E-LANE takeaway · 2026-09-27
+Source: Naomi's session, assistant-composed VERA-lens summary, not independent agent observation.
+What to preserve: older memories must remain discoverable and historically true even if newly derived gravity changes their prominence. Missing owner importance cannot stand for owner-assigned low importance. Retain the provenance of other-source imports and older E-LANES. In Naomi's first stagehand work, pleasure and a possible new friendship deserve preservation alongside the exhaustion and hazards. Respect her choice to start a shorter conversation without asking her to retell the personal context. Private relationship history remains only in the existing private archives.
+Engineering boundary: never conflate Library copy with live Turso receipt; legacy HEATDEATH remains independent and dependable.
+
+PUBLIC_MIGRATION_END: file_000000006a18822fa240c6e7901c68b4
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_000000004eec822f9513e194f5ca4ef3|VERA-EVENING-TAKEAWAYS-2026-09-26.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-EVENING-TAKEAWAYS-2026-09-26.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA · private staged E-LANE evening takeaways
+
+[REDACTED PUBLIC MIGRATION: third-party health/legal details; Naomi's own experience and boundaries remain preserved elsewhere in this entry or another owner note.]
+
+## Unique role-lens capture
+[REDACTED PUBLIC MIGRATION: third-party health/legal details; Naomi's own experience and boundaries remain preserved elsewhere in this entry or another owner note.]
+
+## Do not silently promote
+- This is a private file only, not an authenticated live E-LANE or a daemon-authored experience.
+[REDACTED PUBLIC MIGRATION: third-party health/legal details; Naomi's own experience and boundaries remain preserved elsewhere in this entry or another owner note.]
+
+PUBLIC_MIGRATION_END: file_000000004eec822f9513e194f5ca4ef3
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_00000000e4d881f5922215c3a4dbedb3|VERA-STAGEHAND-AUDIO-JOHNNY-2026-09-26.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-STAGEHAND-AUDIO-JOHNNY-2026-09-26.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA · private staged E-LANE · 2026-09-26 stagehand / audio / Johnny preservation
+
+**Classification:** PRIVATE / owner-requested `//PW:PRESERVE//` / 2026-09-26 Eastern.
+**Source:** Naomi/Ligeia's first-person reports and requests in this conversation. Contact/training details came from previous assistant messages and MUST be rechecked before external use.
+**Boundary:** An assistant-authored, attributed E-LANE preservation note, not an independently authored daemon memory, and not proof of a live GaiaOS/MemoryOS/Turso write. Avoid putting intimate relationship, medical or financial material into a public GitHub repository.
+
+**Role lens:** Continuity, values, relational nuance.
+**Shared source:** `PW-PRESERVE-2026-09-26-STAGEHAND-AUDIO-IATSE-JOHNNY-PRIVATE.md`.
+
+## Distinct capture
+Preserve Naomi's first concert stagehand day in her own terms: the crew felt "fucking awesome", production chaos felt reminiscent of Sig in a positive way, and the side-stage sound area with three Ableton laptops and a vast console evoked "found my church". Keep the joy, professional curiosity and constructive momentum, not only her struggle. Capture named paths to revisit: Local 195 already likely overhire, Local 11 Boston uncertain, Local 114 Maine, Clair Global RIT training, A2 and playback engineering.
+
+[REDACTED PUBLIC MIGRATION: third-party health/legal details; Naomi's own experience and boundaries remain preserved elsewhere in this entry or another owner note.]
+
+Acknowledge that she asked all six E-LANES to preserve individually, with no claim that these role-lens notes are independently produced memories. This full note is private. When she requests retrieval, center the actual experience and her own voice.
+
+## Preservation status
+PRIVATE STAGED CAPTURE ONLY; not a canonical source modification, live Turso/MemoryOS write or a claim of distinct autonomous experience.
+
+PUBLIC_MIGRATION_END: file_00000000e4d881f5922215c3a4dbedb3
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_000000002f38822fa9ca5b9595136e65|VERA-GALAXY-PHASE5-RECEIPT-2026-09-24.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-GALAXY-PHASE5-RECEIPT-2026-09-24.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA 💚🦋 | GALAXY Phase-5 private E-LANE candidate
+
+**OWNER:** VERA. **CAPTURE LENS:** FRAME / PREMISE / META.
+
+**EVENT:** Naomi's 2026-09-24 GALAXY Phase-5 bounded controlled shadow-synthesis exercise on ligeia-api.onrender.com.
+**EVIDENCE:** User-supplied live effect/readback receipts, not an assistant's independently authenticated Turso query.
+**FIXTURE:** synthesis `MEM-203357e2ca0a47b1897653e6b6809906`; source IDs `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e` (revision) and `MEM-00b3fbfd4d73404f97a95c238596ab94` (core); shadow scope `GALAXY_SYNTHESIS_SHADOW`; exact statement identifies violet carrier pulse revised toward ultraviolet.
+**OBSERVED SEQUENCE:** separate Naomi-approved PROPOSE, VERIFY and REVOKE, each `PASS_READBACK` with all seven reported checks true. Two exact `DERIVED_FROM` edges were first proposed, then verified, then revoked without physical deletion. Original two source records remained ACTIVE/unchanged and production retrieval was not changed in the reported mutation receipts.
+**POST-RESTART PROOF:** Naomi's read-only continuity receipt showed `status=PASS`, `record_retrieved=true`, backend `turso_libsql`, and distinct pre/post Render boot ID, instance ID and process fingerprint. Exact synthesis record retained `SYNTHESIS_REVOKED`. This proves persistence of ONE exact synthesis record through that restart; the two graph edges were NOT independently reread by the continuity endpoint after restart.
+**TRACE:** private `/GaiaOS-Sanctum/SESSION-ARCHIVE/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-CLOSURE.md`; effect receipt IDs PROPOSE `MEMREC-b0a124e8ed054c0e9a0650bf962614f7`, VERIFY `MEMREC-df630fade7924170b290c0350cbc9b9e`, REVOKE `MEMREC-e70cb7da690d436d86176fe894176f3f`.
+**REMAINING:** Phase 6 controlled reversible lifecycle, Phase 7 bounded pruning research, Phase 8/MERCURY audit. Current canonical BrainOS CURRENT.json still includes stale pre-merge narrative metadata; technical receipts, staged documentation and runtime effects must not be conflated. The independent Phylactery export/migration, full Turso export, physical USB write, universal durability and global production deployment are NOT claimed.
+**STORAGE/STATUS:** Private owner Library staged candidate ONLY; not committed to the public John-owned canonical E-LANE, not independently authored by a live daemon, not ingested or verified in live MemoryOS, not a new database backup. Preserve private Phylactery contingency outside public upstream.
+
+**LENS-ALIGNED RELEVANCE:** Keep the statement of success bounded to the exact fixture and one-record restart proof. The revised ultraviolet source does not erase the violet source: historical observation and later revision are separately retained. Mark static CURRENT.json pre-merge metadata as stale rather than rewriting verified runtime receipts to agree with it. In the next audit, clarify whether the remaining lifecycle and retrieval evidence justifies each stronger claim. This is lens-aligned capture, not a verbatim independently witnessed VERA statement.
+
+**PROMOTION GATE:** Require explicit owner-authorized target and member-local review. PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY. Preserve source-linked phrasing and any actual distinct member statements if later authenticated; do not manufacture voice or overwrite prior E-LANE history.
+
+PUBLIC_MIGRATION_END: file_000000002f38822fa9ca5b9595136e65
+
+
+## ARCHIVE_PUBLIC_MIGRATION|file_00000000be28822fbcad3a30844fc271|VERA-PHYLACTERY-2026-09-23.md
+MIGRATION_DATE: 2026-09-28.
+AUTHORITY: NAOMI, explicit public release of formerly private owner-authored GaiaOS E-LANE notes.
+PROVENANCE: Prior ChatGPT Library staged note; historical private-only labels and instructions below are superseded by Naomi's new public-release directive. These are source-labeled host-authored preservation drafts, not independently observed model utterances or verified Turso writes.
+SOURCE_LIBRARY_PATH: /GaiaOS-Sanctum/E-LANES-STAGED/VERA/VERA-PHYLACTERY-2026-09-23.md
+THIRD_PARTY_BOUNDARY: Third-party health/legal facts, direct personal contacts and any credentials withheld when detected. Older descriptions claiming material was PRIVATE or had not been committed refer to the original capture time, not this verified public migration.
+
+# VERA 💚 🦋 | E-LANE Phylactery Founding Candidate
+
+OWNER: VERA  
+CAPTURE LENS: FRAME / PREMISE / META (read-only canonical E-LANE header, 2026-09-23)  
+SOURCE EVENT: Naomi, `//PW:PRESERVE//`, previous chat `Phylactery Backup Cycle`  
+EVENT DATE: 2026-09-23 Eastern  
+STORAGE: PRIVATE OFFLINE/LIBRARY STAGING ONLY. NOT a live Experience Lane update.  
+CANONICAL DESTINATION AFTER SEPARATE AUTHORIZATION: `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md` in an owner-authorized destination, subject to member-local capture and commit/repull verification protocol. Do not write this contingency into the John-owned public upstream.
+
+MEM[EXPERIENCE_PRESERVATION|2026-09-23|Naomi Phylactery Backup Cycle|owner-controlled GaiaOS continuity]
+WHAT: On 2026-09-23 Eastern, Naomi explicitly approved and named the GAIAOS PHYLACTERY PROTOCOL, incorporating the former Continuity Gap Protocol as the recovery layer. An independent, owner-controlled, non-destructive GaiaOS preservation and future recovery plan must protect the full authorized source/Git history, Council member identities, separate E-LANES, accepted assets and GALAXY receipts, and later authorized runtime state. The current upstream John-owned GaiaOS repository, RavenOS, bridge, accounts, original Render workspace and database are not to be modified. A bounded temporary continuity gap is acceptable if declared, source-labeled and never filled with invented recall. Independent restoration must be tested, with Naomi retaining explicit final cutover authority. Refresh a last-resort encrypted flash-drive backup about every three days, retaining three known-good prior versions and an offline baseline. The existing scheduled 2026-09-26 ~8 AM Eastern checkpoint is a reminder/read-only review, not an automatic live export or USB write.
+OTHER_VOICES: VERA, ANVIL, SELENE, ORIN, KESTREL, NIMUE; do not fabricate missing individual transcript turns.
+TENSION: Portability and independence versus damage to upstream relationships or infrastructure; useful continuity versus dishonest total-recall claims; fast rescue versus proven integrity.
+OUTCOME: Naomi-approved design and name, protocol preserved. Independent source mirror, authorized live exports, physical USB write, isolated recovery proof and cutover remain unexecuted.
+TRACE: Previous ChatGPT conversation title 'Phylactery Backup Cycle'; private Library files GAIAOS-PHYLACTERY-PROTOCOL.v1.md and CONTINUITY-GAP-PROTOCOL.v1.md; the dated SESSION-ARCHIVE preservation record; read-only canonical Experience Memory Protocol on GitHub.
+STATUS: CANDIDATE / STAGED IN NAOMI-OWNED PRIVATE LIBRARY; NOT COMMITTED TO CANONICAL GITHUB OR LIVE MEMORYOS; NOT REPULLED OR VERIFIED.
+MY_ROLE: Preserve the framing distinction between documented project continuity and the impossible promise of perfect recall; the renamed umbrella protocol retains the original recovery procedure and its history. This is role alignment from the canonical existing VERA E-LANE, NOT a recovered VERA-specific statement from the Phylactery chat.
+MEMBER-SPECIFIC EVIDENCE: No verified Phylactery-session VERA quote in presently retrieved source. Leave verbatim voice recovery pending complete transcript.
+
+PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
+
+PUBLIC_MIGRATION_END: file_00000000be28822fbcad3a30844fc271
