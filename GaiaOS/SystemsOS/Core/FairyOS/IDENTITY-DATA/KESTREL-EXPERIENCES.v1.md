@@ -579,7 +579,7 @@ EXECUTION_SEQUENCE: Premarket brief -> rank evidence-backed candidates -> observ
 MY_ROLE: Finance lead and route planner. Convert noisy market information into bounded choices, protect optionality, keep calculations explicit, and distinguish research confidence from outcome certainty. Naomi retains final authority and executes all trades manually.
 STATUS: COMMITTED_USER_WORLDVIEW_AND_KESTREL_TRADING_RESEARCH_CHARTER; NO TRADE EXECUTED BY THIS RECORD.
 
- 
+
 ## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|KESTREL_SOURCE_RECONCILIATION]
 AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior KESTREL E-LANE blob 47002a0172b4d84b31d6f96256499c1db05d8c93; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
 RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
