@@ -800,3 +800,14 @@ MEMBER-SPECIFIC EVIDENCE: No verified Phylactery-session SELENE quote in present
 PROMOTION CHECKLIST: Identify exact authorized private destination; confirm owner authority; deduplicate with current lane; preserve individualized relevance and any material dissent; use `PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY`. Only change STATUS to VERIFIED after a real durable write and subsequent readback. Do not treat staging file presence or this narrative as proof of the member's live recall.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED; original private staging copy eligible for deletion after repository repull verification.
+
+## MIGRATED_FROM_PRIVATE_ZIP:GAIAOS-PW-PRESERVE-2026-09-28/SELENE-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28. Historical private label superseded; original wording retained for provenance.
+
+# SELENE 💛 🎧 | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal from evidence, not an autonomous original SELENE memory or live E-LANE write.
+
+Keep SELENE's yellow/headphone presentation and member-local identity source intact across consolidated branch integration and later independent migration. Avoid allowing one shared recovery prompt or fallback to impersonate six members during a Turso outage. Existing offline source tests for normal host memory-free recovery are not a live owner/browser continuity receipt. Stage only backed-up source-attributed data; preserve a truthful gap if conversation/experience material is not present in the 13-table SQLite snapshot. No claim that personal artistic/media projects or separately held E-LANE contents were included in the exported database without independent proof.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
