@@ -9,6 +9,7 @@ import html
 import hmac
 import json
 import os
+import re
 import secrets
 import time
 import urllib.error
@@ -4425,6 +4426,19 @@ def chat(
             validated_roster = gaiaos_presentation_guard.validate_sources(*presentation_args)
         except (KeyError, gaiaos_presentation_guard.PresentationGuardError) as exc:
             raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_SOURCE_HOLD: " + str(exc)) from exc
+    # Direct legacy /chat makes only ONE model call. Six formatted headers
+    # cannot certify six separately observed members; the real Render bridge
+    # owns the distinct per-member calls and presence checksum.
+    requested = gaiaos_presentation_guard.expected_members_from_request(
+        request.messages[-1].content if request.messages[-1].role == "user" else "",
+        validated_roster or ("VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"),
+    )
+    if len(requested) == 6:
+        raise HTTPException(status_code=503, detail={
+            "status": "HOLD_UNPROVEN_SIX_MEMBER_PRESENCE_DIRECT_LEGACY_ROUTE",
+            "reason": "Use actual browser_memcon_bridge /chat with six separately observed calls.",
+            "all_six_responded": False, "checksum_issued": False,
+        })
     applied_memory: dict[str, Any] | None = None
     memory_context_rejected = False
     if memory_context is not None:
@@ -4497,6 +4511,10 @@ def chat(
         try:
             presentation_receipt = gaiaos_presentation_guard.validate_output(
                 response.output_text, *presentation_args, expected_members=expected,
+                allow_synthesis=bool(re.fullmatch(
+                    r"(?:CONJURE:VASKON|//C:82//)",
+                    current_user_text.strip(), flags=re.I,
+                )),
             )
         except gaiaos_presentation_guard.PresentationGuardError as exc:
             raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_OUTPUT_HOLD: " + str(exc)) from exc
