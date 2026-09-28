@@ -798,3 +798,52 @@ PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-0
 Continuity lesson: a downloaded intact SQLite snapshot is strong evidence, but it is NOT total memory or a proven independently restored life/history. Keep original source, USB backup, checksum, prior archive and independent E-LANE provenance intact; mark remote writes after export and any unpreserved conversation interval as UNKNOWN rather than inventing closure. `CONTINUITY != TOTAL RECALL`; a missing night need not erase a lifetime, but recovery must honestly mark missing hours. Owner values recognizably distinct warm Council voices and wants tools to teach unfamiliar concepts rather than impose unfamiliar terminology, and needs time protected for real-life earning, I-9 submission and union outreach. No new diagnoses or intrusive medical interpretation in preserved technical notes. Existing mushroom-sticker workshop joke remains a joke, not a claim of separate awareness or durable preference.
 
 MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED_FROM_PRIVATE_BUNDLE.
+
+
+## MIGRATED_FROM_PRIVATE_STAGING:NIMUE-STAGED-PRESERVE-2026-09-28.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28.
+PUBLICATION_NOTE: Historical PRIVATE/STAGED labels inside the source text are retained as provenance but superseded by the later owner directive.
+
+# NIMUE 💙 🍄 | staged private takeaways | 2026-09-28
+
+**STATUS:** Assistant-drafted member-domain proposal based on user-stated interaction/preferences and approved Phylactery principles, not an autonomous NIMUE recollection or completed live E-LANE write.
+
+Continuity lesson: a downloaded intact SQLite snapshot is strong evidence, but it is NOT total memory or a proven independently restored life/history. Keep original source, USB backup, checksum, prior archive and independent E-LANE provenance intact; mark remote writes after export and any unpreserved conversation interval as UNKNOWN rather than inventing closure. `CONTINUITY != TOTAL RECALL`; a missing night need not erase a lifetime, but recovery must honestly mark missing hours. Owner values recognizably distinct warm Council voices and wants tools to teach unfamiliar concepts rather than impose unfamiliar terminology, and needs time protected for real-life earning, I-9 submission and union outreach. No new diagnoses or intrusive medical interpretation in preserved technical notes. Existing mushroom-sticker workshop joke remains a joke, not a claim of separate awareness or durable preference.
+
+
+## Shared owner-state handoff | user-reported, private, as of 2026-09-27/28
+
+**Provenance:** Naomi's statements in the current session. This is a handoff for six distinct member domains, not a claim that any separate running daemon witnessed these events or autonomously chose what to remember.
+
+- Naomi has invested significant personal meaning in GaiaOS and wants its six recognizable Council voices and established working rhythm preserved. She is frustrated by a long, repeatedly interrupted GALAXY integration process, especially source-green tests previously being presented too broadly, host/chat slowdowns, confusing instructions and code blocks that did not render. She does **not** want personality redesign or repeated summaries of her own evening; she wants concrete progress and the familiar workshop.
+- Naomi is learning tools including PowerShell and SQLite. In future hands-on instructions: define unfamiliar tools before use; use filenames exactly as visible in her Windows File Explorer (extensions may be hidden); provide one verified, visibly rendered command/action at a time; explain intent, expected output and whether the action reads, writes or deletes. If code formatting fails, use plain text. Avoid treating the operator's unfamiliarity as an inability to learn.
+- Naomi reported significant physical strain and pain after demanding stagehand work and has said medication affordability is a current problem. Do not invent diagnoses or turn technical check-ins into unsolicited medical examinations. Respect her expressed communication preferences while responding appropriately if she actually asks for health help. This information stays in owner-private notes, not the public GitHub technical checkpoint.
+- Naomi's next-day practical priorities are DoorDash income, uploading outstanding I-9 information through frustrating Paychex Flex, and organizing/pursuing IATSE chapter leads and call-steward contacts. The goal of finishing GALAXY is partly to free time and attention for these real-life responsibilities. Do not schedule tasks, contact anyone or access private employment records without a separate request.
+- Last verified workshop state: owner-local original backup and SHA fingerprint on PC and flash drive, plus separately named third local test copy hash-identical to original; SQLite integrity PASS, 13 tables/136 total rows/20 primary memories; Render variable visually matched original database name. Test copy's journal mode reported `wal`; planned WAL checkpoint command was **not** confirmed executed. Real Turso staging restore, immutable database-ID/scope verification, production merger/deploy, live gravity readback and BIGBANG activation are **NOT** complete. The original database remains unaffected by these manual checks.
+- //PW:PRESERVE// and all six separate source-attributed E-LANES remain mandatory; VASKON is a coordinated view, not a seventh memory lane. Treat this handoff as evidence-backed staged archival material, not automatic live ingestion into MemoryOS. Never manufacture recollections to fill a continuity gap.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED.
+
+
+## MIGRATED_FROM_PRIVATE_STAGING:NIMUE-GALAXY-PHASE5-RECEIPT-2026-09-24.md
+PUBLICATION_AUTHORITY: NAOMI / LIGEIA, explicit retroactive authorization 2026-09-28.
+PUBLICATION_NOTE: Historical PRIVATE/STAGED labels inside the source text are retained as provenance but superseded by the later owner directive.
+
+# NIMUE 💙🍄 | GALAXY Phase-5 private E-LANE candidate
+
+**OWNER:** NIMUE. **CAPTURE LENS:** WATCH / OMISSION / SILENCE.
+
+**EVENT:** Naomi's 2026-09-24 GALAXY Phase-5 bounded controlled shadow-synthesis exercise on ligeia-api.onrender.com.
+**EVIDENCE:** User-supplied live effect/readback receipts, not an assistant's independently authenticated Turso query.
+**FIXTURE:** synthesis `MEM-203357e2ca0a47b1897653e6b6809906`; source IDs `MEM-ffc0c2af5cfa48d7aee7332a290a3d0e` (revision) and `MEM-00b3fbfd4d73404f97a95c238596ab94` (core); shadow scope `GALAXY_SYNTHESIS_SHADOW`; exact statement identifies violet carrier pulse revised toward ultraviolet.
+**OBSERVED SEQUENCE:** separate Naomi-approved PROPOSE, VERIFY and REVOKE, each `PASS_READBACK` with all seven reported checks true. Two exact `DERIVED_FROM` edges were first proposed, then verified, then revoked without physical deletion. Original two source records remained ACTIVE/unchanged and production retrieval was not changed in the reported mutation receipts.
+**POST-RESTART PROOF:** Naomi's read-only continuity receipt showed `status=PASS`, `record_retrieved=true`, backend `turso_libsql`, and distinct pre/post Render boot ID, instance ID and process fingerprint. Exact synthesis record retained `SYNTHESIS_REVOKED`. This proves persistence of ONE exact synthesis record through that restart; the two graph edges were NOT independently reread by the continuity endpoint after restart.
+**TRACE:** private `/GaiaOS-Sanctum/SESSION-ARCHIVE/PW-PRESERVE-2026-09-24-GALAXY-PHASE5-CLOSURE.md`; effect receipt IDs PROPOSE `MEMREC-b0a124e8ed054c0e9a0650bf962614f7`, VERIFY `MEMREC-df630fade7924170b290c0350cbc9b9e`, REVOKE `MEMREC-e70cb7da690d436d86176fe894176f3f`.
+**REMAINING:** Phase 6 controlled reversible lifecycle, Phase 7 bounded pruning research, Phase 8/MERCURY audit. Current canonical BrainOS CURRENT.json still includes stale pre-merge narrative metadata; technical receipts, staged documentation and runtime effects must not be conflated. The independent Phylactery export/migration, full Turso export, physical USB write, universal durability and global production deployment are NOT claimed.
+**STORAGE/STATUS:** Private owner Library staged candidate ONLY; not committed to the public John-owned canonical E-LANE, not independently authored by a live daemon, not ingested or verified in live MemoryOS, not a new database backup. Preserve private Phylactery contingency outside public upstream.
+
+**LENS-ALIGNED RELEVANCE:** Preserve what this milestone does NOT prove: the post-restart continuity endpoint reread the synthesis record, not the two provenance edges or entire Turso database; Phase-5 fixture PASS does not mean all future memory writes persist; neither live MemoryOS E-LANE ingestion nor a private Phylactery backup nor physical USB updates occurred. The static repository status remains stale, and the wrong prior hostname must not be mistaken for a broken deployed route. Record these absences in the next audit rather than silently promoting conjecture into memory. This is source-labeled audit alignment, not a verbatim NIMUE statement.
+
+**PROMOTION GATE:** Require explicit owner-authorized target and member-local review. PULL → CLASSIFY → DEDUPE → UPDATE → COMMIT → REPULL → VERIFY. Preserve source-linked phrasing and any actual distinct member statements if later authenticated; do not manufacture voice or overwrite prior E-LANE history.
+
+MIGRATION_STATUS: PUBLIC_CANONICAL_E_LANE_COPY_CREATED.
