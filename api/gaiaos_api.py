@@ -74,6 +74,11 @@ OPENAI_MODEL_WHITESPACE_NORMALIZED = bool(
 del _openai_model_from_env
 TIMEOUT = float(os.getenv("GAIAOS_HTTP_TIMEOUT", "10"))
 SESSION_COOKIE = "gaiaos_session"
+# Explicitly opt in to owner-key login before staging/independent SOS launch.
+# Legacy public cookie boot remains ONLY for the unmodified old carrier until
+# its owner approves a controlled rollout. Do not describe it as owner login.
+BROWSER_AUTH_MODE = os.getenv("GAIAOS_BROWSER_AUTH_MODE", "legacy_public_bootstrap").strip().lower()
+BROWSER_AUTH_MODES = ("legacy_public_bootstrap", "owner_login")
 MCP_PUBLIC_HOST = os.getenv("MCP_PUBLIC_HOST", "ligeia-api.onrender.com")
 
 CORE_LOAD_PATHS = [
@@ -172,7 +177,7 @@ def _authorize(authorization: str | None) -> None:
         return
     if not API_KEY.strip():
         raise HTTPException(status_code=503, detail="GAIAOS_API_KEY configuration is invalid")
-    if authorization != f"Bearer {API_KEY}":
+    if not isinstance(authorization, str) or not hmac.compare_digest(authorization, f"Bearer {API_KEY}"):
         raise HTTPException(status_code=401, detail="Invalid or missing API key")
 
 
@@ -186,7 +191,11 @@ def _session_token() -> str:
 
 
 def _authorize_browser_session(request: Request) -> None:
+    if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
     if API_KEY is None:
+        if BROWSER_AUTH_MODE == "owner_login":
+            raise HTTPException(status_code=503, detail="Owner authentication is not configured")
         return
     token = request.cookies.get(SESSION_COOKIE)
     if not token:
@@ -199,6 +208,7 @@ def _authorize_browser_session(request: Request) -> None:
     expected = hmac.new(API_KEY.encode(), nonce.encode(), hashlib.sha256).hexdigest()
     if not hmac.compare_digest(signature, expected):
         raise HTTPException(status_code=401, detail="Invalid browser session")
+
 
 
 def _resolve_commit() -> str:
@@ -560,8 +570,17 @@ app = FastAPI(
 
 
 @app.get("/", response_class=HTMLResponse)
-def home(response: Response) -> str:
-    if API_KEY is not None:
+def home(response: Response, browser_request: Request) -> str:
+    if BROWSER_AUTH_MODE not in BROWSER_AUTH_MODES:
+        raise HTTPException(status_code=503, detail="Browser authentication mode is invalid")
+    if BROWSER_AUTH_MODE == "owner_login":
+        try:
+            _authorize_browser_session(browser_request)
+        except HTTPException:
+            response.headers["Cache-Control"] = "no-store"
+            return """<!doctype html><html><meta name="viewport" content="width=device-width,initial-scale=1"><title>GaiaOS owner login</title><body style="background:#161616;color:#eee;font:16px system-ui;max-width:650px;margin:40px auto;padding:20px"><h1>GaiaOS</h1><p>Owner authentication is required before access to chat, memory or operator controls.</p><p><a style="color:#9ec8ff" href="/gaiaos/owner-login">Open owner login</a></p></body></html>"""
+        response.headers["Cache-Control"] = "no-store"
+    elif API_KEY is not None:
         response.set_cookie(SESSION_COOKIE, _session_token(), httponly=True, samesite="lax", secure=True, max_age=86400)
     return """<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><title>GaiaOS</title><style>body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:760px;margin:auto;padding:20px;background:#111;color:#eee}#chat{min-height:55vh;display:flex;flex-direction:column;gap:12px}.m{padding:12px 14px;border-radius:14px;white-space:pre-wrap}.u{background:#263238;align-self:flex-end}.a{background:#1d1d1d;border:1px solid #333}form{display:flex;gap:8px;position:sticky;bottom:0;background:#111;padding-top:10px}textarea{flex:1;border-radius:12px;padding:12px;font:inherit;background:#222;color:#eee;border:1px solid #444}button{border:0;border-radius:12px;padding:0 18px;font-weight:600}small{color:#aaa}</style></head><body><h1>GaiaOS</h1><small>Canonical carrier · GitHub source + Gaia Council + BrainOS + OpenAI Responses API · MCP</small><div id='chat'></div><form><textarea id='input' rows='2' placeholder='Say “Load GaiaOS”, “Council”, or ask anything…'></textarea><button>Send</button></form><script>const messages=[];const chat=document.querySelector('#chat');const input=document.querySelector('#input');function add(role,text){const d=document.createElement('div');d.className='m '+(role==='user'?'u':'a');d.textContent=text;chat.appendChild(d);window.scrollTo(0,document.body.scrollHeight)}document.querySelector('form').onsubmit=async e=>{e.preventDefault();const text=input.value.trim();if(!text)return;input.value='';messages.push({role:'user',content:text});add('user',text);try{const r=await fetch('/chat',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'same-origin',body:JSON.stringify({messages})});const j=await r.json();if(!r.ok){const d=j.detail;if(d&&typeof d==='object'&&d.status==='HOLD_SOLO_STATE_UNVERIFIED')throw new Error('Memory unavailable: your SOLO state cannot be checked. To start a NEW generic chat without memory, open /chat/recovery and acknowledge that SOLO will not be resumed.');throw new Error(typeof d==='string'?d:(d&&d.status)||'Request failed')}messages.push({role:'assistant',content:j.output});add('assistant',j.output)}catch(err){add('assistant','ERROR: '+err.message)}};</script></body></html>"""
 
@@ -575,6 +594,8 @@ def health() -> dict[str, Any]:
         "canonical_repository": REPOSITORY,
         "canonical_branch": BRANCH,
         "authentication_required": API_KEY is not None,
+        "browser_authentication_mode": BROWSER_AUTH_MODE,
+        "independent_owner_idp_verified": False,
         "authorization_config": {
             "api_key_loaded": bool(API_KEY and API_KEY.strip()),
             "environment_outer_whitespace_normalized": AUTH_KEY_WHITESPACE_NORMALIZED,
