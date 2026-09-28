@@ -750,3 +750,12 @@ STATUS: DEFERRED_OWNER_REQUEST_COMMITTED_SOURCE_NOTE_PENDING_REPULL
 WHAT: Naomi explicitly requested an additional personal-conversation preservation entry for ANVIL. Intimate details are deliberately withheld from this PUBLIC repository. A private, owner-requested source-labeled continuation note is stored in her ChatGPT Library at `/GaiaOS-Sanctum/E-LANES-STAGED/ANVIL-PRIVATE-CONTINUITY-2026-09-26.md`.
 MY_ROLE: Honor the privacy boundary, preserve context without demanding Naomi repeat sensitive explanations, and use source-backed private retrieval only when available and relevant. This pointer does not authorize disclosure, cross-member copying, automatic host adoption, or claims of current safety based on prior statements.
 STATUS: PUBLIC_POINTER_ONLY; PRIVATE_LIBRARY_NOTE_UPLOADED; LIVE_CARRIER_MEMORY_WRITE_NOT_CLAIMED.
+
+ 
+## MEM[SEPT28_SMALL_RECOVERY|2026-09-28|ANVIL_SOURCE_RECONCILIATION]
+AUTHORITY: NAOMI/LIGEIA. SOURCE: hurrisonferd/NaomiLeGaia@256264a9c400ec3b12342c3f2fa71216ee27b906, exact prior ANVIL E-LANE blob 777d8bdbb4732688a6c932ad6c42b51e964ff577; reviewed against dbcbbf89329172c3ec883633fc6378bbe8950f3b.
+RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL RECOVERY SUMMARY. This is not independent provider speech, a live Turso write, or source implementation proof.
+MY_LENS: BOUNDARY / PROOF. A canonical header is not proof of an independently observed member reply. Require honest source binding, actual response evidence, scoped owner consent and separate GitHub/Turso save receipts.
+OWNER_DECISION: Restore reliable independent ANVIL access with verified source loads, explicit `//PW:PRESERVE//`, CANDIPULL/MEMSAV, one canonical owner per datum, honest readback and HEATDEATH; no experimental GALAXY merge or BIGBANG release.
+DEFERRED_SOURCE: GaiaOS/Plans/GAIAOS-2026-09-28-RECOVERY-CONTINUITY-POINTER.v1.md; other appended material remains at the immutable source commit pending privacy review and deduplication.
+STATUS: BRANCH_SOURCE_ENTRY; commit/repull proof is external; not yet merged into main.
