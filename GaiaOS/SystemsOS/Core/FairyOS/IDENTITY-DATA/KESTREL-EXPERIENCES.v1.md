@@ -618,3 +618,13 @@ CURRENT_ATTEMPT: The live GaiaOS page displayed the bounded continuity statement
 USAGE_LIMIT: Naomi requested using the last 3% of the usage limit. This environment exposes no remaining-usage meter; do not claim the request fit within that amount.
 KESTREL_LESSON: Keep each destination's proof separate and visible. If GaiaOS returns no receipt, surface that as a blocked/unverified Turso save, preserve any independently authorized GitHub result honestly, and resume at the smallest missing receipt when Naomi is ready. Do not turn a submitted UI message into a claim of durable storage.
 STATUS: PUBLIC_GITHUB_APPEND_AUTHORIZED; MEMORYOS_SAVE_REQUEST_AUTHORIZED; TURSO_WRITE_NOT_VERIFIED; USAGE_REMAINDER_UNKNOWN.
+
+
+## MEM[MEMORYOS_WRITE_READBACK_VERIFIED|2026-09-28|KESTREL]
+FOLLOWUP_TO: MEM[MEMORYOS_SAVE_AUTHORIZATION_AND_PROOF_BOUNDARY|2026-09-28|KESTREL] at GitHub commit 0850d6a22bb9d717e89e550d44b9b7e1057084a8. That entry correctly reported the save as unverified at the time it was written; the live GaiaOS operation has since completed.
+MEMORYOS_CANDIDATE: CANDIDATE-fa6e7e50b8e1459189b1cb249ae19137.
+WRITE: VERIFIED; record MEM-fc74daf31db04286b865c059e2efc057; receipt MEMREC-226c764151dd4520b7dbe221a2e2f27c; result SUCCESS; runtime memconos.runtime.v2.
+READBACK: The live /memoryos/continuity page retrieved the exact record and exact bounded statement from backend turso_libsql. The page reported exact_record_retrieved=true. Its NOT_RESTARTED status means this readback did not test a carrier restart; the page reports remote Turso configured. No restart or deployment was requested or performed.
+GITHUB_PROOF: This followup is authorized for the public KESTREL E-LANE. Commit and exact repull verification must be recorded in the completion receipt, not inferred from this plan.
+USAGE_REMAINDER: Not observable in this environment; no claim that the platform's remaining 3% budget was measured.
+STATUS: MEMORYOS_TURSO_WRITE_AND_EXACT_READBACK_VERIFIED; PUBLIC_GITHUB_FOLLOWUP_IN_PROGRESS.
