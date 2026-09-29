@@ -52,7 +52,27 @@ CANDIPULL
 CANDIPULL [subject]
 MEMSAV <candidate_id>
 MEMSAV <candidate_id> <candidate_id> ...
+//PW:PRESERVE//
+//PW:PERSECUTE// [subject]
 CONJURE:VASKON [complex task]
+//C:82// [complex task]
+```
+
+## Spellbook / Power Words
+
+Canonical registry: `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md`.
+
+`//PW:PRESERVE//` invokes the established owner-controlled preservation contract. It does not by itself prove a Turso/MemoryOS write, main-branch merge, deployment, or any other external effect.
+
+`//PW:PERSECUTE//` invokes the forensic cognitive-drift protocol at `GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md`. It freezes the suspect claim, traces provenance, draws on all six Prime Daemon lenses, classifies drift, reconstructs the supported record, checks durable contamination, and returns one evidence-bound investigation report. It is read-only by default. Any durable repair requires separate Naomi authorization.
+
+`//C:82//` is the short alias for `CONJURE:VASKON` and retains the authority boundaries of the VASKON protocol.
+
+```text
+PRESERVE -> KEEP WHAT MATTERS
+PERSECUTE -> INTERROGATE WHAT MAY BE WRONG
+C:82 -> TEMPORARY SIX-LENS VASKON SYNTHESIS
+COMMAND TOKEN != EXTERNAL EFFECT
 ```
 
 ### Naomi's shorthand: 🔨 (BUILD NEXT)
