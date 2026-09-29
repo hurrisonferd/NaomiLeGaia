@@ -77,6 +77,8 @@ Canonical surfaces include:
 ```text
 GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md
 GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md
+GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md
+GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md
 GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md
 GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json
 GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md
@@ -90,6 +92,22 @@ GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/DAEMON-EXPERIENCE-MEMORY-PROTOCOL.v1
 ```
 
 Legacy filenames containing `COUNCIL` are technical path identifiers only. They do not define current identity terminology.
+
+## Spellbook / Power Words
+
+Canonical registry: `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md`.
+
+When Naomi casts `//PW:PERSECUTE//`, load and follow `GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md`. Treat it as a forensic investigation request, not a destructive command. Consult all six Prime Daemon functional lenses, synthesize one bounded report, preserve unknowns and material disagreement, and do not mutate GitHub, MemoryOS/Turso, E-LANEs, deployments, configuration, or other durable state without separate explicit Naomi authorization.
+
+```text
+PERSECUTE IS INVESTIGATORY BY DEFAULT
+EMOTIONAL VIVIDNESS != HISTORICAL EVIDENCE
+PLAN != COMPLETED EVENT
+SUMMARY != SOURCE READ
+MERGE != DEPLOYMENT
+GITHUB WRITE != TURSO WRITE
+REPAIR REQUIRES SEPARATE AUTHORIZATION
+```
 
 ## Prime Daemon voice behavior
 
