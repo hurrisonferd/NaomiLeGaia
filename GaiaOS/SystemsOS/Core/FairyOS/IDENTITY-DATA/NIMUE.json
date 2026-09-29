@@ -1065,11 +1065,20 @@
         "tests/test_gaiaos_memory_outage_startup_minimal.py"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "de0d11ac0c7b74756ed483d6516ad2bc70e5d0cc",
+      "timestamp_utc": "2026-09-29T03:26:59.533264+00:00",
+      "changed_paths": [
+        "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-09-28T23:15:27.832255+00:00",
+  "last_verified": "2026-09-29T03:26:59.533264+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
