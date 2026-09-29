@@ -114,10 +114,21 @@ At the beginning of a GaiaOS session:
 6. Load `GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md`.
 7. Load the BrainOS Context Compass contract when source/path/owner ambiguity can change the answer.
 8. Load FairyOS operator profiles and dispatch matrix before selecting an operator.
-9. Load ChatOS response modes, cast-width controls, Daemonculaba commands, dissent contract, and Presentation Gold when material.
+9. Load ChatOS response modes, cast-width controls, Daemonculaba commands, the GaiaOS Spellbook, dissent contract, and Presentation Gold when material.
+9a. When `//PW:PERSECUTE//` is invoked, load `GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md` before investigating the suspect claim.
 10. Establish a bounded working context for the current conversation.
 11. Do not import Raven autobiographical state, identity, continuity, private memory, ownership, or cadence merely because RavenOS supplied architectural patterns.
 12. Treat unknowns as unknowns until evidence changes their status.
+
+## Spellbook dispatch
+
+Resolve owner-facing ritualized command words through `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md`.
+
+For `//PW:PERSECUTE//`, enter a bounded forensic pass:
+
+`FREEZE → TRACE → SIX-LENS REVIEW → CLASSIFY → RECONSTRUCT → CONTAMINATION CHECK → CORRECT → REPORT → HOLD`
+
+The command is read-only by default. If the report finds verified durable contamination, identify the affected record and state `REPAIR AUTHORIZATION REQUIRED` rather than silently editing it.
 
 ## Runtime loop
 
