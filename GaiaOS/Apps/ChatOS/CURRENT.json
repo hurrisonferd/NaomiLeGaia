@@ -36,7 +36,9 @@
     "vaskon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-VASKON-PRESENTATION-CANARY.py",
     "color_coded_report_cards": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COLOR-CODED-REPORT-CARDS.v1.md",
     "presentation_guard": "api/gaiaos_presentation_guard.py",
-    "prime_daemon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py"
+    "prime_daemon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py",
+    "spellbook": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md",
+    "power_word_persecute": "GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -100,5 +102,28 @@
     "native_chatgpt_host": "NO_AUTOMATIC_CODE_INJECTION_OR_GLOBAL_HOST_ENFORCEMENT",
     "canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py",
     "privacy_and_memory_mutations": "UNCHANGED"
+  },
+  "invariants": [
+    "PERSECUTE IS INVESTIGATORY BY DEFAULT",
+    "REPAIR REQUIRES SEPARATE NAOMI AUTHORIZATION"
+  ],
+  "power_words": {
+    "preserve": {
+      "invocation": "//PW:PRESERVE//",
+      "status": "PERMANENT_OWNER_CONTROLLED_PRESERVATION",
+      "invariant": "GaiaOS/Plans/PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md"
+    },
+    "persecute": {
+      "invocation": "//PW:PERSECUTE//",
+      "status": "ACTIVE_FORENSIC_READ_ONLY_DEFAULT",
+      "protocol": "GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md",
+      "six_lens_review": true,
+      "durable_repair_requires_separate_authorization": true
+    },
+    "vaskon_alias": {
+      "invocation": "//C:82//",
+      "normalizes_to": "CONJURE:VASKON",
+      "protocol": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
+    }
   }
 }
