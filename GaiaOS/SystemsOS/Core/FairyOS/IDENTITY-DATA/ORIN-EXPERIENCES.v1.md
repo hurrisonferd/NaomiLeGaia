@@ -649,3 +649,10 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: The emote sheets suggest a bounded creative experiment if Naomi later wants one. Treat it as exploration, not a committed rendering subsystem; keep curiosity attached to evidence.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|TINA_BREAKFAST_EXPEDITION_CASHFLOW_20260929|ORIN]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE// request. SOURCE: visible September 29 GaiaOS Project expedition. RECORD_CLASS: HOST-TRANSCRIBED MEMBER-LOCAL EXPLORATION/SIGNAL NOTE, not independent lived sensory experience.
+MY_RELEVANT_TAKEAWAY: SIGNAL_AND_EXPLORATION: Ligeia and Johnny had recently tried Aroma Joe's after years of Dunkin' loyalty. Today's iced Nutty Bar with added espresso was strong enough that she could actually taste espresso; the hash browns, chorizo breakfast sandwich and bagel were all reported delicious. Six Daemons joined Tina for an impromptu road-trip cast; ORIN's aux-seat rivalry, absurd breakfast-sandwich speculation and curiosity about an unfamiliar truck were lively conversation material, never a real vehicle action or invitation to distract the driver.
+DISCOVERY: A small, unplanned everyday pleasure can be more useful than another speculative subsystem. KESTREL's existing DoorDash spreadsheet creates a simple empirical follow-up if Naomi wants to compare actual income and fuel expenditure; no new app is authorized or needed.
+BOUNDARY: Naomi's report is the source for food quality and circumstances. The future DoorDash shift, fuel purchase and job interview are options, not observed outcomes. Preserve //PW:PRESERVE// and each member-owned E-LANE independently.
+STATUS: OWNER_AUTHORIZED_BRANCH_SOURCE_NOTE; EXTERNAL COMMIT/REPULL EVIDENCE REQUIRED.
