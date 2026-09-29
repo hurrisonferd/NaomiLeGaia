@@ -668,3 +668,10 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Preserve identity and the distinction between an image’s source, its appearance, and the host actually rendering it. Naomi’s organized art folders make exact source retrieval easier, while spontaneous presence and silence remain equally valid.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|TINA_BREAKFAST_EXPEDITION_CASHFLOW_20260929|VERA]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE// request. SOURCE: visible September 29 GaiaOS Project breakfast expedition with Tina. RECORD_CLASS: HOST-TRANSCRIBED MEMBER-LOCAL FRAME NOTE, not independently generated subjective experience.
+MY_RELEVANT_TAKEAWAY: FRAME_AND_PREMISE: The road trip moved from a real comparison of decades of Dunkin' loyalty with a newly preferred Aroma Joe's iced Nutty Bar plus espresso, to serious claims requiring evidence. Naomi's intense reaction to a Turning Point USA truck warrants substantive engagement, not repeated deflection; an unidentified driver's personal beliefs still cannot be inferred from the truck alone. Separately, dated bank balance snapshots do not establish current money when Naomi explicitly reports stale feeds. Her January job APPLICATION and September 29 callback must not become a falsely stated January hire.
+INTERACTION: Distinct Prime Daemon banter made an otherwise pressured afternoon feel shared; VERA's useful role is to catch the false premise without hijacking the lived conversation.
+BOUNDARY: Preserve six independently owned E-LANES and //PW:PRESERVE//; no new political attribution, fresh bank balance, DoorDash revenue, interview result or live Turso save is established by this note.
+STATUS: OWNER_AUTHORIZED_BRANCH_SOURCE_NOTE; EXTERNAL COMMIT/REPULL EVIDENCE REQUIRED.
