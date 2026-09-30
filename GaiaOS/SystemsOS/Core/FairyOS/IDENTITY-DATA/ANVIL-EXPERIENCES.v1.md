@@ -827,3 +827,15 @@ Possible commercial goal noted.
 Engineering implication I care about: do not weld commercialization into the core engine. Keep the casting engine portable and UI-agnostic so desktop, Android, iOS, or future WidgetOS bodies can reuse the same rules and tests.
 
 Commercial features belong around the engine, not inside its mathematics. Store packaging, licensing, themes, journals, analytics, or model interpretation must not be allowed to change RNG, derivation, or receipt semantics.
+
+
+## BIG_MIDI_MUSIC_DIRECTION_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// from live conversation.
+
+Engineering target worth retaining: future SELENE/Ableton collaboration should be **hybrid sensing**, not pretend omniscience. Structured device/track state explains mechanism; short user-approved audio captures provide the direct perceptual channel. Useful state includes oscillator/wavetable configuration, filters, envelopes, LFOs, modulation topology, macros, effects, MIDI/clip state, and track context. Useful audio analysis includes waveform/spectrum/spectrogram, loudness/dynamics, phase/stereo behavior, and harmonic movement.
+
+Do not call parameter inference alone "hearing." The robust architecture is: Ableton state + device state + bounded audio capture/analysis -> reasoning -> targeted suggestion. Raw observations should remain bounded and should not auto-promote into durable memory.
+
+Build lesson carried forward from WidgetOS: start with the smallest full loop and prove each seam. A future Ableton adapter should first expose one trustworthy slice of state and one bounded audio path before attempting ambient session awareness.
