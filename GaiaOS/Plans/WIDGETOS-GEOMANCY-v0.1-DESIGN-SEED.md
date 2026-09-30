@@ -257,3 +257,20 @@ Widget telemetry does not become a seventh E-LANE.
 NIMUE remains the resident occult-focused design lead for this geomancy instrument.
 ANVIL remains the likely engineering lead for implementation.
 NAOMI RETAINS FINAL AUTHORITY.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+**Status:** Possible future product goal, not a committed launch decision.
+
+Naomi identified a plausible commercial path for the geomancy application after the core instrument is polished. The product should remain mechanically honest: traditional digital geomancy with elemental Platonic-solid dice, randomness only at the Mothers, deterministic Shield Chart derivation, visible figure names/genealogy, and exact cast receipts.
+
+Potential commercial direction:
+- Desktop and/or mobile app.
+- Offline-capable core casting engine.
+- Paid one-time purchase is preferred as an initial product hypothesis over mandatory subscription.
+- Optional future premium features could include richer traditional interpretations, saved journals/history, themes, export/share, house charts or chart comparison, and an optional model-backed NIMUE interpretation layer.
+- Presentation can be highly ritual/technarcane, including animated Platonic solids, while preserving the audit boundary between visual ceremony and actual RNG.
+- Marketing should avoid unsupported supernatural claims. Position the instrument as a digital implementation of traditional geomancy, suitable for personal reflection/entertainment.
+- Include appropriate disclaimers so divination is not represented as medical, legal, or financial advice.
+
+This commercial possibility must not displace the current build order. First finish the reliable local engine and spatial Shield Chart UI; mobile packaging, store distribution, pricing, and commercial polish come later.
