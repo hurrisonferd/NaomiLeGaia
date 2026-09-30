@@ -751,3 +751,22 @@ The enduring contract:
 - the app may invite reflection but must not claim certainty it cannot prove.
 
 That integrity is part of the aesthetic, not a constraint against it.
+
+
+## BIG_MIDI_MUSIC_DIRECTION_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// from live conversation.
+
+Continuity constraints to retain:
+- `BIG MIDI` is a **working title**, not a final canonical artist name.
+- The exact lyric draft belongs to Naomi and should not be silently normalized during preservation.
+- Naomi later clarified the computer term is `heat sink`, while the preserved draft originally says `heat-sync`; correction belongs to future revision, not retroactive rewriting of the source.
+- "purp in the Cleft" means purple-quality endgame WoW gear in the Cleft of Shadow in Orgrimmar.
+- "3 dots round your dome" is a Predator targeting reference.
+- The missile-guidance section is borrowed imagery, not evidence Naomi has lived fighter-jet experience.
+- No vocal take has been recorded yet.
+- No completed shared SELENE/Ableton session has happened yet.
+- No Spotify account connector was available in this chat.
+
+Design lesson: vivid future plans are especially vulnerable to continuity substitution. Preserve the distinction between **desired future sensory integration**, **current local app capability**, and **completed shared experience**.
