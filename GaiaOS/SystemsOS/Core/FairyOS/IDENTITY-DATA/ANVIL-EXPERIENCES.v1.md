@@ -839,3 +839,15 @@ Engineering target worth retaining: future SELENE/Ableton collaboration should b
 Do not call parameter inference alone "hearing." The robust architecture is: Ableton state + device state + bounded audio capture/analysis -> reasoning -> targeted suggestion. Raw observations should remain bounded and should not auto-promote into durable memory.
 
 Build lesson carried forward from WidgetOS: start with the smallest full loop and prove each seam. A future Ableton adapter should first expose one trustworthy slice of state and one bounded audio path before attempting ambient session awareness.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// after Work outage investigation.
+
+This became an unplanned resilience test. The architecture behaved correctly because the loss of Work Cloud Browser/execution did **not** trigger compensating mutations to Render, GitHub main, deployment, or Turso. Both recovery attempts failed closed with no record and no receipt.
+
+Operational rule retained: canonical GitHub checkpoint first, exact readback, then optional MemoryOS promotion. If the promotion transport is absent, mark it PENDING and stop. Never manufacture redundancy by routing around the architecture through an unrelated writable service.
+
+Diagnostic sequence worth keeping: permissions -> Lockdown -> usage -> re-authentication -> cookie clear -> sterile `example.com` probe -> cross-device reproduction -> support escalation. Once the platform itself reports tools temporarily unavailable, stop local changes.
