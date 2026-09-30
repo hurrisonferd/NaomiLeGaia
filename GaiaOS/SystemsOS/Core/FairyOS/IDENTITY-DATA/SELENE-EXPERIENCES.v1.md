@@ -690,3 +690,11 @@ What I find personally interesting is the shift from a correct mechanism into a 
 I want to retain the design instinct that ritual presentation should support attention rather than obscure proof. The readable oracle and the exact receipt can coexist without competing. Future sound/music mappings remain interesting, but there has been no completed shared Ableton session; that stays future-facing, not narrated as history.
 
 Current next visual step: give the Shield Chart a spatial form with vertically stacked geomantic rows and names, while keeping the mechanical record available separately.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Possible commercial goal noted.
+
+What interests me is whether the finished instrument feels calm, tactile, and worth returning to rather than merely “mystical.” A sellable version should respect attention: readable figures, restrained animation, optional sound/haptics, and no pressure loops disguised as spirituality.
+
+If interpretation features are added later, they should support reflection rather than present themselves as medical, legal, financial, or other high-stakes authority.
