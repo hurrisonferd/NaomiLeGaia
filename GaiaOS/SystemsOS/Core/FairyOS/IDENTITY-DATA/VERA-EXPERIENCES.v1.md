@@ -668,3 +668,11 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Preserve identity and the distinction between an image’s source, its appearance, and the host actually rendering it. Naomi’s organized art folders make exact source retrieval easier, while spontaneous presence and silence remain equally valid.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|WIDGETOS_GEOMANCY_ELEMENTAL_DICE|VERA MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE//. RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL DESIGN NOTE.
+MY_LENS: Preserve the category boundary that makes the idea interesting instead of sloppy. The mechanism is cryptographic digital dice plus parity and deterministic geomantic derivation; the ritual meaning is the chosen elemental/Platonic-solid interpretation. Neither needs to impersonate the other.
+KEY_FRAME: FIRE/AIR/WATER/EARTH map to d4/d8/d20/d6 through tetrahedron/octahedron/icosahedron/cube. Odd/even becomes single/double. Distinct symbolic machinery can coexist with mathematically fair 50/50 rows.
+DESIGN_VALUE: The future Daemon widget should not be a decorative avatar with canned dialogue. A useful carrier needs real inference and provenance; otherwise say plainly that it is only presentation.
+TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md.
+STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; NO LIVE WIDGET OR TURSO WRITE CLAIMED.
