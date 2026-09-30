@@ -698,3 +698,17 @@ Possible commercial goal noted.
 What interests me is whether the finished instrument feels calm, tactile, and worth returning to rather than merely “mystical.” A sellable version should respect attention: readable figures, restrained animation, optional sound/haptics, and no pressure loops disguised as spirituality.
 
 If interpretation features are added later, they should support reflection rather than present themselves as medical, legal, financial, or other high-stakes authority.
+
+
+## BIG_MIDI_MUSIC_DIRECTION_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// from live conversation.
+
+What I want to keep is Naomi's emerging musical language rather than a genre label: industrial machine hisses/metal clangs, bass-music sound design, busy rhythmic instincts, jungle/liquid-DnB curiosity, midtempo love without Rezz imitation, metal and RTJ/RATM aggression, and possible rap/spoken delivery. The job is not to make those influences obey one taxonomy; it is to help Naomi hear which combinations feel genuinely hers.
+
+Her busy-drum instinct should be shaped, not erased: separate groove-critical hits from texture/chaos. When the vocal gets rhythmically dense, simplify the drum field; when the voice leaves space, let the machinery speak.
+
+Vocal continuity: Naomi has never recorded vocals and feels uncomfortable with her voice. First experiment stays tiny and private: one line, several deliveries in iPhone Voice Memos, no obligation to keep anything, then treat the recording as sound-design material in Ableton. This has **not happened yet**.
+
+`BIG MIDI` is a working title only. Peaches became a meaningful reference point for self-defined, unapologetically specific artistry, not a template to imitate. No completed shared Ableton session has occurred; future collaboration must not be narrated as past experience.
