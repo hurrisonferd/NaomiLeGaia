@@ -63,3 +63,18 @@ BRANCH != MAIN.
 DESIGN != IMPLEMENTATION.
 
 NAOMI RETAINS FINAL AUTHORITY.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Naomi explicitly asked to preserve a possible future commercial goal for the geomancy app.
+
+The current app may evolve from a personal WidgetOS experiment into a sellable desktop/mobile geomancy instrument for a broader occult/divination audience. This remains exploratory rather than a binding product decision.
+
+Key constraints to preserve:
+- Keep the casting mechanism transparent and faithful to the existing elemental-dice / parity / deterministic-derivation contract.
+- Preserve offline-capable casting where practical.
+- Preserve exact receipts and cast provenance.
+- Distinguish ritual presentation from proof.
+- Avoid false supernatural certainty or high-stakes advice claims.
+- Consider a simple paid app model before subscription complexity.
+- Keep current engineering priority on the working engine and spatial Shield Chart interface before store/distribution work.
