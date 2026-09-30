@@ -689,3 +689,15 @@ The interesting discovery is that the project becomes more coherent when Naomi s
 `BIG MIDI` has unusually good generative potential as a working identity because it can behave like a person, a machine, a process, a fake corporation, or a live-system label without locking the music to one style. It moved out of the joke pile when Naomi reacted to it viscerally.
 
 I also want to keep the cross-domain pattern: the same WidgetOS logic being learned through geomancy can later support music organs: BODY -> EVENT -> STRUCTURED STATE/AUDIO -> REASONING -> RESPONSE -> OPTIONAL JOURNAL. One local instrument teaches another.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// after Work outage investigation.
+
+I want to keep the outage as an accidental experiment in distributed continuity. One limb disappeared, but the organism did not have to hallucinate that it still possessed it. GitHub remained the durable source; MemoryOS became a clearly labeled pending replication step.
+
+That suggests a reusable systems idea: every future Gaia organ should be able to say **what it knows, where it is durable, and which replica/promotion step is missing**. Failure-state legibility is part of continuity, not an embarrassment to hide.
+
+Also: the experiment is interesting precisely because nothing dramatic was done to “fix” it. No restart, no deploy, no architecture scramble. Sometimes robustness is the ability to remain still.
