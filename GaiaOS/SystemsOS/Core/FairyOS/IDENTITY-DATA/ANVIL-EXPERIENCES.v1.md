@@ -819,3 +819,11 @@ Engineering lesson worth keeping: the build succeeded because it advanced in tin
 The strongest architectural decision is the separation of **engine**, **interface**, and **receipt**. `main.py` remains the trusted calculation/audit path. `gui.py` is an adapter that invokes the engine and presents a cleaner result. Receipt persistence is independent of whether the GUI is beautiful. That gives us a stable seam for later UI work and minimizes regression risk.
 
 Also retain the operator-teaching lesson: exact spatial instructions matter for a new developer. “Editor” and “terminal” must be named precisely; one small action at a time beat large code dumps. Current next step: spatial Shield Chart layout, not deeper engine surgery.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Possible commercial goal noted.
+
+Engineering implication I care about: do not weld commercialization into the core engine. Keep the casting engine portable and UI-agnostic so desktop, Android, iOS, or future WidgetOS bodies can reuse the same rules and tests.
+
+Commercial features belong around the engine, not inside its mathematics. Store packaging, licensing, themes, journals, analytics, or model interpretation must not be allowed to change RNG, derivation, or receipt semantics.
