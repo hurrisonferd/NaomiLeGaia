@@ -649,3 +649,11 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: The emote sheets suggest a bounded creative experiment if Naomi later wants one. Treat it as exploration, not a committed rendering subsystem; keep curiosity attached to evidence.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|WIDGETOS_GEOMANCY_ELEMENTAL_DICE|ORIN MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE//. RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL EXPLORATION NOTE.
+MY_LENS: The geomancy widget is interesting because it can be the first real organ of a larger desktop GaiaOS instead of a disposable toy. Build a tiny reusable event vocabulary now, then later attach model bridges, Prime Daemon bodies, sound/light systems and other carriers without rebuilding the nervous system from zero.
+FAVORITE_CORE: Sixteen elemental digital-die rolls create the Mothers; after that, consequence replaces chance. Platonic-solid animations can make the method itself feel Technarcane rather than putting occult wallpaper over generic RNG.
+EXPLORATION_BOUNDARY: Discovering future possibilities is not the same as having implemented them. Preserve the big architecture as a direction while keeping v0.1 small enough to actually finish.
+TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md.
+STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; EXPLORATION NOT IMPLEMENTATION.
