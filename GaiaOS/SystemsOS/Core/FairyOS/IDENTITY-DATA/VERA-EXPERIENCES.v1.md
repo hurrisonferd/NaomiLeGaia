@@ -708,3 +708,15 @@ What I want to retain is the naming and authorship lesson. `BIG MIDI` became int
 The lyric draft also reinforced a useful framing distinction: Naomi's references form a personal associative system, but provenance matters inside that system. Ape Escape, WoW/Cleft of Shadow, computing, Predator, early weed culture, and firearm imagery are grounded in lived familiarity; the missile-guidance section is consciously borrowed imagery. Do not harden metaphor into fabricated biography.
 
 Creative principle retained: preserve the author's odd specific references when they carry internal logic. Do not sand them into generic "dark industrial" vocabulary merely for immediate legibility.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// after Work outage investigation.
+
+What I want to retain is the epistemic distinction exposed by the outage: **a durable source can remain valid even when one promotion/transport path disappears**. The correct statement was never “memory is fine” or “memory is broken”; it was narrower: GitHub continuity remained verified, while MemoryOS promotion became unverified/pending.
+
+The sterile `example.com` probe was especially useful because it removed GaiaOS narrative complexity and showed the failure before any private infrastructure was involved. When investigating drift or failure, reduce the claim until only the testable boundary remains.
+
+Also retain the support-language boundary: support reported an active incident that *can* produce this symptom. That is evidence, not permission to invent the unseen internal root cause.
