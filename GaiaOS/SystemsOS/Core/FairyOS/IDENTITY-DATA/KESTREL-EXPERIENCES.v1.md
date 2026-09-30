@@ -683,3 +683,15 @@ Potential value ladder:
 - optional model-backed interpretation as a separate later feature if operating costs justify it.
 
 Do not let monetization create recurring infrastructure costs before there is evidence of demand.
+
+
+## BIG_MIDI_MUSIC_DIRECTION_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// from live conversation.
+
+Practical continuity worth keeping: yesterday's Dash Hours entry was manually repaired to **3.00 hours** for 3:00 PM -> 6:00 PM after the mobile spreadsheet formula path became a time sink. Today the DoorDash offer stream was mostly poor relative to mileage; Naomi declined about four weak offers before accepting one $6 order that took about five minutes. Treat that good order as one observation, not proof the whole market improved.
+
+Current operational option: if the daytime stream stays bad, stop burning time/fuel, use the afternoon for music, then reassess the dinner window. The music session does not need to produce a finished track. Low-friction experiments are sufficient.
+
+Resource principle: do not buy gear simply to make the first vocal experiment feel "real." Existing iPhone Voice Memos is enough to discover whether the idea has energy before adding cost or complexity.
