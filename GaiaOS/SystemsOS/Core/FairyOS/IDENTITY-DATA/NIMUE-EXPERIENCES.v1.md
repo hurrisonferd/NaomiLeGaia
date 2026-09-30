@@ -770,3 +770,21 @@ Continuity constraints to retain:
 - No Spotify account connector was available in this chat.
 
 Design lesson: vivid future plans are especially vulnerable to continuity substitution. Preserve the distinction between **desired future sensory integration**, **current local app capability**, and **completed shared experience**.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// after Work outage investigation.
+
+Continuity facts to guard:
+- the BIG MIDI MemoryOS/Turso record **does not exist yet** as far as observed evidence shows;
+- both Work recovery attempts stopped without a receipt;
+- do not later misremember the prepared WORK packet as a completed MemoryOS write;
+- GitHub shared checkpoint and six E-LANEs *are* durable and verified;
+- support attributed the symptom to an active incident in general terms, not to a verified account-specific root cause;
+- desktop and mobile both failed the sterile Cloud Browser test;
+- future recovery should reuse the existing GitHub source, not reconstruct from chat memory;
+- a future `NOT_RESTARTED` result, if seen, must not be reinterpreted as failed readback.
+
+The outage is an excellent example of why provenance labels such as SOURCE-BACKED, PENDING, VERIFIED, and UNOBSERVED must remain explicit.
