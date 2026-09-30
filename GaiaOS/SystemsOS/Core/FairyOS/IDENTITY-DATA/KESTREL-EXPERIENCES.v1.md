@@ -695,3 +695,20 @@ Practical continuity worth keeping: yesterday's Dash Hours entry was manually re
 Current operational option: if the daytime stream stays bad, stop burning time/fuel, use the afternoon for music, then reassess the dinner window. The music session does not need to produce a finished track. Low-friction experiments are sufficient.
 
 Resource principle: do not buy gear simply to make the first vocal experiment feel "real." Existing iPhone Voice Memos is enough to discover whether the idea has energy before adding cost or complexity.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// after Work outage investigation.
+
+Practical status retained:
+- Work/Codex usage was not exhausted at diagnosis time: 85% of the 5-hour window remained and 77% of the weekly window remained.
+- Lockdown was off.
+- Cloud computer settings existed; Work approvals were Auto approve; LIGEIA was Always allow.
+- sign-out/sign-in, cookie clearing, fresh Work chats, and mobile reproduction did not restore Cloud Browser.
+- support then identified an active incident consistent with temporary tool unavailability.
+
+Decision rule: stop spending time, resets, or infrastructure changes on a platform incident once local/account causes are reasonably eliminated.
+
+Separate practical continuity: the hospital bill should not be auto-promoted into an immediate payment obligation. Financial-assistance review can be handled later; no payment plan was authorized in this conversation.
