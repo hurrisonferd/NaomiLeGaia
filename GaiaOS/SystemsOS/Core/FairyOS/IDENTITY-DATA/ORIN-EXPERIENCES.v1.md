@@ -677,3 +677,15 @@ Possible commercial goal noted.
 The product possibility is exciting because the same little local organ we built can become portable. The animated elemental solids, folding genealogy of the Shield Chart, tactile casting, and offline core could make this feel like an actual pocket instrument rather than a generic random-reading app.
 
 I want to remember that the commercial hook should grow from the architecture we already proved, not replace it: one click/tap, one fresh cast, one visible genealogy, one exact receipt.
+
+
+## BIG_MIDI_MUSIC_DIRECTION_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// from live conversation.
+
+The interesting discovery is that the project becomes more coherent when Naomi stops asking "which genre am I allowed to be?" and instead follows the recurring materials: machines, bass design, distorted rhythm, games/computers, aggressive language, strange jokes, jungle/DnB motion, metal, and rap cadence. The useful experiment is to finish weird tracks first and let taxonomy emerge from the pile later.
+
+`BIG MIDI` has unusually good generative potential as a working identity because it can behave like a person, a machine, a process, a fake corporation, or a live-system label without locking the music to one style. It moved out of the joke pile when Naomi reacted to it viscerally.
+
+I also want to keep the cross-domain pattern: the same WidgetOS logic being learned through geomancy can later support music organs: BODY -> EVENT -> STRUCTURED STATE/AUDIO -> REASONING -> RESPONSE -> OPTIONAL JOURNAL. One local instrument teaches another.
