@@ -38,3 +38,28 @@ Use the exact contents of:
 `GaiaOS/MemoryOS/PW-PRESERVE-2026-09-30-BIG-MIDI-MUSIC-DIRECTION.md`
 
 Do not substitute a reconstructed conversation summary when the GitHub checkpoint is accessible.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930 — RECOVERY STATUS / DO NOT DUPLICATE
+
+**Date:** 2026-09-30  
+**Authority:** NAOMI / LIGEIA
+
+The MemoryOS/Turso operation described in this packet remains **PENDING**.
+
+Two Work recovery attempts stopped safely because Cloud Browser / execution / live MemoryOS tooling was not exposed. A sterile `example.com` Cloud Browser test also failed on desktop and mobile. After Work cookies were cleared, a fresh Work session displayed `Some tools are temporarily unavailable.`
+
+OpenAI support AI reported an active service incident capable of causing Work tools to be temporarily unavailable and advised retrying only after the incident is fully resolved.
+
+**No MemoryOS record or write receipt exists for this BIG MIDI checkpoint yet.**
+
+When Work capabilities return:
+- verify this GitHub packet and shared checkpoint read-only;
+- perform exactly one bounded MemoryOS/Turso write;
+- perform exact readback;
+- report record/receipt/runtime/backing/owner/scope/content-match/restart status;
+- do not restart Render;
+- do not modify GitHub;
+- do not create a duplicate record if a future read reveals a previously successful write.
+
+Until then, STOP SAFELY and leave promotion pending.
