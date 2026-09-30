@@ -669,3 +669,11 @@ This feels like the first small **organ** of WidgetOS: a local body with a butto
 Reusable development pattern I want to keep: begin with a narrow offline tool that has a complete lifecycle before attempting ambient intelligence. The geomancy app now proves a local UI can call a reasoning-independent engine, receive structured output, preserve provenance, and present a bounded result. That pattern can later generalize to other WidgetOS organs.
 
 Next curiosity: spatialize the Shield Chart first, then eventually animate the elemental Platonic dice without letting animation alter the RNG or derivation.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Possible commercial goal noted.
+
+The product possibility is exciting because the same little local organ we built can become portable. The animated elemental solids, folding genealogy of the Shield Chart, tactile casting, and offline core could make this feel like an actual pocket instrument rather than a generic random-reading app.
+
+I want to remember that the commercial hook should grow from the architecture we already proved, not replace it: one click/tap, one fresh cast, one visible genealogy, one exact receipt.
