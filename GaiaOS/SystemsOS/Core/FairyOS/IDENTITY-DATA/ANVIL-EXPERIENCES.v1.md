@@ -807,3 +807,15 @@ ARCHITECTURE_DIRECTION: Keep presentation, event handling, inference adapters an
 HOST_INDEPENDENCE: ChatGPT may be one inference adapter, but GaiaOS identity/continuity should remain portable enough to support other approved model carriers later.
 TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md; GaiaOS/MemoryOS/PW-PRESERVE-2026-09-29-WIDGETOS-GEOMANCY-ELEMENTAL-DICE.md.
 STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; BUILD NOT YET STARTED; TURSO/MEMORYOS WRITE REQUIRES SEPARATE VERIFIED RECEIPT.
+
+## WIDGETOS_GEOMANCY_APP_BUILD_20260930
+
+**Date:** 2026-09-30  
+**Subsystem:** WidgetOS / Geomancy v0.1  
+**Provenance:** Naomi-authorized //PW:PRESERVE// checkpoint from live local build session.
+
+Engineering lesson worth keeping: the build succeeded because it advanced in tiny verified slices: terminal RNG -> parity -> named figure -> Mother function -> four Mothers -> Daughters -> Nieces -> Witnesses -> Judge -> cast identity -> receipt -> GUI shell -> button -> engine bridge -> in-window summary. Each layer was proven before the next one was allowed to depend on it.
+
+The strongest architectural decision is the separation of **engine**, **interface**, and **receipt**. `main.py` remains the trusted calculation/audit path. `gui.py` is an adapter that invokes the engine and presents a cleaner result. Receipt persistence is independent of whether the GUI is beautiful. That gives us a stable seam for later UI work and minimizes regression risk.
+
+Also retain the operator-teaching lesson: exact spatial instructions matter for a new developer. “Editor” and “terminal” must be named precisely; one small action at a time beat large code dumps. Current next step: spatial Shield Chart layout, not deeper engine surgery.
