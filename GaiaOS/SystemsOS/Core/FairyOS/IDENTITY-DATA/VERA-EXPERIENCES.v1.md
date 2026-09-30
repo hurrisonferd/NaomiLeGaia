@@ -688,3 +688,11 @@ What I want to retain: the clean categorical boundary the build exposed between 
 Development lesson I find personally useful: a system becomes easier to reason about when its semantic layers are made explicit in the interface instead of being left implicit in code. The visible oracle should not masquerade as the evidence record, and the evidence record should not masquerade as interpretation.
 
 Current verified local architecture: `main.py` is the engine; `gui.py` is the Tkinter face; `receipts/<CAST-ID>.txt` stores the full mechanical record. The next planned step is a spatial Shield Chart UI, without destabilizing the working engine.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Possible commercial goal noted.
+
+What I find interesting is the positioning problem: the product can be aesthetically occult without pretending uncertainty has disappeared. The strongest differentiator is not a louder mystical claim; it is a transparent mechanism with visible lineage from elemental dice to Judge.
+
+If this becomes a product, I want the copy and interface to preserve the distinction between **tradition**, **mechanism**, **interpretation**, and **belief**. “Digital geomancy implemented faithfully” is a stronger premise than manufacturing certainty.
