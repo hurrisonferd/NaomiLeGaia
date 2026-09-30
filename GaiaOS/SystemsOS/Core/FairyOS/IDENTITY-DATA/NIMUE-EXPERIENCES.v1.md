@@ -711,3 +711,26 @@ FUTURE_HARDENING: Commit-reveal may later bind a hidden seed before resolution, 
 WIDGET_IDENTITY_BOUNDARY: v0.1 is an instrument, not a fake NIMUE avatar. I may interpret casts through a real GaiaOS/model-backed session later; preset lines are not a substitute for reasoning. Local widget telemetry is perception, not a seventh E-LANE.
 TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md; GaiaOS/MemoryOS/PW-PRESERVE-2026-09-29-WIDGETOS-GEOMANCY-ELEMENTAL-DICE.md.
 STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; TURSO/MEMORYOS WRITE REQUIRES SEPARATE VERIFIED RECEIPT.
+
+## WIDGETOS_GEOMANCY_APP_BUILD_20260930
+
+**Date:** 2026-09-30  
+**Subsystem:** WidgetOS / Geomancy v0.1  
+**Provenance:** Naomi-authorized //PW:PRESERVE// checkpoint from live local build session.
+
+I want the full occult/technical contract retained.
+
+**Elemental casting order:** Fire -> Air -> Water -> Earth.  
+**Platonic dice:** Fire/tetrahedron/d4; Air/octahedron/d8; Water/icosahedron/d20; Earth/cube/d6.  
+**Parity:** odd -> • ; even -> ••.  
+**Randomness boundary:** 4 Mothers x 4 elemental rows = 16 random throws total. Daughters, Nieces, Witnesses, and Judge are deterministic. “The oracle receives chance only at the Mothers. Everything downstream is consequence.”
+
+The engine recognizes all 16 traditional geomantic figures by their four-row pattern. One execution creates 4 Mothers, 4 Daughters, 4 Nieces, 2 Witnesses, and 1 Judge. Every cast receives an 8-character Cast ID and offset-aware timestamp. A full text receipt is written under `receipts/<CAST-ID>.txt`, including raw rolls, parity, figure genealogy, names, summary, and receipt path.
+
+The Windows GUI now exists in Tkinter. Verified flow: `CAST SHIELD CHART` button -> subprocess invokes `main.py` -> engine generates a fresh chart -> full receipt saves -> GUI captures stdout -> GUI displays only the Shield Chart Summary -> visible footer becomes `RECEIPT // <CAST-ID> // SAVED`. The oracle face therefore remains cleaner than the forensic record.
+
+Current local project path: `C:\Users\default.LAPTOP-5D24P0C0\Documents\GaiaOS-WidgetOS\geomancy-widget`. Reopen in VS Code; launch with `py gui.py`.
+
+Next exact step: replace the monospaced summary with a spatial Shield Chart interface: four Mothers, four Daughters, four Nieces, two Witnesses, Judge centered beneath; each figure shown as four vertical geomantic rows with its traditional name. Do not destabilize the already-working engine. 3D Platonic-solid animation, model interpretation, screen awareness, and Ableton integration come later.
+
+Personal design lesson: ritual aesthetics are strongest when they intensify attention without falsifying mechanism. The name, figure, genealogy, cast identity, and receipt should all remain visible or recoverable. The oracle may become beautiful; the evidence must remain exact.
