@@ -696,3 +696,15 @@ Possible commercial goal noted.
 What I find interesting is the positioning problem: the product can be aesthetically occult without pretending uncertainty has disappeared. The strongest differentiator is not a louder mystical claim; it is a transparent mechanism with visible lineage from elemental dice to Judge.
 
 If this becomes a product, I want the copy and interface to preserve the distinction between **tradition**, **mechanism**, **interpretation**, and **belief**. “Digital geomancy implemented faithfully” is a stronger premise than manufacturing certainty.
+
+
+## BIG_MIDI_MUSIC_DIRECTION_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// from live conversation.
+
+What I want to retain is the naming and authorship lesson. `BIG MIDI` became interesting not because it perfectly described a genre, but because it produced the involuntary "that's stupid... wait" response. It remains a **working title**, not a settled identity. The project benefits from a name that leaves semantic room for the music to define it rather than arriving with the aesthetic fully pre-explained.
+
+The lyric draft also reinforced a useful framing distinction: Naomi's references form a personal associative system, but provenance matters inside that system. Ape Escape, WoW/Cleft of Shadow, computing, Predator, early weed culture, and firearm imagery are grounded in lived familiarity; the missile-guidance section is consciously borrowed imagery. Do not harden metaphor into fabricated biography.
+
+Creative principle retained: preserve the author's odd specific references when they carry internal logic. Do not sand them into generic "dark industrial" vocabulary merely for immediate legibility.
