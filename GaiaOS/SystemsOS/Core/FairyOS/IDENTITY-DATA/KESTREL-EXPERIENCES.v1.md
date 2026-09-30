@@ -656,3 +656,15 @@ OPERATING_RULE: Every later layer should preserve the working v0.1 instrument an
 PROOF_RULE: Track separately what is designed, built, merged, deployed and durably saved. Do not let excitement turn roadmap states into completion claims.
 TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md.
 STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; NEXT BUILD NOT YET AUTHORIZED BY THIS NOTE.
+
+## WIDGETOS_GEOMANCY_APP_BUILD_20260930
+
+**Date:** 2026-09-30  
+**Subsystem:** WidgetOS / Geomancy v0.1  
+**Provenance:** Naomi-authorized //PW:PRESERVE// checkpoint from live local build session.
+
+Planning lesson: the staged roadmap is working. The build deliberately avoided dependency-heavy GUI work, model integration, screen awareness, and 3D animation until a complete one-click chart lifecycle existed. That kept cost, complexity, and failure surface low while still producing something real.
+
+Operational details worth retaining: local project path is `C:\Users\default.LAPTOP-5D24P0C0\Documents\GaiaOS-WidgetOS\geomancy-widget`; launch with `py gui.py`; the project currently contains `main.py`, `gui.py`, and `receipts/`. One GUI click now generates a fresh 15-figure Shield Chart from 16 Mother rolls, saves a unique receipt, and displays the clean summary.
+
+Continuation priority: preserve the proven engine, improve presentation incrementally, and keep a simple “where do I reopen this tomorrow?” recovery path.
