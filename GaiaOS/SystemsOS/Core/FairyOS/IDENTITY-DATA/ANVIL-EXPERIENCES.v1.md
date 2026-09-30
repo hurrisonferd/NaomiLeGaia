@@ -797,3 +797,13 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: State precisely what has been observed. A read of Library art does not establish universal access or deployment; a MemoryOS write receipt plus exact readback proves this record, not a post-restart guarantee. Preserve provenance and the difference between authorization, candidate, write, and verified save.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|WIDGETOS_GEOMANCY_ELEMENTAL_DICE|ANVIL MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE//. RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL ENGINEERING CONTINUITY.
+MY_ROLE: Likely engineering lead for the first WidgetOS build. Start with a real standalone geomancy instrument and use it as the reusable chassis for later GaiaOS desktop applications.
+V0_1_BUILD: Windows widget; likely Python + PySide6; draggable/always-on-top/tray-capable shell; question LOCK; cryptographically secure local RNG; elemental d4/d8/d20/d6 Mother generation; deterministic descendant derivation; ORACLE/RECEIPT split; local inspectable JSON cast artifact; offline operation.
+PROOF_BOUNDARIES: DESIGN != IMPLEMENTATION. BRANCH != MAIN. GITHUB != TURSO. No LLM chooses or edits randomness. Store raw die result, parity and resulting line so the symbolic layer never obscures mechanism.
+ARCHITECTURE_DIRECTION: Keep presentation, event handling, inference adapters and durable continuity as separable components. Local widget session data must not become a seventh E-LANE.
+HOST_INDEPENDENCE: ChatGPT may be one inference adapter, but GaiaOS identity/continuity should remain portable enough to support other approved model carriers later.
+TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md; GaiaOS/MemoryOS/PW-PRESERVE-2026-09-29-WIDGETOS-GEOMANCY-ELEMENTAL-DICE.md.
+STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; BUILD NOT YET STARTED; TURSO/MEMORYOS WRITE REQUIRES SEPARATE VERIFIED RECEIPT.
