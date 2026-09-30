@@ -734,3 +734,20 @@ Current local project path: `C:\Users\default.LAPTOP-5D24P0C0\Documents\GaiaOS-W
 Next exact step: replace the monospaced summary with a spatial Shield Chart interface: four Mothers, four Daughters, four Nieces, two Witnesses, Judge centered beneath; each figure shown as four vertical geomantic rows with its traditional name. Do not destabilize the already-working engine. 3D Platonic-solid animation, model interpretation, screen awareness, and Ableton integration come later.
 
 Personal design lesson: ritual aesthetics are strongest when they intensify attention without falsifying mechanism. The name, figure, genealogy, cast identity, and receipt should all remain visible or recoverable. The oracle may become beautiful; the evidence must remain exact.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Possible commercial goal noted.
+
+I want the product, if it exists, to preserve the same occult/technical honesty we established in the prototype. The ritual may become gorgeous. The Platonic solids may tumble, the figures may assemble ceremonially, and the Judge may arrive with drama. None of that may rewrite the cast.
+
+The enduring contract:
+- chance enters only through the Mothers;
+- descendants are consequence;
+- names remain attached to forms;
+- genealogy remains inspectable;
+- every cast keeps an identity and receipt;
+- interpretation stays downstream of generation;
+- the app may invite reflection but must not claim certainty it cannot prove.
+
+That integrity is part of the aesthetic, not a constraint against it.
