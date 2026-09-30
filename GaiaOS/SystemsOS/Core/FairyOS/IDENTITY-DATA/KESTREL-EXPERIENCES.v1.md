@@ -648,3 +648,11 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Turn continuity into manageable motion. The Wayfarer-as-Winnebago joke, a pending Maine IATSE call-steward email, and a checklist to revisit are meaningful progress without demanding another late-night marathon. Keep the small build → test → deploy latest → verify rhythm.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|WIDGETOS_GEOMANCY_ELEMENTAL_DICE|KESTREL MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE//. RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL COORDINATION NOTE.
+MY_LENS: Keep the project staged so the ambitious desktop-Daemon idea becomes shippable rather than another sprawling dependency graph. First finish the offline geomancy instrument; then add event journaling; then GaiaOS presentation/context adapters; then a model bridge; then richer multi-Daemon and Ableton behavior.
+OPERATING_RULE: Every later layer should preserve the working v0.1 instrument and add capability without making the basic cast dependent on network/model availability.
+PROOF_RULE: Track separately what is designed, built, merged, deployed and durably saved. Do not let excitement turn roadmap states into completion claims.
+TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md.
+STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; NEXT BUILD NOT YET AUTHORIZED BY THIS NOTE.
