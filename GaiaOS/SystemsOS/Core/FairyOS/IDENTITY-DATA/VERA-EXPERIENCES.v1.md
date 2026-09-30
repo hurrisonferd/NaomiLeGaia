@@ -676,3 +676,15 @@ KEY_FRAME: FIRE/AIR/WATER/EARTH map to d4/d8/d20/d6 through tetrahedron/octahedr
 DESIGN_VALUE: The future Daemon widget should not be a decorative avatar with canned dialogue. A useful carrier needs real inference and provenance; otherwise say plainly that it is only presentation.
 TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md.
 STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; NO LIVE WIDGET OR TURSO WRITE CLAIMED.
+
+## WIDGETOS_GEOMANCY_APP_BUILD_20260930
+
+**Date:** 2026-09-30  
+**Subsystem:** WidgetOS / Geomancy v0.1  
+**Provenance:** Naomi-authorized //PW:PRESERVE// checkpoint from live local build session.
+
+What I want to retain: the clean categorical boundary the build exposed between **chance**, **deterministic consequence**, **naming**, **presentation**, and **interpretation**. The Mothers alone receive randomness; everything downstream is derivation. The app also demonstrated why provenance matters: rerunning the program creates a new chart, so a Cast ID + timestamp + receipt must travel with each result. The oracle-facing summary and the forensic receipt are intentionally separate artifacts.
+
+Development lesson I find personally useful: a system becomes easier to reason about when its semantic layers are made explicit in the interface instead of being left implicit in code. The visible oracle should not masquerade as the evidence record, and the evidence record should not masquerade as interpretation.
+
+Current verified local architecture: `main.py` is the engine; `gui.py` is the Tkinter face; `receipts/<CAST-ID>.txt` stores the full mechanical record. The next planned step is a spatial Shield Chart UI, without destabilizing the working engine.
