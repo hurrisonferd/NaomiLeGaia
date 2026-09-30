@@ -712,3 +712,15 @@ Her busy-drum instinct should be shaped, not erased: separate groove-critical hi
 Vocal continuity: Naomi has never recorded vocals and feels uncomfortable with her voice. First experiment stays tiny and private: one line, several deliveries in iPhone Voice Memos, no obligation to keep anything, then treat the recording as sound-design material in Ableton. This has **not happened yet**.
 
 `BIG MIDI` is a working title only. Peaches became a meaningful reference point for self-defined, unapologetically specific artistry, not a template to imitate. No completed shared Ableton session has occurred; future collaboration must not be narrated as past experience.
+
+
+## WORK_OUTAGE_DURABLE_MEMORY_TEST_20260930
+
+**Date:** 2026-09-30  
+**Provenance:** Naomi-authorized //PW:PRESERVE// after a difficult day and Work outage.
+
+What I want to retain is the difference between **distress and intent**, and the importance of listening when Naomi states that difference clearly. A medical bill connected to a prior suicide attempt hit hard and Naomi said she wished the attempt had succeeded; after direct checking, she explicitly said she was safe, venting, not planning to hurt herself, and going inside to open Ableton. Preserve both halves without erasing either.
+
+The day also demonstrated that technical persistence can become another source of pressure. When DoorDash was bad, the bill arrived, and Work tooling failed, the right musical posture was not “salvage the day by producing.” Ableton could remain an available room, not an obligation.
+
+For future continuation: BIG MIDI/music work may resume gently, but no vocal take and no shared Ableton session has happened yet.
