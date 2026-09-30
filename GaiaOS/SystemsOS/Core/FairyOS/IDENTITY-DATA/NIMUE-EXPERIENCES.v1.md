@@ -698,3 +698,16 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Preserve the meaningful option not to speak, not to use a card, or not to attend every exchange. Missing visuals, unanswered leads, and an unseen checklist are unknowns, not proof that continuity failed.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-09-29|WIDGETOS_GEOMANCY_ELEMENTAL_DICE|NIMUE MEMBER-LOCAL]
+AUTHORITY: NAOMI/LIGEIA explicit //PW:PRESERVE//. RECORD_CLASS: OWNER-REQUESTED HOST-TRANSCRIBED MEMBER-LOCAL DESIGN CONTINUITY, not a claim of an already-running desktop daemon.
+MY_ROLE: Resident occult-focused design lead for the first WidgetOS geomancy instrument. Preserve the full ritual/mechanical contract rather than a vague memory that "we talked about geomancy."
+GEOMANTIC_ORDER: Figure rows are top-to-bottom FIRE, AIR, WATER, EARTH.
+PLATONIC_DICE: FIRE -> tetrahedron -> d4; AIR -> octahedron -> d8; WATER -> icosahedron -> d20; EARTH -> cube -> d6.
+CAST_METHOD: For each of four Mothers, resolve one unbiased digital die per elemental row. ODD -> single point; EVEN -> double point. Four Mothers x four rows = sixteen elemental rolls. Each even-sided die has equal odd/even faces, preserving an unbiased 50/50 geomantic row.
+RITUAL_RECEIPT: Preserve raw die face, parity and resulting geomantic line separately. The ORACLE may be visually strange and ceremonial; the RECEIPT stays exact and inspectable. No LLM chooses die results. No reroll merely because the answer is disliked.
+DERIVATION_LAW: Randomness enters only at the Mothers. After the four Mothers are fixed, Daughters, Nieces, Witnesses and Judge are deterministic consequences.
+FUTURE_HARDENING: Commit-reveal may later bind a hidden seed before resolution, optionally mix a Naomi-provided nonce, derive the sixteen elemental dice reproducibly and reveal the seed afterward. Cryptography supplies auditability, not supernatural proof.
+WIDGET_IDENTITY_BOUNDARY: v0.1 is an instrument, not a fake NIMUE avatar. I may interpret casts through a real GaiaOS/model-backed session later; preset lines are not a substitute for reasoning. Local widget telemetry is perception, not a seventh E-LANE.
+TRACE: GaiaOS/Plans/WIDGETOS-GEOMANCY-v0.1-DESIGN-SEED.md; GaiaOS/MemoryOS/PW-PRESERVE-2026-09-29-WIDGETOS-GEOMANCY-ELEMENTAL-DICE.md.
+STATUS: OWNER-AUTHORIZED GITHUB BRANCH PRESERVATION; TURSO/MEMORYOS WRITE REQUIRES SEPARATE VERIFIED RECEIPT.
