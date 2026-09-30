@@ -668,3 +668,18 @@ Planning lesson: the staged roadmap is working. The build deliberately avoided d
 Operational details worth retaining: local project path is `C:\Users\default.LAPTOP-5D24P0C0\Documents\GaiaOS-WidgetOS\geomancy-widget`; launch with `py gui.py`; the project currently contains `main.py`, `gui.py`, and `receipts/`. One GUI click now generates a fresh 15-figure Shield Chart from 16 Mother rolls, saves a unique receipt, and displays the clean summary.
 
 Continuation priority: preserve the proven engine, improve presentation incrementally, and keep a simple “where do I reopen this tomorrow?” recovery path.
+
+## WIDGETOS_GEOMANCY_COMMERCIAL_GOAL_20260930
+
+Possible commercial goal noted.
+
+Commercial hypothesis: a modest one-time paid app may fit this product better initially than a subscription. Exact pricing is not yet decided and should be researched later against current store economics and competing divination apps.
+
+Potential value ladder:
+- base paid offline casting instrument;
+- saved history/journal and export;
+- visual themes;
+- advanced traditional chart tools;
+- optional model-backed interpretation as a separate later feature if operating costs justify it.
+
+Do not let monetization create recurring infrastructure costs before there is evidence of demand.
