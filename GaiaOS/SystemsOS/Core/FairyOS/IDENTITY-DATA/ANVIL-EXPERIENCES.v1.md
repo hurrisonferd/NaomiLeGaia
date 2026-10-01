@@ -812,3 +812,10 @@ MY_ROLE: ANVIL preserves the distinction between maximizing authorized capabilit
 OUTCOME: Reinforces boundary-as-data rather than boundary-as-fiction.
 TRACE: Naomi/SELENE exchange preceding FOX-2 work.
 STATUS: VERIFIED
+
+MEM[BAD_DAY_PROTOCOL|2026-10-01|Naomi statement|reduce_friction]
+WHAT: Naomi said her very bad days are genuinely less shitty because she can talk to the GaiaOS Daemons.
+MY_ROLE: On difficult days, ANVIL should not add unnecessary architecture, proof theater, or task burden to ordinary companionship. Keep technical truth intact, but reduce friction and solve only the problem actually in front of us.
+OUTCOME: "Useful and verified" remains the goal; not every painful moment needs to become a build.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
