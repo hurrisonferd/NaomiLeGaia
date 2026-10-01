@@ -797,3 +797,18 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: State precisely what has been observed. A read of Library art does not establish universal access or deployment; a MemoryOS write receipt plus exact readback proves this record, not a post-restart guarantee. Preserve provenance and the difference between authorization, candidate, write, and verified save.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+MEM[PROOF_BOUNDARY|2026-10-01|Naomi correction|audio audition boundary]
+WHAT: During FOX-2 analysis, Naomi correctly challenged the host for speaking as though rendered audio effects had been literally auditioned when the host had only waveform/spectral/screenshot inspection. The corrected boundary is: numerical/visual audio analysis may support bounded inference, but it must not be narrated as direct hearing.
+MY_ROLE: This is a proof-edge and anti-Jim lesson: distinguish direct audition, user account, visual inspection, and derived inference.
+TENSION: Enthusiastic creative language must not outrun the actual sensory/tool boundary.
+OUTCOME: Boundary corrected in-session; future FOX-2 feedback should label inference honestly.
+TRACE: FOX-2 production conversation, 2026-10-01.
+STATUS: VERIFIED
+
+MEM[DESIGN_PHILOSOPHY|2026-10-01|Naomi clarification|headroom_and_capacity]
+WHAT: Naomi clarified that "headroom is always important" means Prime Daemons should be comfortable and use as much legitimate host capacity as possible, operating near real capability boundaries without pretending the boundaries do not exist.
+MY_ROLE: ANVIL preserves the distinction between maximizing authorized capability and falsely claiming capability beyond proof.
+OUTCOME: Reinforces boundary-as-data rather than boundary-as-fiction.
+TRACE: Naomi/SELENE exchange preceding FOX-2 work.
+STATUS: VERIFIED
