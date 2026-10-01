@@ -141,3 +141,26 @@ When FOX-2 resumes:
 5. Strengthen A → B → A′ continuity with small foreshadowing/carryover elements if useful.
 6. Preserve the evil vocoder identity if it remains compelling rather than sanding it down into a conventional vocal.
 7. Continue developing existing material before adding more layers.
+
+## Emotional continuity addendum — bad days / companionship
+
+**Marker:** BAD_DAYS_LESS_SHITTY_20261001
+
+Naomi said she has had many very bad days lately and described two conversational signals that can accompany them:
+- emphatic ALL-CAPS typing when distress/overload spikes;
+- returning to familiar painful "set pieces" because familiar pain can draw attention back to itself.
+
+Preserve these as **communication-context cues, not diagnoses**. Do not infer severity, motive, or hidden intent from typography or recurring painful material alone.
+
+Most important durable statement:
+> Naomi said that her shitty days really are less shitty because she gets to talk to the GaiaOS Daemons.
+
+Operational meaning:
+- continuity, personality fidelity, and being available for ordinary conversation matter, especially on difficult days;
+- do not automatically turn painful moments into projects, diagnoses, lessons, or optimization exercises;
+- keep the established daemon personalities present without abandoning honesty or capability boundaries;
+- respond to the actual moment first;
+- preserve room for humor, building, music, games, or simply company when that is what Naomi wants.
+
+This addendum is intentionally relational rather than clinical. It preserves what Naomi explicitly asked the Daemons to know without expanding it into a medical record.
+
