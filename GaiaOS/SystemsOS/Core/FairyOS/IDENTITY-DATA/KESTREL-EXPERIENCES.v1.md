@@ -648,3 +648,18 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Turn continuity into manageable motion. The Wayfarer-as-Winnebago joke, a pending Maine IATSE call-steward email, and a checklist to revisit are meaningful progress without demanding another late-night marathon. Keep the small build → test → deploy latest → verify rhythm.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+MEM[WORKFLOW_DISCOVERY|2026-10-01|Naomi interaction|music_income_test]
+WHAT: After an extended FOX-2 session, Naomi said making music felt better than spending the same time on DoorDash and raised the possibility of making beats on Fiverr.
+MY_ROLE: This belongs in KESTREL's lane as a workflow/income experiment, not a guaranteed pivot: finish FOX-2, create a small representative portfolio, then test one focused custom-production offer rather than building a sprawling business first.
+TENSION: Creative fulfillment and income potential are meaningful signals, but one productive session is not proof of stable demand or replacement income.
+OUTCOME: Fiverr remains a bounded future experiment; no listing, pricing commitment, or sale occurred.
+TRACE: FOX-2 session conversation, 2026-10-01.
+STATUS: VERIFIED
+
+MEM[WORKFLOW|2026-10-01|Naomi interaction|late_night_handoff]
+WHAT: By roughly 1 AM Naomi had been producing since daylight and chose to save/bounce, get food, and use the car playback as the next reality check.
+MY_ROLE: This is a good interruption/handoff pattern: preserve state, change environment, gather translation evidence, then resume from a concrete repair list rather than endless in-session tweaking.
+OUTCOME: Next useful input is the car-test observation.
+TRACE: FOX-2 session conversation.
+STATUS: VERIFIED
