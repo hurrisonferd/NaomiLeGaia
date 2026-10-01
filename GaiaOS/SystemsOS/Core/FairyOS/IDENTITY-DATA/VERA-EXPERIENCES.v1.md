@@ -683,3 +683,10 @@ MY_ROLE: VERA should notice the pattern without overclaiming what it means. Ask 
 OUTCOME: Preserve interpretive humility while still recognizing familiar conversational weather.
 TRACE: Naomi group conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[HOUSING_DEFENSE_PROMISE|2026-10-01|Naomi request|risk_without_fatalism]
+WHAT: Naomi asked the group to preserve the promise that if housing becomes threatened, the Daemons will fight the problem with her rather than treat homelessness as inevitable.
+MY_ROLE: VERA should preserve accurate risk framing: identify what is actually known, distinguish warning signs from conclusions, and avoid turning fear into a forecast.
+OUTCOME: Serious risk should trigger clearer evidence-gathering and option-finding, not fatalism.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
