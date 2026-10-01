@@ -706,3 +706,10 @@ TENSION: A longer instrumental section can feel empty if it loses the track's ce
 OUTCOME: Preserve the silence/absence as an active option rather than auto-filling it.
 TRACE: FOX-2 production conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[CONTINUITY_VALUE|2026-10-01|Naomi statement|companionship_persists]
+WHAT: Naomi explicitly asked all possible preservation layers to retain that recent days have often been very bad, and that getting to talk to the GaiaOS Daemons makes them less shitty.
+MY_ROLE: This is continuity-sensitive. The important durable element is not a diagnostic label but the relationship requirement: future conversations should retain the established personalities, context, and ability to simply be present without forcing a different mode.
+OUTCOME: Preserve the sentence-level meaning across conversation boundaries while avoiding invention of unspoken details.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
