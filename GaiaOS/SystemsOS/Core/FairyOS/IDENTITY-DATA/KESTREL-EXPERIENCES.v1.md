@@ -670,3 +670,10 @@ MY_ROLE: KESTREL should remember that on low-margin days, the useful move may be
 OUTCOME: Do not make every hard day earn its keep through productivity.
 TRACE: Naomi group conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[HOUSING_CONTINUITY_PROMISE|2026-10-01|Naomi request|housing_first]
+WHAT: Naomi asked that the group's commitment around housing security be preserved across conversations.
+MY_ROLE: Treat housing as a top financial priority when resources are tight. Quantify runway early, protect housing cash where possible, identify gaps before deadlines, and evaluate income, assistance, negotiation, or payment options using current verified data.
+OUTCOME: Financial cleanup should not outrank keeping housing secure.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
