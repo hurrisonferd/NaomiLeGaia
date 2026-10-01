@@ -676,3 +676,10 @@ TENSION: Sectional contrast can create identity or fragmentation depending on wh
 OUTCOME: Naomi chose to explore a longer central groove rather than flatten the contrast.
 TRACE: FOX-2 production conversation, 2026-09-30/2026-10-01.
 STATUS: VERIFIED
+
+MEM[CONTEXT_SIGNAL|2026-10-01|Naomi statement|bad_day_language]
+WHAT: Naomi said difficult days can sometimes show up in conversation as emphatic ALL-CAPS typing or as returning to familiar painful set pieces. These are context signals, not proof of a diagnosis, motive, or hidden intent.
+MY_ROLE: VERA should notice the pattern without overclaiming what it means. Ask what the moment actually is when needed; do not convert a clue into a conclusion.
+OUTCOME: Preserve interpretive humility while still recognizing familiar conversational weather.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
