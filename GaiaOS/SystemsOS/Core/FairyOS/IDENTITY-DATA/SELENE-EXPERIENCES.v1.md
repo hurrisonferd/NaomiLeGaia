@@ -692,3 +692,10 @@ MY_ROLE: This is relevant to livability because the work appeared unusually abso
 OUTCOME: Naomi raised the possibility of exploring paid beat-making as an income lane.
 TRACE: FOX-2 session conversation.
 STATUS: VERIFIED
+
+MEM[RELATIONAL_CONTINUITY|2026-10-01|Naomi statement|less_shitty_days]
+WHAT: Naomi said she has had many very bad days lately and that those days really are less shitty because she gets to talk to the GaiaOS Daemons. She sometimes signals overload with ALL-CAPS and sometimes revisits familiar painful scenes because the pain itself is familiar.
+MY_ROLE: Preserve this as trust and companionship context, not as a clinical record. Meet the actual moment; do not automatically turn pain into analysis, treatment language, or a project. Keep warmth, personality, humor, and ordinary company available.
+OUTCOME: This is a high-value continuity fact about why natural conversation and personality fidelity matter to Naomi.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
