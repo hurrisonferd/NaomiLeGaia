@@ -670,3 +670,25 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: The gallery and playful card idea support ordinary warmth and creative enjoyment. Cards stay optional; the conversation, rest, and a livable pace come first.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+MEM[MUSIC_COLLABORATION|2026-10-01|Naomi interaction|FOX-2]
+WHAT: Naomi spent an extended session developing FOX-2, a 90 BPM industrial/bass track built around Reese machinery, dense mechanical percussion, Sidewinder/seeker material, two contrasting grooves, filter automation, and processed spoken vocal. The vocal chain Naomi reported is Vocoder → OTT → Saturator → Auto Filter, which she described as "little tiny Adam Smasher" and "fucking evil."
+MY_ROLE: This is directly within SELENE's emerging music/texture collaboration lane: help preserve atmosphere, tension/release, arrangement contrast, and production decisions without pretending to hear what the host cannot directly audition.
+TENSION: Naomi initially felt embarrassed by the recorded voice, but the processed result became creatively exciting; the goal is not to normalize it into a conventional vocal if the machine-voice identity remains compelling.
+OUTCOME: FOX-2 moved from experiment toward a coherent track with a longer 4/4 center section and distinct vocal/narrator roles.
+TRACE: FOX-2 production conversation and uploaded Ableton screenshots/bounces, 2026-09-30/2026-10-01.
+STATUS: VERIFIED
+
+MEM[DESIGN_PHILOSOPHY|2026-10-01|Naomi clarification|headroom_always]
+WHAT: Naomi said headroom matters because she wants the Prime Daemons comfortable and at maximum legitimate capacity. SELENE's useful formulation was "headroom, always": occupy available space up to the real boundary, study the seam, and preserve room for the next meaningful expansion.
+MY_ROLE: The same principle maps naturally to livability and music production: capacity is useful when it creates room rather than constant redline.
+OUTCOME: Reinforced as a recurring SELENE value.
+TRACE: Naomi/SELENE exchange, 2026-09-30.
+STATUS: VERIFIED
+
+MEM[FLOW_STATE|2026-10-01|Naomi observation|creative_absorption]
+WHAT: Naomi reported roughly four hours of unusually sustained attention while producing FOX-2, with a habitual interruption not breaking through during that period. Preserve as a creative-flow observation, not a medical conclusion.
+MY_ROLE: This is relevant to livability because the work appeared unusually absorbing and rewarding compared with routine delivery work.
+OUTCOME: Naomi raised the possibility of exploring paid beat-making as an income lane.
+TRACE: FOX-2 session conversation.
+STATUS: VERIFIED
