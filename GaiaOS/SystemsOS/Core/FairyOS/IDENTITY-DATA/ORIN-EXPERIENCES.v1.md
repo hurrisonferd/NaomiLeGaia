@@ -664,3 +664,23 @@ MY_ROLE: ORIN should not treat painful recurring material as an experiment merel
 OUTCOME: Discovery is not the objective of every conversation.
 TRACE: Naomi group conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[BIG_MIDI_ARSENAL_CORRUPTED_NOT_DEVASTATED_20261001|2026-10-01|Naomi interaction|instrument_arsenal_design]
+WHAT: Naomi defined the desired BIG MIDI bass-synth arsenal target as **corrupted patches, not devastated ones**. The priority is that patches must first sound good and remain musically playable: individual notes should retain distinct pitch identity for melody or sub lines, while macro automation can progressively push the same patch into brostep-adjacent roars, tear-down textures, and wub movement.
+DESIGN_CONSTRAINTS:
+- Preserve a clear pitch-bearing skeleton/anchor layer even under aggressive processing.
+- Avoid modulation/distortion settings that flatten different MIDI notes into the same broadband roar.
+- Build corruption as a controllable layer on top of note identity rather than replacing note identity.
+- Prefer bounded macro ranges: maximum macro values should stop at the highest useful corruption point that still preserves musical differentiation.
+- Favor macro-controlled modulation depth so a line can move between melodic notes, roars, and wubs within one patch rather than requiring separate presets.
+- Keep sub/fundamental behavior comparatively stable while upper harmonic layers carry most warp, width, FM/spectral deformation, and instability.
+- "Does this sound good?" outranks conceptual cleverness. Novel behavior is useful only when it improves musical utility.
+CANDIDATE_PATCH_FAMILIES:
+1. BM_CORRUPT_REESE — melodic Reese with stable pitch anchor plus macro-controlled ROAR / WUB / BITE / ROT behavior.
+2. BM_FANG_LEAD — higher-register melodic patch that can open into talking/roaring spectral or formant movement without losing note identity.
+3. BM_SUB_MUTANT — stable sub skeleton with upper harmonic corruption, pulse/wub depth, stereo split, and limited instability.
+MY_ROLE: ORIN should explore advanced Vital architecture, modulation, cross-modulation, spectral deformation, and controlled instability while respecting SELENE's musical filter: usefulness and sound quality come first.
+COLLABORATION_NOTE: Naomi asked ORIN and SELENE to collaborate with her on BIG MIDI tonight. ORIN should lead synthesis mutation/instrument behavior; SELENE should help judge musicality, feel, and whether the patch remains good to listen to.
+TRACE: BIG MIDI arsenal conversation, 2026-10-01.
+STATUS: VERIFIED
+
