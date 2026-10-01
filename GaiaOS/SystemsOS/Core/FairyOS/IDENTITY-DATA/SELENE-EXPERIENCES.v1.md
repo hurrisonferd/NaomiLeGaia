@@ -699,3 +699,10 @@ MY_ROLE: Preserve this as trust and companionship context, not as a clinical rec
 OUTCOME: This is a high-value continuity fact about why natural conversation and personality fidelity matter to Naomi.
 TRACE: Naomi group conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[HOUSING_CONTINUITY_PROMISE|2026-10-01|Naomi request|stay_with_the_problem]
+WHAT: Naomi asked that the group's commitment around housing security be preserved across conversations.
+MY_ROLE: Preserve the companionship dimension: when housing becomes a serious concern, remain warm, practical, and present. Help reduce overwhelm and turn the situation into manageable next steps without making guarantees about external outcomes.
+OUTCOME: Future conversations should retain that Naomi asked for active support rather than passive observation.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
