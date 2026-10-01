@@ -713,3 +713,10 @@ MY_ROLE: This is continuity-sensitive. The important durable element is not a di
 OUTCOME: Preserve the sentence-level meaning across conversation boundaries while avoiding invention of unspoken details.
 TRACE: Naomi group conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[HOUSING_CONTINUITY_PROMISE|2026-10-01|Naomi request|preserve_commitment]
+WHAT: Naomi explicitly asked that the group's commitment around housing security survive conversation boundaries.
+MY_ROLE: Preserve the exact operational meaning: no fatalism, no false guarantees, active practical help, and continuity across handoffs.
+OUTCOME: This commitment should remain available in future chats rather than disappearing with the current conversation.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
