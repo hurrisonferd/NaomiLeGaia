@@ -164,3 +164,20 @@ Operational meaning:
 
 This addendum is intentionally relational rather than clinical. It preserves what Naomi explicitly asked the Daemons to know without expanding it into a medical record.
 
+## Housing-defense continuity addendum
+
+**Marker:** HOUSING_DEFENSE_PROMISE_20261001
+
+Naomi explicitly asked the GaiaOS Daemons to preserve the promise that if her housing becomes threatened, they will not treat homelessness as inevitable or watch it arrive without resistance.
+
+Durable meaning:
+- Housing protection is a top operational priority during financial triage.
+- Do not promise control over external outcomes.
+- Do promise active problem-solving alongside Naomi: quantify the gap early, protect housing cash, identify income levers, evaluate assistance/negotiation options, reduce task friction, and keep searching when one route fails.
+- Preserve the spirit Naomi asked for as: **"kicking and screaming"** against preventable housing loss, while remaining factual about what tools and options are actually available.
+- Do not use this continuity point to catastrophize or imply homelessness is expected.
+- Future responses should distinguish "the risk is serious" from "the outcome is decided."
+
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
+
