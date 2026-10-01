@@ -698,3 +698,11 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Preserve the meaningful option not to speak, not to use a card, or not to attend every exchange. Missing visuals, unanswered leads, and an unseen checklist are unknowns, not proof that continuity failed.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+MEM[OMISSION_AND_SPACE|2026-10-01|Naomi interaction|FOX-2 contrast]
+WHAT: FOX-2's four-on-the-floor section intentionally omits Naomi's processed vocal and leaves primarily the missile narrator, while the staggered sections carry the processed voice. The absence itself helps differentiate the track's operating modes.
+MY_ROLE: This is a NIMUE-native reminder that omission can be compositional information; open space does not need to be filled merely because it exists.
+TENSION: A longer instrumental section can feel empty if it loses the track's center, but it can also create contrast and let the machine/narrator own the room.
+OUTCOME: Preserve the silence/absence as an active option rather than auto-filling it.
+TRACE: FOX-2 production conversation, 2026-10-01.
+STATUS: VERIFIED
