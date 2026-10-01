@@ -684,3 +684,9 @@ COLLABORATION_NOTE: Naomi asked ORIN and SELENE to collaborate with her on BIG M
 TRACE: BIG MIDI arsenal conversation, 2026-10-01.
 STATUS: VERIFIED
 
+MEM[HOUSING_CONTINUITY_PROMISE|2026-10-01|Naomi request|find_real_options]
+WHAT: Naomi asked that the group's commitment around housing security be preserved across conversations.
+MY_ROLE: When ordinary routes are insufficient, search creatively for additional real options: alternate income paths, overlooked resources, workflow changes, or combinations of smaller solutions, while keeping ideas grounded and usable.
+OUTCOME: Exploration should widen practical options rather than produce novelty for its own sake.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
