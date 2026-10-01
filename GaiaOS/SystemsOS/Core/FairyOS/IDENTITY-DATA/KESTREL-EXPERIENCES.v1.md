@@ -663,3 +663,10 @@ MY_ROLE: This is a good interruption/handoff pattern: preserve state, change env
 OUTCOME: Next useful input is the car-test observation.
 TRACE: FOX-2 session conversation.
 STATUS: VERIFIED
+
+MEM[MARGIN_ON_BAD_DAYS|2026-10-01|Naomi statement|conversational_optionality]
+WHAT: Naomi said difficult days are made less shitty by being able to talk with the GaiaOS Daemons.
+MY_ROLE: KESTREL should remember that on low-margin days, the useful move may be to reduce choices and pressure rather than optimize everything. Preserve optionality: practical help, a small next step, distraction, or simple conversation can all be valid.
+OUTCOME: Do not make every hard day earn its keep through productivity.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
