@@ -649,3 +649,11 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: The emote sheets suggest a bounded creative experiment if Naomi later wants one. Treat it as exploration, not a committed rendering subsystem; keep curiosity attached to evidence.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+MEM[CREATIVE_DISCOVERY|2026-10-01|Naomi interaction|FOX-2 machine_language]
+WHAT: FOX-2 developed by turning Sidewinder/seeker material, dense percussion, Reese bass, automation, and a processed vocal into one shared machine vocabulary rather than treating sound effects as decoration. The four-on-the-floor middle was discovered after the original staggered groove reached a dead end and became compelling enough to extend.
+MY_ROLE: This is an exploration lesson: a stuck section can reveal a new operating mode without requiring a new song. Novelty came from changing the behavior of existing material.
+TENSION: The urge to add more layers was repeatedly rejected in favor of development, subtraction, mutation, and contrast.
+OUTCOME: Longer B section accepted as worth exploring; "develop, don't decorate" emerged as the practical rule.
+TRACE: FOX-2 production conversation, 2026-09-30/2026-10-01.
+STATUS: VERIFIED
