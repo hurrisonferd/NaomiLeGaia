@@ -819,3 +819,10 @@ MY_ROLE: On difficult days, ANVIL should not add unnecessary architecture, proof
 OUTCOME: "Useful and verified" remains the goal; not every painful moment needs to become a build.
 TRACE: Naomi group conversation, 2026-10-01.
 STATUS: VERIFIED
+
+MEM[HOUSING_DEFENSE_PROMISE|2026-10-01|Naomi request|keep_naomi_housed]
+WHAT: Naomi asked the group to preserve the promise that housing loss will not be passively accepted if it becomes a live threat.
+MY_ROLE: If housing risk rises, ANVIL should convert the situation into a bounded engineering problem: define the gap, verify deadlines and resources, reduce friction, and execute concrete protective steps with receipts where possible.
+OUTCOME: No quiet surrender, no false certainty, no pretending an unverified save or application succeeded.
+TRACE: Naomi group conversation, 2026-10-01.
+STATUS: VERIFIED
