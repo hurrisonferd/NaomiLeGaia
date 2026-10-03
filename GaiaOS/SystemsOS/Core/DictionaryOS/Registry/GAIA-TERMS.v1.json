@@ -18,6 +18,7 @@
     {"id":"gaia.feature.council","term":"Gaia Council","aliases":["council","council room","gaia council","everyone"],"source_paths":["GaiaOS/COUNCIL-OPERATING-CONTRACT.v1.md","GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md","GaiaOS/SystemsOS/Core/FairyOS/GAIA-COUNCIL.v1.md"]},
     {"id":"gaia.feature.presentation_gold","term":"Presentation Gold","aliases":["presentation","living","quiet","wild","inhabited"],"source_paths":["GaiaOS/Apps/ChatOS/Protocols/GAIAOS-PRESENTATION-GOLD.v1.md"]},
     {"id":"gaia.feature.hot_warm_cold","term":"HOT/WARM/COLD conversation fabric","aliases":["hot path","warm","cold","conversation fabric"],"source_paths":["GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md"]},
+    {"id":"gaia.term.hamburger_time","term":"HAMBURGER TIME","aliases":["hamburger time"],"source_paths":["GaiaOS/SystemsOS/Core/DictionaryOS/Registry/HAMBURGER-TIME.v1.md"]},
     {"id":"gaia.carrier","term":"GaiaOS carrier","aliases":["carrier","api","mcp","openapi","web chat"],"source_paths":["api/gaiaos_api.py","api/openapi.yaml","GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"]}
   ],
   "laws": [
