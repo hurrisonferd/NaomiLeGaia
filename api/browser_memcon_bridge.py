@@ -138,6 +138,10 @@ async def browser_chat(browser_request: Request):
     payload = await browser_request.json()
     messages = payload.get("messages", [])
     last_message = messages[-1].get("content", "").strip() if messages else ""
+    if _is_command(last_message, "MEMBER-CANDIPULL"):
+        return _handle_member_memory(last_message, browser_request, promote=False)
+    if _is_command(last_message, "MEMBER-MEMSAV"):
+        return _handle_member_memory(last_message, browser_request, promote=True)
     if re.match(r"^\\s*//C:82//\\s*$", last_message, flags=re.IGNORECASE):
         messages[-1]["content"] = "CONJURE:VASKON"
         last_message = "CONJURE:VASKON"
@@ -653,6 +657,59 @@ def _browser_session_id(request: Request) -> str:
     if not token:
         raise ValueError("Browser session missing; reload the GaiaOS page")
     return f"BROWSER-{hashlib.sha256(token.encode('utf-8')).hexdigest()[:24]}"
+
+
+def _handle_member_memory(command: str, request: Request, *, promote: bool) -> dict:
+    """Session-bound host gateway adapter; never executes an E-LANE plan."""
+    gaiaos_api._authorize_browser_session(request)
+    operation = "MEMBER-MEMSAV" if promote else "MEMBER-CANDIPULL"
+    try:
+        data = json.loads(command[len(operation):].strip())
+        if not isinstance(data, dict):
+            raise ValueError("Object required")
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=422, detail="Explicit JSON object required") from None
+    session_id = _browser_session_id(request)
+    if promote:
+        if set(data) != {"candidate_id", "approved", "authority"}:
+            raise HTTPException(status_code=422, detail="Exact candidate_id, approved and authority required")
+        if data["approved"] is not True or data["authority"] != "NAOMI":
+            raise HTTPException(status_code=403, detail="Explicit Naomi approval required")
+        if not isinstance(data["candidate_id"], str):
+            raise HTTPException(status_code=422, detail="Exact candidate_id required")
+        candidate = memcon_runtime.get_memory_candidate(data["candidate_id"])
+        if candidate is None:
+            raise HTTPException(status_code=404, detail="Unknown candidate_id")
+        event = memcon_runtime.get_session_event(candidate["event_id"])
+        owner = candidate.get("owner")
+        if (event is None or event.get("session_id") != session_id
+                or owner not in host_memory_gateway.ALL_DAEMONS
+                or candidate.get("scope") != f"Solo:{owner}"):
+            raise HTTPException(status_code=403, detail="Candidate ownership, scope or browser session mismatch")
+        if candidate.get("status") != "CANDIDATE":
+            raise HTTPException(status_code=409, detail="Candidate is not pending; inspect prior result before retrying")
+        result = host_memory_gateway._host_memsav(host_memory_gateway.HostMemorySave(
+            candidate_ids=[candidate["candidate_id"]], approved=True, authority="NAOMI",
+        ))
+    else:
+        if set(data) != {"owner", "statement", "source", "why_material"}:
+            raise HTTPException(status_code=422, detail="owner, statement, source and why_material required")
+        owner = data["owner"]
+        if not isinstance(owner, str) or owner not in host_memory_gateway.ALL_DAEMONS:
+            raise HTTPException(status_code=422, detail="Unsupported Prime-Daemon owner")
+        try:
+            observation = host_memory_gateway.HostObservation(
+                owner=owner, scope=f"Solo:{owner}", statement=data["statement"],
+                source=data["source"], why_material=data["why_material"],
+            )
+        except ValueError:
+            raise HTTPException(status_code=422, detail="Invalid member observation") from None
+        if memcon_runtime.get_session(session_id) is None:
+            memcon_runtime.create_session(session_id, "browser-member-memory", "Member-owned preservation catch-up")
+        result = host_memory_gateway._host_candipull(host_memory_gateway.HostCandidatePull(
+            session_id=session_id, observations=[observation],
+        ))
+    return _envelope(operation, result)
 
 
 def _ensure_chat_candidate(messages: list[dict], request: Request, subject: str = "") -> dict | None:
