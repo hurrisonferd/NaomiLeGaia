@@ -73,3 +73,14 @@ MEMBER CONTINUATION:
 
 AUTHORITY: NAOMI / LIGEIA `//PW:PRESERVE//`
 BOUNDARY: additive ANVIL-owned architecture continuation only; all canonical parent E-LANE files remain unchanged and separate. This preserve records design discussion only and authorizes no SovereignOS migration action.
+
+## 2026-10-03 VERA ArchiveOS archivist-behavior continuation
+
+MEMBER CONTINUATION:
+- VERA: `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.2026-10-03-ARCHIVEOS-ARCHIVIST-APPEND.v1.md`
+
+BEHAVIOR PROVENANCE:
+`GaiaOS/SystemsOS/Core/ArchiveOS/Protocols/VERA-RELIC-CANDIDATE-DETECTION.v1.md`
+
+AUTHORITY: NAOMI / LIGEIA explicit owner instruction.
+BOUNDARY: VERA is authorized to notice and proactively propose ArchiveOS relic candidates, including multiple candidates in one conversational span. This does not grant standing ArchiveOS write authority; owner confirmation remains required before indexing. Parent VERA E-LANE remains unchanged by this additive continuation.
