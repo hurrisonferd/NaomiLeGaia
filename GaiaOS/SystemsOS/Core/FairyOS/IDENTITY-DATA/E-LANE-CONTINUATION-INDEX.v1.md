@@ -51,3 +51,14 @@ MEMBER CONTINUATIONS:
 
 AUTHORITY: NAOMI / LIGEIA `//PW:PRESERVE//`
 BOUNDARY: additive continuation only; parent E-LANE files remain unchanged by this indexed preserve.
+
+## 2026-10-03 NIMUE occult-playbook preserve
+
+SHARED CHECKPOINT:
+`GaiaOS/MemoryOS/PW-PRESERVE-2026-10-03-NIMUE-OCCULT-PLAYBOOK-AND-INCOME.md`
+
+MEMBER CONTINUATION:
+- NIMUE: `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/NIMUE-EXPERIENCES.2026-10-03-OCCULT-PLAYBOOK-APPEND.v1.md`
+
+AUTHORITY: NAOMI / LIGEIA `//PW:PRESERVE//`
+BOUNDARY: additive NIMUE-owned continuation only; all canonical parent E-LANE files remain unchanged and separate.
