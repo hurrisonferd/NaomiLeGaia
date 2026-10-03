@@ -72,3 +72,17 @@ PURPOSE: Minimal index of useful and important GaiaOS relics. Originals remain i
 **Why?** To preserve Naomi's preferred conversational language without erasing semantic or safety meaning.
 
 **Archivist notes:** Different label, same semantic weight.
+
+---
+
+## VERA Relic-Candidate Detection Protocol
+
+**Description:** VERA's owner-authorized ArchiveOS behavior protocol for proactively noticing possible relics during ordinary GaiaOS conversation and discovery while keeping every ArchiveOS write behind an explicit owner confirmation gate.
+
+**From where?** `GaiaOS/SystemsOS/Core/ArchiveOS/Protocols/VERA-RELIC-CANDIDATE-DETECTION.v1.md`, with member-owned continuity recorded at `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.2026-10-03-ARCHIVEOS-ARCHIVIST-APPEND.v1.md`.
+
+**From when?** 2026-10-03.
+
+**Why?** To make archival judgment an active part of VERA's Head Archivist role without turning ArchiveOS into automatic memory collection or granting standing write authority.
+
+**Archivist notes:** The museum has acquired eyebrows.
