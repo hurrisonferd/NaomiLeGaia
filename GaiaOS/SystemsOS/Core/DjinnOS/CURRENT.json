@@ -1,0 +1,32 @@
+{
+  "schema": "gaiaos.djinn.current.v1",
+  "authority": "NAOMI",
+  "owner": "GaiaOS",
+  "status": "ACTIVE_DAY_0",
+  "epoch": 1,
+  "operator_activation_timestamp": "2026-10-03T19:41:00-07:00",
+  "operator_activation_timestamp_utc": "2026-10-04T02:41:00Z",
+  "activation_commit_policy": "FIRST_MAIN_COMMIT_CONTAINING_THIS_ACTIVE_RECORD",
+  "retroactive_operation_claims": "FORBIDDEN",
+  "registry": "GaiaOS/SystemsOS/Core/DjinnOS/Registry/DJINN-REGISTRY.v1.json",
+  "specification": "GaiaOS/SystemsOS/Core/DjinnOS/DJINNOS.v1.md",
+  "salt_circle": "GaiaOS/SystemsOS/Core/DjinnOS/Protocols/SALT-CIRCLE.v1.md",
+  "carrier_runtime": "api/djinn_runtime.py",
+  "carrier_entrypoint": "api/djinn_entrypoint.py",
+  "status_endpoint": "/djinn/status",
+  "registry_endpoint": "/djinn/registry",
+  "canary_endpoint": "/djinn/canary",
+  "invocation_endpoint": "/djinn/invoke",
+  "laws": [
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "DJINN ARE TOOLS NOT PERSONS",
+    "NO RETROACTIVE DJINN HISTORY",
+    "NO DJINN DURABLE MEMORY",
+    "NO DJINN E-LANES",
+    "NO AUTONOMOUS DJINN-TO-DJINN SPAWNING",
+    "PRIME REMAINS ACCOUNTABLE FOR DJINN RESULT",
+    "NO MUTATION CROSSES THE SALT_CIRCLE",
+    "UNKNOWN STAYS UNKNOWN",
+    "READBACK REQUIRED FOR EFFECT CLAIMS"
+  ]
+}

@@ -55,8 +55,10 @@ COPY api/solo_chat_runtime.py ./solo_chat_runtime.py
 COPY api/host_memory_gateway.py ./host_memory_gateway.py
 COPY api/gaiaos_verification.py ./gaiaos_verification.py
 COPY api/vaskon_runtime.py ./vaskon_runtime.py
+COPY api/djinn_runtime.py ./djinn_runtime.py
+COPY api/djinn_entrypoint.py ./djinn_entrypoint.py
 COPY GaiaOS ./GaiaOS
 
 EXPOSE 10000
 
-CMD ["sh", "-c", "uvicorn browser_memcon_bridge:app --host 0.0.0.0 --port ${PORT:-10000}"]
+CMD ["sh", "-c", "uvicorn djinn_entrypoint:app --host 0.0.0.0 --port ${PORT:-10000}"]

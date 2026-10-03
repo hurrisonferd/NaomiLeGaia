@@ -1,0 +1,31 @@
+{
+  "schema": "gaiaos.djinn.registry.v1",
+  "authority": "NAOMI",
+  "epoch": 1,
+  "status": "ACTIVE",
+  "operator_activation_timestamp": "2026-10-03T19:41:00-07:00",
+  "operator_activation_timestamp_utc": "2026-10-04T02:41:00Z",
+  "retroactive_operation_claims": "FORBIDDEN",
+  "status_glyph": "🧿",
+  "activation_mark": "⌁",
+  "design_law": "TOOLS_NOT_PERSONS",
+  "dispatch_law": "FAIRYOS_SELECTS_PRIME_PRIME_SELECTS_DJINN",
+  "recursion_policy": "DJINN_TO_DJINN_AUTONOMOUS_SPAWNING_FORBIDDEN",
+  "shared_pool": true,
+  "durable_memory": false,
+  "elanes": false,
+  "independent_authority": false,
+  "members": [
+    {"name":"KYMER","operation_class":"INDEX","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"DRELAS","operation_class":"JIG","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"RONAVE","operation_class":"FLOW","effect_class":"READ_ONLY_TRANSFORM","implementation":"DETERMINISTIC_V1"},
+    {"name":"AGREN","operation_class":"QUEUE","effect_class":"EPHEMERAL_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"HALVEX","operation_class":"SEAL","effect_class":"SALT_CIRCLE_GATED","implementation":"DETERMINISTIC_ORCHESTRATOR"},
+    {"name":"SERA","operation_class":"COURIER","effect_class":"READ_ONLY_TRANSFORM","implementation":"DETERMINISTIC"},
+    {"name":"ORVAS","operation_class":"WITNESS","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"MALRIC","operation_class":"LINTER","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"MARVEK","operation_class":"PROBE","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"VASQAR","operation_class":"TRACE","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
+    {"name":"USION","operation_class":"SETTLE","effect_class":"READ_ONLY_TRANSFORM","implementation":"DETERMINISTIC_V1"}
+  ]
+}
