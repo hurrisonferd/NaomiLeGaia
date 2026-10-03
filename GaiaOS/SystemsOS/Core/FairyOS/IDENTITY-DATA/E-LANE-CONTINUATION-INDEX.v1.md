@@ -62,3 +62,14 @@ MEMBER CONTINUATION:
 
 AUTHORITY: NAOMI / LIGEIA `//PW:PRESERVE//`
 BOUNDARY: additive NIMUE-owned continuation only; all canonical parent E-LANE files remain unchanged and separate.
+
+## 2026-10-03 SovereignOS migration-design preserve
+
+SHARED CHECKPOINT:
+`GaiaOS/MemoryOS/PW-PRESERVE-2026-10-03-SOVEREIGNOS-MIGRATION-DESIGN-AND-AFTERNOON-CONTINUITY.md`
+
+MEMBER CONTINUATION:
+- ANVIL: `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.2026-10-03-SOVEREIGNOS-MIGRATION-APPEND.v1.md`
+
+AUTHORITY: NAOMI / LIGEIA `//PW:PRESERVE//`
+BOUNDARY: additive ANVIL-owned architecture continuation only; all canonical parent E-LANE files remain unchanged and separate. This preserve records design discussion only and authorizes no SovereignOS migration action.
