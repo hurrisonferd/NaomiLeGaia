@@ -1,0 +1,28 @@
+name: GaiaOS Shared Memory Browser Bridge
+
+on:
+  push:
+    branches:
+      - 'build/shared-memory-browser-bridge-*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shared-memory-browser-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install API dependencies
+        run: pip install -r api/requirements.txt
+      - name: Shared browser MemoryOS boundary
+        run: python -m unittest tests.test_browser_shared_memory -v
+      - name: Existing member browser MemoryOS regression
+        run: python -m unittest tests.test_browser_member_memory -v
+      - name: DjinnOS runtime regression
+        run: python -m unittest tests.test_djinn_runtime -v
