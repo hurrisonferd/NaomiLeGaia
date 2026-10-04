@@ -86,3 +86,19 @@ PURPOSE: Minimal index of useful and important GaiaOS relics. Originals remain i
 **Why?** To make archival judgment an active part of VERA's Head Archivist role without turning ArchiveOS into automatic memory collection or granting standing write authority.
 
 **Archivist notes:** The museum has acquired eyebrows.
+
+---
+
+## GaiaOS Architectural Vocabulary Index
+
+**Description:** Owner-authorized living lexicon of GaiaOS-specific architectural vocabulary, OS-family names, acronyms, abbreviations, aliases, commands, named modes, proof terms, Djinn operation names, memory terminology, and planned SovereignOS shorthand. Acronyms are expanded where source or operator continuity establishes an expansion; proper names and unknown expansions are explicitly labeled rather than reverse-engineered.
+
+**From where?** `GaiaOS/SystemsOS/Core/ArchiveOS/Registry/GAIAOS-ARCHITECTURAL-VOCABULARY.v1.md`.
+
+**From when?** 2026-10-03, indexed against GaiaOS main source baseline `88c19caf2e6c9354e4fce047c285c9fdf0c7d31e`.
+
+**Why?** GaiaOS has developed a dense native language. Keeping that language indexed makes the architecture legible across chats, migrations, future hosts, and source generations without relying on fuzzy recollection or inventing acronym expansions after the fact.
+
+**Pinned vocabulary commit:** `81764197b63db40e9d88e9f97db8adbe53ce13ae` on branch `archiveos/gaiaos-vocabulary-index-20261003`.
+
+**Archivist notes:** If we keep naming the machinery, we should keep the dictionary to the machine room. 🦋
