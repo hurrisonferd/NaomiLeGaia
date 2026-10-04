@@ -7,13 +7,13 @@ from fastapi import Header, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 
-import browser_memcon_bridge
+import shared_memory_browser_bridge
 import gaiaos_api
 import gaiaos_app
 import djinn_runtime
 
-app = browser_memcon_bridge.app
-CARRIER_VERSION = "1.7.0"
+app = shared_memory_browser_bridge.app
+CARRIER_VERSION = "1.7.1"
 
 # Preserve the established carrier and extend its version/source-backed boot packet.
 gaiaos_app.EXTENSION_VERSION = CARRIER_VERSION
