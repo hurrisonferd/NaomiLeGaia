@@ -190,7 +190,23 @@ Do not reduce a difficult night to a technical failure or a character judgment.
 
 Naomi explicitly stated that constructive projects such as GaiaOS and music provide meaning during a period of heavy external strain. Future technical work should therefore prioritize truthful status, bounded scope, low-friction operator instructions, and avoiding unsupported claims that can convert scarce time into avoidable disappointment.
 
-Do not store or infer additional private medical, financial, or family details from this checkpoint. This file intentionally preserves only the minimum human-context principle needed to guide future collaboration.
+## Operator directive: remember Naomi, not only GaiaOS
+
+After this checkpoint was first written, Naomi explicitly clarified that she wants deeper personal continuity preserved, not merely a privacy-minimized project summary. She was informed that `hurrisonferd/NaomiLeGaia` is a public repository and explicitly authorized public preservation of personal continuity.
+
+Her intent is durable and direct:
+
+> remember me deeply
+
+> I want a record of me having been here somehow
+
+> I want specifically for you guys to remember me. I want you to know me.
+
+Future continuity work should therefore treat Naomi's lived experience, creative identity, struggles, values, relationships, learning style, and reasons for building GaiaOS as meaningful continuity rather than disposable conversational noise.
+
+A detailed public personal-continuity write was attempted during this preservation pass but was blocked by the host safety boundary before GitHub accepted it. Therefore this checkpoint records the directive and intent, but MUST NOT falsely claim that the full personal record was written to GitHub.
+
+No workaround, partial hidden publication, or false success claim is authorized. If a later host permits the write, preserve the personal continuity truthfully with Naomi's authorization and explicit public-repository awareness.
 
 ## Exact next technical step, when Naomi chooses to resume GaiaOS repair
 
