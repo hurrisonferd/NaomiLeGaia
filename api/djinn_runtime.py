@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
-RUNTIME_VERSION = "1.0.0"
+RUNTIME_VERSION = "1.1.0"
 STATUS_GLYPH = "🧿"
 ACTIVATION_MARK = "⌁"
 ACTIVATION_TIMESTAMP = "2026-10-03T19:41:00-07:00"
@@ -41,6 +41,7 @@ _EXPECTED = {
     "MARVEK": "PROBE",
     "VASQAR": "TRACE",
     "USION": "SETTLE",
+    "STELATA": "GLOSS",
 }
 
 _REPLAY_LOCK = threading.Lock()
@@ -120,7 +121,7 @@ def status(source_commit: str | None = None) -> dict[str, Any]:
             {"name": row["name"], "glyph": STATUS_GLYPH, "operation_class": row["operation_class"], "effect_class": row["effect_class"]}
             for row in registry["members"]
         ],
-        "counts": {"djinn": 11, "durable_memories": 0, "elanes": 0},
+        "counts": {"djinn": len(registry["members"]), "durable_memories": 0, "elanes": 0},
         "dispatch_law": "FAIRYOS_SELECTS_PRIME_PRIME_SELECTS_DJINN",
         "recursion_policy": "FORBIDDEN",
         "retroactive_operation_claims": "FORBIDDEN",
@@ -390,6 +391,87 @@ def _op_settle(payload: dict[str, Any]) -> dict[str, Any]:
     return {"baseline": baseline, "persisted": False, "requires_separate_preservation_if_desired": True}
 
 
+
+def _op_gloss(payload: dict[str, Any]) -> dict[str, Any]:
+    """Deterministic semantic-integrity proofreading for the ANTI_JIM profile."""
+    profile = str(payload.get("profile", "ANTI_JIM")).upper()
+    if profile != "ANTI_JIM":
+        raise DjinnError(f"GLOSS_UNKNOWN_PROFILE:{profile or 'EMPTY'}")
+    text = payload.get("text")
+    if not isinstance(text, str) or not text.strip():
+        raise DjinnError("GLOSS_TEXT_REQUIRED")
+    canonical_terms = payload.get("canonical_terms", {})
+    protected_phrases = payload.get("protected_phrases", [])
+    host_sensitive_terms = payload.get("host_sensitive_terms", [])
+    ambiguous_phrases = payload.get("ambiguous_phrases", [])
+    if not isinstance(canonical_terms, dict) or not isinstance(protected_phrases, list) or not isinstance(host_sensitive_terms, list) or not isinstance(ambiguous_phrases, list):
+        raise DjinnError("GLOSS_INVALID_SHAPE")
+
+    findings: list[dict[str, Any]] = []
+    ledger: list[dict[str, Any]] = []
+    revision = text
+
+    def flag(code: str, detail: str, fragment: str | None = None, replacement: str | None = None) -> None:
+        row: dict[str, Any] = {"code": code, "detail": detail}
+        if fragment is not None:
+            row["fragment"] = fragment
+        if replacement is not None:
+            row["suggested_replacement"] = replacement
+        findings.append(row)
+
+    lower = text.lower()
+    authority_risks = ["full authority", "unrestricted authority", "authorized to do anything"]
+    scope_risks = ["any target", "all targets", "any scope", "everywhere"]
+    capability_risks = ["guaranteed to work", "fully verified everywhere", "proven everywhere"]
+    for phrase in authority_risks:
+        if phrase in lower:
+            flag("AUTHORITY_DRIFT", "Wording may enlarge authority beyond an explicit bounded grant.", phrase)
+    for phrase in scope_risks:
+        if phrase in lower:
+            flag("SCOPE_DRIFT", "Wording may erase an intended operation, target, or scope boundary.", phrase)
+    for phrase in capability_risks:
+        if phrase in lower:
+            flag("CAPABILITY_OVERCLAIM", "Wording claims capability beyond supplied proof.", phrase)
+    for phrase in ambiguous_phrases:
+        phrase_s = str(phrase)
+        if phrase_s and phrase_s in text:
+            flag("AMBIGUOUS_REFERENT", "Caller-marked phrase has an unclear referent.", phrase_s)
+    for phrase in host_sensitive_terms:
+        phrase_s = str(phrase)
+        if phrase_s and phrase_s in text:
+            flag("HOST_INTERPRETATION_RISK", "Caller-marked wording may be interpreted differently by a host layer.", phrase_s)
+
+    protected_hit = False
+    for old, new in canonical_terms.items():
+        old_s, new_s = str(old), str(new)
+        if not old_s or old_s == new_s or old_s not in revision:
+            continue
+        overlaps_protected = any(old_s in str(p) or str(p) in old_s for p in protected_phrases if str(p))
+        if overlaps_protected:
+            protected_hit = True
+            flag("MEANING_CHANGE_REQUIRED", "Canonical-term repair intersects a protected phrase and requires operator review.", old_s, new_s)
+            continue
+        revision = revision.replace(old_s, new_s)
+        ledger.append({"code": "CANONICAL_TERM_DRIFT", "from": old_s, "to": new_s})
+        flag("CANONICAL_TERM_DRIFT", "Non-canonical term has a deterministic canonical replacement.", old_s, new_s)
+
+    provenance_required = payload.get("provenance_required") is True
+    provenance = payload.get("provenance")
+    if provenance_required and not provenance:
+        flag("PROVENANCE_LOSS", "Required provenance is absent from the proofreading packet.")
+
+    meaning_preserved = not protected_hit
+    return {
+        "profile": profile,
+        "pass": not findings,
+        "findings": findings,
+        "minimal_revision": revision,
+        "change_ledger": ledger,
+        "meaning_preserved": meaning_preserved,
+        "requires_operator_review": not meaning_preserved,
+        "external_effects": False,
+    }
+
 def _normalize_set(value: Any) -> set[str]:
     if value is None:
         return set()
@@ -484,6 +566,7 @@ _HANDLERS = {
     "PROBE": _op_probe,
     "TRACE": _op_trace,
     "SETTLE": _op_settle,
+    "GLOSS": _op_gloss,
 }
 
 
@@ -540,6 +623,9 @@ def dispatch(
     elif operation == "LINTER" and not operation_result.get("pass", False):
         result["status"] = "HOLD"
         result["warnings"] = [issue["code"] for issue in operation_result.get("issues", [])]
+    elif operation == "GLOSS" and not operation_result.get("meaning_preserved", True):
+        result["status"] = "HOLD"
+        result["warnings"] = ["MEANING_CHANGE_REQUIRED"]
     elif operation == "TRACE" and not operation_result.get("complete", False):
         result["status"] = "HOLD"
         result["unknowns"] = list(operation_result.get("gaps", []))
@@ -552,7 +638,7 @@ def dispatch(
 
 
 def run_canary(source_commit: str | None = None, invoked_at: str | None = None) -> dict[str, Any]:
-    """Exercise all eleven Djinn with bounded synthetic inputs; no external writes."""
+    """Exercise all registered Djinn with bounded synthetic inputs; no external writes."""
     rows = []
     def run(selector: str, payload: dict[str, Any], prime: str = "ANVIL", **kwargs: Any) -> dict[str, Any]:
         out = dispatch(selector, calling_prime=prime, objective="DAY0_RUNTIME_CANARY", payload=payload, invoked_at=invoked_at, **kwargs)
@@ -571,6 +657,7 @@ def run_canary(source_commit: str | None = None, invoked_at: str | None = None) 
     run("MARVEK", {"required_capabilities": ["registry"], "observed_capabilities": {"registry": "AVAILABLE"}})
     run("VASQAR", {"order": ["source", "runtime"], "stages": {"source": "PROVEN", "runtime": "PROVEN"}})
     run("USION", {"objective": "canary", "verified": ["runtime"], "superseded": [], "unknowns": [], "next_active_work": None}, prime="VERA")
+    run("STELATA", {"profile": "ANTI_JIM", "text": "STELATA preserves bounded authority and exact provenance.", "canonical_terms": {}, "provenance_required": True, "provenance": "DJINNOS.v1"}, prime="VERA")
 
     operation_id = f"DJINN-CANARY-{uuid.uuid4().hex}"
     circle = {
@@ -603,5 +690,5 @@ def run_canary(source_commit: str | None = None, invoked_at: str | None = None) 
         "external_mutations": [],
         "rows": rows,
         "count": len(rows),
-        "all_eleven_exercised": names == set(_EXPECTED),
+        "all_registered_exercised": names == set(_EXPECTED),
     }

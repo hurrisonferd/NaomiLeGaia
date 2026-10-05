@@ -19,7 +19,7 @@ This file is an index and map. It does not grant authority, create Djinn memory,
 | --- | --- |
 | Active DjinnOS pointers and laws | `GaiaOS/SystemsOS/Core/DjinnOS/CURRENT.json` |
 | DjinnOS architecture and hierarchy | `GaiaOS/SystemsOS/Core/DjinnOS/DJINNOS.v1.md` |
-| Exact eleven-member registry | `GaiaOS/SystemsOS/Core/DjinnOS/Registry/DJINN-REGISTRY.v1.json` |
+| Exact registered Djinn roster | `GaiaOS/SystemsOS/Core/DjinnOS/Registry/DJINN-REGISTRY.v1.json` |
 | SALT_CIRCLE protocol | `GaiaOS/SystemsOS/Core/DjinnOS/Protocols/SALT-CIRCLE.v1.md` |
 | Carrier runtime behavior | `api/djinn_runtime.py` |
 | Carrier HTTP entrypoint | `api/djinn_entrypoint.py` |
@@ -45,7 +45,7 @@ Key terms:
 - **TOOLS_NOT_PERSONS**: Djinn are bounded tools, not Prime Daemons, people, biographies, independent authorities, memory owners, or E-LANE members.
 - **No retroactive Djinn history**: Djinn may inspect evidence predating Day 0 but may not claim participation in those historical events.
 
-## Eleven Djinn
+## Twelve Djinn
 
 | Djinn | Operation class | Effect class | Implementation | Runtime behavior summary |
 | --- | --- | --- | --- | --- |
@@ -60,6 +60,7 @@ Key terms:
 | **MARVEK** | `PROBE` | `READ_ONLY` | `DETERMINISTIC` | Classifies required capabilities from supplied evidence as AVAILABLE / UNAVAILABLE / UNKNOWN without converting unrecognized states into proof. |
 | **VASQAR** | `TRACE` | `READ_ONLY` | `DETERMINISTIC` | Traces supplied proof stages in order, identifies the highest contiguous proven stage, preserves gaps, and reports whether the chain is complete. |
 | **USION** | `SETTLE` | `READ_ONLY_TRANSFORM` | `DETERMINISTIC_V1` | Produces a non-persistent settled baseline containing objective, verified-now facts, superseded assumptions, remaining unknowns, out-of-scope items, and exact next active work. |
+| **STELATA** | `GLOSS` | `READ_ONLY_TRANSFORM` | `DETERMINISTIC_V1` | Performs deterministic semantic-integrity proofreading under the `ANTI_JIM` profile, returning findings, a minimal revision, a change ledger, and an explicit meaning-preservation result. |
 
 ## Operation classes
 
@@ -74,6 +75,7 @@ Key terms:
 - **PROBE**: classify explicitly supplied capability states without inference.
 - **TRACE**: map a proof chain and identify the first unresolved gap.
 - **SETTLE**: construct a current non-persistent baseline from verified facts and remaining unknowns.
+- **GLOSS**: proofread supplied text for semantic drift and propose only deterministic, meaning-preserving corrections; protected-meaning conflicts require operator review.
 
 ## Effect classes
 
@@ -148,3 +150,12 @@ When a new Djinn, operation class, effect class, canonical DjinnOS protocol term
 5. retain Naomi/Ligeia as final authority.
 
 Archive/index review should be treated as an explicit design step, not an accidental by-product of implementation.
+
+## STELATA and ANTI_JIM
+
+- **STELATA**: Djinn #12, operation class `GLOSS`, effect class `READ_ONLY_TRANSFORM`, implementation `DETERMINISTIC_V1`.
+- **ANTI_JIM**: STELATA's canonical semantic-integrity proofreading profile. It is intended to catch `AMBIGUOUS_REFERENT`, `SCOPE_DRIFT`, `AUTHORITY_DRIFT`, `CAPABILITY_OVERCLAIM`, `PROVENANCE_LOSS`, `CANONICAL_TERM_DRIFT`, `HOST_INTERPRETATION_RISK`, and `MEANING_CHANGE_REQUIRED`.
+- **Minimal revision**: the smallest deterministic textual correction STELATA can make without changing protected meaning.
+- **Change ledger**: explicit record of deterministic replacements proposed by STELATA.
+- **Meaning-preservation gate**: if a requested correction intersects protected meaning, STELATA reports `meaning_preserved=false` and requires operator review rather than silently changing substance.
+- **Naming provenance**: STELATA's name is inspired by Stolas as an etymological/thematic source; STELATA remains a GaiaOS tool, not a representation or instantiation of that spirit.

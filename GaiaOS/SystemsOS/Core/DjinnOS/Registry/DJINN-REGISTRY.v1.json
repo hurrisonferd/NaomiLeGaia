@@ -16,16 +16,77 @@
   "elanes": false,
   "independent_authority": false,
   "members": [
-    {"name":"KYMER","operation_class":"INDEX","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"DRELAS","operation_class":"JIG","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"RONAVE","operation_class":"FLOW","effect_class":"READ_ONLY_TRANSFORM","implementation":"DETERMINISTIC_V1"},
-    {"name":"AGREN","operation_class":"QUEUE","effect_class":"EPHEMERAL_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"HALVEX","operation_class":"SEAL","effect_class":"SALT_CIRCLE_GATED","implementation":"DETERMINISTIC_ORCHESTRATOR"},
-    {"name":"SERA","operation_class":"COURIER","effect_class":"READ_ONLY_TRANSFORM","implementation":"DETERMINISTIC"},
-    {"name":"ORVAS","operation_class":"WITNESS","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"MALRIC","operation_class":"LINTER","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"MARVEK","operation_class":"PROBE","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"VASQAR","operation_class":"TRACE","effect_class":"READ_ONLY","implementation":"DETERMINISTIC"},
-    {"name":"USION","operation_class":"SETTLE","effect_class":"READ_ONLY_TRANSFORM","implementation":"DETERMINISTIC_V1"}
+    {
+      "name": "KYMER",
+      "operation_class": "INDEX",
+      "effect_class": "READ_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "DRELAS",
+      "operation_class": "JIG",
+      "effect_class": "READ_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "RONAVE",
+      "operation_class": "FLOW",
+      "effect_class": "READ_ONLY_TRANSFORM",
+      "implementation": "DETERMINISTIC_V1"
+    },
+    {
+      "name": "AGREN",
+      "operation_class": "QUEUE",
+      "effect_class": "EPHEMERAL_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "HALVEX",
+      "operation_class": "SEAL",
+      "effect_class": "SALT_CIRCLE_GATED",
+      "implementation": "DETERMINISTIC_ORCHESTRATOR"
+    },
+    {
+      "name": "SERA",
+      "operation_class": "COURIER",
+      "effect_class": "READ_ONLY_TRANSFORM",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "ORVAS",
+      "operation_class": "WITNESS",
+      "effect_class": "READ_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "MALRIC",
+      "operation_class": "LINTER",
+      "effect_class": "READ_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "MARVEK",
+      "operation_class": "PROBE",
+      "effect_class": "READ_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "VASQAR",
+      "operation_class": "TRACE",
+      "effect_class": "READ_ONLY",
+      "implementation": "DETERMINISTIC"
+    },
+    {
+      "name": "USION",
+      "operation_class": "SETTLE",
+      "effect_class": "READ_ONLY_TRANSFORM",
+      "implementation": "DETERMINISTIC_V1"
+    },
+    {
+      "name": "STELATA",
+      "operation_class": "GLOSS",
+      "effect_class": "READ_ONLY_TRANSFORM",
+      "implementation": "DETERMINISTIC_V1"
+    }
   ]
 }

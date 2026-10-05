@@ -31,6 +31,7 @@ The operation-class words are architectural taxonomy, not required nameplate tex
 - MARVEK — PROBE
 - VASQAR — TRACE
 - USION — SETTLE
+- STELATA — GLOSS
 
 ## State and authority
 
@@ -41,3 +42,11 @@ Djinn cannot create authorization. HALVEX is the only v1 operation class designe
 ## Proof laws
 
 REQUESTED != COMPLETED. SOURCE != DEPLOYMENT. RECEIPT != READBACK. CANDIDATE != DURABLE. UNKNOWN STAYS UNKNOWN. No mutation crosses the SALT_CIRCLE.
+
+## STELATA / GLOSS
+
+STELATA is the semantic-integrity proofreading Djinn. Its canonical profile is `ANTI_JIM`. It reviews supplied text for ambiguity, scope drift, authority drift, capability overclaim, provenance loss, canonical-term drift, caller-marked host-interpretation risk, and cases where a proposed correction would require changing protected meaning.
+
+STELATA is a `READ_ONLY_TRANSFORM` tool. It may propose a minimal revision and a change ledger, but it does not create authorization, weaken safety restrictions, conceal prohibited intent, rewrite canonical records, or silently alter protected meaning. If a deterministic correction intersects a protected phrase, `meaning_preserved=false` and the dispatcher returns `HOLD` for operator review.
+
+The name STELATA is inspired by Stolas as an etymological and thematic source only. STELATA is a GaiaOS tool and is not represented as the Goetic spirit itself.

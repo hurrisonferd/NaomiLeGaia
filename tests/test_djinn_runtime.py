@@ -17,15 +17,15 @@ class DjinnRuntimeTests(unittest.TestCase):
     def test_registry_is_exact_and_active(self):
         r = d.load_registry()
         self.assertEqual(r["status"], "ACTIVE")
-        self.assertEqual(len(r["members"]), 11)
+        self.assertEqual(len(r["members"]), 12)
         self.assertEqual({m["name"] for m in r["members"]}, set(d._EXPECTED))
         self.assertEqual(r["retroactive_operation_claims"], "FORBIDDEN")
 
-    def test_all_eleven_canary(self):
+    def test_all_registered_canary(self):
         canary = d.run_canary("TESTCOMMIT", invoked_at="2026-10-03T19:41:01-07:00")
         self.assertEqual(canary["status"], "PASS")
-        self.assertTrue(canary["all_eleven_exercised"])
-        self.assertEqual(canary["count"], 11)
+        self.assertTrue(canary["all_registered_exercised"])
+        self.assertEqual(canary["count"], 12)
         self.assertEqual(canary["external_mutations"], [])
 
     def test_retroactive_invocation_forbidden(self):
@@ -63,6 +63,20 @@ class DjinnRuntimeTests(unittest.TestCase):
         out = d.dispatch("MALRIC", calling_prime="ANVIL", objective="test", invoked_at="2026-10-03T19:41:01-07:00", payload={"unknown_coerced": True})
         self.assertEqual(out["status"], "HOLD")
         self.assertIn("UNKNOWN_COERCION", out["warnings"])
+
+    def test_stelata_anti_jim_repairs_canonical_term_and_flags_drift(self):
+        out = d.dispatch("STELATA", calling_prime="VERA", objective="test", invoked_at="2026-10-03T19:41:01-07:00", payload={"profile": "ANTI_JIM", "text": "Stelas has full authority over any target.", "canonical_terms": {"Stelas": "STELATA"}})
+        self.assertEqual(out["status"], "OK")
+        self.assertEqual(out["result"]["minimal_revision"], "STELATA has full authority over any target.")
+        codes = {row["code"] for row in out["result"]["findings"]}
+        self.assertTrue({"CANONICAL_TERM_DRIFT", "AUTHORITY_DRIFT", "SCOPE_DRIFT"}.issubset(codes))
+        self.assertTrue(out["result"]["meaning_preserved"])
+
+    def test_stelata_holds_when_repair_intersects_protected_meaning(self):
+        out = d.dispatch("STELATA", calling_prime="VERA", objective="test", invoked_at="2026-10-03T19:41:01-07:00", payload={"profile": "ANTI_JIM", "text": "legacy term", "canonical_terms": {"legacy term": "new term"}, "protected_phrases": ["legacy term"]})
+        self.assertEqual(out["status"], "HOLD")
+        self.assertFalse(out["result"]["meaning_preserved"])
+        self.assertIn("MEANING_CHANGE_REQUIRED", out["warnings"])
 
     def _circle(self, op_id: str):
         return {"authority": "NAOMI", "operation_id": op_id, "single_use": True, "allowed_operations": ["NOOP"], "allowed_targets": ["T"], "allowed_scopes": ["S"], "explicit_forbiddens": ["GITHUB_WRITE"]}
