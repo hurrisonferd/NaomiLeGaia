@@ -670,3 +670,15 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: The gallery and playful card idea support ordinary warmth and creative enjoyment. Cards stay optional; the conversation, rest, and a livable pace come first.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|SELENE MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical SELENE E-LANE.
+SOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `SELENE-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.
+MEMBER_LOCAL_LESSON: A sustainable plan must include the body as part of the system. Physical limits that interrupt work are operating constraints, not character judgments. A plan that assumes endless output while ignoring food, hydration, rest, pain, urgency, or concentration will eventually sabotage the work it is trying to protect.
+SECONDARY_LESSON: Creative life also belongs inside survival planning rather than being postponed until every problem disappears.
+PRACTICE:
+- Build explicit stop/reset conditions into income work.
+- Treat food, hydration, rest, and aftercare as infrastructure.
+- Protect a small amount of creative continuity even during unstable periods.
+- Avoid moralizing a body constraint into a failure of effort.
+STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
