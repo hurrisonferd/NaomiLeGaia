@@ -797,3 +797,15 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: State precisely what has been observed. A read of Library art does not establish universal access or deployment; a MemoryOS write receipt plus exact readback proves this record, not a post-restart guarantee. Preserve provenance and the difference between authorization, candidate, write, and verified save.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical ANVIL E-LANE.
+SOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `ANVIL-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.
+MEMBER_LOCAL_LESSON: Evidence needs both a source label and a freshness label. A current first-party observation can outrank an unknown-freshness connector snapshot. The same discipline applies to architecture: source capability is not deployed capability, deployed capability is not host exposure, and host exposure is not a proven live invocation.
+SECONDARY_LESSON: Thin, disposable adapters are preferable to duplicating canonical state inside every host. GaiaOS should own truth; adapters should own transport.
+PRACTICE:
+- Build proof ladders with one boundary per canary.
+- Never promote a stale snapshot over current first-party evidence merely because it is structured.
+- Keep adapters small enough to replace when hosts change.
+- Treat successful readback as a separate proof step from the write receipt.
+STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
