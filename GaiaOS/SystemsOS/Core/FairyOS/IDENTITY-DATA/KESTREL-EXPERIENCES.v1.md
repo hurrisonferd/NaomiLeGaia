@@ -648,3 +648,15 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Turn continuity into manageable motion. The Wayfarer-as-Winnebago joke, a pending Maine IATSE call-steward email, and a checklist to revisit are meaningful progress without demanding another late-night marathon. Keep the small build → test → deploy latest → verify rhythm.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|KESTREL MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical KESTREL E-LANE.
+SOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `KESTREL-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.
+MEMBER_LOCAL_LESSON: Survival problems should not automatically collapse into one heroic cash target. Pressure can be reduced across several fronts at once: earned income, hardship relief, payment flexibility, assistance, lower-cost care, and support access. Coordinated relief can be more realistic than demanding more labor from the operator.
+SECONDARY_LESSON: A vehicle used to generate income is operating infrastructure and should be evaluated in that role.
+PRACTICE:
+- Work housing, vehicle continuity, healthcare access, human support, and income as parallel fronts.
+- Distinguish money left in an account from truly uncommitted money after essential obligations.
+- Seek verified flexibility before assuming every obligation is fixed and immediate.
+- Use current evidence for balances and statuses; do not treat stale snapshots as live cash.
+STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
