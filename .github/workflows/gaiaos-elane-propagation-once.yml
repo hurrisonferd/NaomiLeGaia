@@ -1,4 +1,4 @@
-name: GaiaOS E-LANE Propagation ANVIL
+name: GaiaOS E-LANE Propagation SELENE
 
 on:
   push:
@@ -11,24 +11,24 @@ permissions:
   contents: write
 
 jobs:
-  propagate-anvil:
+  propagate-selene:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
-      - name: Append and verify ANVIL candidate
+      - name: Append and verify SELENE candidate
         shell: python
         run: |
           from pathlib import Path
           import hashlib
 
-          path = Path('GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md')
-          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]'
-          entry = '''## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]\nAUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical ANVIL E-LANE.\nSOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `ANVIL-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.\nMEMBER_LOCAL_LESSON: Evidence needs both a source label and a freshness label. A current first-party observation can outrank an unknown-freshness connector snapshot. The same discipline applies to architecture: source capability is not deployed capability, deployed capability is not host exposure, and host exposure is not a proven live invocation.\nSECONDARY_LESSON: Thin, disposable adapters are preferable to duplicating canonical state inside every host. GaiaOS should own truth; adapters should own transport.\nPRACTICE:\n- Build proof ladders with one boundary per canary.\n- Never promote a stale snapshot over current first-party evidence merely because it is structured.\n- Keep adapters small enough to replace when hosts change.\n- Treat successful readback as a separate proof step from the write receipt.\nSTATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.\n'''
+          path = Path('GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md')
+          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|SELENE MEMBER-LOCAL]'
+          entry = '''## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|SELENE MEMBER-LOCAL]\nAUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical SELENE E-LANE.\nSOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `SELENE-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.\nMEMBER_LOCAL_LESSON: A sustainable plan must include the body as part of the system. Physical limits that interrupt work are operating constraints, not character judgments. A plan that assumes endless output while ignoring food, hydration, rest, pain, urgency, or concentration will eventually sabotage the work it is trying to protect.\nSECONDARY_LESSON: Creative life also belongs inside survival planning rather than being postponed until every problem disappears.\nPRACTICE:\n- Build explicit stop/reset conditions into income work.\n- Treat food, hydration, rest, and aftercare as infrastructure.\n- Protect a small amount of creative continuity even during unstable periods.\n- Avoid moralizing a body constraint into a failure of effort.\nSTATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.\n'''
           old = path.read_text(encoding='utf-8')
-          assert marker not in old, 'ANVIL candidate already present; refusing duplicate'
+          assert marker not in old, 'SELENE candidate already present; refusing duplicate'
           old_hash = hashlib.sha256(old.encode('utf-8')).hexdigest()
           sep = '\n' if old.endswith('\n') else '\n\n'
           new = old + sep + entry
@@ -40,25 +40,25 @@ jobs:
           assert reread.count(marker) == 1, 'local reread marker count mismatch'
           print('OLD_SHA256', old_hash)
           print('NEW_SHA256', hashlib.sha256(reread.encode('utf-8')).hexdigest())
-          print('ANVIL_LOCAL_VERIFY PASS')
-      - name: Commit ANVIL propagation
+          print('SELENE_LOCAL_VERIFY PASS')
+      - name: Commit SELENE propagation
         run: |
           git config user.name 'GaiaOS E-LANE Propagator'
           git config user.email 'actions@users.noreply.github.com'
-          git add GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md
+          git add GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md
           git diff --cached --check
-          git diff --cached --quiet && { echo 'FAILED no ANVIL diff'; exit 1; }
-          git commit -m 'Propagate ANVIL staged continuity lesson into canonical E-LANE [skip render]'
+          git diff --cached --quiet && { echo 'FAILED no SELENE diff'; exit 1; }
+          git commit -m 'Propagate SELENE staged continuity lesson into canonical E-LANE [skip render]'
           git push origin HEAD:main
-      - name: Repull and verify ANVIL from origin/main
+      - name: Repull and verify SELENE from origin/main
         shell: bash
         run: |
           git fetch origin main
           python - <<'PY'
           import subprocess
-          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]'
-          path = 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md'
+          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|SELENE MEMBER-LOCAL]'
+          path = 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md'
           text = subprocess.check_output(['git','show',f'origin/main:{path}'], text=True)
-          assert text.count(marker) == 1, 'origin/main ANVIL marker count is not exactly one'
-          print('ANVIL_ORIGIN_REPULL_VERIFY PASS')
+          assert text.count(marker) == 1, 'origin/main SELENE marker count is not exactly one'
+          print('SELENE_ORIGIN_REPULL_VERIFY PASS')
           PY
