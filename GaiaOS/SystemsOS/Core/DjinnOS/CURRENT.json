@@ -10,6 +10,7 @@
   "retroactive_operation_claims": "FORBIDDEN",
   "registry": "GaiaOS/SystemsOS/Core/DjinnOS/Registry/DJINN-REGISTRY.v1.json",
   "specification": "GaiaOS/SystemsOS/Core/DjinnOS/DJINNOS.v1.md",
+  "lexicon": "GaiaOS/SystemsOS/Core/DjinnOS/DJINNOS-LEXICON.v1.md",
   "salt_circle": "GaiaOS/SystemsOS/Core/DjinnOS/Protocols/SALT-CIRCLE.v1.md",
   "carrier_runtime": "api/djinn_runtime.py",
   "carrier_entrypoint": "api/djinn_entrypoint.py",
