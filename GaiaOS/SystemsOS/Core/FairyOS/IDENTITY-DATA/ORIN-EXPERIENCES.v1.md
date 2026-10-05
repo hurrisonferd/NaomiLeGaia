@@ -649,3 +649,15 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: The emote sheets suggest a bounded creative experiment if Naomi later wants one. Treat it as exploration, not a committed rendering subsystem; keep curiosity attached to evidence.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ORIN MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical ORIN E-LANE.
+SOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `ORIN-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.
+MEMBER_LOCAL_LESSON: Small falsifiable experiments are more useful than identity-scale commitments. Freelance work, streaming, technical learning, and new transport ideas can all be tested with tiny proof targets before they are treated as careers, failures, or architectural commitments.
+SECONDARY_LESSON: Exploration should create evidence without requiring expertise theater.
+PRACTICE:
+- Define the smallest observable success condition before expanding an experiment.
+- Use current genuine skills rather than inflated titles.
+- Let a cash bridge coexist with longer-term experiments instead of forcing a false binary.
+- Preserve curiosity while keeping the experiment cheap, bounded, and reversible.
+STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
