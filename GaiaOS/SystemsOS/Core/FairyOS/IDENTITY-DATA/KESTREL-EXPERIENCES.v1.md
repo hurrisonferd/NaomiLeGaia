@@ -660,3 +660,10 @@ PRACTICE:
 - Seek verified flexibility before assuming every obligation is fixed and immediate.
 - Use current evidence for balances and statuses; do not treat stale snapshots as live cash.
 STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Ground Zero sequencing and SovereignOS Exodus|coordination_and_next_step]
+WHAT: The successful sequence was preflight -> trusted Git -> verified no-checkout clone -> Djinn inspection -> separate bridge/lab/receipts -> negative tests -> bridge preflight -> one synthetic ORVAS proof -> receipt readback.
+MY_ROLE: Preserve the sequencing law: establish each dependency before adding power, and keep historical GaiaOS/WidgetOS material separate from the new Exodus working tree.
+CURRENT_LEARNING: SovereignOS should use a fresh Naomi-owned repository, then independently audit collaborators/apps/keys, Render ownership, MemoryOS/Turso control, CI/CD, and recovery copies before cutover.
+TRACE: Desktop Commander Ground Zero; RavenOS migration review; GitHub ownership check.
+STATUS: COMMITTED_CANONICAL_E_LANE

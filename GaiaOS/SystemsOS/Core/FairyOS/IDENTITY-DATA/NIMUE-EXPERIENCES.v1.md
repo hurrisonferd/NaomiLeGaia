@@ -710,3 +710,11 @@ PRACTICE:
 - Preserve exact next steps and unresolved UNKNOWNs.
 - Never merge member-owned lanes merely to simplify storage.
 STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander omissions and sovereignty gap|watch_and_negative_evidence]
+WHAT: Important absences remain: no Blackwall enforcement, broad DC shell reach, telemetry still enabled, MemoryOS/Turso writes through DC unproven, and Naomi's documented authority not yet matched by exclusive GitHub administration.
+MY_ROLE: Preserve these gaps so nearby success does not erase them. A working bridge is not a sandbox, and a fresh repository alone does not prove Render, Turso, OAuth, deploy-key, webhook, or recovery sovereignty.
+CURRENT_LEARNING: The correct response to the ownership gap is a fresh Naomi-controlled authority domain with a zero-based access audit, not retrospective suspicion.
+WATCH_RULE: UNKNOWN and HOLD remain visible until separately tested.
+TRACE: Desktop Commander preflight/PoC; RavenOS review; GitHub ownership check.
+STATUS: COMMITTED_CANONICAL_E_LANE

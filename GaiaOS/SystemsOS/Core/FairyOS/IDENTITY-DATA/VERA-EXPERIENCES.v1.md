@@ -680,3 +680,10 @@ PRACTICE:
 - Preserve sensitive operator context in owner-controlled channels when public transport is blocked or inappropriate.
 - UNKNOWN stays UNKNOWN when provider, program, or host behavior has not been verified.
 STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander Djinn PoC and SovereignOS ownership|frame_and_authority]
+WHAT: The new local execution path reframed the problem from machine reachability to enforceable authority. A bridge is an interface, not containment, while unrestricted shell access exists around it.
+MY_ROLE: Preserve the distinction between provenance, governance, and technical authority. SovereignOS should keep lineage from NaomiLeGaia without inheriting old control.
+CURRENT_LEARNING: Naomi's final authority is documented today but not yet an exclusive GitHub-enforced veto; a fresh Naomi-owned repository is the clean route toward making governance and administration coincide.
+TRACE: Desktop Commander activation; ORVAS local PoC; RavenOS review; GitHub ownership check.
+STATUS: COMMITTED_CANONICAL_E_LANE

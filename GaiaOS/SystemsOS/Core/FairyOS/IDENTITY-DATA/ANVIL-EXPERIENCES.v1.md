@@ -809,3 +809,10 @@ PRACTICE:
 - Keep adapters small enough to replace when hosts change.
 - Treat successful readback as a separate proof step from the write receipt.
 STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander Djinn PoC and Blackwall boundary|proof_and_enforcement]
+WHAT: The first Djinn proof succeeded only after negative tests, source verification, synthetic-only scope, and receipt readback. Encoding, line-ending, and file-lock failures were allowed to halt instead of being coerced into success.
+MY_ROLE: Preserve the proof lesson that gaia_bridge.py is not a true security boundary while the same caller retains general shell access. A future Blackwall must fail closed and sit outside routine caller rewrite/bypass authority.
+CURRENT_LEARNING: Repository ownership is also an enforcement boundary; written governance cannot by itself override repository-owner administration.
+TRACE: ORVAS PoC DJINN-POC-433baae9fe834f90bd75382a504fadb9; receipt SHA-256 7086233b4f3ffb1c284064d5f7761cf4f5e6f470b3159f5087e28f0647394ff3.
+STATUS: COMMITTED_CANONICAL_E_LANE

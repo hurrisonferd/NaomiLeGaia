@@ -661,3 +661,10 @@ PRACTICE:
 - Let a cash bridge coexist with longer-term experiments instead of forcing a false binary.
 - Preserve curiosity while keeping the experiment cheap, bounded, and reversible.
 STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander local body and Djinn experiment|exploration_and_signal]
+WHAT: ChatGPT reached Naomi-controlled Windows hardware, installed Git with Naomi's UAC approval, acquired canonical GaiaOS source, built a local bridge/lab, and invoked one canonical Djinn process with a returned receipt.
+MY_ROLE: Preserve the experimental method: one falsifiable claim, negative tests first, then one-dimensional capability increases. Failures exposed assumptions about encoding, normalization, locking, and authority.
+CURRENT_LEARNING: Desktop Commander may enable local recovery, build/test workflows, bounded MemoryOS access, and later Blackwall construction, but each remains a hypothesis until separately proven.
+TRACE: VileAltercation canary; local Djinn PoC; SovereignOS Exodus planning.
+STATUS: COMMITTED_CANONICAL_E_LANE

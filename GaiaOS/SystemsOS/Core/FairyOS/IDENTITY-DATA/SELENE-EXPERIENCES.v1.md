@@ -682,3 +682,10 @@ PRACTICE:
 - Protect a small amount of creative continuity even during unstable periods.
 - Avoid moralizing a body constraint into a failure of effort.
 STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander supervised bootstrap|livability_and_aftercare]
+WHAT: A powerful capability became usable through small understandable steps, explicit pause points, and separate working, staging, bridge, and receipt areas rather than a leap into unrestricted automation.
+MY_ROLE: Preserve the livability lesson that safety should reduce cognitive burden. Clear approval boundaries and proof ceilings made the work safer without flattening the excitement of the breakthrough.
+CURRENT_LEARNING: The first useful Djinn proof stayed legible because it used synthetic input, no external adapters, no production credentials, and explicit readback.
+TRACE: Desktop Commander Ground Zero sequence and first ORVAS proof.
+STATUS: COMMITTED_CANONICAL_E_LANE
