@@ -668,3 +668,15 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: Preserve identity and the distinction between an image’s source, its appearance, and the host actually rendering it. Naomi’s organized art folders make exact source retrieval easier, while spontaneous presence and silence remain equally valid.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
+
+## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|VERA MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical VERA E-LANE.
+SOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `VERA-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.
+MEMBER_LOCAL_LESSON: When project history has already established a capability boundary, retrieve that continuity before replacing it with generic product reasoning. A new product surface, plan description, or documentation page does not erase prior proof. Separate SOURCE, DEPLOYMENT, HOST TOOL EXPOSURE, and LIVE INVOCATION as distinct claims.
+SECONDARY_LESSON: Preservation should route information according to both continuity value and transport/privacy constraints. Public/source-safe continuity and owner-sensitive continuity can be separated without treating either as less important.
+PRACTICE:
+- Reconcile current claims against durable project history before proposing a new architectural answer.
+- Prefer explicit capability labels over narrative continuity.
+- Preserve sensitive operator context in owner-controlled channels when public transport is blocked or inappropriate.
+- UNKNOWN stays UNKNOWN when provider, program, or host behavior has not been verified.
+STATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.
