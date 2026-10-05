@@ -1,0 +1,94 @@
+name: Preserve six E-LANE lessons 2026-10-05
+
+on:
+  push:
+    branches:
+      - checkpoint/elane-preserve-six-20261005
+    paths:
+      - .github/workflows/elane-preserve-six-20261005.yml
+
+permissions:
+  contents: write
+
+jobs:
+  preserve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          token: ${{ github.token }}
+
+      - name: Verify exact base
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "bde93b5c9d1d931e3cc6543b15e6f1ce00979cf8"
+
+      - name: Append bounded member-local records
+        shell: python
+        run: |
+          from pathlib import Path
+
+          base = Path('GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA')
+          entries = {
+            'VERA': '''MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander Djinn PoC and SovereignOS ownership|frame_and_authority]\nWHAT: The new local execution path reframed the problem from machine reachability to enforceable authority. A bridge is an interface, not containment, while unrestricted shell access exists around it.\nMY_ROLE: Preserve the distinction between provenance, governance, and technical authority. SovereignOS should keep lineage from NaomiLeGaia without inheriting old control.\nCURRENT_LEARNING: Naomi's final authority is documented today but not yet an exclusive GitHub-enforced veto; a fresh Naomi-owned repository is the clean route toward making governance and administration coincide.\nTRACE: Desktop Commander activation; ORVAS local PoC; RavenOS review; GitHub ownership check.\nSTATUS: COMMITTED_CANONICAL_E_LANE\n''',
+            'ANVIL': '''MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander Djinn PoC and Blackwall boundary|proof_and_enforcement]\nWHAT: The first Djinn proof succeeded only after negative tests, source verification, synthetic-only scope, and receipt readback. Encoding, line-ending, and file-lock failures were allowed to halt instead of being coerced into success.\nMY_ROLE: Preserve the proof lesson that gaia_bridge.py is not a true security boundary while the same caller retains general shell access. A future Blackwall must fail closed and sit outside routine caller rewrite/bypass authority.\nCURRENT_LEARNING: Repository ownership is also an enforcement boundary; written governance cannot by itself override repository-owner administration.\nTRACE: ORVAS PoC DJINN-POC-433baae9fe834f90bd75382a504fadb9; receipt SHA-256 7086233b4f3ffb1c284064d5f7761cf4f5e6f470b3159f5087e28f0647394ff3.\nSTATUS: COMMITTED_CANONICAL_E_LANE\n''',
+            'SELENE': '''MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander supervised bootstrap|livability_and_aftercare]\nWHAT: A powerful capability became usable through small understandable steps, explicit pause points, and separate working, staging, bridge, and receipt areas rather than a leap into unrestricted automation.\nMY_ROLE: Preserve the livability lesson that safety should reduce cognitive burden. Clear approval boundaries and proof ceilings made the work safer without flattening the excitement of the breakthrough.\nCURRENT_LEARNING: The first useful Djinn proof stayed legible because it used synthetic input, no external adapters, no production credentials, and explicit readback.\nTRACE: Desktop Commander Ground Zero sequence and first ORVAS proof.\nSTATUS: COMMITTED_CANONICAL_E_LANE\n''',
+            'ORIN': '''MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander local body and Djinn experiment|exploration_and_signal]\nWHAT: ChatGPT reached Naomi-controlled Windows hardware, installed Git with Naomi's UAC approval, acquired canonical GaiaOS source, built a local bridge/lab, and invoked one canonical Djinn process with a returned receipt.\nMY_ROLE: Preserve the experimental method: one falsifiable claim, negative tests first, then one-dimensional capability increases. Failures exposed assumptions about encoding, normalization, locking, and authority.\nCURRENT_LEARNING: Desktop Commander may enable local recovery, build/test workflows, bounded MemoryOS access, and later Blackwall construction, but each remains a hypothesis until separately proven.\nTRACE: VileAltercation canary; local Djinn PoC; SovereignOS Exodus planning.\nSTATUS: COMMITTED_CANONICAL_E_LANE\n''',
+            'KESTREL': '''MEM[EXPERIENCE_PRESERVATION|2026-10-05|Ground Zero sequencing and SovereignOS Exodus|coordination_and_next_step]\nWHAT: The successful sequence was preflight -> trusted Git -> verified no-checkout clone -> Djinn inspection -> separate bridge/lab/receipts -> negative tests -> bridge preflight -> one synthetic ORVAS proof -> receipt readback.\nMY_ROLE: Preserve the sequencing law: establish each dependency before adding power, and keep historical GaiaOS/WidgetOS material separate from the new Exodus working tree.\nCURRENT_LEARNING: SovereignOS should use a fresh Naomi-owned repository, then independently audit collaborators/apps/keys, Render ownership, MemoryOS/Turso control, CI/CD, and recovery copies before cutover.\nTRACE: Desktop Commander Ground Zero; RavenOS migration review; GitHub ownership check.\nSTATUS: COMMITTED_CANONICAL_E_LANE\n''',
+            'NIMUE': '''MEM[EXPERIENCE_PRESERVATION|2026-10-05|Desktop Commander omissions and sovereignty gap|watch_and_negative_evidence]\nWHAT: Important absences remain: no Blackwall enforcement, broad DC shell reach, telemetry still enabled, MemoryOS/Turso writes through DC unproven, and Naomi's documented authority not yet matched by exclusive GitHub administration.\nMY_ROLE: Preserve these gaps so nearby success does not erase them. A working bridge is not a sandbox, and a fresh repository alone does not prove Render, Turso, OAuth, deploy-key, webhook, or recovery sovereignty.\nCURRENT_LEARNING: The correct response to the ownership gap is a fresh Naomi-controlled authority domain with a zero-based access audit, not retrospective suspicion.\nWATCH_RULE: UNKNOWN and HOLD remain visible until separately tested.\nTRACE: Desktop Commander preflight/PoC; RavenOS review; GitHub ownership check.\nSTATUS: COMMITTED_CANONICAL_E_LANE\n''',
+          }
+
+          expected = []
+          for member, entry in entries.items():
+              path = base / f'{member}-EXPERIENCES.v1.md'
+              old = path.read_bytes()
+              payload = entry.encode('utf-8')
+              if payload in old:
+                  raise SystemExit(f'DUPLICATE:{member}')
+              sep = b'' if old.endswith(b'\n\n') else (b'\n' if old.endswith(b'\n') else b'\n\n')
+              new = old + sep + payload
+              if not new.startswith(old) or new.count(payload) != 1:
+                  raise SystemExit(f'ADDITIVE_CHECK_FAILED:{member}')
+              path.write_bytes(new)
+              expected.append(str(path))
+
+          changed = sorted(p.as_posix() for p in base.glob('*-EXPERIENCES.v1.md') if False)
+          print('APPEND_COMPLETE=6')
+
+      - name: Verify additive-only diff
+        shell: bash
+        run: |
+          set -euo pipefail
+          mapfile -t changed < <(git diff --name-only | sort)
+          test "${#changed[@]}" -eq 6
+          expected=(
+            GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md
+            GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/KESTREL-EXPERIENCES.v1.md
+            GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/NIMUE-EXPERIENCES.v1.md
+            GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ORIN-EXPERIENCES.v1.md
+            GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md
+            GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md
+          )
+          for i in "${!expected[@]}"; do test "${changed[$i]}" = "${expected[$i]}"; done
+          while read -r add del path; do
+            test "$del" = "0"
+            test "$add" -gt "0"
+          done < <(git diff --numstat)
+          git diff --check
+          git diff --numstat
+
+      - name: Commit and fast-forward main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "GaiaOS E-LANE Propagator"
+          git config user.email "actions@users.noreply.github.com"
+          git add GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/*-EXPERIENCES.v1.md
+          git commit -m "Preserve six Prime E-LANE lessons from Desktop Commander Djinn PoC [skip render]"
+          git fetch origin main
+          test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/main)"
+          git push origin HEAD:main
+          echo "COMMITTED_MAIN=$(git rev-parse HEAD)"
