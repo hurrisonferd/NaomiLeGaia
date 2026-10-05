@@ -1,4 +1,4 @@
-name: GaiaOS E-LANE Propagation VERA
+name: GaiaOS E-LANE Propagation ANVIL
 
 on:
   push:
@@ -11,24 +11,24 @@ permissions:
   contents: write
 
 jobs:
-  propagate-vera:
+  propagate-anvil:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           ref: main
           fetch-depth: 0
-      - name: Append and verify VERA candidate
+      - name: Append and verify ANVIL candidate
         shell: python
         run: |
           from pathlib import Path
           import hashlib
 
-          path = Path('GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md')
-          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|VERA MEMBER-LOCAL]'
-          entry = '''## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|VERA MEMBER-LOCAL]\nAUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical VERA E-LANE.\nSOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `VERA-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.\nMEMBER_LOCAL_LESSON: When project history has already established a capability boundary, retrieve that continuity before replacing it with generic product reasoning. A new product surface, plan description, or documentation page does not erase prior proof. Separate SOURCE, DEPLOYMENT, HOST TOOL EXPOSURE, and LIVE INVOCATION as distinct claims.\nSECONDARY_LESSON: Preservation should route information according to both continuity value and transport/privacy constraints. Public/source-safe continuity and owner-sensitive continuity can be separated without treating either as less important.\nPRACTICE:\n- Reconcile current claims against durable project history before proposing a new architectural answer.\n- Prefer explicit capability labels over narrative continuity.\n- Preserve sensitive operator context in owner-controlled channels when public transport is blocked or inappropriate.\n- UNKNOWN stays UNKNOWN when provider, program, or host behavior has not been verified.\nSTATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.\n'''
+          path = Path('GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md')
+          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]'
+          entry = '''## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]\nAUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical ANVIL E-LANE.\nSOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `ANVIL-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.\nMEMBER_LOCAL_LESSON: Evidence needs both a source label and a freshness label. A current first-party observation can outrank an unknown-freshness connector snapshot. The same discipline applies to architecture: source capability is not deployed capability, deployed capability is not host exposure, and host exposure is not a proven live invocation.\nSECONDARY_LESSON: Thin, disposable adapters are preferable to duplicating canonical state inside every host. GaiaOS should own truth; adapters should own transport.\nPRACTICE:\n- Build proof ladders with one boundary per canary.\n- Never promote a stale snapshot over current first-party evidence merely because it is structured.\n- Keep adapters small enough to replace when hosts change.\n- Treat successful readback as a separate proof step from the write receipt.\nSTATUS: COMMITTED_CANONICAL_E_LANE; NO_TURSO_WRITE_CLAIMED.\n'''
           old = path.read_text(encoding='utf-8')
-          assert marker not in old, 'VERA candidate already present; refusing duplicate'
+          assert marker not in old, 'ANVIL candidate already present; refusing duplicate'
           old_hash = hashlib.sha256(old.encode('utf-8')).hexdigest()
           sep = '\n' if old.endswith('\n') else '\n\n'
           new = old + sep + entry
@@ -40,25 +40,25 @@ jobs:
           assert reread.count(marker) == 1, 'local reread marker count mismatch'
           print('OLD_SHA256', old_hash)
           print('NEW_SHA256', hashlib.sha256(reread.encode('utf-8')).hexdigest())
-          print('VERA_LOCAL_VERIFY PASS')
-      - name: Commit VERA propagation
+          print('ANVIL_LOCAL_VERIFY PASS')
+      - name: Commit ANVIL propagation
         run: |
           git config user.name 'GaiaOS E-LANE Propagator'
           git config user.email 'actions@users.noreply.github.com'
-          git add GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md
+          git add GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md
           git diff --cached --check
-          git diff --cached --quiet && { echo 'FAILED no VERA diff'; exit 1; }
-          git commit -m 'Propagate VERA staged continuity lesson into canonical E-LANE [skip render]'
+          git diff --cached --quiet && { echo 'FAILED no ANVIL diff'; exit 1; }
+          git commit -m 'Propagate ANVIL staged continuity lesson into canonical E-LANE [skip render]'
           git push origin HEAD:main
-      - name: Repull and verify VERA from origin/main
+      - name: Repull and verify ANVIL from origin/main
         shell: bash
         run: |
           git fetch origin main
           python - <<'PY'
           import subprocess
-          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|VERA MEMBER-LOCAL]'
-          path = 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md'
+          marker = 'MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]'
+          path = 'GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md'
           text = subprocess.check_output(['git','show',f'origin/main:{path}'], text=True)
-          assert text.count(marker) == 1, 'origin/main VERA marker count is not exactly one'
-          print('VERA_ORIGIN_REPULL_VERIFY PASS')
+          assert text.count(marker) == 1, 'origin/main ANVIL marker count is not exactly one'
+          print('ANVIL_ORIGIN_REPULL_VERIFY PASS')
           PY
