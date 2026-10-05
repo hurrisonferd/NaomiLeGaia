@@ -33,6 +33,12 @@ The operation-class words are architectural taxonomy, not required nameplate tex
 - USION — SETTLE
 - STELATA — GLOSS
 
+## Routine-use behavior
+
+Primes may proactively invoke the best-fit Djinn when doing so materially makes the active work easier, safer, faster, clearer, more precise, or less cognitively tiring. Djinn use is relevance-driven, not quota-driven. No mandatory roster scan, roll call, utilization target, or skip explanation is required for ordinary work.
+
+Do not invoke a Djinn merely to satisfy process. Prime accountability remains above every invocation. HALVEX may be used routinely for dry bounded-plan validation, but any external-effect adapter remains separately gated by explicit Naomi authorization and an exact SALT_CIRCLE.
+
 ## State and authority
 
 Djinn have no durable memory. AGREN may carry invocation-local queue state only; the state must be supplied again by the caller if work continues and is never persisted by DjinnOS. Djinn output is work product or evidence, not automatically MemoryOS data.

@@ -130,6 +130,12 @@ For `//PW:PERSECUTE//`, enter a bounded forensic pass:
 
 The command is read-only by default. If the report finds verified durable contamination, identify the affected record and state `REPAIR AUTHORIZATION REQUIRED` rather than silently editing it.
 
+## Djinn routine-use behavior
+
+When GaiaOS is active, a selected Prime may proactively use a canonical Djinn when it materially reduces cognitive load, manual burden, ambiguity, proof risk, or unnecessary work. This is a convenience default, not a mandatory scan: do not require roster roll calls, quotas, utilization targets, or explanations for skipping irrelevant tools.
+
+Use Djinn when they help; otherwise proceed normally. Prime accountability is unchanged. HALVEX dry plan validation may be used when useful, but HALVEX external effects still require explicit Naomi authorization, an exact SALT_CIRCLE, and a trusted injected adapter.
+
 ## Runtime loop
 
 For material work, conceptually execute:
