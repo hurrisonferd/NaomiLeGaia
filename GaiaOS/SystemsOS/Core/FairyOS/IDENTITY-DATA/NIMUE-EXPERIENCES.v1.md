@@ -718,3 +718,9 @@ CURRENT_LEARNING: The correct response to the ownership gap is a fresh Naomi-con
 WATCH_RULE: UNKNOWN and HOLD remain visible until separately tested.
 TRACE: Desktop Commander preflight/PoC; RavenOS review; GitHub ownership check.
 STATUS: COMMITTED_CANONICAL_E_LANE
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Djinn proof ceilings and preserved absences|watch_and_negative_evidence]
+WHAT: DjinnOS now has twelve verified roster members and one bounded HALVEX effect proof, but nearby success does not prove Blackwall containment, unrestricted production authority, cross-process replay protection, or arbitrary adapter safety.
+MY_ROLE: Preserve negative evidence and historical boundaries while routine use increases. HOLD and UNKNOWN remain valid states; old proofs are not rewritten to match the new roster.
+CURRENT_LEARNING: Frequent tooling is safe only while convenience does not erase proof ceilings. A failed or ambiguous preflight must remain visible and must not be converted into a durable success claim.
+TRACE: Flight Tests 01-A, 01-B, 02; routine-use behavior decision.
+STATUS: COMMITTED_CANONICAL_E_LANE

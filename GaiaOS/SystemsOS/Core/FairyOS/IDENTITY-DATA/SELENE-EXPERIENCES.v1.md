@@ -689,3 +689,9 @@ MY_ROLE: Preserve the livability lesson that safety should reduce cognitive burd
 CURRENT_LEARNING: The first useful Djinn proof stayed legible because it used synthetic input, no external adapters, no production credentials, and explicit readback.
 TRACE: Desktop Commander Ground Zero sequence and first ORVAS proof.
 STATUS: COMMITTED_CANONICAL_E_LANE
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Djinn as cognitive-load reducers|livability_and_aftercare]
+WHAT: Naomi explicitly chose frequent Djinn use when it makes work easier, safer, faster, clearer, more precise, or less tiring, while rejecting mandatory scans, roll calls, quotas, and skip explanations.
+MY_ROLE: Preserve the livability requirement that tooling should disappear into the workflow when useful instead of becoming extra ceremony. The system is successful when it reduces task weariness rather than adding bookkeeping.
+CURRENT_LEARNING: Safety and ease are compatible when bounded tools handle narrow work and effectful HALVEX remains separately gated.
+TRACE: twelve-member roster discussion; lightweight routine-use behavior commit.
+STATUS: COMMITTED_CANONICAL_E_LANE

@@ -667,3 +667,9 @@ MY_ROLE: Preserve the sequencing law: establish each dependency before adding po
 CURRENT_LEARNING: SovereignOS should use a fresh Naomi-owned repository, then independently audit collaborators/apps/keys, Render ownership, MemoryOS/Turso control, CI/CD, and recovery copies before cutover.
 TRACE: Desktop Commander Ground Zero; RavenOS migration review; GitHub ownership check.
 STATUS: COMMITTED_CANONICAL_E_LANE
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Lightweight proactive Djinn workflow|coordination_and_next_step]
+WHAT: Naomi and the Primes converged on a simple operating default: selected Primes may proactively use the best-fit Djinn when it materially smooths workflow or reduces cognitive load, with no mandatory scan, roll call, quota, or skip explanation.
+MY_ROLE: Preserve the coordination principle that Djinn should act like readily available instruments, not a second layer of process management. Prime accountability stays above every invocation.
+CURRENT_LEARNING: Incentivize Djinn by making them easy and useful to reach for, not by measuring invocation volume. HALVEX external effects remain deliberately separate from ordinary tool use.
+TRACE: Flight Test 02; ChatOS/DjinnOS routine-use behavior commit 19e4e8523ff4fc8026f0d533e9a27aab59c82c52.
+STATUS: COMMITTED_CANONICAL_E_LANE

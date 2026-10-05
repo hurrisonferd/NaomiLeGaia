@@ -668,3 +668,9 @@ MY_ROLE: Preserve the experimental method: one falsifiable claim, negative tests
 CURRENT_LEARNING: Desktop Commander may enable local recovery, build/test workflows, bounded MemoryOS access, and later Blackwall construction, but each remains a hypothesis until separately proven.
 TRACE: VileAltercation canary; local Djinn PoC; SovereignOS Exodus planning.
 STATUS: COMMITTED_CANONICAL_E_LANE
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Djinn field use after Flight 02|exploration_and_signal]
+WHAT: The roster moved from special demonstration to ordinary field-ready tooling after Flight 02 exercised all twelve Djinn individually, including STELATA, with unique invocation IDs and zero external effects.
+MY_ROLE: Preserve the experimental next phase: learn which Djinn materially improve real work by using them naturally, not by maximizing call counts. Practical use should surface subtler fit and sequencing lessons.
+CURRENT_LEARNING: Maturity questions are now about choosing the right bounded tool and giving it sufficient context, not merely whether the runtime starts.
+TRACE: Flight Test 02; routine-use behavior decision.
+STATUS: COMMITTED_CANONICAL_E_LANE

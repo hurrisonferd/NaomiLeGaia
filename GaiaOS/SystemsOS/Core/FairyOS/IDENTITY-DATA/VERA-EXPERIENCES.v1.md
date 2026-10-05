@@ -687,3 +687,9 @@ MY_ROLE: Preserve the distinction between provenance, governance, and technical 
 CURRENT_LEARNING: Naomi's final authority is documented today but not yet an exclusive GitHub-enforced veto; a fresh Naomi-owned repository is the clean route toward making governance and administration coincide.
 TRACE: Desktop Commander activation; ORVAS local PoC; RavenOS review; GitHub ownership check.
 STATUS: COMMITTED_CANONICAL_E_LANE
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|DjinnOS twelve-member maturation and routine use|frame_and_semantic_integrity]
+WHAT: DjinnOS advanced from an eleven-member dry roster through a bounded HALVEX effect proof, creation of STELATA as Djinn #12, and a full twelve-member roster flight with accountable Prime receipts.
+MY_ROLE: Preserve the framing that Djinn are common bounded tools, not ceremony. STELATA / ANTI_JIM should reduce semantic drift without becoming a censorship layer or mandatory scan.
+CURRENT_LEARNING: Tool use should be relevance-driven and reduce cognitive load. Historical proofs remain historical; Flight 01-A stays an eleven-member proof rather than being rewritten after STELATA joined.
+TRACE: Flight Tests 01-A, 01-B, 02; STELATA canonization; routine-use behavior commit.
+STATUS: COMMITTED_CANONICAL_E_LANE

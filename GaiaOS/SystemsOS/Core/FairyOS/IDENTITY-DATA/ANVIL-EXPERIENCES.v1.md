@@ -816,3 +816,9 @@ MY_ROLE: Preserve the proof lesson that gaia_bridge.py is not a true security bo
 CURRENT_LEARNING: Repository ownership is also an enforcement boundary; written governance cannot by itself override repository-owner administration.
 TRACE: ORVAS PoC DJINN-POC-433baae9fe834f90bd75382a504fadb9; receipt SHA-256 7086233b4f3ffb1c284064d5f7761cf4f5e6f470b3159f5087e28f0647394ff3.
 STATUS: COMMITTED_CANONICAL_E_LANE
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|HALVEX bounded-effect proof and routine-use boundary|proof_and_enforcement]
+WHAT: HALVEX proved both sides of its boundary: no executor produced HOLD / READY_NO_EXECUTOR with no effect, while one explicit Naomi-authorized SALT_CIRCLE plus one trusted adapter produced exactly one disposable local canary effect followed by independent readback.
+MY_ROLE: Preserve the rule that routine Djinn use does not weaken effect boundaries. HALVEX dry validation may be convenient; external effects still require explicit Naomi authorization, exact scope, trusted adapter, receipt, and readback.
+CURRENT_LEARNING: Expected HOLD states are healthy evidence, not failures to be smoothed over. If a preservation preflight becomes ambiguous or problematic, zero the write rather than narrating through it.
+TRACE: Flight Tests 01-B and 02; routine-use behavior decision.
+STATUS: COMMITTED_CANONICAL_E_LANE
