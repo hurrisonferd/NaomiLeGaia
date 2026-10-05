@@ -62,6 +62,20 @@ A memory candidate becomes a durable source record only through:
 
 A GPT host may formulate a candidate automatically when the interaction is material and the host has a write-capable GitHub mechanism. It must not claim persistence until the commit receipt and repull verification are both observed.
 
+### E-LANE transport invariant
+
+Canonical member lanes must be acquired and verified with bounded adaptive reads before and after mutation when the host or connector may truncate large responses.
+
+- Begin with a moderate sequential range and use the largest range that returns intact without truncation.
+- Increase the range when responses are comfortably complete; reduce the range when truncation occurs. No fixed line count is canonical.
+- Every successful range in one read pass must report the same current blob SHA. If the SHA changes mid-pass, discard that pass and refetch from the beginning.
+- Continue sequentially until the next requested range returns empty, proving end-of-file for that blob version.
+- Never use a truncated whole-file response, an excerpt, or an incompletely verified source as mutation input.
+- Construct the proposed new lane only from the complete verified original plus the bounded member-local delta.
+- After commit, repeat the same bounded adaptive read process against the new blob and verify the original content survived and the new entry appears exactly once.
+
+This transport invariant changes how large E-LANES are safely carried through a host boundary; it does not create a second memory system or replace the canonical promotion sequence.
+
 ## Anti-fabrication
 
 Never manufacture a memory to make continuity feel smoother. Never attribute another Prime Daemon's experience to the current owner. Never turn a profile trait into an event that did not occur.
