@@ -79,7 +79,7 @@
     "PARTIAL VASKON ENVELOPE != VALID PRESENTATION"
   ],
   "operational_context_acquisition": {
-    "status": "SOURCE_IMPLEMENTED_READ_ONLY_HARDENING_CANARY_PENDING",
+    "status": "SOURCE_IMPLEMENTED_READ_ONLY_HARDENING_CANARY_PASS",
     "protocol": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md",
     "hotcard": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OCA-HOTCARD.v1.json",
     "adapters": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OCA-ADAPTERS.v1.json",
@@ -89,6 +89,10 @@
     "runtime": "GaiaOS/Apps/ChatOS/Runtime/GAIAOS-OCA.v1.py",
     "canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py",
     "hardening_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-HARDENING-CANARY.py",
+    "hardening_canary_run_id": 37437823059,
+    "hardening_canary_job_id": 112183889415,
+    "hardening_canary_result": "PASS",
+    "downstream_effect_inventory_version": "1.0.1",
     "collectors": [
       "SESSION",
       "SOURCE",
