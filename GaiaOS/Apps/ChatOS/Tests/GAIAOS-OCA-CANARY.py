@@ -11,6 +11,7 @@ CHATOS = Path(__file__).resolve().parents[1]
 RUNTIME = CHATOS / "Runtime/GAIAOS-OCA.v1.py"
 SCHEMA = CHATOS / "Schemas/GAIAOS-OCA-PACKET.v1.schema.json"
 PROTOCOL = CHATOS / "Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md"
+HOTCARD = CHATOS / "Protocols/GAIAOS-OCA-HOTCARD.v1.json"
 CURRENT = CHATOS / "CURRENT.json"
 
 spec = importlib.util.spec_from_file_location("gaiaos_oca", RUNTIME)
@@ -47,7 +48,7 @@ def expect_error(code, fn):
 
 
 # Required source files, ChatOS wiring, and firewall language.
-for path in (RUNTIME, SCHEMA, PROTOCOL, CURRENT):
+for path in (RUNTIME, SCHEMA, PROTOCOL, HOTCARD, CURRENT):
     assert path.is_file(), path
 protocol = PROTOCOL.read_text(encoding="utf-8")
 for token in (
@@ -64,15 +65,50 @@ assert schema["$id"] == "gaiaos.oca.packet.v1"
 assert schema["properties"]["effect_authority"]["const"] == "NONE"
 assert schema["properties"]["persistence"]["const"] == "EPHEMERAL_ONLY"
 
+hotcard = json.loads(HOTCARD.read_text(encoding="utf-8"))
+assert hotcard["schema"] == "gaiaos.oca.hotcard.v1"
+assert hotcard["status"] == "ACTIVE_READ_ONLY_HOST_ACQUISITION_PROFILE"
+assert hotcard["effect_authority"] == "NONE"
+assert hotcard["persistence"] == "EPHEMERAL_ONLY"
+assert hotcard["collector_order"] == ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]
+assert hotcard["acquisition_rules"]["attempt_connected_read_before_asking_naomi_to_relay"] is True
+assert hotcard["acquisition_rules"]["invent_tool_or_connection"] is False
+assert hotcard["acquisition_rules"]["reuse_stale_observation_as_current"] is False
+assert hotcard["acquisition_rules"]["cross_chat_capability_assumption"] is False
+firewall = hotcard["persistence_firewall"]
+for key in (
+    "may_write_memoryos_turso",
+    "may_write_e_lanes",
+    "may_edit_identity",
+    "may_commit_github",
+    "may_deploy_or_restart",
+    "may_promote_memory",
+    "may_consume_authorization",
+):
+    assert firewall[key] is False, key
+assert firewall["may_read_sources"] is True
+assert firewall["may_normalize_reads"] is True
+assert firewall["may_emit_ephemeral_packet"] is True
+interrupt_gate = hotcard["naomi_interruption_gate"]
+for expected in (
+    "COPYING_AN_ID_ALREADY_OBTAINABLE_FROM_CONNECTED_PROVIDER",
+    "REPEATING_CURRENT_COMMIT_ALREADY_READABLE_FROM_GITHUB",
+    "RELAYING_DEPLOY_STATUS_ALREADY_READABLE_FROM_RENDER",
+    "RESTATING_CAPABILITY_AVAILABILITY_ALREADY_OBSERVABLE_IN_SESSION",
+):
+    assert expected in interrupt_gate["do_not_interrupt_for"], expected
+
 current = json.loads(CURRENT.read_text(encoding="utf-8"))
 oca_current = current["operational_context_acquisition"]
 assert oca_current["effect_authority"] == "NONE"
 assert oca_current["persistence"] == "EPHEMERAL_ONLY"
 assert oca_current["collectors"] == ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]
 assert current["sources"]["oca_protocol"].endswith("GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md")
+assert current["sources"]["oca_hotcard"].endswith("GAIAOS-OCA-HOTCARD.v1.json")
 assert current["sources"]["oca_schema"].endswith("GAIAOS-OCA-PACKET.v1.schema.json")
 assert current["sources"]["oca_runtime"].endswith("GAIAOS-OCA.v1.py")
 assert current["sources"]["oca_canary"].endswith("GAIAOS-OCA-CANARY.py")
+assert oca_current["hotcard"].endswith("GAIAOS-OCA-HOTCARD.v1.json")
 
 # Happy path.
 observations = [
