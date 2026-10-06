@@ -1,0 +1,180 @@
+{
+  "schema": "gaiaos.oca.adapters.v1",
+  "version": "1.0.0",
+  "authority": "NAOMI",
+  "authority_alias": "Ligeia",
+  "owner": "ChatOS",
+  "status": "ACTIVE_READ_ONLY_PROVIDER_NORMALIZATION_SPEC",
+  "effect_authority": "NONE",
+  "persistence": "EPHEMERAL_ONLY",
+  "purpose": "Normalize current host/provider reads into provenance-preserving OCA observations without granting the repository runtime direct provider authority.",
+  "observation_envelope": {
+    "required": [
+      "collector",
+      "status",
+      "source_class",
+      "provider",
+      "observed_at",
+      "max_age_seconds",
+      "coordinates",
+      "facts",
+      "verified_facts",
+      "unknowns",
+      "errors"
+    ],
+    "statuses": [
+      "VERIFIED",
+      "PARTIAL",
+      "UNAVAILABLE",
+      "UNKNOWN"
+    ],
+    "freshness_computed_by_runtime": true,
+    "provider_provenance_required": true,
+    "multiple_observations_per_collector": true,
+    "cross_provider_premerge": "FORBIDDEN"
+  },
+  "adapters": {
+    "HOST_SESSION_INVENTORY": {
+      "collector": "SESSION",
+      "provider_class": "HOST",
+      "read_only": true,
+      "default_max_age_seconds": 120,
+      "accepted_read_surfaces": [
+        "CURRENT_TOOL_INVENTORY",
+        "CONNECTED_PLUGIN_DISCOVERY",
+        "CURRENT_PROVIDER_SESSION_RESULT"
+      ],
+      "verified_fact_keys": [
+        "available_capabilities"
+      ],
+      "forbidden_evidence": [
+        "PAST_CHAT_CAPABILITY_STATE",
+        "REMEMBERED_CONNECTION_STATE",
+        "REPOSITORY_DECLARATION_OF_TOOL_EXISTENCE"
+      ],
+      "forbidden_operations": [
+        "CONNECT_WITHOUT_USER_ACTION",
+        "CHANGE_PLUGIN_SETTINGS",
+        "GRANT_PERMISSIONS"
+      ]
+    },
+    "GITHUB_SOURCE": {
+      "collector": "SOURCE",
+      "provider_class": "GITHUB",
+      "read_only": true,
+      "default_max_age_seconds": 300,
+      "accepted_read_operations": [
+        "READ_REF",
+        "READ_FILE",
+        "READ_COMMIT",
+        "READ_COMPARE",
+        "READ_WORKFLOW_RESULT"
+      ],
+      "common_verified_fact_keys": [
+        "canonical_main",
+        "repository",
+        "branch",
+        "source_path",
+        "source_test_status"
+      ],
+      "required_coordinates_when_applicable": [
+        "repository",
+        "ref",
+        "commit_sha",
+        "path"
+      ],
+      "forbidden_operations": [
+        "CREATE_OR_UPDATE_FILE",
+        "MOVE_REF",
+        "MERGE",
+        "DELETE",
+        "DISPATCH_EFFECTFUL_WORKFLOW"
+      ],
+      "law": "SOURCE != DEPLOYMENT"
+    },
+    "RENDER_RUNTIME": {
+      "collector": "RUNTIME_CONTINUITY",
+      "provider_class": "RENDER",
+      "read_only": true,
+      "default_max_age_seconds": 120,
+      "accepted_read_operations": [
+        "READ_SERVICE",
+        "LIST_DEPLOYS",
+        "READ_DEPLOY",
+        "LIST_EVENTS",
+        "READ_HEALTH_EVIDENCE"
+      ],
+      "common_verified_fact_keys": [
+        "deployed_commit",
+        "deployment_id",
+        "deployment_status",
+        "service_url"
+      ],
+      "required_coordinates_when_applicable": [
+        "service_id",
+        "deploy_id",
+        "commit_sha"
+      ],
+      "forbidden_operations": [
+        "TRIGGER_DEPLOY",
+        "RESTART_SERVICE",
+        "CHANGE_ENVIRONMENT",
+        "CHANGE_SERVICE_CONFIGURATION"
+      ],
+      "law": "CONFIGURED_AUTO_DEPLOY != PROOF_OF_DEPLOYMENT"
+    },
+    "MEMORYOS_CONTINUITY": {
+      "collector": "RUNTIME_CONTINUITY",
+      "provider_class": "MEMORYOS",
+      "read_only": true,
+      "default_max_age_seconds": 120,
+      "accepted_read_operations": [
+        "EXACT_RECORD_READBACK",
+        "RECEIPT_READ",
+        "CONTINUITY_STATUS_READ"
+      ],
+      "common_verified_fact_keys": [
+        "record_id",
+        "receipt_id",
+        "record_owner",
+        "record_scope",
+        "record_type",
+        "stored_statement",
+        "storage_backend"
+      ],
+      "required_coordinates_when_applicable": [
+        "record_id",
+        "receipt_id"
+      ],
+      "forbidden_operations": [
+        "CREATE_CANDIDATE",
+        "PROMOTE_CANDIDATE",
+        "WRITE_RECORD",
+        "MUTATE_E_LANE"
+      ],
+      "laws": [
+        "CANDIDATE != DURABLE",
+        "RECEIPT != READBACK"
+      ]
+    }
+  },
+  "normalization_rules": {
+    "read_result_must_precede_verified_status": true,
+    "provider_error_is_not_target_failure": true,
+    "unavailable_provider_stays_unavailable": true,
+    "unknown_stays_unknown": true,
+    "preserve_exact_ids_and_shas": true,
+    "preserve_provider_specific_coordinates": true,
+    "keep_independent_provider_observations_separate": true,
+    "allow_runtime_to_surface_conflicts": true,
+    "do_not_select_winner_between_conflicting_verified_providers": true,
+    "do_not_copy_sensitive_credentials_into_packet": true
+  },
+  "quality_gates": [
+    "NO_ADAPTER_HAS_A_MUTATION_OPERATION",
+    "EVERY_VERIFIED_OBSERVATION_HAS_A_CURRENT_READ",
+    "MULTI_PROVIDER_PROVENANCE_SURVIVES_NORMALIZATION",
+    "PROVIDER_FAILURE_DOES_NOT_ERASE_HEALTHY_EVIDENCE",
+    "EFFECTFUL_NEXT_STEP_REMAINS_OUTSIDE_OCA_AUTHORITY"
+  ]
+}
