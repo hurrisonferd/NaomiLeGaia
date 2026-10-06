@@ -13,6 +13,7 @@ RUNTIME = CHATOS / "Runtime/GAIAOS-OCA.v1.py"
 SCHEMA = CHATOS / "Schemas/GAIAOS-OCA-PACKET.v1.schema.json"
 PROTOCOL = CHATOS / "Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md"
 HOTCARD = CHATOS / "Protocols/GAIAOS-OCA-HOTCARD.v1.json"
+ADAPTERS = CHATOS / "Protocols/GAIAOS-OCA-ADAPTERS.v1.json"
 CURRENT = CHATOS / "CURRENT.json"
 
 spec = importlib.util.spec_from_file_location("gaiaos_oca", RUNTIME)
@@ -60,7 +61,7 @@ def expect_error(code, fn):
 
 
 # Required source files, ChatOS wiring, and firewall language.
-for path in (RUNTIME, SCHEMA, PROTOCOL, HOTCARD, CURRENT):
+for path in (RUNTIME, SCHEMA, PROTOCOL, HOTCARD, ADAPTERS, CURRENT):
     assert path.is_file(), path
 protocol = PROTOCOL.read_text(encoding="utf-8")
 for token in (
@@ -112,6 +113,25 @@ for expected in (
 ):
     assert expected in interrupt_gate["do_not_interrupt_for"], expected
 
+adapters = json.loads(ADAPTERS.read_text(encoding="utf-8"))
+assert adapters["schema"] == "gaiaos.oca.adapters.v1"
+assert adapters["status"] == "ACTIVE_READ_ONLY_PROVIDER_NORMALIZATION_SPEC"
+assert adapters["effect_authority"] == "NONE"
+assert adapters["persistence"] == "EPHEMERAL_ONLY"
+envelope = adapters["observation_envelope"]
+assert envelope["multiple_observations_per_collector"] is True
+assert envelope["provider_provenance_required"] is True
+assert envelope["cross_provider_premerge"] == "FORBIDDEN"
+for name in ("HOST_SESSION_INVENTORY", "GITHUB_SOURCE", "RENDER_RUNTIME", "MEMORYOS_CONTINUITY"):
+    assert adapters["adapters"][name]["read_only"] is True, name
+assert "CREATE_OR_UPDATE_FILE" in adapters["adapters"]["GITHUB_SOURCE"]["forbidden_operations"]
+assert "TRIGGER_DEPLOY" in adapters["adapters"]["RENDER_RUNTIME"]["forbidden_operations"]
+assert "WRITE_RECORD" in adapters["adapters"]["MEMORYOS_CONTINUITY"]["forbidden_operations"]
+normalization = adapters["normalization_rules"]
+assert normalization["keep_independent_provider_observations_separate"] is True
+assert normalization["allow_runtime_to_surface_conflicts"] is True
+assert normalization["do_not_select_winner_between_conflicting_verified_providers"] is True
+
 current = json.loads(CURRENT.read_text(encoding="utf-8"))
 oca_current = current["operational_context_acquisition"]
 assert oca_current["effect_authority"] == "NONE"
@@ -119,10 +139,12 @@ assert oca_current["persistence"] == "EPHEMERAL_ONLY"
 assert oca_current["collectors"] == ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]
 assert current["sources"]["oca_protocol"].endswith("GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md")
 assert current["sources"]["oca_hotcard"].endswith("GAIAOS-OCA-HOTCARD.v1.json")
+assert current["sources"]["oca_adapters"].endswith("GAIAOS-OCA-ADAPTERS.v1.json")
 assert current["sources"]["oca_schema"].endswith("GAIAOS-OCA-PACKET.v1.schema.json")
 assert current["sources"]["oca_runtime"].endswith("GAIAOS-OCA.v1.py")
 assert current["sources"]["oca_canary"].endswith("GAIAOS-OCA-CANARY.py")
 assert oca_current["hotcard"].endswith("GAIAOS-OCA-HOTCARD.v1.json")
+assert oca_current["adapters"].endswith("GAIAOS-OCA-ADAPTERS.v1.json")
 
 # Happy path with multiple providers inside the same collector classes.
 observations = [
