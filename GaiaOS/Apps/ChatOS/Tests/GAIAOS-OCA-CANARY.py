@@ -7,10 +7,10 @@ import importlib.util
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[3]
-RUNTIME = ROOT / "ChatOS/Runtime/GAIAOS-OCA.v1.py"
-SCHEMA = ROOT / "ChatOS/Schemas/GAIAOS-OCA-PACKET.v1.schema.json"
-PROTOCOL = ROOT / "ChatOS/Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md"
+CHATOS = Path(__file__).resolve().parents[1]
+RUNTIME = CHATOS / "Runtime/GAIAOS-OCA.v1.py"
+SCHEMA = CHATOS / "Schemas/GAIAOS-OCA-PACKET.v1.schema.json"
+PROTOCOL = CHATOS / "Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md"
 
 spec = importlib.util.spec_from_file_location("gaiaos_oca", RUNTIME)
 assert spec and spec.loader
