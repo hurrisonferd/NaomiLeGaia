@@ -33,9 +33,9 @@
       "additionalProperties": false,
       "required": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"],
       "properties": {
-        "SESSION": {"$ref": "#/$defs/collector"},
-        "SOURCE": {"$ref": "#/$defs/collector"},
-        "RUNTIME_CONTINUITY": {"$ref": "#/$defs/collector"}
+        "SESSION": {"$ref": "#/$defs/observationList"},
+        "SOURCE": {"$ref": "#/$defs/observationList"},
+        "RUNTIME_CONTINUITY": {"$ref": "#/$defs/observationList"}
       }
     },
     "verified_current_state": {"type": "object"},
@@ -67,9 +67,10 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["collector", "value"],
+              "required": ["collector", "provider", "value"],
               "properties": {
                 "collector": {"enum": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]},
+                "provider": {"type": "string", "minLength": 1},
                 "value": {}
               }
             }
@@ -81,7 +82,12 @@
     "packet_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
   },
   "$defs": {
-    "collector": {
+    "observationList": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/observation"}
+    },
+    "observation": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -118,9 +124,10 @@
     "annotatedValue": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["collector", "value"],
+      "required": ["collector", "provider", "value"],
       "properties": {
         "collector": {"enum": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]},
+        "provider": {"type": "string", "minLength": 1},
         "value": {}
       }
     }
