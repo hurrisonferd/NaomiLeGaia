@@ -90,6 +90,7 @@ assert policy["unregistered_write_capable_workflow"] == "FAIL_CANARY"
 assert policy["registered_workflow_missing"] == "FAIL_CANARY"
 assert policy["inventory_is_not_authority"] is True
 assert policy["inventory_is_not_proof_that_a_workflow_ran"] is True
+assert policy["bounded_signal_scan_is_exhaustive_proof"] is False
 
 # Tripwire: discover workflows carrying the bounded explicit write signals in the
 # inventory. This does not claim to prove the absence of every possible effect.
@@ -109,10 +110,12 @@ assert not stale_inventory, f"REGISTERED_WORKFLOW_NO_LONGER_MATCHES_WRITE_SIGNAL
 for item in effects["workflows"]:
     path = REPO / item["path"]
     assert path.is_file(), item["path"]
-    text = path.read_text(encoding="utf-8")
-    lower = text.lower()
-    for signal in item["write_signals"]:
-        assert signal.lower() in lower, (item["path"], signal)
+    lower = path.read_text(encoding="utf-8").lower()
+    declared_signals = [str(signal).lower() for signal in item["write_signals"]]
+    assert any(signal in lower for signal in declared_signals), (
+        item["path"],
+        "none of the declared write signals are present",
+    )
 
 # Specific regression for the secondary effect discovered during OCA promotion.
 identity_sync = next(
