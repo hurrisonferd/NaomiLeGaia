@@ -3,9 +3,9 @@
 Read-only, provider-agnostic normalizer for operational-context evidence.
 
 The host performs any real provider reads. This module accepts those observations,
-classifies freshness, preserves provenance, surfaces conflicts, and emits one
-bounded ephemeral packet. It performs no network, persistence, deployment, or
-repository effects.
+classifies freshness, preserves provider provenance, surfaces conflicts, and emits
+one bounded ephemeral packet. It performs no network, persistence, deployment,
+or repository effects.
 """
 from __future__ import annotations
 
@@ -78,7 +78,7 @@ def _freshness(observed_at: str | None, max_age_seconds: int | None, now: dateti
     return "FRESH" if age <= max_age_seconds else "STALE"
 
 
-def _unknown_collector(name: str) -> dict[str, Any]:
+def _unknown_observation(name: str) -> dict[str, Any]:
     return {
         "collector": name,
         "status": "UNKNOWN",
@@ -145,8 +145,20 @@ def normalize_observation(raw: dict[str, Any], now: datetime) -> dict[str, Any]:
     }
 
 
-def _annotate(collector: str, values: list[Any]) -> list[dict[str, Any]]:
-    return [{"collector": collector, "value": copy.deepcopy(value)} for value in values]
+def _observation_sort_key(observation: dict[str, Any]) -> tuple[str, str, str, str]:
+    return (
+        str(observation.get("provider", "")),
+        str(observation.get("observed_at") or ""),
+        str(observation.get("source_class", "")),
+        _sha256(observation),
+    )
+
+
+def _annotate(collector: str, provider: str, values: list[Any]) -> list[dict[str, Any]]:
+    return [
+        {"collector": collector, "provider": provider, "value": copy.deepcopy(value)}
+        for value in values
+    ]
 
 
 def build_packet(
@@ -159,37 +171,67 @@ def build_packet(
     objective = str(objective).strip()
     if not objective:
         raise OCAError("OBJECTIVE_REQUIRED")
+    if not isinstance(observations, list):
+        raise OCAError("OBSERVATIONS_MUST_BE_LIST")
 
     now = _parse_time(generated_at) if generated_at else datetime.now(timezone.utc)
     generated = _iso(now)
 
-    normalized: dict[str, dict[str, Any]] = {}
+    grouped: dict[str, list[dict[str, Any]]] = {name: [] for name in COLLECTORS}
+    seen: dict[str, set[str]] = {name: set() for name in COLLECTORS}
     for raw in observations:
         item = normalize_observation(raw, now)
         name = item["collector"]
-        if name in normalized:
-            raise OCAError(f"DUPLICATE_COLLECTOR:{name}")
-        normalized[name] = item
+        identity = _sha256(item)
+        if identity in seen[name]:
+            continue
+        seen[name].add(identity)
+        grouped[name].append(item)
 
-    collectors = {name: normalized.get(name, _unknown_collector(name)) for name in COLLECTORS}
+    collectors: dict[str, list[dict[str, Any]]] = {}
+    for name in COLLECTORS:
+        items = sorted(grouped[name], key=_observation_sort_key)
+        collectors[name] = items if items else [_unknown_observation(name)]
 
     field_observations: dict[str, list[dict[str, Any]]] = {}
     blockers: list[dict[str, Any]] = []
     unknowns: list[dict[str, Any]] = []
 
-    for name, observation in collectors.items():
-        blockers.extend(_annotate(name, _list(observation["facts"].get("blockers"))))
-        unknowns.extend(_annotate(name, observation["unknowns"]))
-        unknowns.extend(_annotate(name, [f"provider error: {err}" for err in observation["errors"]]))
+    for name in COLLECTORS:
+        for observation in collectors[name]:
+            provider = observation["provider"]
+            blockers.extend(_annotate(name, provider, _list(observation["facts"].get("blockers"))))
+            unknowns.extend(_annotate(name, provider, observation["unknowns"]))
+            unknowns.extend(
+                _annotate(name, provider, [f"provider error: {err}" for err in observation["errors"]])
+            )
 
-        if observation["status"] in {"UNAVAILABLE", "UNKNOWN"}:
-            unknowns.append({"collector": name, "value": f"{name} status is {observation['status']}"})
-        if observation["freshness"] == "STALE":
-            unknowns.append({"collector": name, "value": f"{name} observation is STALE"})
+            if observation["status"] in {"UNAVAILABLE", "UNKNOWN"}:
+                unknowns.append(
+                    {
+                        "collector": name,
+                        "provider": provider,
+                        "value": f"{name} status is {observation['status']}",
+                    }
+                )
+            if observation["freshness"] == "STALE":
+                unknowns.append(
+                    {
+                        "collector": name,
+                        "provider": provider,
+                        "value": f"{name} observation is STALE",
+                    }
+                )
 
-        if observation["status"] == "VERIFIED" and observation["freshness"] == "FRESH":
-            for field, value in observation["verified_facts"].items():
-                field_observations.setdefault(str(field), []).append({"collector": name, "value": copy.deepcopy(value)})
+            if observation["status"] == "VERIFIED" and observation["freshness"] == "FRESH":
+                for field, value in observation["verified_facts"].items():
+                    field_observations.setdefault(str(field), []).append(
+                        {
+                            "collector": name,
+                            "provider": provider,
+                            "value": copy.deepcopy(value),
+                        }
+                    )
 
     verified_state: dict[str, Any] = {}
     conflicts: list[dict[str, Any]] = []
@@ -199,15 +241,22 @@ def build_packet(
             verified_state[field] = copy.deepcopy(first)
         else:
             conflicts.append({"field": field, "observations": copy.deepcopy(entries)})
-            blockers.append({"collector": "SOURCE" if field == "canonical_main" else entries[0]["collector"], "value": f"conflicting verified fact: {field}"})
+            blockers.append(
+                {
+                    "collector": entries[0]["collector"],
+                    "provider": entries[0]["provider"],
+                    "value": f"conflicting verified fact: {field}",
+                }
+            )
 
-    session = collectors["SESSION"]
-    capabilities: list[str] = []
-    if session["status"] == "VERIFIED" and session["freshness"] == "FRESH":
-        raw_caps = session["verified_facts"].get("available_capabilities", [])
+    capabilities: set[str] = set()
+    for observation in collectors["SESSION"]:
+        if observation["status"] != "VERIFIED" or observation["freshness"] != "FRESH":
+            continue
+        raw_caps = observation["verified_facts"].get("available_capabilities", [])
         if not isinstance(raw_caps, list):
             raise OCAError("AVAILABLE_CAPABILITIES_MUST_BE_LIST")
-        capabilities = sorted({str(item).strip() for item in raw_caps if str(item).strip()})
+        capabilities.update(str(item).strip() for item in raw_caps if str(item).strip())
 
     last_effect = verified_state.get("last_verified_effect")
 
@@ -219,7 +268,7 @@ def build_packet(
         "persistence": "EPHEMERAL_ONLY",
         "collectors": collectors,
         "verified_current_state": verified_state,
-        "capabilities_available_now": capabilities,
+        "capabilities_available_now": sorted(capabilities),
         "last_verified_effect": copy.deepcopy(last_effect),
         "blockers": blockers,
         "unknowns": unknowns,
