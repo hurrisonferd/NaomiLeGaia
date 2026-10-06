@@ -225,6 +225,8 @@ def build_packet(
 
             if observation["status"] == "VERIFIED" and observation["freshness"] == "FRESH":
                 for field, value in observation["verified_facts"].items():
+                    if name == "SESSION" and str(field) == "available_capabilities":
+                        continue
                     field_observations.setdefault(str(field), []).append(
                         {
                             "collector": name,
