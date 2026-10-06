@@ -4,7 +4,7 @@
   "authority": "NAOMI",
   "owner": "ChatOS application layer",
   "version": "v0.001.003-dev",
-  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_VASKON_PRESENTATION_FAIL_CLOSED_MEMORYOS_AGENCYOS_DISSENT_PRESENTATION_GOLD_CONTINUITY_INTEGRITY",
+  "status": "ACTIVE_SOURCE_HOT_WARM_COLD_AWARE_VASKON_PRESENTATION_FAIL_CLOSED_MEMORYOS_AGENCYOS_DISSENT_PRESENTATION_GOLD_CONTINUITY_INTEGRITY_OCA_READ_ONLY",
   "location": "GaiaOS/Apps/ChatOS",
   "purpose": "Own the current carrier-visible NOW surface while handing durable session-memory lifecycle to MemoryOS and preserving claim, identity, and effect boundaries.",
   "sources": {
@@ -20,6 +20,10 @@
     "bridge": "GaiaOS/Apps/ChatOS/Protocols/CHATOS-BRAINOS-FAIRYOS-BRIDGE.v1.json",
     "compiler": "GaiaOS/Apps/ChatOS/Runtime/CHATOS-EVENT-COMPILER.v1.py",
     "canary": "GaiaOS/Apps/ChatOS/Tests/CHATOS-CANARY.py",
+    "oca_protocol": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md",
+    "oca_schema": "GaiaOS/Apps/ChatOS/Schemas/GAIAOS-OCA-PACKET.v1.schema.json",
+    "oca_runtime": "GaiaOS/Apps/ChatOS/Runtime/GAIAOS-OCA.v1.py",
+    "oca_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py",
     "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
@@ -58,10 +62,31 @@
     "RETRIEVAL != IDENTITY ADOPTION",
     "WARM != SAVED",
     "UNKNOWN STAYS UNKNOWN",
+    "OCA PACKET != MEMORY",
+    "STALE != CURRENT",
+    "REDUCE HUMAN RELAY; DO NOT REDUCE HUMAN AUTHORITY",
     "NAOMI RETAINS FINAL AUTHORITY",
     "VASKON PRESENTATION REQUIRES EXPLICIT CONJURE",
     "PARTIAL VASKON ENVELOPE != VALID PRESENTATION"
   ],
+  "operational_context_acquisition": {
+    "status": "SOURCE_IMPLEMENTED_READ_ONLY_CANARY_PASS",
+    "protocol": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md",
+    "schema": "GaiaOS/Apps/ChatOS/Schemas/GAIAOS-OCA-PACKET.v1.schema.json",
+    "runtime": "GaiaOS/Apps/ChatOS/Runtime/GAIAOS-OCA.v1.py",
+    "canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py",
+    "collectors": [
+      "SESSION",
+      "SOURCE",
+      "RUNTIME_CONTINUITY"
+    ],
+    "effect_authority": "NONE",
+    "persistence": "EPHEMERAL_ONLY",
+    "provider_access": "HOST_SUPPLIED_CURRENT_READS_ONLY",
+    "automatic_durable_write": false,
+    "automatic_deploy": false,
+    "automatic_memory_promotion": false
+  },
   "dedicated_prime_daemon_sessions": {
     "source_contract": "GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md",
     "runtime": "api/solo_chat_runtime.py",
