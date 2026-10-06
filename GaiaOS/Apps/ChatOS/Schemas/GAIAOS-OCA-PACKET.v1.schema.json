@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gaiaos.oca.packet.v1",
+  "title": "GaiaOS Operational Context Acquisition Packet v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "packet_id",
+    "objective",
+    "generated_at",
+    "effect_authority",
+    "persistence",
+    "collectors",
+    "verified_current_state",
+    "capabilities_available_now",
+    "last_verified_effect",
+    "blockers",
+    "unknowns",
+    "conflicts",
+    "exact_next_step",
+    "packet_sha256"
+  ],
+  "properties": {
+    "schema": {"const": "gaiaos.oca.packet.v1"},
+    "packet_id": {"type": "string", "pattern": "^OCA-[0-9a-f]{16}$"},
+    "objective": {"type": "string", "minLength": 1},
+    "generated_at": {"type": "string", "format": "date-time"},
+    "effect_authority": {"const": "NONE"},
+    "persistence": {"const": "EPHEMERAL_ONLY"},
+    "collectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"],
+      "properties": {
+        "SESSION": {"$ref": "#/$defs/collector"},
+        "SOURCE": {"$ref": "#/$defs/collector"},
+        "RUNTIME_CONTINUITY": {"$ref": "#/$defs/collector"}
+      }
+    },
+    "verified_current_state": {"type": "object"},
+    "capabilities_available_now": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "last_verified_effect": {},
+    "blockers": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/annotatedValue"}
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/annotatedValue"}
+    },
+    "conflicts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["field", "observations"],
+        "properties": {
+          "field": {"type": "string", "minLength": 1},
+          "observations": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["collector", "value"],
+              "properties": {
+                "collector": {"enum": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]},
+                "value": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "exact_next_step": {"type": ["string", "null"]},
+    "packet_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "collector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "collector",
+        "status",
+        "source_class",
+        "provider",
+        "observed_at",
+        "max_age_seconds",
+        "freshness",
+        "coordinates",
+        "facts",
+        "verified_facts",
+        "unknowns",
+        "errors"
+      ],
+      "properties": {
+        "collector": {"enum": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]},
+        "status": {"enum": ["VERIFIED", "PARTIAL", "UNAVAILABLE", "UNKNOWN"]},
+        "source_class": {
+          "enum": ["SOURCE_READ", "TOOL_RESULT", "PROVIDER_RESULT", "SYSTEM_STATE", "UNKNOWN"]
+        },
+        "provider": {"type": "string", "minLength": 1},
+        "observed_at": {"type": ["string", "null"], "format": "date-time"},
+        "max_age_seconds": {"type": ["integer", "null"], "minimum": 0},
+        "freshness": {"enum": ["FRESH", "STALE", "UNKNOWN"]},
+        "coordinates": {"type": "object"},
+        "facts": {"type": "object"},
+        "verified_facts": {"type": "object"},
+        "unknowns": {"type": "array"},
+        "errors": {"type": "array"}
+      }
+    },
+    "annotatedValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collector", "value"],
+      "properties": {
+        "collector": {"enum": ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]},
+        "value": {}
+      }
+    }
+  }
+}
