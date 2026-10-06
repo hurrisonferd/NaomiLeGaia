@@ -1084,11 +1084,27 @@
         "GaiaOS/SystemsOS/Core/DjinnOS/DJINNOS.v1.md"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "b89468b3fcc52552701ae434349b98c1c5320339",
+      "timestamp_utc": "2026-10-06T08:21:36.976782+00:00",
+      "changed_paths": [
+        ".github/workflows/gaiaos-oca-canary.yml",
+        "GaiaOS/Apps/ChatOS/CURRENT.json",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OCA-ADAPTERS.v1.json",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OCA-HOTCARD.v1.json",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md",
+        "GaiaOS/Apps/ChatOS/Runtime/GAIAOS-OCA.v1.py",
+        "GaiaOS/Apps/ChatOS/Schemas/GAIAOS-OCA-PACKET.v1.schema.json",
+        "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-10-05T05:30:51.785556+00:00",
+  "last_verified": "2026-10-06T08:21:36.976782+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
