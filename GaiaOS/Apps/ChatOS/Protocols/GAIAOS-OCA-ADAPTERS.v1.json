@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.oca.adapters.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "authority": "NAOMI",
   "authority_alias": "Ligeia",
   "owner": "ChatOS",
@@ -33,8 +33,18 @@
     "multiple_observations_per_collector": true,
     "cross_provider_premerge": "FORBIDDEN"
   },
+  "adapter_law": {
+    "named": true,
+    "versioned": true,
+    "single_collector_binding": true,
+    "independently_testable": true,
+    "provenance_preserving": true,
+    "read_only": true,
+    "cross_adapter_authority_grant": false
+  },
   "adapters": {
     "HOST_SESSION_INVENTORY": {
+      "adapter_version": "1.0.0",
       "collector": "SESSION",
       "provider_class": "HOST",
       "read_only": true,
@@ -59,6 +69,7 @@
       ]
     },
     "GITHUB_SOURCE": {
+      "adapter_version": "1.0.0",
       "collector": "SOURCE",
       "provider_class": "GITHUB",
       "read_only": true,
@@ -92,7 +103,42 @@
       ],
       "law": "SOURCE != DEPLOYMENT"
     },
+    "GITHUB_WORKFLOW_EFFECT_SURFACE": {
+      "adapter_version": "1.0.0",
+      "collector": "SOURCE",
+      "provider_class": "GITHUB",
+      "read_only": true,
+      "default_max_age_seconds": 300,
+      "accepted_read_operations": [
+        "READ_WORKFLOW_SOURCE",
+        "READ_WORKFLOW_PERMISSIONS",
+        "READ_WORKFLOW_TRIGGER_PATHS",
+        "READ_DOWNSTREAM_EFFECT_INVENTORY"
+      ],
+      "common_verified_fact_keys": [
+        "write_capable_workflows",
+        "expected_automations"
+      ],
+      "required_coordinates_when_applicable": [
+        "repository",
+        "ref",
+        "workflow_path"
+      ],
+      "forbidden_operations": [
+        "DISPATCH_WORKFLOW",
+        "CREATE_OR_UPDATE_FILE",
+        "MOVE_REF",
+        "MERGE",
+        "DELETE"
+      ],
+      "laws": [
+        "SOURCE_DIFF != TOTAL_EFFECT_SURFACE",
+        "WORKFLOW_PERMISSION != PROOF_OF_EXECUTION",
+        "EXPECTED_AUTOMATION != OBSERVED_SECONDARY_EFFECT"
+      ]
+    },
     "RENDER_RUNTIME": {
+      "adapter_version": "1.0.0",
       "collector": "RUNTIME_CONTINUITY",
       "provider_class": "RENDER",
       "read_only": true,
@@ -124,6 +170,7 @@
       "law": "CONFIGURED_AUTO_DEPLOY != PROOF_OF_DEPLOYMENT"
     },
     "MEMORYOS_CONTINUITY": {
+      "adapter_version": "1.0.0",
       "collector": "RUNTIME_CONTINUITY",
       "provider_class": "MEMORYOS",
       "read_only": true,
@@ -168,13 +215,18 @@
     "keep_independent_provider_observations_separate": true,
     "allow_runtime_to_surface_conflicts": true,
     "do_not_select_winner_between_conflicting_verified_providers": true,
-    "do_not_copy_sensitive_credentials_into_packet": true
+    "do_not_copy_sensitive_credentials_into_packet": true,
+    "do_not_read_irrelevant_personal_data": true,
+    "provider_availability_alone_does_not_justify_read": true
   },
   "quality_gates": [
     "NO_ADAPTER_HAS_A_MUTATION_OPERATION",
+    "EVERY_ADAPTER_IS_VERSIONED",
+    "EVERY_ADAPTER_HAS_EXACTLY_ONE_COLLECTOR",
     "EVERY_VERIFIED_OBSERVATION_HAS_A_CURRENT_READ",
     "MULTI_PROVIDER_PROVENANCE_SURVIVES_NORMALIZATION",
     "PROVIDER_FAILURE_DOES_NOT_ERASE_HEALTHY_EVIDENCE",
-    "EFFECTFUL_NEXT_STEP_REMAINS_OUTSIDE_OCA_AUTHORITY"
+    "EFFECTFUL_NEXT_STEP_REMAINS_OUTSIDE_OCA_AUTHORITY",
+    "WRITE_CAPABLE_WORKFLOW_SURFACE_IS_READ_BEFORE_RELEVANT_SOURCE_PROMOTION"
   ]
 }
