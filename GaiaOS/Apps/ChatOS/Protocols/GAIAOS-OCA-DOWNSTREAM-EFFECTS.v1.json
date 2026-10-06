@@ -1,0 +1,51 @@
+{
+  "schema": "gaiaos.oca.downstream-effects.v1",
+  "version": "1.0.0",
+  "authority": "NAOMI",
+  "authority_alias": "Ligeia",
+  "owner": "ChatOS",
+  "status": "ACTIVE_READ_ONLY_EFFECT_SURFACE_INVENTORY",
+  "effect_authority": "NONE",
+  "persistence": "EPHEMERAL_ONLY",
+  "purpose": "Make repository automations that can create secondary effects after an otherwise bounded source change visible to OCA preflight and after-action reconciliation.",
+  "classification_order": [
+    "DIRECT_EFFECT",
+    "EXPECTED_AUTOMATION",
+    "OBSERVED_SECONDARY_EFFECT",
+    "UNRESOLVED_DOWNSTREAM_EFFECT"
+  ],
+  "workflows": [
+    {
+      "path": ".github/workflows/GAIAOS-MEMBER-IDENTITY-SYNC.yml",
+      "name": "GaiaOS Member Identity Sync",
+      "trigger": "PUSH_TO_MAIN_EXCEPT_IDENTITY_DATA_ONLY_CHANGES",
+      "write_signals": [
+        "contents: write",
+        "git push"
+      ],
+      "effect_class": "EXPECTED_AUTOMATION",
+      "expected_effect": "Append SOURCE_CHANGE_SYNC provenance events to affected Prime Daemon IDENTITY-DATA JSON records and update last_verified when shared identity-relevant source paths change.",
+      "boundary": "PROVENANCE_SYNC_ONLY; DOES_NOT_INFER_EXPERIENCE_OR_INTERNAL_STATE",
+      "source_of_truth": ".github/workflows/GAIAOS-MEMBER-IDENTITY-SYNC.yml"
+    }
+  ],
+  "discovery_policy": {
+    "scan_workflow_directory_in_canary": true,
+    "write_signals": [
+      "contents: write",
+      "write-all",
+      "git push"
+    ],
+    "unregistered_write_capable_workflow": "FAIL_CANARY",
+    "registered_workflow_missing": "FAIL_CANARY",
+    "inventory_is_not_authority": true,
+    "inventory_is_not_proof_that_a_workflow_ran": true
+  },
+  "laws": [
+    "SOURCE_DIFF != TOTAL_EFFECT_SURFACE",
+    "EXPECTED_AUTOMATION != OBSERVED_EFFECT",
+    "WORKFLOW_PERMISSION != PROOF_OF_EXECUTION",
+    "SECONDARY_EFFECT_REQUIRES_OBSERVATION_BEFORE COMPLETION CLAIM",
+    "OCA MAY INVENTORY EFFECT SURFACES BUT MAY NOT TRIGGER THEM"
+  ]
+}
