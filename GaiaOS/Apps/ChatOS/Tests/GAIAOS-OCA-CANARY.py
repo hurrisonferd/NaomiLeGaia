@@ -141,7 +141,7 @@ for node in ast.walk(tree):
     if isinstance(node, ast.ImportFrom) and node.module:
         assert node.module.split(".")[0] not in {"requests", "httpx", "urllib", "socket", "subprocess", "sqlite3"}
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Attribute):
-        assert node.func.attr not in {"write_text", "write_bytes", "unlink", "rename", "replace"}
+        assert node.func.attr not in {"write_text", "write_bytes", "unlink", "rename", "touch", "mkdir", "rmdir"}
     if isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "open":
         if len(node.args) >= 2 and isinstance(node.args[1], ast.Constant):
             assert not any(flag in str(node.args[1].value) for flag in ("w", "a", "+", "x"))
