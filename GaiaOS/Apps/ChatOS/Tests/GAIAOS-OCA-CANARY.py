@@ -11,6 +11,7 @@ CHATOS = Path(__file__).resolve().parents[1]
 RUNTIME = CHATOS / "Runtime/GAIAOS-OCA.v1.py"
 SCHEMA = CHATOS / "Schemas/GAIAOS-OCA-PACKET.v1.schema.json"
 PROTOCOL = CHATOS / "Protocols/GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md"
+CURRENT = CHATOS / "CURRENT.json"
 
 spec = importlib.util.spec_from_file_location("gaiaos_oca", RUNTIME)
 assert spec and spec.loader
@@ -45,10 +46,9 @@ def expect_error(code, fn):
         raise AssertionError(f"expected OCAError containing {code}")
 
 
-# Required source files and firewall language.
-assert RUNTIME.is_file()
-assert SCHEMA.is_file()
-assert PROTOCOL.is_file()
+# Required source files, ChatOS wiring, and firewall language.
+for path in (RUNTIME, SCHEMA, PROTOCOL, CURRENT):
+    assert path.is_file(), path
 protocol = PROTOCOL.read_text(encoding="utf-8")
 for token in (
     "OCA_PACKET != MEMORY",
@@ -63,6 +63,16 @@ schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
 assert schema["$id"] == "gaiaos.oca.packet.v1"
 assert schema["properties"]["effect_authority"]["const"] == "NONE"
 assert schema["properties"]["persistence"]["const"] == "EPHEMERAL_ONLY"
+
+current = json.loads(CURRENT.read_text(encoding="utf-8"))
+oca_current = current["operational_context_acquisition"]
+assert oca_current["effect_authority"] == "NONE"
+assert oca_current["persistence"] == "EPHEMERAL_ONLY"
+assert oca_current["collectors"] == ["SESSION", "SOURCE", "RUNTIME_CONTINUITY"]
+assert current["sources"]["oca_protocol"].endswith("GAIAOS-OPERATIONAL-CONTEXT-ACQUISITION.v1.md")
+assert current["sources"]["oca_schema"].endswith("GAIAOS-OCA-PACKET.v1.schema.json")
+assert current["sources"]["oca_runtime"].endswith("GAIAOS-OCA.v1.py")
+assert current["sources"]["oca_canary"].endswith("GAIAOS-OCA-CANARY.py")
 
 # Happy path.
 observations = [
