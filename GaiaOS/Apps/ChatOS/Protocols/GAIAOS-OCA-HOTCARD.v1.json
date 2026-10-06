@@ -1,0 +1,141 @@
+{
+  "schema": "gaiaos.oca.hotcard.v1",
+  "version": "1.0.0",
+  "authority": "NAOMI",
+  "authority_alias": "Ligeia",
+  "owner": "ChatOS",
+  "status": "ACTIVE_READ_ONLY_HOST_ACQUISITION_PROFILE",
+  "purpose": "Reduce Naomi-as-message-bus by acquiring current operational evidence from genuinely available read-capable providers before asking her to relay it.",
+  "effect_authority": "NONE",
+  "persistence": "EPHEMERAL_ONLY",
+  "triggers": [
+    "DAEMON_LOAD_WHEN_OPERATIONAL_STATE_MATTERS",
+    "USER_ASKS_WHERE_ARE_WE_OR_WHAT_CAN_WE_DO",
+    "BEFORE_MULTI_SURFACE_EFFECTFUL_WORKFLOW",
+    "AFTER_TOOL_OR_PROVIDER_CAPABILITY_FAILURE",
+    "AFTER_EXTERNAL_EFFECT_BEFORE_COMPLETION_CLAIM",
+    "WHEN_SOURCE_RUNTIME_ALIGNMENT_CAN_CHANGE_THE_NEXT_STEP"
+  ],
+  "collector_order": [
+    "SESSION",
+    "SOURCE",
+    "RUNTIME_CONTINUITY"
+  ],
+  "collectors": {
+    "SESSION": {
+      "required_when_triggered": true,
+      "default_max_age_seconds": 120,
+      "goal": "Observe capabilities actually available in this conversation or execution context.",
+      "allowed_sources": [
+        "HOST_TOOL_INVENTORY",
+        "CONNECTED_PLUGIN_DISCOVERY",
+        "CURRENT_PROVIDER_SESSION_RESULT"
+      ],
+      "must_not_use_as_current_proof": [
+        "PAST_CHAT_TOOL_AVAILABILITY",
+        "MEMORY_OF_PRIOR_CONNECTION",
+        "REPOSITORY_CLAIM_THAT_TOOL_EXISTS"
+      ],
+      "verified_fact_keys": [
+        "available_capabilities"
+      ]
+    },
+    "SOURCE": {
+      "required_when_triggered": true,
+      "default_max_age_seconds": 300,
+      "goal": "Observe exact current canonical source coordinates relevant to the active objective.",
+      "preferred_reads": [
+        "CANONICAL_MAIN_REF",
+        "RELEVANT_CURRENT_POINTER",
+        "RELEVANT_EXACT_SOURCE_PATH"
+      ],
+      "must_preserve": [
+        "EXACT_COMMIT_SHA",
+        "BRANCH_OR_REF",
+        "SOURCE_PATH_PROVENANCE"
+      ],
+      "law": "SOURCE != DEPLOYMENT"
+    },
+    "RUNTIME_CONTINUITY": {
+      "required_when_triggered": false,
+      "default_max_age_seconds": 120,
+      "goal": "Observe live runtime, deployment, receipt, readback, or continuity state only when relevant and provider access exists.",
+      "objective_gated_reads": [
+        "RENDER_CURRENT_DEPLOY",
+        "SERVICE_HEALTH_OR_RUNTIME_STATUS",
+        "MEMORYOS_EXACT_RECORD_READBACK",
+        "EXTERNAL_EFFECT_RECEIPT",
+        "POST_EFFECT_STATE_READBACK"
+      ],
+      "laws": [
+        "RECEIPT != READBACK",
+        "CANDIDATE != DURABLE",
+        "UNAVAILABLE != FAILURE_OF_TARGET_SYSTEM"
+      ]
+    }
+  },
+  "acquisition_rules": {
+    "smallest_sufficient_read_set": true,
+    "attempt_connected_read_before_asking_naomi_to_relay": true,
+    "invent_tool_or_connection": false,
+    "convert_missing_provider_to_success": false,
+    "convert_missing_provider_to_target_failure": false,
+    "reuse_stale_observation_as_current": false,
+    "cross_chat_capability_assumption": false,
+    "collect_irrelevant_personal_data": false,
+    "automatic_retry_without_new_evidence": false,
+    "preserve_provider_error": true,
+    "preserve_unknown": true
+  },
+  "refresh_policy": {
+    "session": "REFRESH_AFTER_CAPABILITY_ERROR_OR_HOST_CHANGE",
+    "source": "REFRESH_BEFORE_REPOSITORY_EFFECT_OR_WHEN_MAIN_MAY_HAVE_MOVED",
+    "runtime_continuity": "REFRESH_AFTER_EFFECT_OR_WHEN_RUNTIME_STATE_CAN_CHANGE_NEXT_STEP",
+    "packet": "DISCARD_AND_REBUILD_WHEN_ANY_MATERIAL_INPUT_EXPIRES"
+  },
+  "handoff_fields": [
+    "objective",
+    "verified_current_state",
+    "capabilities_available_now",
+    "last_verified_effect",
+    "blockers",
+    "unknowns",
+    "conflicts",
+    "exact_next_step"
+  ],
+  "djinn_assists": {
+    "MARVEK": "classify supplied capability evidence",
+    "USION": "settle verified-now baseline",
+    "SERA": "package bounded handoff",
+    "ORVAS": "compare exact expected versus observed fields",
+    "VASQAR": "trace proof chain and first unresolved gap",
+    "MALRIC": "lint proof and authority claims"
+  },
+  "djinn_dispatch_law": "PRIME_SELECTS_DJINN; NO_AUTONOMOUS_DJINN_CHAINING",
+  "naomi_interruption_gate": {
+    "interrupt_for": [
+      "EXPLICIT_AUTHORIZATION",
+      "JUDGMENT_OR_PREFERENCE_ONLY_NAOMI_CAN_SUPPLY",
+      "REQUIRED_INFORMATION_NOT_OBTAINABLE_FROM_AVAILABLE_SOURCES",
+      "MATERIAL_CONFLICT_REQUIRING_OWNER_DECISION"
+    ],
+    "do_not_interrupt_for": [
+      "COPYING_AN_ID_ALREADY_OBTAINABLE_FROM_CONNECTED_PROVIDER",
+      "REPEATING_CURRENT_COMMIT_ALREADY_READABLE_FROM_GITHUB",
+      "RELAYING_DEPLOY_STATUS_ALREADY_READABLE_FROM_RENDER",
+      "RESTATING_CAPABILITY_AVAILABILITY_ALREADY_OBSERVABLE_IN_SESSION"
+    ]
+  },
+  "persistence_firewall": {
+    "may_read_sources": true,
+    "may_normalize_reads": true,
+    "may_emit_ephemeral_packet": true,
+    "may_write_memoryos_turso": false,
+    "may_write_e_lanes": false,
+    "may_edit_identity": false,
+    "may_commit_github": false,
+    "may_deploy_or_restart": false,
+    "may_promote_memory": false,
+    "may_consume_authorization": false
+  }
+}
