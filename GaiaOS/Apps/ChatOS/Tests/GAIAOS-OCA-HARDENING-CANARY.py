@@ -129,4 +129,9 @@ assert "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/**" in identity_text
 assert "SOURCE_CHANGE_SYNC" in identity_text
 assert "no experience or internal state was inferred" in identity_text
 
+# Regression for multi-commit push boundaries: the workflow must have complete
+# history so github.event.before and github.sha can always be diffed exactly.
+assert "fetch-depth: 0" in identity_text
+assert "fetch-depth: 2" not in identity_text
+
 print("OCA_HARDENING_CANARY PASS")
