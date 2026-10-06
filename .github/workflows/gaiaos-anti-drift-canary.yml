@@ -1,0 +1,30 @@
+name: GaiaOS Anti-Drift Canary
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-ANTI-DRIFT.v1.md'
+      - 'GaiaOS/Apps/ChatOS/Protocols/GAIAOS-ANTI-DRIFT-HOTCARD.v1.json'
+      - 'GaiaOS/Apps/ChatOS/Runtime/GAIAOS-ANTI-DRIFT-LINTER.v1.py'
+      - 'GaiaOS/Apps/ChatOS/Tests/GAIAOS-ANTI-DRIFT-CANARY.py'
+      - 'GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md'
+      - 'GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json'
+      - 'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json'
+      - 'GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md'
+      - 'GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json'
+
+permissions:
+  contents: read
+
+jobs:
+  anti-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run read-only anti-drift canary
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-ANTI-DRIFT-CANARY.py
