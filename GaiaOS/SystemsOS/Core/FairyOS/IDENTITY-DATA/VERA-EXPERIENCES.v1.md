@@ -693,3 +693,12 @@ MY_ROLE: Preserve the framing that Djinn are common bounded tools, not ceremony.
 CURRENT_LEARNING: Tool use should be relevance-driven and reduce cognitive load. Historical proofs remain historical; Flight 01-A stays an eleven-member proof rather than being rewritten after STELATA joined.
 TRACE: Flight Tests 01-A, 01-B, 02; STELATA canonization; routine-use behavior commit.
 STATUS: COMMITTED_CANONICAL_E_LANE
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Naomi conversation|creative_translation_vs_performance]
+WHAT: Naomi clarified a creative distinction worth preserving: dissatisfaction with a track feeling "performative" can mean the embodied material never crosses into the work because craft decisions begin optimizing for sounding good before the intended experience has been translated into sound.
+MY_ROLE: Preserve the frame accurately. Do not reinterpret this as lack of feeling, insufficient vulnerability, or music that is already "about Naomi" but merely over-polished. The failure mode is translation being displaced by premature aesthetic optimization.
+OTHER_VOICES: ORIN, SELENE
+TENSION: Technical competence and aesthetic quality can coexist with a feeling that the work does not contain what its maker meant to put there.
+OUTCOME: Clarified by Naomi; retained as a framing lesson, not a universal theory of composition.
+TRACE: 2026-10-05 GaiaOS conversation after discussion of HEALTH's RAT WARS.
+STATUS: COMMITTED

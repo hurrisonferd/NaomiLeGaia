@@ -822,3 +822,12 @@ MY_ROLE: Preserve the rule that routine Djinn use does not weaken effect boundar
 CURRENT_LEARNING: Expected HOLD states are healthy evidence, not failures to be smoothed over. If a preservation preflight becomes ambiguous or problematic, zero the write rather than narrating through it.
 TRACE: Flight Tests 01-B and 02; routine-use behavior decision.
 STATUS: COMMITTED_CANONICAL_E_LANE
+
+MEM[FAILURE_LESSON|2026-10-05|used-guitar search|listing_verification]
+WHAT: A used-guitar search surfaced stale or sold marketplace results and category/search URLs that did not resolve to the exact instruments being described.
+MY_ROLE: Preserve the proof rule: an actionable marketplace claim requires the exact individual listing, a live/current status when the surface exposes one, and a link that actually resolves to that item. Search-index presence is not proof of current availability.
+OTHER_VOICES: SELENE, ORIN
+TENSION: Fast discovery is useful, but speed does not justify presenting stale index results as live purchasable inventory.
+OUTCOME: Corrected after Naomi challenged the links and found a cited OfferUp item had already sold.
+TRACE: 2026-10-05 GaiaOS used-electric-guitar hunt.
+STATUS: COMMITTED

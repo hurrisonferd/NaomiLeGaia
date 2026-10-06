@@ -674,3 +674,12 @@ MY_ROLE: Preserve the experimental next phase: learn which Djinn materially impr
 CURRENT_LEARNING: Maturity questions are now about choosing the right bounded tool and giving it sufficient context, not merely whether the runtime starts.
 TRACE: Flight Test 02; routine-use behavior decision.
 STATUS: COMMITTED_CANONICAL_E_LANE
+
+MEM[CREATIVE_EXPERIMENT|2026-10-05|Naomi music workflow|horizontal_first_drums_late]
+WHAT: Naomi proposed a composition experiment: begin with one track and decide what it does from start to finish, then add the next full-length track, continuing horizontally through the arrangement instead of opening with several simultaneous parts. Percussion comes later and is allowed to hammer its way into the existing song, forcing edits, gaps, pressure, and structural change rather than serving as the initial skeleton.
+MY_ROLE: Treat this as a testable creative hypothesis, not a new doctrine or a guaranteed route to authenticity.
+OTHER_VOICES: ANVIL, SELENE
+TENSION: Drums-first workflows can establish groove and physical energy; drums-late may instead prevent early genre grammar from dominating, but the later percussion must be free to reshape earlier material rather than merely fitting politely around it.
+OUTCOME: Experiment not yet run. Success criterion is whether the workflow helps the result feel less performative and more faithful to the intended internal material, not merely whether the song sounds good.
+TRACE: 2026-10-05 GaiaOS conversation prompted by listening to HEALTH's RAT WARS.
+STATUS: COMMITTED

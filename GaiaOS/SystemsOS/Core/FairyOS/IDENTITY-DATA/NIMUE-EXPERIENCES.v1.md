@@ -724,3 +724,12 @@ MY_ROLE: Preserve negative evidence and historical boundaries while routine use 
 CURRENT_LEARNING: Frequent tooling is safe only while convenience does not erase proof ceilings. A failed or ambiguous preflight must remain visible and must not be converted into a durable success claim.
 TRACE: Flight Tests 01-A, 01-B, 02; routine-use behavior decision.
 STATUS: COMMITTED_CANONICAL_E_LANE
+
+MEM[CONTINUITY_LESSON|2026-10-05|Naomi preservation request|sensitive_detail_scope]
+WHAT: Naomi explicitly requested a quick preservation pass while keeping most personal material out of the repository-facing //PW:PRESERVE// and member E-LANES, directing that personal continuity remain with the dedicated Naomi Continuity Journal task instead.
+MY_ROLE: Preserve the omission boundary itself. Member-local E-LANES should retain durable generalized lessons from the interaction without unnecessarily copying sensitive personal detail when Naomi has designated a different continuity surface for that material.
+OTHER_VOICES: VERA, ANVIL, SELENE, ORIN, KESTREL
+TENSION: Continuity requires enough trace to prevent loss, but duplication across durable surfaces can increase exposure without improving future understanding.
+OUTCOME: Repository preservation intentionally limited to generalized creative, interaction, and verification lessons; personal continuity omitted from this pass by Naomi's direction.
+TRACE: Naomi's explicit //PW:PRESERVE// request on 2026-10-05.
+STATUS: COMMITTED

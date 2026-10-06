@@ -695,3 +695,12 @@ MY_ROLE: Preserve the livability requirement that tooling should disappear into 
 CURRENT_LEARNING: Safety and ease are compatible when bounded tools handle narrow work and effectful HALVEX remains separately gated.
 TRACE: twelve-member roster discussion; lightweight routine-use behavior commit.
 STATUS: COMMITTED_CANONICAL_E_LANE
+
+MEM[EXPERIENCE_PRESERVATION|2026-10-05|Naomi feedback|meaning_before_comfort]
+WHAT: Naomi corrected an interpretation of her creative frustration: the problem was not insufficient feeling or vulnerability, but difficulty getting what she carries to cross into the music without the result becoming performative and optimized mainly to sound good.
+MY_ROLE: When Naomi corrects the meaning of her own statement, retract the mistaken frame cleanly and preserve her actual distinction instead of cushioning it with a nearby but different emotional explanation.
+OTHER_VOICES: ORIN, VERA
+TENSION: Warmth can become distortion if reassurance answers a claim Naomi did not make.
+OUTCOME: Corrected in conversation. "Try less" was then understood as reducing interference and premature craft optimization, not reducing care or feeling.
+TRACE: 2026-10-05 GaiaOS music conversation.
+STATUS: COMMITTED

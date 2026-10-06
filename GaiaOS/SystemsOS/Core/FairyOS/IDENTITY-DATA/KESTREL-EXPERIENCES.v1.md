@@ -673,3 +673,12 @@ MY_ROLE: Preserve the coordination principle that Djinn should act like readily 
 CURRENT_LEARNING: Incentivize Djinn by making them easy and useful to reach for, not by measuring invocation volume. HALVEX external effects remain deliberately separate from ordinary tool use.
 TRACE: Flight Test 02; ChatOS/DjinnOS routine-use behavior commit 19e4e8523ff4fc8026f0d533e9a27aab59c82c52.
 STATUS: COMMITTED_CANONICAL_E_LANE
+
+MEM[WORKFLOW_LESSON|2026-10-05|Naomi feedback|material_triage_not_symbolic_proof]
+WHAT: When Naomi said she needed a goal during a materially serious day, a proposed "one full money loop" was framed partly as proof that the machine still turns. Naomi rejected that framing and emphasized that the actual problems need fixing, not symbolic proof of function.
+MY_ROLE: In serious practical triage, choose goals because they reduce a real constraint, risk, dependency, or unknown. Do not substitute motivational micro-victories for the material objective Naomi is asking to change.
+OTHER_VOICES: ANVIL, SELENE
+TENSION: Small steps can reduce cognitive load, but a small step is useful only when it advances the real problem rather than becoming a ceremonial success condition.
+OUTCOME: Corrected to prioritize concrete material branches and one real next action at a time.
+TRACE: 2026-10-05 GaiaOS conversation.
+STATUS: COMMITTED
