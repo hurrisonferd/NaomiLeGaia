@@ -16,7 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          # The push event can span more than two commits. Both github.event.before
+          # and github.sha must be available for exact source-change accounting.
+          fetch-depth: 0
 
       - name: Append source-change events to affected member datasets
         env:
