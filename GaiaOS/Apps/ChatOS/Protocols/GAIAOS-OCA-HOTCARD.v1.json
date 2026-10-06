@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.oca.hotcard.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "authority": "NAOMI",
   "authority_alias": "Ligeia",
   "owner": "ChatOS",
@@ -8,6 +8,8 @@
   "purpose": "Reduce Naomi-as-message-bus by acquiring current operational evidence from genuinely available read-capable providers before asking her to relay it.",
   "effect_authority": "NONE",
   "persistence": "EPHEMERAL_ONLY",
+  "hardening_contract": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OCA-HARDENING.v1.md",
+  "downstream_effect_inventory": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-OCA-DOWNSTREAM-EFFECTS.v1.json",
   "triggers": [
     "DAEMON_LOAD_WHEN_OPERATIONAL_STATE_MATTERS",
     "USER_ASKS_WHERE_ARE_WE_OR_WHAT_CAN_WE_DO",
@@ -76,6 +78,8 @@
   },
   "acquisition_rules": {
     "smallest_sufficient_read_set": true,
+    "task_selected_provider_set": true,
+    "provider_availability_is_not_read_justification": true,
     "attempt_connected_read_before_asking_naomi_to_relay": true,
     "invent_tool_or_connection": false,
     "convert_missing_provider_to_success": false,
@@ -85,7 +89,21 @@
     "collect_irrelevant_personal_data": false,
     "automatic_retry_without_new_evidence": false,
     "preserve_provider_error": true,
-    "preserve_unknown": true
+    "preserve_unknown": true,
+    "packet_is_truth": false,
+    "source_diff_is_total_effect_surface": false,
+    "expected_automation_is_observed_effect": false
+  },
+  "repository_effect_preflight": {
+    "inspect_write_capable_workflow_inventory_when_relevant": true,
+    "classifications": [
+      "DIRECT_EFFECT",
+      "EXPECTED_AUTOMATION",
+      "OBSERVED_SECONDARY_EFFECT",
+      "UNRESOLVED_DOWNSTREAM_EFFECT"
+    ],
+    "completion_requires_secondary_effect_accounting_when_expected": true,
+    "silent_downstream_state_means_no_effect": false
   },
   "refresh_policy": {
     "session": "REFRESH_AFTER_CAPABILITY_ERROR_OR_HOST_CHANGE",
