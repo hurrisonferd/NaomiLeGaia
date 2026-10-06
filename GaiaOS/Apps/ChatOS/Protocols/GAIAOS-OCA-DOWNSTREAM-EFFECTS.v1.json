@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.oca.downstream-effects.v1",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authority": "NAOMI",
   "authority_alias": "Ligeia",
   "owner": "ChatOS",
@@ -27,6 +27,32 @@
       "expected_effect": "Append SOURCE_CHANGE_SYNC provenance events to affected Prime Daemon IDENTITY-DATA JSON records and update last_verified when shared identity-relevant source paths change.",
       "boundary": "PROVENANCE_SYNC_ONLY; DOES_NOT_INFER_EXPERIENCE_OR_INTERNAL_STATE",
       "source_of_truth": ".github/workflows/GAIAOS-MEMBER-IDENTITY-SYNC.yml"
+    },
+    {
+      "path": ".github/workflows/gaiaos-wave7-settle.yml",
+      "name": "GaiaOS Wave 7 MCP Settlement",
+      "trigger": "PUSH_TO_MAIN_ONLY_WHEN_THIS_WORKFLOW_PATH_CHANGES",
+      "write_signals": [
+        "contents: write",
+        "git push"
+      ],
+      "effect_class": "EXPECTED_AUTOMATION_WHEN_TRIGGER_PATH_MATCHES",
+      "expected_effect": "Rewrite GaiaOS/CURRENT.json and GaiaOS/VERSION.json with the workflow's pinned Wave 7 live-MCP settlement proof, then commit and push those changes.",
+      "boundary": "SELF_PATH_TRIGGERED_HISTORICAL_PROOF_SETTLEMENT; NOT_TRIGGERED_BY_ORDINARY_OCA_SOURCE_CHANGES",
+      "source_of_truth": ".github/workflows/gaiaos-wave7-settle.yml"
+    },
+    {
+      "path": ".github/workflows/gaiaos-wave8-frontdoor-settle.yml",
+      "name": "GaiaOS Wave 8 Front Door Settlement",
+      "trigger": "PUSH_TO_MAIN_ONLY_WHEN_THIS_WORKFLOW_PATH_CHANGES_OR_EXPLICIT_WORKFLOW_DISPATCH",
+      "write_signals": [
+        "contents: write",
+        "git push"
+      ],
+      "effect_class": "EXPECTED_AUTOMATION_WHEN_TRIGGER_PATH_MATCHES_OR_DISPATCHED",
+      "expected_effect": "Rewrite GaiaOS/CURRENT.json and GaiaOS/VERSION.json with the workflow's pinned Wave 8 live-front-door settlement proof, then commit and push those changes.",
+      "boundary": "SELF_PATH_TRIGGERED_OR_EXPLICITLY_DISPATCHED_HISTORICAL_PROOF_SETTLEMENT; NOT_TRIGGERED_BY_ORDINARY_OCA_SOURCE_CHANGES",
+      "source_of_truth": ".github/workflows/gaiaos-wave8-frontdoor-settle.yml"
     }
   ],
   "discovery_policy": {
@@ -39,13 +65,15 @@
     "unregistered_write_capable_workflow": "FAIL_CANARY",
     "registered_workflow_missing": "FAIL_CANARY",
     "inventory_is_not_authority": true,
-    "inventory_is_not_proof_that_a_workflow_ran": true
+    "inventory_is_not_proof_that_a_workflow_ran": true,
+    "bounded_signal_scan_is_exhaustive_proof": false
   },
   "laws": [
     "SOURCE_DIFF != TOTAL_EFFECT_SURFACE",
-    "EXPECTED_AUTOMATION != OBSERVED_EFFECT",
+    "EXPECTED_AUTOMATION != OBSERVED_SECONDARY_EFFECT",
     "WORKFLOW_PERMISSION != PROOF_OF_EXECUTION",
-    "SECONDARY_EFFECT_REQUIRES_OBSERVATION_BEFORE COMPLETION CLAIM",
+    "TRIGGER_CAPABILITY != TRIGGER_MATCH",
+    "SECONDARY_EFFECT_REQUIRES_OBSERVATION_BEFORE_COMPLETION_CLAIM",
     "OCA MAY INVENTORY EFFECT SURFACES BUT MAY NOT TRIGGER THEM"
   ]
 }
