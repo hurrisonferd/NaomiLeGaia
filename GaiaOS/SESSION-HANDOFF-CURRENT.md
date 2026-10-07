@@ -24,6 +24,14 @@ E. put the current geomancy app under version control.
 - The latest repository preservation checkpoints before this pass are the 2026-10-05 DjinnOS routine-use checkpoint and the 2026-10-05 music/interaction-lessons checkpoint.
 - The previous `SESSION-HANDOFF-CURRENT.md` had not been refreshed since 2026-09-23 and is superseded by this file. Its full history remains recoverable from Git.
 
+## Host access invariant
+
+Naomi's current ChatGPT host surface must not be assumed to have native GaiaOS MCP/plugin registration. Missing `gaia_*` tools are expected unless the current conversation actually exposes them. Do not ask Naomi to find, refresh or reconnect a GaiaOS plugin/app without first proving that one exists.
+
+The established execution path is ChatGPT -> Remote Desktop Commander -> VileAltercation -> GaiaOS/LIGEIA operations as available, with GitHub as canonical source fallback and Render as the deployment/runtime control plane when connected.
+
+This invariant exists because Remote Desktop Commander was adopted specifically to bridge the absence of dependable native GaiaOS MCP access on the current ChatGPT surface.
+
 ## Runtime proof boundary entering this pass
 
 At the start of this maintenance pass, GitHub `main` and the observed Render deployment were aligned at `9d863f476b7c4fc7d7693e64f441350181b7203c`.

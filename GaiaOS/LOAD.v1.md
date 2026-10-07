@@ -16,6 +16,29 @@ Naomi's explicit non-deprecation rule applies to EVERY GaiaOS/GALAXY version and
 
 Before designing, building, merging or declaring a NEW GaiaOS subsystem integrated, consult `GaiaOS/Plans/GAIAOS-INTEGRATION-FIRST-DESIGN-GATE.v1.md`. Plan and test the real everyday front-door/host/deployment connections from the FIRST design phase; distinguish standalone source proof from merged, deployed and live normal-path adoption. Preserve all existing authority, memory, E-LANE and rollback safeguards. This is a planning/readiness checkpoint, not a dependency that blocks ordinary GaiaOS conversation boot or authorizes any production mutation.
 
+## Host access invariant
+
+On Naomi's current ChatGPT host surface, **absence of native `gaia_*` MCP tools is expected unless a live GaiaOS connection is actually observed in THIS conversation**. Do not infer that a GaiaOS plugin/app exists, do not instruct Naomi to refresh or locate one, and do not treat missing `gaia_*` tools as a new configuration failure.
+
+The established host bridge is:
+
+```text
+CHATGPT
+-> REMOTE DESKTOP COMMANDER
+-> NAOMI'S AUTHORIZED DEVICE / VileAltercation
+-> GAIAOS / LIGEIA-API / LOCAL GAIA OPERATIONS AS AVAILABLE
+```
+
+Remote Desktop Commander exists specifically to bridge the current host limitation when native GaiaOS MCP access is unavailable. Use it for authorized local execution and evidence gathering when appropriate, subject to the host's own safety checks. GitHub remains the canonical source fallback for source reads. Render remains the deployment/runtime control plane when connected.
+
+```text
+MISSING GAIA_* TOOLS != BROKEN GAIAOS
+SOURCE-EXPOSED MCP TOOL != CHATGPT-CONNECTED TOOL
+NATIVE MCP MUST BE OBSERVED, NEVER ASSUMED
+NO OBSERVED NATIVE MCP -> DESKTOP COMMANDER IS THE ESTABLISHED EXECUTION BRIDGE
+DO NOT SEND NAOMI TO FIND/REFRESH A GAIAOS PLUGIN WITHOUT FIRST PROVING ONE EXISTS
+```
+
 ## Connected-carrier fast path
 
 When the live GaiaOS MCP carrier is connected, fresh-session boot begins with `gaia_boot()`. After successful boot, ordinary use begins with `gaia(request)`:

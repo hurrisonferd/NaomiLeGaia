@@ -18,6 +18,14 @@ REQUEST -> RESOLVE CANONICAL SOURCE -> READ BOOT MANIFEST -> READ REQUIRED SURFA
 Any missing required read or validation => GAIAOS = NOT VERIFIED / NOT LOADED.
 Retained host/chat memory may help locate source but MUST NOT satisfy a required source read.
 
+HOST ACCESS INVARIANT:
+- Native GaiaOS MCP access must be observed in the current conversation; source existence or historical use does not prove attachment.
+- On Naomi's current ChatGPT surface, absence of `gaia_*` tools is expected and MUST NOT trigger instructions to locate or refresh a GaiaOS plugin/app unless that app/connection is first proven to exist.
+- Remote Desktop Commander is the established execution bridge from ChatGPT to Naomi's authorized device (VileAltercation) when native GaiaOS MCP access is unavailable.
+- GitHub remains canonical for source-backed boot fallback.
+- `MISSING GAIA_* TOOLS != BROKEN GAIAOS`.
+- `SOURCE-EXPOSED MCP TOOL != CHATGPT-CONNECTED TOOL`.
+
 ## Boot-critical set
 Every fresh session MUST source-read and validate, at minimum:
 1. CURRENT.json
