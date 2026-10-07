@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.oca.adapters.v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "authority": "NAOMI",
   "authority_alias": "Ligeia",
   "owner": "ChatOS",
@@ -170,7 +170,7 @@
       "law": "CONFIGURED_AUTO_DEPLOY != PROOF_OF_DEPLOYMENT"
     },
     "MEMORYOS_CONTINUITY": {
-      "adapter_version": "1.0.0",
+      "adapter_version": "1.1.0",
       "collector": "RUNTIME_CONTINUITY",
       "provider_class": "MEMORYOS",
       "read_only": true,
@@ -178,7 +178,8 @@
       "accepted_read_operations": [
         "EXACT_RECORD_READBACK",
         "RECEIPT_READ",
-        "CONTINUITY_STATUS_READ"
+        "CONTINUITY_STATUS_READ",
+        "HOST_GATEWAY_EXACT_RECORD_READ"
       ],
       "common_verified_fact_keys": [
         "record_id",
@@ -187,12 +188,25 @@
         "record_scope",
         "record_type",
         "stored_statement",
-        "storage_backend"
+        "storage_backend",
+        "exact_record_retrieved",
+        "record_authority",
+        "record_status",
+        "record_version"
       ],
       "required_coordinates_when_applicable": [
         "record_id",
         "receipt_id"
       ],
+      "host_read_surface": {
+        "preferred_tool_when_connected": "gaia_host_memory_read",
+        "http_route": "GET /host/memory/read?record_id=<ID>",
+        "http_authentication_required": true,
+        "source": "api/host_memory_gateway.py",
+        "runtime_read": "api/memcon_runtime.py::read_record_read_only",
+        "schema_initialization_allowed": false,
+        "mutation_allowed": false
+      },
       "forbidden_operations": [
         "CREATE_CANDIDATE",
         "PROMOTE_CANDIDATE",

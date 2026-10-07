@@ -29,6 +29,7 @@
     "oca_runtime": "GaiaOS/Apps/ChatOS/Runtime/GAIAOS-OCA.v1.py",
     "oca_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py",
     "oca_hardening_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-HARDENING-CANARY.py",
+    "oca_memoryos_host_reader_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-MEMORYOS-HOST-READER-CANARY.py",
     "fairyos_dispatch": "GaiaOS/SystemsOS/Core/FairyOS/Runtime/GAIAOS-DISPATCH-RESOLVER.v1.py",
     "brainos_support": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-SUPPORT-FABRIC-CURRENT.v1.json",
     "context_compass": "GaiaOS/SystemsOS/Core/BrainOS/Protocols/BRAINOS-CONTEXT-COMPASS.v1.json",
@@ -103,6 +104,16 @@
     "provider_access": "HOST_SUPPLIED_CURRENT_READS_ONLY",
     "acquisition_scope": "SMALLEST_SUFFICIENT_TASK_SELECTED_PROVIDER_SET",
     "repository_effect_accounting": "DIRECT_EXPECTED_OBSERVED_UNRESOLVED",
+    "memoryos_host_reader": {
+      "status": "SOURCE_IMPLEMENTED_READ_ONLY",
+      "tool": "gaia_host_memory_read",
+      "http_route": "/host/memory/read",
+      "source": "api/host_memory_gateway.py",
+      "runtime_read": "api/memcon_runtime.py::read_record_read_only",
+      "schema_initialization_allowed": false,
+      "mutation_allowed": false,
+      "live_use_requires_deployed_source_and_connected_gaia_host": true
+    },
     "automatic_durable_write": false,
     "automatic_deploy": false,
     "automatic_memory_promotion": false

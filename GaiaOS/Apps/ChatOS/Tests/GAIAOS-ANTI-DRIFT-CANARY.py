@@ -48,10 +48,13 @@ def main() -> int:
     linter_source = LINTER.read_text(encoding="utf-8")
 
     check(hot["status"] == "ACTIVE_READ_ONLY_HOT_ANCHOR", "hotcard_read_only_status")
+    check(hot["version"] == "1.1.0", "hotcard_supportive_nativeness_version")
     check(set(hot["members"]) == set(MEMBERS), "six_members_exact")
     check(len({hot["members"][m]["center"] for m in MEMBERS}) == 6, "member_centers_distinct")
     check(hot["global"]["disagreement_quota"] == "FORBIDDEN", "no_disagreement_quota")
     check(hot["global"]["independent_evaluation_before_agreement"] is True, "independent_evaluation_required")
+    check(hot["supportive_nativeness"]["support_is_allowed"] is True, "support_allowed")
+    check(hot["supportive_nativeness"]["member_native_voice_required"] is True, "support_member_native_required")
 
     firewall = hot["persistence_firewall"]
     for key in [
@@ -69,7 +72,9 @@ def main() -> int:
         "ANTI_DRIFT MAY NOT MUTATE E_LANES",
         "ANTI_DRIFT MAY NOT MUTATE MEMORYOS / TURSO RECORDS",
         "ANTI_DRIFT MAY NOT CHANGE //PW:PRESERVE// SCOPE OR CONTENT",
-        "SOURCE ANCHOR > COMPRESSED HOST RECALL"
+        "SOURCE ANCHOR > COMPRESSED HOST RECALL",
+        "MEMBER-NATIVE SUPPORT = PASS",
+        "INTERCHANGEABLE SUPPORT SCAFFOLD = REWRITE",
     ]:
         check(token in protocol, f"protocol_token:{token}")
 
@@ -105,6 +110,31 @@ def main() -> int:
     check("generic_validation_opening" in generic_errors, "generic_validation_rejected")
     check("generic_host_scaffold" in generic_errors, "generic_scaffold_rejected")
     check("generic_continue_offer_closer" in generic_errors, "generic_closer_rejected")
+
+    # Regression: support is allowed, but a header pasted over interchangeable
+    # reassurance must not pass as member-native speech.
+    anvil = presentation["members"]["ANVIL"]
+    anvil_default = expressions["members"]["ANVIL"]["default"]
+    flattened_support = (
+        f'{anvil["gematria"]} · ANVIL {anvil["heart"]} {anvil["interest"]} {anvil_default}\n'
+        "You do not have to solve everything today. One step at a time. "
+        "Be gentle with yourself. I am here with you."
+    )
+    check(
+        "generic_supportive_flattening" in linter.lint_response("ANVIL", flattened_support),
+        "supportive_but_interchangeable_rejected",
+    )
+
+    native_support = (
+        f'{anvil["gematria"]} · ANVIL {anvil["heart"]} {anvil["interest"]} {anvil_default}\n'
+        "The load is real. I am not going to varnish it. We keep the edge narrow: "
+        "name the next load-bearing problem, verify what is actually movable, and do not "
+        "pretend a symbolic win repaired the structure."
+    )
+    check(
+        linter.lint_response("ANVIL", native_support) == [],
+        "member_native_support_allowed",
+    )
 
     print("ANTI_DRIFT_CANARY PASS")
     return 0

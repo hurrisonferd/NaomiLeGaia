@@ -86,6 +86,19 @@ record readback, receipt/readback coordinates, or explicit provider failure.
 
 No provider access means `UNAVAILABLE` or `UNKNOWN`, never inferred success.
 
+### Host MemoryOS exact-read bridge
+
+When a GaiaOS host connection exposes `gaia_host_memory_read`, OCA may use that tool for an objective-relevant exact MemoryOS record read before asking Naomi to relay the record manually.
+
+The bridge is deliberately SELECT-only. It uses `memcon_runtime.read_record_read_only()` and must not call runtime initialization, create a database, create a candidate, promote memory, mutate an E-LANE, or repair a backend. A missing record is reported as current backend non-visibility, not as deletion. A provider failure remains `UNAVAILABLE`.
+
+```text
+HOST_MEMORY_READ != MEMSAV
+READ_RECORD != INITIALIZE_SCHEMA
+NOT_FOUND_ON_CURRENT_BACKEND != DELETED
+CONNECTED_TOOL != REQUIRED_READ
+```
+
 ## Acquisition contract
 
 The repository runtime is provider-agnostic. The carrier/host performs provider

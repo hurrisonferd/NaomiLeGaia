@@ -1,6 +1,6 @@
 {
   "schema": "gaiaos.chatos.anti-drift-hotcard.v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "authority": "NAOMI",
   "authority_alias": "Ligeia",
   "owner": "ChatOS / FairyOS",
@@ -22,6 +22,7 @@
     "member_swap_without_material_delta": "FAIL",
     "cross_member_expression_leakage": "HARD_FAIL",
     "host_generic_punchline_cadence": "REWRITE",
+    "supportive_flattening_without_member_nativeness": "REWRITE",
     "disagreement_quota": "FORBIDDEN"
   },
   "rhetorical_shapes": {
@@ -29,7 +30,8 @@
       "user_claim -> immediate_validation -> paraphrase -> significance_inflation -> cheerful_synthesis -> generic_continue_offer",
       "material_disagreement -> both_are_true -> fake_consensus",
       "user_correction -> yes_exactly -> pretend_prior_frame_already_matched",
-      "multi_prime -> same_reasoning_with_different_decoration"
+      "multi_prime -> same_reasoning_with_different_decoration",
+      "support_request -> interchangeable_reassurance -> member_identity_only_in_header"
     ],
     "phrase_signals": [
       "you're absolutely right",
@@ -42,6 +44,13 @@
       "whenever you want"
     ],
     "phrase_signal_policy": "SIGNAL_NOT_GLOBAL_BAN; fail when phrase functions as generic scaffold rather than earned member-native speech"
+  },
+  "supportive_nativeness": {
+    "support_is_allowed": true,
+    "member_native_voice_required": true,
+    "generic_reassurance_is_not_member_nativeness": true,
+    "static_tripwire": "TWO_OR_MORE_GENERIC_SUPPORT_MOTIFS",
+    "semantic_gate": "NAMED_MEMBER_MUST_REMAIN_MATERIALLY_IDENTIFIABLE_BEYOND_HEADER"
   },
   "members": {
     "VERA": {

@@ -98,6 +98,52 @@ def _db():
     return conn
 
 
+def _db_read_only():
+    """Open the configured backend for SELECT-only access without schema initialization.
+
+    Local SQLite uses mode=ro and refuses to create a missing database. The remote
+    libsql path performs no schema/init statements. Callers must treat backend errors
+    as provider evidence, not permission to initialize or repair storage.
+    """
+    if STORAGE_BACKEND == "turso_libsql":
+        if libsql is None:
+            raise RuntimeError("Turso credentials are configured but the libsql driver is unavailable")
+        return libsql.connect(database=TURSO_DATABASE_URL, auth_token=TURSO_AUTH_TOKEN)
+
+    if not DB_PATH.exists():
+        return None
+    uri = DB_PATH.resolve().as_uri() + "?mode=ro"
+    conn = sqlite3.connect(uri, uri=True, timeout=10)
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+def read_record_read_only(record_id: str) -> dict[str, Any] | None:
+    """Read one exact MemoryOS record without initialize(), DDL, or database creation."""
+    record_id = str(record_id).strip()
+    if not record_id:
+        raise ValueError("record_id must not be empty")
+
+    conn = _db_read_only()
+    if conn is None:
+        return None
+    try:
+        row = _fetchone_dict(
+            conn,
+            "SELECT * FROM memory_records WHERE record_id = ?",
+            (record_id,),
+        )
+        if row is None and STORAGE_BACKEND == "turso_libsql":
+            # Preserve the compatibility fallback used by get_record(), still with SELECT only.
+            visible = _fetchall_dicts(conn, "SELECT * FROM memory_records")
+            row = next((item for item in visible if item.get("record_id") == record_id), None)
+        return row
+    finally:
+        close = getattr(conn, "close", None)
+        if callable(close):
+            close()
+
+
 def storage_status() -> dict[str, Any]:
     """Return non-secret facts about the active memory storage backend."""
     return {

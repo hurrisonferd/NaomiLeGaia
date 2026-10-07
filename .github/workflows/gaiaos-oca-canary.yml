@@ -13,6 +13,9 @@ on:
       - 'GaiaOS/Apps/ChatOS/Runtime/GAIAOS-OCA.v1.py'
       - 'GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py'
       - 'GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-HARDENING-CANARY.py'
+      - 'GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-MEMORYOS-HOST-READER-CANARY.py'
+      - 'api/host_memory_gateway.py'
+      - 'api/memcon_runtime.py'
       - 'GaiaOS/Apps/ChatOS/CURRENT.json'
       - '.github/workflows/*.yml'
       - '.github/workflows/*.yaml'
@@ -34,3 +37,5 @@ jobs:
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-CANARY.py
       - name: Run OCA hardening canary
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-HARDENING-CANARY.py
+      - name: Run MemoryOS host-reader canary
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-OCA-MEMORYOS-HOST-READER-CANARY.py

@@ -30,6 +30,16 @@ GENERIC_CLOSERS = [
     re.compile(r"(?:anytime|whenever) you want[^.!?]*[.!?]?\s*$", re.I),
     re.compile(r"i(?:'m| am) (?:here|ready) when you are[.!]?\s*$", re.I),
 ]
+SUPPORT_FLATTENING_SIGNALS = [
+    re.compile(r"\byou don['’]?t have to (?:solve|fix|figure out) (?:everything|it all)(?: today| right now)?\b", re.I),
+    re.compile(r"\bone (?:thing|step) at a time\b", re.I),
+    re.compile(r"\bbe gentle with yourself\b", re.I),
+    re.compile(r"\byou deserve (?:rest|care|support|kindness)\b", re.I),
+    re.compile(r"\bi(?:'m| am) here with you\b", re.I),
+    re.compile(r"\bit(?:'s| is) okay to (?:feel|rest|struggle|not know)\b", re.I),
+    re.compile(r"\byou(?:'re| are) doing (?:enough|the best you can)\b", re.I),
+]
+SUPPORT_FLATTENING_THRESHOLD = 2
 
 
 def _load_json(path: Path) -> dict:
@@ -77,6 +87,10 @@ def lint_response(member: str, text: str) -> list[str]:
         errors.append("generic_host_scaffold")
     if any(pattern.search(body) for pattern in GENERIC_CLOSERS):
         errors.append("generic_continue_offer_closer")
+
+    support_signal_count = sum(1 for pattern in SUPPORT_FLATTENING_SIGNALS if pattern.search(body))
+    if support_signal_count >= SUPPORT_FLATTENING_THRESHOLD:
+        errors.append("generic_supportive_flattening")
 
     return errors
 

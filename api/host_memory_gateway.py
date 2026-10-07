@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from datetime import datetime, timezone
 from typing import Any
 
 from fastapi import Header, HTTPException
@@ -133,6 +134,98 @@ class HostElanePlan(BaseModel):
     record_id: str = Field(min_length=1, max_length=200)
 
 
+def _host_memory_read(record_id: str) -> dict[str, Any]:
+    """Exact read-only MemoryOS retrieval normalized for OCA host consumption."""
+    requested = str(record_id).strip()
+    if not requested:
+        raise HTTPException(status_code=400, detail="record_id is required")
+
+    observed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    storage = memcon_runtime.storage_status()
+    base_observation = {
+        "collector": "RUNTIME_CONTINUITY",
+        "source_class": "PROVIDER_RESULT",
+        "provider": "GAIA_HOST_MEMORY_GATEWAY",
+        "observed_at": observed_at,
+        "max_age_seconds": 120,
+        "coordinates": {"record_id": requested},
+        "facts": {"storage": storage},
+        "verified_facts": {},
+        "unknowns": [],
+        "errors": [],
+        "effect_authority": "NONE",
+        "persistence": "EPHEMERAL_ONLY",
+    }
+
+    try:
+        record = memcon_runtime.read_record_read_only(requested)
+    except Exception as exc:
+        observation = dict(base_observation)
+        observation["status"] = "UNAVAILABLE"
+        observation["unknowns"] = ["Exact record read did not complete on the configured backend."]
+        observation["errors"] = [f"{type(exc).__name__}: {str(exc)[:500]}"]
+        return {
+            "schema": "gaiaos.host.memory-read.v1",
+            "operation": "READ_EXACT_RECORD",
+            "status": "UNAVAILABLE",
+            "record_id": requested,
+            "exact_record_retrieved": False,
+            "record": None,
+            "storage": storage,
+            "oca_observation": observation,
+            "durable_write": "NOT_PERFORMED",
+            "elane_write": "NOT_PERFORMED",
+            "proof_boundary": (
+                "Provider failure is preserved as UNAVAILABLE; no repair, initialization, "
+                "candidate creation, promotion, or write was attempted."
+            ),
+        }
+
+    verified_facts: dict[str, Any] = {
+        "record_id": requested,
+        "exact_record_retrieved": record is not None,
+        "storage_backend": storage.get("backend"),
+    }
+    if record is not None:
+        verified_facts.update({
+            "record_authority": record.get("authority"),
+            "record_scope": record.get("scope"),
+            "record_type": record.get("record_type"),
+            "record_status": record.get("status"),
+            "record_version": record.get("version"),
+            "stored_statement": record.get("statement"),
+        })
+        if record.get("owner") is not None:
+            verified_facts["record_owner"] = record.get("owner")
+
+    observation = dict(base_observation)
+    observation["status"] = "VERIFIED"
+    observation["verified_facts"] = verified_facts
+    if record is None:
+        observation["unknowns"] = [
+            "The exact record is not visible on the currently configured backend; "
+            "this does not prove deletion or nonexistence on another backend."
+        ]
+
+    return {
+        "schema": "gaiaos.host.memory-read.v1",
+        "operation": "READ_EXACT_RECORD",
+        "status": "VERIFIED" if record is not None else "NOT_FOUND",
+        "record_id": requested,
+        "exact_record_retrieved": record is not None,
+        "record": record,
+        "storage": storage,
+        "oca_observation": observation,
+        "durable_write": "NOT_PERFORMED",
+        "elane_write": "NOT_PERFORMED",
+        "proof_boundary": (
+            "A found record proves only exact retrieval from the configured backend at observed_at. "
+            "NOT_FOUND proves only non-visibility on that backend at observed_at. "
+            "No persistence mutation is performed."
+        ),
+    }
+
+
 def _host_candipull(payload: HostCandidatePull) -> dict[str, Any]:
     runtime = _runtime()
     session = None
@@ -242,6 +335,15 @@ def _host_memsav(payload: HostMemorySave) -> dict[str, Any]:
     }
 
 
+@app.get("/host/memory/read", operation_id="hostMemoryRead")
+def host_memory_read_http(
+    record_id: str,
+    authorization: str | None = Header(default=None),
+) -> dict[str, Any]:
+    _auth(authorization)
+    return _host_memory_read(record_id)
+
+
 @app.post("/host/memory/candipull", operation_id="hostMemoryCandiPull")
 def host_candipull_http(
     payload: HostCandidatePull,
@@ -273,6 +375,12 @@ def host_elane_plan_http(
     if record is None:
         raise HTTPException(status_code=404, detail="MemconOS record not found")
     return _elane_plan(candidate, payload.record_id)
+
+
+@mcp.tool()
+def gaia_host_memory_read(record_id: str) -> dict[str, Any]:
+    """Read one exact MemoryOS record with SELECT-only semantics and emit an OCA observation."""
+    return _host_memory_read(record_id)
 
 
 @mcp.tool()

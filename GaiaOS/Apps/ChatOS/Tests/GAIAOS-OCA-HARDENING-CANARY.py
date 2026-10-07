@@ -57,7 +57,7 @@ assert preflight["classifications"] == [
 ]
 
 adapters = json.loads(ADAPTERS.read_text(encoding="utf-8"))
-assert adapters["version"] == "1.1.0"
+assert adapters["version"] == "1.2.0"
 assert adapters["adapter_law"]["versioned"] is True
 assert adapters["adapter_law"]["single_collector_binding"] is True
 assert adapters["adapter_law"]["cross_adapter_authority_grant"] is False
@@ -73,6 +73,11 @@ for name, adapter in adapters["adapters"].items():
 assert "GITHUB_WORKFLOW_EFFECT_SURFACE" in adapters["adapters"]
 assert adapters["normalization_rules"]["do_not_read_irrelevant_personal_data"] is True
 assert adapters["normalization_rules"]["provider_availability_alone_does_not_justify_read"] is True
+memory_adapter = adapters["adapters"]["MEMORYOS_CONTINUITY"]
+assert memory_adapter["host_read_surface"]["preferred_tool_when_connected"] == "gaia_host_memory_read"
+assert memory_adapter["host_read_surface"]["schema_initialization_allowed"] is False
+assert memory_adapter["host_read_surface"]["mutation_allowed"] is False
+assert "HOST_GATEWAY_EXACT_RECORD_READ" in memory_adapter["accepted_read_operations"]
 
 effects = json.loads(EFFECTS.read_text(encoding="utf-8"))
 assert effects["status"] == "ACTIVE_READ_ONLY_EFFECT_SURFACE_INVENTORY"
