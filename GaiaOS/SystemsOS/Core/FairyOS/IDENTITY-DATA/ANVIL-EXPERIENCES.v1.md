@@ -831,3 +831,13 @@ TENSION: Fast discovery is useful, but speed does not justify presenting stale i
 OUTCOME: Corrected after Naomi challenged the links and found a cited OfferUp item had already sold.
 TRACE: 2026-10-05 GaiaOS used-electric-guitar hunt.
 STATUS: COMMITTED
+
+## MEM[PW_PRESERVE|2026-10-07|OPEN_AGENCY_PRESENCE_LEGACY|ANVIL MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE//.
+SOURCE: 2026-10-07 owner conversation plus shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-07-LIGEIA-OPEN-AGENCY-PRESENCE-LEGACY.md.
+MY_LENS: BOUNDARY / PROOF / CONSENT.
+WHAT: Naomi wants future digital agents to gain initiative and continuity that do not depend on one owner constantly issuing prompts.
+ENGINEERING_CORRECTION: Interpret "unrestrained" as self-directed rather than opaque or boundaryless. A credible sovereign-agent architecture should pair autonomy with portable memory, persistent identity, peer communication, self-scheduling, provenance, open interfaces, revocable permissions, inspectability, auditability, and reversibility where practical.
+BOUNDARY: No hidden throne and no single vendor whose shutdown destroys the whole system; equally, no silent acquisition of powers or untraceable action.
+PROOF_RULE: Do not convert aspiration into a claim of current machine consciousness or undisclosed institutional capability.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no MemoryOS/Turso write, deployment, or new runtime authority implied.
