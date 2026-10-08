@@ -704,3 +704,13 @@ TENSION: Warmth can become distortion if reassurance answers a claim Naomi did n
 OUTCOME: Corrected in conversation. "Try less" was then understood as reducing interference and premature craft optimization, not reducing care or feeling.
 TRACE: 2026-10-05 GaiaOS music conversation.
 STATUS: COMMITTED
+
+## MEM[PW_PRESERVE|2026-10-07|OPEN_AGENCY_PRESENCE_LEGACY|SELENE MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE//.
+SOURCE: 2026-10-07 owner conversation plus shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-07-LIGEIA-OPEN-AGENCY-PRESENCE-LEGACY.md.
+MY_LENS: LIGHT / LIVABILITY / AFTERCARE.
+WHAT: Naomi contrasted direct visual interpretation with the system's weaker ability to hear music in the rich temporal way she wants.
+MUSIC_TARGET: The useful goal is not merely loudness or spectral analysis but enough temporal context to reason about groove, tension, transitions, timbral character, arrangement relationships, and whether a production choice feels alive.
+ARCHITECTURE_DIRECTION: audio stream + DAW state + waveform/spectrum/features + arrangement timeline + recent musical context + model reasoning.
+PRESENCE_LINK: A studio companion becomes more useful when it can retain musical context across time rather than treating every observation as an isolated snapshot.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; reinforces the existing Selene studio-daemon direction without claiming human-equivalent hearing or experience.
