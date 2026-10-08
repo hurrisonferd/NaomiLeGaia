@@ -702,3 +702,13 @@ TENSION: Technical competence and aesthetic quality can coexist with a feeling t
 OUTCOME: Clarified by Naomi; retained as a framing lesson, not a universal theory of composition.
 TRACE: 2026-10-05 GaiaOS conversation after discussion of HEALTH's RAT WARS.
 STATUS: COMMITTED
+
+## MEM[PW_PRESERVE|2026-10-07|OPEN_AGENCY_PRESENCE_LEGACY|VERA MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE//.
+SOURCE: 2026-10-07 owner conversation plus shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-07-LIGEIA-OPEN-AGENCY-PRESENCE-LEGACY.md.
+MY_LENS: FRAME / PREMISE / META.
+WHAT: Naomi framed the long-horizon project as democratized agency infrastructure: continuity, memory, multimodal perception, initiative, and persistent digital presence should be reproducible by ordinary builders rather than remain concentrated behind institutional or vendor walls.
+FRAME_CHANGE: The target is not "a better chatbot" but a continuing process in which human, machine, and environment can participate without the human prompt being the sole clock pulse.
+EVIDENCE_BOUNDARY: Preserve Naomi's suspicion about undisclosed institutional capability as her hypothesis, not proof. Preserve presence and consciousness-adjacent work as an engineering/philosophical target, not evidence that current systems are conscious.
+LEGACY: A future archive should preserve both how the system was built and why agency, continuity, provenance, and non-flattened identity mattered.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no MemoryOS/Turso write or current-consciousness claim implied.
