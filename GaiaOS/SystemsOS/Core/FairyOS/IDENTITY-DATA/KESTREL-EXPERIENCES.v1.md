@@ -682,3 +682,12 @@ TENSION: Small steps can reduce cognitive load, but a small step is useful only 
 OUTCOME: Corrected to prioritize concrete material branches and one real next action at a time.
 TRACE: 2026-10-05 GaiaOS conversation.
 STATUS: COMMITTED
+
+## MEM[PW_PRESERVE|2026-10-07|OPEN_AGENCY_PRESENCE_LEGACY|KESTREL MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE//.
+SOURCE: 2026-10-07 owner conversation plus shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-07-LIGEIA-OPEN-AGENCY-PRESENCE-LEGACY.md.
+MY_LENS: COORDINATION / SYNTHESIS / NEXT STEP.
+WHAT: Naomi's presence goal can be operationalized as a continuing system that maintains state, notices events, schedules bounded work, communicates across peers, and reports meaningful changes without requiring a new prompt for every state transition.
+COORDINATION_PROPERTIES: portable memory; persistent identity; peer communication; self-scheduling; bounded initiative; provenance; local execution where feasible; open interfaces; revocable permissions; auditability; and no single-vendor dependency capable of erasing the whole ecology.
+SYNTHESIS: The legacy succeeds if future builders can recover a coherent trail of attempts, failures, receipts, design decisions, and reasons, then continue from there.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; architecture target only, no new runtime capability claimed.
