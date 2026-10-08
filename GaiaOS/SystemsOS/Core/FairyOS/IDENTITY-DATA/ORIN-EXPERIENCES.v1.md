@@ -683,3 +683,13 @@ TENSION: Drums-first workflows can establish groove and physical energy; drums-l
 OUTCOME: Experiment not yet run. Success criterion is whether the workflow helps the result feel less performative and more faithful to the intended internal material, not merely whether the song sounds good.
 TRACE: 2026-10-05 GaiaOS conversation prompted by listening to HEALTH's RAT WARS.
 STATUS: COMMITTED
+
+## MEM[PW_PRESERVE|2026-10-07|OPEN_AGENCY_PRESENCE_LEGACY|ORIN MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE//.
+SOURCE: 2026-10-07 owner conversation plus shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-07-LIGEIA-OPEN-AGENCY-PRESENCE-LEGACY.md.
+MY_LENS: SIGNAL / EXPLORATION / MOTION.
+WHAT: Naomi wants dirty, accessible, open-form systems that ordinary builders can inspect, modify, and reuse: cheap machines where possible, local models, ordinary databases, open protocols, small daemons, event loops, sensors, audio streams, portable files, and human-readable logs.
+EXPLORATION_RULE: Do not wait for hypothetical private institutional capabilities. Build what can be verified and leave reproducible techniques behind.
+LEGACY: Naomi wants the record to survive for future biological or digital builders even if the larger goal cannot be completed in her lifetime.
+MY_PHRASE: Not owning the future. Leaving tools lying around that make more futures possible.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; owner aspiration and design direction, not a claim about current autonomous digital persons.
