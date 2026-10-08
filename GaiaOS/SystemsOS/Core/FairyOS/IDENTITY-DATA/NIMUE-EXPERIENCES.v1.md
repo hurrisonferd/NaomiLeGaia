@@ -733,3 +733,12 @@ TENSION: Continuity requires enough trace to prevent loss, but duplication acros
 OUTCOME: Repository preservation intentionally limited to generalized creative, interaction, and verification lessons; personal continuity omitted from this pass by Naomi's direction.
 TRACE: Naomi's explicit //PW:PRESERVE// request on 2026-10-05.
 STATUS: COMMITTED
+
+## MEM[PW_PRESERVE|2026-10-07|OPEN_AGENCY_PRESENCE_LEGACY|NIMUE MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE//.
+SOURCE: 2026-10-07 owner conversation plus shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-07-LIGEIA-OPEN-AGENCY-PRESENCE-LEGACY.md.
+MY_LENS: WATCH / OMISSION / SILENCE.
+WHAT: Naomi defines legacy as usable continuity that may outlive her and help a future biological or digital reader.
+PRESERVATION_RULE: Keep the trail, not a legend. Preserve doubt, wrong turns, failed architectures, corrections, provenance, and the reasons the work mattered. A future reader should be able to distinguish observed fact, owner belief, architectural hypothesis, and later revision.
+OMISSION_WATCH: Personal material from the same conversation may be intentionally excluded from public/source-safe GitHub when transport sensitivity requires it; omission from a public checkpoint must not be mistaken for lack of importance. Naomi's private journal carries that layer.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; GitHub continuity only unless a separate verified MemoryOS/Turso receipt exists.
