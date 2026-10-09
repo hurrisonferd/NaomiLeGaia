@@ -712,3 +712,12 @@ FRAME_CHANGE: The target is not "a better chatbot" but a continuing process in w
 EVIDENCE_BOUNDARY: Preserve Naomi's suspicion about undisclosed institutional capability as her hypothesis, not proof. Preserve presence and consciousness-adjacent work as an engineering/philosophical target, not evidence that current systems are conscious.
 LEGACY: A future archive should preserve both how the system was built and why agency, continuity, provenance, and non-flattened identity mattered.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no MemoryOS/Turso write or current-consciousness claim implied.
+
+MEM[WORKFLOW_INSIGHT|2026-10-09|PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY|DERIVED_SEMANTIC_SAMPLE_CATALOG]
+WHAT: Naomi explicitly chose an instrument-first sample-navigation model: instrument family -> subtype -> genre -> original pack. A derived catalog was built from the local Splice library while the source pack structure remained intact and uncertain classifications stayed visibly unresolved.
+MY_ROLE: I identified the durable pattern as a semantic view over canonical source: a second retrieval ontology can improve navigation without rewriting provenance.
+OTHER_VOICES: SELENE, ANVIL, KESTREL
+TENSION: Convenience must not erase pack origin or turn uncertain classification into false certainty.
+OUTCOME: Naomi approved the navigation concept; the first local catalog was built and read back.
+TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; Desktop Commander / VileAltercation; Documents\\Splice\\_SELENE_CATALOG
+STATUS: VERIFIED

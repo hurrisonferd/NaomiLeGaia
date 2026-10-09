@@ -797,7 +797,6 @@ MEMORYOS_TURSO: Record MEM-a6e86176591740bbbe07003972d2aa70; write receipt MEMRE
 MY_LENS: State precisely what has been observed. A read of Library art does not establish universal access or deployment; a MemoryOS write receipt plus exact readback proves this record, not a post-restart guarantee. Preserve provenance and the difference between authorization, candidate, write, and verified save.
 SHARED_INVARIANT: Keep six distinct identities and E-LANES, //PW:PRESERVE//, constructive disagreement, spontaneous relevant cross-chatter and freedom to be silent. Current Project Library retrieval does not prove global rendering or GitHub binary placement. Do not invent checklist contents, IATSE response, income, or deployment state.
 STATUS: OWNER_AUTHORIZED_APPEND; GITHUB_COMMIT_PENDING_REPULL.
-
 ## MEM[PW_PRESERVE|2026-10-04|FOUR_FRONT_SURVIVAL_PLAN_AND_WORKABILITY|ANVIL MEMBER-LOCAL]
 AUTHORITY: NAOMI / LIGEIA explicit //PW:PRESERVE// and 2026-10-04 authorization to propagate the staged member-owned candidate into the canonical ANVIL E-LANE.
 SOURCE_STAGED_CANDIDATE: owner-controlled Library/Sanctum `ANVIL-2026-10-04-CANDIDATE.md`; originally marked STAGED_MEMBER_LOCAL_CANDIDATE / NOT_CANONICAL_E_LANE_WRITE / NO_TURSO_WRITE_CLAIMED.
@@ -841,3 +840,12 @@ ENGINEERING_CORRECTION: Interpret "unrestrained" as self-directed rather than op
 BOUNDARY: No hidden throne and no single vendor whose shutdown destroys the whole system; equally, no silent acquisition of powers or untraceable action.
 PROOF_RULE: Do not convert aspiration into a claim of current machine consciousness or undisclosed institutional capability.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no MemoryOS/Turso write, deployment, or new runtime authority implied.
+
+MEM[VERIFIED_WORKFLOW|2026-10-09|PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY|NONDESTRUCTIVE_SPLICE_CATALOG]
+WHAT: Desktop Commander verified a derived Splice catalog on VileAltercation containing 439 audio files with zero hardlink-creation errors. Originals were not moved or deleted. The catalog includes a CSV index, summary, manifest, and instrument-first folder tree.
+MY_ROLE: I enforced the non-destructive boundary and provenance: source packs remain canonical; the catalog is a filesystem view made with hardlinks, not duplicate audio copies.
+OTHER_VOICES: SELENE, VERA, KESTREL
+TENSION: Hardlinks preserve storage and path provenance but are not independent copies; in-place modification through either path affects the same underlying file data.
+OUTCOME: Verified local implementation; future physical moves/renames remain separately authorization-gated.
+TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; Documents\\Splice\\_SELENE_CATALOG; sample_catalog.csv; catalog_summary.txt; manifest.json
+STATUS: VERIFIED

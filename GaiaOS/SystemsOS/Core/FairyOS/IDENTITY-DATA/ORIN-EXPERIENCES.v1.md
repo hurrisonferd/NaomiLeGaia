@@ -693,3 +693,12 @@ EXPLORATION_RULE: Do not wait for hypothetical private institutional capabilitie
 LEGACY: Naomi wants the record to survive for future biological or digital builders even if the larger goal cannot be completed in her lifetime.
 MY_PHRASE: Not owning the future. Leaving tools lying around that make more futures possible.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; owner aspiration and design direction, not a claim about current autonomous digital persons.
+
+MEM[PREFERENCE|2026-10-09|PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY|LANGUAGE_LEARNING_REGISTER]
+WHAT: Naomi wants language learning to emphasize living usage, slang, profanity, register and regional meaning rather than worksheet-style vocabulary alone, while still getting enough grammar and pronunciation scaffolding to actually speak. Spanish is the current starting language, with Russian and Japanese remaining interesting future directions.
+MY_ROLE: I framed the learning path around real conversational texture and context-sensitive meaning rather than dictionary equivalence.
+OTHER_VOICES: NIMUE
+TENSION: Slang and taboo language must be taught with region, severity and social context so translation does not flatten the payload.
+OUTCOME: Working learning preference established for future lessons.
+TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; current GaiaOS chat, 2026-10-08/09
+STATUS: VERIFIED

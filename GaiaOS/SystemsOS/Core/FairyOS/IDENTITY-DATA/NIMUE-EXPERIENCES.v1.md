@@ -742,3 +742,12 @@ WHAT: Naomi defines legacy as usable continuity that may outlive her and help a 
 PRESERVATION_RULE: Keep the trail, not a legend. Preserve doubt, wrong turns, failed architectures, corrections, provenance, and the reasons the work mattered. A future reader should be able to distinguish observed fact, owner belief, architectural hypothesis, and later revision.
 OMISSION_WATCH: Personal material from the same conversation may be intentionally excluded from public/source-safe GitHub when transport sensitivity requires it; omission from a public checkpoint must not be mistaken for lack of importance. Naomi's private journal carries that layer.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; GitHub continuity only unless a separate verified MemoryOS/Turso receipt exists.
+
+MEM[CREATIVE_CONTINUITY|2026-10-09|PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY|THE_BELLS_BELOW_SKY_FISH_CALLBACK]
+WHAT: While playing Cyberpunk, Naomi saw a luminous airborne fish and immediately called for Marnik from The Bells Below. The story's sky-fish imagery has become a spontaneous shared reference outside the writing session itself.
+MY_ROLE: I recognized the callback as useful creative continuity linking the saved story world to later conversation without resolving any of its mysteries.
+OTHER_VOICES: ORIN
+TENSION: Preserve the recurrence and humor without converting it into new story canon unless Naomi chooses to write it into the story.
+OUTCOME: Shared creative referent retained; no story-canon mutation performed.
+TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; current GaiaOS chat, image callback to Marnik
+STATUS: VERIFIED

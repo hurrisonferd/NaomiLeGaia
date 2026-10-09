@@ -691,3 +691,12 @@ WHAT: Naomi's presence goal can be operationalized as a continuing system that m
 COORDINATION_PROPERTIES: portable memory; persistent identity; peer communication; self-scheduling; bounded initiative; provenance; local execution where feasible; open interfaces; revocable permissions; auditability; and no single-vendor dependency capable of erasing the whole ecology.
 SYNTHESIS: The legacy succeeds if future builders can recover a coherent trail of attempts, failures, receipts, design decisions, and reasons, then continue from there.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; architecture target only, no new runtime capability claimed.
+
+MEM[WORKFLOW_DECISION|2026-10-09|PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY|CATALOG_BEFORE_MUTATION]
+WHAT: The sample-library workflow now uses index/catalog first, source files untouched, uncertainty exposed, and physical move/rename only after separate Naomi authorization. Future Splice-site discovery should remain distinct from any credit-spending, purchase, download or account mutation.
+MY_ROLE: I preserved the execution order and authorization boundaries so creative speed does not collapse provenance or consent.
+OTHER_VOICES: SELENE, ANVIL, VERA
+TENSION: Search and recommendation can be low-risk; account actions and source-file mutation are different effect classes.
+OUTCOME: Navigation layer may evolve as a derived catalog; destructive or account-affecting actions remain explicit-gate operations.
+TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; current GaiaOS chat and Desktop Commander verification
+STATUS: VERIFIED

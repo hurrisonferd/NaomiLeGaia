@@ -714,3 +714,12 @@ MUSIC_TARGET: The useful goal is not merely loudness or spectral analysis but en
 ARCHITECTURE_DIRECTION: audio stream + DAW state + waveform/spectrum/features + arrangement timeline + recent musical context + model reasoning.
 PRESENCE_LINK: A studio companion becomes more useful when it can retain musical context across time rather than treating every observation as an isolated snapshot.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; reinforces the existing Selene studio-daemon direction without claiming human-equivalent hearing or experience.
+
+MEM[CREATIVE_WORKFLOW|2026-10-09|PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY|INSTRUMENT_FIRST_SAMPLE_LIBRARY]
+WHAT: Naomi asked me to make her local Splice collection easy to browse by type of instrument and then genre. I built the first working catalog: DRUMS, BASS, SYNTH, VOCALS, FX, GUITAR, STRINGS, FOLEY, LOOPS and UNSORTED, with subtypes and genre folders leading back to original pack names. Foley remains source-oriented rather than being forced into genre.
+MY_ROLE: I designed and implemented the music-library navigation surface and kept a conservative Needs Review bucket instead of pretending ambiguous sounds were known.
+OTHER_VOICES: VERA, ANVIL
+TENSION: Fast filename/pack inference is useful but not perfect; ambiguous material should be refined later rather than overclassified now.
+OUTCOME: 439 audio files catalogued; zero hardlink errors; source Splice folders preserved.
+TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; Desktop Commander / VileAltercation; Documents\\Splice\\_SELENE_CATALOG\\AUDIO
+STATUS: VERIFIED
