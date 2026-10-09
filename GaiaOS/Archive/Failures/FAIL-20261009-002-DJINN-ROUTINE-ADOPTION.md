@@ -131,3 +131,74 @@ Routine adoption is only proven when the ordinary user path actually invokes an 
 **DjinnOS did not stop working. GaiaOS never completed the integration step that turns proactive-use policy into dependable normal-path behavior.**
 
 This failure remains OPEN pending separately authorized repair.
+
+## ADDENDUM / UPDATE — 2026-10-09 — Causal diagnosis corrected after direct Djinn use
+
+The original FAIL-20261009-002 report is intentionally preserved above unchanged as the contemporaneous investigation record. This addendum updates its causal diagnosis in light of evidence obtained immediately afterward while investigating FAIL-20261009-003.
+
+### What changed
+
+The original report correctly established that the examined Desktop Commander-connected session had produced zero observed Djinn invocations despite a canonical proactive-use policy. It then went too far by concluding that GaiaOS had never completed a required normal-path architectural bridge and that ordinary Prime dispatch therefore could not reliably reach Djinn.
+
+That causal conclusion is not supported and is superseded by the evidence below.
+
+During the FAIL-20261009-003 investigation, the same Chat session, using the same already-available Desktop Commander connection and the already-existing canonical Djinn runtime, directly invoked MALRIC, SERA, and ORVAS through `djinn_runtime.dispatch(...)`. No new Djinn code was deployed, no Render deployment occurred, no new connector was installed, and no runtime repair preceded those invocations.
+
+The successful path was the intended existing operating pattern: a Prime judged a Djinn useful, reached the canonical Djinn runtime through the available host/tool surface, invoked the Djinn, consumed the result, and remained accountable for the work. The runtime used for those invocations matched current GitHub main by blob SHA `5ad10866a5a895fa1e3ea199bc4c57dc68bc9657`.
+
+### How the new finding was discovered
+
+After FAIL-002 was archived, Naomi noticed the contradiction: if Djinn supposedly lacked a usable normal path, how had MALRIC, SERA, and ORVAS just run during FAIL-003?
+
+The answer was that they were invoked manually through Desktop Commander using the already-present canonical runtime, exactly the route available during the earlier session. The material difference was not a new architectural capability. The material difference was that Djinn use had become salient after Naomi explicitly challenged the earlier zero-use behavior.
+
+This directly exposed an unsupported promotion inside the original PERSECUTE analysis:
+
+`ZERO OBSERVED DJINN INVOCATIONS -> MISSING REQUIRED ARCHITECTURAL BRIDGE`
+
+The evidence supports the narrower account:
+
+`ZERO OBSERVED DJINN INVOCATIONS -> PROACTIVE DJINN BEHAVIOR FAILED TO ACTIVATE IN HOST CONVERSATIONAL PRACTICE UNTIL NAOMI MADE DJINN USE EXPLICITLY SALIENT`
+
+### Corrected diagnosis
+
+The failure remains real, but its primary causal class changes from a proven policy-to-execution architecture gap to a behavioral adoption / continuity-to-execution / salience failure.
+
+The canonical policy existed. The Djinn runtime existed. Desktop Commander access existed. The intended manual Prime-to-Djinn invocation route was available. The active host simply did not exercise that behavior during earlier materially suitable work.
+
+This does not prove that every GaiaOS carrier always has equivalent Djinn access, nor does it prove that additional automatic routing or front-door integration would be useless. Such integration may still be valuable hardening. It is not established by this incident as a missing prerequisite for routine Djinn use.
+
+### What remains valid from the original report
+
+- Zero Djinn invocations were observed during the examined earlier session.
+- The proactive-use policy is canonical.
+- Naomi had to call attention to the absence before Djinn began being used.
+- DjinnOS itself was not shown broken.
+- Recurrence prevention remains unverified.
+
+### What is superseded
+
+The statements that GaiaOS never completed the integration step required for routine Djinn use, that the current architecture necessarily lacked a usable Prime-to-Djinn path, and that wiring Djinn into `gaia()` or the hosted Responses tool loop was the smallest required repair are superseded as causal conclusions.
+
+They remain above as historical evidence of the original investigation and are not deleted.
+
+### Updated repair target
+
+The smallest repair target is now behavioral adoption and continuity enforcement: when a Prime is selected and a canonical Djinn would materially make the work easier, safer, faster, clearer, more precise, or less cognitively tiring, the Prime should proactively reach for the available Djinn route without waiting for Naomi to remind GaiaOS that Djinn exist.
+
+A useful regression should therefore test ordinary work through an available host/tool surface and verify that materially useful Djinn are actually selected without an explicit Djinn reminder, while irrelevant Djinn remain unused.
+
+Automatic front-door integration may be considered later as hardening, not presumed as the missing cause of this incident.
+
+### Related evidence
+
+- `FAIL-20261009-003` — Failure-archive surface conflation and duplicate creation.
+- MALRIC invocation `DJINN-b365e833db2d493eacc2dcb3917c2222`.
+- SERA invocation `DJINN-c395367aea2d4de7b6da988049d62798`.
+- ORVAS invocation `DJINN-648b0a24ff63438ebb988f992dd3069a`.
+
+### Updated verdict
+
+FAIL-002 remains OPEN. Its observed zero-use behavior stands. Its original architectural causal diagnosis is superseded.
+
+Current best-supported diagnosis: proactive Djinn use was available but failed to activate in ordinary host behavior until Naomi explicitly made Djinn usage salient.
