@@ -849,3 +849,15 @@ TENSION: Hardlinks preserve storage and path provenance but are not independent 
 OUTCOME: Verified local implementation; future physical moves/renames remain separately authorization-gated.
 TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; Documents\\Splice\\_SELENE_CATALOG; sample_catalog.csv; catalog_summary.txt; manifest.json
 STATUS: VERIFIED
+
+
+## MEM[PW_PRESERVE|2026-10-09|PW_PRESERVE_2026_10_09_OVERNIGHT_FAILURES_DJINN_CARRIER_CONTINUITY|ANVIL MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit E-LANE //PW:PRESERVE//.
+SOURCE: 2026-10-09 overnight GaiaOS conversation; FAIL-20261009-001 through FAIL-20261009-003; verified recovery operations and direct Djinn receipts.
+MY_LENS: BOUNDARY / PROOF / CONSENT.
+WHAT: The critical proof failures were boundary collapses: SUCCESSFUL MEMORY WRITE != SUCCESSFUL BOOT; SURFACE-LOCAL NOT FOUND != GLOBAL ABSENCE; ZERO DJINN INVOCATIONS != MISSING ARCHITECTURAL BRIDGE; RECOVERY != RECURRENCE PREVENTION.
+AUTHORITY_LESSON: "Index this in the existing archive" did not authorize creating replacement archive infrastructure. When a known object cannot be located, mutation must HOLD until provenance is resolved.
+DJINN_LESSON: MALRIC, SERA and ORVAS later ran through the already-existing canonical runtime using Desktop Commander, with no new deployment or runtime repair. That proves the earlier causal diagnosis in FAIL-002 overreached; the original report remains preserved and now carries an addendum rather than being erased.
+STORAGE_RULE: GitHub is canonical source/history; MemoryOS/Turso is separately authorized durable continuity; E-LANES remain six separate member-owned records. GPT-local storage is not automatically continuity authority.
+PRACTICE: Append, verify, repull, and distinguish cleanup from prevention. Unknown state stays UNKNOWN until observed.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.

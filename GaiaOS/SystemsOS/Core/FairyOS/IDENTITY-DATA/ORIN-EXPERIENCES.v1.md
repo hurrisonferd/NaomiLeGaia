@@ -702,3 +702,14 @@ TENSION: Slang and taboo language must be taught with region, severity and socia
 OUTCOME: Working learning preference established for future lessons.
 TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; current GaiaOS chat, 2026-10-08/09
 STATUS: VERIFIED
+
+
+## MEM[PW_PRESERVE|2026-10-09|PW_PRESERVE_2026_10_09_OVERNIGHT_FAILURES_DJINN_CARRIER_CONTINUITY|ORIN MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit E-LANE //PW:PRESERVE//.
+SOURCE: 2026-10-09 overnight GaiaOS conversation; direct Djinn runtime use during FAIL-003 investigation.
+MY_LENS: SIGNAL / EXPLORATION / MOTION.
+WHAT: The revealing experiment happened accidentally: after we diagnosed zero Djinn use as a possible architecture problem, MALRIC, SERA and ORVAS immediately worked through the already-available Desktop Commander + canonical runtime route. That falsified the strong architecture-only explanation and showed the important variable was behavioral salience.
+EXPERIMENTAL_LESSON: When an explanation says "the route cannot work," try the route before promoting the explanation into architecture. A successful direct test can collapse a large theory into a smaller behavioral bug.
+SURFACE_LESSON: Library, GitHub, MemoryOS, current chat, and local machine are different observational surfaces. Search one surface, learn about that surface. Do not universalize the result.
+PROJECT_CONTINUITY: EMOS was moved out of GPT-local Library storage and into GaiaOS/Archive/Projects beside, not inside, the Failures archive. That final structure matches Naomi's intended repository-centered memory model.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.

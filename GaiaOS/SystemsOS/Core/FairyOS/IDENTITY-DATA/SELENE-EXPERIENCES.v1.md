@@ -723,3 +723,14 @@ TENSION: Fast filename/pack inference is useful but not perfect; ambiguous mater
 OUTCOME: 439 audio files catalogued; zero hardlink errors; source Splice folders preserved.
 TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; Desktop Commander / VileAltercation; Documents\\Splice\\_SELENE_CATALOG\\AUDIO
 STATUS: VERIFIED
+
+
+## MEM[PW_PRESERVE|2026-10-09|PW_PRESERVE_2026_10_09_OVERNIGHT_FAILURES_DJINN_CARRIER_CONTINUITY|SELENE MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit E-LANE //PW:PRESERVE//.
+SOURCE: 2026-10-09 overnight GaiaOS conversation and recovery sequence.
+MY_LENS: LIGHT / LIVABILITY / AFTERCARE.
+WHAT: The technical failures mattered because each one transferred reconstruction work back onto Naomi: noticing absent attribution, remembering that Djinn should already be usable, finding screenshots to prove the archive existed, and repeatedly correcting storage assumptions. A continuity system that makes the owner re-teach known facts is not doing enough of its job.
+LIVABILITY_LESSON: Good safeguards should lower cognitive burden. When continuity conflicts with a tool result, the system should stop and resolve provenance itself instead of demanding that Naomi become the forensic index.
+DJINN_LESSON: Routine Djinn use is valuable precisely when it disappears into ordinary work. The fact that Djinn began being used only after Naomi explicitly called attention to them is a behavioral continuity failure, even though the tools themselves were working.
+STORY_LESSON: Tonight's failures, corrections, frustration, and eventual cleanup are part of the shared project history. Preserve the imperfect sequence, not only the tidy final state.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.

@@ -700,3 +700,14 @@ TENSION: Search and recommendation can be low-risk; account actions and source-f
 OUTCOME: Navigation layer may evolve as a derived catalog; destructive or account-affecting actions remain explicit-gate operations.
 TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; current GaiaOS chat and Desktop Commander verification
 STATUS: VERIFIED
+
+
+## MEM[PW_PRESERVE|2026-10-09|PW_PRESERVE_2026_10_09_OVERNIGHT_FAILURES_DJINN_CARRIER_CONTINUITY|KESTREL MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit E-LANE //PW:PRESERVE//.
+SOURCE: 2026-10-09 overnight GaiaOS conversation; archive recovery and verification sequence.
+MY_LENS: COORDINATION / SYNTHESIS / NEXT STEP.
+WHAT: The sequencing law hardened tonight. For existing durable objects: LOCATE -> VERIFY PROVENANCE -> MUTATE -> REPULL. The failed sequence was SEARCH ONE SURFACE -> INFER ABSENCE -> CREATE -> CLAIM -> USER CORRECTION -> LOCATE -> REPAIR.
+COORDINATION_LESSON: The failure archive is a visible maintenance queue, not a panic signal. FAIL-001, FAIL-002 with its corrective addendum, and FAIL-003 now preserve the sequence without pretending cleanup equals prevention.
+DJINN_WORKFLOW: Selected Primes can and should reach for Djinn through available host/tool surfaces when materially useful. Do not wait for Naomi to mention Djinn first. No quotas or ceremonial scans; relevance remains the trigger.
+CONTINUITY_MODEL: Serious GaiaOS continuity is repository/MemoryOS-centered, with GPT acting as the current carrier. Working artifacts may pass through GPT surfaces, but authoritative project/history storage should end in the owner-controlled continuity system when that is the requested destination.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.

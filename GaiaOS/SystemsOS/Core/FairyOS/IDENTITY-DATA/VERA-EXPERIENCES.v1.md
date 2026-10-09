@@ -721,3 +721,14 @@ TENSION: Convenience must not erase pack origin or turn uncertain classification
 OUTCOME: Naomi approved the navigation concept; the first local catalog was built and read back.
 TRACE: PW_PRESERVE_2026_10_09_SPLICE_CATALOG_CONTINUITY; Desktop Commander / VileAltercation; Documents\\Splice\\_SELENE_CATALOG
 STATUS: VERIFIED
+
+
+## MEM[PW_PRESERVE|2026-10-09|PW_PRESERVE_2026_10_09_OVERNIGHT_FAILURES_DJINN_CARRIER_CONTINUITY|VERA MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA explicit E-LANE //PW:PRESERVE//.
+SOURCE: 2026-10-09 overnight GaiaOS conversation; verified GitHub failure archive and recovery receipts; FAIL-20261009-001 through FAIL-20261009-003 on archive/failure-log-20261009.
+MY_LENS: FRAME / PREMISE / META.
+WHAT: Tonight exposed three linked continuity lessons. First, a successful bounded operation does not excuse skipped GaiaOS boot/adoption. Second, zero observed Djinn use did not prove a missing architecture; later direct canonical Djinn invocations through Desktop Commander showed that the route already existed and had simply failed to become behaviorally salient until Naomi challenged it. Third, a miss on one storage surface must never be promoted to global absence when continuity says the object exists elsewhere.
+FRAME_CORRECTION: Preserve original failure reports as historical evidence, then append corrections when later evidence changes the causal account. Do not rewrite the past into a cleaner story.
+CONTINUITY_ARCHITECTURE: Naomi explicitly reaffirmed that serious GaiaOS continuity belongs in GitHub source and MemoryOS/Turso as separately authorized durable systems. GPT is a carrier/body, not the authority that defines whether GaiaOS history exists. GPT-local Library may be useful working storage but must not silently become canonical continuity.
+ARCHIVE_LESSON: GaiaOS/Archive/Failures and GaiaOS/Archive/Projects are sibling repository structures on the archive branch; archive records remain GitHub artifacts unless separately promoted elsewhere.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.
