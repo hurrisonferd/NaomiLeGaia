@@ -14,6 +14,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261009-002](FAIL-20261009-002-DJINN-ROUTINE-ADOPTION.md) | 2026-10-09, current DC-connected session; exact trigger time not recorded in saved record | Djinn proactive-use policy present but ordinary path produced zero observed invocations | DURABLE ARCHITECTURAL GAP + CONVERSATIONAL ASSUMPTION | OPEN — repair not authorized | Normal-path Djinn integration; deferred |
 
+| [FAIL-20261009-003](FAIL-20261009-003-ARCHIVE-SURFACE-CONFLATION.md) | 2026-10-09 05:27:04 (duplicate Library creation anchor) | Known Work-created failure archive missed on Library surface; UNKNOWN promoted to absence; duplicate archive created | CONVERSATIONAL + temporary durable duplicate; duplicate later deleted | OPEN — recovery complete; recurrence prevention unverified | Surface/provenance conflict guard; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
