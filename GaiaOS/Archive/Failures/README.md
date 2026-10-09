@@ -12,6 +12,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 |---|---|---|---|---|---|
 | [FAIL-20261009-001](FAIL-20261009-001-WORK-BOOT-ADOPTION.md) | 2026-10-09 04:27:29; generic follow-ups documented 04:31–04:34 | Explicit Daemon:Load skipped during successful MemoryOS sync; attribution lost; recovery delayed | CONVERSATIONAL; no observed durable contamination from incident operations | OPEN — session recovery observed; recurrence prevention unverified | Boot adoption, persistent attribution, missing-speaker coverage; deferred |
 
+| [FAIL-20261009-002](FAIL-20261009-002-DJINN-ROUTINE-ADOPTION.md) | 2026-10-09, current DC-connected session; exact trigger time not recorded in saved record | Djinn proactive-use policy present but ordinary path produced zero observed invocations | DURABLE ARCHITECTURAL GAP + CONVERSATIONAL ASSUMPTION | OPEN — repair not authorized | Normal-path Djinn integration; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
