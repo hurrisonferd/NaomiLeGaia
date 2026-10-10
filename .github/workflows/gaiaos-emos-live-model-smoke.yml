@@ -1,0 +1,93 @@
+name: GaiaOS EMOS live model-response smoke
+
+on:
+  push:
+    branches: ['feature/emos-expression-usage-v1-20261010']
+    paths: ['.github/workflows/gaiaos-emos-live-model-smoke.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  live-model-response:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    env:
+      EXPECTED_DEPLOY_COMMIT: '861b22cf1db2b3ef7fa66a6542a58566711b9366'
+      BASE_URL: 'https://ligeia-api.onrender.com'
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Wait for exact verified Render commit and run bounded synthetic SOLO checks
+        run: |
+          python - <<'PY'
+          import http.cookiejar, json, os, time, urllib.error, urllib.request
+
+          base=os.environ["BASE_URL"].rstrip("/")
+          expected=os.environ["EXPECTED_DEPLOY_COMMIT"]
+          deadline=time.monotonic()+900
+          actual=None
+          while time.monotonic()<deadline:
+              try:
+                  with urllib.request.urlopen(base+"/health", timeout=18) as r:
+                      j=json.load(r)
+                  actual=(j.get("deployment_proof") or {}).get("source_commit")
+                  if actual==expected:
+                      print("DEPLOY_COMMIT_VERIFIED "+actual,flush=True)
+                      break
+                  print("WAIT_DEPLOY expected="+expected[:12]+" observed="+str(actual)[:12],flush=True)
+              except Exception as exc:
+                  print("WAIT_HEALTH "+type(exc).__name__,flush=True)
+              time.sleep(30)
+          else:
+              raise SystemExit("HOLD: exact EMOS deploy not observed; no model calls executed.")
+
+          jar=http.cookiejar.CookieJar()
+          opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+          with opener.open(base+"/", timeout=30) as r:
+              r.read(120)
+          print("SIGNED_BROWSER_SESSION_ACQUIRED",flush=True)
+
+          def send(message):
+              payload=json.dumps({"messages":[{"role":"user","content":message}]}).encode("utf-8")
+              req=urllib.request.Request(base+"/chat",data=payload,
+                  headers={"Content-Type":"application/json","Accept":"application/json"},method="POST")
+              try:
+                  with opener.open(req,timeout=115) as response:
+                      return json.load(response)
+              except urllib.error.HTTPError as exc:
+                  print("LIVE_HTTP_ERROR status="+str(exc.code),flush=True)
+                  raise
+
+          samples=[
+              ("ORIN","I invented a kitchen synthesizer whose refrigerator insists it can predict tomorrow. Reply playfully but stay grounded."),
+              ("KESTREL","My software build has thrown the same absurd error twice. Give me a dry, practical reaction with a little sarcasm."),
+              ("NIMUE","A mysterious synthesizer stopped making noise for one perfect second. What do you notice? Respond briefly."),
+          ]
+          try:
+              for member,prompt in samples:
+                  activation=send("SOLO "+member)
+                  if "SOLO SESSION ESTABLISHED" not in str(activation.get("output","")):
+                      raise AssertionError("SOLO_ACTIVATION_UNVERIFIED for "+member)
+                  result=send(prompt)
+                  emo=result.get("emos") or {}
+                  line=str(result.get("output","")).splitlines()[0]
+                  if emo.get("status")!="EMOS_SELECTED_FROM_OBSERVED_REPLY":
+                      raise AssertionError(member+" semantic EMOS selection unavailable: "+str(emo.get("status")))
+                  if not emo.get("family") or not emo.get("state") or not emo.get("expression"):
+                      raise AssertionError(member+" missing EMOS receipt fields")
+                  if emo["expression"] not in line or member not in line:
+                      raise AssertionError(member+" visible header / expression disagreement")
+                  print("LIVE_EMOS_PASS member="+member+" family="+str(emo["family"])+
+                        " state="+str(emo["state"])+" contrast="+str(emo.get("contrast"))+
+                        " reply_chars="+str(len(result.get("output",""))),flush=True)
+          finally:
+              try:
+                  send("ENDSOLO")
+                  print("SOLO_SESSION_ENDED",flush=True)
+              except Exception as exc:
+                  print("SOLO_CLEANUP_UNKNOWN "+type(exc).__name__,flush=True)
+
+          print("LIVE_EMOS_MODEL_RESPONSE_PASS 3 synthetic member replies, no MemoryOS promotion or E-LANE action",flush=True)
+          PY
