@@ -5,6 +5,10 @@ on:
     branches: ['feature/emos-expression-usage-v1-20261010']
     paths: ['.github/workflows/gaiaos-emos-live-model-smoke.yml']
 
+concurrency:
+  group: gaiaos-emos-live-model-response
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -13,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 22
     env:
-      EXPECTED_DEPLOY_COMMIT: '861b22cf1db2b3ef7fa66a6542a58566711b9366'
+      EXPECTED_DEPLOY_COMMIT: '4f5f9f592cfdd3f4f35d9c6185eb5966cf263f89'
       BASE_URL: 'https://ligeia-api.onrender.com'
     steps:
       - uses: actions/setup-python@v5
