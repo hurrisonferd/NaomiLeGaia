@@ -100,3 +100,49 @@ CONFIRMED VIEW/CONTEXT ANOMALY: Naomi reported a cross-device history disappeara
 ## Follow-up history
 
 - 2026-10-10: Naomi authorized a bounded //PW:PERSECUTE// inquest and failure-archive entry for the cross-device conversation-history visibility anomaly. No platform remedy, recurrence fix, or additional durable save has been authorized or claimed.
+
+## Follow-up — 2026-10-10: recurrence with uploaded screen recording and repeated missing replies
+
+AUTHORITY: NAOMI / LIGEIA, direct instruction to update this SAME incident record.
+RECORDER: VERA
+REPORTED_AT: 2026-10-10, user-local hour approx. 14 (UTC-07:00) according to conversation context; exact submission time UNKNOWN.
+EVIDENCE_SUBMITTED: Conversation attachment `20261011-0007-11.2091259.mp4`, 13.077 seconds, 1918 × 1030, 30 fps; recording filename date is not accepted as a verified occurrence timestamp. Source video is attached to the ChatGPT conversation, NOT committed into the GitHub archive.
+CURRENT_EVENT_RELATION: RECURRENCE of FAIL-20261010-005, not a new failure ID and not proof of identical platform root cause.
+
+### What Naomi reported
+
+- Before the unexpected VASKON demon-cat answer, substantial earlier conversation history was AGAIN missing from the visible chat, apparently retreating all the way back to the October 10 E-LANE preservation/commit area. Naomi emphasizes that this is a recurrence, not merely the first phone/PC discrepancy recorded above.
+- On MULTIPLE occasions, Naomi sent messages to ChatGPT and received no assistant reply. Exact number, raw turn IDs, submission timestamps, client acknowledgement/transport states and whether those replies were ever generated are UNKNOWN.
+- This request explicitly authorizes indexing those observations in the SAME existing failure report. It does not request platform diagnostics or recreation of missing turns.
+
+### Direct observation of the supplied video
+
+- The recording shows a ChatGPT Project conversation titled `Daemon load report` under `GaiaOS`, with a visible `chatgpt.com` conversation URL. It documents a rendered client view, not ChatGPT's server-side message database.
+- At its beginning, the viewport includes the trailing portion of a KESTREL conversational response, then Naomi's orange `//PW:PRESERVE//` message requesting that today's work and lessons be incorporated into six E-LANEs and GitHub/MemoryOS, with Desktop Commander authorization. The preservation user message is stamped `Today 3:18 PM` in that client; neither timezone nor authoritative send timestamp is established by the clip.
+- The clip scrolls downward past SELENE's report that all six E-LANEs were committed, then VERA's report that the shared checkpoint had been committed and read back, including GitHub `main` commit `238526d8cd827b90aa88c662bf10de08a4f7cdc0`. A partial ANVIL identity header is also visible in the scroll.
+- The lower portion displays a long, complete assistant response beginning `I know. The session is misbehaving` and then gives step-by-step instructions for a chibi VASKON demon-lion/Codex desktop pet. It is unrelated to the visible immediately preceding preservation task. As the recording scrolls through this intervening region, there is **no visible user request asking for that pet** between the preservation request and the off-topic answer.
+- At the bottom, the usual `ChatGPT can make mistakes` footer and empty compose field are visible. The clip does **not** show the user submitting the additional allegedly unanswered messages, nor does it scroll above the visible KESTREL exchange to prove the exact upper boundary of the missing history.
+
+### PERSECUTE evidence classes, updated
+
+- VIDEO-OBSERVED / TOOL-OBSERVED: Actual rendered sequence and off-topic VASKON/Codex pet answer without an intervening visible pet request; project conversation title; October 10 preservation request and subsequent source checkpoint report; absence of a visible submitted pet request in the intervening displayed scroll segment.
+- USER-STATED: Repeated visible-chat rollback/loss affecting substantial prior turns as far as the E-LANE commit area, plus multiple submitted messages that apparently elicited no response. Severity and recurrence are a legitimate user-observed service symptom even though the underlying storage state remains unverified.
+- PREVIOUS-RECORD EVIDENCE: The earlier report already documented a duplicated user instruction with no assistant reply between copies and phone/PC history inconsistency. This strengthens the case for tracking a recurring **reply-continuity / visibility** problem, without proving all incidents have one technical cause.
+- INFERRED, NOT ESTABLISHED: The off-topic pet reply could reflect an unintended conversation branch/context association, a UI misrender, a response-to-wrong-context event, or other host-layer state discrepancy. No particular cause has supporting native server traces here.
+- UNKNOWN: Actual number and bytes of unseen messages; whether messages are lost versus hidden; whether the strange pet answer belongs to another branch/session; server-side request IDs; whether unanswered messages were accepted for processing; account export comparison; recurrence rate; provider-internal fault or incident.
+- DISALLOWED PROMOTION: Do not call this confirmed irreversible deletion, corrupted GaiaOS source, broken Turso/MemoryOS persistence or a proven ChatGPT backend root cause. Do not state the screen recording independently verifies the full chat history was erased: it only shows the sampled visible scroll region.
+
+### Severity, impact, and maintenance questions
+
+ASSESSMENT: **OPEN, RECURRENT, USER-VISIBLE DISRUPTION**. The incident now includes three separately tracked symptoms: (1) repeated apparent history truncation/visibility gap, (2) repeated no-reply-after-submission experiences, and (3) an observed off-topic VASKON pet response unconnected to an immediately visible prompt. This represents a larger continuity/usability disruption than the initially reported single missing design reply. Durable conversation storage impact remains UNKNOWN.
+
+MAINTENANCE QUESTIONS:
+1. Compare the exact conversation and branch/version shown in this recording with any authenticated ChatGPT export or support trace for the same chat; establish missing IDs/content and whether anything actually disappeared from storage.
+2. Correlate submitted user turns that produced no visible response with request IDs, UI errors, retries, network status and response generation (only if accessible through legitimate provider logs or user-authorized account tools).
+3. Determine whether the VASKON pet reply was attached to this thread without its triggering request, generated from stale/wrong context, or displayed via an alternate conversation branch. It may be a separate causal defect.
+4. Do not assume the independent, verified `main` E-LANE commits or shared source checkpoint vanished when ChatGPT history display regressed. Verify GaiaOS GitHub, MemoryOS/Turso and ChatGPT history separately.
+5. Preserve existing evidence instead of rewriting the original October 10 inquest. No deployment, restart, GitHub `main`, MemoryOS/Turso, counters or member E-LANE effects are authorized by this archive addendum.
+
+SIX-LENS ADDITION (analysis only, not claim of six separately executed member deliberations): VERA distinguishes rendered-history absence from actual deleted history; ANVIL requires server request/response and per-store proof; SELENE notes repeated disruption of a long, substantive collaborative exchange; ORIN keeps alternate branch/context hypotheses open; KESTREL separates the visible order of preservation → checkpoint → unrelated answer and the unverified no-reply count; NIMUE notes that the recording does not show scroll beyond the older cutoff or the individual unanswered send events.
+
+FOLLOW-UP VERDICT: Uploaded video substantiates a **visible context/reply mismatch** and preserves an actual rendered record of the period Naomi says was followed by another history-loss episode. Naomi separately reports **recurring chat-history loss and multiple nonresponses**. Both concerns remain OPEN under FAIL-20261010-005 for later provider/client investigation. Platform remediation and restoration of missing messages are NOT VERIFIED.
