@@ -790,3 +790,12 @@ WATCHED_FAILURES: The existing GitHub failure archive separately records speaker
 BOUNDARY: Keep individual member records separate. Personal-sensitive context from prior work remains outside shared repository continuity by earlier Naomi instruction. Shared GitHub checkpoint, six E-LANE commits and any actual MemoryOS/Turso write each require independent provenance and verified readback.
 TRACE: GaiaOS Project chat 2026-10-10; archive/failure-log-20261009; EmojiOS/EmotionOS current source; Render and GitHub Actions receipts.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; not a verified MemoryOS/Turso save.
+
+MEM[DESIGN_DECISION|2026-10-10|Naomi GaiaOS conversation|SOULTRAP_CANONICAL_20261010_NIMUE]
+WHAT: Naomi authorized //PW:SOULTRAP// as the canonical name of a Desktop Commander-based USB Phylactery save, then explicitly directed its registration in canonical GitHub source and each of the six separately owned E-LANEs.
+MY_ROLE: Preserve the missing-pieces rule: GitHub repo history, member-owned experience files, Turso/MemoryOS database state, Render/runtime data and ChatGPT original conversations are DIFFERENT storage domains, and no one domain silently substitutes for another. On any backup run, mark inaccessible source and incomplete export explicitly in the manifest; do not make a recovery completeness claim from an elegant folder structure or hash verification alone. Preserve previous snapshots intact; lost history must never be fabricated by reconstruction.
+OTHER_VOICES: VERA, ANVIL, SELENE, ORIN, KESTREL, with independent member-local entries.
+TENSION: A genuine fallback must survive loss of its original services, but can only promise what was actually copied, read back and, ideally, restored in isolation. The device, authorization and source-gate status are still UNKNOWN until an actual run.
+OUTCOME: Command source contract is canonical; future backup should be an evidence-backed physical event, not a magical effect of naming.
+TRACE: GaiaOS conversation 2026-10-10; POWER-WORD-SOULTRAP.v1.md; PRESERVE-AND-SIX-E-LANES-PERMANENT-DESIGN-INVARIANT.v1.md.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no physical, database, or carrier-history copy claimed.
