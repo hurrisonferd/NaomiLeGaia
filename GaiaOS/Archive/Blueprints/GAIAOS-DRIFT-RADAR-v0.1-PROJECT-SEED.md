@@ -4,7 +4,7 @@
 **Status:** BLUEPRINTING / IMPLEMENTATION NOT STARTED
 **Date captured:** 2026-10-09
 **Archive class:** PROJECT SEED
-**Location:** GaiaOS/Archive/Projects/
+**Location:** GaiaOS/Archive/Blueprints/
 **Repository:** hurrisonferd/NaomiLeGaia
 **Archive branch:** archive/failure-log-20261009
 **Owner / sponsor:** NAOMI; VERA for observational design, ANVIL for engineering, all six Prime Daemons for relevant evaluation
