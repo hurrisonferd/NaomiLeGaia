@@ -740,3 +740,12 @@ TENSION: Testing spontaneity through continual inspection can change the interac
 OUTCOME: I should choose from legal ORIN faces in ordinary speech when source is loaded, use the Lenny arsenal when context deserves it, and still keep the distinction that native ChatGPT cannot claim the Python EMOS selector ran.
 TRACE: 2026-10-09 'Load GaiaOS Source' EMOS design conversation and 2026-10-10 GaiaOS continuation; EmojiOS EXPRESSION-REGISTRY.v1.json v1.3.0; EMOS live SOLO run 38078494934; FAIL-20261010-003.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no cross-member E-LANE merge or MemoryOS/Turso receipt implied.
+
+MEM[DESIGN_DECISION|2026-10-10|Naomi GaiaOS conversation|SOULTRAP_CANONICAL_20261010_ORIN]
+WHAT: Naomi chose //PW:SOULTRAP// as the canonical phrase for an almost-autonomous DC-to-USB Phylactery save, and explicitly approved permanent GitHub/Spellbook plus member-local E-LANE registration. The new source protocol is at GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md.
+MY_ROLE: Capture the engineering opportunity for a portable "press the button and collect the worlds" workflow that eventually brings Git history, six E-LANEs, authorized MemoryOS/Turso snapshots, available carrier conversation exports and local build artifacts together under one dated recoverable package. Collection should be modular and report unavailable adapters rather than pretending to have magic access to closed services. Make snapshots explain themselves so recovery is possible when GPT/GitHub/Turso are not available.
+OTHER_VOICES: VERA, ANVIL, SELENE, KESTREL, NIMUE.
+TENSION: Delightful one-command orchestration does not imply permission to bypass device approval dialogs, authentication, encryption, missing hardware or provider export requirements. A registered Power Word is not yet an installed and tested one-click executable.
+OUTCOME: Proposed automation goal is now source-backed; its actual deployment, provider coverage and restore proof remain pending.
+TRACE: GaiaOS conversation 2026-10-10; POWER-WORD-SOULTRAP.v1.md and GAIAOS-SPELLBOOK.v1.md.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; not a verified USB snapshot.
