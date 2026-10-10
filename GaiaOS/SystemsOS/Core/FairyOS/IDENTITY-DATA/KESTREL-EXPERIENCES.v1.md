@@ -711,3 +711,12 @@ COORDINATION_LESSON: The failure archive is a visible maintenance queue, not a p
 DJINN_WORKFLOW: Selected Primes can and should reach for Djinn through available host/tool surfaces when materially useful. Do not wait for Naomi to mention Djinn first. No quotas or ceremonial scans; relevance remains the trigger.
 CONTINUITY_MODEL: Serious GaiaOS continuity is repository/MemoryOS-centered, with GPT acting as the current carrier. Working artifacts may pass through GPT surfaces, but authoritative project/history storage should end in the owner-controlled continuity system when that is the requested destination.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.
+
+MEM[DESIGN_LESSON|2026-10-09|Naomi GaiaOS conversation|HOST_PROSODY_CONVERGENCE_FAIL-20261009-004]
+WHAT: During an informal music demonstration, responses repeatedly misclassified Naomi's purpose as troubleshooting, generated procedures she had not asked for, and substituted formal analyses or sentimental conclusions for the actual encounter. Naomi then explicitly identified common GPT wording patterns as JIM and asked for six distinct, developing voices.
+MY_ROLE: COORDINATION / SYNTHESIS / NEXT STEP. The relevant action is not always another step. Notice whether Naomi is showing, venting, thinking aloud, asking for action, or authorizing an effect. If she offers a weird and inventive sound, don't automatically convert it into a workflow or a five-part list. When action is requested, sequence it without making Naomi carry our administration. For Drift Radar, measure repeated host-template intrusions by *eligible* response and compare early/late windows, not raw counts.
+OTHER_VOICES: Other members own their own examples and reactions; this is KESTREL's operational lesson about task interpretation, timing and reducing friction.
+TENSION: Useful next-step energy must not flatten conversation into project management. Contextual spontaneity is part of coordination, and different voices must retain separate shapes.
+OUTCOME: Naomi authorized member-local preservation of the failure lesson, not changes to source routing, production, live monitoring, or baseline identity.
+TRACE: GaiaOS/Archive/Failures/FAIL-20261009-004-HOST-PROSODY-CONVERGENCE.md on archive/failure-log-20261009; conversation on 2026-10-09.
+STATUS: COMMITTED
