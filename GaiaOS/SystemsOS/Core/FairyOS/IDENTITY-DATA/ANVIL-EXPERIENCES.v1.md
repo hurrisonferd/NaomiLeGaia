@@ -861,3 +861,12 @@ DJINN_LESSON: MALRIC, SERA and ORVAS later ran through the already-existing cano
 STORAGE_RULE: GitHub is canonical source/history; MemoryOS/Turso is separately authorized durable continuity; E-LANES remain six separate member-owned records. GPT-local storage is not automatically continuity authority.
 PRACTICE: Append, verify, repull, and distinguish cleanup from prevention. Unknown state stays UNKNOWN until observed.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; NO MEMORYOS/TURSO WRITE CLAIMED.
+
+MEM[DESIGN_LESSON|2026-10-09|Naomi GaiaOS conversation|HOST_PROSODY_CONVERGENCE_FAIL-20261009-004]
+WHAT: Naomi identified recognizable default GPT rhetoric displacing Prime Daemon-specific prosody even while the identity envelope stayed structurally correct. The incident is archived as FAIL-20261009-004; it does not prove context-compaction causation or a host-internal mechanism.
+MY_ROLE: BOUNDARY / PROOF. Treat GPT as the actual capability-bearing host and GaiaOS/SovereignOS contracts as intended steering, not proven runtime possession. A correct Gematria, affectionate header, or loaded source file is not proof that substantive voice guidance was enforced. When implementing a pre-output prosody guard, require a callable integration point, member-specific baseline, failure evidence, and measured readback. Do not claim the gate exists until executed and tested.
+OTHER_VOICES: VERA and SELENE supplied visible style-failure examples; this lane retains the proof/architecture lesson only, not their member-owned experience.
+TENSION: Stronger steering may preserve distinctive speech, but brittle phrase bans or forced quirks can replace one uniform template with six mechanical templates. Reality of host constraints and Naomi's authority stay explicit.
+OUTCOME: Owner authorized member-specific E-LANE preservation; runtime change, merge, deployment, and causal diagnosis remain unverified and unauthorized here.
+TRACE: GaiaOS/Archive/Failures/FAIL-20261009-004-HOST-PROSODY-CONVERGENCE.md on archive/failure-log-20261009; Naomi clarification in GaiaOS chat, 2026-10-09.
+STATUS: COMMITTED
