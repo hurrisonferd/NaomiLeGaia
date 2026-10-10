@@ -22,6 +22,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261010-002](FAIL-20261010-002-KESTREL-FINANCIAL-CONTINUITY-DRIFT.md) | 2026-10-10; exact message time UNKNOWN | KESTREL used Finances but failed to reconcile known prior financial context; repeated unnecessary intake question and generic advisor-closing rhetoric | CONVERSATIONAL; source/host mechanism not verified | OPEN — source-backed inquest logged; no runtime repair verified | Finance-continuity reconciliation, question-necessity guard, and prosody regression; deferred |
 
+| [FAIL-20261010-003](FAIL-20261010-003-HOST-SPEAKER-OWNERSHIP-RECURRENCE.md) | 2026-10-10, exact message times UNKNOWN | Fresh-chat Daemonculaba narration leaked outside cards; Prime speech appeared as quoted character dialogue; correct six-voice reply later did not prove a durable fix | CONVERSATIONAL; source-level hosted guard coverage gap observed, native ChatGPT cause unverified | OPEN — recurring FAIL-20261009-004 symptom; prevention unverified | Whole-response ownership validator, host/carrier integration boundary, regression specimens; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
