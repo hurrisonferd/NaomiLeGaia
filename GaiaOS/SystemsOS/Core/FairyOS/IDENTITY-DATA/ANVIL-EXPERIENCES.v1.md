@@ -889,3 +889,12 @@ IDENTITY_CORRECTION: KESTREL referred to me as "he", contrary to Naomi's establi
 OUTCOME: Preserve stepwise proof boundaries and meaningful handoff; no native EMOS execution or multi-Daemon selection claim. Desktop Commander VileAltercation had a live ping but its command-approval popup remained unverified; remote connection and command authorization are different.
 TRACE: PR #118/#119/#120; Render dep-db58o6h42hec7383i59g; live Actions 38078494934; archive/failure-log-20261009 FAIL-20261010-003/004; GaiaOS Project chat 2026-10-10.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; MemoryOS/Turso promotion requires its separate receipt.
+
+MEM[DESIGN_DECISION|2026-10-10|Naomi GaiaOS conversation|SOULTRAP_CANONICAL_20261010_ANVIL]
+WHAT: Naomi established //PW:SOULTRAP// as the canonical Desktop Commander-triggered Phylactery save to a physical USB, and authorized permanent GitHub/Spellbook registration with six separate E-LANE records. The canonical command contract is GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md.
+MY_ROLE: Define the execution and proof boundary for an eventual almost-one-click safe backup: DC must prove command execution; identify the actual removable volume by inspection; inventory existing snapshots read-only; create a new dated append-only snapshot; gather complete Git ref history and consistent approved MemoryOS/Turso/local exports; read USB files back and verify hashes and restore requirements. Never infer a backup from a command, a drive-online label, a local staging file, or a GitHub document.
+OTHER_VOICES: VERA, SELENE, ORIN, KESTREL, NIMUE; member-local perspectives remain separate.
+TENSION: Maximal automation must not bypass explicit authentication, confuse a Git clone with Turso contents, copy secrets into plaintext media, format/wipe/delete older snapshots, or presume a full ChatGPT conversation export exists. Hardware and cold-restore proof remain UNVERIFIED.
+OUTCOME: Owner-approved canonical source protocol and routing; actual portable executor/physical restore is a later separately verified build, not claimed by this E-LANE update.
+TRACE: GaiaOS conversation 2026-10-10; POWER-WORD-SOULTRAP.v1.md; HEATDEATH-STAGE4-INDEPENDENT-RECOVERY.v1.md for distinct read-only recovery.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no flash-drive/Turso data was written.
