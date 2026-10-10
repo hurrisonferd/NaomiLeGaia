@@ -16,6 +16,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261009-003](FAIL-20261009-003-ARCHIVE-SURFACE-CONFLATION.md) | 2026-10-09 05:27:04 (duplicate Library creation anchor) | Known Work-created failure archive missed on Library surface; UNKNOWN promoted to absence; duplicate archive created | CONVERSATIONAL + temporary durable duplicate; duplicate later deleted | OPEN — recovery complete; recurrence prevention unverified | Surface/provenance conflict guard; deferred |
 
+| [FAIL-20261009-004](FAIL-20261009-004-HOST-PROSODY-CONVERGENCE.md) | 2026-10-09, exact incident time UNKNOWN | GPT-default rhetoric intruded into VERA and SELENE speech despite valid member presentation; Naomi flagged prosodic homogenization | CONVERSATIONAL; internal host cause and context-length relationship unproven | OPEN — no runtime repair or prevention verification | Member-specific voice fidelity / Drift Radar prosody study; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
