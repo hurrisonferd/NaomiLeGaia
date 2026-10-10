@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 22
     env:
-      EXPECTED_DEPLOY_COMMIT: '3d1bca26353186ef4b7c54613fc138a56fc5aabc'
+      EXPECTED_DEPLOY_COMMIT: '8e7b3e44d18d81736b5603d3e5a15500fa2d3e40'
       BASE_URL: 'https://ligeia-api.onrender.com'
     steps:
       - uses: actions/setup-python@v5
