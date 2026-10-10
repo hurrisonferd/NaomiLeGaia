@@ -132,6 +132,59 @@ class GALAXYOperationalTests(unittest.TestCase):
         self.assertFalse(out["physical_delete"])
         self.assertEqual(out["writes_performed"], [])
 
+    def test_pre_galaxy_memory_receives_read_only_preview(self):
+        original = self.rt.galaxy_record
+        self.rt.GALAXY_SCORE_VERSION = "galaxy.gravity.test.v2"
+
+        def old_record(rid):
+            result = original(rid)
+            if rid == "CURRENT":
+                result["gravity"] = None
+                result["importance"] = None
+            return result
+
+        self.rt.galaxy_record = old_record
+        self.rt.galaxy_gravity_preview = lambda rid: {
+            "gravity_score": 0.63,
+            "score_version": self.rt.GALAXY_SCORE_VERSION,
+        }
+        out = lane.operational(self.rt, "gravity contextual influence memory retrieval")
+        self.assertEqual(out["status"], "PASS_GALAXY_OPERATIONAL_RETRIEVAL", out)
+        g = out["records"][0]["gravity"]
+        self.assertEqual(g["basis"], "READ_ONLY_PREVIEW")
+        self.assertEqual(g["score"], 0.63)
+        self.assertEqual(g["score_version"], self.rt.GALAXY_SCORE_VERSION)
+        self.assertTrue(g["backfill_required"])
+        self.assertEqual(g["owner_importance_status"], "UNSET_NOT_ZERO")
+        self.assertEqual(out["writes_performed"], [])
+        self.assertFalse(out["e_lanes_modified"])
+
+    def test_stale_gravity_preview_cannot_use_old_score(self):
+        original = self.rt.galaxy_record
+        self.rt.GALAXY_SCORE_VERSION = "galaxy.gravity.test.v2"
+
+        def stale_record(rid):
+            result = original(rid)
+            if rid == "CURRENT":
+                result["gravity"] = {
+                    "gravity_score": 0.01,
+                    "score_version": "galaxy.gravity.test.v1",
+                }
+            return result
+
+        self.rt.galaxy_record = stale_record
+        self.rt.galaxy_gravity_preview = lambda rid: {
+            "gravity_score": 0.71,
+            "score_version": self.rt.GALAXY_SCORE_VERSION,
+        }
+        out = lane.operational(self.rt, "gravity contextual influence memory retrieval")
+        g = out["records"][0]["gravity"]
+        self.assertEqual(g["basis"], "STALE_SCORE_PREVIEW")
+        self.assertEqual(g["score"], 0.71)
+        self.assertTrue(g["backfill_required"])
+        self.assertEqual(g["owner_importance_status"], "OWNER_SET")
+        self.assertEqual(out["writes_performed"], [])
+
     def test_uninitialized_hold_before_data_access(self):
         self.rt._INITIALIZED = False
         out = lane.operational(self.rt, "gravity contextual influence memory retrieval")
