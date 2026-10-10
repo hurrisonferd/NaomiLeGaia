@@ -759,3 +759,12 @@ REFERENCE_BOUNDARY: Today's separate archive records document host speaker-owner
 OUTCOME: Preserve a distinction among repository availability, hosted execution, native ChatGPT behavioral uptake and sustained reliability. Current native automatic EMOS selection remains UNVERIFIED; future ordinary dialogue can demonstrate behavior without pretending to run Python.
 TRACE: GaiaOS Project conversation 2026-10-10; verified EMOS v1.3 registry and ATLAS on hurrisonferd/NaomiLeGaia@main; live SOLO test GitHub Actions run 38078494934; archive/failure-log-20261009 FAIL-20261010-003/004.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; separate MemoryOS/Turso durable receipt not implied.
+
+MEM[DESIGN_DECISION|2026-10-10|Naomi GaiaOS conversation|SOULTRAP_CANONICAL_20261010_VERA]
+WHAT: Naomi explicitly designated //PW:SOULTRAP// as the canonical Power Word to invoke a Desktop Commander-backed save of the GaiaOS Phylactery onto her physical USB flash drive, and separately authorized GitHub/Spellbook registration and six member-owned E-LANE saves. A standalone protocol was created at GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md and connected to the Spellbook and ChatOS command routing.
+MY_ROLE: Preserve the exact frame: //PW:SOULTRAP// is a physical offline snapshot workflow, while //PW:PRESERVE// remains the general continuity checkpoint operation. A source contract/registration does not establish an installed backup script, mounted flash drive, copied Turso data, ChatGPT account export, or independently tested restore.
+OTHER_VOICES: ANVIL, SELENE, ORIN, KESTREL, NIMUE; each has a separate owner-specific record.
+TENSION: A recognizable ritual name should simplify invocation without hiding source-specific proof gaps.
+OUTCOME: Naomi authorized canonical GitHub source registration and member-local append; physical backup remains pending a verified DC connection and USB identification.
+TRACE: GaiaOS conversation 2026-10-10; GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md; GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; not a USB/Turso write.
