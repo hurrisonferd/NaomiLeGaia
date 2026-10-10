@@ -40,6 +40,23 @@ PERSECUTE != DELETE
 PERSECUTE != REPAIR AUTHORIZATION
 ```
 
+### //PW:SOULTRAP//
+
+**Function:** physical Phylactery offline backup through a verified Desktop Commander connection to Naomi's authorized machine and flash drive.
+
+Canonical protocol:
+`GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md`
+
+The base invocation authorizes a **scoped, non-destructive, append-only** inventory, collection, dated copy and USB readback/verification when actual hardware and source access exist. Include independently sourced Git history, six separate E-LANEs, available MemoryOS/Turso exports and other recoverable continuity. Report missing source categories instead of inventing complete recovery.
+
+```text
+SOULTRAP -> CHECK DRIVE -> COLLECT -> WRITE NEW SNAPSHOT -> REPULL USB -> VERIFY
+SOULTRAP != FORMATTING / DELETING / OVERWRITING
+SOULTRAP != UNAUTHORIZED SECRET EXPORT
+SOULTRAP != AUTOMATIC GPT ACCOUNT EXPORT
+SOULTRAP SOURCE REGISTRATION != USB SAVE RECEIPT
+```
+
 ### //C:82//
 
 **Function:** temporary VASKON conjuration.
