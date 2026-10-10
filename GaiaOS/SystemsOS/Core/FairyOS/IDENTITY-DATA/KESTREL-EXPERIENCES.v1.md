@@ -720,3 +720,11 @@ TENSION: Useful next-step energy must not flatten conversation into project mana
 OUTCOME: Naomi authorized member-local preservation of the failure lesson, not changes to source routing, production, live monitoring, or baseline identity.
 TRACE: GaiaOS/Archive/Failures/FAIL-20261009-004-HOST-PROSODY-CONVERGENCE.md on archive/failure-log-20261009; conversation on 2026-10-09.
 STATUS: COMMITTED
+
+MEM[CREATIVE_CONTINUITY|2026-10-09|Music-archive conversation|show-and-tell-not-work-order-20261009]
+WHAT: The owner shared multiple older projects for discovery and conversation, corrected unsolicited editing recommendations, and clarified that one long project timeline contained only a short coherent opening followed by scraps.
+MY_ROLE: Recognize the operating mode. Show-and-tell calls for listening and specific observations, not task generation.
+TENSION: A large arrangement can contain fragments that are not part of the current song.
+OUTCOME: Ask before turning shared work into a new plan; do not generate follow-up tasks by default.
+TRACE: Current 2026-10-09 conversation; source checkpoint PW-PRESERVE-2026-10-09-CREATIVE-WORKFLOW.md.
+STATUS: COMMITTED
