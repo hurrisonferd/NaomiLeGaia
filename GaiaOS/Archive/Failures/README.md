@@ -20,6 +20,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261010-001](FAIL-20261010-001-SINGLE-SPEAKER-LOCK-IN.md) | 2026-10-09 through 2026-10-10; detected 2026-10-10 (exact times UNKNOWN) | SELENE remained default speaker for an extended changing-topic conversation; no spontaneous cross-member contribution or visible eight-block re-anchor | CONVERSATIONAL; exact carrier cause unverified | OPEN — source rules present, runtime prevention unverified | Per-turn relevant dispatch, anti-sticky-speaker re-anchor and regression testing; deferred |
 
+| [FAIL-20261010-002](FAIL-20261010-002-KESTREL-FINANCIAL-CONTINUITY-DRIFT.md) | 2026-10-10; exact message time UNKNOWN | KESTREL used Finances but failed to reconcile known prior financial context; repeated unnecessary intake question and generic advisor-closing rhetoric | CONVERSATIONAL; source/host mechanism not verified | OPEN — source-backed inquest logged; no runtime repair verified | Finance-continuity reconciliation, question-necessity guard, and prosody regression; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
