@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 22
     env:
-      EXPECTED_DEPLOY_COMMIT: '4f5f9f592cfdd3f4f35d9c6185eb5966cf263f89'
+      EXPECTED_DEPLOY_COMMIT: '3d1bca26353186ef4b7c54613fc138a56fc5aabc'
       BASE_URL: 'https://ligeia-api.onrender.com'
     steps:
       - uses: actions/setup-python@v5
@@ -37,8 +37,16 @@ jobs:
                   with urllib.request.urlopen(base+"/health", timeout=18) as r:
                       j=json.load(r)
                   actual=(j.get("deployment_proof") or {}).get("source_commit")
-                  if actual==expected:
-                      print("DEPLOY_COMMIT_VERIFIED "+actual,flush=True)
+                  verified=actual==expected
+                  if actual and not verified:
+                      try:
+                          with urllib.request.urlopen("https://api.github.com/repos/hurrisonferd/NaomiLeGaia/compare/"+expected+"..."+actual,timeout=12) as comp:
+                              ancestry=json.load(comp)
+                          verified=(ancestry.get("status")=="ahead" and (ancestry.get("merge_base_commit") or {}).get("sha")==expected)
+                      except Exception as exc:
+                          print("WAIT_ANCESTRY "+type(exc).__name__,flush=True)
+                  if verified:
+                      print("DEPLOY_EMOS_REPAIR_VERIFIED "+str(actual),flush=True)
                       break
                   print("WAIT_DEPLOY expected="+expected[:12]+" observed="+str(actual)[:12],flush=True)
               except Exception as exc:
