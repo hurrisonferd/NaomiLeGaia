@@ -40,6 +40,23 @@ class FakeClient:
     def create(self,**kwargs):
         self.calls+=1
         return SimpleNamespace(output_text=json.dumps(self.reply))
+def test_loader_allowlist():
+    import ast
+    tree=ast.parse((ROOT/"api/gaiaos_api.py").read_text(encoding="utf-8"))
+    assigned=None
+    for node in tree.body:
+        if isinstance(node,ast.Assign):
+            if any(isinstance(t,ast.Name) and t.id=="COUNCIL_PATHS" for t in node.targets):
+                assigned=ast.literal_eval(node.value)
+                break
+    required={
+        "GaiaOS/SystemsOS/Core/EmotionOS/CURRENT.json",
+        "GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json",
+        "GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md",
+    }
+    assert isinstance(assigned,list) and required.issubset(set(assigned)), "EMOS canonical loader source allowlist incomplete"
+    print("EMOS_CANONICAL_LOADER_PATHS_PASS")
+
 def test_production_docker_copy():
     dockerfile=(ROOT/"api/Dockerfile").read_text(encoding="utf-8")
     for source in ("gaiaos_emos.py","gaiaos_emos_host.py"):
@@ -73,5 +90,5 @@ def test_fallback():
                           expected_members=("NIMUE",))
     print("EMOS_CLASSIFIER_FALLBACK_PASS")
 if __name__=="__main__":
-    test_coverage();test_production_docker_copy();test_host();test_fallback()
+    test_coverage();test_loader_allowlist();test_production_docker_copy();test_host();test_fallback()
     print("EMOS_CANARY_PASS: local fake-model proof ONLY, not live carrier")
