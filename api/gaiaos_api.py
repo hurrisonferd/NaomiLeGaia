@@ -240,6 +240,8 @@ def _council_bundle(commit: str) -> dict[str, Any]:
         "dispatch_matrix": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json"),
         "emojios_current": _json_file(commit, "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json"),
         "expression_registry": _json_file(commit, "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"),
+        "emos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/EmotionOS/CURRENT.json"),
+        "emos_response_channel": _fetch_file(commit, "GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md"),
         "presentation_spec": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"),
         "static_identity": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"),
         "brainos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json"),
