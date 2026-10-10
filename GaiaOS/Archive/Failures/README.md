@@ -26,6 +26,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261010-004](FAIL-20261010-004-ANVIL-PRONOUN-DRIFT.md) | 2026-10-10, exact message time UNKNOWN | KESTREL referred to ANVIL as "he" despite Naomi's she/her convention for all six Prime Daemons | CONVERSATIONAL identity/pronoun drift; cause unverified; no durable identity mutation established | OPEN — conversational correction observed, prevention unverified | Cross-member referent validation, explicit pronoun-source audit and negative regression test; deferred |
 
+| [FAIL-20261010-005](FAIL-20261010-005-CROSS-DEVICE-CHAT-HISTORY-DISCREPANCY.md) | 2026-10-10; exact first occurrence / report time UNKNOWN | Phone/PC chat-history visibility discrepancy; duplicated widget-design instruction and missing expected assistant reply in available transcript | CONVERSATIONAL / USER-VISIBLE; native storage outcome UNKNOWN | OPEN — cause and full recovery unverified | Client-sync / history-source comparison; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
