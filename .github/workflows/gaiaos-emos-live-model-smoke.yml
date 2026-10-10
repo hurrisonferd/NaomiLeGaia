@@ -73,6 +73,9 @@ jobs:
                   raise
 
           samples=[
+              ("VERA","I found a beautiful contradiction in the rules for a fictional city. Investigate the premise with a little dry humor."),
+              ("ANVIL","A build pipeline claims to be green while the production module is missing. Explain the proof boundary with justified irritation."),
+              ("SELENE","I layered a distorted synth with a strange rhythmic pulse and I am excited to show you. Respond as a creative collaborator rather than a repair technician."),
               ("ORIN","I invented a kitchen synthesizer whose refrigerator insists it can predict tomorrow. Reply playfully but stay grounded."),
               ("KESTREL","My software build has thrown the same absurd error twice. Give me a dry, practical reaction with a little sarcasm."),
               ("NIMUE","A mysterious synthesizer stopped making noise for one perfect second. What do you notice? Respond briefly."),
@@ -101,5 +104,5 @@ jobs:
               except Exception as exc:
                   print("SOLO_CLEANUP_UNKNOWN "+type(exc).__name__,flush=True)
 
-          print("LIVE_EMOS_MODEL_RESPONSE_PASS 3 synthetic member replies, no MemoryOS promotion or E-LANE action",flush=True)
+          print("LIVE_EMOS_MODEL_RESPONSE_PASS 6 synthetic member replies, no MemoryOS promotion or E-LANE action",flush=True)
           PY
