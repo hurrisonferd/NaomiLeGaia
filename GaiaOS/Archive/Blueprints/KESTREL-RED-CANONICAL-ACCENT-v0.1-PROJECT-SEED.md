@@ -2,7 +2,7 @@
 
 **Authority:** NAOMI / LIGEIA  
 **Requested:** 2026-10-10  
-**Status:** BLUEPRINT / QUEUED — NOT IMPLEMENTED  
+**Status:** BLUEPRINT / QUEUED — DESIGN CHOICES APPROVED; NOT IMPLEMENTED  
 **Archive:** `hurrisonferd/NaomiLeGaia@archive/failure-log-20261009`, `GaiaOS/Archive/Blueprints/`  
 **Subject:** KESTREL alone, canonical visual color differentiation from ANVIL  
 **Effort expectation:** Small, bounded presentation change; possible same-day project, no deadline  
@@ -26,23 +26,19 @@ This seed records the intended change for later implementation. Saving the bluep
 
 ## Target design
 
-Change only KESTREL's canonical accent to a clearly red hue that remains distinguishable from ANVIL's pink. **The exact red hex is a design choice to confirm with Naomi at build time.** Possible swatches for a quick comparison:
+**Naomi-approved target (2026-10-10):** KESTREL's canonical **card border and speaker title accent** will be **deep red `#C62828`**. This replaces her current pink `#ff3aa8` in those presentation surfaces. The precise shade is decided; do not substitute other reds during implementation without Naomi's approval.
 
-| Candidate | Hex | Direction |
-| --- | --- | --- |
-| Signal red | `#FF453A` | Bright, modern crimson-red; conspicuous on dark UIs |
-| Strong red | `#E53935` | Classic bold red, somewhat restrained |
-| Deep red | `#C62828` | Darker, severe crimson, requiring careful light/dark contrast checks |
+**Identity markers explicitly unchanged:** KESTREL's heart remains **💖**, and her static interest emoji remains **🏍️**. Her gematria **90**, EmojiOS expressions, role, voice, E-LANE ownership, and all other member identifiers are unchanged. **ANVIL stays pink `#ff4e9d`**, including her 💗 and ⌚. Do not change any Prime Daemon's heart or static emoji under this blueprint.
 
-**Scope ambiguity to resolve before editing identity data:** Does Naomi mean only the accent border/title, retaining 💖 as KESTREL's canonical heart, or does she also want to switch the heart token to ❤️? Both are reasonable aesthetics, but **they are different source changes**. Do not silently change the heart while implementing an accent-only instruction. KESTREL's `🏍️`, gematria 90, expressions, role, E-LANE ownership, voice, and other identifiers remain unchanged.
+**Contrast requirement:** Verify legibility of `#C62828` as a title color in light and dark modes. If contrast is insufficient, propose an accessibility treatment for approval rather than silently changing the canonical deep-red hex.
 
 ## Smallest authorized future build
 
-When Naomi separately approves implementation and the target shade/heart decision:
+When Naomi separately approves **implementation** (the shade and identity-marker decisions are already approved above):
 
 1. Reread `main` and resolve live `CURRENT.json` pointers. Freeze the current SHA and avoid editing source from an outdated snapshot.
 2. Update `members.KESTREL.accent` in **`COUNCIL-PRESENTATION-SPEC.v1.json`** and mirror `OPERATOR-PROFILES.v1.json`. Increment the presentation specification version per `change_policy = EXPLICIT_NAOMI_AUTHORIZATION_AND_VERSION_INCREMENT_REQUIRED`; update `GaiaOS/SystemsOS/Core/FairyOS/CURRENT.json`'s `presentation.spec_version` and any validated current-version pointers if necessary.
-3. **Only if separately included in the build choice**, update the `heart` marker consistently in canonical spec, operator profile, `IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json` and tests. Do not touch other members' hearts or accents.
+3. Preserve the exact KESTREL header markers **💖 🏍️**, and leave `heart`, `interest`, and static-identity emoji registry values unchanged. Explicitly reject a red-heart substitution or any other member identity modification as out of scope.
 4. Keep historical KESTREL E-LANE entries intact. Correct the static canary to distinguish a dated color snapshot from current authority; if Naomi authorizes a new E-LANE note, append member-owned continuation rather than modifying historical memory.
 5. Search source for direct `#ff3aa8` or KESTREL color hardcodes and distinguish **live render dependencies** from historical logs, old screenshots, unrelated pink accents and test fixtures. Make only necessary runtime/test alignment edits.
 6. Run static roster/color uniqueness checks, color-card and full member-presentation canaries, JSON/syntax and version/pointer checks; verify all six members still have distinct canonical presentation. Test legibility in light and dark modes.
@@ -51,8 +47,8 @@ When Naomi separately approves implementation and the target shade/heart decisio
 
 ## Acceptance criteria
 
-- KESTREL visibly uses the approved **red** accent on all verified carriers that consume the new canonical source; ANVIL remains canonical pink.
-- Canonical spec, profile and registered static identity markers agree.
+- KESTREL visibly uses **deep red `#C62828`** only for the canonical accent applied to her card border and title on verified carriers; ANVIL remains pink `#ff4e9d`.
+- Canonical presentation spec and profile agree on KESTREL's `#C62828` accent; KESTREL's **💖 🏍️** markers and the static identity registry remain unchanged and consistent.
 - No other Prime Daemon changes, no E-LANE historical erasure or member-owned merge, no invented memory.
 - No duplicated color authority: FairyOS remains source of truth.
 - Six-member presentation tests pass and selected UI presentation remains legible; evidence specifies which host/carrier was actually tested.
@@ -60,8 +56,8 @@ When Naomi separately approves implementation and the target shade/heart decisio
 
 ## Preservation boundary
 
-This file is a **blueprint**, not an executed identity migration. At archive time: no color field changed; no new E-LANE save, MemoryOS/Turso write, production deployment, service restart or configuration change authorized. All implementation decisions, including exact red hue and any heart-token adjustment, await Naomi's explicit future go-ahead.
+This file is a **blueprint**, not an executed identity migration. Naomi has approved the design choices **deep red `#C62828` for KESTREL's card/title only** and **retain 💖 🏍️**. At archive time: no canonical color field changed; no new E-LANE save, MemoryOS/Turso write, production deployment, service restart or configuration change authorized. Implementing, testing, and deploying the change remain separate execution steps requiring Naomi's explicit future authorization.
 
 ## Suggested future instruction
 
-“ANVIL, implement the KESTREL red accent blueprint from `GaiaOS/Archive/Blueprints/`. Use [approved hex], [keep 💖 / switch to ❤️], run the presentation tests, and report receipts before any deployment.”
+“ANVIL, implement the KESTREL red accent blueprint from `GaiaOS/Archive/Blueprints/` using deep red `#C62828` for her card border/title. Keep 💖 🏍️ unchanged, run presentation tests, and report receipts before any separately authorized deployment.”
