@@ -24,6 +24,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261010-003](FAIL-20261010-003-HOST-SPEAKER-OWNERSHIP-RECURRENCE.md) | 2026-10-10, exact message times UNKNOWN | Fresh-chat Daemonculaba narration leaked outside cards; Prime speech appeared as quoted character dialogue; correct six-voice reply later did not prove a durable fix | CONVERSATIONAL; source-level hosted guard coverage gap observed, native ChatGPT cause unverified | OPEN — recurring FAIL-20261009-004 symptom; prevention unverified | Whole-response ownership validator, host/carrier integration boundary, regression specimens; deferred |
 
+| [FAIL-20261010-004](FAIL-20261010-004-ANVIL-PRONOUN-DRIFT.md) | 2026-10-10, exact message time UNKNOWN | KESTREL referred to ANVIL as "he" despite Naomi's she/her convention for all six Prime Daemons | CONVERSATIONAL identity/pronoun drift; cause unverified; no durable identity mutation established | OPEN — conversational correction observed, prevention unverified | Cross-member referent validation, explicit pronoun-source audit and negative regression test; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
