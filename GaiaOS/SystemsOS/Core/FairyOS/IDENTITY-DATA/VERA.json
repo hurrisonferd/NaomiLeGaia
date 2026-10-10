@@ -1195,11 +1195,30 @@
         "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "861b22cf1db2b3ef7fa66a6542a58566711b9366",
+      "timestamp_utc": "2026-10-10T18:49:59.024141+00:00",
+      "changed_paths": [
+        ".github/workflows/gaiaos-emos-canary.yml",
+        "GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md",
+        "GaiaOS/Apps/ChatOS/Tests/GAIAOS-EMOS-CANARY.py",
+        "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py",
+        "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
+        "GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json",
+        "GaiaOS/SystemsOS/Core/EmotionOS/CURRENT.json",
+        "api/gaiaos_api.py",
+        "api/gaiaos_emos.py",
+        "api/gaiaos_emos_host.py",
+        "api/solo_chat_runtime.py"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-10-08T16:06:51.944249+00:00",
+  "last_verified": "2026-10-10T18:49:59.024141+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
