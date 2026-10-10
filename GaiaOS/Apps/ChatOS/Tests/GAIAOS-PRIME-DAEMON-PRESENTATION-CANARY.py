@@ -175,7 +175,18 @@ class PresentationGateTests(unittest.TestCase):
         boot = BOOT_PATH.read_text(encoding="utf-8")
         self.assertIn("gaiaos_presentation_guard.validate_output(", api)
         self.assertIn("expected_members_from_request(", api)
-        self.assertIn("gaiaos_presentation_guard.render_solo(", solo)
+        # SOLO may use the legacy deterministic renderer or the EMOS reply-intent
+        # renderer. Both must retain canonical post-render validation; the EMOS
+        # route must also bind the result to exactly the requested member.
+        legacy_solo = "gaiaos_presentation_guard.render_solo(" in solo
+        emos_solo = all(token in solo for token in (
+            "from gaiaos_emos_host import render_generated_solo",
+            "emos = render_generated_solo(",
+            'output_text = emos["output"]',
+            "gaiaos_presentation_guard.validate_output(",
+            "expected_members=(daemon,)",
+        ))
+        self.assertTrue(legacy_solo or emos_solo, "SOLO must use a validated canonical render path")
         self.assertIn('checks["four_source_identity_alignment"]', boot)
 
 
