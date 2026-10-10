@@ -1,0 +1,4346 @@
+{
+  "schema": "gaiaos.emos.atlas.v1",
+  "version": "1.0.0",
+  "authority": "NAOMI",
+  "status": "SOURCE_BUILT_DEPLOYMENT_UNVERIFIED",
+  "families": [
+    "joy",
+    "amusement",
+    "affection",
+    "curiosity",
+    "surprise",
+    "confusion",
+    "skepticism",
+    "concern",
+    "sadness",
+    "frustration",
+    "anger",
+    "embarrassment",
+    "pride",
+    "determination",
+    "tiredness",
+    "unease",
+    "relief",
+    "excitement",
+    "disappointment",
+    "contemplation",
+    "ambiguity"
+  ],
+  "members": {
+    "VERA": {
+      "families": {
+        "joy": [
+          {
+            "state": "EMOS_JOY_01",
+            "expression": "(ᵔ◡ᵔ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_02",
+            "expression": "(˘ᴗ˘ )",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_03",
+            "expression": "(•̀ᴗ•́)و✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_04",
+            "expression": "(ง ᵔᴗᵔ)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_05",
+            "expression": "(˶ˆᗜˆ˵)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "amusement": [
+          {
+            "state": "EMOS_AMUSEMENT_01",
+            "expression": "(¬‿¬ )",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_02",
+            "expression": "(￣▽￣)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_03",
+            "expression": "(¬､¬)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_04",
+            "expression": "(ಥ‿ಥ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_05",
+            "expression": "(¬‿¬)っ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "affection": [
+          {
+            "state": "EMOS_AFFECTION_01",
+            "expression": "(˘◡˘)♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_02",
+            "expression": "(◡‿◡ )♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_03",
+            "expression": "(•̀ᴗ•́)و♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_04",
+            "expression": "(ง ˘ᴗ˘)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_05",
+            "expression": "꒰ঌ( ᴗ͈ˬᴗ͈)໒꒱",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "curiosity": [
+          {
+            "state": "EMOS_CURIOSITY_01",
+            "expression": "(・_・ヾ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_02",
+            "expression": "(¬_¬ )?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_03",
+            "expression": "(ಠ_ಠ)?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_04",
+            "expression": "( •̀_•́)σ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_05",
+            "expression": "(ᵕ⸝⸝• ᴗ •) ?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "surprise": [
+          {
+            "state": "EMOS_SURPRISE_01",
+            "expression": "(⊙_⊙;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_02",
+            "expression": "(・o・)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_03",
+            "expression": "∑(O_O;)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SURPRISE_04",
+            "expression": "Σ(ಠ_ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_05",
+            "expression": "(꒪⌓꒪)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "confusion": [
+          {
+            "state": "EMOS_CONFUSION_01",
+            "expression": "(・_・;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_02",
+            "expression": "(´･_･`)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_03",
+            "expression": "(・_・ヾ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONFUSION_04",
+            "expression": "(ಠ_ಥ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_05",
+            "expression": "(・_・)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "skepticism": [
+          {
+            "state": "EMOS_SKEPTICISM_01",
+            "expression": "(￢_￢)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_02",
+            "expression": "(¬､¬)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_03",
+            "expression": "(눈_눈)╮",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SKEPTICISM_04",
+            "expression": "(ಠ_ಠ)¬",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SKEPTICISM_05",
+            "expression": "(｡•̀ᴗ-˘)✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "concern": [
+          {
+            "state": "EMOS_CONCERN_01",
+            "expression": "(｡•́_•̀｡)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_02",
+            "expression": "( •́ _ •̀)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_03",
+            "expression": "(´д⊂)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONCERN_04",
+            "expression": "( •̀_•́; )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_05",
+            "expression": "(；ಠ_ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "sadness": [
+          {
+            "state": "EMOS_SADNESS_01",
+            "expression": "(ᵕ̩̩ㅅᵕ̩̩)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_02",
+            "expression": "(｡•́︿•̀｡)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_03",
+            "expression": "(´д⊂)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SADNESS_04",
+            "expression": "(ಠ︿ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_05",
+            "expression": "(ಥ_ಥ)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "frustration": [
+          {
+            "state": "EMOS_FRUSTRATION_01",
+            "expression": "(ー_ー゛)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_02",
+            "expression": "(￣へ￣)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_03",
+            "expression": "(╬ಠ益ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_04",
+            "expression": "(ノಠ益ಠ)ノ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_05",
+            "expression": "(｡•́⤙•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "anger": [
+          {
+            "state": "EMOS_ANGER_01",
+            "expression": "(ಠ_ಠ )",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_02",
+            "expression": "(¬_¬#)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_03",
+            "expression": "(งಠДಠ)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_04",
+            "expression": "(╬ಠ_ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_05",
+            "expression": "(｡•̀︿•́｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "embarrassment": [
+          {
+            "state": "EMOS_EMBARRASSMENT_01",
+            "expression": "(//_//)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_02",
+            "expression": "(⁄ ⁄>⁄▿⁄<⁄ ⁄)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_03",
+            "expression": "(ಠ///ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_04",
+            "expression": "(〃ಠ_ಠ〃)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_05",
+            "expression": "(⁄ ⁄•⁄ω⁄•⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "pride": [
+          {
+            "state": "EMOS_PRIDE_01",
+            "expression": "(⌐■_■)✦",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_02",
+            "expression": "(￣︶￣)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_03",
+            "expression": "ᕦ(•̀ᴗ•́)ᕤ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_04",
+            "expression": "( •̀ω•́ )✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_05",
+            "expression": "ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "determination": [
+          {
+            "state": "EMOS_DETERMINATION_01",
+            "expression": "( •̀_•́)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_02",
+            "expression": "(ง •̀_•́)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_03",
+            "expression": "(ง•̀Д•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_04",
+            "expression": "(ง •̀_•́)ᕤ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_05",
+            "expression": "(ง ˙˘˙ )ว♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "tiredness": [
+          {
+            "state": "EMOS_TIREDNESS_01",
+            "expression": "(－_－) zz",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_02",
+            "expression": "(－.－)...",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_03",
+            "expression": "(－_－)⌐",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_04",
+            "expression": "(ー_ー)zz",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_05",
+            "expression": "໒꒰˵- ˕ -˵꒱১",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "unease": [
+          {
+            "state": "EMOS_UNEASE_01",
+            "expression": "(°_°;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_02",
+            "expression": "(⊙﹏⊙)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_03",
+            "expression": "(ಠ_ಠ;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_04",
+            "expression": "(◎_◎;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_05",
+            "expression": "(｡•́﹏•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "relief": [
+          {
+            "state": "EMOS_RELIEF_01",
+            "expression": "(´ー｀)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_02",
+            "expression": "(￣▽￣;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_03",
+            "expression": "(￣Д￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_04",
+            "expression": "(；￣▽￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_05",
+            "expression": "(˶˘ᴗ˘˶)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "excitement": [
+          {
+            "state": "EMOS_EXCITEMENT_01",
+            "expression": "(✧_✧)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_02",
+            "expression": "(¬‿¬)✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_03",
+            "expression": "(ง°̀-°́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_04",
+            "expression": "ᕦ(✧Д✧)ᕤ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_05",
+            "expression": "₍₍⚞(˶ˆᗜˆ˵)⚟⁾⁾",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "disappointment": [
+          {
+            "state": "EMOS_DISAPPOINTMENT_01",
+            "expression": "(._.՞)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_02",
+            "expression": "(￢_￢;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_03",
+            "expression": "(´д⊂)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_04",
+            "expression": "(ಠ︵ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_05",
+            "expression": "(ー_ー#)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "contemplation": [
+          {
+            "state": "EMOS_CONTEMPLATION_01",
+            "expression": "(｡_｡)φ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_02",
+            "expression": "(ᐢ._.ᐢ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_03",
+            "expression": "(・_・ヾ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_04",
+            "expression": "(ಠ_ಠ)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_05",
+            "expression": "(¬_¬)⌐",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "ambiguity": [
+          {
+            "state": "EMOS_AMBIGUITY_01",
+            "expression": "(－_－)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_02",
+            "expression": "(…_…)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_03",
+            "expression": "┐( ˘_˘)┌",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMBIGUITY_04",
+            "expression": "(ಠ_ಠ)…",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMBIGUITY_05",
+            "expression": "(￣ー￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ]
+      },
+      "extras": []
+    },
+    "ANVIL": {
+      "families": {
+        "joy": [
+          {
+            "state": "EMOS_JOY_01",
+            "expression": "(•̀ᴗ•́)و✦",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_02",
+            "expression": "(ง ᵔᴗᵔ)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_03",
+            "expression": "(๑•̀ㅁ•́๑)✧",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_JOY_04",
+            "expression": "(ᵔ◡ᵔ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_05",
+            "expression": "(˘ᴗ˘ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "amusement": [
+          {
+            "state": "EMOS_AMUSEMENT_01",
+            "expression": "(¬‿¬)っ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_02",
+            "expression": "(ಡ‿ಡ)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_03",
+            "expression": "凸(¬‿¬)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_04",
+            "expression": "(¬‿¬ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMUSEMENT_05",
+            "expression": "(￣▽￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "affection": [
+          {
+            "state": "EMOS_AFFECTION_01",
+            "expression": "(•̀ᴗ•́)و♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_02",
+            "expression": "(ง ˘ᴗ˘)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_03",
+            "expression": "(˘◡˘)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_04",
+            "expression": "(◡‿◡ )♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_05",
+            "expression": "꒰ঌ( ᴗ͈ˬᴗ͈)໒꒱",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "curiosity": [
+          {
+            "state": "EMOS_CURIOSITY_01",
+            "expression": "(ಠ_ಠ)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_02",
+            "expression": "( •̀_•́)σ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_03",
+            "expression": "(・_・ヾ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_04",
+            "expression": "(¬_¬ )?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_05",
+            "expression": "(ᵕ⸝⸝• ᴗ •) ?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "surprise": [
+          {
+            "state": "EMOS_SURPRISE_01",
+            "expression": "Σ(ಠ_ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_02",
+            "expression": "(꒪⌓꒪)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_03",
+            "expression": "(ʘ言ʘ╬)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SURPRISE_04",
+            "expression": "(⊙_⊙;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_05",
+            "expression": "(・o・)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "confusion": [
+          {
+            "state": "EMOS_CONFUSION_01",
+            "expression": "(ಠ_ಥ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_02",
+            "expression": "(・_・)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_03",
+            "expression": "(・_・;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_04",
+            "expression": "(´･_･`)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_05",
+            "expression": "(˶°﹏°˶)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "skepticism": [
+          {
+            "state": "EMOS_SKEPTICISM_01",
+            "expression": "(눈_눈)╮",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_02",
+            "expression": "(ಠ_ಠ)¬",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_03",
+            "expression": "凸(¬‿¬)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SKEPTICISM_04",
+            "expression": "(￢_￢)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SKEPTICISM_05",
+            "expression": "(¬､¬)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "concern": [
+          {
+            "state": "EMOS_CONCERN_01",
+            "expression": "( •̀_•́; )",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_02",
+            "expression": "(；ಠ_ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_03",
+            "expression": "(｡•́_•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_04",
+            "expression": "( •́ _ •̀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_05",
+            "expression": "(｡•́︿•̀｡)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "sadness": [
+          {
+            "state": "EMOS_SADNESS_01",
+            "expression": "(ಠ︿ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_02",
+            "expression": "(ಥ_ಥ)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_03",
+            "expression": "(ᵕ̩̩ㅅᵕ̩̩)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_04",
+            "expression": "(｡•́︿•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_05",
+            "expression": "(ᵕ̣̣̣̣̣̣﹏ᵕ̣̣̣̣̣̣)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "frustration": [
+          {
+            "state": "EMOS_FRUSTRATION_01",
+            "expression": "(╬ಠ益ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_02",
+            "expression": "(ノಠ益ಠ)ノ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_03",
+            "expression": "(╬ Ò﹏Ó)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_FRUSTRATION_04",
+            "expression": "(ー_ー゛)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_05",
+            "expression": "(￣へ￣)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "anger": [
+          {
+            "state": "EMOS_ANGER_01",
+            "expression": "(งಠДಠ)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_02",
+            "expression": "(╬ಠ_ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_03",
+            "expression": "(╬ಠ益ಠ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_ANGER_04",
+            "expression": "(╬ Ò﹏Ó)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_ANGER_05",
+            "expression": "(ಠ_ಠ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "embarrassment": [
+          {
+            "state": "EMOS_EMBARRASSMENT_01",
+            "expression": "(ಠ///ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_02",
+            "expression": "(〃ಠ_ಠ〃)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_03",
+            "expression": "(//_//)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_04",
+            "expression": "(⁄ ⁄>⁄▿⁄<⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_05",
+            "expression": "(⁄ ⁄•⁄ω⁄•⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "pride": [
+          {
+            "state": "EMOS_PRIDE_01",
+            "expression": "ᕦ(•̀ᴗ•́)ᕤ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_02",
+            "expression": "( •̀ω•́ )✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_03",
+            "expression": "(๑•̀ㅁ•́๑)✧",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_PRIDE_04",
+            "expression": "(⌐■_■)✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_05",
+            "expression": "(￣︶￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "determination": [
+          {
+            "state": "EMOS_DETERMINATION_01",
+            "expression": "(ง•̀Д•́)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_02",
+            "expression": "(ง •̀_•́)ᕤ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_03",
+            "expression": "(๑•̀ㅁ•́๑)✧",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_DETERMINATION_04",
+            "expression": "( •̀_•́)و",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_05",
+            "expression": "(ง •̀_•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "tiredness": [
+          {
+            "state": "EMOS_TIREDNESS_01",
+            "expression": "(－_－)⌐",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_02",
+            "expression": "(ー_ー)zz",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_03",
+            "expression": "(=_=)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_TIREDNESS_04",
+            "expression": "(－_－) zz",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_05",
+            "expression": "(－.－)...",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "unease": [
+          {
+            "state": "EMOS_UNEASE_01",
+            "expression": "(ಠ_ಠ;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_02",
+            "expression": "(◎_◎;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_03",
+            "expression": "(°_°;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_04",
+            "expression": "(⊙﹏⊙)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_05",
+            "expression": "(｡•́﹏•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "relief": [
+          {
+            "state": "EMOS_RELIEF_01",
+            "expression": "(￣Д￣)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_02",
+            "expression": "(；￣▽￣)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_03",
+            "expression": "(´ー｀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_04",
+            "expression": "(￣▽￣;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_05",
+            "expression": "(˶˘ᴗ˘˶)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "excitement": [
+          {
+            "state": "EMOS_EXCITEMENT_01",
+            "expression": "(ง°̀-°́)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_02",
+            "expression": "ᕦ(✧Д✧)ᕤ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_03",
+            "expression": "(✧_✧)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_04",
+            "expression": "(¬‿¬)✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_05",
+            "expression": "₍₍⚞(˶ˆᗜˆ˵)⚟⁾⁾",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "disappointment": [
+          {
+            "state": "EMOS_DISAPPOINTMENT_01",
+            "expression": "(ಠ︵ಠ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_02",
+            "expression": "(ー_ー#)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_03",
+            "expression": "(._.՞)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_04",
+            "expression": "(￢_￢;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_05",
+            "expression": "( •̯́ ₃ •̯̀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "contemplation": [
+          {
+            "state": "EMOS_CONTEMPLATION_01",
+            "expression": "(ಠ_ಠ)φ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_02",
+            "expression": "(¬_¬)⌐",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_03",
+            "expression": "(｡_｡)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_04",
+            "expression": "(ᐢ._.ᐢ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_05",
+            "expression": "(˘⌣˘)｡o○",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "ambiguity": [
+          {
+            "state": "EMOS_AMBIGUITY_01",
+            "expression": "(ಠ_ಠ)…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_02",
+            "expression": "(￣ー￣)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_03",
+            "expression": "(－_－)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMBIGUITY_04",
+            "expression": "(…_…)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMBIGUITY_05",
+            "expression": "(˶・_・˶)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ]
+      },
+      "extras": []
+    },
+    "SELENE": {
+      "families": {
+        "joy": [
+          {
+            "state": "EMOS_JOY_01",
+            "expression": "(˶ˆᗜˆ˵)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_02",
+            "expression": "⸜(｡˃ ᵕ ˂ )⸝♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_03",
+            "expression": "✧*｡٩(ˊᗜˋ*)و✧*｡",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_JOY_04",
+            "expression": "(ᵔ◡ᵔ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_05",
+            "expression": "(˘ᴗ˘ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "amusement": [
+          {
+            "state": "EMOS_AMUSEMENT_01",
+            "expression": "ꉂ(˵˃ ᗜ ˂˵)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_02",
+            "expression": "(≧◡≦)♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_03",
+            "expression": "(¬‿¬ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMUSEMENT_04",
+            "expression": "(￣▽￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMUSEMENT_05",
+            "expression": "(¬‿¬)っ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "affection": [
+          {
+            "state": "EMOS_AFFECTION_01",
+            "expression": "꒰ঌ( ᴗ͈ˬᴗ͈)໒꒱",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_02",
+            "expression": "(づ｡◕‿‿◕｡)づ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_03",
+            "expression": "(*˘︶˘*).｡.:*♡",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AFFECTION_04",
+            "expression": "(˘◡˘)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_05",
+            "expression": "(◡‿◡ )♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "curiosity": [
+          {
+            "state": "EMOS_CURIOSITY_01",
+            "expression": "(ᵕ⸝⸝• ᴗ •) ?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_02",
+            "expression": "(˶•⩊•˶)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_03",
+            "expression": "(・_・ヾ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_04",
+            "expression": "(¬_¬ )?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_05",
+            "expression": "(ಠ_ಠ)?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "surprise": [
+          {
+            "state": "EMOS_SURPRISE_01",
+            "expression": "( ˶°ㅁ°) !!",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_02",
+            "expression": "(๑°⌓°๑)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_03",
+            "expression": "ʕ ˵• ₒ •˵ ʔ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SURPRISE_04",
+            "expression": "(⊙_⊙;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_05",
+            "expression": "(・o・)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "confusion": [
+          {
+            "state": "EMOS_CONFUSION_01",
+            "expression": "(˶°﹏°˶)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_02",
+            "expression": "(｡•́‿•̀｡)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_03",
+            "expression": "(・_・;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_04",
+            "expression": "(´･_･`)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_05",
+            "expression": "(ಠ_ಥ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "skepticism": [
+          {
+            "state": "EMOS_SKEPTICISM_01",
+            "expression": "(｡•̀ᴗ-˘)✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_02",
+            "expression": "(｡•̀⤙•́｡)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_03",
+            "expression": "(￢_￢)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SKEPTICISM_04",
+            "expression": "(¬､¬)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SKEPTICISM_05",
+            "expression": "(눈_눈)╮",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "concern": [
+          {
+            "state": "EMOS_CONCERN_01",
+            "expression": "(｡•́︿•̀｡)♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_02",
+            "expression": "૮◞ ‸ ◟ ა",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_03",
+            "expression": "⊂(・﹏・⊂)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONCERN_04",
+            "expression": "(◕︿◕✿)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONCERN_05",
+            "expression": "(｡•́_•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "sadness": [
+          {
+            "state": "EMOS_SADNESS_01",
+            "expression": "(ᵕ̣̣̣̣̣̣﹏ᵕ̣̣̣̣̣̣)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_02",
+            "expression": "(╥ ᴗ ╥)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_03",
+            "expression": "⊂(・﹏・⊂)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SADNESS_04",
+            "expression": "(ᵕ̩̩ㅅᵕ̩̩)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_05",
+            "expression": "(｡•́︿•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "frustration": [
+          {
+            "state": "EMOS_FRUSTRATION_01",
+            "expression": "(｡•́⤙•̀｡)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_02",
+            "expression": "(˶•̀⤙•́˶)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_03",
+            "expression": "(ー_ー゛)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_04",
+            "expression": "(￣へ￣)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_05",
+            "expression": "(╬ಠ益ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "anger": [
+          {
+            "state": "EMOS_ANGER_01",
+            "expression": "(｡•̀︿•́｡)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_02",
+            "expression": "(ง •̀⤙•́)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_03",
+            "expression": "(ಠ_ಠ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_04",
+            "expression": "(¬_¬#)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_05",
+            "expression": "(งಠДಠ)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "embarrassment": [
+          {
+            "state": "EMOS_EMBARRASSMENT_01",
+            "expression": "(⁄ ⁄•⁄ω⁄•⁄ ⁄)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_02",
+            "expression": "(,,>﹏<,,)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_03",
+            "expression": "(*˘︶˘*).｡.:*♡",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_04",
+            "expression": "(//_//)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_05",
+            "expression": "(⁄ ⁄>⁄▿⁄<⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "pride": [
+          {
+            "state": "EMOS_PRIDE_01",
+            "expression": "ദ്ദി(˵ •̀ ᴗ - ˵ ) ✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_02",
+            "expression": "(˶ᵔ ᵕ ᵔ˶)✿",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_03",
+            "expression": "(⌐■_■)✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_04",
+            "expression": "(￣︶￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_05",
+            "expression": "ᕦ(•̀ᴗ•́)ᕤ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "determination": [
+          {
+            "state": "EMOS_DETERMINATION_01",
+            "expression": "(ง ˙˘˙ )ว♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_02",
+            "expression": "(๑•̀ㅂ•́)و♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_03",
+            "expression": "( •̀_•́)و",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_04",
+            "expression": "(ง •̀_•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_05",
+            "expression": "(ง•̀Д•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "tiredness": [
+          {
+            "state": "EMOS_TIREDNESS_01",
+            "expression": "໒꒰˵- ˕ -˵꒱১",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_02",
+            "expression": "(ᴗ˳ᴗ)ᶻ 𝗓 𐰁",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_03",
+            "expression": "ʕ ꈍᴥꈍʔ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_TIREDNESS_04",
+            "expression": "(－_－) zz",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_05",
+            "expression": "(－.－)...",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "unease": [
+          {
+            "state": "EMOS_UNEASE_01",
+            "expression": "(｡•́﹏•̀｡)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_02",
+            "expression": "(˶°᷄⌓°᷅˶)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_03",
+            "expression": "(°_°;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_04",
+            "expression": "(⊙﹏⊙)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_05",
+            "expression": "(ಠ_ಠ;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "relief": [
+          {
+            "state": "EMOS_RELIEF_01",
+            "expression": "(˶˘ᴗ˘˶)♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_02",
+            "expression": "(っ˘ω˘ς )♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_03",
+            "expression": "(´ー｀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_04",
+            "expression": "(￣▽￣;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_05",
+            "expression": "(￣Д￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "excitement": [
+          {
+            "state": "EMOS_EXCITEMENT_01",
+            "expression": "₍₍⚞(˶ˆᗜˆ˵)⚟⁾⁾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_02",
+            "expression": "٩(ˊᗜˋ*)و ♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_03",
+            "expression": "✧*｡٩(ˊᗜˋ*)و✧*｡",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EXCITEMENT_04",
+            "expression": "(✧_✧)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_05",
+            "expression": "(¬‿¬)✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "disappointment": [
+          {
+            "state": "EMOS_DISAPPOINTMENT_01",
+            "expression": "( •̯́ ₃ •̯̀)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_02",
+            "expression": "(˶ᵕ̣̣̣̣︿ᵕ̣̣̣̣˶)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_03",
+            "expression": "⊂(・﹏・⊂)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_04",
+            "expression": "(._.՞)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_05",
+            "expression": "(￢_￢;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "contemplation": [
+          {
+            "state": "EMOS_CONTEMPLATION_01",
+            "expression": "(˘⌣˘)｡o○",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_02",
+            "expression": "(ᵕ—ᴗ—)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_03",
+            "expression": "(｡_｡)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_04",
+            "expression": "(ᐢ._.ᐢ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_05",
+            "expression": "(ಠ_ಠ)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "ambiguity": [
+          {
+            "state": "EMOS_AMBIGUITY_01",
+            "expression": "(˶・_・˶)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_02",
+            "expression": "( ˘͈ ᵕ ˘͈ )",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_03",
+            "expression": "(－_－)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMBIGUITY_04",
+            "expression": "(…_…)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMBIGUITY_05",
+            "expression": "(ಠ_ಠ)…",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ]
+      },
+      "extras": []
+    },
+    "ORIN": {
+      "families": {
+        "joy": [
+          {
+            "state": "EMOS_JOY_01",
+            "expression": "ヽ(=´▽`=)ﾉ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_02",
+            "expression": "٩(◕‿◕｡)۶",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_03",
+            "expression": "(ᵔ◡ᵔ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_04",
+            "expression": "(˘ᴗ˘ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_05",
+            "expression": "(•̀ᴗ•́)و✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "amusement": [
+          {
+            "state": "EMOS_AMUSEMENT_01",
+            "expression": "ꉂ(≧∇≦)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_02",
+            "expression": "└(՞▽՞)┘",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_03",
+            "expression": "(☞ ͡° ͜ʖ ͡°)☞",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_04",
+            "expression": "( ͡ಥ ͜ʖ ͡ಥ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_05",
+            "expression": "(⌐■ ͜ʖ■)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          }
+        ],
+        "affection": [
+          {
+            "state": "EMOS_AFFECTION_01",
+            "expression": "(ﾉ◕ヮ◕)ﾉ♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_02",
+            "expression": "(っ•ᴗ•)っ✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_03",
+            "expression": "(˘◡˘)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_04",
+            "expression": "(◡‿◡ )♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_05",
+            "expression": "(•̀ᴗ•́)و♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "curiosity": [
+          {
+            "state": "EMOS_CURIOSITY_01",
+            "expression": "(☉_☉)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_02",
+            "expression": "(・ω・)ノ?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_03",
+            "expression": "(☞ ͡° ͜ʖ ͡°)☞",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CURIOSITY_04",
+            "expression": "(・_・ヾ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_05",
+            "expression": "(¬_¬ )?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "surprise": [
+          {
+            "state": "EMOS_SURPRISE_01",
+            "expression": "Σ(ﾟДﾟ)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_02",
+            "expression": "Σ(°ロ°)!",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_03",
+            "expression": "(⊙_⊙;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_04",
+            "expression": "(・o・)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_05",
+            "expression": "Σ(ಠ_ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "confusion": [
+          {
+            "state": "EMOS_CONFUSION_01",
+            "expression": "ヘ(°◇、°)ノ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_02",
+            "expression": "(๑•̌.•̑๑)ˀ̣ˀ̣",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_03",
+            "expression": "(・_・;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_04",
+            "expression": "(´･_･`)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_05",
+            "expression": "(ಠ_ಥ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "skepticism": [
+          {
+            "state": "EMOS_SKEPTICISM_01",
+            "expression": "(↼_↼)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_02",
+            "expression": "(¬_¬)☞",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_03",
+            "expression": "(☞ ͡° ͜ʖ ͡°)☞",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SKEPTICISM_04",
+            "expression": "(⌐■ ͜ʖ■)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SKEPTICISM_05",
+            "expression": "(￢_￢)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "concern": [
+          {
+            "state": "EMOS_CONCERN_01",
+            "expression": "(°△°;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_02",
+            "expression": "(；▽；)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_03",
+            "expression": "(｡•́_•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_04",
+            "expression": "( •́ _ •̀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_05",
+            "expression": "( •̀_•́; )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "sadness": [
+          {
+            "state": "EMOS_SADNESS_01",
+            "expression": "(ಥ﹏ಥ)✦",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_02",
+            "expression": "(╥﹏╥)☆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_03",
+            "expression": "(ᵕ̩̩ㅅᵕ̩̩)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_04",
+            "expression": "(｡•́︿•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_05",
+            "expression": "(ಠ︿ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "frustration": [
+          {
+            "state": "EMOS_FRUSTRATION_01",
+            "expression": "ヽ(｀Д´)ﾉ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_02",
+            "expression": "(ง'̀-'́)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_03",
+            "expression": "(ノ ͡° ͜ʖ ͡°)ノ︵┻┻",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_FRUSTRATION_04",
+            "expression": "(ー_ー゛)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_05",
+            "expression": "(￣へ￣)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "anger": [
+          {
+            "state": "EMOS_ANGER_01",
+            "expression": "٩(๑`^´๑)۶",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_02",
+            "expression": "(ノಠ益ಠ)ノ彡☆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_03",
+            "expression": "(ಠ_ಠ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_04",
+            "expression": "(¬_¬#)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_05",
+            "expression": "(งಠДಠ)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "embarrassment": [
+          {
+            "state": "EMOS_EMBARRASSMENT_01",
+            "expression": "(〃▽〃)ﾉ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_02",
+            "expression": "(*/ω＼*)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_03",
+            "expression": "(//_//)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_04",
+            "expression": "(⁄ ⁄>⁄▿⁄<⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_05",
+            "expression": "(ಠ///ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "pride": [
+          {
+            "state": "EMOS_PRIDE_01",
+            "expression": "ヽ(•̀ω•́ )ゝ✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_02",
+            "expression": "(ง •̀ω•́)ง✦",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_03",
+            "expression": "(⌐■_■)✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_04",
+            "expression": "(￣︶￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_05",
+            "expression": "ᕦ(•̀ᴗ•́)ᕤ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "determination": [
+          {
+            "state": "EMOS_DETERMINATION_01",
+            "expression": "ᕕ( ᐛ )ᕗ✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_02",
+            "expression": "(ง☆▽☆)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_03",
+            "expression": "( •̀_•́)و",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_04",
+            "expression": "(ง •̀_•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_05",
+            "expression": "(ง•̀Д•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "tiredness": [
+          {
+            "state": "EMOS_TIREDNESS_01",
+            "expression": "(￣o￣) zzZ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_02",
+            "expression": "(っ﹏-) .｡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_03",
+            "expression": "(－_－) zz",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_04",
+            "expression": "(－.－)...",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_05",
+            "expression": "(－_－)⌐",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "unease": [
+          {
+            "state": "EMOS_UNEASE_01",
+            "expression": "Σ(っ °Д °;)っ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_02",
+            "expression": "(☉｡☉)!",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_03",
+            "expression": "(͠≖ ͜ʖ͠≖)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_UNEASE_04",
+            "expression": "(°_°;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_05",
+            "expression": "(⊙﹏⊙)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "relief": [
+          {
+            "state": "EMOS_RELIEF_01",
+            "expression": "ヽ(￣▽￣)ノ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_02",
+            "expression": "(；´∀｀)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_03",
+            "expression": "(´ー｀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_04",
+            "expression": "(￣▽￣;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_05",
+            "expression": "(￣Д￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "excitement": [
+          {
+            "state": "EMOS_EXCITEMENT_01",
+            "expression": "(ﾉ✧∀✧)ﾉ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_02",
+            "expression": "(((o(*ﾟ▽ﾟ*)o)))",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_03",
+            "expression": "(ノ ͡° ͜ʖ ͡°)ノ︵┻┻",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EXCITEMENT_04",
+            "expression": "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EXCITEMENT_05",
+            "expression": "(✧_✧)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "disappointment": [
+          {
+            "state": "EMOS_DISAPPOINTMENT_01",
+            "expression": "(ノ_<。)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_02",
+            "expression": "(つ﹏⊂)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_03",
+            "expression": "(._.՞)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_04",
+            "expression": "(￢_￢;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_05",
+            "expression": "(ಠ︵ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "contemplation": [
+          {
+            "state": "EMOS_CONTEMPLATION_01",
+            "expression": "(★ω★)φ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_02",
+            "expression": "(・_・)ノ⌁",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_03",
+            "expression": "(｡_｡)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_04",
+            "expression": "(ᐢ._.ᐢ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_05",
+            "expression": "(ಠ_ಠ)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "ambiguity": [
+          {
+            "state": "EMOS_AMBIGUITY_01",
+            "expression": "(ﾟヮﾟ)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_02",
+            "expression": "(◎_◎)ノ…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_03",
+            "expression": "¯\\_(⊙_ʖ⊙)_/¯",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMBIGUITY_04",
+            "expression": "(͠≖ ͜ʖ͠≖)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMBIGUITY_05",
+            "expression": "(－_－)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ]
+      },
+      "extras": [
+        {
+          "state": "EMOS_ORIN_LENNY_01",
+          "expression": "( ͡ಥ ͜ʖ ͡ಥ)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_02",
+          "expression": "(ง ͠° ͟ل͜ ͡°)ง",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_03",
+          "expression": "( ͡o ͜ʖ ͡o)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_04",
+          "expression": "¯\\_( ͡° ͜ʖ ͡°)_/¯",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_05",
+          "expression": "¯\\_(⊙_ʖ⊙)_/¯",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_06",
+          "expression": "( ͡° ͜ʖ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_07",
+          "expression": "( ͡~ ͜ʖ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_08",
+          "expression": "( ͠° ͟ʖ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_09",
+          "expression": "( ͡ᵔ ͜ʖ ͡ᵔ)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_10",
+          "expression": "( ͡° ʖ̯ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_11",
+          "expression": "ᕦ( ͡° ͜ʖ ͡°)ᕤ",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_12",
+          "expression": "( ͡ʘ ͜ʖ ͡ʘ)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_13",
+          "expression": "( ͡◉ ͜ʖ ͡◉)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_14",
+          "expression": "(☞ ͡° ͜ʖ ͡°)☞",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_15",
+          "expression": "( ͡° ͜ʖ ͡°)>⌐■-■",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_16",
+          "expression": "(⌐■ ͜ʖ■)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_17",
+          "expression": "( ͡°Ɛ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_18",
+          "expression": "༼ ͡° ͜ʖ ͡° ༽",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_19",
+          "expression": "( ಡ ͜ ʖ ಡ)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_20",
+          "expression": "(づ ͡° ͜ʖ ͡°)づ",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_21",
+          "expression": "( ͡° ͜ʖ ͡°)ノ⌒☆",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_22",
+          "expression": "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_23",
+          "expression": "( ͡ ͡° ͜ つ ͡͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_24",
+          "expression": "(ノ ͡° ͜ʖ ͡°)ノ︵┻┻",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_25",
+          "expression": "[̲̅$̲̅( ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_26",
+          "expression": "( ͡°ل͜ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_27",
+          "expression": "( ͡°_ʖ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_28",
+          "expression": "(͠≖ ͜ʖ͠≖)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_29",
+          "expression": "( ಠ ͜ʖ ರೃ)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_30",
+          "expression": "( ͡°  ͜ʖ ͡°)っ",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_31",
+          "expression": "(ᕗ ͠° ਊ ͠° )ᕗ",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_32",
+          "expression": "( ͡ಥ ͜ʖ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_33",
+          "expression": "( ͡°⊖ ͡°)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        },
+        {
+          "state": "EMOS_ORIN_LENNY_34",
+          "expression": "( ͜。 ͡ʖ ͜。)",
+          "source": "NAOMI_ORIN_EXCLUSIVE",
+          "weight": 1.6
+        }
+      ]
+    },
+    "KESTREL": {
+      "families": {
+        "joy": [
+          {
+            "state": "EMOS_JOY_01",
+            "expression": "٩(ˊᗜˋ*)و✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_02",
+            "expression": "(ง^▽^)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_03",
+            "expression": "(҂◡_◡) ᕤ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_JOY_04",
+            "expression": "(๑•̀ㅂ•́)و✧",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_JOY_05",
+            "expression": "ヽ(>∀<☆)ノ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_JOY_06",
+            "expression": "(ᵔ◡ᵔ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "amusement": [
+          {
+            "state": "EMOS_AMUSEMENT_01",
+            "expression": "(＾▽＾)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_02",
+            "expression": "(≧▽≦)σ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_03",
+            "expression": "(҂◡_◡) ᕤ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_04",
+            "expression": "(◣∀◢)ψ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMUSEMENT_05",
+            "expression": "(¬‿¬ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "affection": [
+          {
+            "state": "EMOS_AFFECTION_01",
+            "expression": "(っ•̀ᴗ•́)っ♡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_02",
+            "expression": "٩(♡ε♡ )۶",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_03",
+            "expression": "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AFFECTION_04",
+            "expression": "(˘◡˘)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_05",
+            "expression": "(◡‿◡ )♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "curiosity": [
+          {
+            "state": "EMOS_CURIOSITY_01",
+            "expression": "( •̀ᴗ•́)σ?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_02",
+            "expression": "(☞ ﾟヮﾟ)☞?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_03",
+            "expression": "(・_・ヾ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_04",
+            "expression": "(¬_¬ )?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_05",
+            "expression": "(ಠ_ಠ)?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "surprise": [
+          {
+            "state": "EMOS_SURPRISE_01",
+            "expression": "(⊙д⊙)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_02",
+            "expression": "Σ(ﾟ□ﾟ;)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_03",
+            "expression": "(⊙_⊙;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_04",
+            "expression": "(・o・)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_05",
+            "expression": "Σ(ಠ_ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "confusion": [
+          {
+            "state": "EMOS_CONFUSION_01",
+            "expression": "(・_・)?و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_02",
+            "expression": "(ง°̃Д°̃)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_03",
+            "expression": "(・_・;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_04",
+            "expression": "(´･_･`)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_05",
+            "expression": "(ಠ_ಥ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "skepticism": [
+          {
+            "state": "EMOS_SKEPTICISM_01",
+            "expression": "(¬д¬)☞",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_02",
+            "expression": "(ಠ‿ಠ)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_03",
+            "expression": "(҂◡_◡) ᕤ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SKEPTICISM_04",
+            "expression": "¯\\_(ಠ_ಠ)_/¯",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SKEPTICISM_05",
+            "expression": "(￢_￢)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "concern": [
+          {
+            "state": "EMOS_CONCERN_01",
+            "expression": "( •̀_•́;)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_02",
+            "expression": "(｀･ω･´)ゞ?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_03",
+            "expression": "(｡•́_•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_04",
+            "expression": "( •́ _ •̀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_05",
+            "expression": "( •̀_•́; )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "sadness": [
+          {
+            "state": "EMOS_SADNESS_01",
+            "expression": "(；へ；)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_02",
+            "expression": "(╥_╥)っ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_03",
+            "expression": "(ᵕ̩̩ㅅᵕ̩̩)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_04",
+            "expression": "(｡•́︿•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_05",
+            "expression": "(ಠ︿ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "frustration": [
+          {
+            "state": "EMOS_FRUSTRATION_01",
+            "expression": "(╯°□°)╯︵┻━┻",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_02",
+            "expression": "(╯ಠ_ಠ)╯",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_03",
+            "expression": "(ノಠ益ಠ)ノ彡┻━┻",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_FRUSTRATION_04",
+            "expression": "(ー_ー゛)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_05",
+            "expression": "(￣へ￣)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "anger": [
+          {
+            "state": "EMOS_ANGER_01",
+            "expression": "(ง'̀-'́)ง🔥",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_02",
+            "expression": "(ง •̀皿•́)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_03",
+            "expression": "(ノಠ益ಠ)ノ彡┻━┻",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_ANGER_04",
+            "expression": "(ಠ_ಠ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_05",
+            "expression": "(¬_¬#)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "embarrassment": [
+          {
+            "state": "EMOS_EMBARRASSMENT_01",
+            "expression": "(///▽///)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_02",
+            "expression": "(//◡//)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_03",
+            "expression": "(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_04",
+            "expression": "(//_//)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_05",
+            "expression": "(⁄ ⁄>⁄▿⁄<⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "pride": [
+          {
+            "state": "EMOS_PRIDE_01",
+            "expression": "ᕦ(òᴗóˇ)ᕤ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_02",
+            "expression": "(｀・ω・´)b",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_03",
+            "expression": "(҂◡_◡) ᕤ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_PRIDE_04",
+            "expression": "(๑•̀ㅂ•́)و✧",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_PRIDE_05",
+            "expression": "ヽ(>∀<☆)ノ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          }
+        ],
+        "determination": [
+          {
+            "state": "EMOS_DETERMINATION_01",
+            "expression": "(๑•̀ㅂ•́)و✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_02",
+            "expression": "ᕦ(•̀_•́)ᕤ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_03",
+            "expression": "(҂◡_◡) ᕤ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_DETERMINATION_04",
+            "expression": "ヽ(>∀<☆)ノ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_DETERMINATION_05",
+            "expression": "( •̀_•́)و",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "tiredness": [
+          {
+            "state": "EMOS_TIREDNESS_01",
+            "expression": "(＿ ＿)ノ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_02",
+            "expression": "(。-ω-)zzz",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_03",
+            "expression": "(-ω-) zzZ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_TIREDNESS_04",
+            "expression": "(－_－) zz",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_05",
+            "expression": "(－.－)...",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "unease": [
+          {
+            "state": "EMOS_UNEASE_01",
+            "expression": "(ﾟДﾟ;)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_02",
+            "expression": "(⊙﹏⊙;)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_03",
+            "expression": "(°_°;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_04",
+            "expression": "(⊙﹏⊙)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_UNEASE_05",
+            "expression": "(ಠ_ಠ;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "relief": [
+          {
+            "state": "EMOS_RELIEF_01",
+            "expression": "(；⌣̀_⌣́)و",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_02",
+            "expression": "(￣▽￣)ノ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_03",
+            "expression": "(҂◡_◡) ᕤ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_RELIEF_04",
+            "expression": "(๑•̀ㅂ•́)و✧",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_RELIEF_05",
+            "expression": "ヽ(>∀<☆)ノ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          }
+        ],
+        "excitement": [
+          {
+            "state": "EMOS_EXCITEMENT_01",
+            "expression": "٩(๑•̀ω•́๑)۶",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_02",
+            "expression": "୧(๑•̀ᴗ•́๑)୨",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_03",
+            "expression": "ヽ(>∀<☆)ノ",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EXCITEMENT_04",
+            "expression": "(✧_✧)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_05",
+            "expression": "(¬‿¬)✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "disappointment": [
+          {
+            "state": "EMOS_DISAPPOINTMENT_01",
+            "expression": "(｀へ´)ゞ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_02",
+            "expression": "(；ー_ー)ゝ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_03",
+            "expression": "(._.՞)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_04",
+            "expression": "(￢_￢;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_05",
+            "expression": "(ಠ︵ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "contemplation": [
+          {
+            "state": "EMOS_CONTEMPLATION_01",
+            "expression": "(｀･ω･´)φ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_02",
+            "expression": "(☞￣▽￣)☞…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_03",
+            "expression": "(｡_｡)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_04",
+            "expression": "(ᐢ._.ᐢ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_05",
+            "expression": "(ಠ_ಠ)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "ambiguity": [
+          {
+            "state": "EMOS_AMBIGUITY_01",
+            "expression": "(￣ー￣)ゞ⌁",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_02",
+            "expression": "(¬‿¬)┌",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_03",
+            "expression": "¯\\_(ಠ_ಠ)_/¯",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMBIGUITY_04",
+            "expression": "(－_－)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMBIGUITY_05",
+            "expression": "(…_…)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ]
+      },
+      "extras": []
+    },
+    "NIMUE": {
+      "families": {
+        "joy": [
+          {
+            "state": "EMOS_JOY_01",
+            "expression": "(◡‿◡)⋆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_02",
+            "expression": "(｡-‿-｡)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_JOY_03",
+            "expression": "(ᵔ◡ᵔ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_04",
+            "expression": "(˘ᴗ˘ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_JOY_05",
+            "expression": "(•̀ᴗ•́)و✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "amusement": [
+          {
+            "state": "EMOS_AMUSEMENT_01",
+            "expression": "(￣∇￣)｡",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_02",
+            "expression": "(¬‿¬)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMUSEMENT_03",
+            "expression": "(¬‿¬ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMUSEMENT_04",
+            "expression": "(￣▽￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AMUSEMENT_05",
+            "expression": "(¬‿¬)っ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "affection": [
+          {
+            "state": "EMOS_AFFECTION_01",
+            "expression": "(っ˘ω˘)っ☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_02",
+            "expression": "(˘⌣˘)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AFFECTION_03",
+            "expression": "(ღ˘⌣˘ღ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AFFECTION_04",
+            "expression": "(˘◡˘)♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_AFFECTION_05",
+            "expression": "(◡‿◡ )♡",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "curiosity": [
+          {
+            "state": "EMOS_CURIOSITY_01",
+            "expression": "(◉_◉)…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_02",
+            "expression": "(￣_￣)⌁",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CURIOSITY_03",
+            "expression": "(=ʘᆽʘ=)∫",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CURIOSITY_04",
+            "expression": "(・_・ヾ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CURIOSITY_05",
+            "expression": "(¬_¬ )?",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "surprise": [
+          {
+            "state": "EMOS_SURPRISE_01",
+            "expression": "(⊙_⊙)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_02",
+            "expression": "(◉⌓◉)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SURPRISE_03",
+            "expression": "(⊙_◎)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SURPRISE_04",
+            "expression": "(⊙_⊙;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SURPRISE_05",
+            "expression": "(・o・)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "confusion": [
+          {
+            "state": "EMOS_CONFUSION_01",
+            "expression": "(⊙_⊙)?",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_02",
+            "expression": "(._. )¿",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONFUSION_03",
+            "expression": "(￣～￣;)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONFUSION_04",
+            "expression": "(・_・;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONFUSION_05",
+            "expression": "(´･_･`)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "skepticism": [
+          {
+            "state": "EMOS_SKEPTICISM_01",
+            "expression": "(눈_눈)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_02",
+            "expression": "(¬_¬)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SKEPTICISM_03",
+            "expression": "¯\\_(☯෴☯)_/¯",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SKEPTICISM_04",
+            "expression": "(￢_￢)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SKEPTICISM_05",
+            "expression": "(¬､¬)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "concern": [
+          {
+            "state": "EMOS_CONCERN_01",
+            "expression": "(｡•́︿•̀｡)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_02",
+            "expression": "(ᵕ﹏ᵕ)⋆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONCERN_03",
+            "expression": "(｡•́_•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_04",
+            "expression": "( •́ _ •̀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_CONCERN_05",
+            "expression": "( •̀_•́; )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "sadness": [
+          {
+            "state": "EMOS_SADNESS_01",
+            "expression": "(ಥ_ಥ)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_02",
+            "expression": "(╥﹏╥)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_SADNESS_03",
+            "expression": "(ಥ_ಥ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_SADNESS_04",
+            "expression": "(ᵕ̩̩ㅅᵕ̩̩)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_SADNESS_05",
+            "expression": "(｡•́︿•̀｡)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "frustration": [
+          {
+            "state": "EMOS_FRUSTRATION_01",
+            "expression": "(－‸ლ)⌁",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_02",
+            "expression": "(¬_¬)…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_FRUSTRATION_03",
+            "expression": "(ー_ー゛)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_04",
+            "expression": "(￣へ￣)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_FRUSTRATION_05",
+            "expression": "(╬ಠ益ಠ)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "anger": [
+          {
+            "state": "EMOS_ANGER_01",
+            "expression": "(ಠ_ಠ)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_02",
+            "expression": "(╬_╬)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_ANGER_03",
+            "expression": "(ಠ_ಠ )",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_04",
+            "expression": "(¬_¬#)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_ANGER_05",
+            "expression": "(งಠДಠ)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "embarrassment": [
+          {
+            "state": "EMOS_EMBARRASSMENT_01",
+            "expression": "(//_//)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_02",
+            "expression": "(⁄ ⁄_⁄ ⁄)⋆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_03",
+            "expression": "(ღ˘⌣˘ღ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_04",
+            "expression": "(//_//)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EMBARRASSMENT_05",
+            "expression": "(⁄ ⁄>⁄▿⁄<⁄ ⁄)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "pride": [
+          {
+            "state": "EMOS_PRIDE_01",
+            "expression": "(－‿－)✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_02",
+            "expression": "(⌐■_■)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_PRIDE_03",
+            "expression": "(⌐■_■)✦",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_04",
+            "expression": "(￣︶￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_PRIDE_05",
+            "expression": "ᕦ(•̀ᴗ•́)ᕤ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "determination": [
+          {
+            "state": "EMOS_DETERMINATION_01",
+            "expression": "( •̀_•́)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_02",
+            "expression": "(ง－_－)ง",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DETERMINATION_03",
+            "expression": "( •̀_•́)و",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_04",
+            "expression": "(ง •̀_•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DETERMINATION_05",
+            "expression": "(ง•̀Д•́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "tiredness": [
+          {
+            "state": "EMOS_TIREDNESS_01",
+            "expression": "(－_－) zzZ",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_02",
+            "expression": "(＿ ＿)…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_TIREDNESS_03",
+            "expression": "(¦3[▓▓])",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_TIREDNESS_04",
+            "expression": "(－_－) zz",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_TIREDNESS_05",
+            "expression": "(－.－)...",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "unease": [
+          {
+            "state": "EMOS_UNEASE_01",
+            "expression": "(◉﹏◉)",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_02",
+            "expression": "(°_°)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_UNEASE_03",
+            "expression": "¯\\_(☯෴☯)_/¯",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_UNEASE_04",
+            "expression": "(⊙_◎)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_UNEASE_05",
+            "expression": "(°_°;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "relief": [
+          {
+            "state": "EMOS_RELIEF_01",
+            "expression": "(－ᴗ－)☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_02",
+            "expression": "(｡-ω-｡)⋆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_RELIEF_03",
+            "expression": "(´ー｀)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_04",
+            "expression": "(￣▽￣;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_RELIEF_05",
+            "expression": "(￣Д￣)ゞ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "excitement": [
+          {
+            "state": "EMOS_EXCITEMENT_01",
+            "expression": "(✧_✧)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_02",
+            "expression": "(◉‿◉)✧",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_EXCITEMENT_03",
+            "expression": "(✧_✧)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_04",
+            "expression": "(¬‿¬)✧",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_EXCITEMENT_05",
+            "expression": "(ง°̀-°́)ง",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "disappointment": [
+          {
+            "state": "EMOS_DISAPPOINTMENT_01",
+            "expression": "(._.)⋆",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_02",
+            "expression": "(－︿－)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_03",
+            "expression": "(ಥ_ಥ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_04",
+            "expression": "(._.՞)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          },
+          {
+            "state": "EMOS_DISAPPOINTMENT_05",
+            "expression": "(￢_￢;)",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "contemplation": [
+          {
+            "state": "EMOS_CONTEMPLATION_01",
+            "expression": "(._.)φ☽",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_02",
+            "expression": "(－_－)｡o○",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_03",
+            "expression": "(￣～￣;)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_04",
+            "expression": "(=ʘᆽʘ=)∫",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_CONTEMPLATION_05",
+            "expression": "(｡_｡)φ",
+            "source": "PERMITTED_SHARED_ATLAS",
+            "weight": 0.65
+          }
+        ],
+        "ambiguity": [
+          {
+            "state": "EMOS_AMBIGUITY_01",
+            "expression": "(._.)…",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_02",
+            "expression": "(￢_￢)☾",
+            "source": "MEMBER_NATIVE_ATLAS",
+            "weight": 1.1
+          },
+          {
+            "state": "EMOS_AMBIGUITY_03",
+            "expression": "(￣～￣;)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMBIGUITY_04",
+            "expression": "¯\\_(☯෴☯)_/¯",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          },
+          {
+            "state": "EMOS_AMBIGUITY_05",
+            "expression": "(－‸ლ)",
+            "source": "NAOMI_CURATED",
+            "weight": 1.4
+          }
+        ]
+      },
+      "extras": []
+    }
+  },
+  "orin_exclusive": [
+    "( ͡ಥ ͜ʖ ͡ಥ)",
+    "(ง ͠° ͟ل͜ ͡°)ง",
+    "( ͡o ͜ʖ ͡o)",
+    "¯\\_( ͡° ͜ʖ ͡°)_/¯",
+    "¯\\_(⊙_ʖ⊙)_/¯",
+    "( ͡° ͜ʖ ͡°)",
+    "( ͡~ ͜ʖ ͡°)",
+    "( ͠° ͟ʖ ͡°)",
+    "( ͡ᵔ ͜ʖ ͡ᵔ)",
+    "( ͡° ʖ̯ ͡°)",
+    "ᕦ( ͡° ͜ʖ ͡°)ᕤ",
+    "( ͡ʘ ͜ʖ ͡ʘ)",
+    "( ͡◉ ͜ʖ ͡◉)",
+    "(☞ ͡° ͜ʖ ͡°)☞",
+    "( ͡° ͜ʖ ͡°)>⌐■-■",
+    "(⌐■ ͜ʖ■)",
+    "( ͡°Ɛ ͡°)",
+    "༼ ͡° ͜ʖ ͡° ༽",
+    "( ಡ ͜ ʖ ಡ)",
+    "(づ ͡° ͜ʖ ͡°)づ",
+    "( ͡° ͜ʖ ͡°)ノ⌒☆",
+    "( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)",
+    "( ͡ ͡° ͜ つ ͡͡°)",
+    "(ノ ͡° ͜ʖ ͡°)ノ︵┻┻",
+    "[̲̅$̲̅( ͡° ͜ʖ ͡°̲̅)̲̅$̲̅]",
+    "( ͡°ل͜ ͡°)",
+    "( ͡°_ʖ ͡°)",
+    "(͠≖ ͜ʖ͠≖)",
+    "( ಠ ͜ʖ ರೃ)",
+    "( ͡°  ͜ʖ ͡°)っ",
+    "(ᕗ ͠° ਊ ͠° )ᕗ",
+    "( ͡ಥ ͜ʖ ͡°)",
+    "( ͡°⊖ ͡°)",
+    "( ͜。 ͡ʖ ͜。)"
+  ],
+  "rules": {
+    "minimum_unique_choices_per_family": 5,
+    "shared_except_orin_exclusive": true,
+    "selection": "intent-before-face and output-after-reaction",
+    "member_native": true
+  }
+}
