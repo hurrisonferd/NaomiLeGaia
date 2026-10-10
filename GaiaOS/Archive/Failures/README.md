@@ -18,6 +18,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261009-004](FAIL-20261009-004-HOST-PROSODY-CONVERGENCE.md) | 2026-10-09, exact incident time UNKNOWN | GPT-default rhetoric intruded into VERA and SELENE speech despite valid member presentation; Naomi flagged prosodic homogenization | CONVERSATIONAL; internal host cause and context-length relationship unproven | OPEN — no runtime repair or prevention verification | Member-specific voice fidelity / Drift Radar prosody study; deferred |
 
+| [FAIL-20261010-001](FAIL-20261010-001-SINGLE-SPEAKER-LOCK-IN.md) | 2026-10-09 through 2026-10-10; detected 2026-10-10 (exact times UNKNOWN) | SELENE remained default speaker for an extended changing-topic conversation; no spontaneous cross-member contribution or visible eight-block re-anchor | CONVERSATIONAL; exact carrier cause unverified | OPEN — source rules present, runtime prevention unverified | Per-turn relevant dispatch, anti-sticky-speaker re-anchor and regression testing; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
