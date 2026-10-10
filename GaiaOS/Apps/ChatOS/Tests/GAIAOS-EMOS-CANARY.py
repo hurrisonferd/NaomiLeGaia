@@ -40,6 +40,13 @@ class FakeClient:
     def create(self,**kwargs):
         self.calls+=1
         return SimpleNamespace(output_text=json.dumps(self.reply))
+def test_production_docker_copy():
+    dockerfile=(ROOT/"api/Dockerfile").read_text(encoding="utf-8")
+    for source in ("gaiaos_emos.py","gaiaos_emos_host.py"):
+        expected=f"COPY api/{source} ./{source}"
+        assert expected in dockerfile, f"EMOS module missing from production Dockerfile: {source}"
+    print("EMOS_DOCKER_COPY_PASS: selector and hosted classifier included")
+
 def test_host():
     client=FakeClient({"family":"amusement","act":"SMUG_BANTER","intensity":3,
                        "sarcasm":3,"contrast":True,"target":"situation"})
@@ -66,5 +73,5 @@ def test_fallback():
                           expected_members=("NIMUE",))
     print("EMOS_CLASSIFIER_FALLBACK_PASS")
 if __name__=="__main__":
-    test_coverage();test_host();test_fallback()
+    test_coverage();test_production_docker_copy();test_host();test_fallback()
     print("EMOS_CANARY_PASS: local fake-model proof ONLY, not live carrier")

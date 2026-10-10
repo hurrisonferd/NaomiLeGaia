@@ -10,6 +10,7 @@ on:
       - 'api/gaiaos_emos.py'
       - 'api/gaiaos_emos_host.py'
       - 'api/solo_chat_runtime.py'
+      - 'api/Dockerfile'
       - 'api/gaiaos_api.py'
       - '.github/workflows/gaiaos-emos-canary.yml'
   push:
@@ -22,6 +23,7 @@ on:
       - 'api/gaiaos_emos.py'
       - 'api/gaiaos_emos_host.py'
       - 'api/solo_chat_runtime.py'
+      - 'api/Dockerfile'
       - 'api/gaiaos_api.py'
       - '.github/workflows/gaiaos-emos-canary.yml'
 
@@ -43,3 +45,7 @@ jobs:
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-EMOS-CANARY.py
       - name: Verify canonical Prime Daemon presentation
         run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py
+      - name: Build production Docker artifact
+        run: docker build --tag gaiaos-emos-release-test -f api/Dockerfile .
+      - name: Import EMOS selector and classifier from built image
+        run: docker run --rm --entrypoint python gaiaos-emos-release-test -c "import gaiaos_emos, gaiaos_emos_host; print('EMOS_PRODUCTION_IMAGE_IMPORT_PASS')"
