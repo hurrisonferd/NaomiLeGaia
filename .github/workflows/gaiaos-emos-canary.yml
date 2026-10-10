@@ -1,0 +1,45 @@
+name: GaiaOS EMOS hosted expression canary
+
+on:
+  pull_request:
+    paths:
+      - 'GaiaOS/SystemsOS/Core/EmotionOS/**'
+      - 'GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json'
+      - 'GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md'
+      - 'GaiaOS/Apps/ChatOS/Tests/GAIAOS-EMOS-CANARY.py'
+      - 'api/gaiaos_emos.py'
+      - 'api/gaiaos_emos_host.py'
+      - 'api/solo_chat_runtime.py'
+      - 'api/gaiaos_api.py'
+      - '.github/workflows/gaiaos-emos-canary.yml'
+  push:
+    branches: [main, 'feature/emos-expression-usage-v1-20261010']
+    paths:
+      - 'GaiaOS/SystemsOS/Core/EmotionOS/**'
+      - 'GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json'
+      - 'GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md'
+      - 'GaiaOS/Apps/ChatOS/Tests/GAIAOS-EMOS-CANARY.py'
+      - 'api/gaiaos_emos.py'
+      - 'api/gaiaos_emos_host.py'
+      - 'api/solo_chat_runtime.py'
+      - 'api/gaiaos_api.py'
+      - '.github/workflows/gaiaos-emos-canary.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  emos-source-and-host-adapter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify syntax of EMOS modules and SOLO caller
+        run: python -m py_compile api/gaiaos_emos.py api/gaiaos_emos_host.py api/solo_chat_runtime.py
+      - name: Run EMOS atlas, selector, hosted fake-model and fallback canary
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-EMOS-CANARY.py
+      - name: Verify canonical Prime Daemon presentation
+        run: python GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py

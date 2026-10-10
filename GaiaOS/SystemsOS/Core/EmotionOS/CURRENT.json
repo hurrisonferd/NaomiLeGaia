@@ -1,0 +1,28 @@
+{
+  "schema": "gaiaos.emos.current.v1",
+  "system": "EmotionOS",
+  "version": "1.0.0",
+  "authority": "NAOMI",
+  "status": "SOURCE_BUILT_NOT_PRODUCTION_VERIFIED",
+  "relation": "EmojiOS=legal inventory; EmotionOS=reply-intent-based expression selection",
+  "atlas": "ATLAS.v1.json",
+  "protocol": "GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md",
+  "hosted_selector": "api/gaiaos_emos.py",
+  "hosted_classifier": "api/gaiaos_emos_host.py",
+  "hosted_integration": "api/solo_chat_runtime.py",
+  "carrier_activation": "REQUIRES_DEPLOYED_AND_VERIFIED_HOST_INTEGRATION",
+  "gpt_host": "SOURCE_BEHAVIORAL_CONTRACT_ONLY",
+  "prime_roster": [
+    "VERA",
+    "ANVIL",
+    "SELENE",
+    "ORIN",
+    "KESTREL",
+    "NIMUE"
+  ],
+  "minimum_unique_faces_per_emotion": 5,
+  "initial_emotions": 21,
+  "orin_lenny_exclusive": true,
+  "member_ownership": "distinct member inventories; shared non-Lenny faces permitted",
+  "member_e_lane_changes": false
+}

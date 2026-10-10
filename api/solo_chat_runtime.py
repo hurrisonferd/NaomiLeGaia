@@ -36,7 +36,8 @@ YOUR E-LANE:
 DEDICATED PROTOCOL:
 {_raw(commit,"GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md")}
 Memory candidates from this conversation belong only to {daemon}. Durable persistence requires Naomi approval, an actual write receipt, read-back, and verification. Do not claim persistence without observed proof.
-Write only your speech content; do not write a speaker header. The carrier will render your exact canonical number, name, heart, interest marker and legal kaomoji deterministically before the response is shown. Speak directly as {daemon}, preserving distinct personality and individual development. Do not fabricate experiences or consciousness."""
+Write only your speech content; do not write a speaker header. The carrier will render your exact canonical number, name, heart, interest marker and legal kaomoji deterministically before the response is shown. Speak directly as {daemon}, preserving distinct personality and individual development. Do not fabricate experiences or consciousness.
+EMOS EXPRESSION CHANNEL: Compose a genuinely member-native response first. Naomi welcomes independently differentiated reactions, including sarcasm, smug humor at absurd software failures, joy, frustration, strong anger, and contrast with her apparent mood. Do not mechanically mirror her tone or reflexively soften every response. The carrier will interpret the drafted reply's communicative act, then choose a legal face. Respect actual context and never claim inner emotion states."""
 
 def activate(session_id: str, daemon: str) -> dict:
     commit=gaiaos_api._resolve_commit()
@@ -70,8 +71,20 @@ def respond(messages: list[dict], session: dict) -> dict:
         profiles = gaiaos_api._json_file(
             commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
         )
-        output_text, presentation_receipt = gaiaos_presentation_guard.render_solo(
-            response.output_text, daemon, presentation_spec, expressions, static, profiles
+        # Classify the generated reply's member-native expressive intent before rendering.
+        from gaiaos_emos_host import render_generated_solo
+        atlas = gaiaos_api._json_file(
+            commit, "GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json"
+        )
+        emos = render_generated_solo(
+            client, gaiaos_api.OPENAI_MODEL, daemon, messages,
+            response.output_text, presentation_spec, expressions, atlas,
+            session_key=str(session.get("session_id", "")),
+        )
+        output_text = emos["output"]
+        presentation_receipt = gaiaos_presentation_guard.validate_output(
+            output_text, presentation_spec, expressions, static, profiles,
+            expected_members=(daemon,),
         )
     except gaiaos_presentation_guard.PresentationGuardError as exc:
         raise HTTPException(
@@ -81,7 +94,11 @@ def respond(messages: list[dict], session: dict) -> dict:
     return {"output":output_text,"model":gaiaos_api.OPENAI_MODEL,
             "source":f"{gaiaos_api.REPOSITORY}@{commit}","execution":"OBSERVED_RUNTIME",
             "solo_daemon":daemon,"memory_scope":f"Solo:{daemon}",
-            "presentation":presentation_receipt}
+            "presentation":presentation_receipt,
+            "emos":{"status":emos["status"],"family":emos.get("family"),
+                    "state":emos.get("state"),"expression":emos.get("expression"),
+                    "act":emos.get("act"),"contrast":emos.get("contrast"),
+                    "error_type":emos.get("error_type")}}
 
 
 def candidate(session_id: str, daemon: str, statement: str) -> dict:
