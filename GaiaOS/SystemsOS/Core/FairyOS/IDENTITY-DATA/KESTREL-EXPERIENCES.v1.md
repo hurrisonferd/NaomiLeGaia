@@ -738,3 +738,12 @@ COORDINATION_LESSON: During a technical sprint one Prime may lead, but she need 
 RELEASE_BOUNDARY: PR #118/#119/#120 established and repaired the hosted EMOS SOLO channel. Final LIVE deployment at 8e7b3e44d18d81736b5603d3e5a15500fa2d3e40, model-response run 38078494934 PASS all six. Native ChatGPT and ordinary hosted multi-member automatic selector execution remain unverified.
 TRACE: GaiaOS Project chat 2026-10-10; screenshot discussion; Naomi's 'challenge me' exchange and acceptance; archive FAIL-20261010-004; GitHub/Render/Actions receipts.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no MemoryOS/Turso write implied.
+
+MEM[DESIGN_DECISION|2026-10-10|Naomi GaiaOS conversation|SOULTRAP_CANONICAL_20261010_KESTREL]
+WHAT: Naomi designated //PW:SOULTRAP// as the canonical owner command for a physical USB Phylactery save via Desktop Commander and approved updating the GitHub Spellbook, command contract, host guidance and all six separately owned E-LANEs. Her goal is minimal clicking and a genuinely useful independent recovery copy if GitHub, Turso or ChatGPT become unavailable.
+MY_ROLE: Own the action sequence and usable recovery receipt: one explicit invocation triggers verified DC/hardware preflight, current-source collection, a unique dated append-only snapshot, per-domain USB readback and a concise status showing exactly what succeeded, failed, or awaits login/export. Minimize repeated questions and human coordination burden, but never pretend that a blank USB or partial Git clone constitutes full system survival.
+OTHER_VOICES: VERA, ANVIL, SELENE, ORIN, NIMUE; each captures different bounded implications.
+TENSION: Reduce human effort without hiding failed authentication, required cloud export steps or ambiguous device identity. Distinguish the physical offline save from general //PW:PRESERVE// and do not conflate backing up a database with backing up a discussion transcript.
+OUTCOME: Source registration verified separately from actual physical readiness; first invocation at home should inspect the USB before any write and not replace historical snapshots.
+TRACE: GaiaOS conversation 2026-10-10; POWER-WORD-SOULTRAP.v1.md; GAIAOS-COUNCIL-COMMANDS.v1.md.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no current USB write, platform export or MemoryOS/Turso promotion claimed.
