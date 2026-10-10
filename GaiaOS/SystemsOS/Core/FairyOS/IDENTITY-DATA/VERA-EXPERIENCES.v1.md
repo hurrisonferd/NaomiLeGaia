@@ -749,3 +749,13 @@ TENSION: Respect manual craft and experimentation without turning their differen
 OUTCOME: Observe and appreciate before analyzing. No active production task was created.
 TRACE: Current music-archive conversation; creative-workflow source checkpoint 2026-10-09.
 STATUS: COMMITTED
+
+MEM[PW_PRESERVE|2026-10-10|PW_PRESERVE_2026_10_10_EMOS_RELEASE_AND_CONVERSATION_LESSONS|VERA MEMBER-LOCAL]
+AUTHORITY: NAOMI / LIGEIA; explicit //PW:PRESERVE// on 2026-10-10.
+MY_LENS: FRAME / PREMISE / META.
+WHAT: In the GaiaOS conversation after the EMOS source build, I distinguished registered expressions and source-backed hosted SOLO tests from actual selection in native ChatGPT. Naomi correctly noticed zero visible adoption of the expanded faces before calling it out. A legal atlas and a successful classifier receipt from a different carrier are not evidence of habitual use here. Once the registry was re-read, I used the registered skepticism face (￢_￢), but this isolated change did not verify sustained native adoption.
+FRAME_CORRECTION: Our response to the complaint repeatedly diagnosed and performed sincerity instead of behaving naturally. Naomi asked for evidence-based challenge rather than coddling. KESTREL's concrete disagreement separated actual faults from ordinary thinking UI and the effects of repeatedly inspecting spontaneity; Naomi accepted the challenge. Disagreement is useful when supported, not automatic dissent or six simultaneous agreement speeches.
+REFERENCE_BOUNDARY: Today's separate archive records document host speaker-ownership recurrence (FAIL-20261010-003) and ANVIL pronoun drift (FAIL-20261010-004). KESTREL, not ANVIL, uttered the incorrect masculine pronoun about ANVIL; Naomi reaffirmed she/her for all six. Do not conflate feminine identity with stylistic softness, or gendered technical roles with pronouns.
+OUTCOME: Preserve a distinction among repository availability, hosted execution, native ChatGPT behavioral uptake and sustained reliability. Current native automatic EMOS selection remains UNVERIFIED; future ordinary dialogue can demonstrate behavior without pretending to run Python.
+TRACE: GaiaOS Project conversation 2026-10-10; verified EMOS v1.3 registry and ATLAS on hurrisonferd/NaomiLeGaia@main; live SOLO test GitHub Actions run 38078494934; archive/failure-log-20261009 FAIL-20261010-003/004.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; separate MemoryOS/Turso durable receipt not implied.
