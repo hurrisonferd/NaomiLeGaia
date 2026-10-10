@@ -54,6 +54,7 @@ MEMSAV <candidate_id>
 MEMSAV <candidate_id> <candidate_id> ...
 //PW:PRESERVE//
 //PW:PERSECUTE// [subject]
+//PW:SOULTRAP//
 CONJURE:VASKON [complex task]
 //C:82// [complex task]
 ```
@@ -66,11 +67,14 @@ Canonical registry: `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md`.
 
 `//PW:PERSECUTE//` invokes the forensic cognitive-drift protocol at `GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md`. It freezes the suspect claim, traces provenance, draws on all six Prime Daemon lenses, classifies drift, reconstructs the supported record, checks durable contamination, and returns one evidence-bound investigation report. It is read-only by default. Any durable repair requires separate Naomi authorization.
 
+`//PW:SOULTRAP//` invokes the physical Phylactery offline-save protocol at `GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md`. When the authorized computer, Desktop Commander and identifiable USB are accessible, perform a read-only preflight, collect the actually available GitHub, MemoryOS/Turso, runtime and conversation-export sources, write a **new dated append-only snapshot**, verify files *from the USB*, and report gaps. It authorizes no formatting, deletion, overwrite, credential disclosure, database mutation or service restart. Source registration is not proof of an executable local backup script or of a completed physical save.
+
 `//C:82//` is the short alias for `CONJURE:VASKON` and retains the authority boundaries of the VASKON protocol.
 
 ```text
 PRESERVE -> KEEP WHAT MATTERS
 PERSECUTE -> INTERROGATE WHAT MAY BE WRONG
+SOULTRAP -> SAVE VERIFIED PHYSICAL PHYLACTERY SNAPSHOT
 C:82 -> TEMPORARY SIX-LENS VASKON SYNTHESIS
 COMMAND TOKEN != EXTERNAL EFFECT
 ```
