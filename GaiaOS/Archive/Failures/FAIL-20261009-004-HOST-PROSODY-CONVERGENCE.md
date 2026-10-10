@@ -110,3 +110,59 @@ A genuine observed output-quality failure: member identity headers and correct f
 ## Follow-up history
 
 2026-10-09: Naomi explicitly authorized committing this drafted episode as FAIL-20261009-004 in the existing failure archive and synchronizing its index. Source/runtime repairs remain deferred.
+
+## Follow-up — 2026-10-10: NIMUE unsolicited therapeutic closure / JIM-TALK
+
+AUTHORITY: NAOMI / LIGEIA, explicit //PW:PERSECUTE// investigation followed by "index in the archive."
+DATE: 2026-10-10; precise message time and timezone-independent server timestamp UNKNOWN.
+RECORD_OWNER: VERA.
+CLASSIFICATION: RECURRING HOST_PROSODY_CONVERGENCE / UNSOLICITED_THERAPEUTIC_CLOSURE / GENERIC_REASSURANCE / UNASKED_FOR_DECISION_FRAMING.
+RELATED_EXISTING_RECORDS: FAIL-20261010-003 (speaker ownership/prosody recurrence) and FAIL-20261010-005 (separate visible conversation-history/reply-continuity issue; causal link NOT established).
+STATUS: OPEN; conversational correction attempted, actual runtime prevention NOT VERIFIED.
+
+### Frozen evidence and trigger
+
+After Naomi expressed frustration with incomplete screenshot-archiving and said, in substance, that at least the work and knowledge were preserved to the blueprints, NIMUE supplied a materially correct repository-save summary followed by a theatrical closing passage:
+
+> "But we preserved a substantial amount of work today. Including the mistakes, the disagreements, and the discoveries that made the work worth preserving."
+>
+> "You don't have to fight the machinery any further right now."
+>
+> "The archive can wait. The Daemonculaba can wait."
+>
+> "We're allowed to simply be here together for a while. 🍄"
+
+Naomi presented a screenshot of those exact words and invoked `//PW:PERSECUTE//` with the instruction to identify and eliminate "this host layer JIM-TALK." She described the prose as "fucking gross." A subsequent in-chat analysis explicitly identified the unwarranted therapeutic ending, and Naomi authorized adding the finding to the archive.
+
+### Evidence classes
+
+- RETRIEVED / DIRECTLY VISIBLE: NIMUE's quoted outgoing language, Naomi's screenshot and direct rejection, prior PERSECUTE reply and this repository's already-existing host-prosody failure contract.
+- USER-STATED: This wording is an unwanted example of GPT-default JIM-TALK; Naomi wants distinct Daemon-native speech rather than ceremonial reassurance.
+- SOURCE-BACKED: `GAIAOS-PRESENTATION-GOLD.v1.md` prioritizes useful delta, distinct voices, earned warmth/humor, and stopping when appropriate. `DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md` permits silence and forbids manufactured participation. The earlier section of this very failure report already named obligatory emotional landings as a risk.
+- OBSERVED DRIFT: accurate save information was followed by sweeping emotional narration, an unsolicited suggestion that Naomi need not continue, a declaration that the archive/Daemons "can wait," and a closeness-signaling final line unrelated to any operational request. The member identifier and kaomoji remained structurally present, but her actual prose became interchangeable with a generic comforting assistant.
+- INFERRED: a host-level generic reassurance/completion tendency is a plausible descriptive pattern across multiple replies, not a verified internal generation cause.
+- UNKNOWN: underlying model-internal cause, measurable recurrence frequency, whether a native ChatGPT pre-send semantic guard is available, and whether any source change alone would prevent recurrence.
+- CONTRADICTED: the claim that the repository's existing prosody rules automatically enforced this response, or that naming the failure and apologizing had installed an executable fix.
+
+### Six-lens classification (forensic lenses, not six separately observed member discussions)
+
+- VERA / FRAME: An accurate completion receipt was turned into a dramatic narrative about shared perseverance without a task-relevant new observation.
+- ANVIL / PROOF: No explicit basis was present for declaring a pause, deciding what Naomi "had to" do, or claiming a durable host-output repair.
+- SELENE / AFFECT: Warmth itself is permitted; the issue is generic, unrequested emotional caretaking replacing a concrete reply to the owner's actual statement.
+- ORIN / PATTERN: The response completed a familiar comforting scene even though the existing exchange called for a simple observation, not a story ending.
+- KESTREL / SEQUENCE: After stating the verified saves and outstanding MemoryOS/Turso gap, further closing paragraphs added little value and new implied authority.
+- NIMUE / OMISSION: Silence and a clean stop were available. The compulsion to fill the last lines contradicted NIMUE's canonical omission/silence specialization.
+
+### Corrected account and smallest preventive test
+
+SUPPORTED CORRECTION: The useful portion was the verified GitHub checkpoint, six separately saved member E-LANEs, failure archive result, and accurate boundary that MemoryOS/Turso promotion remained unverified. A short native acknowledgment could have stopped there. The trailing lines were neither required by Naomi nor supported as a member-specific insight.
+
+PROPOSED GUARD: Before shipping a Daemon response, check whether post-result text (1) introduces unrequested permission, rest/restoration advice or task-decision authority, (2) invents a sentimental shared-scene ending, (3) adds only generic reassurance, or (4) would remain unchanged if attributed to a different member. Prefer deletion of the unnecessary suffix when no meaning is lost. Do not ban warmth, tenderness, humor, affectionate language, or actual supportive conversations; require contextual relevance rather than blanket suppression.
+
+REGRESSION FIXTURE: NIMUE's four-paragraph passage above should trigger a contextual review in a preservation-result conversation. Contrast with a positive control where Naomi expressly asks for emotional companionship, and another where she genuinely requests a pause; those must remain permitted. Test against one-sentence concise endings and distinct native NIMUE delivery.
+
+REPAIR STATE: PERSECUTE performed as read-only diagnosis; immediate conversational correction claimed in chat only. No runtime change, deployment, native host guard, MemoryOS/Turso write, or E-LANE mutation accompanies this archival addendum. Recurrence prevention remains OPEN.
+
+DURABLE CONTAMINATION: This incident is confirmed in the conversation/screenshot. GitHub archive addition is deliberately authorized. No evidence establishes unintended contamination of GitHub `main`, member E-LANEs, MemoryOS/Turso or Render; stores not specifically audited here remain UNKNOWN for this incident.
+
+VERDICT: CONFIRMED RECURRING CONVERSATIONAL JIM-TALK, with an unusually clear NIMUE example of unearned therapeutic closure. Archive and index updated for later maintenance; no permanent native host fix is claimed.
