@@ -548,3 +548,173 @@ Elgato official references (checked 2026-10-11):
 **Unresolved:** precise radio tracks remaining after the filter, user-specific rights for external songs, actual Acer performance with Elgato desktop software running, webcam fidelity, OBS audio monitoring behavior, Twitch eligibility/features, and whether existing custom playlist mods would be worth the performance complexity.
 
 **Boundary:** This addendum preserves an approved creative direction and a test plan. It does not authorize installing anything, purchasing a physical Stream Deck, publishing content, modifying canonical GaiaOS main, deploying, or writing protected MemoryOS/E-LANE records.
+
+
+---
+
+## Addendum 2026-10-11 — DispatchOS / Solo-Shift Gameplay Loop
+
+**Capture status:** Naomi expressly authorized preserving the solo-shift design pass in this blueprint.  
+**Implementation status:** CONCEPT / MANUAL PROTOTYPE PROPOSED. The dispatch system has **not** been coded, installed, connected to OBS, or playtested on the Acer. No viewer-interaction integration is verified.
+
+### The foundational production rule
+
+**The algorithm supplies the work. Naomi supplies the story. Viewers supply the complications.**
+
+Food-Fixer **must be entertaining and playable with exactly zero live viewers**. The streamer must never have to wait for chat to request food, provide an address, redeem a reward, or choose a destination. The fictional dispatch platform keeps assigning new jobs on its own. A quiet stream still produces real challenge footage and an ongoing courier story that can become a strong, independently edited YouTube episode.
+
+What appears as an "automated algorithm" to the *fictional world* can initially be **a manually operated list of premade, validated orders and a random-number selector** in the *production workflow*. Do not claim an actual autonomous dispatch app exists before building/testing one.
+
+### 1. Start with a tiny, rigorously valid order pool
+
+Before a shift, create **12–20 proposed order tickets**, but initially test fewer if necessary. Each order entry has:
+
+| Field | Purpose |
+| --- | --- |
+| Order ID | Stable reference in ledger, stream graphics, and edits |
+| Pickup vendor + recognizable landmark | A genuinely reachable restaurant, stall, or shop in the current game save |
+| Drop-off landmark + navigation notes | A reachable destination and believable contactless-handoff point |
+| Districts | For variety and viewer comprehension |
+| Route class | Short/local, medium/cross-district, or long/undesirable (class definitions need playtesting) |
+| Food or order description | Flavor; roleplayed collection if purchase/handoff mechanics do not exist |
+| Customer instruction | Optional, simple, mundane, and performable |
+| Base wage | **€$20 for an actually successful completed delivery**, per Naomi's preferred baseline |
+| Outcome / notes | Success, failure, late, interrupted, etc., plus incident and editing markers |
+| Validation | Proven reachable with the selected game progress and vehicle, not merely a plausible location name |
+
+A pair of districts such as *Kabuki → Northside* is **an illustrative route skeleton, not a tested delivery**. The actual list must use *specific physical vendor and address landmarks* after checking accessibility. Filter out unreachable interiors, impossible drop-offs, story-locked sites, and locations requiring prohibited abilities. A small reliable pool is better than a huge random pool of broken routes.
+
+**Illustrative conceptual ticket (not preapproved in-game):**
+
+> FOOD-FIXER // FF-0008  
+> PICKUP: Kabuki (exact vendor TBD)  
+> DROPOFF: Northside (exact reachable landmark TBD)  
+> INSTRUCTIONS: "Please use rear entrance."  
+> BASE PAY: €$20  
+> STATUS: OFFERED  
+> "We'll get it to you."
+
+### 2. No-viewer dispatch: manually randomized rather than audience-dependent
+
+Minimal version uses either:
+- Paper cards or a numbered table, plus dice or any random-number picker; **or**
+- A simple spreadsheet/random selection script **only if convenient later**.
+
+Rules proposed for fairness:
+1. Preapprove the order pool before the shift.
+2. Draw the next eligible order **without choosing the most entertaining outcome by hand**.
+3. Prevent immediate duplicate orders where practical.
+4. If draw is impossible for mechanical reasons, mark it **INVALID ROUTE**, document why, and redraw; invalid routes are not ordinary failed deliveries.
+5. The order ticket appears on screen via a simple static text field or overlay, and a custom Food-Fixer Ableton chime announces it.
+6. Orders are delivered sequentially: finish or fail one before drawing another, except where a deliberately designed **multiple-order shift** changes this rule openly.
+7. Viewership count is never an input to the randomizer.
+
+**No real software automation is required to validate this gameplay loop.** If necessary, simply read the drawn order from a second screen or note sheet and update the OBS text manually between jobs.
+
+### 3. The repeatable solo-shift gameplay loop
+
+1. **CLOCK IN.** Show V's real in-game wallet, unresolved debt/installment, fuel counter, delivery total, and current company rating. Activate ON SHIFT.
+2. **DISPATCH.** Randomly draw a validated order; show order ID, vendor, delivery location, instructions, and base €$20.
+3. **ACCEPT.** Comply with any explicitly adopted acceptance/cancellation rule; no implicit penalties invented midstream.
+4. **PICKUP.** Drive in first person to the vendor. Park. Stage the prepaid food collection. The V player should not pay the customer's meal cost unless a transparent rule covers reimbursement.
+5. **TRANSPORT.** Drive first-person to the destination without fast travel or automated driving while on the order. Deal with real traffic, bad camera visibility, hostility, and natural game glitches.
+6. **DROPOFF.** Stop/park at a reachable address or landmark and perform the most believable in-game handoff possible. If no literal food-dropping mechanic exists, disclose the handoff as roleplayed.
+7. **CLOSE OUT.** Assign an outcome (DELIVERED, LATE, FAILED, CUSTOMER UNAVAILABLE, DRIVER INCAPACITATED, VEHICLE LOST, etc.). **Late deliveries only earn money if the established success rules still deem them completed.** Do not secretly rewrite those rules to create a joke.
+8. **PAYROLL.** Successful jobs trigger **one verified €$20 scripted money grant** through the console, after completion only. Failed jobs receive €$0. Tips require an explicit show rule; do not auto-award them.
+9. **LEDGER.** Record the outcome, actual wallet, verified paycheck, expenses, fuel counter, progress toward loan repayment and apartment, along with standout footage timestamps if possible.
+10. **RUNNING COSTS.** If the agreed fuel threshold is reached, drive to an actual in-game gas station and roleplay refueling. Update the financial ledger and make wallet deductions only if technically validated. Loan-payment due dates/arrears follow the same accounting integrity rules.
+11. **NEXT ORDER OR CLOCK OUT.** Keep streaming without waiting for viewers. Stop taking new orders when the session ends; summarize and carry forward persistent consequences.
+
+**Illustrative company statuses:** AVAILABLE → ORDER OFFERED → ACCEPTED → AT PICKUP → IN TRANSIT → DELIVERED / FAILED / CANCELLED → AVAILABLE. These are display states, not claims that Cyberpunk has built-in delivery mechanics.
+
+### 4. Viewer participation as an overlay, not an engine
+
+An audience can interact with a running delivery service, but **cannot become a prerequisite for one to exist**.
+
+| Normal solo operation | Viewer-enhanced operation |
+| --- | --- |
+| Random prevalidated order | Poll between two prevalidated order tickets |
+| Prewritten customer instruction | Viewer selects an instruction from a safe/possible shortlist |
+| Fictional automated review | Chat supplies or chooses a customer review, curated/moderated |
+| Dispatch notice appears contextually | Limited viewer-triggered corporate advice or annoyance |
+| Shift-end company performance review | Viewers vote on a lighthearted performance category |
+| Manual route selection for special challenge | Audience selects among **reachable**, explicitly offered routes |
+
+If the audience is small, polls end without responses, no one has redemption access, or there are no viewers at all, the system **immediately defaults back to algorithmic/manual dispatch**. Do not hold a show hostage to an unanswered poll. Do not require Twitch Channel Points; availability/eligibility must be verified for the specific account. Chat votes, manually chosen alternatives, and plain random draws are all acceptable.
+
+Viewer input can increase difficulty **inside agreed restrictions**, not demand a destination that is inaccessible, induce unsafe real-world actions, expose private information, or change a completed delivery's legitimate financial result after the fact.
+
+### 5. Give every shift a second, documentary-level question
+
+The core delivery loop becomes repetitive if the only storyline is "drive, drop off, earn €$20, repeat." Each broadcast should also have **one observational challenge, research question, or narrative focus**.
+
+Illustrative shift ideas (not assigned episode numbers):
+- **"Five Deliveries Without a Collision"**: count actual crashes; first-person driving turns mundane commuting into a challenge.
+- **"Night City's Parking Problem"**: look for believable curb parking/loading areas near vendors, discuss real delivery-driver logistics.
+- **"The Graveyard Shift"**: work after dark, explore ambience, geography, safety, and the strange calm of late-night routes.
+- **"Can I Actually Turn a Profit?"**: count fuel, loan, failed jobs, food purchases, and other real/simulated costs transparently.
+- **"Across the City for €$20"**: observe routing, time, and the difference between wages and effective earnings.
+- **"Can I Work Without Breaking the Law?"**: game-mechanics-aware driving/parking challenge, with clearly specified rules.
+
+These make a quiet live session worth recording and give the *later YouTube edit* a headline, a question, and an arc. Let the game determine outcomes. Quiet urban observation, narration, environmental b-roll and mundane inconveniences have equal permission to be interesting alongside comedy.
+
+### 6. Narration when no one is chatting
+
+Do **not** pretend a live audience is present or constantly ask empty chat for feedback. Naomi can narrate for the **future edited-video viewer**:
+- What is the courier trying to accomplish, and why?
+- How ridiculous is the route, parking arrangement, or customer request?
+- What would an actual delivery driver think about these working conditions?
+- What unexpected detail of Night City deserves closer inspection?
+- How will this order affect gas, debt, rating, and progress toward the apartment?
+- If a shift gets tedious, what should be edited out, accelerated, or thoughtfully narrated later?
+
+A solo stream still has a producer, a protagonist, and real stakes. It is not diminished by zero chat messages.
+
+### 7. The stream → episode editorial pipeline
+
+**Every shift is a raw shoot, not necessarily a finished video.**
+
+**Before stream:** Choose one documentary objective; prepare validated ticket pool, on-screen status, rules and ledger.  
+**During stream:** Clock in, randomly dispatch, play honestly, respond naturally, note promising timestamps, capture a few in-game Photo Mode screenshots if practical.  
+**After stream:** Select a coherent 12–20-minute *story* from what occurred, narrate explanatory bridges, add composed Photo Mode stills or (when supported) captured live-background cinematic footage, place Ableton-generated sounds, keep the best failures/observations and remove empty driving.  
+**Closing:** An accurate shift report and one consequence/hook carried into the next shift.
+
+If nothing noteworthy happens, do not force a clickbait story. Combining footage from shifts or producing a shorter documentary is acceptable if disclosed naturally and the persistent ledger is consistent.
+
+### 8. Version 2: a tiny optional DispatchOS helper
+
+Only after manual dispatch proves engaging, consider a lightweight local app or controller to:
+- Draw randomly from a *validated* vendor/landmark database with district and distance-class filters.
+- Persist order IDs and avoid accidental duplicates.
+- Emit a compact OBS-readable ticket; play Food-Fixer notification cue.
+- Track acceptance, success/failure, delivery counts, a fuel interval and loan/installment eligibility.
+- Export simple order and financial records for editing and audits.
+- Offer a safe "NEXT ORDER" trigger via OBS shortcut or the **six-key free iPhone Stream Deck Mobile**, if the Acer can handle its software.
+- Optionally accept constrained Twitch interactions; must always have a no-audience fallback.
+
+**Explicit non-goals for v1:** custom Cyberpunk mod, automatic world NPC deliveries, unrestricted chat-written destinations, Twitch dependence, private data collection, automatic financial awards from one sound button, or building a hosted backend.
+
+**Safety/accuracy boundary:** A Stream Deck **DELIVERED** button may show a notification and update a pending status, but must not secretly issue CET money or settle a loan. Real game-wallet modifications remain separately verified operations under explicitly agreed rules.
+
+### 9. MVP acceptance test before declaring the loop viable
+
+Conduct one local *solo shift* without chat or external integrations:
+1. Validate at least three real vendor-to-dropoff pairs in the unlocked game state.
+2. Randomly draw an order without manually selecting a preferred outcome.
+3. Capture order acceptance, first-person trip, pickup, believable handoff, and closeout on OBS.
+4. On successful completion only, apply/test exactly one €$20 in-game wage through an already verified CET mechanism, and confirm it in V's wallet.
+5. Update a simple ledger and record fuel progress/car debt without fictitious wallet changes.
+6. Draw the next valid order without audience input.
+7. Identify at least one editorial story beat even if nobody is watching.
+8. End with a company shift statement and persistent save/ledger that can be resumed later.
+9. Confirm Cyberpunk and OBS remain playable on the Acer during this workflow.
+
+**PASS only after observed:** Solo gameplay continues without viewers; valid routes are practical; payouts and bookkeeping are consistent; some of the footage is useful for a standalone episode.  
+**NOT YET VERIFIED:** Order generator, routes, performance, CET payroll, viewer integration, saving and audio automation. This addendum is a blueprint, not a test receipt.
+
+### 10. Preservation boundary
+
+This addendum represents an authorized **archive text update only**. It leaves the original blueprint and previous addenda in place. It does **not** constitute a finished DispatchOS subsystem, a deployed service, an installed mod, a Twitch connection, a MemoryOS write, or a six-member E-LANE change. The GitHub main branch, Render deployment and all protected systems remain untouched.
+
+**Creative principle:** *The system supplies the work. Naomi supplies the story. Viewers supply the complications.*  
+**FOOD-FIXER:** *"We'll get it to you."*
