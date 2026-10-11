@@ -100,6 +100,41 @@
 
 **PASS:** One job's financial outcome is consistent in ledger and V's actual wallet; loan bookkeeping is coherent.
 
+
+## Phase 3A — In-game GPS and mod installation runbook (ADDED 2026-10-11)
+
+**Goal:** One existing in-game saved-locations menu, not a new Food-Fixer app, external customer map or separate coordinate database. **Not required for initial OBS benchmark. No installation is authorized by this checklist alone.**
+
+**Exact stack:** Cyber Engine Tweaks (CET) → **RED4ext** (Codeware dependency) + **redscript** (Map Waypoint Bug Fixes dependency) → **Codeware** + **Map Waypoint Bug Fixes** → **Simple Location Manager (SLM)**. Install/check individually in actual dependency order. **Window Utils is optional and skipped.** The earlier four-component summary omitted RED4ext and redscript.
+
+- [ ] Identify actual Cyberpunk 2077 game version and install directory on Acer.
+- [ ] Read latest compatible installation/requirements for each mod against that game version; note exact installed versions.
+- [ ] Preserve untouched production save; create **separate throwaway test save** and rollback plan.
+- [ ] Benchmark **Cyberpunk + OBS** first before installing or changing any mods.
+- [ ] Install CET from its verified source; launch game, assign an overlay hotkey, confirm it opens and baseline gameplay remains smooth.
+- [ ] On test save, validate that `Game.AddToInventory("Items.money", 20)` adds **exactly €$20**; check wallet before/after.
+- [ ] **Separately verify** any real deductions before claiming fuel or debt expenses reduce the game wallet; never invent a successful money operation.
+- [ ] Install dependency frameworks **RED4ext** and **redscript** according to their own instructions. Relaunch/check game.
+- [ ] Install **Codeware** and **Map Waypoint Bug Fixes**. Relaunch/check game and run a short recording.
+- [ ] Install **Simple Location Manager**; final mod folder should be `Cyberpunk 2077\bin\x64\plugins\cyber_engine_tweaks\mods\SimpleLocationManager\`.
+- [ ] Open CET → SLM window. At one accessible restaurant entrance, click **+** to save current position as `R01 | Vendor Name`.
+- [ ] At one reachable drop-off doorway, save another position as `D01 | Door/Customer`.
+- [ ] In SLM select R01 and choose **Set Custom Map Pin**. Confirm the in-game GPS route works.
+- [ ] Switch pin to D01 and confirm navigation updates correctly. Drive there in first person.
+- [ ] **Never teleport or fast travel during a Food-Fixer order.** SLM has teleport controls: avoid them.
+- [ ] Restart and verify saved locations persist; export a backup of address records where feasible.
+- [ ] Capture one complete R01 → D01 order and confirm smooth-enough Acer/OBS performance.
+- [ ] Use only verified physical addresses for published orders. Chat can choose by **R/D number**, but random/manual dispatch works with **zero viewers**.
+- [ ] If SLM stack is unstable or excessive, revert to manually placed vanilla custom waypoints and a small numbered reference. No custom website/app required.
+
+**PASS:** One specific vendor and one specific customer doorstep are selectable from a saved in-game menu, follow the game's GPS, and support a complete recorded courier trip with verified payroll. All boxes remain unverified until personally tested.
+
+**References:**  
+- CET install: https://wiki.redmodding.org/cyber-engine-tweaks/getting-started/installing  
+- Codeware (RED4ext required): https://www.nexusmods.com/cyberpunk2077/mods/7780  
+- Map Waypoint Bug Fixes (redscript required): https://www.nexusmods.com/cyberpunk2077/mods/32175  
+- SLM (CET, Codeware, Map Waypoint Bug Fixes required): https://www.nexusmods.com/cyberpunk2077/mods/26454
+
 ## Phase 4 — Sound and music rights (ADDED 2026-10-11)
 
 **Goal:** Use Night City atmosphere and original Ableton music without avoidable copyright problems.
@@ -114,6 +149,8 @@
 - [ ] Use Ableton to make at least **one short order-received cue**; export a WAV.
 - [ ] Optionally make app-startup, delivery-complete, failure, fuel-due, loan-due, ON SHIFT, OFF SHIFT and corporate-warning sounds.
 - [ ] Use consistent file names (for example `FF_Order_Received.wav`); preserve original Ableton projects and final WAV files.
+- [ ] **For an incoming M4A file that must be MP3:** if VLC is installed, use Media → Convert / Save → Add the M4A → Convert / Save → Profile **Audio - MP3** → output filename ending `.mp3` → Start; audition result and keep original.
+- [ ] **For original Ableton alerts, keep WAV masters**, not MP3 masters. M4A/AAC → MP3 transcoding is lossy, and MP3 loops can have timing gaps. Audio conversion does not supply broadcast rights.
 - [ ] Import a WAV into OBS **Media Source** and verify trigger, restart, playback routing, and volume.
 - [ ] Check microphone speech remains clear and louder than notifications/music.
 - [ ] For YouTube Episode One, consider adding most music **in editing** to conserve runtime processing.
@@ -127,6 +164,7 @@
 - https://www.cdprojektred.com/en/fan-content
 - https://www.cyberpunk.net/en/news/49036/disable-copyrighted-music-feature-in-phantom-liberty
 - https://obsproject.com/kb/media-sources
+- https://docs.videolan.me/vlc-user/desktop/3.0/en/basic/tipsandtricks/index.html
 
 ## Phase 5 — Food-Fixer interface and simple brand package
 
@@ -249,6 +287,7 @@
 **Test 2:** Five minutes of game + mic recorded via OBS.  
 **Test 3:** Copyright setting ON + one original Ableton sound added to a test clip.  
 **Test 4 (optional):** Assign one free iPhone Stream Deck key to that sound.  
+**Test 5 (optional, only after OBS benchmark):** CET on throwaway save, verify small payroll command, then RED4ext/redscript/Codeware/Map Waypoint Bug Fixes/SLM one dependency layer at a time; confirm one saved vendor and one saved customer address with a functioning GPS pin.  
 **Next:** Dedicated save, payroll proof, real pickup/drop-off test, orientation script, pilot filming/editing.  
 **Later:** Publish YouTube pilot; only then plan Twitch participation.
 
