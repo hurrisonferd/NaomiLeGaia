@@ -467,3 +467,84 @@ All six GaiaOS Prime Daemons' member-owned E-LANES remain separate and unchanged
 
 **Design mantra:** The game can look terrible. The show must still feel deliberately made.  
 **Corporate slogan:** **FOOD-FIXER — "We'll get it to you."**
+
+
+---
+
+## Addendum 2026-10-11 — Music filter, curated audio and Stream Deck controls
+
+**Status:** NAOMI-authorized addition to the archived concept. Production hardware/software remains untested; no purchases, installs, or live setup implied.  
+**Companion operating checklist:** [FOOD-FIXER-PREFLIGHT-CHECKLIST.v0.1.md](./FOOD-FIXER-PREFLIGHT-CHECKLIST.v0.1.md) (create and verify separately).
+
+### A. Cyberpunk 2077 creator-friendly music mode
+
+- Before the first gameplay recording, enable **Cyberpunk 2077 → Settings → Sound/Audio → Disable Copyrighted Music → ON** (verify exact menu labels against installed build).
+- CD PROJEKT RED specifically recommends this feature for streamers and video makers. It omits a **small portion** of radio/in-game tracks considered unsuitable for streaming; it does **not** turn every game song into general-purpose royalty-free music.
+- Keep the underlying Night City ambiance and any remaining in-game station content as a source of atmosphere. **Potential station sound palettes to audition:** Vexelstrom/Ritual FM for harsh industrial/heavy moments, PEBKAC/Impulse for techno, Pacific Dreams for quieter late-night drives, Growl FM/The Dirge for variety and hip-hop. These are listening *candidates*, **not individual-track clearances**. Check what actually plays when the filter is enabled.
+- CDPR states a special **Phantom Liberty exception**: "Delicate Weapon" by Grimes may still play with the option on. Verify current behavior and decide how to handle it when recording/editing.
+- Music rights and platform automated checks can still be complicated. Record test footage, inspect audio, check YouTube for claims/blocks, and investigate Twitch VOD muting as needed before publishing. Do not imply zero copyright risk.
+- CDPR's allowance for Cyberpunk-connected gameplay videos is **not permission to extract radio tracks and use them separately** as an unrelated standalone soundtrack or playlist.
+- **Official sources (checked 2026-10-11):**
+  - https://www.cdprojektred.com/en/videopolicy
+  - https://www.cdprojektred.com/en/fan-content
+  - https://www.cyberpunk.net/en/news/36734/dedicated-cyberpunk-2077-feature-for-content-creators-disable-copyrighted-music
+  - https://www.cyberpunk.net/en/news/49036/disable-copyrighted-music-feature-in-phantom-liberty
+
+### B. Build a real Food-Fixer playlist, separate from the game's radio
+
+Two layers of audio may coexist:
+
+1. **Diegetic world audio:** Cyberpunk's own radio/ambience with **Disable Copyrighted Music** on, selected by station while driving.
+2. **Authored Food-Fixer audio library:** original Ableton-made jingles, short stingers, loading music, dispatch chimes, corporate voiceovers, and any outside tracks for which Naomi has independently secured **appropriate streaming/VOD/YouTube synchronization rights**.
+
+Build a reusable folder/library with descriptive file names, e.g. `FF_App_Boot.wav`, `FF_Order_Received.wav`, `FF_Delivery_Complete.wav`, `FF_OnShift.wav`, `FF_OffShift.wav`, `FF_Corporate_Alert.wav`, `FF_Shift_Report.wav`. Aim for clear sound levels: never drown out Naomi's microphone or the game commentary. Use different mixes for the edited YouTube pilot vs live streams when practical.
+
+For OBS, use local **Media Sources** for WAV/MP3 files; test trigger/restart behavior, mute/unmute, and monitor/output routing; ensure viewers and Naomi hear the intended sound **once**, rather than duplicating it. Advanced looping playlists are optional. For Episode One, inserting music in editing may be easier and lighter on the Acer than playing multiple extra sources live.
+
+**Do not feed a personal Spotify or other consumer music subscription directly into a public stream under the assumption that ordinary listening rights allow broadcast use.** Use original work or explicitly licensed tracks.
+
+OBS reference: https://obsproject.com/kb/media-sources
+
+### C. Stream Deck is a control surface, not required hardware
+
+An **Elgato Stream Deck** is a bank of programmable buttons controlling apps/actions, for example OBS scene switching, microphone muting, source toggles, hotkeys, triggering media/sounds, and multistep macros. It is not an encoding accelerator and does not eliminate the Acer's CPU/GPU limitations.
+
+**First plan: use the existing iPhone rather than buying a physical deck.** Elgato Stream Deck Mobile currently provides **six customizable keys for free**. It requires the **Stream Deck desktop application on the Acer** and a connection between phone and computer. Pair by the app's on-screen steps / QR or supported manual connection; use Wi-Fi first if easy. For USB pairing on Windows, Elgato notes platform-specific requirements such as the Apple Devices app and compatible Stream Deck desktop version; troubleshoot only if needed.
+
+Suggested **six-key Food-Fixer prototype layout** (not yet configured):
+
+| Key | Desired action | Initial implementation |
+| --- | --- | --- |
+| **ON SHIFT** | Show courier dispatch scene/status | OBS scene switch/hotkey |
+| **OFF SHIFT** | Show non-dispatch/free-chat scene/status | OBS scene switch/hotkey |
+| **NEW ORDER** | Play original Ableton order chirp / show ticket | OBS media-source toggle, manual trigger |
+| **DELIVERED** | Play completion cue / show payout notice | OBS cue + update manual ledger; **no automatic money grant** |
+| **CORP ALERT** | Flash a context-appropriate bureaucratic warning / tone | Hotkey to preconfigured media/text source |
+| **MUTE MIC** | Emergency microphone mute toggle | OBS mute hotkey |
+
+**Important boundary:** A Stream Deck button **must not silently award in-game eddies** just because it plays the delivery-success noise. Payroll remains a separate, verified script/console action after an actual successful delivery. No financial automation without a specific later design and Naomi's explicit authorization.
+
+A possible later button: **DRIVER TERMINATED**, with cheerful corporate message and an app note that the timer is still running. This is a design gag, not required for the pilot.
+
+Elgato official references (checked 2026-10-11):
+- https://www.elgato.com/se/en/explorer/products/stream-deck/how-you-can-use-stream-deck-for-free/
+- https://help.elgato.com/hc/en-us/articles/16786832942221-Elgato-Stream-Deck-Mobile-2-0-Getting-Started
+
+### D. Prototype order and acceptance
+
+**No shopping required. Do not let controller setup delay publishing a viable pilot.**
+
+1. Finish the low-friction webcam and baseline OBS test first.
+2. Enable Cyberpunk's **Disable Copyrighted Music** option before any gameplay intended for release; listen/check the first test capture.
+3. Create **one original two-note Food-Fixer order cue in Ableton** and export a clean WAV.
+4. Import that WAV into OBS as a simple Media Source and test manually.
+5. **Optional later:** Install/launch Stream Deck Mobile on iPhone plus Elgato desktop software on Acer and pair them. First link **one** button to the audio cue; then add the other five buttons if performance remains acceptable.
+6. Test 5 minutes of **game + OBS + Stream Deck desktop** at once and compare smoothness/audio against the baseline. Retain OBS keyboard shortcuts as a zero-purchase, lower-complexity fallback.
+7. For the YouTube pilot, **perform music editing offline** if that produces cleaner storytelling or better laptop performance.
+8. Before posting or going live, perform a final rights/audio test. Save original Ableton project and cue exports as reusable creative assets.
+
+**Pilot acceptance:** Gameplay capture and voice are watchable; game copyright-music filter is set; one original Food-Fixer cue is usable; **Stream Deck is explicitly optional** until Twitch interactive shifts.
+
+**Unresolved:** precise radio tracks remaining after the filter, user-specific rights for external songs, actual Acer performance with Elgato desktop software running, webcam fidelity, OBS audio monitoring behavior, Twitch eligibility/features, and whether existing custom playlist mods would be worth the performance complexity.
+
+**Boundary:** This addendum preserves an approved creative direction and a test plan. It does not authorize installing anything, purchasing a physical Stream Deck, publishing content, modifying canonical GaiaOS main, deploying, or writing protected MemoryOS/E-LANE records.
