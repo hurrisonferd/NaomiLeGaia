@@ -718,3 +718,81 @@ This addendum represents an authorized **archive text update only**. It leaves t
 
 **Creative principle:** *The system supplies the work. Naomi supplies the story. Viewers supply the complications.*  
 **FOOD-FIXER:** *"We'll get it to you."*
+
+---
+
+## Addendum 2026-10-11 — V1 navigation mod and in-game address book
+
+**Naomi-authorized decision:** Keep Food-Fixer's navigation and address system **as simple and in-game as possible**. Use an existing mod menu for saved vendor and customer addresses, not a homebuilt app, custom website, mapping stack, public database, or second software-development project. Viewers may choose addresses by simple names/numbers; Naomi navigates by a saved in-game pin.
+
+**Implementation status:** PLANNED / NOT INSTALLED OR PLAYTESTED. The mod, dependencies, menu layout, Acer performance, pin pathfinding, and exact location access have not been tested on Naomi's system.
+
+### Approved navigation candidate: Simple Location Manager
+
+- **Name:** Simple Location Manager (SLM), by **Spuddeh**.
+- **Primary download and description:** https://www.nexusmods.com/cyberpunk2077/mods/26454
+- **Source / usage instructions:** https://github.com/spuddeh/simple-location-manager
+- **Observed mod version when archived:** **1.7.0** (Nexus page; updated August 18, 2026). Recheck actual version and requirements at installation time.
+- **Function:** In Cyberpunk's existing Cyber Engine Tweaks (CET) overlay, save V's **current position** with a custom name and notes; browse/search locations organized by district or custom category; click the **custom map pin** action on a saved location and navigate via the game's normal minimap/map. It also offers import/export and manual coordinate entry, but neither is needed for the first Food-Fixer test.
+- **Strict usage:** Saved locations and navigation pins **ONLY**. The mod also displays **teleport buttons, which are forbidden during deliveries**. In version 1.7, teleport buttons are readily accessible; avoid accidental use. Optional location-based weather/time features are **not** part of the courier workflow.
+- **Why it fits:** Orders feel like actual vendor-to-doorstep jobs, not vague "Kabuki to Westbrook" errands. Exact locations can persist across shifts without anyone memorizing raw X/Y/Z coordinates.
+
+#### Required components for this option
+
+| Component | Purpose | Status |
+| --- | --- | --- |
+| Cyber Engine Tweaks (CET) | In-game mod overlay; also candidate for scripted €$20 payroll console | Previously selected / compatibility unverified |
+| **Simple Location Manager** | Named saved locations and waypoint-pin navigation | **New V1 navigation candidate; not installed** |
+| **Codeware** | Dependency required by current SLM | Not installed/verified |
+| **Map Waypoint Bug Fixes** | Dependency to clean HUD/minimap markers after pin replacement/clearing | Not installed/verified |
+| Window Utils | Optional SLM window positioning conveniences | **Skip in V1** |
+
+SLM's own published instructions list the **latest compatible CET**, **Codeware**, and **Map Waypoint Bug Fixes** as requirements. Install/download only after a baseline Cyberpunk + OBS recording works on the Acer, using versions compatible with the *installed* Cyberpunk release. Do not assume the mod imposes no performance cost until tested.
+
+#### Existing discussed mods and intended priority
+
+1. **CET**: core candidate for actual in-game Food-Fixer wages, the one-time Galena loan, and the overlay needed to run SLM.
+2. **Simple Location Manager + required dependencies**: **preferred minimal V1 navigation solution**.
+3. **Blowout Jobs / Night City Pizza Delivery**: previously researched optional full-delivery-job mod (https://www.nexusmods.com/cyberpunk2077/mods/30397). **Not part of V1** if manual Food-Fixer delivery + CET payroll + SLM navigation work. Avoid installing an entire mission overhaul unnecessarily.
+4. Any other location-management, custom-map, delivery, or UI mod: **defer** unless a verified problem makes it necessary.
+
+No new companion app needs to be designed or coded to implement this V1 idea.
+
+### V1 street-level address workflow (no custom app)
+
+1. **Scout three real food vendors** in accessible districts. At each vendor's *actual pickup entrance*, open CET → SLM → **+ Save current location**, and name it e.g. `R01 | Kabuki Noodles`. Include district and optional parking/entrance notes.
+2. **Scout six real drop-off doors**. At each approachable doorstep / curbside handoff, save e.g. `D01 | Northside Rear Door`. Include visual clues and only locations that V can actually stand beside.
+3. Use SLM categories such as `Food-Fixer Restaurants` and `Food-Fixer Customers`, if practical; the actual naming/grouping options are available in the mod's interface.
+4. Maintain one simple customer-readable numbered menu, potentially just a static OBS graphic or chat message: **R01–R03** for restaurants, **D01–D06** for customer addresses. Customers/viewers never need actual coordinates or to use a website. Optional screenshot references can make each listing more tangible.
+5. For zero viewers, draw from the same verified orders using the previously archived DispatchOS manual randomizer. Nobody must order for the shift to work.
+6. For an audience-selected order, accept the known restaurant and destination **IDs**; do not take arbitrary unreadable X/Y/Z or inaccessible map pins.
+7. In SLM, select the chosen restaurant and click **Set Custom Map Pin**. Follow the game's GPS **in first person**, with no teleport or fast travel.
+8. At pickup, switch the SLM navigation pin to the selected customer address. Drive there and stage the handoff.
+9. Record result, award **€$20 once on successful delivery** through the separately verified CET payroll, update the ledger, and continue.
+10. Save/export SLM locations if needed to protect this small catalog against mod updates or a new PC.
+
+**Sample order:** `R01 | Kabuki Noodles → D03 | Northside Service Entrance`. These IDs are **fictional examples**, not verified in-game places; do not populate the actual catalog until scouted.
+
+### Tiny installation/acceptance test before V1 adoption
+
+- [ ] Baseline capture of Cyberpunk in OBS succeeds without mods.
+- [ ] Confirm Cyberpunk version and compatible CET/Codeware/Map Waypoint Bug Fixes/SLM builds.
+- [ ] Back up the dedicated Food-Fixer save before installing/testing.
+- [ ] Install only the necessary mod and dependencies; assess game launch and Acer performance.
+- [ ] Walk V to a specific food stall; save it via SLM and verify a named location appears in the menu.
+- [ ] Walk V to a particular accessible doorstep; save it separately.
+- [ ] Set the vendor's **map pin**, confirm it appears on map/minimap and route guidance is usable.
+- [ ] Change to the doorstep pin, confirm it replaced the prior pin, and follow the route.
+- [ ] Verify saved names persist after restarting the game.
+- [ ] Confirm **no teleportation** was needed.
+- [ ] Test the whole workflow while recording; if stability fails, revert to **manual vanilla custom waypoints** with a tiny numbered address reference.
+
+**PASS only when observed:** Naomi can select a *specific* vendor and *specific* customer doorway from a simple in-game list, follow the game's GPS between them, and still record smooth enough footage on her Acer. Until then, this is a candidate design, not a proven installation.
+
+### Scope and authority
+
+This addendum supersedes earlier suggestions to **build a dedicated map or customer-ordering app as a V1 prerequisite**. An interactive external app may be revisited later only if desired; it is *not* required to start Food-Fixer. Preserve the previously archived solo-shift gameplay, payroll accounting, first-person driving restriction, and YouTube-first release model.
+
+No mods were downloaded or installed by this archival edit, no purchases were made, no gameplay saves altered, and no E-LANE, MemoryOS, Render, or GitHub `main` changes authorized. Naomi retains final authority.
+
+**V1 mantra:** *A restaurant. A doorway. A saved GPS pin. A miserable €$20 paycheck.*
