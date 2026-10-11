@@ -796,3 +796,67 @@ This addendum supersedes earlier suggestions to **build a dedicated map or custo
 No mods were downloaded or installed by this archival edit, no purchases were made, no gameplay saves altered, and no E-LANE, MemoryOS, Render, or GitHub `main` changes authorized. Naomi retains final authority.
 
 **V1 mantra:** *A restaurant. A doorway. A saved GPS pin. A miserable €$20 paycheck.*
+
+---
+
+## Addendum 2026-10-11 — Install sequence, dependency correction, and sound conversion
+
+**Authorized archive update:** Naomi requested adding the selected mods and their working procedures to *both* the Food-Fixer blueprint and preflight checklist. Only the archival branch files are changed. **No mods have been installed, purchases made, scripts executed in Cyberpunk, or live systems changed.**
+
+### Correct dependency chain (verified 2026-10-11)
+
+The earlier four-item simplification omitted lower-level dependencies. The complete **proposed** V1 saved-GPS stack is:
+
+1. **Cyber Engine Tweaks (CET)** — in-game Lua/console overlay; test alone first. Installation: https://wiki.redmodding.org/cyber-engine-tweaks/getting-started/installing
+2. **RED4ext** — core extension required by Codeware. Obtain the matching version identified by Codeware's requirements. This is an installed game framework, **not a menu Naomi needs to operate**.
+3. **redscript** — scripting runtime required by Map Waypoint Bug Fixes. Install the matching version described by its requirements.
+4. **Codeware** — needed by Simple Location Manager, and itself requires RED4ext. https://www.nexusmods.com/cyberpunk2077/mods/7780
+5. **Map Waypoint Bug Fixes** — required by Simple Location Manager; requires redscript, and fixes stuck HUD/minimap waypoint markers. https://www.nexusmods.com/cyberpunk2077/mods/32175
+6. **Simple Location Manager (SLM)** — **the only address/GPS menu we intend to use**; saves/restores named pickup and drop-off positions. https://www.nexusmods.com/cyberpunk2077/mods/26454
+
+**Window Utils:** optional visual/window features; **skip**.  
+**Other custom mission/map/web apps:** not required.  
+**Version caution:** resolve each framework dependency against the *actual game version* at installation, not merely the latest release number; the mod's published description may target specific Cyberpunk patches. The underlying dependencies make it misleading to call this a four-mod install, though it remains a single-menu in-game workflow.
+
+### Installation and validation runbook: stop at each successful checkpoint
+
+**Preflight**
+- Confirm Windows game version, storefront/install folder, free drive space and recording performance; preserve a working game save and original mod folder status.
+- Make a *throwaway test save*, apart from the dedicated production save. Keep a rollback path and note installed versions.
+- Download only from the mod's actual source and verify instructions and compatibility before copying files; avoid automatic bulk-install until dependencies are understood.
+
+**Checkpoint A: CET alone**
+1. Install CET per the official guide (place its `bin` files into the Cyberpunk installation root, not into a save folder).
+2. Start Cyberpunk. On first launch, choose an overlay hotkey. Confirm the CET overlay opens and game remains playable.
+3. On the throwaway save only, test the intended €$20 money command `Game.AddToInventory("Items.money", 20)`; verify actual wallet delta before marking pass. Do not repeat it in production outside a completed paid delivery.
+4. Close game and verify test-save integrity. Do **not** test negative-money deductions as if confirmed; explore actual expense behavior later with a protected rollback.
+5. Record baseline FPS/recording stability before layering more mods.
+
+**Checkpoint B: required frameworks**
+1. Install **RED4ext + redscript** following their own patch-specific instructions, then **Codeware + Map Waypoint Bug Fixes**.
+2. Restart and ensure the game loads without missing dependency/errors; test a short OBS capture. If broken, stop and reverse only the latest addition.
+
+**Checkpoint C: Simple Location Manager**
+1. Install SLM by extracting its `bin` folder to the Cyberpunk installation root. Its expected mod folder is `Cyberpunk 2077\bin\x64\plugins\cyber_engine_tweaks\mods\SimpleLocationManager\` according to its Nexus instructions.
+2. Launch, open CET overlay, locate the SLM window; click **+** to save V's current location at a genuinely accessible restaurant.
+3. Scout and save one reachable customer doorway. Name records simply: `R01 | Food Vendor` and `D01 | Customer Door`, ideally with entrance/parking notes.
+4. Set the **restaurant custom map pin** from SLM; close menus and confirm the game's normal HUD/minimap GPS works.
+5. Change the pin to the **customer destination**, confirm it replaces the old route, then **drive manually in first person**, no teleport/fast travel.
+6. Relaunch to verify records persist; export a backup of saved locations if useful.
+7. Run a short OBS capture with the full stack; confirm the Acer remains usable.
+
+**Checkpoint D: one real fictional delivery**
+1. Test a manually drawn/assigned order using verified `R01 → D01`.
+2. Roleplay food pickup/handoff, finish the journey, then award **one** €$20 paycheck through verified CET procedure on successful completion only.
+3. Inspect wallet delta, update ledger (and any agreed refueling/loan counter), then select the next saved order without viewer help.
+4. If SLM/dependencies create instability, uninstall/disable the problematic stack and use **vanilla custom map waypoints + a tiny numbered address reference**. Recording the show takes priority over an elaborate install.
+
+**Success definition:** A reachable specific restaurant and specific doorway can be saved, named, selected, GPS-routed and reached during a clean-enough OBS recording without a custom map app or active chat. Until witnessed, this is a *planned* proof of concept, not an installed or passed setup.
+
+### M4A → MP3 quick audio workflow (Windows production note)
+
+For narration, received clips or temporary media that is available as M4A, use **VLC** if installed:
+`Media → Convert / Save → Add .m4a → Convert / Save → Profile: Audio - MP3 → destination name.mp3 → Start`.
+Play back the MP3 to check conversion and avoid overwriting the original M4A. Official VLC docs: https://docs.videolan.me/vlc-user/desktop/3.0/en/basic/tipsandtricks/index.html
+
+This is **audio format conversion, not licensing**. M4A is typically AAC, and transcoding a lossy M4A to MP3 can incur further quality loss. For Naomi's original Ableton alert loops, prefer **WAV masters** for OBS/editing, and make MP3 exports only when a recipient or editor specifically needs MP3. Audacity documentation: https://manual.audacityteam.org/man/mp3_export_options.html
