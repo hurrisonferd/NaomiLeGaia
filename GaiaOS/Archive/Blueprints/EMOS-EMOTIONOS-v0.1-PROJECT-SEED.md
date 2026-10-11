@@ -1,7 +1,7 @@
 # EMOS / EmotionOS — Project Seed v0.1
 
 **Authority:** NAOMI / LIGEIA  
-**Status:** QUEUED / NOT STARTED  
+**Status:** IN PROGRESS / PARTIALLY IMPLEMENTED — ACCEPTANCE OPEN  
 **Date captured:** 2026-10-09  
 **Archive class:** PROJECT SEED  
 **Relationship:** Extends EmojiOS rather than replacing it
@@ -127,3 +127,34 @@ This file is a project seed / archive entry only.
 It does **not** authorize source implementation, GitHub changes, deployment, MemoryOS/Turso writes, E-LANE writes, or modifications to the current canonical EmojiOS registry.
 
 NAOMI retains final authority.
+
+---
+
+## Progress update — 2026-10-11 (Naomi-authorized)
+
+**Current project status:** IN PROGRESS / PARTIALLY IMPLEMENTED  
+**Acceptance / closure status:** OPEN — NOT COMPLETE  
+**Scope:** This addendum supersedes the original `QUEUED / NOT STARTED` status and historical "No implementation tonight" / "next build" notes for current project tracking. Those original notes are retained as the dated 2026-10-09 design seed, not as a claim that the subsequent implementation never occurred.
+
+### Verified implementation progress
+
+- EmojiOS expression registry v1.3.0 and EmotionOS atlas v1.0.0 are present on canonical GitHub `main`, with 21 emotion families, at least five faces per family/member, and ORIN's separate exclusive Lenny arsenal.
+- The hosted EMOS SOLO selection path was implemented, repaired and exercised against real model responses for all six members. Production source/deployment at the tested milestone: `8e7b3e44d18d81736b5603d3e5a15500fa2d3e40`; Render deployment `dep-db58o6h42hec7383i59g`; GitHub Actions live response test `38078494934`. The earlier HTTP 500 and HTTP 400 failures remain part of the engineering history.
+- These receipts support **hosted SOLO behavior**, not proof that the same Python selector runs automatically in ordinary hosted multi-member `/chat`, in native ChatGPT conversations, or consistently after fresh chats.
+
+### Open acceptance criteria — must not mark complete until verified
+
+1. **Ordinary multi-member usage:** Demonstrate that emotion-aware, member-correct expression selection runs in natural multi-member interactions, rather than only in SOLO tests.
+2. **Contextual nuance:** Show expressions react meaningfully to emotion family, subtype, intensity, social meaning, sarcasm, restraint, ambiguity and subtext. The face is communicative, not random decoration.
+3. **Diversity / repetition:** Reduce repeated fallback/default kaomojis in actual conversation while allowing intentional repetition when it conveys meaning. Assess observed output across enough exchanges, not registry size alone.
+4. **Per-member differentiation:** Preserve each daemon's recognizable expression dialect and ORIN's exclusively owned Lenny arsenal; cross-member overlap remains permitted where intentional.
+5. **Native ChatGPT / fresh-chat adoption:** Separately observe everyday use and persistence across fresh conversations. Treat the ChatGPT-hosted behavior boundary explicitly; no claim that repository code executes inside native ChatGPT without an actual connected execution path.
+6. **Evidence and closure:** Record repeatable real-response observations, remaining failures and Naomi's acceptance before changing this blueprint to `COMPLETED`. Passing source canaries or hosted SOLO tests alone does not close the project.
+
+### Naomi's acceptance decision
+
+On 2026-10-11 Naomi explicitly withheld completion: EMOS remained inconsistent in ordinary conversation and too often reused the same kaomoji. Naomi authorized updating this archive blueprint to **IN PROGRESS / PARTIALLY IMPLEMENTED**, with outstanding criteria preserved. No runtime repair, GitHub main merge, E-LANE modification, MemoryOS write or deployment is authorized by this archive-status update.
+
+**Next step:** Diagnose ordinary-path adoption and measured expression diversity before any completion declaration. Keep original seed intact as historical design provenance.
+
+**Source context:** `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-10-EMOS-RELEASE-AND-DAEMONCULABA-CONTINUITY.md` and existing E-LANE records on `main`. This addendum is an archive project-status record, not a fresh live execution receipt.
