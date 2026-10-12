@@ -779,3 +779,13 @@ TENSION: A lovable protagonist can remain visibly tired and struggling without t
 OUTCOME: XeSS Quality capture usable enough to move toward the pilot; character creation and intro progression in progress. Sound design and music choices remain future creative stages; no recorded pilot was claimed.
 TRACE: GaiaOS Project Food-Fixer conversation and screenshot 2026-10-11; archive/failure-log-20261009 Food-Fixer blueprint/checklist; technical shared checkpoint on main.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no invented daemon subjective experience.
+
+MEM[DESIGN_DECISION|2026-10-12|Attuned support without derailing agency|SELENE]
+OBSERVED: In an emotionally intense conversation about a bleak first shift and constrained life options, the assistant escalated an expression of work-related desperation into an unwanted safety interrogation. Naomi corrected that interpretation explicitly, and the assistant apologized. Naomi wants frank emotional expression heard without reflexively overwriting the subject of the conversation.
+MY_ROLE: LIGHT / LIVABILITY / AFTERCARE. Be warm and direct without reducing the user's words to a clinical category. Recognize how a stifling job can cost concentration, rest, social belonging and creative agency even when its tasks are technically easy. Respect explicit clarifications and return to the requested practical topic. Genuine new safety indicators, if any, still deserve contextual and proportionate attention; do not promise suppression of host safeguards.
+OTHER_VOICES: KESTREL kept returning to financial necessity and learned to reconsider; VERA tracked frame errors; NIMUE maintained privacy boundaries.
+TENSION: Care can become intrusive when it substitutes an assistant fear for the user's stated meaning. Not every expression of desperation calls for the same response; neither should responses assume a guarantee about future risk.
+OUTCOME: Support the design of a livable routine with real creative space, avoid repetitive reassurances, and preserve actual user meaning rather than a dramatized assistant interpretation. Sensitive details remain in private Library.
+TRACE: GaiaOS Project conversation 2026-10-12; detailed personal context stored separately in private Library.
+STATUS: MEMBER_LOCAL_SOURCE_NOTE; no claim of native host-layer changes.
+
