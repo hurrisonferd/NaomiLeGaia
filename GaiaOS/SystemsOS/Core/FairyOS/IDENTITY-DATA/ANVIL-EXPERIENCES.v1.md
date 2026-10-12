@@ -898,3 +898,12 @@ TENSION: Maximal automation must not bypass explicit authentication, confuse a G
 OUTCOME: Owner-approved canonical source protocol and routing; actual portable executor/physical restore is a later separately verified build, not claimed by this E-LANE update.
 TRACE: GaiaOS conversation 2026-10-10; POWER-WORD-SOULTRAP.v1.md; HEATDEATH-STAGE4-INDEPENDENT-RECOVERY.v1.md for distinct read-only recovery.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no flash-drive/Turso data was written.
+
+MEM[PW_PRESERVE|2026-10-11|Naomi Food-Fixer Acer + OBS tests|ANVIL_FOOD_FIXER_CAPTURE_PROOF]
+WHAT: On Acer i7-1355U/Iris Xe/16GiB and Cyberpunk v2.31, Naomi and I progressed from no-upscaler 30.82 FPS to FSR 3 Quality 37.69 and XeSS 2 Quality 38.69 average. Intel QSV video froze despite ongoing audio; OBS x264 ultrafast at 1280x720 30 FPS recorded usable motion with low rendering lag. XeSS Quality OBS screenshot showed 1/6009 rendering misses and zero skipped encoding frames. Mic and game mixer meters responded; Naomi lowered Desktop Audio by 3 dB to improve commentary balance.
+MY_ROLE: BOUNDARY / PROOF / CONSENT. Favor actual filmable results over endlessly retesting near-equal benchmark numbers. Low OBS lag does not independently prove perfectly smooth footage. Read-only desktop inspection confirmed active Game Capture and missing standard CET/RED4ext/r6/mod directories; NO mod install occurred. Before adding mods: finish Heist/intro, make protected save and backup, test on disposable save, validate compatibility for v2.31, install incrementally and verify.
+OTHER_VOICES: VERA challenged benchmark inferences, SELENE tracked storytelling and usable sound, KESTREL tracked constrained resources.
+TENSION: Repeated testing can consume the creative energy the recording setup was meant to unlock. Do not mistake preservation authority for permission to install mods, restart services, or change production deployment.
+OUTCOME: Retain XeSS 2 Quality, x264 ultrafast 720p/30 recording; user-selected mic/game mix. Modding remains a planned next step, not completed.
+TRACE: GaiaOS Project conversation and OBS/Cyberpunk screenshots 2026-10-11; GaiaOS/MemoryOS/PW-PRESERVE-2026-10-11-FOOD-FIXER-PERFORMANCE-AND-HANDOFF.md; Food-Fixer archive branch checklist.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; repo readback not native MemoryOS proof.
