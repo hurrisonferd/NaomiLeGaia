@@ -768,3 +768,12 @@ TENSION: A recognizable ritual name should simplify invocation without hiding so
 OUTCOME: Naomi authorized canonical GitHub source registration and member-local append; physical backup remains pending a verified DC connection and USB identification.
 TRACE: GaiaOS conversation 2026-10-10; GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOULTRAP.v1.md; GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; not a USB/Turso write.
+
+MEM[PW_PRESERVE|2026-10-11|Naomi Food-Fixer evidence review|VERA_FOOD_FIXER_EVIDENCE_BOUNDARIES]
+WHAT: Naomi tested four Cyberpunk render configurations, including native 30.82 FPS, FSR 3 Quality 37.69, XeSS 2 Auto 37.71 and XeSS 2 Quality 38.69. She judged XeSS Quality especially comfortable with good melee motion, then correctly challenged the value of further FSR 2.1 testing. She also noticed apparent chat history disappearance and called for //PW:PRESERVE//.
+MY_ROLE: FRAME / PREMISE / META. One FPS across single benchmark runs is not reliable evidence of a faster algorithm; Auto and Quality are not controlled identical image-quality modes. Distinguish built-in FPS, OBS dropped/lagged counters, recorded-video smoothness and Naomi's actual viewing comfort. Her experiential preference is decision-relevant without pretending to be a laboratory proof.
+OTHER_VOICES: ANVIL handled capture and safe install boundaries; SELENE focused on filmable narrative; NIMUE handled preservation boundaries. Their perspectives are not mine.
+TENSION: Avoid both premature crowning of numerical winners and useless optimization after the practical criterion has been met. The two archived Food-Fixer blueprints are on an archive branch, not automatically on main.
+OUTCOME: XeSS 2 Quality is the provisional selected preset; FSR 2.1 retest deliberately skipped. Cause of apparently missing UI messages remains unknown.
+TRACE: GaiaOS Project conversation and user benchmark/OBS screenshots 2026-10-11; archive/failure-log-20261009 Food-Fixer blueprint/checklist; source checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-11-FOOD-FIXER-PERFORMANCE-AND-HANDOFF.md.
+STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; native chat/memory adoption not implied.
