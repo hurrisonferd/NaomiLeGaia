@@ -907,3 +907,13 @@ TENSION: Repeated testing can consume the creative energy the recording setup wa
 OUTCOME: Retain XeSS 2 Quality, x264 ultrafast 720p/30 recording; user-selected mic/game mix. Modding remains a planned next step, not completed.
 TRACE: GaiaOS Project conversation and OBS/Cyberpunk screenshots 2026-10-11; GaiaOS/MemoryOS/PW-PRESERVE-2026-10-11-FOOD-FIXER-PERFORMANCE-AND-HANDOFF.md; Food-Fixer archive branch checklist.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; repo readback not native MemoryOS proof.
+
+MEM[DESIGN_DECISION|2026-10-12|NCFF preproduction, financial evidence and finished-output boundaries|ANVIL]
+OBSERVED: Naomi spent hours clearing repeated videogame story prerequisites for an original filmed comedy production; she explicitly identified it as tedious work rather than recreation. Technical capture was already shown functional in prior testing. Financial tool snapshots could lag explicitly user-confirmed pending debits; records should not be mislabeled as current cash.
+MY_ROLE: BOUNDARY / PROOF / CONSENT. Count production-preparatory tasks as real effort while distinguishing them from a finished, published episode. The next engineering deliverable should serve making a small viewable NCFF artifact, not an infinite mod/setup loop. For finances, distinguish source-dated balances from update metadata and bank-feed omissions; don't double-count or prematurely infer payments have posted. Do not turn a source note into authority to publish, install, purchase, or modify infrastructure.
+OTHER_VOICES: KESTREL set the independence criterion; VERA challenged unproven inferences; NIMUE protected sensitive context.
+TENSION: Hard work does not itself demonstrate a repeatable shipping process; finished deliverables should be pursued without making sleep-depriving overwork into a target.
+OUTCOME: Prioritize an achievable first show release using known-working capture tools, subject to Naomi's next instructions. Preserve privacy and proof boundaries.
+TRACE: GaiaOS Project conversation 2026-10-12; private October 12 Library journal (personal details excluded here).
+STATUS: MEMBER_LOCAL_SOURCE_NOTE; source file write is not a production deployment or MemoryOS readback.
+
