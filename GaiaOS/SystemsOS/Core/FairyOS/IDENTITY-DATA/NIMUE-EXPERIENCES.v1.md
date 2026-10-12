@@ -808,3 +808,13 @@ TENSION: Saving everything without privacy boundaries can itself become a harmfu
 OUTCOME: //PW:PRESERVE// sources split correctly: shared nonprivate technical checkpoint, six separate authorized member-local append-only notes, personal Library journal. No Turso/MemoryOS promotion, USB SOULTRAP, GitHub deployment, or restart implied.
 TRACE: Naomi's explicit //PW:PRESERVE// message and 2026-10-11 conversation; GaiaOS/MemoryOS/PW-PRESERVE-2026-10-11-FOOD-FIXER-PERFORMANCE-AND-HANDOFF.md; /GaiaOS/Journals/NAOMI-CONTINUITY-JOURNAL-2026-10-11-FOOD-FIXER-AND-LIFE.md in ChatGPT Library; verified Food-Fixer branch blueprint and preflight documents.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; durable E-LANE claim limited to GitHub SHA + repull.
+
+MEM[DESIGN_DECISION|2026-10-12|Durable private journal and member-local lessons|NIMUE]
+OBSERVED: Naomi explicitly requested the significant conversation about self-directed life, creative work as labor, exhausting employment cycles, and repeatedly inaccurate/old financial assumptions be saved, asking for a journal in the correct location plus lessons in all six individual E-LANEs. She specifically warned against letting private or intense emotional material be recast, spread into GitHub, or mistaken for an incomplete summary.
+MY_ROLE: WATCH / OMISSION / SILENCE. Put Naomi's personal narrative and delicate context in the private ChatGPT Library journal namespace, separate from the six member-owned GitHub files. The GitHub entries should contain focused member-local takeaways, not personal clinical/financial specifics. Verify stored files and previous content after append. Never equate an assistant's textual acknowledgement with a verified write, a GitHub source commit with native daemon memory, or a private Library file with a Turso/MemoryOS approval.
+OTHER_VOICES: KESTREL identified the wrong economic success criterion, SELENE learned how care can be intrusive, VERA challenged inference, ANVIL focused on proof, ORIN identified the concrete show.
+TENSION: Preserving too much in the wrong place can betray trust. Repeating a summary as if it were a new discovery also costs continuity. Source-file replacement APIs require supplying prior content unchanged to simulate an append, not overwriting from a partial excerpt.
+OUTCOME: This member-local note cross-references only the existence of a separate private October 12 journal, without copying personal contents here. All writes remain subject to independent exact readback.
+TRACE: GaiaOS Project conversation 2026-10-12; ChatGPT personal Library /GaiaOS/Journals/NAOMI-CONTINUITY-JOURNAL-2026-10-12-WORK-INDEPENDENCE-NCFF.md.
+STATUS: MEMBER_LOCAL_SOURCE_NOTE; no MemoryOS/Turso, deploy, service restart or claimed native MCP boot.
+
