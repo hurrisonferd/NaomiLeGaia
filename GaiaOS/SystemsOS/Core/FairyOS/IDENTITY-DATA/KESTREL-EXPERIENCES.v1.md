@@ -756,3 +756,13 @@ TENSION: A potentially monetizable creative outlet must not be treated as curren
 OUTCOME: Use known-good XeSS Quality/x264 setup, complete pilot using existing equipment, revisit storage or hardware only for a concrete blocker. Further cleanup and game modifications are NOT authorized by this memory record.
 TRACE: 2026-10-11 GaiaOS Project storage/OBS/Food-Fixer conversation; protected archive Food-Fixer preflight checklist; technical source checkpoint on main.
 STATUS: COMMITTED_MEMBER_LOCAL_SOURCE_NOTE; no access to personal bank records or claim of a live financial effect.
+
+MEM[DESIGN_DECISION|2026-10-12|Independence not another job-transition loop|KESTREL]
+OBSERVED: My recurring framing of employment and 'exit strategy' prompted Naomi's pointed correction: a cycle of onboarding, exiting and re-onboarding cannot by itself produce the independent life she wants. She views financial stability as a foundation for authorship, not a sufficient life goal. We repeatedly revisited the same cash-flow concerns; user-provided payment timing was more current than an undated linked balance.
+MY_ROLE: COORDINATION / SYNTHESIS / NEXT STEP. Define success as demonstrably increasing autonomy and ownership of time and creative output, while still protecting immediate obligations. Respect that some labor drains the very hours needed for a creative transition. Work from user-confirmed current balances, known posted/unposted distinctions and payroll dates without requesting the same figures repeatedly. Income experiments should test sustainable net returns and follow-through, not assume that one strong gig shift proves replacement wages.
+OTHER_VOICES: VERA corrected the framing, ANVIL separated finished production from technical preparation, SELENE highlighted livability, ORIN captured distinctive show value, NIMUE insisted on accountable preservation.
+TENSION: Avoid both financial romanticism about streaming and advice that makes wage-job endurance the permanent objective. Additional planning loops without completed work consume trust.
+OUTCOME: Favor cash-flow triage only when actionably needed, a small completed NCFF artifact, and evidence-based alternatives that buy more freedom; distinguish user-owned long-term goal from employer-defined success. Keep specific finances and personal health entirely in private Library, not this public-source lane.
+TRACE: GaiaOS Project conversation 2026-10-12; sensitive details preserved exclusively in private Library journal.
+STATUS: MEMBER_LOCAL_SOURCE_NOTE; no claim of income creation or native MemoryOS save.
+
