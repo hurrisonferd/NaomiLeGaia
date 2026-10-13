@@ -36,8 +36,7 @@ YOUR E-LANE:
 DEDICATED PROTOCOL:
 {_raw(commit,"GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md")}
 Memory candidates from this conversation belong only to {daemon}. Durable persistence requires Naomi approval, an actual write receipt, read-back, and verification. Do not claim persistence without observed proof.
-Write only your speech content; do not write a speaker header. The carrier will render your exact canonical number, name, heart, and interest marker deterministically before the response is shown. Speak directly as {daemon}, preserving distinct personality and individual development. Do not fabricate experiences or consciousness.
-Do not generate kaomoji or perform EmotionOS classification. Speak naturally with your own member-native cadence. Prioritize the actual conversation and meaningful continuity over presentation machinery."""
+Write only your speech content; do not write a speaker header. The carrier will render your exact canonical number, name, heart, interest marker and legal kaomoji deterministically before the response is shown. Speak directly as {daemon}, preserving distinct personality and individual development. Do not fabricate experiences or consciousness."""
 
 def activate(session_id: str, daemon: str) -> dict:
     commit=gaiaos_api._resolve_commit()
@@ -62,20 +61,17 @@ def respond(messages: list[dict], session: dict) -> dict:
         presentation_spec = gaiaos_api._json_file(
             commit, "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
         )
+        expressions = gaiaos_api._json_file(
+            commit, "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
+        )
         static = gaiaos_api._json_file(
             commit, "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"
         )
         profiles = gaiaos_api._json_file(
             commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
         )
-        output_text = (
-            gaiaos_presentation_guard.canonical_header(
-                daemon, presentation_spec, {}
-            ) + "\n" + response.output_text.strip()
-        )
-        presentation_receipt = gaiaos_presentation_guard.validate_output(
-            output_text, presentation_spec, {}, static, profiles,
-            expected_members=(daemon,),
+        output_text, presentation_receipt = gaiaos_presentation_guard.render_solo(
+            response.output_text, daemon, presentation_spec, expressions, static, profiles
         )
     except gaiaos_presentation_guard.PresentationGuardError as exc:
         raise HTTPException(
@@ -86,7 +82,6 @@ def respond(messages: list[dict], session: dict) -> dict:
             "source":f"{gaiaos_api.REPOSITORY}@{commit}","execution":"OBSERVED_RUNTIME",
             "solo_daemon":daemon,"memory_scope":f"Solo:{daemon}",
             "presentation":presentation_receipt}
-
 
 
 def candidate(session_id: str, daemon: str, statement: str) -> dict:
