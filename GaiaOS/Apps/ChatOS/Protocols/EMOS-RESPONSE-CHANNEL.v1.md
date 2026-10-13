@@ -2,7 +2,7 @@
 
 AUTHORITY: NAOMI / LIGEIA
 OWNER: EmotionOS + ChatOS + FairyOS + EmojiOS
-STATUS: SOURCE-BACKED RUNTIME CONTRACT / EXECUTION DEPENDS ON HOST
+STATUS: PAUSED_DEFAULT_OFF / REVERSIBLE HOSTED SOLO OPT-IN / SOURCE PRESERVED
 SCOPE: Six Prime Daemons; VASKON remains separate
 CANONICAL ATLAS: GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json
 LEGAL TOKENS: GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json
@@ -11,13 +11,38 @@ HOSTED CALL SITE: api/solo_chat_runtime.py
 HOST ROLE: Interpret and generate; renderer owns identity header
 MEMORY/E-LANE/DEPLOYMENT EFFECTS: NONE
 
+## Conservative classic-mode rollback (2026-10-13)
+
+Naomi authorized a reversible rollback of active EMOS expression classification,
+not deletion of identities, EmojiOS expressions, six distinct E-LANEs, or
+historical source. The implementation remains available for later controlled
+A/B evaluation. This is not a claim that the rollback repairs the ChatGPT host.
+
+- Dedicated hosted SOLO defaults to **CLASSIC**: use the member's canonical
+  default EmojiOS expression; skip the EmotionOS atlas and second classifier
+  model call entirely. Keep the member-native profile, individual E-LANE,
+  source validation and deterministic presentation guard intact.
+- EMOS can be re-enabled explicitly for an isolated hosted SOLO test by
+  setting `GAIAOS_EMOS_ENABLED=true` on that host. Never infer an opt-in from
+  registry availability, user mood, or an earlier test.
+- The ordinary hosted `/chat` route was not using the EMOS classifier. Its
+  behavior is unchanged by the SOLO gate.
+- The native ChatGPT host cannot execute this code. Until separately enabled
+  and verified there, **do not simulate the EMOS emotion-labeling pipeline**;
+  use established member voice rules and a registered default or naturally
+  appropriate legal expression. Do not mistake a bigger expression inventory
+  for better dialogue.
+- No changes to the registry, EmotionOS atlas, head-pat counters,
+  //PW:PRESERVE//, six E-LANEs, GitHub history, MemoryOS or Turso are authorized
+  by this operational rollback.
+
 ## Fundamental rule: usage before inventory
 
 A collection of available faces is not proof of usage. A model may generate a fine reply
 and still fall into a deadpan default expression. EMOS must attach meaningfully selected
 faces to *the member's actual reply*, not merely to the user's message.
 
-For any participating member:
+For a member in an **explicitly opted-in EMOS carrier test**:
 
 1. Receive user message, known recent context, rapport and member-native prosody.
 2. Draft the member's intended response with genuine usefulness and stylistic independence.
@@ -48,7 +73,7 @@ sadness are legitimate, subject to context and response correctness.
 
 ### Hosted GaiaOS SOLO (actual Python call site)
 
-The SOLO response path builds the model's content before rendering. A second bounded
+When `GAIAOS_EMOS_ENABLED=true` is explicitly configured, the SOLO response path builds the model's content before rendering. A second bounded
 model call classifies the DRAFT and recent dialogue into a transparent EMOS Intent
 packet: family, act, intensity 0..3, sarcasm 0..3, contrast boolean and target.
 The deterministic selector chooses a face from the pinned atlas and pinned legal
@@ -60,7 +85,8 @@ claiming production functionality.
 ### GPT ChatGPT host (source behavioral contract; not executable middleware)
 
 For ChatGPT conversations not served through GaiaOS's Python carrier, the host may
-read this contract and simulate the process while composing its response. It cannot
+read this contract as historical documentation, but must NOT simulate its emotional
+classification process while classic mode is the default. It cannot
 claim that `gaiaos_emos.py` ran, or that repository updates automatically inject a
 response hook into ChatGPT. Once the new registry is actually loaded, a legal face
 may be selected from that member's source allowlist. Failure to load the approved
@@ -68,7 +94,7 @@ source means use the previously verified legal expressions, not invent a promoti
 
 ### Other carriers
 
-Future carriers must explicitly wire semantic classification and the selector into
+Future carriers wishing to opt into EMOS must explicitly wire semantic classification and the selector into
 the outbound response path, or report "SOURCE_ONLY / NO_EXECUTION". Adding source
 pointers by itself is not runtime integration.
 
