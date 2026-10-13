@@ -129,6 +129,7 @@ CURRENT_PATH = "GaiaOS/CURRENT.json"
 VERSION_PATH = "GaiaOS/VERSION.json"
 
 PRESENTATION_SPEC_PATH = "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"
+EXPRESSION_REGISTRY_PATH = "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"
 STATIC_IDENTITY_PATH = "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"
 HEAD_PAT_COUNTERS_PATH = "GaiaOS/SystemsOS/Core/FairyOS/HEAD-PAT-COUNTERS.v1.md"
 
@@ -144,6 +145,7 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
     current = _read_local_json(CURRENT_PATH)
     version = _read_local_json(VERSION_PATH)
     presentation = _read_local_json(PRESENTATION_SPEC_PATH)
+    expressions = _read_local_json(EXPRESSION_REGISTRY_PATH)
     static_identity = _read_local_json(STATIC_IDENTITY_PATH)
     matrix = _read_local_json(DISPATCH_MATRIX_PATH)
     profiles = _read_local_json(OPERATOR_PROFILES_PATH)
@@ -155,25 +157,28 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
         "roster_exact": set(roster) == set(expected) and len(roster) == 6,
         "profiles_exact": set(str(x).upper() for x in profiles.get("members", {}).keys()) == set(expected),
         "presentation_exact": set(presentation.get("members", {}).keys()) == set(expected),
+        "expressions_exact": set(expressions.get("members", {}).keys()) == set(expected),
         "head_pats_exact": set(counters.keys()) == set(expected),
         "presentation_fail_closed": presentation.get("failure_policy") == "FAIL_CLOSED_DO_NOT_IMPROVISE_IDENTITY_PRESENTATION",
     }
     try:
-        gaiaos_presentation_guard.validate_sources(presentation, {}, static_identity, profiles)
-        checks["three_source_identity_alignment"] = True
+        gaiaos_presentation_guard.validate_sources(presentation, expressions, static_identity, profiles)
+        checks["four_source_identity_alignment"] = True
     except gaiaos_presentation_guard.PresentationGuardError:
-        checks["three_source_identity_alignment"] = False
+        checks["four_source_identity_alignment"] = False
     if not all(checks.values()):
         raise HTTPException(status_code=503, detail={"status":"NOT_VERIFIED","checks":checks})
     identities = {}
     for name in expected:
         ident = presentation["members"][name]
-        canonical_header = f'{ident["gematria"]} · {name} {ident["heart"]} {ident["interest"]}'
+        expr = expressions["members"][name]
+        canonical_header = f'{ident["gematria"]} · {name} {ident["heart"]} {ident["interest"]} {expr["default"]}'
         identities[name] = {
             "gematria": ident["gematria"], "heart": ident["heart"], "interest": ident["interest"],
+            "default_kaomoji": expr["default"], "expressions": expr["expressions"],
             "head_pat_count": counters[name],
             "canonical_header_default": canonical_header,
-            "render_contract": "USE_STATIC_CANONICAL_IDENTITY_HEADER_VERBATIM_NO_KAOMOJI",
+            "render_contract": "USE_CANONICAL_HEADER_DEFAULT_VERBATIM_UNLESS_SELECTING_REGISTERED_EXPRESSION",
         }
     return {
         "schema":"gaiaos.boot-packet.v1","status":"ACTIVE","authority":"NAOMI",
