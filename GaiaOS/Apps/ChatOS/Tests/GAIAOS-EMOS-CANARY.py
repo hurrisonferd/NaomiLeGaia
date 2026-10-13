@@ -177,6 +177,40 @@ def test_classic_solo_rollback():
         assert client.calls == 2
     print("EMOS_CLASSIC_ROLLBACK_PASS: default off, native headers, no extra model call; opt-in retained")
 
+
+def test_carrier_prompt_suppresses_expression_catalog():
+    """Model prompt receives only compact defaults; source validation keeps its registry."""
+    import ast
+    from collections import defaultdict
+    from typing import Any
+
+    source_text = (ROOT / "api/gaiaos_api.py").read_text(encoding="utf-8")
+    tree = ast.parse(source_text)
+    target = next(n for n in tree.body if isinstance(n, ast.FunctionDef)
+                  and n.name == "_carrier_instructions")
+    compiled = compile(ast.fix_missing_locations(ast.Module(
+        body=[target], type_ignores=[]
+    )), "<carrier_instructions>", "exec")
+    namespace = {"json": json, "Any": Any}
+    exec(compiled, namespace)
+    registry = json.loads(json.dumps(REG))
+    marker = "NEVER_FEED_THIS_UNUSED_EMOS_EXPRESSION_TO_THE_MODEL"
+    registry["members"]["ORIN"]["expressions"]["INVENTORY_TEST"] = marker
+    council = defaultdict(str, {"expression_registry": registry})
+    bundle = defaultdict(str, {
+        "council_bundle": council,
+        "gaiaos": {"source": "test", "platform_version": "test",
+                   "authority": "NAOMI"},
+    })
+    output = namespace["_carrier_instructions"](bundle)
+    for name in SPEC["speaker_order"]:
+        assert registry["members"][name]["default"] in output, name
+    assert marker not in output
+    assert '"INVENTORY_TEST"' not in output
+    assert "EMOJIOS CLASSIC DEFAULT FACES" in output
+    assert "Do not optimize faces" in output
+    print("EMOS_COMPACT_CARRIER_PROMPT_PASS: six defaults, no catalog injection")
+
 if __name__=="__main__":
-    test_coverage();test_loader_allowlist();test_production_docker_copy();test_host();test_fallback();test_classic_solo_rollback()
+    test_coverage();test_loader_allowlist();test_production_docker_copy();test_host();test_fallback();test_classic_solo_rollback();test_carrier_prompt_suppresses_expression_catalog()
     print("EMOS_CANARY_PASS: local fake-model proof ONLY, not live carrier")
