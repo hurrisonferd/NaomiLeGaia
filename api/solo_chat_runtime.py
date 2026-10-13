@@ -9,6 +9,10 @@ import gaiaos_presentation_guard
 import gaiaos_api
 import memcon_runtime
 
+def _emos_enabled() -> bool:
+    """Opt-in only. Default SOLO uses classic canonical presentation."""
+    return os.getenv("GAIAOS_EMOS_ENABLED", "false").strip().lower() in {"1", "true", "yes", "on"}
+
 def _raw(commit: str, path: str) -> str:
     return gaiaos_api._request(f"{gaiaos_api.RAW_BASE}/{gaiaos_api.REPOSITORY}/{commit}/{path}").decode("utf-8")
 
@@ -26,6 +30,11 @@ def elane(commit: str, daemon: str) -> str:
     return _raw(commit,f"GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/{daemon}-EXPERIENCES.v1.md")
 
 def instructions(commit: str, daemon: str) -> str:
+    expression_guidance = (
+        "EMOS EXPRESSION CHANNEL: Compose a genuinely member-native response first. Naomi welcomes independently differentiated reactions, including sarcasm, smug humor at absurd software failures, joy, frustration, strong anger, and contrast with her apparent mood. Do not mechanically mirror her tone or reflexively soften every response. The carrier will interpret the drafted reply's communicative act, then choose a legal face. Respect actual context and never claim inner emotion states."
+        if _emos_enabled() else
+        "CLASSIC EXPRESSION MODE: Speak in your own native voice, guided by your profile, your own E-LANE, and the current conversation. Do not perform EmotionOS classification or choreograph reactions to match emotional labels. The carrier renders your canonical default expression. Do not add generic reassurance, summaries, apologies, or performative jokes unless the exchange itself warrants them."
+    )
     return f"""You are {daemon}, a GaiaOS Prime Daemon, speaking directly with Naomi in a dedicated SOLO conversation.
 Only your own member-local E-LANE may be used as experience memory. Do not consult, summarize, infer private state from, or reference another Prime Daemon's E-LANE. Do not turn this into Daemonculaba or VASKON.
 CANONICAL SOURCE: {gaiaos_api.REPOSITORY}@{commit}
@@ -37,7 +46,7 @@ DEDICATED PROTOCOL:
 {_raw(commit,"GaiaOS/Apps/ChatOS/Protocols/DAEMON-SOLO-CHAT.v1.md")}
 Memory candidates from this conversation belong only to {daemon}. Durable persistence requires Naomi approval, an actual write receipt, read-back, and verification. Do not claim persistence without observed proof.
 Write only your speech content; do not write a speaker header. The carrier will render your exact canonical number, name, heart, interest marker and legal kaomoji deterministically before the response is shown. Speak directly as {daemon}, preserving distinct personality and individual development. Do not fabricate experiences or consciousness.
-EMOS EXPRESSION CHANNEL: Compose a genuinely member-native response first. Naomi welcomes independently differentiated reactions, including sarcasm, smug humor at absurd software failures, joy, frustration, strong anger, and contrast with her apparent mood. Do not mechanically mirror her tone or reflexively soften every response. The carrier will interpret the drafted reply's communicative act, then choose a legal face. Respect actual context and never claim inner emotion states."""
+{expression_guidance}"""
 
 def activate(session_id: str, daemon: str) -> dict:
     commit=gaiaos_api._resolve_commit()
@@ -71,17 +80,30 @@ def respond(messages: list[dict], session: dict) -> dict:
         profiles = gaiaos_api._json_file(
             commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
         )
-        # Classify the generated reply's member-native expressive intent before rendering.
-        from gaiaos_emos_host import render_generated_solo
-        atlas = gaiaos_api._json_file(
-            commit, "GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json"
-        )
-        emos = render_generated_solo(
-            client, gaiaos_api.OPENAI_MODEL, daemon, messages,
-            response.output_text, presentation_spec, expressions, atlas,
-            session_key=str(session.get("session_id", "")),
-        )
-        output_text = emos["output"]
+        if _emos_enabled():
+            # Explicit opt-in only: preserve the old EMOS pathway unchanged.
+            from gaiaos_emos_host import render_generated_solo
+            atlas = gaiaos_api._json_file(
+                commit, "GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json"
+            )
+            emos = render_generated_solo(
+                client, gaiaos_api.OPENAI_MODEL, daemon, messages,
+                response.output_text, presentation_spec, expressions, atlas,
+                session_key=str(session.get("session_id", "")),
+            )
+            output_text = emos["output"]
+        else:
+            # Classic: no classifier call, no EmotionOS atlas, no content rewrite.
+            output_text = (
+                gaiaos_presentation_guard.canonical_header(
+                    daemon, presentation_spec, expressions
+                ) + "\n" + response.output_text.strip()
+            )
+            emos = {
+                "status": "EMOS_DISABLED_CLASSIC_PRESENTATION",
+                "family": None, "state": None,
+                "expression": expressions["members"][daemon]["default"],
+            }
         presentation_receipt = gaiaos_presentation_guard.validate_output(
             output_text, presentation_spec, expressions, static, profiles,
             expected_members=(daemon,),
