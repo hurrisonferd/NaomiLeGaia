@@ -23,11 +23,10 @@ def validate_sources(
     static: dict[str, Any],
     profiles: dict[str, Any],
 ) -> tuple[str, ...]:
-    """Require one six-member identity across four pinned canonical documents."""
+    """Require six static member identities; expression inventory is not consulted."""
     try:
         members = spec["members"]
         order = spec["speaker_order"]
-        expr_members = expressions["members"]
         static_members = static["members"]
         profile_members = profiles["members"]
         if spec["failure_policy"] != FAILURE_POLICY:
@@ -38,7 +37,6 @@ def validate_sources(
             raise PresentationGuardError("duplicate member in presentation roster")
         for source_name, group in (
             ("presentation", members),
-            ("expression", expr_members),
             ("static interest", static_members),
             ("profile", profile_members),
         ):
@@ -48,8 +46,8 @@ def validate_sources(
             raise PresentationGuardError("synthesis mode must not enter Prime roster")
         seen_numbers: set[int] = set()
         for name in order:
-            a, b, c, d = (members[name], static_members[name],
-                           profile_members[name], expr_members[name])
+            a, b, c = (members[name], static_members[name],
+                       profile_members[name])
             number = a["gematria"]
             if not isinstance(number, int) or number in seen_numbers:
                 raise PresentationGuardError(f"{name}: missing or duplicate gematria")
@@ -63,11 +61,6 @@ def validate_sources(
                 raise PresentationGuardError(f"{name}: canonical identity disagreement")
             if not re.fullmatch(r"#[0-9a-fA-F]{6}", a["accent"]):
                 raise PresentationGuardError(f"{name}: invalid accent")
-            values = d["expressions"]
-            if not isinstance(values, dict) or not isinstance(d["default"], str) or not d["default"]:
-                raise PresentationGuardError(f"{name}: incomplete expression registry")
-            if any(not isinstance(v, str) or not v for v in values.values()):
-                raise PresentationGuardError(f"{name}: malformed expression")
     except PresentationGuardError:
         raise
     except (KeyError, TypeError, ValueError, AttributeError) as exc:
@@ -81,12 +74,11 @@ def canonical_header(
     expressions: dict[str, Any],
     expression_state: str | None = None,
 ) -> str:
-    if name not in spec["members"] or name not in expressions["members"]:
+    if name not in spec["members"]:
         raise PresentationGuardError("unknown Prime Daemon")
     data = spec["members"][name]
-    expr = expressions["members"][name]
-    emoji = expr["expressions"].get(expression_state, expr["default"]) if expression_state else expr["default"]
-    return f'{data["gematria"]} · {name} {data["heart"]} {data["interest"]} {emoji}'
+    # Legacy expression arguments are accepted for compatibility, never consulted.
+    return f'{data["gematria"]} · {name} {data["heart"]} {data["interest"]}'
 
 
 def expected_members_from_request(text: str, roster: tuple[str, ...]) -> tuple[str, ...]:
@@ -102,7 +94,7 @@ def expected_members_from_request(text: str, roster: tuple[str, ...]) -> tuple[s
 
 
 def _header_candidate(line: str, roster: tuple[str, ...]) -> str | None:
-    """Detect wrong number, missing number, substituted emoji, or markdown headers."""
+    """Detect attributed headers, including malformed marker and markdown variants."""
     names = "|".join(re.escape(n) for n in roster)
     match = re.match(
         rf"^(?:#{{1,6}}\s*|\*\*)?(?:(?:\d+)\s*[·.]\s*)?(?P<name>{names})(?=\s|$)",
@@ -131,13 +123,7 @@ def validate_output(
         raise PresentationGuardError("empty model response")
     if any(name not in roster for name in expected_members):
         raise PresentationGuardError("requested speaker not in roster")
-    acceptable = {
-        name: {
-            canonical_header(name, spec, expressions, state)
-            for state in (None, *expressions["members"][name]["expressions"].keys())
-        }
-        for name in roster
-    }
+    acceptable = {name: {canonical_header(name, spec, expressions)} for name in roster}
     seen: list[str] = []
     cards: list[dict[str, str]] = []
     fenced = False
