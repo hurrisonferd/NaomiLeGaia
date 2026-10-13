@@ -1,4 +1,4 @@
-"""GaiaOS deterministic Prime Daemon + synthesis-mode presentation validator/renderer v2 (no kaomoji dependency)."""
+"""GaiaOS deterministic Prime Daemon + synthesis-mode presentation validator/renderer v1.3."""
 import json
 from pathlib import Path
 
@@ -130,9 +130,8 @@ def canonical_header(name, expression_state=None, spec=None, registry=None, invo
     elif invocation is not None:
         raise PresentationError(f"{name}: Prime Daemon header does not accept synthesis invocation")
     static=data.get("interest",data.get("symbol"))
-    # Legacy expression arguments are accepted only for backward compatibility.
-    # Active presentation never loads the EmojiOS registry.
-    return f'{data["gematria"]} · {name} {data["heart"]} {static}'
+    k=resolve_kaomoji(name,expression_state,registry)
+    return f'{data["gematria"]} · {name} {data["heart"]} {static} {k}'
 
 def validate_header(name, header, expression_state=None, spec=None, registry=None, invocation=None):
     expected=canonical_header(name,expression_state,spec,registry,invocation=invocation)
