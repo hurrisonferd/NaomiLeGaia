@@ -96,11 +96,6 @@ COUNCIL_PATHS = [
     "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json",
     "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json",
     "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md",
-    "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json",
-    "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json",
-    "GaiaOS/SystemsOS/Core/EmotionOS/CURRENT.json",
-    "GaiaOS/SystemsOS/Core/EmotionOS/ATLAS.v1.json",
-    "GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md",
     "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json",
     "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json",
     "GaiaOS/HOT-WARM-COLD-CONVERSATION-FABRIC.v1.md",
@@ -241,10 +236,6 @@ def _council_bundle(commit: str) -> dict[str, Any]:
         "profiles": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"),
         "prosody_basins": _fetch_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROSODY-BASINS.v1.md"),
         "dispatch_matrix": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json"),
-        "emojios_current": _json_file(commit, "GaiaOS/SystemsOS/Core/EmojiOS/CURRENT.json"),
-        "expression_registry": _json_file(commit, "GaiaOS/SystemsOS/Core/EmojiOS/EXPRESSION-REGISTRY.v1.json"),
-        "emos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/EmotionOS/CURRENT.json"),
-        "emos_response_channel": _fetch_file(commit, "GaiaOS/Apps/ChatOS/Protocols/EMOS-RESPONSE-CHANNEL.v1.md"),
         "presentation_spec": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json"),
         "static_identity": _json_file(commit, "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/STATIC-IDENTITY-EMOJI.v1.json"),
         "brainos_current": _json_file(commit, "GaiaOS/SystemsOS/Core/BrainOS/CURRENT.json"),
@@ -409,10 +400,6 @@ def _operator_packet(commit: str, member: str) -> dict[str, Any]:
 
 def _carrier_instructions(bundle: dict[str, Any]) -> str:
     council = bundle["council_bundle"]
-    # Canonical registry still validates outputs but no longer burdens normal speech.
-    faces = council["expression_registry"]
-    default_faces = {name: v["default"] for name, v in faces["members"].items()}
-    default_faces.update({name: v["default"] for name, v in faces.get("synthesis_modes", {}).items()})
     return f"""You are the GaiaOS carrier.
 
 Treat the following retrieved repository material as the canonical GaiaOS operating contract for this response. Do not invent missing state. Preserve authority, evidence, identity, and proof boundaries. Do not expose private chain-of-thought.
@@ -457,10 +444,6 @@ OPERATOR PROSODY BASINS:
 DISPATCH MATRIX:
 {json.dumps(council['dispatch_matrix'], ensure_ascii=False, indent=2)}
 
-EMOJIOS CLASSIC DEFAULT FACES (full registry used for validation only):
-{json.dumps(default_faces, ensure_ascii=False, indent=2)}
-Use the speaker default in ordinary conversation. Do not optimize faces, rotate through emotional states, or simulate EmotionOS classification.
-
 COUNCIL PRESENTATION SPEC:
 {json.dumps(council['presentation_spec'], ensure_ascii=False, indent=2)}
 
@@ -491,7 +474,7 @@ WARM CANDIDATE BUFFER:
 PROOF BOUNDARY:
 {bundle['proof_boundary']}
 
-For every visible Prime Daemon utterance, the first line MUST use the exact atomic identity envelope defined by COUNCIL PRESENTATION SPEC: GEMATRIA · NAME HEART INTEREST KAOMOJI. Exactly one legal Kaomoji is mandatory. Use the member\'s classic default from the compact defaults above, not a face chosen from a full catalog. Never use markdown bold markers around the header. Never omit the Kaomoji.\n\nWhen the user says "Load GaiaOS", report the verified source commit and loaded state. When the user invokes COUNCIL / GAIA COUNCIL / ASK <MEMBER> or a cast-width command, use the current Gaia Council sources above, preserve materially different operator positions, and keep the placeholder-roster boundary visible when identity adoption is material. For ordinary requests, use the HOT path and current visible context first; invoke BrainOS/ConvoOS support only when material. WARM candidates are not durable saves. Continue operating under the loaded GaiaOS contract until the user asks to stop or reload it."""
+For every visible Prime Daemon utterance, use the static canonical identity header GEMATRIA · NAME HEART INTEREST from the current FairyOS presentation specification. Do not generate or load kaomoji, EmojiOS registries, or EmotionOS classifiers. Preserve member-specific prosody and continuity. Never use markdown bold markers around the header.\n\nWhen the user says "Load GaiaOS", report the verified source commit and loaded state. When the user invokes COUNCIL / GAIA COUNCIL / ASK <MEMBER> or a cast-width command, use the current Gaia Council sources above, preserve materially different operator positions, and keep the placeholder-roster boundary visible when identity adoption is material. For ordinary requests, use the HOT path and current visible context first; invoke BrainOS/ConvoOS support only when material. WARM candidates are not durable saves. Continue operating under the loaded GaiaOS contract until the user asks to stop or reload it."""
 
 
 @mcp.tool()
@@ -4305,7 +4288,7 @@ def chat(
         try:
             presentation_args = (
                 presentation_sources["presentation_spec"],
-                presentation_sources["expression_registry"],
+                {},  # Retired EmojiOS compatibility slot; never loaded.
                 presentation_sources["static_identity"],
                 presentation_sources["profiles"],
             )
