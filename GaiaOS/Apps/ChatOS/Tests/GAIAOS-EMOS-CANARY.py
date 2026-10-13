@@ -89,6 +89,94 @@ def test_fallback():
     guard.validate_output(output["output"],SPEC,REG,STATIC,PROFILES,
                           expected_members=("NIMUE",))
     print("EMOS_CLASSIFIER_FALLBACK_PASS")
+
+def test_classic_solo_rollback():
+    """Exercise real SOLO response logic with a fake provider and no network."""
+    import importlib.util
+    import os
+    import types
+    from unittest.mock import patch
+
+    class FakeClient:
+        def __init__(self):
+            self.calls = 0
+            self.responses = self
+        def create(self, **kwargs):
+            self.calls += 1
+            return SimpleNamespace(output_text="The corridor is quiet.")
+
+    client = FakeClient()
+    loaded_paths = []
+    def load_json(commit, path):
+        loaded_paths.append(path)
+        return source(path)
+
+    fake_api = types.ModuleType("gaiaos_api")
+    fake_api._resolve_commit = lambda: "test-source-commit"
+    fake_api.OPENAI_API_KEY = "test-only"
+    fake_api.OPENAI_MODEL = "fake-model"
+    fake_api.REPOSITORY = "hurrisonferd/NaomiLeGaia"
+    fake_api._json_file = load_json
+
+    fake_openai = types.ModuleType("openai")
+    fake_openai.OpenAI = lambda **kwargs: client
+    fake_fastapi = types.ModuleType("fastapi")
+    fake_fastapi.HTTPException = RuntimeError
+    fake_memcon = types.ModuleType("memcon_runtime")
+
+    enabled_calls = []
+    fake_host = types.ModuleType("gaiaos_emos_host")
+    def opt_in_render(client_arg, model, daemon, messages, draft, spec, registry,
+                      atlas, session_key=""):
+        enabled_calls.append(daemon)
+        return {
+            "status": "EMOS_SELECTED_FROM_OBSERVED_REPLY",
+            "output": guard.canonical_header(daemon, spec, registry) + "\n" + draft.strip(),
+            "family": "amusement", "state": None,
+            "expression": registry["members"][daemon]["default"],
+        }
+    fake_host.render_generated_solo = opt_in_render
+
+    with patch.dict(sys.modules, {
+        "openai": fake_openai, "fastapi": fake_fastapi,
+        "gaiaos_api": fake_api, "memcon_runtime": fake_memcon,
+        "gaiaos_emos_host": fake_host,
+    }):
+        spec = importlib.util.spec_from_file_location(
+            "gaiaos_solo_rollback_canary", ROOT / "api/solo_chat_runtime.py"
+        )
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        module.roster = lambda commit: ["NIMUE"]
+        module.profile = lambda commit, daemon: {"name": daemon}
+        module.elane = lambda commit, daemon: "NIMUE OWNED EXPERIENCE"
+        module._raw = lambda commit, path: "SOLO SOURCE CONTRACT"
+        payload = [{"role": "user", "content": "Test the classic speech pathway."}]
+        session = {"daemon": "NIMUE", "session_id": "test-session"}
+
+        with patch.dict(os.environ, {"GAIAOS_EMOS_ENABLED": "false"}):
+            assert "EMOS EXPRESSION CHANNEL:" not in module.instructions("fake", "NIMUE")
+            classic = module.respond(payload, session)
+
+        assert classic["emos"]["status"] == "EMOS_DISABLED_CLASSIC_PRESENTATION"
+        assert classic["output"] == (
+            guard.canonical_header("NIMUE", SPEC, REG) + "\nThe corridor is quiet."
+        )
+        assert client.calls == 1, "default-off must make exactly one model call"
+        assert not enabled_calls, "default-off must not classify"
+        assert not any("EmotionOS/ATLAS" in p for p in loaded_paths), (
+            "default-off must not load EmotionOS atlas"
+        )
+
+        with patch.dict(os.environ, {"GAIAOS_EMOS_ENABLED": "true"}):
+            assert "EMOS EXPRESSION CHANNEL:" in module.instructions("fake", "NIMUE")
+            opt_in = module.respond(payload, session)
+        assert opt_in["emos"]["status"] == "EMOS_SELECTED_FROM_OBSERVED_REPLY"
+        assert enabled_calls == ["NIMUE"]
+        assert any("EmotionOS/ATLAS" in p for p in loaded_paths)
+        assert client.calls == 2
+    print("EMOS_CLASSIC_ROLLBACK_PASS: default off, native headers, no extra model call; opt-in retained")
+
 if __name__=="__main__":
-    test_coverage();test_loader_allowlist();test_production_docker_copy();test_host();test_fallback()
+    test_coverage();test_loader_allowlist();test_production_docker_copy();test_host();test_fallback();test_classic_solo_rollback()
     print("EMOS_CANARY_PASS: local fake-model proof ONLY, not live carrier")
