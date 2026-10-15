@@ -62,3 +62,7 @@ The archived preferred pay remains **€$20 for a completed delivery, €$0 for 
 **Definition of ready-for-dispatch:** a solo trigger draws a real pickup and destination, OBS shows the offer where Ligeia positions it, her phone mirrors the same order, and one original chime plays. The game overlay is a preferred enhancement, not a prerequisite.
 
 **Authority boundary:** This is a design record, not authorization to install, deploy, modify Cyberpunk/SLM, publish a stream, change MemoryOS or member E-LANEs, or make purchases. Naomi retains final authority.
+
+## Subsequent implementation: V2 CHOOH2 (2026-10-15)
+
+The formerly pending core dispatcher has been implemented locally as V1, followed by a separately preserved V2 that adds **fuel reserve depletion, voluntary refuel runs, empty-tank dispatch lockout, three-minute real-time pumping, and a rising fuel-cost meter**. See **[FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md](FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md)** for owner-approved design decisions, exact provisional pricing, files, test observations, and remaining unverified integrations. **Vehicle auto-loan financing is expressly deferred and must not be included in V2 builds.**
