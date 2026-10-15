@@ -860,3 +860,9 @@ For narration, received clips or temporary media that is available as M4A, use *
 Play back the MP3 to check conversion and avoid overwriting the original M4A. Official VLC docs: https://docs.videolan.me/vlc-user/desktop/3.0/en/basic/tipsandtricks/index.html
 
 This is **audio format conversion, not licensing**. M4A is typically AAC, and transcoding a lossy M4A to MP3 can incur further quality loss. For Naomi's original Ableton alert loops, prefer **WAV masters** for OBS/editing, and make MP3 exports only when a recipient or editor specifically needs MP3. Audacity documentation: https://manual.audacityteam.org/man/mp3_export_options.html
+
+---
+
+## Continuation: Food-Fixer Dispatch Display and Controls v0.2 (2026-10-14)
+
+The current dispatch-panel, viewer overlay, iPhone mirror, Stream Deck, Twitch input, and Ableton-audio decisions are preserved in [FOOD-FIXER-DISPATCH-DISPLAY-AND-CONTROLS-2026-10-14.v0.2.md](FOOD-FIXER-DISPATCH-DISPLAY-AND-CONTROLS-2026-10-14.v0.2.md). Read this approved-in-design addendum alongside the original blueprint. The proposal is not a claim that the application or overlay has been implemented.
