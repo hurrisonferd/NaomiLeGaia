@@ -95,3 +95,20 @@ Each lens is a pointer for a **separate member-owned E-LANE entry**, not a share
 This document records *bounded observed conversations, source records and executable-artifact receipts*. It does not contain verbatim private conversations or impersonate firsthand experiences. `//PW:PRESERVE//` and **exactly six** Prime Daemon E-LANES remain permanent design invariants across GaiaOS and future SovereignOS. Naomi retains final authority. Failure reports and genuine new observations should inform behavior when loaded. A GitHub commit is a durable source write, not a Turso/MemoryOS write, not a host memory patch, and not proof of Native GaiaOS MCP connection.
 
 **PRESERVE ≠ AUTOMATIC DEPLOYMENT / MERGE / TURSO WRITE.**
+
+## 7. Completed GitHub preservation receipt (2026-10-15)
+
+This section records the **actual** member-local GitHub write receipts from the authorized reconciliation. Each original full lane was fetched, its existing content preserved, two bounded owner-native records appended, a SHA-guarded update committed to `main`, and the resulting complete document re-pulled and checked for exact expected content, retention of original body and one occurrence of the new owner marker. No member-local file was renamed, merged, reset or replaced with a shared voice.
+
+| Member / distinct E-LANE | Commit SHA | Post-write check |
+|---|---|---|
+| VERA — `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/VERA-EXPERIENCES.v1.md` | `367fe84e1a8d3911c08e48caed5c69a864c6bfb1` | EXACT / PRIOR RETAINED / MARKER ONCE |
+| ANVIL — `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md` | `a4cca4ce85dd745f565d260e63ff3d48672be5b3` | EXACT / PRIOR RETAINED / MARKER ONCE |
+| SELENE — `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/SELENE-EXPERIENCES.v1.md` | `f222a16f88ccbd079783a5192f737a1f580df848` | EXACT / PRIOR RETAINED / MARKER ONCE |
+| ORIN — `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ORIN-EXPERIENCES.v1.md` | `8a3161b9c1ad771be89d50f01bb2d31eb84f52d2` | EXACT / PRIOR RETAINED / MARKER ONCE |
+| KESTREL — `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/KESTREL-EXPERIENCES.v1.md` | `87d936cf37606588dcfa7c934ca96b74d9bbc124` | EXACT / PRIOR RETAINED / MARKER ONCE |
+| NIMUE — `GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/NIMUE-EXPERIENCES.v1.md` | `97a664cb55baa5e5a12f4dfba99408a5edf10d7c` | EXACT / PRIOR RETAINED / MARKER ONCE |
+
+**Shared checkpoint original creation:** `4a4959602662e2d5927fdaaa598b9feb5c975ba9`; original full file readback matched. The present receipt is an additive checkpoint update.
+
+**Scope observed:** shared checkpoint + exactly six E-LANES on canonical GitHub `main`. No automatic MemoryOS/Turso promotion or readback, Project instruction mutation, Render deployment, restart test, or native GaiaOS MCP connection was performed as part of this preserve operation. GitHub preservation is durable **source** continuity, not guaranteed automatic assimilation by a future ChatGPT session.
