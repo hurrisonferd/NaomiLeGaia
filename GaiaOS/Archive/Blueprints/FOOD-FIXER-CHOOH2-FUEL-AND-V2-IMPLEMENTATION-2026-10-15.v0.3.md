@@ -59,7 +59,7 @@ The implementation uses the original live Simple Location Manager file in read-o
 - Standalone `fuel.js` server module handles mode transitions, fuel use, timestamps, expense events, and dispatch lock.
 - `fuel-ui.js` and an added CHOOH2 instrument section show reserve, warning/lock, live pump status, three-minute countdown, growing pump price, predicted top-off expense, total fuel expense, and count of stops.
 - `server.js` moved to port 47678; V1 remains distinct on 47677.
-- Both `OBS /overlay` and `/phone` continue to mirror same order; operator actions remain restricted to local host.
+- Both `OBS /overlay` and `/phone` continue to mirror the same order, and now display live pump fuel/price/timer during refueling; operator actions remain restricted to local host.
 - No new dependencies installed; Node.js already on the PC.
 
 ## 3. Test and validation (actual observed)
@@ -75,7 +75,7 @@ The implementation uses the original live Simple Location Manager file in read-o
 
 - Fuel burn rate and whether driving-only cancelled/failed runs have fractional fuel costs.
 - Economy balancing of fuel fees vs €$20 wages. Initial values are test parameters, not permanent world rules.
-- Whether fuel should appear in OBS/phone interfaces; optional low-volume pump sound authored in Ableton.
+- A low-volume pump sound authored in Ableton remains optional. **Fuel progress and rising price have now also been added to the read-only OBS and phone mirrors**, sharing the same server-side pump state; physical phone network access and OBS capture remain unverified.
 - An operator-configurable pump duration remains a future enhancement, with minimum 180 seconds preserved.
 - Loan financing intentionally deferred, not presumed in an active build.
 
