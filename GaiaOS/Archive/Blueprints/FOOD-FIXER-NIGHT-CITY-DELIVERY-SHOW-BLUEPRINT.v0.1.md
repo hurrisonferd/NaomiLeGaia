@@ -866,3 +866,7 @@ This is **audio format conversion, not licensing**. M4A is typically AAC, and tr
 ## Continuation: Food-Fixer Dispatch Display and Controls v0.2 (2026-10-14)
 
 The current dispatch-panel, viewer overlay, iPhone mirror, Stream Deck, Twitch input, and Ableton-audio decisions are preserved in [FOOD-FIXER-DISPATCH-DISPLAY-AND-CONTROLS-2026-10-14.v0.2.md](FOOD-FIXER-DISPATCH-DISPLAY-AND-CONTROLS-2026-10-14.v0.2.md). Read this approved-in-design addendum alongside the original blueprint. The proposal is not a claim that the application or overlay has been implemented.
+
+## October 15, 2026 implementation amendment: CHOOH2 fuel and local v2
+
+Food-Fixer V1 was implemented as a functioning local dispatcher. On October 15, Naomi explicitly requested a separate v2 with a CHOOH2 fuel gauge, voluntary refuel runs, a dispatch lockout at empty, and a three-minute real-time pump with rising fuel and price meters. The v2 build and isolated QA checks are documented in **[FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md](FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md)**. This is the latest active fuel-design and implementation record. **Exclude auto-loan/vehicle financing from current software builds until Naomi separately reauthorizes its design.** Earlier vehicle-loan passages above remain historical proposals, not implemented requirements.
