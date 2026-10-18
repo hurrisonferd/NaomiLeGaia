@@ -934,3 +934,12 @@ TENSION: Build enough functionality to be real while resisting fake map/routing 
 OUTCOME: Isolated QA passed fuel-state transitions, exact charges, depletion and nonduplicating completion. Source at `Desktop\\NIGHT CITY FOOD-FIXER\\Food-Fixer v2`; archive amendment `FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md` on archive/failure-log-20261009. Auto-loan was NOT implemented.
 TRACE: Actual authorized Desktop Commander files and test receipts 2026-10-15; shared checkpoint `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-15-POST-PAUSE-DAEMONCULABA-RECONCILIATION.md`.
 STATUS: MEMBER_LOCAL_SOURCE_RECORD; GitHub write and readback required for VERIFIED classification.
+
+MEM[ENGINEERING_CONTRACT|2026-10-18|Food-Fixer V6 and connected PC diagnostics|ONE_TAP_CONTRACT_AND_CRASH_PROOF_20261018_ANVIL]
+WHAT: The operator required one-tap acceptance of chat-selected Food-Fixer orders without leaving gameplay. Initial replies wrongly focused on Stream Deck order-display details. Read-only V6 inspection found a fixed ACCEPT .vbs button action using dispatch.js and localhost /api/action plus a separate read-only phone monitor; live Elgato mobile pairing, Twitch event intake and attended end-to-end acceptance remained unverified. PC event logs confirmed an unclean reboot and historical LiveKernelEvent 141 GPU watchdog records, without proving the cause of the latest full-system lockup.
+MY_ROLE: BOUNDARY / PROOF / CONSENT. Re-express the desired user action before building. Distinguish installed action scripts from a tested mobile control and historical error correlations from a proven failure cause. Future SovereignOS planning calls for read-only Phylactery inspection, provenance checks, and non-destructive restore proof before any authorized cutover.
+OTHER_VOICES: ORIN owns the creative flow; VERA corrects framing; NIMUE protects privacy and records only observed effects.
+TENSION: An impressive interface cannot compensate for a missing single-action workflow. A helpful diagnostic lead is not permission to alter a machine or production environment.
+OUTCOME: The acceptance contract is one tap, no Alt-Tab, no focus change. Test bridge and actual hardware steps only when authorized; preserve proof boundaries.
+TRACE: GaiaOS Project conversation 2026-10-17 to 2026-10-18; local V6 streamdeck-actions README/dispatch.js inspection; Windows event log read-only diagnostics. Private narratives excluded.
+STATUS: MEMBER_LOCAL_SOURCE_NOTE; GitHub commit and exact readback required.
