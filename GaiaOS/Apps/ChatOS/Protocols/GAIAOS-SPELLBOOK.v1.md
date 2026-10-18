@@ -40,6 +40,24 @@ PERSECUTE != DELETE
 PERSECUTE != REPAIR AUTHORIZATION
 ```
 
+### //PW:AUDIT//
+
+**Function:** manually invoked, interactive six-dimensional behavioral drift audit. Presents test questions to Ligeia, observes actual replies and reports PASS / PARTIAL / FAIL / UNVERIFIED with source and evidence limits. Not automatic repair, memory write or personality certification.
+
+Canonical protocol:
+GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-AUDIT.v1.md
+
+### //PW:SOAK//
+
+**Function:** manually invoked bounded source recovery and context adoption verification. Default target all six; optional single Prime Daemon name. Source reading and packet compilation do not prove session application or behavioral adoption.
+
+Canonical protocol:
+GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-SOAK.v1.md
+
+AUDIT != PERSECUTE
+SOAK SOURCE_READY != SOAKED
+SOAK != MEMORY WRITE
+
 ### //PW:SOULTRAP//
 
 **Function:** physical Phylactery offline backup through a verified Desktop Commander connection to Naomi's authorized machine and flash drive.

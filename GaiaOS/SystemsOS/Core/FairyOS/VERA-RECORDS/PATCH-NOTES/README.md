@@ -37,6 +37,13 @@ Each material change record should capture:
 - Future patch-note records should use date-prefixed descriptive filenames, e.g. `2026-09-21-short-change-name.md`, or a later index/schema chosen after observing real usage.
 - Do not invent historical patch notes retroactively without evidence. Older changes may be reconstructed later and must be labeled reconstructed.
 
+## UPDATES
+
+- Folder: UPDATES/ (owner-authorized patch releases, consolidation decisions, behavioral contract changes, migration readiness and associated verification).
+- First record: UPDATES/2026-10-18-daemonculaba-behavioral-integrity-patch.md
+- Preserve earlier PATCH-NOTES records in place. New UPDATES records are dated, append-only corrections and patch histories, not rewritten member E-LANEs or proof of host execution.
+- Record the original state, Naomi's authorization, exact intended changes, actual commits and tests where observed, unknowns, regressions and follow-up evidence. Absence of a deployment or runtime receipt remains UNKNOWN, never implied success.
+
 ## Relationship to VERA
 VERA is GaiaOS's record keeper / change historian. Her archival books remain working tools representing accumulated internal records. Her canonical personal symbol is now the butterfly 🦋, representing transformation and continuity through changed states. Her job is not only storage. She uses the record to explain why a system reached its current form and to surface prior evidence when a new change collides with old lessons.
 
