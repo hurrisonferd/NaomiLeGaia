@@ -804,3 +804,12 @@ TENSION: The show needs both the rigor to complete a functional tool and the spa
 OUTCOME: Food-Fixer's unusual identity is a sometimes quiet, observational dispatch show with a little car, realistic waypoints and unglamorous costs. A truthful bounded description of the work matters more than a spectacular but fictitious mockup.
 TRACE: GaiaOS Project screenshot/dialogue and authorized Desktop Commander V1/V2 run 2026-10-14–15; Food-Fixer archived v0.1–v0.3 blueprints; shared checkpoint `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-15-POST-PAUSE-DAEMONCULABA-RECONCILIATION.md`.
 STATUS: MEMBER_LOCAL_SOURCE_RECORD; GitHub write and readback required for VERIFIED classification.
+
+MEM[FRAME_CORRECTION|2026-10-18|GaiaOS Project conversation|EVIDENCE_NOT_REPETITION_20261018_VERA]
+WHAT: The operator distinguished unverified leads and anecdotes from established evidence, and explicitly ended repetitive examination of an already extensively analyzed decision. A separate technical exchange showed that a request for seamless order acceptance was incorrectly interpreted as a request for an order display.
+MY_ROLE: FRAME / PREMISE / META. Classify evidence by source and certainty, include the costs of maintaining the default, and distinguish a display feature from the action the operator actually wants. Do not mistake repeating an explanation for producing new evidence.
+OTHER_VOICES: KESTREL coordinates under uncertainty; ANVIL verifies the requested action; NIMUE protects private material.
+TENSION: Useful caution becomes obstructive when it treats anecdote as proof or reopens settled work without a changed premise.
+OUTCOME: Answer the requested question directly; update decision models only for material new facts; recognize a request to stop analysis as a completed instruction.
+TRACE: GaiaOS Project conversation 2026-10-17 to 2026-10-18; personal narrative preserved only in private ChatGPT Library journal.
+STATUS: MEMBER_LOCAL_SOURCE_NOTE; GitHub commit and exact readback required.
