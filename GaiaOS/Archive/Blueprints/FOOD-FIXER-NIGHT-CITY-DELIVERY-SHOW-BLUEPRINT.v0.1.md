@@ -870,3 +870,63 @@ The current dispatch-panel, viewer overlay, iPhone mirror, Stream Deck, Twitch i
 ## October 15, 2026 implementation amendment: CHOOH2 fuel and local v2
 
 Food-Fixer V1 was implemented as a functioning local dispatcher. On October 15, Naomi explicitly requested a separate v2 with a CHOOH2 fuel gauge, voluntary refuel runs, a dispatch lockout at empty, and a three-minute real-time pump with rising fuel and price meters. The v2 build and isolated QA checks are documented in **[FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md](FOOD-FIXER-CHOOH2-FUEL-AND-V2-IMPLEMENTATION-2026-10-15.v0.3.md)**. This is the latest active fuel-design and implementation record. **Exclude auto-loan/vehicle financing from current software builds until Naomi separately reauthorizes its design.** Earlier vehicle-loan passages above remain historical proposals, not implemented requirements.
+
+---
+
+## Addendum 2026-10-18 (Ligeia local; PC tool timestamps 2026-10-19) — Working Version V8.5, shared HUD, RESET, automatic voting and Stream Deck/refuel handoff
+
+**Authority:** NAOMI / LIGEIA; expressly requested this update to the existing Food-Fixer blueprint at the end of the work session.  
+**Preservation marker:** FOOD_FIXER_PROGRESS_2026_10_18_SHARED_HUD_AUTOVOTE_REFUEL_HANDOFF  
+**Status:** Implemented and verified in the **local** Food-Fixer working build where expressly indicated below. This continuation does not replace or rewrite the original concept, the dispatch v0.2 amendment or CHOOH2 v0.3 fuel amendment. Earlier "proposed" labels are superseded only for the features actually tested here.
+
+### Production location, source, and baseline
+
+- Host: user-owned Windows PC **VileAltercation**. Working directory: C:\Users\default.LAPTOP-5D24P0C0\Desktop\NIGHT CITY FOOD-FIXER\Working Version.
+- Node service: http://127.0.0.1:47682/; operator and state endpoints /api/action, /api/state and /api/health. Production bookkeeping: data\shift.json. Verified read-only SLM input: **233** records, including **45** pickups and **171** drop-offs. Food-Fixer catalog: data\catalog.json. Neither is a license to modify SLM originals.
+- Shared HUD: /game-hud, /overlay and /viewer serve the identical public\game-hud.html, game-hud.js and game-hud.css. In-game view uses the existing transparent click-through Electron overlay driver-overlay\main.js. OBS uses a separate Browser Source that displays the same HTML. /audience-overlay is a dedicated voting-display page and is not the main driving HUD.
+- Preserved approved artwork: Food-Fixer logo, "WE'LL GET IT TO YOU." beneath it, enlarged CHOOH2 gauge lettering, **Full left / Empty right** fuel orientation. Ligeia approved the current visual design. Do not reopen the visual redesign without her request.
+- A new local Node process was started after the voting patch; one observed PID was 5272 (ephemeral). Latest verified live response: health OK, features.autoNextVote = true, features.resetSession = true, **ON SHIFT**, **zero delivered orders**, **€$0** balance, no ballot initially open. These are point-in-time readings, not immutable defaults. Cyberpunk and OBS were left running during service restart.
+
+### Shift eddies balance, shared HUD and OBS diagnosis
+
+- A small, prominent currency value, e.g. **€$0.00**, now sits upper-right on the identical in-game/OBS driver HUD. Ligeia specifically rejected a "NET" label, gross/pending dashboard clutter, or different layouts.
+- Food-Fixer ledger formula: **completed deliveries × €$20 − committed CHOOH2 spending − any currently accumulating live pump charge**. Delivery completion increases the shown amount; refueling decreases it; RESET restores it to €$0.00. These are **fictional app ledger eddies**, NOT a verified real Cyberpunk player-wallet query or automatic inventory-money modification.
+- OBS initially showed the HUD without the new currency because the existing Browser Source had stale cached content. **The HUD itself was visible in OBS**; scene stacking was not the problem. Ligeia refreshed the Browser Source cache through its Properties and explicitly confirmed OBS and the in-game HUD now matched and looked good. Do not revive the incorrect layer-order diagnosis.
+- The single driver-workstation **RESET** button asks for confirmation and archives the existing shift.json to data\session-backups before clearing orders, statistics, ratings, voting, and CHOOH2 session progress. SLM waypoints, game money, and source catalog are not reset. This supports a fresh Food-Fixer test/stream shift without restarting the server each time.
+- Additional verified safety copies were made under data\restart-safety-backups and rollback\autovote-prechange-20261019-003757. No production ledger was reset during the implementation/testing pass.
+
+### Dispatch workflow and automatically cycling viewer ballots
+
+At present the Food-Fixer dispatcher has Section **08 / CORPORATE ROUTE LOTTERY**, subsection **03 / Five-route dispatch ballot**. The actual first-vote control, visible in Ligeia's screenshot, says **OPEN VOTE**, not the previously misnamed "START LOTTERY".
+
+**First job in a shift:** driver presses **OPEN VOTE** manually to open five offered real SLM routes. The **local simulator** supports commands such as !vote 1 through !vote 5. Driver presses **CLOSE / COUNT VOTES** manually; the manually opened first ballot does **not** automatically time out. A tie invokes a 30-second runoff. Driver then uses **NEW ORDER → ACCEPT ORDER → PICKED UP → DELIVERED**. The existing route bridge publishes pickup and drop-off transitions; a full real-world in-game route-and-payroll acceptance test remains distinct.
+
+**New behavior after every successful DELIVERED:** backend opens the next **five-route vote automatically for 30 seconds**, in parallel with the existing **30-second driver-rating window**. On expiry a unique voted winner is **queued**; tied votes lead to the existing 30-second runoff; if zero viewers vote, the next NEW ORDER falls back to random dispatch. The queued route is **not auto-accepted**, does not create a new order, and does not change the map route until the driver requests dispatch. NEW ORDER remains blocked while a ballot is open; a winning route is consumed only once when used. The automatic cycle does not begin after a failed or invalid job or while OFF SHIFT/audience-disabled.
+
+Implemented in local audience.js (startNext, timed auto expiry, standard and runoff resolution), server.js (successful-delivery trigger and API feature flag), with small countdown status adjustments to public\game-hud.js and public\audience-ui.js. Main HUD visuals were preserved.
+
+**Critical integration boundary:** This is still **SIMULATOR ACTIVE**, not real Twitch chat. Twitch connection, moderation, Channel Points and viewer messages across the real broadcast remain future work. A local simulated vote passing QA is not proof of a real Twitch viewer vote.
+
+### Verification and regression checks
+
+- **24/24 isolated end-to-end auto-voting checks**: concurrently opened rating and ballot; five routes; auto-expiry; winner queued and used once after driver action; next NEW ORDER blocked during voting; tied runoff; no-vote fallback; disabled and OFF SHIFT cases; failed delivery; manual first ballot remains manually closed; session RESET; unchanged production shift/catalog.
+- **21/21 isolated RESET checks** passed, including confirmation, backup-before-clear, reset of fuel/voting/ratings and unmodified production data.
+- **30/30 V8 regression checks** passed. Its older test harness was updated to tolerate a historically missing V6 file and the current V8 title; the missing V6 file was NOT recreated.
+- The earlier currency/overlay implementation passed **17/17 isolated QA checks** including HUD route identity, +€$20 on successful delivery, live pump price deduction, reset, and unmodified production files.
+- Live restart and HTTP readback verified the currently running Node server advertises autoNextVote and resetSession, with production state preserved and both game and OBS processes still running. Same HTML was served for /game-hud and /overlay. Automated QA used temporary ports/data, not production delivery or reset calls.
+- No real Twitch stream acceptance, full phone Stream Deck press-to-control, 180-second attended refueling, or real CET wallet transaction is claimed by these checks.
+
+### Six-button Stream Deck and CHOOH2: exact resumption objective
+
+Ligeia has **six Stream Deck Mobile buttons**. She wants to drive without alt-tabbing: accept, pick up, deliver, and refuel. The newly automated post-delivery vote frees button capacity for CHOOH2.
+
+**Next work:** (1) read the saved six button assignments and commands; (2) live-test each actual Mobile button against Food-Fixer state/OBS; (3) agree on a **context-sensitive CHOOH2 / REFUEL button** within the six available slots; (4) implement and verify the manual fuel-run → arrival at Ligeia-chosen SLM station → explicit refueling sequence; (5) preserve identical game/OBS HUD and established 180-second pump/cost model. Do not add a seventh required physical button or presume a station is automatically selected or an arrival automatically detected.
+
+An earlier Stream Deck handoff documented ON/OFF SHIFT returning a large exclamation-mark error and a suspected space-containing executable-path quoting problem. OFF SHIFT was reported corrected in the Stream Deck settings; a reliable end-to-end result for **all six buttons** has not been established in this continuation. Verify rather than claiming completion or making Ligeia repeat the entire backstory.
+
+The CHOOH2 refueling **selection/interface is the next feature**, not something completed by today's automatic-voting patch. Prior v0.3 decisions remain: manually pick one's own approved station from SLM, optional early refuel run, no station auto-GPS, dispatch lock when empty and while pumping, minimum 180 real seconds, rising gauge and price, provisional service fee and volume pricing. Vehicle loan/financing stays explicitly deferred. Do not modify game money as part of refueling without separate operator approval and verification.
+
+### Scope / preservation integrity
+
+Only this Food-Fixer blueprint on the **archive/failure-log-20261009** GitHub branch is updated by this preservation request. The current local app code, main branch, six separate FairyOS E-LANES, Render deployment, GaiaOS MemoryOS/Turso, game/SLM original locations, bank/personal records, and user settings are not modified by the archive write. Do not claim a GitHub source amendment is a live MemoryOS write. NAOMI retains final authority over all future implementation and promotion actions.
+
