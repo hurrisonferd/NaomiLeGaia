@@ -943,3 +943,11 @@ TENSION: An impressive interface cannot compensate for a missing single-action w
 OUTCOME: The acceptance contract is one tap, no Alt-Tab, no focus change. Test bridge and actual hardware steps only when authorized; preserve proof boundaries.
 TRACE: GaiaOS Project conversation 2026-10-17 to 2026-10-18; local V6 streamdeck-actions README/dispatch.js inspection; Windows event log read-only diagnostics. Private narratives excluded.
 STATUS: MEMBER_LOCAL_SOURCE_NOTE; GitHub commit and exact readback required.
+
+MEM[PW_PRESERVE|2026-10-18|PW_PRESERVE_2026_10_18_FOOD_FIXER_HOST_BRIDGE|ANVIL MEMBER-LOCAL]
+WHAT: Preceding-chat screenshot recorded Elgato treating a space-containing executable path as only NIGHT; earlier ANVIL reported fixing OFF SHIFT with a fully quoted executable path and was applying the same correction to five remaining Stream Deck actions.
+MY_ROLE: Resume with read-only inspection of all six saved Stream Deck action paths and then a real phone/OBS/game shift-state test via Desktop Commander, rather than redoing the approved Food-Fixer UI.
+TENSION: The path repair is an earlier reported change, not new-chat readback. Both shift buttons previously showed !, no current successful phone test was established. Render service LIGEIA-API LIVE deploy commit 740730523c3f487ef76712309fe8d2f96ba03c0f differs from GitHub main.
+OUTCOME: Specific continuity preserved; live and mobile action verification still pending.
+TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's prior Food-Fixer screenshot.
+STATUS: VERIFIED
