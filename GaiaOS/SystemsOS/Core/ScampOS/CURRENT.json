@@ -9,5 +9,8 @@
   "identity_roster_changes": false,
   "e_lane_changes": false,
   "operations_authority": "NONE",
-  "host_integration": "NOT_YET_ACTIVE"
+  "host_integration": "NOT_YET_ACTIVE",
+  "character_addenda": [
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md"
+  ]
 }
