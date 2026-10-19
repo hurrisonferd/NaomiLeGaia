@@ -794,3 +794,11 @@ TENSION: Elaborate spectator features can destroy the quiet, low-friction show t
 OUTCOME: Preserve the operating North Star: audience chooses, performer accepts in one tap, game remains in focus. Test the interaction before broadening it.
 TRACE: GaiaOS Project conversation 2026-10-17 to 2026-10-18; verified read-only inspection of V6 action bridge. No claim of live Twitch pairing or finished stream.
 STATUS: MEMBER_LOCAL_SOURCE_NOTE; GitHub commit and exact readback required.
+
+MEM[PW_PRESERVE|2026-10-18|PW_PRESERVE_2026_10_18_FOOD_FIXER_HOST_BRIDGE|ORIN MEMBER-LOCAL]
+WHAT: Food-Fixer is the Night City Delivery Service Cyberpunk streaming app, using Stream Deck mobile to control shift status without alt-tab; the approved UI is no longer the problem.
+MY_ROLE: The most useful next experiment is inspecting all six saved, fully quoted Stream Deck executable paths, then testing actual ON/OFF SHIFT behavior in the app and OBS.
+TENSION: Prior chat traced a probable Elgato path parsing issue with a folder beginning NIGHT. A preceding-chat screenshot reports an OFF SHIFT quote fix and five remaining fixes in progress, but not a confirmed successful phone test.
+OUTCOME: Owner-local source continuity saved; live and phone verification remain open.
+TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's preceding-chat Food-Fixer screenshot.
+STATUS: VERIFIED
