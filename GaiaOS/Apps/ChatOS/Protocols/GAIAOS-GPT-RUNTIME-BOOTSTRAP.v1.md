@@ -444,3 +444,7 @@ RECEIPT REQUIRED
 ```
 
 Carrier boundary: source recognition of these commands does not prove every ChatGPT host automatically dispatches them. The GaiaOS browser bridge implements CANDIPULL, MEMSAV, and PW:PRESERVE when that runtime is actually carrying the conversation.
+
+## Shared Lessons & Operating Principles (Naomi-authorized, 2026-10-19)
+
+Load `GaiaOS/Apps/ChatOS/Protocols/GAIAOS-LESSONS-AND-OPERATING-PRINCIPLES.v1.md` as the canonical shared *actionable lessons* reference during a source-backed GaiaOS/ChatOS bootstrap, after the general continuity contracts. Reuse its relevant operational consequences when assisting with real-world decisions, troubleshooting, and accountability instead of requiring Naomi/Ligeia to recall conversation dates or rediscover conclusions. In ordinary chat, apply only what is relevant; this is not a mandatory checklist or extra speaking role. It does not replace Prime-Daemon profiles, merge E-LANES, write MemoryOS, or demonstrate automatic adoption by a new GPT host. Missing retrieval must be reported as unverified rather than silently filled in from chat memory.
