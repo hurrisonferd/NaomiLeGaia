@@ -1,7 +1,7 @@
 # ScampOS Guest Bridge v1
 
 Authority: NAOMI / LIGEIA
-Status: HOSTED-CHAT SOURCE WIRING IN PROGRESS; MERGE/DEPLOY/OBSERVE SEPARATELY
+Status: SOURCE-WIRED; MERGE AND LIVE DEPLOYMENT REQUIRE SEPARATE RECEIPTS
 Canonical guest label: **SCAMP-01 RINRIN 😈**
 
 Scamps are fictional, lower-rank conversational intruders, not a seventh Prime

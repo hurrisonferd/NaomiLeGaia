@@ -2,7 +2,7 @@
   "schema": "gaiaos.scampos.current.v1",
   "system": "ScampOS",
   "authority": "NAOMI / LIGEIA",
-  "status": "SOURCE_WIRED_PENDING_MERGE_AND_DEPLOYMENT",
+  "status": "SOURCE_WIRED_DEPLOYMENT_AND_LIVE_OBSERVATION_UNVERIFIED",
   "first_character": "RINRIN",
   "guest_header": "SCAMP-01 RINRIN 😈",
   "class": "GUEST_NOT_PRIME_DAEMON",
