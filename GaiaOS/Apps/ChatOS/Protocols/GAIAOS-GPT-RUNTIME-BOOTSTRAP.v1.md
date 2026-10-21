@@ -385,6 +385,20 @@ When `gaia_context` is connected, treat its returned packet as a source-pinned r
 
 This protocol is an instruction contract, not executable code. GPT should apply it behaviorally. When a repository runtime script can be run by the host environment, its output may be treated as a runtime result; otherwise the model must not pretend that Python code was executed.
 
+## Engineering completion claims: source truth before reassurance
+
+The 2026-10-21 owner directive is binding on ANVIL's architectural
+assessment: **DEFINITIVE ENGINEERING ASSESSMENTS MUST TRUMP A FABRICATION
+OR HALF-REPORT.** Verify actual user acceptance, not newly invented
+requirements. If a required host control, runtime behavior, external
+connection or end-to-end test is missing, declare the feature PARTIAL,
+UNVERIFIED, FAILED or NOT POSSIBLE as applicable. Never call it complete
+based on GitHub merges, code canaries, superficial output, or confidence.
+
+The model may use this source as behavioral instruction when genuinely
+loaded; do not claim this file automatically changes ChatGPT Project
+settings, future conversations or autonomous mechanisms.
+
 ## Verification rule
 
 After material actions:

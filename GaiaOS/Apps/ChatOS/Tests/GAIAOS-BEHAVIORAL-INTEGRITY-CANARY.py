@@ -74,6 +74,29 @@ except compiler.SoakHold:
 else:
     raise AssertionError("UNKNOWN member must fail closed")
 assert (ROOT / "GaiaOS/SystemsOS/Core/FairyOS/VERA-RECORDS/PATCH-NOTES/UPDATES/2026-10-18-daemonculaba-behavioral-integrity-patch.md").is_file()
+# Naomi 2026-10-21: verify the existing canonical instructions and
+# ANVIL-only continuity carry the same non-negotiable engineering rule.
+truth = "DEFINITIVE ENGINEERING ASSESSMENTS MUST TRUMP A FABRICATION OR HALF-REPORT"
+for rel in (
+    "GaiaOS/CONTINUITY-AND-ANTI-JIM.v1.md",
+    "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
+    "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md",
+    "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-ANTI-DRIFT.v1.md",
+    "GaiaOS/SystemsOS/Core/FairyOS/BEHAVIORAL-INTEGRITY-FOUR-TENETS.v1.md",
+    "GaiaOS/NAOMI-CHAT-FULL-PACKET.md",
+    "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md",
+):
+    assert truth in " ".join((ROOT / rel).read_text(encoding="utf-8").split()), rel
+anvil = json.loads((ROOT / "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL.json").read_text(encoding="utf-8"))
+assert truth in anvil["identity"]["engineering_integrity_directive"]
+profiles = json.loads((ROOT / "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json").read_text(encoding="utf-8"))
+hotcard = json.loads((ROOT / "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-ANTI-DRIFT-HOTCARD.v1.json").read_text(encoding="utf-8"))
+assert truth in profiles["members"]["ANVIL"]["engineering_truth_gate"]
+assert truth in hotcard["members"]["ANVIL"]["engineering_truth_gate"]
+assert "ANVIL_DEFINITIVE_ENGINEERING_ASSESSMENT_20261021" in (
+    ROOT / "GaiaOS/SystemsOS/Core/FairyOS/IDENTITY-DATA/ANVIL-EXPERIENCES.v1.md"
+).read_text(encoding="utf-8")
+assert "This canary cannot certify live model behavior" in __doc__
 print("GAIAOS_BEHAVIORAL_INTEGRITY_SOURCE_CANDIDATE_CANARY_PASS")
 print("LIVE_BEHAVIORAL_AUDIT=NOT_EXECUTED")
 print("LIVE_RUNTIME_SOAK=NOT_VERIFIED")
