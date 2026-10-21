@@ -1337,12 +1337,11 @@
         "header": "SCAMP-002 HELTI-SKELTI 🕸️",
         "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
         "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
-        "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
-        "knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+        "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
       }
     },
     "guest_count": 2,
     "collision_policy": "ONE_PER_RESPONSE_ROTATING_FAIR_TIEBREAK",
-    "knowledge_threads": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+    "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH"
   }
 }

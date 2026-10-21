@@ -93,17 +93,20 @@ class ScampTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             adapter.insert_guest("Before","Bad","After",{**d,"header":RIN})
 
-    def test_knowledge_has_grounded_unique_seeds(self):
-        catalog=json.loads((CORE/"Knowledge/HELTI-SKELTI-FACTS.v1.json").read_text(encoding="utf-8"))
-        self.assertEqual(catalog["identity"],HELTI)
-        self.assertGreaterEqual(len(catalog["items"]),10)
-        self.assertEqual(len({x["id"] for x in catalog["items"]}),len(catalog["items"]))
-        for item in catalog["items"]:
-            self.assertTrue(item["line"])
-            self.assertTrue(item["source"])
-            self.assertTrue(item["url"].startswith("https://"))
-            self.assertTrue(item["practical_takeaway"])
-            self.assertTrue(item["safe_lab"])
+    def test_unbounded_knowledge_not_a_fixed_fact_list(self):
+        current=json.loads((CORE/"CURRENT.json").read_text(encoding="utf-8"))
+        helti=current["guests"]["SCAMP-002"]
+        self.assertNotIn("knowledge",helti)
+        self.assertEqual(current["knowledge_mode"],
+                         "GENERATIVE_MODEL_KNOWLEDGE_OPTIONAL_LIVE_RESEARCH")
+        profile=scamp.load_registry()["SCAMP-002"]["character"]
+        self.assertEqual(profile["knowledge"]["mode"],"OPEN_ENDED_GENERATIVE_INTELLIGENCE")
+        self.assertNotIn("source",profile["knowledge"])
+        api=(REPO/"api/gaiaos_api.py").read_text(encoding="utf-8")
+        host=(REPO/"api/gaiaos_scamp_chat.py").read_text(encoding="utf-8")
+        self.assertNotIn("HELTI-SKELTI-FACTS.v1.json",api)
+        self.assertNotIn('fact["line"]',host)
+        self.assertNotIn('facts[(turn-',host)
 
     def test_six_prime_roster_and_elanes_not_mutated(self):
         fair=REPO/"GaiaOS/SystemsOS/Core/FairyOS"

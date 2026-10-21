@@ -18,7 +18,7 @@ from fastapi import FastAPI, Header, HTTPException, Request, Response
 from fastapi.responses import HTMLResponse
 from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
-from openai import OpenAI
+from openai import OpenAI, BadRequestError
 import gaiaos_presentation_guard
 import gaiaos_scamp_chat
 from pydantic import BaseModel, Field
@@ -120,7 +120,6 @@ SCAMPOS_PATHS = [
     "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
     "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
     "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
-    "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json",
 ]
 LOAD_PATHS = CORE_LOAD_PATHS + COUNCIL_PATHS + SCAMPOS_PATHS
 
@@ -273,7 +272,7 @@ def _council_bundle(commit: str) -> dict[str, Any]:
 
 
 def _scampos_bundle(commit: str) -> dict[str, Any]:
-    """Pin both Scamp guests, full personas and bounded fact pool to one commit."""
+    """Pin both Scamp guests and cumulative personas to one Git commit."""
     current = _json_file(commit, SCAMPOS_PATHS[0])
     bridge = _fetch_file(commit, SCAMPOS_PATHS[4])
     if current.get("guest_order") != ["SCAMP-001", "SCAMP-002"]:
@@ -306,14 +305,8 @@ def _scampos_bundle(commit: str) -> dict[str, Any]:
         ):
             raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_SOURCE_HOLD: "+guest_id)
         result[guest_id] = {"character": profile, "addendum": traits, "policy": policy}
-    knowledge = _json_file(commit, SCAMPOS_PATHS[8])
-    if not (knowledge.get("identity") == expected["SCAMP-002"][0]
-            and isinstance(knowledge.get("items"), list)
-            and len(knowledge["items"]) >= 8
-            and all(isinstance(x.get("line"), str) and x.get("source")
-                    for x in knowledge["items"])):
-        raise HTTPException(status_code=503, detail="SCAMPOS_KNOWLEDGE_HOLD")
-    return {"current": current, "guests": result, "knowledge_threads": knowledge,
+    return {"current": current, "guests": result,
+            "knowledge_mode": "OPEN_ENDED_MODEL_AND_OPTIONAL_LIVE_RESEARCH",
             "bridge": bridge, "source_commit": commit}
 
 
@@ -4395,11 +4388,31 @@ def chat(
         except (ValueError, KeyError, TypeError) as exc:
             raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_POLICY_HOLD") from exc
     client = OpenAI(api_key=OPENAI_API_KEY)
-    response = client.responses.create(
-        model=OPENAI_MODEL,
-        instructions=instructions,
-        input=[{"role": message.role, "content": message.content} for message in request.messages],
-    )
+    response_kwargs = {
+        "model": OPENAI_MODEL,
+        "instructions": instructions,
+        "input": [
+            {"role": message.role, "content": message.content}
+            for message in request.messages
+        ],
+    }
+    guest_research_tools = gaiaos_scamp_chat.response_tool_options(guest_decision)
+    guest_research_tool_unavailable = False
+    try:
+        response = client.responses.create(**response_kwargs, **guest_research_tools)
+    except BadRequestError as exc:
+        # Preserve truthful model-only answers if a configured model/host
+        # cannot use Responses web_search. Never claim a search occurred.
+        detail = str(exc).lower()
+        if not (guest_research_tools
+                and ("web_search" in detail or "web search" in detail)
+                and any(token in detail for token in (
+                    "unsupported", "not supported", "invalid", "unavailable",
+                    "not allowed", "does not support"
+                ))):
+            raise
+        guest_research_tool_unavailable = True
+        response = client.responses.create(**response_kwargs)
     # Browser /chat is the ordinary hosted response path. Never return an
     # attributed Prime Daemon block until the current pinned source validates it.
     current_user_text = (
@@ -4452,6 +4465,18 @@ def chat(
     }
     if guest_receipt is not None:
         output["scampos_guest"] = guest_receipt
+        if guest_decision and guest_decision.get("guest_id") == "SCAMP-002":
+            research = gaiaos_scamp_chat.collect_web_citations(response)
+            research["tool_offered"] = bool(guest_research_tools)
+            research["tool_unavailable"] = guest_research_tool_unavailable
+            output["scampos_research"] = research
+            if research["web_search_used"] and research["sources"]:
+                # Keep links user-visible, not just hidden in model metadata.
+                citations = " · ".join(
+                    f"[{i + 1}]({source['url']})"
+                    for i, source in enumerate(research["sources"])
+                )
+                output["output"] += "\n\nSources: " + citations
     if applied_memory is not None:
         output["memory_context"] = {
             "status": "BIGBANG_VERIFIED_CONTEXT_USED",
