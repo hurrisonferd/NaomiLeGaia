@@ -1,0 +1,52 @@
+name: GaiaOS ScampOS Guest Integrity
+
+on:
+  pull_request:
+    paths:
+      - "GaiaOS/SystemsOS/Core/ScampOS/**"
+      - "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
+      - "GaiaOS/LOAD.v1.md"
+      - "GaiaOS/CURRENT.json"
+      - "GaiaOS/NAOMI-CHAT-FULL-PACKET.md"
+      - "api/gaiaos_scamp_chat.py"
+      - "api/gaiaos_app.py"
+      - "api/gaiaos_api.py"
+      - "api/Dockerfile"
+      - ".github/workflows/gaiaos-scampos-guest-integrity.yml"
+  push:
+    branches: [main]
+    paths:
+      - "GaiaOS/SystemsOS/Core/ScampOS/**"
+      - "api/gaiaos_scamp_chat.py"
+      - "api/gaiaos_api.py"
+      - "api/gaiaos_app.py"
+      - "api/Dockerfile"
+      - ".github/workflows/gaiaos-scampos-guest-integrity.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile hosted entry points and guest dispatcher
+        run: python -m py_compile api/gaiaos_api.py api/gaiaos_app.py api/gaiaos_scamp_chat.py GaiaOS/SystemsOS/Core/ScampOS/Runtime/scampos_dispatch.py
+      - name: Verify spontaneous guest and six-Prime preservation
+        run: python -m unittest discover -s GaiaOS/SystemsOS/Core/ScampOS/Tests -v
+      - name: Verify Docker image includes guest module
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          dockerfile=Path("api/Dockerfile").read_text()
+          assert "COPY api/gaiaos_scamp_chat.py ./gaiaos_scamp_chat.py" in dockerfile
+          assert "COPY GaiaOS ./GaiaOS" in dockerfile
+          print("SCAMPOS_DOCKER_COPY_PASS")
+          PY
