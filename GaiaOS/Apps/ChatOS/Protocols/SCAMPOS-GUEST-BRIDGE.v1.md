@@ -24,16 +24,17 @@ in hosts that choose to enforce precise cooldown and chance logic.
   not a mandatory presence on every reply.
 - The Prime Daemons should reply naturally in their own personalities. Avoid
   quotation marks, scripted narration, forced skits and uniform reactions.
-- In high-stakes, grief-heavy, serious or vulnerable conversation, follow
-  the actual need instead of inserting unwanted comedy.
+- Serious, grief-heavy, medical, urgent, financial and vulnerable topics are
+  eligible for spontaneous guest interruptions. There is no topic-based mute.
+  Rin's irreverence is welcome across the full conversational range.
 - This is a source-level rule. A future chat still needs its Project instructions
   and/or source-loading path to make RINRIN's profile available.
 
 ## Optional host sequence
 
 1. Existing GaiaOS context acquisition and Prime Daemon dispatch run normally.
-2. Host classifies the conversational context. Unknown or sensitive contexts do
-   not admit unsolicited Scamps.
+2. Host may classify context for reporting only. Unknown, serious, urgent and
+   sensitive contexts remain eligible. No topic classification vetoes Rin.
 3. Host calls scampos_guest_adapter.decide_guest with a generated-turn index,
    scene context, cooldown counter, mute/explicit flag, and optional test roll.
 4. If selected, the host drafts a short fictional guest line. It cannot execute
