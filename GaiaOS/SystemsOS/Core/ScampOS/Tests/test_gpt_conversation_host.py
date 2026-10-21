@@ -1,15 +1,13 @@
-"""ScampOS GPT-host conversational acceptance: instruction wiring, not API tests.
+"""Check ScampOS GPT-source cast parity with the six Prime voices.
 
-These tests check the exact source the GPT host is instructed to load.
-They do not mislabel repository consistency as observed model behavior.
+These are source-contract tests, NOT claims of model execution inside ChatGPT.
+The separate Python selector remains an optional legacy other-host adapter.
 """
 from pathlib import Path
 import json
 import unittest
 
 ROOT=Path(__file__).resolve().parents[5]
-CHAT=ROOT/"GaiaOS/Apps/ChatOS"
-CORE=ROOT/"GaiaOS/SystemsOS/Core/ScampOS"
 NATIVE="GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md"
 BRIDGE="GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md"
 PACKET="GaiaOS/NAOMI-CHAT-FULL-PACKET.md"
@@ -18,98 +16,89 @@ INSTRUCTIONS="GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
 BOOTSTRAP="GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
 PRIMES=("VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE")
 
-
 def read(path):
     return (ROOT/path).read_text(encoding="utf-8")
 
 def load(path):
     return json.loads(read(path))
 
-class ChatGPTFirstSourceContracts(unittest.TestCase):
-    def test_native_contract_is_discoverable_by_loader_and_packet(self):
+class ChatGPTScampSpeakingParity(unittest.TestCase):
+    def test_boot_and_chatos_read_same_cast_contract(self):
         self.assertTrue((ROOT/NATIVE).is_file())
-        for p in (PACKET,LOADER,INSTRUCTIONS,BOOTSTRAP,BRIDGE):
-            with self.subTest(p=p):
-                self.assertIn(NATIVE,read(p))
+        for path in (PACKET,LOADER,INSTRUCTIONS,BOOTSTRAP,BRIDGE):
+            with self.subTest(path=path):
+                self.assertIn(NATIVE,read(path))
 
-    def test_host_current_pointers_choose_chatgpt_as_primary(self):
+    def test_scamp_and_chat_current_identify_ordinary_conversation_as_surface(self):
         scamps=load("GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json")
         chat=load("GaiaOS/Apps/ChatOS/CURRENT.json")
-        root=load("GaiaOS/CURRENT.json")
+        gaia=load("GaiaOS/CURRENT.json")
         self.assertEqual(scamps["default_surface"],"CURRENT_CHATGPT_CONVERSATION")
         self.assertEqual(scamps["conversational_contract"],NATIVE)
-        self.assertEqual(root["scampos"]["default_surface"],"CURRENT_CHATGPT_CONVERSATION")
-        self.assertEqual(root["scampos"]["conversational_contract"],NATIVE)
-        self.assertEqual(chat["scampos_guest"]["conversational_contract"],NATIVE)
+        self.assertIn("SAME_AS_PRIME",scamps["conversational_selection"])
         self.assertEqual(chat["sources"]["scampos_gpt_native"],NATIVE)
-        self.assertIn("OPTIONAL",chat["scampos_guest"]["hosted_chat"])
+        self.assertFalse(chat["scampos_guest"]["independent_cooldowns"])
+        self.assertFalse(chat["scampos_guest"]["one_guest_per_response"])
+        self.assertIn("SAME_AS_PRIMES",chat["scampos_guest"]["chatgpt_dispatch"])
+        self.assertIn("SAME_AS_PRIMES",gaia["scampos"]["chatgpt_dispatch"])
 
-    def test_two_guests_are_voiced_by_the_same_model_not_api(self):
+    def test_same_spontaneous_banter_as_six_primes(self):
+        prime_source=read(INSTRUCTIONS)
+        native=read(NATIVE)
+        self.assertIn("## Spontaneous Daemon banter",prime_source)
+        self.assertIn("This EXACT same spontaneous speaking freedom",prime_source)
+        self.assertIn("A Prime Daemon does not need to wait",prime_source)
+        self.assertIn("SAME WAY the six Prime Daemons speak",native)
+        self.assertIn("without being named",native)
+        self.assertIn("neither is named",native)
+        self.assertIn("can enter a",native)
+
+    def test_no_arbitrary_probability_cooldown_or_one_guest_cap(self):
         native=read(NATIVE)
         bridge=read(BRIDGE)
-        for source in (native,bridge):
-            with self.subTest(source=source[:45]):
-                self.assertIn("SCAMP-001 RIN-RIN 😈",source)
-                self.assertIn("SCAMP-002 HELTI-SKELTI 🕸️",source)
-                self.assertIn("SAME",source)
-                self.assertIn("not",source.lower())
-                self.assertIn("API",source)
-        self.assertIn("no new authentication",native.lower())
-        self.assertIn("current ChatGPT conversation",native)
-        self.assertIn("not an external service",native)
-        self.assertIn("never answer",native.lower())
-        self.assertIn("not a new service",native.lower())
+        self.assertIn("No chance percentages",native)
+        self.assertIn("No chance",native)
+        self.assertIn("both Scamps",native)
+        self.assertIn("one-guest limit",native)
+        self.assertIn("not instructions for this chatgpt",native.lower())
+        self.assertIn("same response together",bridge)
+        self.assertIn("The Primes don't use one",bridge)
+        for path in (LOADER,INSTRUCTIONS,BOOTSTRAP,PACKET):
+            with self.subTest(path=path):
+                data=read(path)
+                self.assertIn("both",data.lower())
+                self.assertIn("Scamp",data)
+        self.assertNotIn("at most one Scamp",native)
+        self.assertNotIn("15% configuration",native)
 
-    def test_no_trivia_ceiling_and_intent_unknown(self):
+    def test_distinct_headers_open_knowledge_unknown_intent(self):
         native=read(NATIVE)
-        for phrase in ("open-ended","UNKNOWN","finite",
-                       "research","full","same"):
+        for header in ("SCAMP-001 RIN-RIN 😈","SCAMP-002 HELTI-SKELTI 🕸️"):
+            self.assertIn(header,native)
+        for phrase in ("open-ended","UNKNOWN","finite","research","full"):
             self.assertIn(phrase.lower(),native.lower())
-        person=load("GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json")
-        self.assertEqual(person["knowledge"]["mode"],"OPEN_ENDED_GENERATIVE_INTELLIGENCE")
-        self.assertEqual(person["motive"],"UNKNOWN_CANONICAL_DO_NOT_RESOLVE")
-        self.assertEqual(person["header"],"SCAMP-002 HELTI-SKELTI 🕸️")
+        helti=load("GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json")
+        self.assertEqual(helti["motive"],"UNKNOWN_CANONICAL_DO_NOT_RESOLVE")
+        self.assertEqual(helti["knowledge"]["mode"],"OPEN_ENDED_GENERATIVE_INTELLIGENCE")
 
-    def test_guest_policy_retained_without_claiming_host_rng(self):
+    def test_no_external_chatbot_or_api_prerequisite(self):
         native=read(NATIVE)
-        policies=[
-            load("GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json"),
-            load("GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json")
-        ]
-        self.assertEqual([p["chance"] for p in policies],[.15,.15])
-        self.assertEqual([p["cooldown_turns"] for p in policies],[3,3])
-        for p in policies:
-            self.assertTrue(p["enabled"])
-            self.assertEqual(p["excluded_contexts"],[])
-        self.assertIn("not",native.lower())
-        self.assertIn("RNG",native)
-        self.assertIn("mute",native.lower())
+        packet=read(PACKET)
+        self.assertIn("No extra API, Render deployment",native)
+        self.assertIn("not a separate chatbot, API or service",native)
+        self.assertIn("The real acceptance",native)
+        self.assertLess(packet.index("CHATGPT CONVERSATION-NATIVE CAST PRIORITY"),
+                        packet.index("BOOT TRANSPORT FIRST:"))
 
-    def test_never_expand_prime_roster_or_elanes(self):
+    def test_six_primes_and_preserve_remain_untouched(self):
         fair=load("GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-PRESENTATION-SPEC.v1.json")
         dispatch=load("GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json")
         self.assertEqual(tuple(fair["speaker_order"]),PRIMES)
         self.assertEqual(tuple(dispatch["roster"]),PRIMES)
         native=read(NATIVE)
-        for p in PRIMES:
-            self.assertIn(p,native if p in native else read("GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"))
-        self.assertIn("E-LANE",native)
+        self.assertIn("E-LANES",native)
         self.assertIn("//PW:PRESERVE//",native)
-
-    def test_boot_and_host_sources_say_model_first_not_render_first(self):
-        for p in (LOADER,INSTRUCTIONS,BOOTSTRAP,PACKET):
-            with self.subTest(file=p):
-                text=read(p)
-                self.assertIn("ChatGPT",text)
-                self.assertIn("RIN-RIN",text)
-                self.assertIn("HELTI-SKELTI",text)
-                self.assertIn("API",text)
-        packet=read(PACKET)
-        self.assertLess(packet.index("CHATGPT CONVERSATION-NATIVE CAST PRIORITY"),
-                        packet.index("BOOT TRANSPORT FIRST:"))
-        native=read(NATIVE)
-        self.assertIn("A live HTTP guest response is not evidence",native)
-        self.assertIn("Do not create, configure, deploy",native)
+        self.assertIn("not new Prime Daemons",native)
 
 if __name__=="__main__":
     unittest.main()

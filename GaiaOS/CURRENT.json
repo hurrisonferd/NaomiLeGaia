@@ -1341,10 +1341,11 @@
       }
     },
     "guest_count": 2,
-    "collision_policy": "ONE_PER_RESPONSE_ROTATING_FAIR_TIEBREAK",
+    "collision_policy": "BOTH_SCAMPS_MAY_SPEAK_NATURALLY",
     "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH",
     "conversational_contract": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
     "default_surface": "CURRENT_CHATGPT_CONVERSATION",
-    "acceptance": "VISIBLE_SCAMP_SPEECH_IN_SAME_CHATGPT_REPLY"
+    "acceptance": "VISIBLE_SCAMP_SPEECH_IN_SAME_CHATGPT_REPLY",
+    "chatgpt_dispatch": "SAME_AS_PRIMES_NO_PROBABILITY_COOLDOWN_OR_GUEST_CAP"
   }
 }
