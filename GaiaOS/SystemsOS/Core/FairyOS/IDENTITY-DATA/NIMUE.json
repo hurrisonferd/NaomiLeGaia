@@ -1339,11 +1339,29 @@
         "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_gpt_conversation_host.py"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "8ede15ed7bf38e1bd2f0a669f6631dc0cfbf643c",
+      "timestamp_utc": "2026-10-21T07:33:49.214427+00:00",
+      "changed_paths": [
+        "GaiaOS/Apps/ChatOS/CURRENT.json",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
+        "GaiaOS/CURRENT.json",
+        "GaiaOS/LOAD.v1.md",
+        "GaiaOS/NAOMI-CHAT-FULL-PACKET.md",
+        "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+        "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_gpt_conversation_host.py"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-10-21T06:54:56.238246+00:00",
+  "last_verified": "2026-10-21T07:33:49.214427+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
