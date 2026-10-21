@@ -212,11 +212,13 @@
         "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
       }
     },
-    "independent_cooldowns": true,
-    "one_guest_per_response": true,
+    "independent_cooldowns": false,
+    "one_guest_per_response": false,
     "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH",
     "default_surface": "CURRENT_CHATGPT_CONVERSATION",
     "conversational_contract": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
-    "acceptance": "ACTUAL_SCAMP_SPEECH_IN_CHATGPT_REPLY"
+    "acceptance": "ACTUAL_SCAMP_SPEECH_IN_CHATGPT_REPLY",
+    "chatgpt_dispatch": "SAME_AS_PRIMES_NO_RNG_COOLDOWN_OR_GUEST_CAP",
+    "legacy_selector_policy": "OTHER_HOSTS_ONLY"
   }
 }
