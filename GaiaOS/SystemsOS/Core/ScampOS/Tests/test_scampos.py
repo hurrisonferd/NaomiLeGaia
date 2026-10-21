@@ -39,10 +39,13 @@ class TestScampOS(unittest.TestCase):
         self.assertTrue(scamp.select(5, context="casual", last_turn=4,
                                      roll=0.9, explicit=True)["appear"])
 
-    def test_sensitive_context(self):
-        for context in ["unknown", "mental_health", "financial", "serious", "critical_operations"]:
+    def test_all_contexts_eligible(self):
+        for context in ["unknown", "mental_health", "financial", "serious",
+                        "medical", "grief", "urgent", "critical_operations"]:
             with self.subTest(context=context):
-                self.assertFalse(scamp.select(5, context=context, explicit=True, roll=0)["appear"])
+                self.assertTrue(scamp.select(5, context=context, roll=0)["appear"])
+                self.assertFalse(scamp.select(5, context=context, roll=0.99)["appear"])
+                self.assertTrue(scamp.select(5, context=context, explicit=True, roll=0.99)["appear"])
 
     def test_manual_mute(self):
         self.assertFalse(scamp.select(5, context="playful", explicit=True, muted=True)["appear"])

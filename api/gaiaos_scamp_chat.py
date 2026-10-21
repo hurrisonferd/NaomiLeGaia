@@ -4,7 +4,6 @@ from pathlib import Path
 import importlib.util
 ROOT = Path(__file__).resolve().parents[1]
 HEADER = "SCAMP-01 RINRIN 😈"
-SENSITIVE = re.compile(r"\b(?:suicid\w*|self.harm|overdos\w*|hospital\w*|tonsil\w*|throat|infection|medical|medicat\w*|clinic|grief|funeral|rent|eviction|debt|financial|credit.card|paycheck|payment|bank|homeless\w*|trauma|panic.attack|depress\w*)\b",re.I)
 GAMING = re.compile(r"\b(?:cyberpunk|edgerunners|night city|galena|watson|gaming|game|choom)\b",re.I)
 CREATIVE = re.compile(r"\b(?:ableton|splice|synth|samples?|dj|bassline|music|song|producer|track|remix)\b",re.I)
 TECH = re.compile(r"\b(?:plugin|python|code|programming|ports?|jack|cable|desktop|app|debug|adapter|build|computer)\b",re.I)
@@ -12,7 +11,6 @@ CASUAL = re.compile(r"\b(?:lol|lmao|haha|pizza|jacket|funny|hilarious|silly|ridi
 
 def context(text):
     if not text or not isinstance(text,str): return "unknown"
-    if SENSITIVE.search(text): return "serious"
     for name,matcher in (("gaming",GAMING),("creative",CREATIVE),("light_technical",TECH),("casual",CASUAL)):
         if matcher.search(text): return name
     return "unknown"

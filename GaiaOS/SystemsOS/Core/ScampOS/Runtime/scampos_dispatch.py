@@ -19,7 +19,7 @@ def load_policy():
 def select(turn, context="unknown", last_turn=None, roll=None, explicit=False, muted=False):
     """Select without writing state or generating prose.
 
-    A host classifies context independently; unknown always fails closed.
+    Context is descriptive metadata, never a topic-based exclusion.
     Supplied roll permits deterministic tests. Return next_last_turn to a host
     capable of storing temporary session state, not to a durable memory system.
     """
@@ -38,8 +38,6 @@ def select(turn, context="unknown", last_turn=None, roll=None, explicit=False, m
               "guest_authority": "NONE"}
     if muted or not p["enabled"]:
         result["reason"] = "MUTED"
-    elif context not in p["allowed_contexts"] or context in p["excluded_contexts"]:
-        result["reason"] = "CONTEXT_EXCLUDED"
     elif explicit and p["explicit_invocation_bypasses_chance"]:
         result.update(appear=True, reason="EXPLICIT", next_last_turn=turn)
     elif last_turn is not None and turn - last_turn <= p["cooldown_turns"]:

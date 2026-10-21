@@ -8,26 +8,14 @@
   "max_guest_lines": 2,
   "enabled": true,
   "allowed_contexts": [
-    "playful",
-    "casual",
-    "creative",
-    "gaming",
-    "light_technical"
+    "*"
   ],
-  "excluded_contexts": [
-    "unknown",
-    "urgent",
-    "serious",
-    "medical",
-    "mental_health",
-    "grief",
-    "financial",
-    "critical_operations"
-  ],
+  "excluded_contexts": [],
   "explicit_invocation_bypasses_chance": true,
-  "explicit_invocation_requires_allowed_context": true,
+  "explicit_invocation_requires_allowed_context": false,
   "manual_mute": true,
   "host_sends_context": "unknown by default",
   "effect_authority": "NONE",
-  "note": "Guest selector only runs when host chooses to call it for a response. It never initiates independent messages."
+  "note": "No topic-based suppression, including serious, urgent, medical, mental-health, grief, financial, critical-operations or unknown. Selection depends only on enabled, manual mute, explicit invocation, cooldown and chance. The guest never initiates independent messages.",
+  "context_filter": "NONE_ALL_TOPICS_ELIGIBLE"
 }
