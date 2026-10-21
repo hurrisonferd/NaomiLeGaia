@@ -5,6 +5,7 @@ on:
     paths:
       - "GaiaOS/SystemsOS/Core/ScampOS/**"
       - "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md"
       - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"
       - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"
       - "GaiaOS/LOAD.v1.md"
@@ -19,6 +20,8 @@ on:
     branches: [main]
     paths:
       - "GaiaOS/SystemsOS/Core/ScampOS/**"
+      - "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md"
       - "api/gaiaos_scamp_chat.py"
       - "api/gaiaos_api.py"
       - "api/gaiaos_app.py"
