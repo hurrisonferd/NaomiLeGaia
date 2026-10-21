@@ -1323,7 +1323,7 @@
     "guest_bridge": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
     "header": "SCAMP-001 RIN-RIN 😈",
     "type": "GUEST_NOT_PRIME_DAEMON",
-    "integration": "SOURCE_WIRED_PENDING_DEPLOYMENT",
+    "integration": "GPT_CONVERSATION_FIRST; EXTERNAL_API_ADAPTER_OPTIONAL",
     "guests": {
       "SCAMP-001": {
         "name": "RIN-RIN",
@@ -1342,6 +1342,9 @@
     },
     "guest_count": 2,
     "collision_policy": "ONE_PER_RESPONSE_ROTATING_FAIR_TIEBREAK",
-    "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH"
+    "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH",
+    "conversational_contract": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
+    "default_surface": "CURRENT_CHATGPT_CONVERSATION",
+    "acceptance": "VISIBLE_SCAMP_SPEECH_IN_SAME_CHATGPT_REPLY"
   }
 }

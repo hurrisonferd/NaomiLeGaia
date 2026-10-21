@@ -53,7 +53,8 @@
     "scampos_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
     "scampos_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
     "scampos_helti_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
-    "scampos_helti_policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
+    "scampos_helti_policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
+    "scampos_gpt_native": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -192,8 +193,8 @@
     "spontaneous": true,
     "prime_roster_change": false,
     "e_lane_change": false,
-    "hosted_chat": "SOURCE_WIRED_PENDING_DEPLOYMENT",
-    "chatgpt_host": "SOURCE_GUIDANCE_ONLY_NO_AUTOMATIC_CODE_INJECTION",
+    "hosted_chat": "SEPARATE_OPTIONAL_CARRIER_NOT_GPT_PREREQUISITE",
+    "chatgpt_host": "MODEL_AUTHORED_SAME_CHATGPT_CONVERSATION_PRIMARY",
     "guest_count": 2,
     "guests": {
       "SCAMP-001": {
@@ -213,6 +214,9 @@
     },
     "independent_cooldowns": true,
     "one_guest_per_response": true,
-    "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH"
+    "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH",
+    "default_surface": "CURRENT_CHATGPT_CONVERSATION",
+    "conversational_contract": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
+    "acceptance": "ACTUAL_SCAMP_SPEECH_IN_CHATGPT_REPLY"
   }
 }
