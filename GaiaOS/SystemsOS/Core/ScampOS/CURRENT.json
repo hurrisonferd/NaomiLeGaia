@@ -1,0 +1,24 @@
+{
+  "schema": "gaiaos.scampos.current.v1",
+  "system": "ScampOS",
+  "authority": "NAOMI / LIGEIA",
+  "status": "SOURCE_WIRED_DEPLOYMENT_AND_LIVE_OBSERVATION_UNVERIFIED",
+  "first_character": "RINRIN",
+  "guest_header": "SCAMP-01 RINRIN 😈",
+  "class": "GUEST_NOT_PRIME_DAEMON",
+  "identity_roster_changes": false,
+  "e_lane_changes": false,
+  "operations_authority": "NONE",
+  "host_integration": "HOSTED_CHAT_MODEL_PROMPT_AND_GUEST_GATE_SOURCE_WIRED",
+  "character_addenda": [
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md"
+  ],
+  "guest_sources": {
+    "current": "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+    "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
+    "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md",
+    "policy": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
+    "bridge": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md"
+  },
+  "chatgpt_host": "NEEDS_FRESH_SOURCE_BOOT"
+}

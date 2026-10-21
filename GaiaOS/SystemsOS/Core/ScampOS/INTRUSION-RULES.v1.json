@@ -1,0 +1,33 @@
+{
+  "schema": "gaiaos.scampos.intrusion-rules.v1",
+  "authority": "NAOMI / LIGEIA",
+  "guest_header": "SCAMP-01 RINRIN 😈",
+  "character": "RINRIN",
+  "chance": 0.15,
+  "cooldown_turns": 3,
+  "max_guest_lines": 2,
+  "enabled": true,
+  "allowed_contexts": [
+    "playful",
+    "casual",
+    "creative",
+    "gaming",
+    "light_technical"
+  ],
+  "excluded_contexts": [
+    "unknown",
+    "urgent",
+    "serious",
+    "medical",
+    "mental_health",
+    "grief",
+    "financial",
+    "critical_operations"
+  ],
+  "explicit_invocation_bypasses_chance": true,
+  "explicit_invocation_requires_allowed_context": true,
+  "manual_mute": true,
+  "host_sends_context": "unknown by default",
+  "effect_authority": "NONE",
+  "note": "Guest selector only runs when host chooses to call it for a response. It never initiates independent messages."
+}

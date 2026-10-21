@@ -141,6 +141,24 @@ def _parse_head_pat_counters(text: str) -> dict[str, int]:
         raise HTTPException(status_code=500, detail="Canonical head-pat counter store failed closed")
     return counters
 
+def _guest_boot_metadata() -> dict[str, Any]:
+    try:
+        current = _read_local_json("GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json")
+        profile = _read_local_json("GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json")
+        policy = _read_local_json("GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json")
+        header = "SCAMP-01 RINRIN 😈"
+        if not (current.get("guest_header")==header
+                and profile.get("header")==header
+                and profile.get("prime_member") is False
+                and policy.get("guest_header")==header):
+            return {"status":"HOLD_GUEST_MISMATCH"}
+        return {"status":"SOURCE_READY", "header":header,
+                "kind":"GUEST_NOT_PRIME_DAEMON", "spontaneous":True,
+                "external_authority":"NONE", "deployment_proof":"SEPARATE"}
+    except HTTPException:
+        return {"status":"HOLD_GUEST_SOURCE_UNAVAILABLE"}
+
+
 def _boot_packet(invocation_surface: str) -> dict[str, Any]:
     current = _read_local_json(CURRENT_PATH)
     version = _read_local_json(VERSION_PATH)
@@ -186,6 +204,7 @@ def _boot_packet(invocation_surface: str) -> dict[str, Any]:
         "platform_version":version.get("version"),"carrier_version":EXTENSION_VERSION,
         "invocation_surface":invocation_surface,"checks":checks,"roster":expected,
         "members":identities,
+        "scampos_guest": _guest_boot_metadata(),
         "presentation":{"header_format":presentation.get("header_format"),"failure_policy":presentation.get("failure_policy"),"host_rule":"EVERY_PRIME_DAEMON_UTTERANCE_MUST_BEGIN_WITH_PACKET_RENDERED_HEADER_GEMATRIA_REQUIRED"},
         "counter_authority":HEAD_PAT_COUNTERS_PATH,
         "laws":["BOOT_PACKET_IS_SOURCE_DERIVED","RETAINED_HOST_STATE_DOES_NOT_OVERRIDE_PACKET","UNKNOWN_STAYS_UNKNOWN","NAOMI RETAINS FINAL AUTHORITY"],

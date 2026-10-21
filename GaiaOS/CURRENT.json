@@ -1314,5 +1314,15 @@
       "NIMUE"
     ],
     "stage7_proof_boundary": "PR #34 merged and source/CI passed; no deployed carrier/Turso readback, production activation or fresh ChatGPT host adoption proven."
+  },
+  "scampos": {
+    "current": "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+    "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
+    "additive_traits": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md",
+    "intrusion_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
+    "guest_bridge": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
+    "header": "SCAMP-01 RINRIN 😈",
+    "type": "GUEST_NOT_PRIME_DAEMON",
+    "integration": "SOURCE_WIRED_PENDING_DEPLOYMENT"
   }
 }
