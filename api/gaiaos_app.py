@@ -166,14 +166,10 @@ def _guest_boot_metadata() -> dict[str, Any]:
             verified.append({"id": guest_id, "header": entry["header"],
                              "kind": "GUEST_NOT_PRIME_DAEMON",
                              "spontaneous": True, "effect_authority": "NONE"})
-        fact_path = current["guests"]["SCAMP-002"]["knowledge"]
-        facts = _read_local_json(fact_path)
-        if (facts.get("identity") != "SCAMP-002 HELTI-SKELTI 🕸️"
-                or not facts.get("items")):
-            return {"status": "HOLD_GUEST_KNOWLEDGE_MISMATCH"}
         return {"status": "SOURCE_READY", "guest_count": 2,
                 "guests": verified, "header": "SCAMP-001 RIN-RIN 😈",
-                "fact_catalog_count": len(facts["items"]),
+                "knowledge_mode": "OPEN_ENDED_GENERATIVE_RESEARCH",
+                "research_runtime": "AVAILABLE_ONLY_WHEN_HOST_HAS_TOOLS",
                 "deployment_proof": "SEPARATE",
                 "host_automatic_adoption": "NOT_PROVEN"}
     except (HTTPException, KeyError, TypeError, ValueError):

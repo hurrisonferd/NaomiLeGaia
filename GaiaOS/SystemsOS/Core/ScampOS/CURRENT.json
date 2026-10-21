@@ -2,14 +2,14 @@
   "schema": "gaiaos.scampos.current.v2",
   "system": "ScampOS",
   "authority": "NAOMI / LIGEIA",
-  "status": "TWO_GUEST_SOURCE_READY_DEPLOYMENT_PROOF_SEPARATE",
+  "status": "GENERATIVE_HELTI_SOURCE_READY_DEPLOYMENT_UNVERIFIED",
   "first_character": "RIN-RIN",
   "guest_header": "SCAMP-001 RIN-RIN 😈",
   "class": "GUEST_NOT_PRIME_DAEMON",
   "identity_roster_changes": false,
   "e_lane_changes": false,
   "operations_authority": "NONE",
-  "host_integration": "DUAL_GUEST_SELECTOR_AND_SOURCE_PINNED_FACT_CATALOG",
+  "host_integration": "TWO_GUEST_MODEL_GENERATIVE_RESEARCH_OPTIONAL_WEB_SEARCH",
   "character_addenda": [
     "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN-ADDITIVE-TRAITS.v1.md",
     "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md"
@@ -40,9 +40,10 @@
       "header": "SCAMP-002 HELTI-SKELTI 🕸️",
       "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
       "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
-      "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
-      "knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+      "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
     }
   },
-  "guest_collision_policy": "ONE_PER_RESPONSE_EXPLICIT_PRIORITY_THEN_ROTATING_FAIR_TIEBREAK"
+  "guest_collision_policy": "ONE_PER_RESPONSE_EXPLICIT_PRIORITY_THEN_ROTATING_FAIR_TIEBREAK",
+  "knowledge_mode": "GENERATIVE_MODEL_KNOWLEDGE_OPTIONAL_LIVE_RESEARCH",
+  "knowledge_policy": "OPEN_DOMAIN_RESEARCH_NOT_BOUNDED_BY_LOCAL_FACT_CATALOG"
 }

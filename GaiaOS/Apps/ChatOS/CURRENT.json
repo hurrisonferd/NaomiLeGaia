@@ -53,8 +53,7 @@
     "scampos_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
     "scampos_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
     "scampos_helti_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
-    "scampos_helti_policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
-    "scampos_helti_knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+    "scampos_helti_policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -209,11 +208,11 @@
         "header": "SCAMP-002 HELTI-SKELTI 🕸️",
         "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
         "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
-        "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
-        "knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+        "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
       }
     },
     "independent_cooldowns": true,
-    "one_guest_per_response": true
+    "one_guest_per_response": true,
+    "knowledge_mode": "MODEL_GENERATIVE_OPTIONAL_WEB_SEARCH"
   }
 }

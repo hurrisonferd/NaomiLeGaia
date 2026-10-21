@@ -15,7 +15,7 @@ class Message:
 
 def fixture():
     registry=json.loads((CORE/"CURRENT.json").read_text(encoding="utf-8"))
-    b={"guests":{},"knowledge_threads":json.loads((CORE/"Knowledge/HELTI-SKELTI-FACTS.v1.json").read_text(encoding="utf-8"))}
+    b={"guests":{}}
     for id,paths in registry["guests"].items():
         b["guests"][id]={
             "character":json.loads((REPO/paths["character"]).read_text(encoding="utf-8")),
@@ -35,19 +35,34 @@ class HostTests(unittest.TestCase):
         self.assertEqual(d["reason"],"CHANCE")
         self.assertEqual(host.validate_output(RIN+"\nI have opinions.",d)["status"],"PASS_GUEST_RENDERED")
 
-    def test_helti_spontaneous_without_topic(self):
+    def test_helti_spontaneous_without_topic_and_without_fact_pool(self):
         d=self.choose("What should I eat tonight?",helti=0)
         self.assertEqual(d["guest_id"],"SCAMP-002")
         self.assertEqual(d["header"],HELTI)
-        self.assertTrue(d["fact"]["line"])
-        self.assertTrue(d["fact"]["url"].startswith("https://"))
-        self.assertIn(d["fact"]["line"],host.model_instruction(d))
-        self.assertEqual(host.validate_output(HELTI+"\n"+d["fact"]["line"],d)["status"],"PASS_GUEST_RENDERED")
+        self.assertEqual(d["interaction_mode"],"intrusion")
+        self.assertNotIn("fact",d)
+        self.assertIn("OPEN-ENDED reasoning",host.model_instruction(d))
+        self.assertIn("original",host.model_instruction(d))
+        self.assertEqual(
+            host.validate_output(
+                HELTI+"\nSome authenticated sessions survive a password change.",d
+            )["status"],"PASS_GUEST_RENDERED"
+        )
 
-    def test_helti_exact_fact_not_fabricated(self):
-        d=self.choose("The sky is pink",helti=0)
+    def test_helti_open_ended_answers_are_not_forced_to_catalog(self):
+        d=self.choose("Helti-Skelti, explain how DNS works.",helti=.99)
+        self.assertEqual(d["guest_id"],"SCAMP-002")
+        self.assertEqual(d["interaction_mode"],"dialogue")
+        self.assertIn("full, capable technical",host.model_instruction(d))
+        long_reply=(HELTI+"\nDNS translates names to records through resolver queries.\n"
+                    "Recursive resolvers cache answers for their TTL.\n"
+                    "On your own PC you can try a DNS lookup and inspect the reply.")
+        self.assertEqual(
+            host.validate_output(long_reply,d)["status"],
+            "PASS_GUEST_RENDERED"
+        )
         with self.assertRaises(ValueError):
-            host.validate_output(HELTI+"\nI can read your files.",d)
+            host.validate_output(HELTI,d)
 
     def test_no_guest_without_selection(self):
         d=self.choose("hello")
@@ -69,6 +84,17 @@ class HostTests(unittest.TestCase):
         d=self.choose("Helti-Skelti, speak.",rin=0,helti=.99)
         self.assertEqual(d["guest_id"],"SCAMP-002")
         self.assertEqual(d["reason"],"EXPLICIT")
+        self.assertEqual(d["interaction_mode"],"dialogue")
+
+    def test_natural_followup_invites_full_helti_dialogue(self):
+        history=[
+            Message("user","I am making noodles"),
+            Message("assistant",HELTI+"\nA name can resolve to several IP addresses."),
+        ]
+        d=self.choose("How does that work?",rin=.99,helti=.99,extra=history)
+        self.assertEqual(d["guest_id"],"SCAMP-002")
+        self.assertEqual(d["reason"],"EXPLICIT")
+        self.assertEqual(d["interaction_mode"],"dialogue")
 
     def test_new_rin_name_and_legacy_alias(self):
         for alias in ("RIN-RIN","Rin","RINRIN","SCAMP-001"):
@@ -110,17 +136,46 @@ class HostTests(unittest.TestCase):
         b=(API/"gaiaos_app.py").read_text(encoding="utf-8")
         docker=(API/"Dockerfile").read_text(encoding="utf-8")
         for text in ("Characters/RIN-RIN.v1.json","Characters/HELTI-SKELTI.v1.json",
-                     "Knowledge/HELTI-SKELTI-FACTS.v1.json",
                      "gaiaos_scamp_chat.decide(","gaiaos_scamp_chat.model_instruction(",
-                     "gaiaos_scamp_chat.validate_output("):
+                     "gaiaos_scamp_chat.validate_output(",
+                     "gaiaos_scamp_chat.response_tool_options(",
+                     "gaiaos_scamp_chat.collect_web_citations("):
             self.assertIn(text,a)
         self.assertIn("SCAMP-002",b)
         self.assertIn('"scampos_guest": _guest_boot_metadata()',b)
         self.assertIn("COPY api/gaiaos_scamp_chat.py ./gaiaos_scamp_chat.py",docker)
 
-    def test_curated_ambiguity_no_forced_motive(self):
+    def test_unresolved_motive_and_open_ended_knowledge(self):
         char=self.bundle["guests"]["SCAMP-002"]["character"]
         self.assertEqual(char["motive"],"UNKNOWN_CANONICAL_DO_NOT_RESOLVE")
         self.assertEqual(char["intent_ambiguity"]["teaching"],"UNKNOWN")
+        self.assertEqual(char["knowledge"]["mode"],"OPEN_ENDED_GENERATIVE_INTELLIGENCE")
+        self.assertNotIn("source",char["knowledge"])
+
+    def test_web_search_available_only_to_selected_helti(self):
+        d=self.choose("What should I eat?",helti=0)
+        tools=host.response_tool_options(d)
+        self.assertEqual(tools["tools"][0]["type"],"web_search")
+        self.assertEqual(tools["tool_choice"],"auto")
+        rin=self.choose("What should I eat?",rin=0,helti=.99)
+        self.assertEqual(host.response_tool_options(rin),{})
+        none=self.choose("What should I eat?")
+        self.assertEqual(host.response_tool_options(none),{})
+
+    def test_real_web_citation_metadata_without_invented_sources(self):
+        from types import SimpleNamespace as S
+        good=S(type="url_citation",url="https://www.rfc-editor.org/rfc/rfc8446",title="TLS")
+        bad=S(type="url_citation",url="javascript:alert(1)",title="Oops")
+        result=S(output=[
+            S(type="web_search_call",content=[]),
+            S(type="message",content=[S(annotations=[good,good,bad])])
+        ])
+        sources=host.collect_web_citations(result)
+        self.assertTrue(sources["web_search_used"])
+        self.assertEqual(len(sources["sources"]),1)
+        self.assertEqual(sources["sources"][0]["title"],"TLS")
+        nosearch=S(output=[S(type="message",content=[])])
+        self.assertEqual(host.collect_web_citations(nosearch),
+                         {"web_search_used":False,"sources":[]})
 
 if __name__=="__main__":unittest.main()
