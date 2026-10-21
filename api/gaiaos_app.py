@@ -142,21 +142,42 @@ def _parse_head_pat_counters(text: str) -> dict[str, int]:
     return counters
 
 def _guest_boot_metadata() -> dict[str, Any]:
+    """Fail-closed source-derived registry, no ChatGPT runtime adoption claim."""
     try:
         current = _read_local_json("GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json")
-        profile = _read_local_json("GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json")
-        policy = _read_local_json("GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json")
-        header = "SCAMP-01 RINRIN 😈"
-        if not (current.get("guest_header")==header
-                and profile.get("header")==header
+        if current.get("guest_order") != ["SCAMP-001", "SCAMP-002"]:
+            return {"status": "HOLD_GUEST_ROSTER_MISMATCH"}
+        verified = []
+        for guest_id in current["guest_order"]:
+            entry = current["guests"][guest_id]
+            profile = _read_local_json(entry["character"])
+            policy = _read_local_json(entry["policy"])
+            _read_local_text(entry["addendum"])
+            if not (
+                profile.get("id") == guest_id
+                and profile.get("header") == entry["header"]
                 and profile.get("prime_member") is False
-                and policy.get("guest_header")==header):
-            return {"status":"HOLD_GUEST_MISMATCH"}
-        return {"status":"SOURCE_READY", "header":header,
-                "kind":"GUEST_NOT_PRIME_DAEMON", "spontaneous":True,
-                "external_authority":"NONE", "deployment_proof":"SEPARATE"}
-    except HTTPException:
-        return {"status":"HOLD_GUEST_SOURCE_UNAVAILABLE"}
+                and profile.get("tool_access") is False
+                and policy.get("guest_id") == guest_id
+                and policy.get("guest_header") == entry["header"]
+                and policy.get("effect_authority") == "NONE"
+            ):
+                return {"status": "HOLD_GUEST_SOURCE_MISMATCH", "guest_id": guest_id}
+            verified.append({"id": guest_id, "header": entry["header"],
+                             "kind": "GUEST_NOT_PRIME_DAEMON",
+                             "spontaneous": True, "effect_authority": "NONE"})
+        fact_path = current["guests"]["SCAMP-002"]["knowledge"]
+        facts = _read_local_json(fact_path)
+        if (facts.get("identity") != "SCAMP-002 HELTI-SKELTI 🕸️"
+                or not facts.get("items")):
+            return {"status": "HOLD_GUEST_KNOWLEDGE_MISMATCH"}
+        return {"status": "SOURCE_READY", "guest_count": 2,
+                "guests": verified, "header": "SCAMP-001 RIN-RIN 😈",
+                "fact_catalog_count": len(facts["items"]),
+                "deployment_proof": "SEPARATE",
+                "host_automatic_adoption": "NOT_PROVEN"}
+    except (HTTPException, KeyError, TypeError, ValueError):
+        return {"status": "HOLD_GUEST_SOURCE_UNAVAILABLE"}
 
 
 def _boot_packet(invocation_surface: str) -> dict[str, Any]:

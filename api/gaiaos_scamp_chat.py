@@ -1,74 +1,149 @@
-"""Source-aligned ScampOS turn gate for ordinary hosted ChatOS."""
+"""Source-pinned two-Scamp selection in ordinary hosted ChatOS."""
+from __future__ import annotations
 import re
-from pathlib import Path
 import importlib.util
-ROOT = Path(__file__).resolve().parents[1]
-HEADER = "SCAMP-01 RINRIN 😈"
-GAMING = re.compile(r"\b(?:cyberpunk|edgerunners|night city|galena|watson|gaming|game|choom)\b",re.I)
-CREATIVE = re.compile(r"\b(?:ableton|splice|synth|samples?|dj|bassline|music|song|producer|track|remix)\b",re.I)
-TECH = re.compile(r"\b(?:plugin|python|code|programming|ports?|jack|cable|desktop|app|debug|adapter|build|computer)\b",re.I)
-CASUAL = re.compile(r"\b(?:lol|lmao|haha|pizza|jacket|funny|hilarious|silly|ridiculous|meme|watching)\b",re.I)
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+HEADERS={
+    "SCAMP-001":"SCAMP-001 RIN-RIN 😈",
+    "SCAMP-002":"SCAMP-002 HELTI-SKELTI 🕸️",
+}
+HEADER=HEADERS["SCAMP-001"]  # Legacy single-Rin caller convenience.
+
+GAMING=re.compile(r"\b(?:cyberpunk|edgerunners|night city|galena|gaming|game|choom)\b",re.I)
+CREATIVE=re.compile(r"\b(?:ableton|splice|synth|samples?|music|track|remix)\b",re.I)
+TECH=re.compile(r"\b(?:plugin|python|code|programming|port|cable|desktop|app|debug|computer|network)\b",re.I)
+CASUAL=re.compile(r"\b(?:lol|lmao|haha|pizza|jacket|funny|silly|meme|watching)\b",re.I)
+NAME_PATTERNS={
+ "SCAMP-001":re.compile(r"\b(?:rin[ -]?rin|rin|SCAMP-001)\b",re.I),
+ "SCAMP-002":re.compile(r"\b(?:helti[ -]?skelti|helti|skelti|SCAMP-002)\b",re.I),
+}
+MUTE_WORDS=re.compile(r"\b(?:mute|disable|silence)\b",re.I)
+UNMUTE_WORDS=re.compile(r"\b(?:unmute|allow|enable)\b",re.I)
 
 def context(text):
-    if not text or not isinstance(text,str): return "unknown"
-    for name,matcher in (("gaming",GAMING),("creative",CREATIVE),("light_technical",TECH),("casual",CASUAL)):
-        if matcher.search(text): return name
+    if not isinstance(text,str) or not text.strip():return "unknown"
+    for name,pattern in (("gaming",GAMING),("creative",CREATIVE),
+                         ("light_technical",TECH),("casual",CASUAL)):
+        if pattern.search(text):return name
     return "unknown"
 
-def decide(messages,bundle,roll=None,muted=False):
-    if bundle["character"].get("header") != HEADER or bundle["policy"].get("guest_header") != HEADER:
-        raise ValueError("RINRIN source mismatch")
-    users=[m for m in messages if getattr(m,"role",None)=="user"]
-    if not users: raise ValueError("missing user")
-    turn=len(users)
-    last_turn=None
-    for i,m in enumerate(messages[:-1]):
-        if getattr(m,"role",None)=="assistant" and HEADER in getattr(m,"content",""):
-            last_turn=sum(1 for x in messages[:i+1] if getattr(x,"role",None)=="user")
-    text=users[-1].content
-    c=context(text)
-    explicit=bool(re.search(r"\b(?:rinrin|rin)\b",text,re.I))
-    # Explicit invitation is a casual eligible context unless high-stakes.
-    if explicit and c=="unknown":
-        c="casual"
-    # The most recent explicit mute/unmute instruction persists within the
-    # bounded supplied conversation, without a database or host side effect.
-    user_muted=False
-    for item in users:
-        instruction=item.content.strip()
-        if re.search(r"\b(?:unmute|allow|enable)\s+(?:rinrin|rin)\b",instruction,re.I):
-            user_muted=False
-        elif re.search(r"\b(?:mute|disable|silence)\s+(?:rinrin|rin)\b",instruction,re.I):
-            user_muted=True
+def _load_selector():
     spec=importlib.util.spec_from_file_location(
-        "gaiaos_scamp_turn_selector",ROOT/"GaiaOS/SystemsOS/Core/ScampOS/Runtime/scampos_dispatch.py"
-    )
+        "gaiaos_scamp_dispatch_runtime",
+        ROOT/"GaiaOS/SystemsOS/Core/ScampOS/Runtime/scampos_dispatch.py")
+    if spec is None or spec.loader is None:raise ValueError("ScampOS selector unavailable")
     module=importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
-    result=module.select(turn,context=c,last_turn=last_turn,
-                         explicit=explicit,
-                         muted=muted or user_muted,roll=roll)
-    result["context"]=c
-    return result
+    return module
+
+def _explicit_names(text):
+    return {guest for guest,pattern in NAME_PATTERNS.items() if pattern.search(text)}
+
+def _historical_last_turns(messages):
+    last={}
+    for i,message in enumerate(messages[:-1]):
+        if getattr(message,"role",None)!="assistant":continue
+        lines=getattr(message,"content","").splitlines()
+        for guest_id,header in HEADERS.items():
+            if header in [line.strip() for line in lines]:
+                last[guest_id]=sum(1 for msg in messages[:i+1]
+                                    if getattr(msg,"role",None)=="user")
+    return last
+
+def _muted_guests(user_messages):
+    muted=set()
+    for msg in user_messages:
+        line=msg.content.strip()
+        names=_explicit_names(line)
+        if re.search(r"\b(?:all\s+scamps|scamps\s+all)\b",line,re.I):
+            names=set(HEADERS)
+        if UNMUTE_WORDS.search(line):muted-=names
+        elif MUTE_WORDS.search(line):muted|=names
+    return muted
+
+def decide(messages,bundle,roll=None,muted=False):
+    """Return one winner from two independent lanes or no selected guest."""
+    guests=bundle.get("guests")
+    if not isinstance(guests,dict) or set(guests)!=set(HEADERS):
+        raise ValueError("two-source ScampOS bundle required")
+    for guest_id,header in HEADERS.items():
+        src=guests[guest_id]
+        if (src["character"].get("header")!=header
+                or src["policy"].get("guest_header")!=header):
+            raise ValueError("ScampOS identity disagreement")
+    users=[m for m in messages if getattr(m,"role",None)=="user"]
+    if not users:raise ValueError("missing user turn")
+    turn=len(users)
+    text=users[-1].content
+    contextual=context(text)
+    explicit=_explicit_names(text)
+    # Any direct request or unmute remains explicit, including topic-free requests.
+    muteds=_muted_guests(users)
+    if muted:muteds=set(HEADERS)
+    rolls=roll if isinstance(roll,dict) else {"SCAMP-001":roll} if roll is not None else {}
+    decision=_load_selector().select_guests(
+        turn,context=contextual,last_turns=_historical_last_turns(messages),
+        rolls=rolls,explicit_guests=explicit,muted_guests=muteds)
+    if decision["appear"] and decision["guest_id"]=="SCAMP-002":
+        catalog=bundle.get("knowledge_threads",{})
+        facts=catalog.get("items",[])
+        if catalog.get("identity")!=HEADERS["SCAMP-002"] or not facts:
+            raise ValueError("Helti-Skelti knowledge source unavailable")
+        fact=facts[(turn-1)%len(facts)]
+        if not all(isinstance(fact.get(k),str) and fact.get(k) for k in ("line","source","url")):
+            raise ValueError("invalid technical fact")
+        decision["fact"]={"id":fact["id"],"line":fact["line"],
+                          "source":fact["source"],"url":fact["url"]}
+    return decision
 
 def model_instruction(decision):
-    if decision["appear"]:
-        return ("\nSCAMPOS GUEST SELECTED THIS TURN. Include a brief, natural, "
-                "non-graphic guest interruption under the exact standalone "
-                "header SCAMP-01 RINRIN 😈. Preserve her cumulative character, "
-                "leave the main answer useful and maintain all Prime Daemon "
-                "identity headers. Never give the guest tool or memory authority.")
-    return "\nSCAMPOS: no guest selected on this turn. Do not add a Rin speaker block."
+    if not decision["appear"]:
+        return "\nSCAMPOS: no guest selected. Do not include a Scamp speaker block."
+    if decision["guest_id"]=="SCAMP-001":
+        return (
+            "\nSCAMPOS: RIN-RIN selected. Give her a spontaneous brief interruption "
+            "with exactly this unadorned standalone header: SCAMP-001 RIN-RIN 😈. "
+            "Preserve her cumulative character traits; no topic-based censorship. "
+            "Do not give her tools, memory writes, or Prime Daemon identity."
+        )
+    fact=decision["fact"]
+    return (
+        "\nSCAMPOS: HELTI-SKELTI selected. Include a cold, clinically matter-of-fact "
+        "guest interruption with exactly this standalone header: "
+        "SCAMP-002 HELTI-SKELTI 🕸️. The entire speech after the header is exactly "
+        "the following one verified fact, with NO additional threat, exposition, "
+        "personal surveillance claim, theatrics, invented detail, or conclusion: "
+        +fact["line"]+
+        " Preserve ambiguity of their motive. Keep the main answer useful; "
+        "all six Prime identities remain their own. If the user asks to expand "
+        "later, explain the real science with safe, lawful exercises."
+    )
 
 def validate_output(output,decision):
-    lines=[x.strip() for x in output.splitlines() if re.match(r"^\s*(?:#{1,6}\s*)?SCAMP-01\s+RINRIN\b",x,re.I)]
-    if any(x != HEADER for x in lines) or len(lines)>1:
-        raise ValueError("invalid guest presentation")
-    if lines and not decision["appear"]:
-        raise ValueError("guest bypassed selection")
-    return {"status":("PASS_GUEST_RENDERED" if lines else
-                     "HOLD_GUEST_SELECTED_NOT_RENDERED" if decision["appear"]
-                     else "PASS_NO_GUEST_SELECTED"),
-            "selected":bool(decision["appear"]),
-            "rendered":bool(lines),"context":decision["context"],
-            "effect_authority":"NONE"}
+    if not isinstance(output,str):raise ValueError("output must be text")
+    candidates=[
+        line.strip() for line in output.splitlines()
+        if re.match(r"^\s*(?:#{1,6}\s*)?SCAMP-?0*\d+\s+\S+",line,re.I)
+    ]
+    expected=HEADERS.get(decision.get("guest_id"))
+    if len(candidates)>1:raise ValueError("only one Scamp guest per response")
+    if candidates and (not decision.get("appear") or candidates[0]!=expected):
+        raise ValueError("Scamp guest identity or selection mismatch")
+    if candidates and decision.get("guest_id")=="SCAMP-002":
+        lines=[line.strip() for line in output.splitlines()]
+        idx=lines.index(expected)
+        if idx+1>=len(lines) or lines[idx+1]!=decision["fact"]["line"]:
+            raise ValueError("Helti-Skelti must deliver exact sourced fact")
+    return {
+        "status":("PASS_GUEST_RENDERED" if candidates else
+                  "HOLD_GUEST_SELECTED_NOT_RENDERED" if decision.get("appear")
+                  else "PASS_NO_GUEST_SELECTED"),
+        "guest_id":decision.get("guest_id"),
+        "selected":bool(decision.get("appear")),
+        "rendered":bool(candidates),
+        "context":decision.get("context","unknown"),
+        "fact_id":decision.get("fact",{}).get("id"),
+        "effect_authority":"NONE"
+    }

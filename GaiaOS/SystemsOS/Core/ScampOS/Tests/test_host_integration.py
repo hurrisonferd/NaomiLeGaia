@@ -1,85 +1,126 @@
-"""Source-wired ScampOS integration canaries."""
-import importlib.util
-import json
-import unittest
+"""ScampOS ChatOS dual-guest integration and boundary tests."""
+import importlib.util,json,unittest
 from pathlib import Path
-
-REPO = Path(__file__).resolve().parents[5]
-API = REPO / "api"
-CORE = REPO / "GaiaOS/SystemsOS/Core/ScampOS"
-
-spec = importlib.util.spec_from_file_location("scamp_host_canary", API / "gaiaos_scamp_chat.py")
-host = importlib.util.module_from_spec(spec)
+REPO=Path(__file__).resolve().parents[5]
+CORE=REPO/"GaiaOS/SystemsOS/Core/ScampOS"
+API=REPO/"api"
+spec=importlib.util.spec_from_file_location("dual_scamp_host",API/"gaiaos_scamp_chat.py")
+host=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(host)
+RIN="SCAMP-001 RIN-RIN 😈"
+HELTI="SCAMP-002 HELTI-SKELTI 🕸️"
 
 class Message:
-    def __init__(self,role,content):
-        self.role=role
-        self.content=content
+    def __init__(self,role,content):self.role,self.content=role,content
 
-class IntegrationTests(unittest.TestCase):
-    def setUp(self):
-        self.bundle={
-            "character":json.loads((CORE/"Characters/RINRIN.v1.json").read_text(encoding="utf-8")),
-            "policy":json.loads((CORE/"INTRUSION-RULES.v1.json").read_text(encoding="utf-8")),
+def fixture():
+    registry=json.loads((CORE/"CURRENT.json").read_text(encoding="utf-8"))
+    b={"guests":{},"knowledge_threads":json.loads((CORE/"Knowledge/HELTI-SKELTI-FACTS.v1.json").read_text(encoding="utf-8"))}
+    for id,paths in registry["guests"].items():
+        b["guests"][id]={
+            "character":json.loads((REPO/paths["character"]).read_text(encoding="utf-8")),
+            "policy":json.loads((REPO/paths["policy"]).read_text(encoding="utf-8"))
         }
+    return b
 
-    def test_spontaneous_without_summons(self):
-        decision=host.decide([Message("user","That Cyberpunk jacket is ridiculous.")],self.bundle,roll=0.01)
-        self.assertTrue(decision["appear"])
-        self.assertEqual(decision["reason"],"CHANCE")
-        self.assertEqual(decision["context"],"gaming")
+class HostTests(unittest.TestCase):
+    def setUp(self):self.bundle=fixture()
+    def choose(self,text,rin=.99,helti=.99,extra=()):
+        return host.decide(list(extra)+[Message("user",text)],self.bundle,
+                           roll={"SCAMP-001":rin,"SCAMP-002":helti})
 
-    def test_all_topics_remain_eligible(self):
-        for sample in ("Rin, my tonsil hurts", "Rin, I'm afraid of eviction",
-                       "I'm thinking about suicide", "Rin, I need to pay my debt",
-                       "My throat hurts", "Rent is due", "Terrible emergency"):
-            with self.subTest(sample=sample):
-                result=host.decide([Message("user",sample)],self.bundle,roll=0.01)
-                self.assertTrue(result["appear"])
+    def test_rin_spontaneous_with_new_exact_header(self):
+        d=self.choose("Hello",rin=0)
+        self.assertEqual(d["header"],RIN)
+        self.assertEqual(d["reason"],"CHANCE")
+        self.assertEqual(host.validate_output(RIN+"\nI have opinions.",d)["status"],"PASS_GUEST_RENDERED")
 
-    def test_cooldown_and_manual_mute(self):
-        history=[Message("user","game"),Message("assistant",host.HEADER+"\ntext"),
-                 Message("user","lol cyberpunk")]
-        self.assertFalse(host.decide(history,self.bundle,roll=0.001)["appear"])
-        self.assertFalse(host.decide([Message("user","game")],self.bundle,roll=0.001,muted=True)["appear"])
+    def test_helti_spontaneous_without_topic(self):
+        d=self.choose("What should I eat tonight?",helti=0)
+        self.assertEqual(d["guest_id"],"SCAMP-002")
+        self.assertEqual(d["header"],HELTI)
+        self.assertTrue(d["fact"]["line"])
+        self.assertTrue(d["fact"]["url"].startswith("https://"))
+        self.assertIn(d["fact"]["line"],host.model_instruction(d))
+        self.assertEqual(host.validate_output(HELTI+"\n"+d["fact"]["line"],d)["status"],"PASS_GUEST_RENDERED")
 
-    def test_in_chat_mute_and_reenable(self):
-        messages=[Message("user","Mute Rin"),Message("assistant","Done"),
-                  Message("user","lol Cyberpunk")]
-        self.assertFalse(host.decide(messages,self.bundle,roll=0)["appear"])
-        messages.extend([Message("assistant","Okay"),Message("user","Unmute Rin")])
-        self.assertTrue(host.decide(messages,self.bundle,roll=0.99)["appear"])
-
-    def test_explicit_casual_summon_without_keyword_context(self):
-        self.assertTrue(host.decide([Message("user","Rin, get in here")],
-                                    self.bundle,roll=0.99)["appear"])
-
-    def test_exact_guest_header(self):
-        decision=host.decide([Message("user","lol gaming")],self.bundle,roll=0)
-        self.assertEqual(host.validate_output(host.HEADER+"\nA bad pun",decision)["status"],"PASS_GUEST_RENDERED")
+    def test_helti_exact_fact_not_fabricated(self):
+        d=self.choose("The sky is pink",helti=0)
         with self.assertRaises(ValueError):
-            host.validate_output("SCAMP-01 RINRIN 😈 (invented)\nA bad pun",decision)
+            host.validate_output(HELTI+"\nI can read your files.",d)
 
-    def test_no_incorrect_intrusions(self):
-        decision=host.decide([Message("user","My throat hurts")],self.bundle,roll=0.99)
+    def test_no_guest_without_selection(self):
+        d=self.choose("hello")
+        self.assertFalse(d["appear"])
+        self.assertEqual(host.validate_output("The answer is yes.",d)["status"],"PASS_NO_GUEST_SELECTED")
         with self.assertRaises(ValueError):
-            host.validate_output(host.HEADER+"\nBad timing",decision)
-        self.assertEqual(host.validate_output("60 · SELENE 💛 🎧 (˶ᵔ ᵕ ᵔ˶)\nHi",decision)["status"],"PASS_NO_GUEST_SELECTED")
+            host.validate_output(HELTI+"\nUninvited",d)
 
-    def test_real_api_path_wired(self):
-        api=(API/"gaiaos_api.py").read_text(encoding="utf-8")
-        boot=(API/"gaiaos_app.py").read_text(encoding="utf-8")
-        for snippet in ("scampos_bundle", "gaiaos_scamp_chat.decide(",
-                        "gaiaos_scamp_chat.model_instruction(",
-                        "gaiaos_scamp_chat.validate_output("):
-            self.assertIn(snippet,api)
-        self.assertIn('"scampos_guest": _guest_boot_metadata()',boot)
+    def test_collision_one_scamp_and_strict_header(self):
+        d=self.choose("wow",rin=0,helti=0)
+        self.assertTrue(d["collision"])
+        wrong=HELTI if d["guest_id"]=="SCAMP-001" else RIN
+        with self.assertRaises(ValueError):
+            host.validate_output(wrong+"\nWrong speaker",d)
+        with self.assertRaises(ValueError):
+            host.validate_output(RIN+"\nHi\n"+HELTI+"\nFacts",d)
 
-    def test_six_prime_lanes_untouched(self):
-        fair=REPO/"GaiaOS/SystemsOS/Core/FairyOS"
-        data=json.loads((fair/"COUNCIL-PRESENTATION-SPEC.v1.json").read_text(encoding="utf-8"))
-        self.assertEqual(data["speaker_order"],["VERA","ANVIL","SELENE","ORIN","KESTREL","NIMUE"])
-        self.assertNotIn("RINRIN",data["members"])
+    def test_named_helti_direct_request(self):
+        d=self.choose("Helti-Skelti, speak.",rin=0,helti=.99)
+        self.assertEqual(d["guest_id"],"SCAMP-002")
+        self.assertEqual(d["reason"],"EXPLICIT")
 
-if __name__=="__main__": unittest.main()
+    def test_new_rin_name_and_legacy_alias(self):
+        for alias in ("RIN-RIN","Rin","RINRIN","SCAMP-001"):
+            with self.subTest(alias=alias):
+                d=self.choose(alias+" get in here",rin=.99,helti=.99)
+                self.assertEqual(d["guest_id"],"SCAMP-001")
+                self.assertEqual(d["reason"],"EXPLICIT")
+
+    def test_independent_cooldown_from_history(self):
+        msgs=[Message("user","hello"),Message("assistant",RIN+"\nComment"),
+              Message("user","No one needs to talk")]
+        d=host.decide(msgs,self.bundle,roll={"SCAMP-001":0,"SCAMP-002":0})
+        self.assertEqual(d["guest_id"],"SCAMP-002")
+        self.assertEqual(d["evaluations"]["SCAMP-001"]["reason"],"COOLDOWN")
+
+    def test_individual_mute_persists_until_unmute(self):
+        previous=[Message("user","Mute RIN-RIN"),Message("assistant","Fine")]
+        d=self.choose("Normal conversation",rin=0,helti=0,extra=previous)
+        self.assertEqual(d["guest_id"],"SCAMP-002")
+        previous.extend([Message("user","Unmute RIN-RIN"),Message("assistant","Okay")])
+        d=self.choose("Normal conversation",rin=0,helti=.99,extra=previous)
+        self.assertEqual(d["guest_id"],"SCAMP-001")
+        self.assertEqual(d["reason"],"CHANCE")
+
+    def test_helti_mute_persists(self):
+        previous=[Message("user","Mute Helti-Skelti"),Message("assistant","Acknowledged")]
+        d=self.choose("Testing",rin=.99,helti=0,extra=previous)
+        self.assertFalse(d["appear"])
+
+    def test_no_topic_exclusions(self):
+        for text in ("Rent is due", "I am grieving", "Urgent medical appointment",
+                     "Network knowledge", "I am scared"):
+            with self.subTest(text=text):
+                d=self.choose(text,rin=.99,helti=0)
+                self.assertEqual(d["guest_id"],"SCAMP-002")
+
+    def test_source_and_boot_paths_wired(self):
+        a=(API/"gaiaos_api.py").read_text(encoding="utf-8")
+        b=(API/"gaiaos_app.py").read_text(encoding="utf-8")
+        docker=(API/"Dockerfile").read_text(encoding="utf-8")
+        for text in ("Characters/RIN-RIN.v1.json","Characters/HELTI-SKELTI.v1.json",
+                     "Knowledge/HELTI-SKELTI-FACTS.v1.json",
+                     "gaiaos_scamp_chat.decide(","gaiaos_scamp_chat.model_instruction(",
+                     "gaiaos_scamp_chat.validate_output("):
+            self.assertIn(text,a)
+        self.assertIn("SCAMP-002",b)
+        self.assertIn('"scampos_guest": _guest_boot_metadata()',b)
+        self.assertIn("COPY api/gaiaos_scamp_chat.py ./gaiaos_scamp_chat.py",docker)
+
+    def test_curated_ambiguity_no_forced_motive(self):
+        char=self.bundle["guests"]["SCAMP-002"]["character"]
+        self.assertEqual(char["motive"],"UNKNOWN_CANONICAL_DO_NOT_RESOLVE")
+        self.assertEqual(char["intent_ambiguity"]["teaching"],"UNKNOWN")
+
+if __name__=="__main__":unittest.main()

@@ -1317,12 +1317,32 @@
   },
   "scampos": {
     "current": "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
-    "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
-    "additive_traits": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md",
+    "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
+    "additive_traits": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN-ADDITIVE-TRAITS.v1.md",
     "intrusion_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
     "guest_bridge": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
-    "header": "SCAMP-01 RINRIN 😈",
+    "header": "SCAMP-001 RIN-RIN 😈",
     "type": "GUEST_NOT_PRIME_DAEMON",
-    "integration": "SOURCE_WIRED_PENDING_DEPLOYMENT"
+    "integration": "SOURCE_WIRED_PENDING_DEPLOYMENT",
+    "guests": {
+      "SCAMP-001": {
+        "name": "RIN-RIN",
+        "header": "SCAMP-001 RIN-RIN 😈",
+        "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
+        "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN-ADDITIVE-TRAITS.v1.md",
+        "policy": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json"
+      },
+      "SCAMP-002": {
+        "name": "HELTI-SKELTI",
+        "header": "SCAMP-002 HELTI-SKELTI 🕸️",
+        "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
+        "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
+        "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
+        "knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+      }
+    },
+    "guest_count": 2,
+    "collision_policy": "ONE_PER_RESPONSE_ROTATING_FAIR_TIEBREAK",
+    "knowledge_threads": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
   }
 }
