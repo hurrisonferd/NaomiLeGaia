@@ -10,7 +10,12 @@ import re
 from pathlib import Path
 from urllib.parse import urlsplit
 
-ROOT = Path(__file__).resolve().parents[1]
+# The source checkout imports this module from api/, but the production
+# Dockerfile flattens it to /app/gaiaos_scamp_chat.py and copies GaiaOS under
+# /app/GaiaOS. Resolve the real adjacent source tree in either layout.
+MODULE_DIR = Path(__file__).resolve().parent
+SCAMP_RUNTIME = Path("GaiaOS/SystemsOS/Core/ScampOS/Runtime/scampos_dispatch.py")
+ROOT = MODULE_DIR if (MODULE_DIR / SCAMP_RUNTIME).is_file() else MODULE_DIR.parent
 HEADERS = {
     "SCAMP-001": "SCAMP-001 RIN-RIN 😈",
     "SCAMP-002": "SCAMP-002 HELTI-SKELTI 🕸️",
