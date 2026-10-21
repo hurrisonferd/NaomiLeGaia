@@ -1,0 +1,21 @@
+{
+  "schema": "gaiaos.scampos.intrusion-rules.v1",
+  "authority": "NAOMI / LIGEIA",
+  "guest_id": "SCAMP-002",
+  "guest_header": "SCAMP-002 HELTI-SKELTI 🕸️",
+  "character": "HELTI-SKELTI",
+  "chance": 0.15,
+  "cooldown_turns": 3,
+  "max_guest_lines": 2,
+  "enabled": true,
+  "allowed_contexts": [
+    "*"
+  ],
+  "excluded_contexts": [],
+  "explicit_invocation_bypasses_chance": true,
+  "manual_mute": true,
+  "host_sends_context": "unknown by default",
+  "context_filter": "NONE_ALL_TOPICS_ELIGIBLE",
+  "effect_authority": "NONE",
+  "note": "Separate Scamp lane. No topic filters or summons requirement. An explicit user mute is still honored; selection is one guest maximum per response."
+}

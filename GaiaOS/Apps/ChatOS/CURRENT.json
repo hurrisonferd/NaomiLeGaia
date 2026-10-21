@@ -50,8 +50,11 @@
     "spellbook": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md",
     "power_word_persecute": "GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md",
     "scampos_guest_bridge": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
-    "scampos_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
-    "scampos_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json"
+    "scampos_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
+    "scampos_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
+    "scampos_helti_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
+    "scampos_helti_policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
+    "scampos_helti_knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -186,11 +189,31 @@
     }
   },
   "scampos_guest": {
-    "guest_header": "SCAMP-01 RINRIN 😈",
+    "guest_header": "SCAMP-001 RIN-RIN 😈",
     "spontaneous": true,
     "prime_roster_change": false,
     "e_lane_change": false,
     "hosted_chat": "SOURCE_WIRED_PENDING_DEPLOYMENT",
-    "chatgpt_host": "SOURCE_GUIDANCE_ONLY_NO_AUTOMATIC_CODE_INJECTION"
+    "chatgpt_host": "SOURCE_GUIDANCE_ONLY_NO_AUTOMATIC_CODE_INJECTION",
+    "guest_count": 2,
+    "guests": {
+      "SCAMP-001": {
+        "name": "RIN-RIN",
+        "header": "SCAMP-001 RIN-RIN 😈",
+        "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
+        "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN-ADDITIVE-TRAITS.v1.md",
+        "policy": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json"
+      },
+      "SCAMP-002": {
+        "name": "HELTI-SKELTI",
+        "header": "SCAMP-002 HELTI-SKELTI 🕸️",
+        "character": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
+        "addendum": "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
+        "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
+        "knowledge": "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json"
+      }
+    },
+    "independent_cooldowns": true,
+    "one_guest_per_response": true
   }
 }

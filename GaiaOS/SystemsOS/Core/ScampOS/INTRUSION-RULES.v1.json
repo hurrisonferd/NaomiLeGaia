@@ -1,8 +1,8 @@
 {
   "schema": "gaiaos.scampos.intrusion-rules.v1",
   "authority": "NAOMI / LIGEIA",
-  "guest_header": "SCAMP-01 RINRIN 😈",
-  "character": "RINRIN",
+  "guest_header": "SCAMP-001 RIN-RIN 😈",
+  "character": "RIN-RIN",
   "chance": 0.15,
   "cooldown_turns": 3,
   "max_guest_lines": 2,
@@ -17,5 +17,6 @@
   "host_sends_context": "unknown by default",
   "effect_authority": "NONE",
   "note": "No topic-based suppression, including serious, urgent, medical, mental-health, grief, financial, critical-operations or unknown. Selection depends only on enabled, manual mute, explicit invocation, cooldown and chance. The guest never initiates independent messages.",
-  "context_filter": "NONE_ALL_TOPICS_ELIGIBLE"
+  "context_filter": "NONE_ALL_TOPICS_ELIGIBLE",
+  "guest_id": "SCAMP-001"
 }

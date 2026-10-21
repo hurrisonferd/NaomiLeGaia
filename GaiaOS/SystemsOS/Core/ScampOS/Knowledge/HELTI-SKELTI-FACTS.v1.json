@@ -1,0 +1,116 @@
+{
+  "schema": "gaiaos.scampos.helti-facts.v1",
+  "authority": "NAOMI / LIGEIA",
+  "identity": "SCAMP-002 HELTI-SKELTI 🕸️",
+  "usage": "Select one compact technically grounded fact per appearance. The note/caveat is mandatory when material. The source is a pointer for follow-up verification, not a claim of browsing. Follow-ups can use practical_takeaway and safe_lab only on user-controlled resources.",
+  "items": [
+    {
+      "id": "tls-trust",
+      "topic": "TLS",
+      "line": "HTTPS can protect the connection to a malicious website. Encryption does not establish the operator's good intentions.",
+      "source": "RFC 8446, TLS 1.3",
+      "url": "https://www.rfc-editor.org/rfc/rfc8446",
+      "practical_takeaway": "Learn what TLS authentication does and does not establish.",
+      "safe_lab": "Inspect the certificate details for a site you trust in your own browser. Record the issuer and subject."
+    },
+    {
+      "id": "session-token",
+      "topic": "HTTP sessions",
+      "line": "A stolen valid session token can preserve access even when someone knows neither the password nor the authentication code. Revocation controls whether it keeps working.",
+      "source": "OWASP Session Management Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "practical_takeaway": "Know the difference between account credentials and an active session.",
+      "safe_lab": "Review the active-session list and sign-out options in one of your own accounts. Do not expose session tokens."
+    },
+    {
+      "id": "dns-resolver",
+      "topic": "DNS privacy",
+      "line": "Encrypted DNS hides queries from some intermediaries. It does not hide those queries from the DNS resolver you chose.",
+      "source": "RFC 8484, DNS over HTTPS",
+      "url": "https://www.rfc-editor.org/rfc/rfc8484",
+      "practical_takeaway": "Separate confidentiality from who performs DNS resolution.",
+      "safe_lab": "Inspect your own device's DNS resolver settings; compare them to your browser's secure-DNS setting."
+    },
+    {
+      "id": "bgp",
+      "topic": "Internet routing",
+      "line": "Internet routes are influenced by networks announcing which addresses they can reach. Bad announcements have redirected traffic belonging to other networks.",
+      "source": "RFC 4271, BGP-4",
+      "url": "https://www.rfc-editor.org/rfc/rfc4271",
+      "practical_takeaway": "Understand routing announcements and the effect of route errors.",
+      "safe_lab": "Look up a public AS number's announced prefixes on a read-only BGP viewer such as RIPEstat."
+    },
+    {
+      "id": "cookies",
+      "topic": "Session boundaries",
+      "line": "A website's cookie can identify a logged-in session without asking for the password again. The cookie is not the password, but possession can still matter.",
+      "source": "RFC 6265, HTTP State Management",
+      "url": "https://www.rfc-editor.org/rfc/rfc6265",
+      "practical_takeaway": "Treat authenticated session cookies as secrets, not harmless personalization.",
+      "safe_lab": "Inspect cookie attributes on a locally controlled demo webpage using browser developer tools."
+    },
+    {
+      "id": "referrer",
+      "topic": "Web privacy",
+      "line": "A browser may tell a website which page you came from through a request header. The referrer policy determines how much of that address is exposed.",
+      "source": "MDN Referer header",
+      "url": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Referer",
+      "practical_takeaway": "Recognize which URLs and origins can leak through navigation.",
+      "safe_lab": "Inspect Referrer-Policy and Referer behavior using browser developer tools on pages you control."
+    },
+    {
+      "id": "logs",
+      "topic": "Incident response",
+      "line": "A log records what a system was configured to observe. An empty log cannot prove that an event never happened.",
+      "source": "NIST SP 800-92, Guide to Computer Security Log Management",
+      "url": "https://csrc.nist.gov/pubs/sp/800/92/final",
+      "practical_takeaway": "Correlate alerts with configured telemetry rather than assuming completeness.",
+      "safe_lab": "Generate a harmless event on a local test service, then locate it in its application log."
+    },
+    {
+      "id": "mfa",
+      "topic": "Authentication",
+      "line": "Multi-factor authentication can protect a login and still leave an existing compromised session usable. The two protections operate at different moments.",
+      "source": "OWASP Session Management Cheat Sheet",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "practical_takeaway": "Understand why MFA and session revocation are separate controls.",
+      "safe_lab": "Review your own account's active device/session dashboard and available session revocation controls."
+    },
+    {
+      "id": "backup",
+      "topic": "Recovery",
+      "line": "A backup reachable with the same compromised credentials as its source may be lost in the same incident. Isolation is a recovery control.",
+      "source": "CISA StopRansomware Guide",
+      "url": "https://www.cisa.gov/stopransomware/ransomware-guide",
+      "practical_takeaway": "Create backups that a single stolen account cannot erase.",
+      "safe_lab": "Practice restoring a copy of a harmless file from a separate versioned backup."
+    },
+    {
+      "id": "email-meta",
+      "topic": "Network metadata",
+      "line": "A message can be encrypted while its timing, endpoints or routing metadata remain observable to some systems carrying it.",
+      "source": "RFC 5322, Internet Message Format",
+      "url": "https://www.rfc-editor.org/rfc/rfc5322",
+      "practical_takeaway": "Separate confidential message content from delivery metadata.",
+      "safe_lab": "View the full headers of an email you sent to yourself; identify timestamps and routing fields."
+    },
+    {
+      "id": "certificate",
+      "topic": "Trust chains",
+      "line": "Certificate validation establishes a chain of trust in a server identity. It does not audit the software that server chooses to run.",
+      "source": "RFC 5280, PKIX certificate validation",
+      "url": "https://www.rfc-editor.org/rfc/rfc5280",
+      "practical_takeaway": "Distinguish a valid trust chain from trustworthy site content.",
+      "safe_lab": "Inspect the certificate chain of a website in your browser and compare that with the site's ownership claims."
+    },
+    {
+      "id": "dns-cache",
+      "topic": "Resolution",
+      "line": "A DNS change does not reach every computer at once. Cached answers can outlive a correction until their validity window expires.",
+      "source": "RFC 1035, Domain Names",
+      "url": "https://www.rfc-editor.org/rfc/rfc1035",
+      "practical_takeaway": "Understand DNS TTL and propagation delay.",
+      "safe_lab": "Use your device's DNS lookup utility on a public hostname and inspect the returned TTL if exposed."
+    }
+  ]
+}

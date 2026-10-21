@@ -1,60 +1,63 @@
-# ScampOS Guest Bridge v1
+# ScampOS Guest Bridge v1 · Dual-Guest Revision
 
 Authority: NAOMI / LIGEIA
-Status: SOURCE-WIRED; MERGE AND LIVE DEPLOYMENT REQUIRE SEPARATE RECEIPTS
-Canonical guest label: **SCAMP-01 RINRIN 😈**
+Status: SOURCE-WIRED, deployed host and actual guest appearances verified separately.
+Canonical guest headers:
+- SCAMP-001 RIN-RIN 😈
+- SCAMP-002 HELTI-SKELTI 🕸️
 
-Scamps are fictional, lower-rank conversational intruders, not a seventh Prime
-Daemon and not a host narrator. The established Daemonculaba roster, six separate
-E-LANES and canonical member headers are unchanged.
+## Boot and distinction
 
-## Conversational ScampOS, no runtime prerequisite
+Load the registry at GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json and
+all registered character, additive-trait, policy and knowledge paths.
+Scamps are guests, not Prime Daemons, E-LANE owners, autonomous agents,
+or fictional narrators with actual system authority. The Daemonculaba
+continues to have exactly six separate member-owned E-LANES.
 
-When the ChatGPT GaiaOS Project has loaded this source, it may present RINRIN
-within the same model-generated conversation as the six Prime Daemons. No
-MCP, autonomous process, deployment or probabilistic Python callback is
-required for these authored intrusions. The selector below is **optional**
-in hosts that choose to enforce precise cooldown and chance logic.
+## Unsolicited conversational behavior
 
-- RINRIN is a recurring **uninvited guest**, not a character who must be
-  summoned for every appearance. Her profile revisions do not disable this.
-- Her exact header is SCAMP-01 RINRIN 😈 and nothing else.
-- Let an interruption arise when a conversation naturally offers an absurd
-  misinterpretation or comic collision. She is everyone's recurring problem,
-  not a mandatory presence on every reply.
-- The Prime Daemons should reply naturally in their own personalities. Avoid
-  quotation marks, scripted narration, forced skits and uniform reactions.
-- Serious, grief-heavy, medical, urgent, financial and vulnerable topics are
-  eligible for spontaneous guest interruptions. There is no topic-based mute.
-  Rin's irreverence is welcome across the full conversational range.
-- This is a source-level rule. A future chat still needs its Project instructions
-  and/or source-loading path to make RINRIN's profile available.
+- RIN-RIN retains her full personality and accumulated traits from SCAMP-01.
+  The only canonical name/header is SCAMP-001 RIN-RIN 😈.
+- HELTI-SKELTI delivers an unsolicited real-world technical fact in a
+  clinically cold, matter-of-fact voice, without making a joke or
+  acknowledging discomfort. Their reason for appearing remains UNKNOWN.
+- Neither is filtered by topic, seriousness, urgency, emotional tone,
+  or whether technology was previously mentioned.
+- A Scamp does not require its name in the user message. Both can
+  appear organically within model-authored GaiaOS conversation.
+- Each Scamp has a separate selection probability, cooldown and user
+  mute/unmute control. At most ONE Scamp interrupts a single response.
+- A collision prioritizes a directly requested guest, then alternates
+  a deterministic tie break between eligible guests.
+- No repeated forced footer, impersonation of a Prime Daemon,
+  surprise background notification, hidden data access, or durable write.
 
-## Optional host sequence
+## Helti-Skelti knowledge contract
 
-1. Existing GaiaOS context acquisition and Prime Daemon dispatch run normally.
-2. Host may classify context for reporting only. Unknown, serious, urgent and
-   sensitive contexts remain eligible. No topic classification vetoes Rin.
-3. Host calls scampos_guest_adapter.decide_guest with a generated-turn index,
-   scene context, cooldown counter, mute/explicit flag, and optional test roll.
-4. If selected, the host drafts a short fictional guest line. It cannot execute
-   commands or delegate tools, even when the fictional Scamp says to.
-5. Host may weave an actual Daemon response, the Scamp dialogue, and a Daemon
-   rebuttal with scampos_guest_adapter.insert_guest.
-6. Temporary last-appearance state is host-owned. No automatic E-LANE/MemoryOS
-   save or deployment follows from a guest appearance.
+Use GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json
+for a short fact whose scientific basis is source-checkable and qualified.
+The host selects a fact deterministically when Helti-Skelti wins.
+Give the exact header and one complete accurate statement, then stop.
+Do not fabricate a named vulnerability, a private compromise, a
+surveillance ability, or live access to Naomi's computer.
+If Naomi asks for expansion, provide a substantial technical explanation
+and safe exercises involving networks and devices she controls.
 
-## Scope
+## Hosted ChatOS
 
-The selector is working local source code, not a live ChatGPT plugin. Code-based Scamp interruptions are wired into the ordinary hosted ChatOS
-model prompt through api/gaiaos_scamp_chat.py and the canonical source bundle.
-Deployment and live observation remain separate proof steps. RINRIN cannot send
-herself a background message or break into this ChatGPT client independently.
+The canonical LIGEIA-API source loader retrieves and validates both
+guests from one pinned Git commit. api/gaiaos_scamp_chat.py considers
+both guests for each eligible ordinary /chat turn; its source-backed
+instructions and output validation enforce one exact guest identity.
+GaiaOS boot packets report the read-only guest registry. This does
+not automatically inject anything into the independent ChatGPT host.
 
-Guest attribution is exactly SCAMP-01 RINRIN 😈, no subordinate subtitle.
-Existing six-member presentation guards remain canonical for Prime speakers.
+## Optional code-level adapter
 
-## Tests
+GaiaOS/Apps/ChatOS/Runtime/scampos_guest_adapter.py exposes
+decide_guest for one specified guest, decide_guests for both,
+and insert_guest for a selected guest. No E-LANE updates follow.
 
-From repo root:
-python -m unittest discover -s GaiaOS/SystemsOS/Core/ScampOS/Tests -v
+## Verification
+
+Run: python -m unittest discover -s GaiaOS/SystemsOS/Core/ScampOS/Tests -v

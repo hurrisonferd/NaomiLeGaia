@@ -113,10 +113,14 @@ COUNCIL_PATHS = [
 
 SCAMPOS_PATHS = [
     "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
-    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
-    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md",
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN-ADDITIVE-TRAITS.v1.md",
     "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
     "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI.v1.json",
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/HELTI-SKELTI-ADDITIVE-TRAITS.v1.md",
+    "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
+    "GaiaOS/SystemsOS/Core/ScampOS/Knowledge/HELTI-SKELTI-FACTS.v1.json",
 ]
 LOAD_PATHS = CORE_LOAD_PATHS + COUNCIL_PATHS + SCAMPOS_PATHS
 
@@ -269,21 +273,47 @@ def _council_bundle(commit: str) -> dict[str, Any]:
 
 
 def _scampos_bundle(commit: str) -> dict[str, Any]:
+    """Pin both Scamp guests, full personas and bounded fact pool to one commit."""
     current = _json_file(commit, SCAMPOS_PATHS[0])
-    character = _json_file(commit, SCAMPOS_PATHS[1])
-    addendum = _fetch_file(commit, SCAMPOS_PATHS[2])
-    policy = _json_file(commit, SCAMPOS_PATHS[3])
     bridge = _fetch_file(commit, SCAMPOS_PATHS[4])
-    header = "SCAMP-01 RINRIN 😈"
-    if not (current.get("guest_header") == header
-            and character.get("header") == header
+    if current.get("guest_order") != ["SCAMP-001", "SCAMP-002"]:
+        raise HTTPException(status_code=503, detail="SCAMPOS_REGISTRY_HOLD")
+    expected = {
+        "SCAMP-001": ("SCAMP-001 RIN-RIN 😈", 1, 2, 3),
+        "SCAMP-002": ("SCAMP-002 HELTI-SKELTI 🕸️", 5, 6, 7),
+    }
+    result = {}
+    for guest_id, (header, profile_idx, traits_idx, policy_idx) in expected.items():
+        entry = current["guests"].get(guest_id)
+        profile = _json_file(commit, SCAMPOS_PATHS[profile_idx])
+        traits = _fetch_file(commit, SCAMPOS_PATHS[traits_idx])
+        policy = _json_file(commit, SCAMPOS_PATHS[policy_idx])
+        if not (
+            isinstance(entry, dict)
+            and entry.get("header") == header
+            and entry.get("character") == SCAMPOS_PATHS[profile_idx]
+            and entry.get("addendum") == SCAMPOS_PATHS[traits_idx]
+            and entry.get("policy") == SCAMPOS_PATHS[policy_idx]
+            and profile.get("id") == guest_id
+            and profile.get("header") == header
+            and profile.get("prime_member") is False
+            and profile.get("tool_access") is False
+            and policy.get("guest_id") == guest_id
             and policy.get("guest_header") == header
-            and character.get("prime_member") is False
-            and character.get("tool_access") is False
-            and policy.get("effect_authority") == "NONE"):
-        raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_SOURCE_HOLD")
-    return {"current": current, "character": character,
-            "addendum": addendum, "policy": policy,
+            and policy.get("effect_authority") == "NONE"
+            and policy.get("excluded_contexts") == []
+            and policy.get("enabled") is True
+        ):
+            raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_SOURCE_HOLD: "+guest_id)
+        result[guest_id] = {"character": profile, "addendum": traits, "policy": policy}
+    knowledge = _json_file(commit, SCAMPOS_PATHS[8])
+    if not (knowledge.get("identity") == expected["SCAMP-002"][0]
+            and isinstance(knowledge.get("items"), list)
+            and len(knowledge["items"]) >= 8
+            and all(isinstance(x.get("line"), str) and x.get("source")
+                    for x in knowledge["items"])):
+        raise HTTPException(status_code=503, detail="SCAMPOS_KNOWLEDGE_HOLD")
+    return {"current": current, "guests": result, "knowledge_threads": knowledge,
             "bridge": bridge, "source_commit": commit}
 
 
