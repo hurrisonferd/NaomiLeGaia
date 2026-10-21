@@ -56,8 +56,8 @@ class TestScampOS(unittest.TestCase):
 
     def test_original_six_still_six(self):
         fairy = REPO / "GaiaOS/SystemsOS/Core/FairyOS"
-        presentation = json.loads((fair / "COUNCIL-PRESENTATION-SPEC.v1.json").read_text(encoding="utf-8"))
-        dispatch = json.loads((fair / "OPERATOR-DISPATCH-MATRIX.v1.json").read_text(encoding="utf-8"))
+        presentation = json.loads((fairy / "COUNCIL-PRESENTATION-SPEC.v1.json").read_text(encoding="utf-8"))
+        dispatch = json.loads((fairy / "OPERATOR-DISPATCH-MATRIX.v1.json").read_text(encoding="utf-8"))
         six = ["VERA", "ANVIL", "SELENE", "ORIN", "KESTREL", "NIMUE"]
         self.assertEqual(presentation["speaker_order"], six)
         self.assertEqual(dispatch["roster"], six)

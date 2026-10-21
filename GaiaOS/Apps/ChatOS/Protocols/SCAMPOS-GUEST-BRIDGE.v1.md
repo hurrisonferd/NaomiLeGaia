@@ -1,7 +1,7 @@
 # ScampOS Guest Bridge v1
 
 Authority: NAOMI / LIGEIA
-Status: EXPERIMENTAL, BRANCH ONLY, NOT DEPLOYED
+Status: HOSTED-CHAT SOURCE WIRING IN PROGRESS; MERGE/DEPLOY/OBSERVE SEPARATELY
 Canonical guest label: **SCAMP-01 RINRIN 😈**
 
 Scamps are fictional, lower-rank conversational intruders, not a seventh Prime
@@ -45,9 +45,9 @@ in hosts that choose to enforce precise cooldown and chance logic.
 
 ## Scope
 
-The selector is working local source code, not a live ChatGPT plugin. Code-based
-Scamp interruptions require the future ChatOS/LIGEIA-API host to call the adapter.
-That separate deployment is not authorized by this experiment. RINRIN cannot send
+The selector is working local source code, not a live ChatGPT plugin. Code-based Scamp interruptions are wired into the ordinary hosted ChatOS
+model prompt through api/gaiaos_scamp_chat.py and the canonical source bundle.
+Deployment and live observation remain separate proof steps. RINRIN cannot send
 herself a background message or break into this ChatGPT client independently.
 
 Guest attribution is exactly SCAMP-01 RINRIN 😈, no subordinate subtitle.

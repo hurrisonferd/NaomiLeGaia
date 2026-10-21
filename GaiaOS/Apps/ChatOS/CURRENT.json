@@ -48,7 +48,10 @@
     "presentation_guard": "api/gaiaos_presentation_guard.py",
     "prime_daemon_presentation_canary": "GaiaOS/Apps/ChatOS/Tests/GAIAOS-PRIME-DAEMON-PRESENTATION-CANARY.py",
     "spellbook": "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-SPELLBOOK.v1.md",
-    "power_word_persecute": "GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md"
+    "power_word_persecute": "GaiaOS/Apps/ChatOS/Protocols/POWER-WORD-PERSECUTE.v1.md",
+    "scampos_guest_bridge": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
+    "scampos_profile": "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
+    "scampos_rules": "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json"
   },
   "memory_boundary": {
     "chatos_owns": "CURRENT_VISIBLE_SESSION",
@@ -181,5 +184,13 @@
       "normalizes_to": "CONJURE:VASKON",
       "protocol": "GaiaOS/Apps/ChatOS/Protocols/CONJURE-VASKON.v1.md"
     }
+  },
+  "scampos_guest": {
+    "guest_header": "SCAMP-01 RINRIN 😈",
+    "spontaneous": true,
+    "prime_roster_change": false,
+    "e_lane_change": false,
+    "hosted_chat": "SOURCE_WIRED_PENDING_DEPLOYMENT",
+    "chatgpt_host": "SOURCE_GUIDANCE_ONLY_NO_AUTOMATIC_CODE_INJECTION"
   }
 }

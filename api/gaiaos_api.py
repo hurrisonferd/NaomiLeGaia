@@ -20,6 +20,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.server.transport_security import TransportSecuritySettings
 from openai import OpenAI
 import gaiaos_presentation_guard
+import gaiaos_scamp_chat
 from pydantic import BaseModel, Field
 
 APP_VERSION = "1.4.0"
@@ -110,7 +111,14 @@ COUNCIL_PATHS = [
     "GaiaOS/SystemsOS/Core/MemberContinuityOS/WARM-CANDIDATE-BUFFER.v1.md",
 ]
 
-LOAD_PATHS = CORE_LOAD_PATHS + COUNCIL_PATHS
+SCAMPOS_PATHS = [
+    "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN.v1.json",
+    "GaiaOS/SystemsOS/Core/ScampOS/Characters/RINRIN-ADDITIVE-TRAITS.v1.md",
+    "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
+    "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
+]
+LOAD_PATHS = CORE_LOAD_PATHS + COUNCIL_PATHS + SCAMPOS_PATHS
 
 mcp = FastMCP(
     "GaiaOS Carrier",
@@ -260,6 +268,25 @@ def _council_bundle(commit: str) -> dict[str, Any]:
     }
 
 
+def _scampos_bundle(commit: str) -> dict[str, Any]:
+    current = _json_file(commit, SCAMPOS_PATHS[0])
+    character = _json_file(commit, SCAMPOS_PATHS[1])
+    addendum = _fetch_file(commit, SCAMPOS_PATHS[2])
+    policy = _json_file(commit, SCAMPOS_PATHS[3])
+    bridge = _fetch_file(commit, SCAMPOS_PATHS[4])
+    header = "SCAMP-01 RINRIN 😈"
+    if not (current.get("guest_header") == header
+            and character.get("header") == header
+            and policy.get("guest_header") == header
+            and character.get("prime_member") is False
+            and character.get("tool_access") is False
+            and policy.get("effect_authority") == "NONE"):
+        raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_SOURCE_HOLD")
+    return {"current": current, "character": character,
+            "addendum": addendum, "policy": policy,
+            "bridge": bridge, "source_commit": commit}
+
+
 def _load_bundle() -> dict[str, Any]:
     """Retrieve the GaiaOS bootstrap and council surface from one Git commit."""
     commit = _resolve_commit()
@@ -283,6 +310,7 @@ def _load_bundle() -> dict[str, Any]:
         "runtime_bootstrap": _fetch_file(commit, "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md"),
         "host_instructions": _fetch_file(commit, "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md"),
         "council_bundle": _council_bundle(commit),
+        "scampos_bundle": _scampos_bundle(commit),
         "proof_boundary": (
             "This API verifies source retrieval from one Git commit and can deterministically "
             "route explicit council signals and expose the current Gaia-native BrainOS/chat-control "
@@ -477,6 +505,9 @@ MEMBER CONTINUITY CURRENT:
 
 WARM CANDIDATE BUFFER:
 {council['warm_candidate_buffer']}
+
+SCAMPOS GUEST (not a Prime Daemon; may interject uninvited in eligible scenes):
+{json.dumps(bundle.get('scampos_bundle', {}), ensure_ascii=False, indent=2)}
 
 PROOF BOUNDARY:
 {bundle['proof_boundary']}
@@ -4324,6 +4355,15 @@ def chat(
         else:
             memory_context_rejected = True
 
+    guest_decision = None
+    if isinstance(bundle.get("scampos_bundle"), dict):
+        try:
+            guest_decision = gaiaos_scamp_chat.decide(
+                request.messages, bundle["scampos_bundle"]
+            )
+            instructions += gaiaos_scamp_chat.model_instruction(guest_decision)
+        except (ValueError, KeyError, TypeError) as exc:
+            raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_POLICY_HOLD") from exc
     client = OpenAI(api_key=OPENAI_API_KEY)
     response = client.responses.create(
         model=OPENAI_MODEL,
@@ -4366,12 +4406,22 @@ def chat(
             )
         except gaiaos_presentation_guard.PresentationGuardError as exc:
             raise HTTPException(status_code=503, detail="GAIAOS_PRESENTATION_OUTPUT_HOLD: " + str(exc)) from exc
+    guest_receipt = None
+    if guest_decision is not None:
+        try:
+            guest_receipt = gaiaos_scamp_chat.validate_output(
+                response.output_text, guest_decision
+            )
+        except ValueError as exc:
+            raise HTTPException(status_code=503, detail="SCAMPOS_GUEST_OUTPUT_HOLD") from exc
     output = {
         "output": response.output_text,
         "model": OPENAI_MODEL,
         "source": bundle["gaiaos"]["source"],
         "presentation": presentation_receipt,
     }
+    if guest_receipt is not None:
+        output["scampos_guest"] = guest_receipt
     if applied_memory is not None:
         output["memory_context"] = {
             "status": "BIGBANG_VERIFIED_CONTEXT_USED",
