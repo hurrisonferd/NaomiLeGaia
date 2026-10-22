@@ -1,22 +1,13 @@
 {
-  "schema": "gaiaos.scampos.intrusion-rules.v1",
+  "schema": "gaiaos.scampos.conversational-presence.v2",
   "authority": "NAOMI / LIGEIA",
+  "guest_id": "SCAMP-001",
   "guest_header": "SCAMP-001 RIN-RIN 😈",
   "character": "RIN-RIN",
-  "chance": 0.15,
-  "cooldown_turns": 3,
-  "max_guest_lines": 2,
   "enabled": true,
-  "allowed_contexts": [
-    "*"
-  ],
-  "excluded_contexts": [],
-  "explicit_invocation_bypasses_chance": true,
-  "explicit_invocation_requires_allowed_context": false,
   "manual_mute": true,
-  "host_sends_context": "unknown by default",
+  "excluded_contexts": [],
   "effect_authority": "NONE",
-  "note": "No topic-based suppression, including serious, urgent, medical, mental-health, grief, financial, critical-operations or unknown. Selection depends only on enabled, manual mute, explicit invocation, cooldown and chance. The guest never initiates independent messages.",
-  "context_filter": "NONE_ALL_TOPICS_ELIGIBLE",
-  "guest_id": "SCAMP-001"
+  "selection": "SAME_MODEL_COMPOSITION_AS_PRIMES",
+  "note": "No numeric chance, cooldown, guest quota, line cap or separate selector. Speech is natural and user-directed."
 }

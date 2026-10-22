@@ -219,6 +219,6 @@
     "conversational_contract": "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
     "acceptance": "ACTUAL_SCAMP_SPEECH_IN_CHATGPT_REPLY",
     "chatgpt_dispatch": "SAME_AS_PRIMES_NO_RNG_COOLDOWN_OR_GUEST_CAP",
-    "legacy_selector_policy": "OTHER_HOSTS_ONLY"
+    "legacy_selector_policy": "RETIRED_NO_SELECTOR"
   }
 }
