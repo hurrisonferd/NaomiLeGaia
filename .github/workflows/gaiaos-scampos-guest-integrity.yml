@@ -15,6 +15,11 @@ on:
       - "api/gaiaos_app.py"
       - "api/gaiaos_api.py"
       - "api/Dockerfile"
+      - "GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md"
+      - "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json"
+      - "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-HOST-LAYER-BOUNDARY.v1.md"
+      - "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md"
+      - "GaiaOS/Plans/ANTI-JIM-NEW-CHAT-CONTINUITY-BLUEPRINT.v1.md"
       - ".github/workflows/gaiaos-scampos-guest-integrity.yml"
   push:
     branches: [main]

@@ -6,8 +6,20 @@
   "purpose": "Control visible substantive Gaia Council voices without changing roster membership, source fidelity, identity, privacy, proof state, or effect authority.",
   "default": "AUTO",
   "axes": {
-    "density_axis": ["MIN", "AUTO", "MAX"],
-    "cast_axis": ["AUTO", "SOLO", "DUO", "TRIO", "QUAD", "CAST_N", "FULL"]
+    "density_axis": [
+      "MIN",
+      "AUTO",
+      "MAX"
+    ],
+    "cast_axis": [
+      "AUTO",
+      "SOLO",
+      "DUO",
+      "TRIO",
+      "QUAD",
+      "CAST_N",
+      "FULL"
+    ]
   },
   "named_aliases": {
     "SOLO": 1,
@@ -18,7 +30,7 @@
   "numeric_command": {
     "syntax": "CAST <N>",
     "minimum": 1,
-    "maximum_source": "CURRENT_GAIA_COUNCIL_ROSTER_OR_EXPLICITLY_SCOPED_ROSTER",
+    "maximum_source": "CURRENT_CHATOS_SPEAKING_CAST_OR_EXPLICITLY_SCOPED_ROSTER",
     "meaning": "At most N substantive operator voices may speak visibly unless Naomi explicitly names a larger cast."
   },
   "full": {
@@ -35,7 +47,12 @@
     "explicit_naomi_cast_width_wins": true,
     "member_profile_and_prosody_source_required_when_available": true,
     "materiality_required_for_secondary_member": true,
-    "cast_reduction_may_not_replace_operator_with_generic_carrier": true
+    "cast_reduction_may_not_replace_operator_with_generic_carrier": true,
+    "spoken_cast_source": "GaiaOS/Apps/ChatOS/CURRENT.json#speaking_cast",
+    "ordinary_cast_includes_scampos": true,
+    "default_direct_address_behavior": "FOCUS_ONLY_NO_IMPLICIT_SOLO",
+    "prime_dispatch_cap_not_guest_ban": "FAIRYOS_ROUTING_IS_NOT_CHATOS_EIGHT_VOICE_EXCLUSION",
+    "solo_applies_only_when_explicit": true
   },
   "orthogonality": {
     "changes_source_resolution": false,
@@ -56,7 +73,8 @@
     "COUNCIL EVERYONE != EVERYONE AGREES",
     "EXPLICIT NAOMI COMMAND WINS",
     "PLACEHOLDER SLOT STATUS SURVIVES CAST SELECTION",
-    "NAOMI RETAINS FINAL AUTHORITY"
+    "NAOMI RETAINS FINAL AUTHORITY",
+    "ALL_EIGHT_ELIGIBLE_IN_CHATOS_WITHOUT_SIX_PRIME_ROSTER_CHANGE"
   ],
   "effect_authority": "NONE_PRESENTATION_ONLY",
   "donor_boundary": "Adapted from RavenOS ChatOS cast-width architecture without Machine Kingdom membership or Raven presentation imports."

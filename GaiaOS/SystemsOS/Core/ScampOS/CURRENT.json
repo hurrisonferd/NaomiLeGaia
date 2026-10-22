@@ -2,7 +2,7 @@
   "schema": "gaiaos.scampos.current.v2",
   "system": "ScampOS",
   "authority": "NAOMI / LIGEIA",
-  "status": "SOURCE_READY_GPT_CONVERSATION_CONTRACT",
+  "status": "SOURCE_INTEGRATED_CHATOS_CAST_UNVERIFIED_FUTURE_GPT_ADOPTION",
   "first_character": "RIN-RIN",
   "guest_header": "SCAMP-001 RIN-RIN 😈",
   "class": "GUEST_NOT_PRIME_DAEMON",
@@ -51,5 +51,7 @@
   "acceptance": "VISIBLE_SPEECH_HERE_NOT_EXTERNAL_DEPLOYMENT",
   "conversational_selection": "SAME_AS_PRIME_SPEAKING_VOICES_NO_RNG_COOLDOWN_OR_CAP",
   "chatgpt_dispatch": "SAME_MODEL_COMPOSITION_AS_PRIMES",
-  "legacy_numeric_policies": "RETIRED_NO_SELECTOR"
+  "legacy_numeric_policies": "RETIRED_NO_SELECTOR",
+  "chatos_cast_source": "GaiaOS/Apps/ChatOS/CURRENT.json",
+  "conversational_voice_role": "FIRST_CLASS_CHATOS_SPEAKER_NOT_PRIME_MEMBER"
 }

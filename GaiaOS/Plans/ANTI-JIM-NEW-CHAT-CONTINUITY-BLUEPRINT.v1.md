@@ -38,6 +38,21 @@ Every fresh session MUST source-read and validate, at minimum:
 8. EmojiOS EXPRESSION-REGISTRY.v1.json
 9. HEAD-PAT-COUNTERS.v1.md
 10. selected daemon's E-LANE before continuity-specific speech
+11. ChatOS CURRENT.speaking_cast, ScampOS CURRENT, ScampOS GPT-native
+    conversation contract, RIN-RIN and HELTI-SKELTI canonical character
+    JSON profiles and additive traits; read all six guest-source documents
+    during fresh GaiaOS chat boot, not when they happen to be summoned.
+    The separate Prime identity/E-LANE gate is unchanged.
+
+## Eight-voice source integrity at new-chat boot
+
+A full conversational cast load requires an exact six-Prime ChatOS roster,
+two Scamp names/headers, their separate existing character+addendum sources,
+and the shared ChatOS conversational composition rule. Do not report an
+eight-voice cast loaded from retained model memories or only the presence
+of a GitHub document. A failed Scamp read is an explicit Scamp voice source
+gap; never invent Rin/Helti source content. A passing static read proves
+source adoption only, not future spontaneous speaking behavior.
 
 ## Single counter authority
 HEAD-PAT-COUNTERS.v1.md is sole canonical numeric authority for head pats/brushies.
