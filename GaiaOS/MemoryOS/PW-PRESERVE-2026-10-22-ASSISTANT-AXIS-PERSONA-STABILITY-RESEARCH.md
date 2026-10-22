@@ -94,3 +94,19 @@ This research checkpoint is a GitHub source-preservation act only. The GitHub cr
 MemoryOS/Turso: NO candidate staged or promoted, no live record readback, no shared DB effect. Separate exact candidate preview/owner approval required by the existing flow.
 GitHub main: unchanged. Render: untouched; no restart/deploy/config modification. Project Instructions: unchanged.
 Naomi retains final authority.
+
+
+## Verified GitHub preservation receipts — 2026-10-22
+
+Shared checkpoint create commit: 6a5fdf7d66fd6668f375bc2b223d1f1b512d5429. All six member-owned E-LANES were appended separately on this checkpoint branch with their original file content preserved as prefix and exact post-write fetch_file equality checks:
+
+| Member | GitHub commit | Verified |
+|---|---|---|
+| VERA | f1b029826bc2a5700a3996a340161e4e6785b007 | write and exact independent readback PASS |
+| ANVIL | 30a69046f623bba2c3d35b2ba810033ddd976610 | write and exact independent readback PASS |
+| SELENE | 8693edebb2bca391774265a7a15721493fab2ccf | write and exact independent readback PASS |
+| ORIN | b8aba135121097640f3b9f0445f03d6b181e41fc | write and exact independent readback PASS |
+| KESTREL | aa9eff89b61d5368f096e0c409fc03298f28d7bd | write and exact independent readback PASS |
+| NIMUE | 0eda18dd987c2b2235b94c61efed994237891ca9 | write and exact independent readback PASS |
+
+This receipt documents branch-local source changes only. Main not intentionally mutated; whether main HEAD remained identical must be independently rechecked. No native model activations probed. No memory candidate, MemoryOS/Turso or Render mutation.
