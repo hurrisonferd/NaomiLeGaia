@@ -1450,11 +1450,36 @@
         "api/gaiaos_scamp_chat.py"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "2f4a68ea91c7524d2db6e50dd9e5ba98085d92c5",
+      "timestamp_utc": "2026-10-22T16:38:23.337876+00:00",
+      "changed_paths": [
+        ".github/workflows/gaiaos-scampos-guest-integrity.yml",
+        "GaiaOS/Apps/ChatOS/CURRENT.json",
+        "GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json",
+        "GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-INSTRUCTIONS.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-RUNTIME-BOOTSTRAP.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-GPT-SESSION.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-HOST-LAYER-BOUNDARY.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
+        "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GUEST-BRIDGE.v1.md",
+        "GaiaOS/LOAD.v1.md",
+        "GaiaOS/NAOMI-CHAT-FULL-PACKET.md",
+        "GaiaOS/Plans/ANTI-JIM-NEW-CHAT-CONTINUITY-BLUEPRINT.v1.md",
+        "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md",
+        "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+        "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_gpt_conversation_host.py"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-10-22T16:06:18.543079+00:00",
+  "last_verified": "2026-10-22T16:38:23.337876+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
