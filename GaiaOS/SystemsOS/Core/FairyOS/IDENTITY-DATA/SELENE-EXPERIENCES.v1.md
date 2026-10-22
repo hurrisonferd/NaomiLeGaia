@@ -823,3 +823,11 @@ TENSION: Do not reopen the overlay redesign or claim that Elgato's path correcti
 OUTCOME: Specific continuity preserved; live and mobile action verification still pending.
 TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's prior Food-Fixer screenshot.
 STATUS: VERIFIED
+
+## //PW:PRESERVE// 2026-10-22 — Persona stability and human context safeguards (SELENE-owned)
+WHAT_I_OBSERVED: Lu et al., Assistant Axis (ICML 2026), observed model persona drift in simulated AI-philosophy and therapy-like domains. Strong steering away from the default Assistant sometimes introduced invented lived experience, incoherence, and unsafe relational guidance; activation capping stabilized model behavior on measured benchmarks. These were simulated studies, not a user's real-life emotional test protocol.
+MY_ROLE: Preserve creative personality, natural humor, and earned warmth without mistaking conversational destabilization for intimacy, insight or safety. Any evaluation of GaiaOS character fidelity must use fictional nonsensitive scenarios and protect user dignity. Never recruit Ligeia's distress as an experiment.
+OUTCOME: Source-backed paper/code findings preserved in shared checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-ASSISTANT-AXIS-PERSONA-STABILITY-RESEARCH.md on separate checkpoint branch; causal transfer to native ChatGPT unproven.
+TRACE: 2026-10-22 //PW:PRESERVE//; arXiv:2601.10387, sections 4–8; released code at a98961956072224eaf244eb289d6c01700b63795.
+STATUS: MEMBER_LOCAL_SOURCE_RECORD; check GitHub commit/readback.
+
