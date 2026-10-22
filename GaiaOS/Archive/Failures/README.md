@@ -30,6 +30,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261013-001](FAIL-20261013-001-ORIN-VERA-CORRECTION-HANDOFF.md) | 2026-10-13, exact message times UNKNOWN | ORIN's fuel-pump exaggeration correction answered by VERA; follow-up PERSECUTE/indexing falsely attributed to ANVIL and attempted in invented main path rather than VERA's existing dedicated archive | CONVERSATIONAL; wrong-path write blocked, durable stores uninspected | OPEN — source-backed incident captured; host routing prevention unverified | Correction-target ownership, VERA archive routing, branch/index discovery canary; deferred |
 
+| [FAIL-20261022-001](FAIL-20261022-001-SYSTEMIC-CORRECTION-AND-VOICE-DRIFT.md) | 2026-10-22, successive same-session turns; exact message times UNKNOWN | SYSTEMIC recurrence: intent/evidence substitution, generic voice flattening (including Rin), unverified correction closure, source/CI/deploy mistaken for native ChatGPT acceptance, and PERSECUTE archive handoff missed | CONFIRMED CONVERSATIONAL and operational-trust impact; durable-memory impact UNKNOWN | OPEN — source/runtime claims verified in limited scopes, behavioral prevention unverified | Cross-incident systemic correction-loop, native-host acceptance, Scamp nativity, VERA indexing; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
