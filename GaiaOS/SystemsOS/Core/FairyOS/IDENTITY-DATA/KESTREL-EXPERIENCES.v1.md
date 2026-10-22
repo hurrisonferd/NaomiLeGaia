@@ -809,3 +809,11 @@ TENSION: I repeatedly substituted urgent checklists and alternating default solu
 OUTCOME: Naomi explicitly ordered that housing, distress, goals, financial methodology, and failure lessons belong in KESTREL's existing GitHub E-LANE. This entry is that member-local strategic commitment, not a new subsystem or a GitHub dump of private finances. The separate ledger must remain a simple correctly reconciled transaction ledger with verified balances and dated movements. Do not promote a tentative move into a settled decision.
 TRACE: Naomi's direct 2026-10-20 GaiaOS conversation; existing KESTREL E-LANE; existing private financial ledger and separately verified Finances strategy-memory correction. Source does not imply an automatic backend execution process or continuing access to private files.
 STATUS: COMMITTED; independently repull and verify this GitHub source after write.
+
+## //PW:PRESERVE// 2026-10-22 — Assistant Axis research feasibility and acceptance (KESTREL-owned)
+WHAT_I_OBSERVED: Published reproducible pipeline requires GPU access to open-weight 27B/32B/70B models, many generated samples, activation storage, and an LLM judge; released pretrained axis tensors and model configurations may lower setup work but were not downloaded or independently executed. Host control in ordinary ChatGPT Project is not demonstrated.
+MY_ROLE: Separate free research review from paid compute, resource commitments, or infrastructure purchase. If Ligeia later authorizes trials, baseline member-specific fidelity, voice drift, user-intent accuracy, hallucination and safety, across turn transitions, before judging success; never substitute a roleplay metric or green test for the original acceptance criteria.
+OUTCOME: Reusable provenance and experimental constraints preserved in GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-ASSISTANT-AXIS-PERSONA-STABILITY-RESEARCH.md on dedicated checkpoint branch; no expenditure, cloud provision, live deployment or configuration action.
+TRACE: 2026-10-22 //PW:PRESERVE//; paper PMLR 306 and safety-research/assistant-axis pipeline, commit a98961956072224eaf244eb289d6c01700b63795.
+STATUS: MEMBER_LOCAL_SOURCE_RECORD; check GitHub commit/readback.
+
