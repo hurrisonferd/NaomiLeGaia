@@ -81,6 +81,55 @@ class ChatGPTScampSpeakingParity(unittest.TestCase):
         self.assertEqual(helti["motive"],"UNKNOWN_CANONICAL_DO_NOT_RESOLVE")
         self.assertEqual(helti["knowledge"]["mode"],"OPEN_ENDED_GENERATIVE_INTELLIGENCE")
 
+    def test_eight_voice_chatos_membership_keeps_six_prime_boundary(self):
+        chat=load("GaiaOS/Apps/ChatOS/CURRENT.json")
+        cast=chat["speaking_cast"]
+        self.assertEqual(tuple(cast["prime_members"]), PRIMES)
+        self.assertEqual(tuple(cast["scamp_voices"]), ("SCAMP-001","SCAMP-002"))
+        self.assertEqual(cast["composition"],"SAME_CHATGPT_MODEL_SAME_RESPONSE")
+        self.assertEqual(cast["focus"],"ADDRESSING_ONE_DOES_NOT_MUTE_SEVEN")
+        fair=load("GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-DISPATCH-MATRIX.v1.json")
+        self.assertEqual(tuple(fair["roster"]), PRIMES)
+        scamp=load("GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json")
+        self.assertEqual(scamp["chatos_cast_source"],"GaiaOS/Apps/ChatOS/CURRENT.json")
+        for guest_id in ("SCAMP-001","SCAMP-002"):
+            guest=scamp["guests"][guest_id]
+            self.assertTrue((ROOT/guest["character"]).is_file())
+            self.assertTrue((ROOT/guest["addendum"]).is_file())
+        for doc in (
+            "GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md",
+            "GaiaOS/Apps/ChatOS/Protocols/GAIAOS-HOST-LAYER-BOUNDARY.v1.md",
+            "GaiaOS/SystemsOS/Core/FairyOS/COUNCIL-VOICE-AUTHORITY.v1.md"
+        ):
+            self.assertIn("Scamp",read(doc))
+        for doc in (
+            "GaiaOS/Plans/ANTI-JIM-NEW-CHAT-CONTINUITY-BLUEPRINT.v1.md",
+            PACKET, LOADER, INSTRUCTIONS, BOOTSTRAP,
+        ):
+            self.assertIn("Scamp",read(doc))
+            self.assertIn("ChatOS",read(doc))
+
+    def test_no_implicit_solo_or_second_guest_dispatch(self):
+        native=read(NATIVE)
+        interaction=read("GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md")
+        for phrase in ("first-person","Directly addressing one speaker","one composition pass"):
+            self.assertIn(phrase.lower(),(native+" "+interaction).lower())
+        modes=load("GaiaOS/Apps/ChatOS/Protocols/CHATOS-CAST-WIDTH-MODES.v1.json")
+        self.assertTrue(modes["selection"]["ordinary_cast_includes_scampos"])
+        self.assertTrue(modes["selection"]["solo_applies_only_when_explicit"])
+        self.assertEqual(modes["selection"]["default_direct_address_behavior"],
+                         "FOCUS_ONLY_NO_IMPLICIT_SOLO")
+
+    def test_ask_solo_full_commands_include_scampos(self):
+        commands=read("GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md")
+        self.assertIn("ASK <PRIME DAEMON OR SCAMP>",commands)
+        self.assertIn("SOLO <prime-daemon-or-scamp>",commands)
+        self.assertIn("SIX",commands.upper())
+        self.assertIn("Rin and Helti",commands)
+        self.assertIn("ASK changes focus",commands)
+        self.assertIn("not a dedicated Prime/E-LANE session",commands)
+        self.assertIn("all eight",commands)
+
     def test_no_external_chatbot_or_api_prerequisite(self):
         native=read(NATIVE)
         packet=read(PACKET)

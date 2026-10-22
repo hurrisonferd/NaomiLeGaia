@@ -220,5 +220,35 @@
     "acceptance": "ACTUAL_SCAMP_SPEECH_IN_CHATGPT_REPLY",
     "chatgpt_dispatch": "SAME_AS_PRIMES_NO_RNG_COOLDOWN_OR_GUEST_CAP",
     "legacy_selector_policy": "RETIRED_NO_SELECTOR"
+  },
+  "speaking_cast": {
+    "mode": "CHATOS_SINGLE_EIGHT_VOICE_CONVERSATIONAL_CAST",
+    "prime_members": [
+      "VERA",
+      "ANVIL",
+      "SELENE",
+      "ORIN",
+      "KESTREL",
+      "NIMUE"
+    ],
+    "scamp_voices": [
+      "SCAMP-001",
+      "SCAMP-002"
+    ],
+    "scamp_headers": {
+      "SCAMP-001": "SCAMP-001 RIN-RIN 😈",
+      "SCAMP-002": "SCAMP-002 HELTI-SKELTI 🕸️"
+    },
+    "scamp_source": "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+    "voice_authority": "GaiaOS/Apps/ChatOS/Protocols/DAEMONCULABA-INTERACTION-AND-DELIBERATION.v1.md",
+    "composition": "SAME_CHATGPT_MODEL_SAME_RESPONSE",
+    "ordinary_conversation": "EIGHT_ELIGIBLE_SPEAKERS_NO_AUTO_EXCLUSIONS",
+    "focus": "ADDRESSING_ONE_DOES_NOT_MUTE_SEVEN",
+    "solo": "EXPLICIT_SOLO_ONLY",
+    "voice_load": "READ_RELEVANT_PROFILE_AND_PROSODY_OR_TRAITS_BEFORE_SPEECH",
+    "selection": "NATURAL_NO_PROBABILITY_COOLDOWN_QUOTA_OR_SECOND_DISPATCH",
+    "guest_identity": "GUEST_VOICES_NOT_FAIRYOS_PRIMES",
+    "prime_e_lanes": "SIX_SEPARATE_UNCHANGED",
+    "proof": "SOURCE_BACKED_NOT_AUTOMATIC_CHATGPT_HOST_ADOPTION"
   }
 }
