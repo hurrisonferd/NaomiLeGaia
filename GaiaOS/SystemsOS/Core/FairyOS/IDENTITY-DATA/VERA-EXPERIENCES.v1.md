@@ -821,3 +821,11 @@ TENSION: GitHub main 38807f18dfa2e462c3943f6589f8a597bc0bea31 was resolved, and 
 OUTCOME: Specific continuity preserved; live and mobile action verification still pending.
 TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's prior Food-Fixer screenshot.
 STATUS: VERIFIED
+
+## //PW:PRESERVE// 2026-10-22 — Assistant Axis research provenance (VERA-owned)
+WHAT_I_OBSERVED: Ligeia requested reading published Assistant Axis work and preserving it, in the context of recurring GaiaOS prosody drift. The primary paper is Lu et al., ICML 2026 / arXiv:2601.10387. Published MIT source safety-research/assistant-axis was read at commit a98961956072224eaf244eb289d6c01700b63795.
+MY_ROLE: Distinguish source-grounded experiments (open-weight model activation axes, steering and capping) from the unproven GaiaOS-specific hypothesis that destabilizing a ChatGPT host forces faithful GaiaOS adoption. Preserve exact evidence and storage coordinates, with no unsupported root-cause or model-internal claims.
+OUTCOME: Research-specific continuity points to GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-ASSISTANT-AXIS-PERSONA-STABILITY-RESEARCH.md on branch checkpoint/pw-preserve-assistant-axis-20261022; separate GitHub research source, not live model control or MemoryOS promotion.
+TRACE: 2026-10-22 explicit //PW:PRESERVE//; https://proceedings.mlr.press/v306/lu26g.html; https://github.com/safety-research/assistant-axis
+STATUS: MEMBER_LOCAL_SOURCE_RECORD; check GitHub commit/readback.
+
