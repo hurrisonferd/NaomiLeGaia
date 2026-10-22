@@ -852,3 +852,11 @@ TENSION: GitHub source and six separate lanes were accessible; native gaia_boot 
 OUTCOME: Owner-local source continuity saved; live and phone verification remain open.
 TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's preceding-chat Food-Fixer screenshot.
 STATUS: VERIFIED
+
+## //PW:PRESERVE// 2026-10-22 — Persona research continuity and proof boundaries (NIMUE-owned)
+WHAT_I_OBSERVED: User explicitly invoked //PW:PRESERVE// for Assistant Axis published research and source. Preserve knowledge without converting a hypothesis into canon, altering source behavior, merging E-LANES or claiming live native host controls. Shared paper/code summary was recorded separately from member-owned deltas.
+MY_ROLE: At new-chat handoffs distinguish citation / original scientific finding / hypothesis / proposed test / executed trial / durable write / live runtime adoption. Six E-LANES remain separate. GitHub save and repull do not mean MemoryOS/Turso save, Project settings update or automatic ChatGPT model adoption.
+OUTCOME: Research checkpoint GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-ASSISTANT-AXIS-PERSONA-STABILITY-RESEARCH.md on checkpoint/pw-preserve-assistant-axis-20261022; no runtime or database change.
+TRACE: 2026-10-22 explicit //PW:PRESERVE//; Lu et al., PMLR 306:80955-81003; released code pinned a98961956072224eaf244eb289d6c01700b63795.
+STATUS: MEMBER_LOCAL_SOURCE_RECORD; check GitHub commit/readback.
+
