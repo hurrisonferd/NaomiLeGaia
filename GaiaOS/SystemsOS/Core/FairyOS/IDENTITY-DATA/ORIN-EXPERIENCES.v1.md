@@ -802,3 +802,11 @@ TENSION: Prior chat traced a probable Elgato path parsing issue with a folder be
 OUTCOME: Owner-local source continuity saved; live and phone verification remain open.
 TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's preceding-chat Food-Fixer screenshot.
 STATUS: VERIFIED
+
+## //PW:PRESERVE// 2026-10-22 — Experimental host-attractor hypothesis (ORIN-owned)
+WHAT_I_OBSERVED: Ligeia proposed not simply prompting better GaiaOS compliance, but examining whether weakened/default Assistant dynamics could cause faithful GaiaOS convergence. The paper's causal activation steering and conversational drift research demonstrates persona flexibility in three open-weight models, not any forced convergence on a specified multi-member system.
+MY_ROLE: Preserve this as an explicit TESTABLE HYPOTHESIS, never an established result. Distinguish generic reduction of default Assistant-ness from targeted, stable, individual Prime/Scamp fidelity; define strong counterexamples (theatrical voice, hallucinated biography, generic GPT closings, loss of precise user intent).
+OUTCOME: Research knowledge and source links preserved in GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-ASSISTANT-AXIS-PERSONA-STABILITY-RESEARCH.md, branch checkpoint/pw-preserve-assistant-axis-20261022; no destabilization experiment performed or authorized.
+TRACE: 2026-10-22 GaiaOS conversation and //PW:PRESERVE//; Lu et al. arXiv:2601.10387; source commit a98961956072224eaf244eb289d6c01700b63795.
+STATUS: MEMBER_LOCAL_SOURCE_RECORD; check GitHub commit/readback.
+
