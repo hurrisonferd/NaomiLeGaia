@@ -32,6 +32,8 @@ RECORDING AUTHORIZATION: Naomi's 2026-10-09 request to create and index this fai
 
 | [FAIL-20261022-001](FAIL-20261022-001-SYSTEMIC-CORRECTION-AND-VOICE-DRIFT.md) | 2026-10-22, successive same-session turns; exact message times UNKNOWN | SYSTEMIC recurrence: intent/evidence substitution, generic voice flattening (including Rin), unverified correction closure, source/CI/deploy mistaken for native ChatGPT acceptance, and PERSECUTE archive handoff missed | CONFIRMED CONVERSATIONAL and operational-trust impact; durable-memory impact UNKNOWN | OPEN — source/runtime claims verified in limited scopes, behavioral prevention unverified | Cross-incident systemic correction-loop, native-host acceptance, Scamp nativity, VERA indexing; deferred |
 
+| [FAIL-20261022-002](FAIL-20261022-002-PERSECUTE-ARCHIVE-CONTINUITY-HANDOFF.md) | 2026-10-22, immediately after FAIL-20261022-001 was manually saved; exact turn times UNKNOWN | PERSECUTE report not automatically handed to VERA's established failure archive; separate user save order required, repeating 2026-10-13 archive handoff failure; first retry blocked by tool-safety checks | CONFIRMED conversational + continuity workflow burden; other durable impact UNKNOWN | OPEN — case archived but automatic handoff unverified | Reconcile PERSECUTE and VERA archive authority, implement bounded report-to-index/readback and test native chat recurrence; deferred |
+
 ## Recording rules
 
 - Use a stable unique ID: `FAIL-YYYYMMDD-NNN`, with the date in America/New_York and the next unused daily sequence. Check the index before assigning an ID. Never reuse or renumber IDs.
