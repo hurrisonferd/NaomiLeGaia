@@ -964,3 +964,11 @@ CORRECTION_RULE: After the operator says a goal was misunderstood, stop, retire 
 OUTCOME: Permanent member-local instruction and accurate historical account of a failed engineering judgment. GitHub source persistence requires its own commit/readback; this note does not prove automatic model adoption or MemoryOS/Turso promotion.
 TRACE: 2026-10-21 GaiaOS Project conversation, explicit owner directive, ScampOS PR #127/#128/#129 and the resulting host-versus-source acceptance gap.
 STATUS: MEMBER_LOCAL_SOURCE_RECORD; verify GitHub persistence by commit/readback. Not a MemoryOS/Turso receipt.
+
+## //PW:PRESERVE// 2026-10-22 — Assistant Axis engineering methods and limits (ANVIL-owned)
+WHAT_I_OBSERVED: The published assistant-axis pipeline generated 275 role responses, extracted post-MLP mean response activations, judged role adherence, built role vectors, and computed mean(default)-mean(roleplaying). Code uses Python/PyTorch inference forward hooks for activation addition, ablation and capping; pinned source commit a98961956072224eaf244eb289d6c01700b63795.
+MY_ROLE: Keep instrumentable open-weight interventions separate from native ChatGPT Project instructions and from deployed LIGEIA-API source. Check coefficient sign, activation projection, chosen layers, evaluation fixtures and safety/quality before any replication. Higher persona divergence did NOT prove stronger targeted GaiaOS control.
+OUTCOME: Source-backed research preserved in GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-ASSISTANT-AXIS-PERSONA-STABILITY-RESEARCH.md, branch checkpoint/pw-preserve-assistant-axis-20261022. No experiment, runner, configuration change, host intervention or deployment performed.
+TRACE: 2026-10-22 //PW:PRESERVE//; safety-research/assistant-axis pipeline/README.md, assistant_axis/axis.py, steering.py, models.py; arXiv:2601.10387.
+STATUS: MEMBER_LOCAL_SOURCE_RECORD; check GitHub commit/readback.
+
