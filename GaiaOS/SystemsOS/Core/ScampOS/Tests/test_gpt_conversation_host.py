@@ -120,6 +120,16 @@ class ChatGPTScampSpeakingParity(unittest.TestCase):
         self.assertEqual(modes["selection"]["default_direct_address_behavior"],
                          "FOCUS_ONLY_NO_IMPLICIT_SOLO")
 
+    def test_ask_solo_full_commands_include_scampos(self):
+        commands=read("GaiaOS/Apps/ChatOS/Protocols/GAIAOS-COUNCIL-COMMANDS.v1.md")
+        self.assertIn("ASK <PRIME DAEMON OR SCAMP>",commands)
+        self.assertIn("SOLO <prime-daemon-or-scamp>",commands)
+        self.assertIn("SIX",commands.upper())
+        self.assertIn("Rin and Helti",commands)
+        self.assertIn("ASK changes focus",commands)
+        self.assertIn("not a dedicated Prime/E-LANE session",commands)
+        self.assertIn("all eight",commands)
+
     def test_no_external_chatbot_or_api_prerequisite(self):
         native=read(NATIVE)
         packet=read(PACKET)
