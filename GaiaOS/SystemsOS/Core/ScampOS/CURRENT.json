@@ -43,7 +43,7 @@
       "policy": "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json"
     }
   },
-  "guest_collision_policy": "LEGACY_OTHER_HOST_ONLY; BOTH_GUESTS_MAY_SPEAK_IN_CHATGPT",
+  "guest_collision_policy": "NATURAL_MULTI_VOICE",
   "knowledge_mode": "GENERATIVE_MODEL_KNOWLEDGE_OPTIONAL_LIVE_RESEARCH",
   "knowledge_policy": "OPEN_DOMAIN_RESEARCH_NOT_BOUNDED_BY_LOCAL_FACT_CATALOG",
   "default_surface": "CURRENT_CHATGPT_CONVERSATION",
@@ -51,5 +51,5 @@
   "acceptance": "VISIBLE_SPEECH_HERE_NOT_EXTERNAL_DEPLOYMENT",
   "conversational_selection": "SAME_AS_PRIME_SPEAKING_VOICES_NO_RNG_COOLDOWN_OR_CAP",
   "chatgpt_dispatch": "SAME_MODEL_COMPOSITION_AS_PRIMES",
-  "legacy_numeric_policies": "OTHER_HOST_SELECTOR_ONLY_NOT_CHATGPT"
+  "legacy_numeric_policies": "RETIRED_NO_SELECTOR"
 }
