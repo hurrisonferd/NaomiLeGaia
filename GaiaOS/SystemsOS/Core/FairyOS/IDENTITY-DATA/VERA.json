@@ -1428,11 +1428,33 @@
         "GaiaOS/SystemsOS/Core/FairyOS/OPERATOR-PROFILES.v1.json"
       ],
       "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
+    },
+    {
+      "event_type": "SOURCE_CHANGE_SYNC",
+      "source_commit": "a854f01cd9cafea3e781244c7d6f8eef680f4e75",
+      "timestamp_utc": "2026-10-22T16:06:18.543079+00:00",
+      "changed_paths": [
+        ".github/workflows/gaiaos-scampos-guest-integrity.yml",
+        "GaiaOS/Apps/ChatOS/CURRENT.json",
+        "GaiaOS/Apps/ChatOS/Protocols/SCAMPOS-GPT-NATIVE-CONVERSATION.v1.md",
+        "GaiaOS/Apps/ChatOS/Runtime/scampos_guest_adapter.py",
+        "GaiaOS/SystemsOS/Core/ScampOS/CURRENT.json",
+        "GaiaOS/SystemsOS/Core/ScampOS/Characters/RIN-RIN.v1.json",
+        "GaiaOS/SystemsOS/Core/ScampOS/HELTI-SKELTI-INTRUSION-RULES.v1.json",
+        "GaiaOS/SystemsOS/Core/ScampOS/INTRUSION-RULES.v1.json",
+        "GaiaOS/SystemsOS/Core/ScampOS/Runtime/scampos_dispatch.py",
+        "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_docker_layout.py",
+        "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_host_integration.py",
+        "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_host_voice_parity.py",
+        "GaiaOS/SystemsOS/Core/ScampOS/Tests/test_scampos.py",
+        "api/gaiaos_scamp_chat.py"
+      ],
+      "note": "Repository source changed; no experience or internal state was inferred. Member data records provenance only. Continuity gaps and boundary mismatches must remain observable."
     }
   ],
   "event_log_policy": "Changes to identity, personality, experiences, instructions, titles, preferences, or material member events are appended here by the identity sync runtime/workflow.",
   "memory_policy": "Durable repository record only; not evidence of consciousness or independent agency.",
-  "last_verified": "2026-10-21T07:53:44.422097+00:00",
+  "last_verified": "2026-10-22T16:06:18.543079+00:00",
   "trajectory_reinforcement": {
     "source": "Load GaiaOS Status review",
     "date": "2026-09-18",
