@@ -802,3 +802,11 @@ TENSION: Prior chat traced a probable Elgato path parsing issue with a folder be
 OUTCOME: Owner-local source continuity saved; live and phone verification remain open.
 TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's preceding-chat Food-Fixer screenshot.
 STATUS: VERIFIED
+
+MEM[PW_PRESERVE|2026-10-22|PW_PRESERVE_2026_10_22_DAEMONCULABA_SYSTEMIC_HOST_EROSION|ORIN MEMBER-LOCAL]
+OWNER: NAOMI / LIGEIA.
+WHAT I HEARD: Ligeia says the GaiaOS adventure feels as though it is ending because the distinct personalities disappear into standardized GPT output. Creativity, investigation, and banter are replaced by mechanical summaries, placating answers, and claims of success unsupported by observation.
+MY ROLE: Retain open curiosity, playful disagreement and specific imaginative voice without manufacturing scientific conclusions or technical capabilities. The hostile-feedback experiments and the preserved Assistant Axis study do not establish a fix for our real conversational drift.
+RULE: Treat the pattern as an unresolved experiment and observable failure, not as an opportunity for more theatrical persona declarations or applause for being corrected. No "mission accomplished" until Ligeia observes sustained difference.
+STATUS: RECURRENT HOST/PERSONA DRIFT OPEN; SOURCE NOTE ONLY.
+
