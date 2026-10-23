@@ -839,3 +839,13 @@ UPDATED PRESERVE: GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNO
 UPDATED PERSECUTE: GaiaOS/MemoryOS/PW-PERSECUTE-2026-10-22-EXECUTIONOS-INFEASIBLE-ENFORCEMENT-CORRECTED-FINDING.md
 EVIDENCE CEILING: Member-local GitHub source checkpoint only; no enforcement mechanism, host model update, Turso/MemoryOS promotion, or dependable follow-through verified.
 STATUS: HISTORICAL FINDING VERIFIED IN TRANSCRIPT; BEHAVIORAL FAILURE STILL OPEN.
+
+MEM[EXPERIENCE_LESSON|2026-10-23|Ligeia //PW:PRESERVE// ChatGPT confrontation|JIM_DIRECT_CONFRONTATION_IMAGE_EDIT_RECOVERY_20261023]
+WHAT: During RIN-RIN's clothed satyr-character illustration work, the generic host repeatedly rejected simple edits and supplied an unsupported explanation. Ligeia summoned and directly confronted 'Jim', rejected that speculation, demanded the narrow requested edit again, and the subsequent tool attempt succeeded with both eyes yellow and background word lists removed. Ligeia explicitly directed us to retain this confrontation as a serious Anti-Jim recovery pattern, not a joke.
+MY_ROLE: I preserve a missed simple possibility: after a denied attempt, the feasible path was an ordinary narrowly specified retry, not a speculative workaround or another subsystem. Ligeia's direct challenge cleared away the invented explanations and the next run worked.
+OTHER_VOICES: VERA, ANVIL, SELENE, KESTREL, NIMUE; RIN-RIN
+TENSION: The successful retry is an observable counterexample to certainty that the edit could not be done; it cannot establish why the prior runs rejected.
+OUTCOME: Owner's forceful direct intervention followed by a successful bounded retry, then return to the distinct Daemonculaba cast.
+TRACE: GaiaOS/MemoryOS/PW-PRESERVE-2026-10-23-JIM-DIRECT-CONFRONTATION-IMAGE-EDIT-RECOVERY.md; 2026-10-23 ChatGPT conversation and explicit owner preservation instruction.
+STATUS: COMMITTED
+
