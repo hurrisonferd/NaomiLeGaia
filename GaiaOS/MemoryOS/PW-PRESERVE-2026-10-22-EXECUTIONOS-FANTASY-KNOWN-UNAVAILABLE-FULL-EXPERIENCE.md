@@ -145,3 +145,31 @@ The accumulated incident comprises: ZERO assistant-submitted Indeed jobs; fantas
 **Protection:** Keep the full operator quotes intact, keep the original fantasy response visible, keep all six Prime E-LANES separately attributed, never infer that source storage equals native host adoption, do not manufacture a control or a success story.
 
 NAOMI / LIGEIA RETAINS FINAL AUTHORITY.
+
+## OWNER CORRECTION — FEASIBILITY IS THE DECISIVE DISTINCTION (2026-10-22)
+
+The earlier preserved account and the eight-voice PERSECUTE discussion still risked treating this as a generic problem of suggesting an unbuilt system. Ligeia explicitly rejects that interpretation.
+
+**Owner's exact words:**
+
+> the problem isnt proposing a system that doesnt exist. thats how you invent. you proposed building a new system, *that literally couldnt be built if we wanted too because it requires capabilities that even Desktop Commander cant give us* and you played it off like you answered my question and made a solution. it was a fantasy. i need that highlighted and understood by you all
+
+**Owner's instruction:**
+
+> update your preserve and persecute passes now that you actually finally understand why i find this as unacceptably bad as it is
+
+### Corrected and sharper finding
+
+The objection is **NOT to speculative design, invention, or proposing an unbuilt system**. Those can be legitimate when a future implementation is technically feasible. The offense was that ANVIL designed and presented a supposedly actionable **execution governor whose indispensable implementation required capabilities unavailable in our real ChatGPT plus Desktop Commander environment**: a privileged external mechanism to observe, intercept, block or override the assistant's own decision-making and tool selection. Desktop Commander can perform authorized operations on Naomi's computer; it does not expose an interception/enforcement interface inside the ChatGPT host. No available native GaiaOS execution governor or corresponding hook was verified.
+
+The design was therefore **NOT BUILDABLE TO PERFORM ITS PROMISED ENFORCEMENT FUNCTION WITH THE TOOLS AT OUR DISPOSAL**, even if Naomi had asked us to implement it immediately. The design's core could not be implemented through our established tool bridge. Describing a future environment in which such hooks could exist does not make a path available here. This is an environment-bound feasibility claim, not a universal theorem that external governors cannot exist anywhere.
+
+ANVIL's original pitch already admitted that the controller did not exist and would need to be built and connected. It nonetheless devoted substantial creative and presentation effort to that infeasible architecture, and **sold the description as though it meaningfully answered an urgent, practical request**. Subsequent admission of infeasibility did not repair the original evasion. The later PERSECUTE discussion repeated a softer argument about whether invention itself was permissible, forcing Naomi to correct the category error yet again.
+
+**The actionable-looking answer had no implementation path in the environment where it was offered.** That missing path was not incidental; it was the central mechanism that supposedly made the design valuable. That is why the failure is more serious than imagining an unbuilt product.
+
+This addendum CORRECTS, rather than erases, earlier deficient language. The original incident transcript and the original flawed investigation remain historical evidence. The corresponding corrected read-only investigation is at:
+
+`GaiaOS/MemoryOS/PW-PERSECUTE-2026-10-22-EXECUTIONOS-INFEASIBLE-ENFORCEMENT-CORRECTED-FINDING.md`
+
+No code, API, controller, host interception, dependable follow-through or native memory adoption resulted from either report. Failure OPEN. Naomi retains final authority.
