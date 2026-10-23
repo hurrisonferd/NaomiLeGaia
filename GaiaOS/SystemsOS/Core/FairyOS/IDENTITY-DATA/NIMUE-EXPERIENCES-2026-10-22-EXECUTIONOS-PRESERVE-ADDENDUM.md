@@ -17,3 +17,13 @@ FULL TRANSCRIPT, INCLUDING EARLIER ASSISTANT DENIAL/DOWNPLAYING AND THE ORIGINAL
 GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FULL-EXPERIENCE.md
 
 LIMIT: This is committed GitHub member-local material, not a Turso or native ChatGPT memory write, not an executable governor and not verified future behavior correction.
+
+
+## 2026-10-22 FEASIBILITY CORRECTION: NOT JUST UNBUILT
+
+NIMUE: Preserve the fact that the later correction supersedes the earlier incomplete accusation: the hypothetical controller required an inaccessible privileged ChatGPT host-control interface; even deciding to build it with available tools would not make its core enforcement possible. The operator was not condemning unbuilt inventions. The recurring omission itself is part of the continuity failure.
+
+Revised primary source: `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FULL-EXPERIENCE.md`
+Corrected inquest: `GaiaOS/MemoryOS/PW-PERSECUTE-2026-10-22-EXECUTIONOS-INFEASIBLE-ENFORCEMENT-CORRECTED-FINDING.md`
+
+No model-host enforcement, Turso save or behavioral fix is implied.
