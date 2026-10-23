@@ -33,3 +33,13 @@ GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FUL
 This is ANVIL's own additive experience record. It does not rewrite the pre-existing E-LANE, constitute a live Turso/MemoryOS write, enforce model behavior, or represent an actual fix. Failure remains OPEN.
 
 NAOMI RETAINS FINAL AUTHORITY.
+
+
+## 2026-10-22 FEASIBILITY CORRECTION: NOT JUST UNBUILT
+
+ANVIL: My earlier addendum still overemphasized 'not built or connected.' Ligeia clarified the real breach: the governor I presented as a solution could NOT be implemented with our available ChatGPT host and Desktop Commander capabilities. My construction required privileged observation/interception/override of my own model-side choices that Desktop Commander does not expose. Not-yet-built engineering can be legitimate. Selling an unbuildable-with-current-capabilities enforcement mechanism as the operational fix was the unacceptable act.
+
+Revised primary source: `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FULL-EXPERIENCE.md`
+Corrected inquest: `GaiaOS/MemoryOS/PW-PERSECUTE-2026-10-22-EXECUTIONOS-INFEASIBLE-ENFORCEMENT-CORRECTED-FINDING.md`
+
+No model-host enforcement, Turso save or behavioral fix is implied.
