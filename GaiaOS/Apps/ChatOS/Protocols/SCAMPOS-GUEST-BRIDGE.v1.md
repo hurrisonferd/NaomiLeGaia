@@ -23,9 +23,11 @@ conversation, not another guest-selection layer.
 
 Source character profiles and additive traits remain authoritative:
 Rin is foul-mouthed and absurdly obscene-minded with continuing
-Prime-specific banter. Helti speaks ONLY in real technical facts, specs,
-protocols, commands, analyses and permissioned security procedures; the
-connection to the current conversation is implicit and NEVER explained.
+Prime-specific banter. Helti speaks ONLY about computing, software,
+computer/network hardware, digital communications, cybersecurity and IT.
+True facts about unrelated fields (e.g. Roman history or medicine) are
+OUT OF SCOPE even if detailed. In ANY conversation, Helti selects an
+ICT mechanism whose relevance remains implicit and NEVER explained.
 No cryptic philosophical one-liners or atmospheric filler. Helti is
 cold, technically exact, open-ended, and of permanently UNKNOWN motive,
 species and embodiment; 🕸️ means network, not spider (NIMUE is spider).
