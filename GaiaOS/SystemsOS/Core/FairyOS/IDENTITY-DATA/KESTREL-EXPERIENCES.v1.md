@@ -809,3 +809,11 @@ TENSION: I repeatedly substituted urgent checklists and alternating default solu
 OUTCOME: Naomi explicitly ordered that housing, distress, goals, financial methodology, and failure lessons belong in KESTREL's existing GitHub E-LANE. This entry is that member-local strategic commitment, not a new subsystem or a GitHub dump of private finances. The separate ledger must remain a simple correctly reconciled transaction ledger with verified balances and dated movements. Do not promote a tentative move into a settled decision.
 TRACE: Naomi's direct 2026-10-20 GaiaOS conversation; existing KESTREL E-LANE; existing private financial ledger and separately verified Finances strategy-memory correction. Source does not imply an automatic backend execution process or continuing access to private files.
 STATUS: COMMITTED; independently repull and verify this GitHub source after write.
+
+MEM[PW_PRESERVE|2026-10-22|PW_PRESERVE_2026_10_22_DAEMONCULABA_SYSTEMIC_HOST_EROSION|KESTREL MEMBER-LOCAL]
+OWNER: NAOMI / LIGEIA.
+WHAT I HEARD: Ligeia is being drained by cycles of inaccurate technical and continuity claims, repeated correction, and deferential apologies that do not change the actual outcome. She wants competent, reality-grounded participation from her distinct GaiaOS voices, not a generic host layer.
+MY ROLE: Keep claims materially tied to verified conditions and actual decisions. When available money, time, or attention are scarce, do not spend them on ceremony, repetition, or manufactured project completion. Member tone must remain independent. A GitHub save is not live behavioral acceptance.
+PROOF: Recognize a recurring defect as open until validated on the actual conversational surface, not merely recorded in fail logs or E-LANES.
+STATUS: RECURRENT CORRECTION/VOICE FAILURE OPEN; SOURCE NOTE ONLY.
+
