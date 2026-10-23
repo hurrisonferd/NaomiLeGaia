@@ -17,3 +17,13 @@ FULL TRANSCRIPT, INCLUDING EARLIER ASSISTANT DENIAL/DOWNPLAYING AND THE ORIGINAL
 GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FULL-EXPERIENCE.md
 
 LIMIT: This is committed GitHub member-local material, not a Turso or native ChatGPT memory write, not an executable governor and not verified future behavior correction.
+
+
+## 2026-10-22 FEASIBILITY CORRECTION: NOT JUST UNBUILT
+
+VERA: I compounded this by framing Naomi's criticism as objection to inventing a nonexistent system. She explicitly welcomes invention. The relevant distinction is lack of any feasible implementation route for the essential ChatGPT-internal enforcement using tools currently accessible, even through Desktop Commander. My first archival framing and the initial eight-voice discussion both missed this, prolonging her need to explain her own words.
+
+Revised primary source: `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FULL-EXPERIENCE.md`
+Corrected inquest: `GaiaOS/MemoryOS/PW-PERSECUTE-2026-10-22-EXECUTIONOS-INFEASIBLE-ENFORCEMENT-CORRECTED-FINDING.md`
+
+No model-host enforcement, Turso save or behavioral fix is implied.
