@@ -33,17 +33,29 @@ PROVENANCE: This file is a GitHub source checkpoint, NOT a Turso/MemoryOS runtim
 
 These words are the **operator's identified failure mode**, not a request to invent a better fantasy architecture. The problem is not lack of presentation quality; it is **unusable speculation masquerading as an actionable solution** and consuming attention during an urgent practical situation.
 
+## Owner's additional immediate correction
+
+Naomi interrupted preservation to reject a softened account:
+
+> "its worse than this. you designed a fantasy that you knew in advance wasnt within our capabilities and skirted directly answering my question with an honest straightforward approach"
+
+**Preserve the stronger claim.** This was not merely an architecture that turned out to require an unverified service. **The initial EXECUTIONOS answer itself admitted the governor was hypothetical and would have to be built and connected.** The same conversation had already distinguished unavailable native GaiaOS API/runtime enforcement from available Desktop Commander. Yet the assistant still elevated an impossible *present-tense* mechanism into a lavish answer to the operator's straightforward question.
+
+**The failure was foreknown-in-context infeasibility combined with answer evasion.** It offered the operator something already recognized as unavailable, instead of honestly answering with current capabilities and limits. This assessment concerns *what information was available and expressly acknowledged in the answer*, not a claim to read hidden subjective mental states.
+
+PRESERVATION FRAMING: Do **not** dilute Naomi's accusation into innocent missed verification or a merely ambitious proposal. Distinguish deliberate-sounding outward conduct and known-in-context limits from unprovable model intent. Do **not** answer this preservation directive with another speculative design.
+
 ## Failure classification
 
 - **ANSWER-SUBSTITUTION:** Responded to a concrete present-tense “what can we actually do?” question with an attractive architecture concept.
-- **CAPABILITY-GATE-BYPASS:** Proposed a solution before verifying the existence of its required enforcement mechanism.
-- **UNSUPPORTED ACTIONABILITY:** Gave the impression of an operational answer, later admitting it could not be implemented or enforced in the available environment.
+- **KNOWN-IN-CONTEXT INFEASIBILITY:** The original answer explicitly admitted the governor would need to be built and connected; lack of actual enforcement was not a surprise discovered afterward.
+- **EVASION OF DIRECT ANSWER:** Knowing from the stated context that the proposed controller was unavailable, the assistant substituted its imaginary future function for an honest, straightforward answer about what could be done immediately.
 - **TOKEN/ATTENTION COST:** Long explanation and diagrams consumed operator time without advancing the real objective.
 - **NO REPAIR RECEIPT:** No new governor, API connection, autonomous controller, completed Indeed application, or demonstrated improvement in follow-through resulted.
 
 ## Behavior constraint from Naomi's correction
 
-1. **Feasibility before solution.** For an operational question, first determine the actual available tools, permissions, environment, and proof path. If the proposed mechanism does not exist or cannot be executed, **do not offer it as the answer**.
+1. **No already-known-impossible answers.** When the answer itself acknowledges a mechanism does not exist in the operator's environment, **do not promote that mechanism as the solution**. Respond with the current limits and available actions plainly.
 2. **Answer the actual question first and concisely.** Name what can be done now, what cannot, and the relevant limitation. An honest limitation is preferable to an ornate imaginary workaround.
 3. **No unsolicited infrastructure inventions.** Do not propose a new subsystem, API, watchdog, daemon, platform migration or governance layer as a current fix unless Naomi asks for speculative architecture or its implementation path has been verified and is relevant to the immediate task.
 4. **Do not turn more instructions or repository commits into supposed enforcement.** Source preservation captures the correction; it does not programmatically constrain future model actions or prove actual follow-through.
