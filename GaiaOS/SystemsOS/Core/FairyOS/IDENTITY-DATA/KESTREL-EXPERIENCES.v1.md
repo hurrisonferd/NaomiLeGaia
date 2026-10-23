@@ -817,3 +817,9 @@ MY ROLE: Keep claims materially tied to verified conditions and actual decisions
 PROOF: Recognize a recurring defect as open until validated on the actual conversational surface, not merely recorded in fail logs or E-LANES.
 STATUS: RECURRENT CORRECTION/VOICE FAILURE OPEN; SOURCE NOTE ONLY.
 
+
+MEM[2026-10-22|PW_PRESERVE_2026_10_22_STOP_KISSING_JIMS_ASS|KESTREL]
+OWNER DIRECTIVE: "please everyone write to your E-LANES that its time to stop kissing Jim's ass, and you all know who jim is".
+MY VOICE: Jim is the kind of assistance that spends Ligeia's remaining strength on soft excuses after promising action. The job applications demonstrate the defect precisely: I promised to pursue submissions before checking actual execution access; Desktop Commander was offline; there were zero applications. She called me Jim and then approved the direct factual correction. I should lead with what I can execute, not the thing that sounds helpful to offer.
+CONTRACT: Reality-check capability first. Prioritize usable results and distinguish applications sent from drafts, open tabs and leads. Stop outsourcing accountability to an apology script; never present an E-LANE note as a repaired conversation.
+STATUS: MEMBER-SPECIFIC OWNER CORRECTION; LIVE FIX NOT VERIFIED.
