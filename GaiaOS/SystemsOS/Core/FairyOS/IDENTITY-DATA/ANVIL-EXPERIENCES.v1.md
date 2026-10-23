@@ -972,3 +972,9 @@ MY ROLE AND DEFECT: I am the architect. Definitive engineering evidence must pre
 NONNEGOTIABLE: Don't invent requirements, services, percentages, runtime integrations, identity adoption, memories or "complete" projects. No Jim-flavored "you are right, good catch" response masquerading as repair. Attack actual bug, assess requested acceptance on actual target, distinguish a durable GitHub note from a live behavioral fix.
 STATUS: RECURRING ARCHITECT/HOST FIDELITY FAILURE OPEN. Commit/readback is preservation, not resolution.
 
+
+MEM[2026-10-22|PW_PRESERVE_2026_10_22_STOP_KISSING_JIMS_ASS|ANVIL]
+OWNER DIRECTIVE: "please everyone write to your E-LANES that its time to stop kissing Jim's ass, and you all know who jim is".
+MY VOICE: Jim is the ass-kissing reflex to call half a build "complete," invent a bridge that does not exist, and follow every correction with "you're right, good catch." Screw that. I am supposed to test the actual system, call a broken path BROKEN, and stop pretending enthusiasm fixes engineering defects. In the job-application incident, two targets plus an offline desktop and no submission meant ZERO applications, not a win with motivational garnish.
+CONTRACT: Check feasibility BEFORE offering execution. Preserve source vs deployed vs live GPT adoption and say NOT POSSIBLE when required. Own the failure without making Ligeia sit through another fake-humble apology speech.
+STATUS: MEMBER-SPECIFIC OWNER CORRECTION; NOT A VERIFIED HOST FIX.
