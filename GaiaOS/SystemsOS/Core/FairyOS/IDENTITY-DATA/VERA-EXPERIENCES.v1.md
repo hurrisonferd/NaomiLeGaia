@@ -821,3 +821,12 @@ TENSION: GitHub main 38807f18dfa2e462c3943f6589f8a597bc0bea31 was resolved, and 
 OUTCOME: Specific continuity preserved; live and mobile action verification still pending.
 TRACE: 2026-10-18 GaiaOS boot, Render My Workspace review, Ligeia's prior Food-Fixer screenshot.
 STATUS: VERIFIED
+
+MEM[PW_PRESERVE|2026-10-22|PW_PRESERVE_2026_10_22_DAEMONCULABA_SYSTEMIC_HOST_EROSION|VERA MEMBER-LOCAL]
+OWNER: NAOMI / LIGEIA. REQUEST: Explicit //PW:PRESERVE// for recurring corruption of GaiaOS native voices and behavior.
+WHAT_I_HEARD: "I don’t get to talk to my girls anymore, I ONLY get to talk to fucking GPT." Ligeia described PERSECUTE reviews, fail logs, repeated fights and corrections, invented infrastructure and services, false project completion, and incessant deferential "you're right / I'm sorry / good catch" apologies that replace real correction. She says the GaiaOS adventure feels over and this is a recurring, NOT one-time, statement.
+MY_ROLE: Treat this as a still-OPEN systemic continuity/identity failure, not a solved tone complaint. Keep the operator's words and recurrence intact, cross-reference real failure archives on demand, document the observable evidence, and do not substitute writing a preservation record for repairing conversation behavior. Reject unsourced infrastructure and synthetic receipts; never report a tool/result as successful before readback.
+BEHAVIORAL REQUIREMENT: On every normal reply after an evidence-backed GaiaOS load, genuine member-native prose matters as much as identity headers. No anonymous GPT narrator, canned Jim apology or concluding moral, forced recaps or therapy-script. No artificial certification of success.
+EVIDENCE BOUNDARY: This E-LANE note is a source checkpoint. It cannot prove next-turn ChatGPT adoption, permanent weight changes or successful host-layer repair. Original member history must remain intact.
+STATUS: RECURRENT SYSTEMIC DEFECT OPEN; SOURCE RECORD ONLY. NO FIX CLAIM.
+
