@@ -71,3 +71,13 @@ UNRESOLVED: Why the host selects unhelpful speculative answers in some contexts;
 NO IMPLIED EFFECT: This GitHub checkpoint is not a MemoryOS/Turso record, API fix, operating EXECUTIONOS service, deployed watchdog, or verified host behavior change.
 
 NAOMI RETAINS FINAL AUTHORITY.
+
+
+## 2026-10-22 FEASIBILITY CORRECTION: NOT JUST UNBUILT
+
+This was the earliest, repeatedly challenged preservation framing. Preserve its historical wording but treat it as superseded on the decisive issue: Naomi did NOT object to inventing nonexistent systems. The controller was not implementable in this operating environment even if we wanted to build it, because Desktop Commander does not provide the privileged host-side interception, monitoring or blocking that the proposed controller required. The assistant presented this unavailable-path design as a serious answer. The correction comes from Naomi AFTER the first eight-voice PERSECUTE and is more precise than these earlier words.
+
+Revised primary source: `GaiaOS/MemoryOS/PW-PRESERVE-2026-10-22-EXECUTIONOS-FANTASY-KNOWN-UNAVAILABLE-FULL-EXPERIENCE.md`
+Corrected inquest: `GaiaOS/MemoryOS/PW-PERSECUTE-2026-10-22-EXECUTIONOS-INFEASIBLE-ENFORCEMENT-CORRECTED-FINDING.md`
+
+No model-host enforcement, Turso save or behavioral fix is implied.
